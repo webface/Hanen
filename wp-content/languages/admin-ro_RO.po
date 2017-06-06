@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.7.x - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-05-20 07:00:07+0000\n"
+"PO-Revision-Date: 2017-05-28 08:15:40+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7272,7 +7272,7 @@ msgstr "Comută la adaugă categorie"
 #: wp-admin/includes/class-wp-press-this.php:845
 #: wp-admin/includes/meta-boxes.php:385 wp-admin/includes/theme.php:263
 msgid "Post Formats"
-msgstr "Formate pentru articol"
+msgstr "Formate de articol"
 
 #: wp-admin/includes/class-wp-press-this.php:266
 msgid "Error while adding the category. Please try again later."

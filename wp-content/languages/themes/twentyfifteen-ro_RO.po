@@ -1,14 +1,15 @@
-# Translation of Twenty Fifteen in Romanian
-# This file is distributed under the same license as the Twenty Fifteen package.
+# Translation of Themes - Twenty Fifteen in Romanian
+# This file is distributed under the same license as the Themes - Twenty Fifteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2016-08-19 20:19:09+0000\n"
+"PO-Revision-Date: 2017-06-05 08:30:57+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);\n"
-"X-Generator: GlotPress/2.1.0-alpha\n"
-"Project-Id-Version: Twenty Fifteen\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: ro\n"
+"Project-Id-Version: Themes - Twenty Fifteen\n"
 
 #. Description of the plugin/theme
 msgid "Our 2015 default theme is clean, blog-focused, and designed for clarity. Twenty Fifteen's simple, straightforward typography is readable on a wide variety of screen sizes, and suitable for multiple languages. We designed it using a mobile-first approach, meaning your content takes center-stage, regardless of whether your visitors arrive by smartphone, tablet, laptop, or desktop computer."
@@ -68,15 +69,15 @@ msgctxt "Used before post author name."
 msgid "Author"
 msgstr "Autor"
 
-#: inc/template-tags.php:55
-msgctxt "Used before post format."
-msgid "Format"
-msgstr "Format"
-
 #: inc/template-tags.php:76
 msgctxt "Used before publish date."
 msgid "Posted on"
 msgstr "Publicat pe"
+
+#: inc/template-tags.php:55
+msgctxt "Used before post format."
+msgid "Format"
+msgstr "Format"
 
 #: inc/template-tags.php:49
 msgid "Featured"
@@ -122,26 +123,26 @@ msgstr "Implicit"
 msgid "Header and Sidebar Background Color"
 msgstr "Culoare fundal pentru antet și bara laterală"
 
-#: inc/customizer.php:59
-msgid "Header and Sidebar Text Color"
-msgstr "Culoare text pentru antet și bara laterală"
-
 #: inc/customizer.php:60 inc/customizer.php:76 inc/customizer.php:81
 msgid "Applied to the header on small screens and the sidebar on wide screens."
 msgstr "Pentru ecranele mici se aplică pe antet iar pentru ecranele mari se aplică pe bara laterală."
+
+#: inc/customizer.php:59
+msgid "Header and Sidebar Text Color"
+msgstr "Culoare text pentru antet și bara laterală"
 
 #: inc/customizer.php:44
 msgid "Base Color Scheme"
 msgstr "Schema de culoarea de bază"
 
+#: inc/back-compat.php:37 inc/back-compat.php:47 inc/back-compat.php:60
+msgid "Twenty Fifteen requires at least WordPress version 4.1. You are running version %s. Please upgrade and try again."
+msgstr "Twenty Fifteen necesită cel puțin WordPress versiunea 4.1. Folosești versiunea %s. Te rog actualizează și mai încearcă încă o dată."
+
 #: image.php:84
 msgctxt "Parent post link"
 msgid "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%title</span>"
 msgstr "<span class=\"meta-nav\">Publicat în</span><span class=\"post-title\">%title</span>"
-
-#: inc/back-compat.php:37 inc/back-compat.php:47 inc/back-compat.php:60
-msgid "Twenty Fifteen requires at least WordPress version 4.1. You are running version %s. Please upgrade and try again."
-msgstr "Twenty Fifteen necesită cel puțin WordPress versiunea 4.1. Folosești versiunea %s. Te rog actualizează și mai încearcă încă o dată."
 
 #: image.php:24
 msgid "Next Image"
@@ -159,34 +160,34 @@ msgstr "Meniu și widget-uri"
 msgid "Skip to content"
 msgstr "Sari la conținut"
 
-#: functions.php:269
-msgid "expand child menu"
-msgstr "extinde meniul copil"
-
-#: functions.php:270
+#: functions.php:283
 msgid "collapse child menu"
 msgstr "restrânge meniul copil"
 
-#. Translators: If there are characters in your language that are not supported
-#. by Inconsolata, translate this to 'off'. Do not translate into your own
-#. language.
-#: functions.php:191
-msgctxt "Inconsolata font: on or off"
-msgid "on"
-msgstr "on"
+#: functions.php:282
+msgid "expand child menu"
+msgstr "extinde meniul copil"
 
 #. Translators: To add an additional character subset specific to your
 #. language, translate this to 'greek', 'cyrillic', 'devanagari' or
 #. 'vietnamese'. Do not translate into your own language.
-#: functions.php:199
+#: functions.php:212
 msgctxt "Add new subset (greek, cyrillic, devanagari, vietnamese)"
 msgid "no-subset"
-msgstr "romanian"
+msgstr "no-subset"
+
+#. Translators: If there are characters in your language that are not supported
+#. by Inconsolata, translate this to 'off'. Do not translate into your own
+#. language.
+#: functions.php:204
+msgctxt "Inconsolata font: on or off"
+msgid "on"
+msgstr "on"
 
 #. Translators: If there are characters in your language that are not supported
 #. by Noto Serif, translate this to 'off'. Do not translate into your own
 #. language.
-#: functions.php:183
+#: functions.php:196
 msgctxt "Noto Serif font: on or off"
 msgid "on"
 msgstr "on"
@@ -194,16 +195,16 @@ msgstr "on"
 #. Translators: If there are characters in your language that are not supported
 #. by Noto Sans, translate this to 'off'. Do not translate into your own
 #. language.
-#: functions.php:175
+#: functions.php:188
 msgctxt "Noto Sans font: on or off"
 msgid "on"
 msgstr "on"
 
-#: functions.php:149
+#: functions.php:162
 msgid "Add widgets here to appear in your sidebar."
 msgstr "Adaugă widgeturi aici pentru a le afișa în bara laterală."
 
-#: functions.php:147
+#: functions.php:160
 msgid "Widget Area"
 msgstr "Zonă asamblabilă"
 
@@ -219,7 +220,7 @@ msgstr "Meniu principal"
 msgid "Proudly powered by %s"
 msgstr "Propulsat de %s"
 
-#. #-#-#-#-#  twentyfifteen.pot (Twenty Fifteen 1.6)  #-#-#-#-#
+#. #-#-#-#-#  twentyfifteen.pot (Twenty Fifteen 1.7)  #-#-#-#-#
 #. Author URI of the plugin/theme
 #: footer.php:25
 msgid "https://wordpress.org/"
@@ -290,7 +291,7 @@ msgstr "Pagina anterioară"
 
 #: 404.php:21
 msgid "It looks like nothing was found at this location. Maybe try a search?"
-msgstr "Se pare că nu există nimic aici. Încearcă o căutare"
+msgstr "Se pare că n-am găsit nimic la această locație. Poate încerci o căutare?"
 
 #: 404.php:17
 msgid "Oops! That page can&rsquo;t be found."
