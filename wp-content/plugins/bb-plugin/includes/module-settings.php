@@ -8,54 +8,66 @@ FLBuilder::register_settings_form('module_advanced', array(
 		'margins'       => array(
 			'title'         => __('Margins', 'fl-builder'),
 			'fields'        => array(
-				'margin_top'    => array(
-					'type'          => 'text',
-					'label'         => __( 'Top', 'fl-builder' ),
-					'default'       => '',
-					'description'   => 'px',
-					'maxlength'     => '4',
-					'size'          => '5',
-					'placeholder'   => $global_settings->module_margins,
-					'preview'         => array(
-						'type'            => 'none'
+				'margin_top' => array(
+					'type'        => 'unit',
+					'label'       => __( 'Top', 'fl-builder' ),
+					'description' => 'px',
+					'preview'     => array(
+						'type' => 'none',
+					),
+					'responsive'  => array(
+						'placeholder' => array(
+							'default'    => ( isset( $global_settings->module_margins ) ) ? $global_settings->module_margins : '',
+							'medium'     => ( isset( $global_settings->module_margins_medium ) ) ? $global_settings->module_margins_medium : '',
+							'responsive' => ( isset( $global_settings->module_margins_responsive ) ) ? $global_settings->module_margins_responsive : '',
+						)
 					)
 				),
 				'margin_bottom' => array(
-					'type'          => 'text',
-					'label'         => __( 'Bottom', 'fl-builder' ),
-					'default'       => '',
-					'description'   => 'px',
-					'maxlength'     => '4',
-					'size'          => '5',
-					'placeholder'   => $global_settings->module_margins,
-					'preview'         => array(
-						'type'            => 'none'
+					'type'        => 'unit',
+					'label'       => __( 'Bottom', 'fl-builder' ),
+					'description' => 'px',
+					'preview'     => array(
+						'type' => 'none',
+					),
+					'responsive'  => array(
+						'placeholder' => array(
+							'default'    => ( isset( $global_settings->module_margins ) ) ? $global_settings->module_margins : '',
+							'medium'     => ( isset( $global_settings->module_margins_medium ) ) ? $global_settings->module_margins_medium : '',
+							'responsive' => ( isset( $global_settings->module_margins_responsive ) ) ? $global_settings->module_margins_responsive : '',
+						)
 					)
 				),
-				'margin_left'   => array(
-					'type'          => 'text',
-					'label'         => __( 'Left', 'fl-builder' ),
-					'default'       => '',
-					'description'   => 'px',
-					'maxlength'     => '4',
-					'size'          => '5',
-					'placeholder'   => $global_settings->module_margins,
-					'preview'         => array(
-						'type'            => 'none'
+				'margin_left' => array(
+					'type'        => 'unit',
+					'label'       => __( 'Left', 'fl-builder' ),
+					'description' => 'px',
+					'preview'     => array(
+						'type' => 'none',
+					),
+					'responsive'  => array(
+						'placeholder' => array(
+							'default'    => ( isset( $global_settings->module_margins ) ) ? $global_settings->module_margins : '',
+							'medium'     => ( isset( $global_settings->module_margins_medium ) ) ? $global_settings->module_margins_medium : '',
+							'responsive' => ( isset( $global_settings->module_margins_responsive ) ) ? $global_settings->module_margins_responsive : '',
+						)
 					)
 				),
-				'margin_right'  => array(
-					'type'          => 'text',
-					'label'         => __( 'Right', 'fl-builder' ),
-					'default'       => '',
-					'description'   => 'px',
-					'maxlength'     => '4',
-					'size'          => '5',
-					'placeholder'   => $global_settings->module_margins,
-					'preview'         => array(
-						'type'            => 'none'
+				'margin_right' => array(
+					'type'        => 'unit',
+					'label'       => __( 'Right', 'fl-builder' ),
+					'description' => 'px',
+					'preview'     => array(
+						'type' => 'none',
+					),
+					'responsive'  => array(
+						'placeholder' => array(
+							'default'    => ( isset( $global_settings->module_margins ) ) ? $global_settings->module_margins : '',
+							'medium'     => ( isset( $global_settings->module_margins_medium ) ) ? $global_settings->module_margins_medium : '',
+							'responsive' => ( isset( $global_settings->module_margins_responsive ) ) ? $global_settings->module_margins_responsive : '',
+						)
 					)
-				)
+				),
 			)
 		),
 		'responsive'   => array(
@@ -76,6 +88,37 @@ FLBuilder::register_settings_form('module_advanced', array(
 					'preview'         => array(
 						'type'            => 'none'
 					)
+				),
+			)
+		),
+		'visibility'   => array(
+			'title'         => __('Visibility', 'fl-builder'),
+			'fields'        => array(
+				'visibility_display' => array(
+					'type'          => 'select',
+					'label'         => __('Display', 'fl-builder'),
+					'options'       => array(
+						''				=> __('Always', 'fl-builder'),
+						'logged_out'    => __('Logged Out User', 'fl-builder'),
+						'logged_in'     => __('Logged In User', 'fl-builder'),
+						'0'             => __('Never', 'fl-builder'),
+					),
+					'toggle' 		=> array(
+						'logged_in'		=> array(
+							'fields' 		=> array('visibility_user_capability')
+						)
+					),
+					'preview'         => array(
+						'type'            => 'none'
+					)
+				),
+				'visibility_user_capability' => array(
+					'type' 						=> 'text',
+					'label'						=> __('User Capability', 'fl-builder'),
+					'description'  	 			=> sprintf( __( 'Optional. Set the <a%s>capability</a> required for users to view this module.', 'fl-builder' ), ' href="http://codex.wordpress.org/Roles_and_Capabilities#Capability_vs._Role_Table" target="_blank"' ),
+					'preview'         			=> array(
+						'type'            			=> 'none'
+					),
 				)
 			)
 		),
@@ -112,7 +155,7 @@ FLBuilder::register_settings_form('module_advanced', array(
 			)
 		),
 		'css_selectors' => array(
-			'title'         => __('CSS Selectors', 'fl-builder'),
+			'title'         => __('HTML Element', 'fl-builder'),
 			'fields'        => array(
 				'id'            => array(
 					'type'          => 'text',

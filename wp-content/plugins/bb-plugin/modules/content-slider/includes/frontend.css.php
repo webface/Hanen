@@ -97,6 +97,8 @@ for($i = 0; $i < count($settings->slides); $i++) {
 		echo '.fl-node-'. $id .' .fl-slide-'. $i .' .fl-slide-text, ';
 		echo '.fl-node-'. $id .' .fl-slide-'. $i .' .fl-slide-text * ';
 		echo '{ color: #'. $slide->text_color .'; }';
+		echo '.fl-node-'. $id .' .fl-slide-'. $i .' .fl-slide-text strong ';
+		echo '{ color: inherit; }';
 	}
 	
 	// Text BG Color
@@ -126,6 +128,8 @@ for($i = 0; $i < count($settings->slides); $i++) {
 			echo '.fl-node-'. $id .' .fl-slide-'. $i .' .fl-slide-text, ';
 			echo '.fl-node-'. $id .' .fl-slide-'. $i .' .fl-slide-text * ';
 			echo '{ color: #'. $slide->r_text_color .'; }';
+			echo '.fl-node-'. $id .' .fl-slide-'. $i .' .fl-slide-text strong ';
+			echo '{ color: inherit; }';
 		}
 		else {
 			echo '.fl-node-'. $id .' .fl-slide-'. $i .' .fl-slide-title, ';
@@ -164,10 +168,13 @@ for($i = 0; $i < count($settings->slides); $i++) {
 			'bg_color'          => $slide->btn_bg_color,
 			'bg_hover_color'    => $slide->btn_bg_hover_color,
 			'bg_opacity'        => isset( $slide->btn_bg_opacity ) ? $slide->btn_bg_opacity : 0,
+			'bg_hover_opacity'  => isset( $slide->btn_bg_hover_opacity ) ? $slide->btn_bg_hover_opacity : 0,
+			'button_transition' => $slide->btn_button_transition,
 			'border_radius'     => $slide->btn_border_radius,
 			'border_size'       => isset( $slide->btn_border_size ) ? $slide->btn_border_size : 2,
 			'font_size'         => $slide->btn_font_size,
 			'icon'              => isset( $slide->btn_icon ) ? $slide->btn_icon : '',
+			'icon_position'     => isset( $slide->btn_icon_position ) ? $slide->btn_icon_position : '',
 			'link'              => $slide->link,
 			'link_target'       => $slide->link_target,
 			'padding'           => $slide->btn_padding,

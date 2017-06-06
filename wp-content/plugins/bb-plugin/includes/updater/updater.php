@@ -12,6 +12,6 @@ if(!class_exists('FLUpdater') && FL_BUILDER_LITE !== true) {
 	/* Actions */
 	add_action('fl_themes_license_form', 'FLUpdater::render_form');
 	
-	/* Run the updater. */
+	/* Initialize the updater. */
 	FLUpdater::init();
 }

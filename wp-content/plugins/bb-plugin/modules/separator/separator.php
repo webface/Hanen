@@ -11,10 +11,11 @@ class FLSeparatorModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Separator', 'fl-builder'),
-			'description'   => __('A divider line to separate content.', 'fl-builder'),
-			'category'      => __('Basic Modules', 'fl-builder'),
-			'editor_export' => false
+			'name'          	=> __('Separator', 'fl-builder'),
+			'description'   	=> __('A divider line to separate content.', 'fl-builder'),
+			'category'      	=> __('Basic Modules', 'fl-builder'),
+			'editor_export' 	=> false,
+			'partial_refresh'	=> true
 		));
 	}
 }
@@ -66,6 +67,39 @@ FLBuilder::register_module('FLSeparatorModule', array(
 							'property'      => 'border-top-width',
 							'unit'          => 'px'
 						)
+					),
+					'width'        => array(
+						'type'          => 'select',
+						'label'         => __('Width', 'fl-builder'),
+						'default'       => 'full',
+						'options'       => array(
+							'full'          => __('Full Width', 'fl-builder'),
+							'custom'        => __('Custom', 'fl-builder')
+						),
+						'toggle'        => array(
+							'full'          => array(),
+							'custom'        => array(
+								'fields'        => array('align', 'custom_width')
+							)
+						)
+					),
+					'custom_width'  => array(
+						'type'          => 'text',
+						'label'         => __('Custom Width', 'fl-builder'),
+						'default'       => '10',
+						'maxlength'     => '3',
+						'size'          => '4',
+						'description'   => '%'
+					),
+					'align'         => array(
+						'type'          => 'select',
+						'label'         => __('Align', 'fl-builder'),
+						'default'       => 'center',
+						'options'       => array(
+							'center'      => _x( 'Center', 'Alignment.', 'fl-builder' ),
+							'left'        => _x( 'Left', 'Alignment.', 'fl-builder' ),
+							'right'       => _x( 'Right', 'Alignment.', 'fl-builder' ),
+						),
 					),
 					'style'         => array(
 						'type'          => 'select',

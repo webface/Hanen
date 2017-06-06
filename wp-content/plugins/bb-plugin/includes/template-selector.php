@@ -1,100 +1,53 @@
 <form class="fl-builder-settings fl-template-selector">
 	<div class="fl-lightbox-header">
+
 		<h1><?php _e('Layout Templates', 'fl-builder'); ?></h1>
-	</div>
-	<div class="fl-builder-settings-tabs">
 
-		<?php if($enabled_templates == 'enabled' || $enabled_templates == 'core') : ?>
-		<a href="#fl-builder-settings-tab-landing" class="<?php if(count($user_templates) == 0) echo 'fl-active'; ?>"><?php _e('Home Pages', 'fl-builder'); ?></a>
-		<a href="#fl-builder-settings-tab-company"><?php _e('Content Pages', 'fl-builder'); ?></a>
+		<?php if ( count( $filter_data ) > 1 ) : ?>
+		<div class="fl-template-category-filter fl-builder-settings-fields">
+			<select class="fl-template-category-select" name="fl-template-category-select">
+				<?php foreach ( $filter_data as $slug => $category ) : ?>
+				<option value="fl-builder-settings-tab-<?php echo $slug; ?>"><?php echo $category; ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
 		<?php endif; ?>
 
-		<?php if($enabled_templates == 'enabled' || $enabled_templates == 'user') : ?>
-		<a href="#fl-builder-settings-tab-yours" class="<?php if(count($user_templates) > 0 || $enabled_templates == 'user') echo 'fl-active'; ?>"><?php _e('Your Templates', 'fl-builder'); ?></a>
-		<?php endif; ?>
 	</div>
 	<div class="fl-builder-settings-fields fl-nanoscroller">
 		<div class="fl-nanoscroller-content">
 
-			<?php if($enabled_templates == 'enabled' || $enabled_templates == 'core') : ?>
-
-			<div id="fl-builder-settings-tab-landing" class="fl-builder-settings-tab <?php if(count($user_templates) == 0) echo 'fl-active'; ?>">
-
-				<div class="fl-builder-settings-section">
-
-					<?php $i = 0; foreach($templates as $key => $template) : if($template->category != 'landing') continue; ?>
-					<div class="fl-template-preview<?php if(($i + 1) % 3 === 0) echo ' fl-last'; ?>" data-index="<?php echo $key; ?>">
-						<div class="fl-template-image">
-							<img src="<?php echo FL_BUILDER_URL . 'img/templates/' . $template->image; ?>" />
-						</div>
-						<span><?php echo $template->name; ?></span>
-					</div>
-					<?php $i++; endforeach; ?>
-
-					<div class="fl-clear"></div>
-
+			<?php if ( true === FL_BUILDER_LITE ) : ?>
+				<?php if ( FLBuilderModel::has_templates() ) : ?>
+				<div class="fl-builder-settings-message fl-builder-templates-cta">
+					<p><?php _e( 'Save and reuse your layouts or kick-start your creativity with even more professionally designed templates.', 'fl-builder' ); ?></p>
+					<a class="fl-builder-upgrade-button fl-builder-button" href="<?php echo FLBuilderModel::get_store_url( '', array( 'utm_medium' => 'bb-lite', 'utm_source' => 'builder-ui', 'utm_campaign' => 'templates-cta' ) ); ?>" target="_blank"><?php _e( 'Learn More', 'fl-builder' ); ?> <i class="fa fa-external-link-square"></i></a>
 				</div>
-			</div>
-
-			<div id="fl-builder-settings-tab-company" class="fl-builder-settings-tab">
-
-				<div class="fl-builder-settings-section">
-
-					<div class="fl-template-preview" data-index="0">
-						<div class="fl-template-image">
-							<img src="<?php echo FL_BUILDER_URL; ?>img/templates/blank.jpg" />
-						</div>
-						<span><?php _ex( 'Blank', 'Template name.', 'fl-builder' ); ?></span>
-					</div>
-
-					<?php $i = 1; foreach($templates as $key => $template) : if($template->category != 'company') continue; ?>
-					<div class="fl-template-preview<?php if(($i + 1) % 3 === 0) echo ' fl-last'; ?>" data-index="<?php echo $key; ?>">
-						<div class="fl-template-image">
-							<img src="<?php echo FL_BUILDER_URL . 'img/templates/' . $template->image; ?>" />
-						</div>
-						<span><?php echo $template->name; ?></span>
-					</div>
-					<?php $i++; endforeach; ?>
-
-					<div class="fl-clear"></div>
-
+				<?php else : ?>
+				<div class="fl-builder-settings-message fl-builder-templates-cta">
+					<p><?php _e( 'Save and reuse your layouts or kick-start your creativity with dozens of professionally designed templates.', 'fl-builder' ); ?></p>
+					<a class="fl-builder-upgrade-button fl-builder-button" href="<?php echo FLBuilderModel::get_store_url( '', array( 'utm_medium' => 'bb-lite', 'utm_source' => 'builder-ui', 'utm_campaign' => 'templates-cta' ) ); ?>" target="_blank"><?php _e( 'Learn More', 'fl-builder' ); ?> <i class="fa fa-external-link-square"></i></a>
 				</div>
-			</div>
-
+				<img class="fl-builder-templates-cta-img" src="<?php echo FL_BUILDER_URL; ?>img/templates-preview.jpg" />
+				<?php endif; ?>
 			<?php endif; ?>
 
-			<?php if($enabled_templates == 'enabled' || $enabled_templates == 'user') : ?>
-
-			<div id="fl-builder-settings-tab-yours" class="fl-builder-settings-tab <?php if(count($user_templates) > 0 || $enabled_templates == 'user') echo 'fl-active'; ?>">
-
+			<?php $i = 0; foreach ( $templates['categorized'] as $slug => $category ) : ?>
+			<div id="fl-builder-settings-tab-<?php echo $slug; ?>" class="fl-builder-settings-tab<?php if ( 0 === $i ) echo ' fl-active'; ?>">
 				<div class="fl-builder-settings-section">
-
-					<p class="fl-builder-settings-message fl-user-templates-message"><?php _e('You haven\'t saved any templates yet! To do so, create a layout and save it as a template under <strong>Tools &rarr; Save Template</strong>.', 'fl-builder'); ?></p>
-
-					<?php if(count($user_templates) > 0) : ?>
-					<div class="fl-user-templates">
-						<div class="fl-user-template" data-id="blank">
-							<span class="fl-user-template-title"><?php _ex( 'Blank', 'Template name.', 'fl-builder' ); ?></span>
-							<div class="fl-clear"></div>
+					<?php $k = 0; foreach ( $category['templates'] as $template ) : ?>
+					<div class="fl-template-preview<?php if(($k + 1) % 3 === 0) echo ' fl-last'; ?>" data-id="<?php echo $template['id']; ?>">
+						<div class="fl-template-image">
+							<img src="<?php echo $template['image']; ?>" />
 						</div>
-						<?php foreach($user_templates as $template) : ?>
-						<div class="fl-user-template" data-id="<?php echo $template->ID; ?>">
-							<div class="fl-user-template-actions">
-								<a class="fl-user-template-edit" href="<?php echo add_query_arg('fl_builder', '', get_permalink($template->ID)); ?>"><?php _e('Edit', 'fl-builder'); ?></a>
-								<a class="fl-user-template-delete" href="javascript:void(0);" onclick="return false;"><?php _e('Delete', 'fl-builder'); ?></a>
-							</div>
-							<span class="fl-user-template-title"><?php echo $template->post_title; ?></span>
-							<div class="fl-clear"></div>
-						</div>
-						<?php endforeach; ?>
-						<div class="fl-clear"></div>
+						<span><?php echo $template['name']; ?></span>
 					</div>
-					<?php endif; ?>
-
+					<?php $k++; endforeach; ?>
 				</div>
 			</div>
+			<?php $i++; endforeach; ?>
 
-			<?php endif; ?>
+			<?php do_action( 'fl_builder_template_selector_content' ); ?>
 
 		</div>
 	</div>

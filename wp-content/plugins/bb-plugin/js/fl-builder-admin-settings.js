@@ -27,9 +27,14 @@
 		init: function()
 		{
 			this._bind();
+			this._maybeShowWelcome();
 			this._initNav();
-			this._initOverrides();
-			this._initHelpButtonSettings();
+			this._initNetworkOverrides();
+			this._initLicenseSettings();
+			this._initMultiSelects();
+			this._initUserAccessSelects();
+			this._initUserAccessNetworkOverrides();
+			this._templatesOverrideChange();
 		},
 		
 		/**
@@ -42,16 +47,33 @@
 		_bind: function()
 		{
 			$('.fl-settings-nav a').on('click', FLBuilderAdminSettings._navClicked);
+			$('.fl-override-ms-cb').on('click', FLBuilderAdminSettings._overrideCheckboxClicked);
+			$('.fl-ua-override-ms-cb').on('click', FLBuilderAdminSettings._overrideUserAccessCheckboxClicked);
 			$('.fl-module-all-cb').on('click', FLBuilderAdminSettings._moduleAllCheckboxClicked);
 			$('.fl-module-cb').on('click', FLBuilderAdminSettings._moduleCheckboxClicked);
-			$('.fl-override-ms-cb').on('click', FLBuilderAdminSettings._overrideCheckboxClicked);
+			$('input[name=fl-templates-override]').on('keyup click', FLBuilderAdminSettings._templatesOverrideChange);
 			$('input[name=fl-upload-icon]').on('click', FLBuilderAdminSettings._showIconUploader);
 			$('.fl-delete-icon-set').on('click', FLBuilderAdminSettings._deleteCustomIconSet);
 			$('#uninstall-form').on('submit', FLBuilderAdminSettings._uninstallFormSubmit);
-			$('input[name=fl-help-button-enabled]').on('click', FLBuilderAdminSettings._initHelpButtonSettings);
-			$('input[name=fl-help-video-enabled]').on('click', FLBuilderAdminSettings._initHelpButtonSettings);
-			$('input[name=fl-knowledge-base-enabled]').on('click', FLBuilderAdminSettings._initHelpButtonSettings);
-			$('input[name=fl-forums-enabled]').on('click', FLBuilderAdminSettings._initHelpButtonSettings);
+			$( '.fl-settings-form .dashicons-editor-help' ).tipTip();
+		},
+		
+		/**
+		 * Show the welcome page after the license has been saved.
+		 *
+		 * @since 1.7.4
+		 * @access private
+		 * @method _maybeShowWelcome
+		 */
+		_maybeShowWelcome: function()
+		{
+			var onLicense    = 'license' == window.location.hash.replace( '#', '' ),
+				isUpdated    = $( '.wrap .updated' ).length,
+				licenseError = $( '.fl-license-error' ).length;
+			
+			if ( onLicense && isUpdated && ! licenseError ) {
+				window.location.hash = 'welcome';
+			}
 		},
 		
 		/**
@@ -65,12 +87,12 @@
 		{
 			var links  = $('.fl-settings-nav a'),
 				hash   = window.location.hash,
-				active = hash == '' ? [] : links.filter('[href~='+ hash +']');
+				active = hash === '' ? [] : links.filter('[href~="'+ hash +'"]');
 				
 			$('a.fl-active').removeClass('fl-active');
 			$('.fl-settings-form').hide();
 				
-			if(hash == '' || active.length === 0) {
+			if(hash === '' || active.length === 0) {
 				active = links.eq(0);
 			}
 			
@@ -92,6 +114,167 @@
 				$('.fl-settings-form').hide();
 				$(this).addClass('fl-active');
 				$('#fl-'+ $(this).attr('href').split('#').pop() +'-form').fadeIn();
+			}
+		},
+		
+		/**
+		 * Initializes the checkboxes for overriding network settings.
+		 *
+		 * @since 1.0
+		 * @access private
+		 * @method _initNetworkOverrides
+		 */
+		_initNetworkOverrides: function()
+		{
+			$('.fl-override-ms-cb').each(FLBuilderAdminSettings._initNetworkOverride);
+		},
+		
+		/**
+		 * Initializes a checkbox for overriding network settings.
+		 *
+		 * @since 1.0
+		 * @access private
+		 * @method _initNetworkOverride
+		 */
+		_initNetworkOverride: function()
+		{
+			var cb      = $(this),
+				content = cb.closest('.fl-settings-form').find('.fl-settings-form-content');
+				
+			if(this.checked) {
+				content.show();
+			}
+			else {
+				content.hide();
+			}
+		},
+		
+		/**
+		 * Fired when a network override checkbox is clicked.
+		 *
+		 * @since 1.0
+		 * @access private
+		 * @method _overrideCheckboxClicked
+		 */
+		_overrideCheckboxClicked: function()
+		{
+			var cb      = $(this),
+				content = cb.closest('.fl-settings-form').find('.fl-settings-form-content');
+				
+			if(this.checked) {
+				content.show();
+			}
+			else {
+				content.hide();
+			}
+		},
+		
+		/**
+		 * Initializes custom multi-selects.
+		 *
+		 * @since 1.10
+		 * @access private
+		 * @method _initMultiSelects
+		 */
+		_initMultiSelects: function()
+		{
+			$( 'select[multiple]' ).multiselect( {
+				selectAll: true,
+				texts: {
+					deselectAll     : FLBuilderAdminSettingsStrings.deselectAll,
+					noneSelected    : FLBuilderAdminSettingsStrings.noneSelected,
+					placeholder     : FLBuilderAdminSettingsStrings.select,
+					selectAll       : FLBuilderAdminSettingsStrings.selectAll,
+					selectedOptions : FLBuilderAdminSettingsStrings.selected
+				}
+			} );
+		},
+		
+		/**
+		 * Initializes user access select options.
+		 *
+		 * @since 1.10
+		 * @access private
+		 * @method _initUserAccessSelects
+		 */
+		_initUserAccessSelects: function()
+		{
+			var config  = FLBuilderAdminSettingsConfig,
+				options = null,
+				role    = null,
+				select  = null,
+				key     = null,
+				hidden  = null;
+			
+			$( '.fl-user-access-select' ).each( function() {
+				
+				options = [];
+				select  = $( this );
+				key     = select.attr( 'name' ).replace( 'fl_user_access[', '' ).replace( '][]', '' );
+				
+				for( role in config.roles ) {
+					options.push( {
+						name    : config.roles[ role ],
+						value   : role,
+						checked : 'undefined' == typeof config.userAccess[ key ] ? false : config.userAccess[ key ][ role ]
+					} );
+				}
+				
+				select.multiselect( 'loadOptions', options );
+			} );
+		},
+		
+		/**
+		 * Initializes the checkboxes for overriding user access 
+		 * network settings.
+		 *
+		 * @since 1.0
+		 * @access private
+		 * @method _initUserAccessNetworkOverrides
+		 */
+		_initUserAccessNetworkOverrides: function()
+		{
+			$('.fl-ua-override-ms-cb').each(FLBuilderAdminSettings._initUserAccessNetworkOverride);
+		},
+		
+		/**
+		 * Initializes a checkbox for overriding user access
+		 * network settings.
+		 *
+		 * @since 1.0
+		 * @access private
+		 * @method _initUserAccessNetworkOverride
+		 */
+		_initUserAccessNetworkOverride: function()
+		{
+			var cb     = $(this),
+				select = cb.closest('.fl-user-access-setting').find('.ms-options-wrap');
+				
+			if(this.checked) {
+				select.show();
+			}
+			else {
+				select.hide();
+			}
+		},
+		
+		/**
+		 * Fired when a network override checkbox is clicked.
+		 *
+		 * @since 1.0
+		 * @access private
+		 * @method _overrideCheckboxClicked
+		 */
+		_overrideUserAccessCheckboxClicked: function()
+		{
+			var cb     = $(this),
+				select = cb.closest('.fl-user-access-setting').find('.ms-options-wrap');
+				
+			if(this.checked) {
+				select.show();
+			}
+			else {
+				select.hide();
 			}
 		},
 		
@@ -138,80 +321,48 @@
 		},
 		
 		/**
-		 * Initializes the checkboxes for overriding network settings.
-		 *
-		 * @since 1.0
+		 * @since 1.7.4
 		 * @access private
-		 * @method _initOverrides
+		 * @method _initLicenseSettings
 		 */
-		_initOverrides: function()
+		_initLicenseSettings: function()
 		{
-			$('.fl-override-ms-cb').each(FLBuilderAdminSettings._initOverride);
+			$( '.fl-new-license-form .button' ).on( 'click', FLBuilderAdminSettings._newLicenseButtonClick );
 		},
 		
 		/**
-		 * Initializes a checkbox for overriding network settings.
-		 *
-		 * @since 1.0
+		 * @since 1.7.4
 		 * @access private
-		 * @method _initOverride
+		 * @method _newLicenseButtonClick
 		 */
-		_initOverride: function()
+		_newLicenseButtonClick: function()
 		{
-			var cb      = $(this),
-				content = cb.closest('.fl-settings-form').find('.fl-settings-form-content');
+			$( '.fl-new-license-form' ).hide();
+			$( '.fl-license-form' ).show();
+		},
+		
+		/**
+		 * Fires when the templates override setting is changed.
+		 *
+		 * @since 1.6.3
+		 * @access private
+		 * @method _templatesOverrideChange
+		 */
+		_templatesOverrideChange: function()
+		{
+			var input 			= $('input[name=fl-templates-override]'),
+				val 			= input.val(),
+				overrideNodes 	= $( '.fl-templates-override-nodes' ),
+				toggle 			= false;
 				
-			if(this.checked) {
-				content.show();
+			if ( 'checkbox' == input.attr( 'type' ) ) {
+				toggle = input.is( ':checked' );
 			}
 			else {
-				content.hide();
-			}
-		},
-		
-		/**
-		 * Fired when a network override checkbox is clicked.
-		 *
-		 * @since 1.0
-		 * @access private
-		 * @method _overrideCheckboxClicked
-		 */
-		_overrideCheckboxClicked: function()
-		{
-			var cb      = $(this),
-				content = cb.closest('.fl-settings-form').find('.fl-settings-form-content');
-				
-			if(this.checked) {
-				content.show();
-			}
-			else {
-				content.hide();
-			}
-		},
-		
-		/**
-		 * Initializes the the help button settings.
-		 *
-		 * @since 1.4.9
-		 * @access private
-		 * @method _initHelpButtonSettings
-		 */
-		_initHelpButtonSettings: function()
-		{
-			if ( 0 === $( '#fl-help-button-form' ).length ) {
-				return;
+				toggle = '' !== val;
 			}
 			
-			var enabled  = $( 'input[name=fl-help-button-enabled]' )[ 0 ].checked,
-				tour     = $('input[name=fl-help-tour-enabled]')[ 0 ].checked,
-				video    = $('input[name=fl-help-video-enabled]')[ 0 ].checked,
-				kb       = $('input[name=fl-knowledge-base-enabled]')[ 0 ].checked,
-				forums   = $('input[name=fl-forums-enabled]')[ 0 ].checked;
-			
-			$( '.fl-help-button-settings' ).toggle( enabled );
-			$( '.fl-help-video-embed' ).toggle( video );
-			$( '.fl-knowledge-base-url' ).toggle( kb );
-			$( '.fl-forums-url' ).toggle( forums );
+			overrideNodes.toggle( toggle );
 		},
 		
 		/**
@@ -276,7 +427,7 @@
 		 */
 		_uninstallFormSubmit: function()
 		{
-			var result = prompt(FLBuilderAdminSettingsStrings.uninstall, '');
+			var result = prompt(FLBuilderAdminSettingsStrings.uninstall.replace(/&quot;/g, '"'), '');
 			
 			if(result == 'uninstall') {
 				return true;

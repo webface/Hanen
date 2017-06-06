@@ -1,11 +1,11 @@
 <?php
 
 FLBuilder::register_settings_form('global', array(
-	'title' => sprintf( _x( '%s Settings', '%s stands for custom branded "Page Builder" name.', 'fl-builder' ), FLBuilderModel::get_branding() ),
+	'title' => __( 'Global Settings', 'fl-builder' ),
 	'tabs' => array(
 		'general'  => array(
 			'title'         => __('General', 'fl-builder'),
-			'description'   => __('Note: These settings apply to all posts and pages.', 'fl-builder'),
+			'description'   => __('<strong>Note</strong>: These settings apply to all posts and pages.', 'fl-builder'),
 			'sections'      => array(
 				'page_heading'  => array(
 					'title'         => __('Default Page Heading', 'fl-builder'),
@@ -37,19 +37,19 @@ FLBuilder::register_settings_form('global', array(
 					'title'         => __('Rows', 'fl-builder'),
 					'fields'        => array(
 						'row_margins'       => array(
-							'type'              => 'text',
+							'type'              => 'unit',
 							'label'             => __('Margins', 'fl-builder'),
 							'default'           => '0',
-							'maxlength'         => '3',
-							'size'              => '5',
+							'placeholder'       => '0',
+							'responsive'        => true,
 							'description'       => 'px'
 						),
 						'row_padding'       => array(
-							'type'              => 'text',
+							'type'              => 'unit',
 							'label'             => __('Padding', 'fl-builder'),
 							'default'           => '20',
-							'maxlength'         => '3',
-							'size'              => '5',
+							'placeholder'       => '0',
+							'responsive'        => true,
 							'description'       => 'px'
 						),
 						'row_width'         => array(
@@ -59,7 +59,7 @@ FLBuilder::register_settings_form('global', array(
 							'maxlength'         => '4',
 							'size'              => '5',
 							'description'       => 'px',
-							'help'                     => __('All rows will default to this width. You can override this and make a row full width in the settings for each row.', 'fl-builder')
+							'help'              => __('All rows will default to this width. You can override this and make a row full width in the settings for each row.', 'fl-builder')
 						),
 						'row_width_default' => array(
 							'type'    => 'select',
@@ -90,11 +90,11 @@ FLBuilder::register_settings_form('global', array(
 					'title'         => __('Modules', 'fl-builder'),
 					'fields'        => array(
 						'module_margins'    => array(
-							'type'              => 'text',
+							'type'              => 'unit',
 							'label'             => __('Margins', 'fl-builder'),
 							'default'           => '20',
-							'maxlength'         => '3',
-							'size'              => '5',
+							'placeholder'       => '0',
+							'responsive'        => true,
 							'description'       => 'px'
 						)
 					)
@@ -143,6 +143,44 @@ FLBuilder::register_settings_form('global', array(
 							'size'              => '5',
 							'description'       => 'px',
 							'help'              => __('The browser width at which the layout will adjust for small devices such as phones.', 'fl-builder')
+						)
+					)
+				)
+			)
+		),
+		'css'  => array(
+			'title'         => __('CSS', 'fl-builder'),
+			'sections'      => array(
+				'css'  			=> array(
+					'title'         => '',
+					'fields'        => array(
+						'css' 			=> array(
+							'type'          => 'code',
+							'label'         => '',
+							'editor'        => 'css',
+							'rows'          => '18',
+							'preview'           => array(
+								'type'              => 'none'
+							)
+						)
+					)
+				)
+			)
+		),
+		'js'  	=> array(
+			'title'         => __('JavaScript', 'fl-builder'),
+			'sections'      => array(
+				'js'  			=> array(
+					'title'         => '',
+					'fields'        => array(
+						'js' 			=> array(
+							'type'          => 'code',
+							'label'         => '',
+							'editor'        => 'javascript',
+							'rows'          => '18',
+							'preview'           => array(
+								'type'              => 'none'
+							)
 						)
 					)
 				)

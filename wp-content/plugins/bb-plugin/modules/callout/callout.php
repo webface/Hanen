@@ -11,9 +11,10 @@ class FLCalloutModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Callout', 'fl-builder'),
-			'description'   => __('A heading and snippet of text with an optional link, icon and image.', 'fl-builder'),
-			'category'      => __('Advanced Modules', 'fl-builder')
+			'name'          	=> __('Callout', 'fl-builder'),
+			'description'   	=> __('A heading and snippet of text with an optional link, icon and image.', 'fl-builder'),
+			'category'      	=> __('Advanced Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 	}
 
@@ -24,15 +25,8 @@ class FLCalloutModule extends FLBuilderModule {
 	public function update($settings)
 	{
 		// Cache the photo data.
-		if(!empty($settings->photo)) {
-
-			$data = FLBuilderPhoto::get_attachment_data($settings->photo);
-
-			if($data) {
-				$settings->photo_data = $data;
-			}
-		}
-
+		$settings->photo_data = FLBuilderPhoto::get_attachment_data($settings->photo);
+		
 		return $settings;
 	}
 
@@ -103,7 +97,9 @@ class FLCalloutModule extends FLBuilderModule {
 	 */
 	public function render_text()
 	{
-		echo '<div class="fl-callout-text">' . $this->settings->text . '</div>';
+		global $wp_embed;
+		
+		echo '<div class="fl-callout-text">' . wpautop( $wp_embed->autoembed( $this->settings->text ) ) . '</div>';
 	}
 
 	/**
@@ -132,7 +128,10 @@ class FLCalloutModule extends FLBuilderModule {
 				'border_size'       => $this->settings->btn_border_size,
 				'font_size'         => $this->settings->btn_font_size,
 				'icon'              => $this->settings->btn_icon,
+				'icon_position'     => $this->settings->btn_icon_position,
+				'icon_animation'	=> $this->settings->btn_icon_animation,
 				'link'              => $this->settings->link,
+				'link_nofollow'		=> $this->settings->link_nofollow,
 				'link_target'       => $this->settings->link_target,
 				'padding'           => $this->settings->btn_padding,
 				'style'             => $this->settings->btn_style,
@@ -154,15 +153,18 @@ class FLCalloutModule extends FLBuilderModule {
 	public function render_image($position)
 	{
 		if($this->settings->image_type == 'photo' && $this->settings->photo_position == $position) {
-
+			
 			if(empty($this->settings->photo)) {
 				return;
 			}
 
 			$photo_data = FLBuilderPhoto::get_attachment_data($this->settings->photo);
 
-			if(!$photo_data) {
+			if(!$photo_data && isset($this->settings->photo_data)) {
 				$photo_data = $this->settings->photo_data;
+			}
+			else {
+				$photo_data = -1;
 			}
 
 			$photo_settings = array(
@@ -217,7 +219,8 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'preview'       => array(
 							'type'          => 'text',
 							'selector'      => '.fl-callout-title'
-						)
+						),
+						'connections'   => array( 'string' )
 					)
 				)
 			),
@@ -228,10 +231,12 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'type'          => 'editor',
 						'label'         => '',
 						'media_buttons' => false,
+						'wpautop'		=> false,
 						'preview'       => array(
 							'type'          => 'text',
 							'selector'      => '.fl-callout-text'
-						)
+						),
+						'connections'   => array( 'string' )
 					)
 				)
 			)
@@ -333,14 +338,15 @@ FLBuilder::register_module('FLCalloutModule', array(
 				'fields'        => array(
 					'photo'         => array(
 						'type'          => 'photo',
-						'label'         => __('Photo', 'fl-builder')
+						'label'         => __('Photo', 'fl-builder'),
+						'connections'   => array( 'photo' )
 					),
 					'photo_crop'    => array(
 						'type'          => 'select',
 						'label'         => __('Crop', 'fl-builder'),
 						'default'       => '',
 						'options'       => array(
-							''              => _x( 'None', 'Crop', 'fl-builder' ),
+							''              => _x( 'None', 'Photo Crop.', 'fl-builder' ),
 							'landscape'     => __('Landscape', 'fl-builder'),
 							'panorama'      => __('Panorama', 'fl-builder'),
 							'portrait'      => __('Portrait', 'fl-builder'),
@@ -450,7 +456,8 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'help'          => __('The link applies to the entire module. If choosing a call to action type below, this link will also be used for the text or button.', 'fl-builder'),
 						'preview'       => array(
 							'type'          => 'none'
-						)
+						),
+						'connections'   => array( 'url' )
 					),
 					'link_target'   => array(
 						'type'          => 'select',
@@ -459,6 +466,18 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'options'       => array(
 							'_self'         => __('Same Window', 'fl-builder'),
 							'_blank'        => __('New Window', 'fl-builder')
+						),
+						'preview'       => array(
+							'type'          => 'none'
+						)
+					),
+					'link_nofollow'          => array(
+						'type'          => 'select',
+						'label'         => __('Link No Follow', 'fl-builder'),
+						'default'       => 'no',
+						'options' 		=> array(
+							'yes' 			=> __('Yes', 'fl-builder'),
+							'no' 			=> __('No', 'fl-builder'),
 						),
 						'preview'       => array(
 							'type'          => 'none'
@@ -484,19 +503,39 @@ FLBuilder::register_module('FLCalloutModule', array(
 								'fields'        => array('cta_text')
 							),
 							'button'        => array(
-								'fields'        => array('cta_text', 'btn_icon'),
-								'sections'      => array('btn_colors', 'btn_structure')
+								'fields'        => array('cta_text', 'btn_icon', 'btn_icon_position', 'btn_icon_animation'),
+								'sections'      => array('btn_style', 'btn_colors', 'btn_structure')
 							)
 						)
 					),
 					'cta_text'      => array(
 						'type'          => 'text',
-						'label'         => __('Text', 'fl-builder')
+						'label'         => __('Text', 'fl-builder'),
+						'default'		=> __('Read More', 'fl-builder'),
+						'connections'   => array( 'string' )
 					),
 					'btn_icon'      => array(
 						'type'          => 'icon',
 						'label'         => __('Button Icon', 'fl-builder'),
 						'show_remove'   => true
+					),
+					'btn_icon_position' => array(
+						'type'          => 'select',
+						'label'         => __('Button Icon Position', 'fl-builder'),
+						'default'       => 'before',
+						'options'       => array(
+							'before'        => __('Before Text', 'fl-builder'),
+							'after'         => __('After Text', 'fl-builder')
+						)
+					),
+					'btn_icon_animation' => array(
+						'type'          => 'select',
+						'label'         => __('Icon Visibility', 'fl-builder'),
+						'default'       => 'disable',
+						'options'       => array(
+							'disable'        => __('Always Visible', 'fl-builder'),
+							'enable'         => __('Fade In On Hover', 'fl-builder')
+						)
 					)
 				)
 			),
@@ -549,7 +588,7 @@ FLBuilder::register_module('FLCalloutModule', array(
 						),
 						'toggle'        => array(
 							'transparent'   => array(
-								'fields'        => array('btn_bg_opacity', 'btn_border_size')
+								'fields'        => array('btn_bg_opacity', 'btn_bg_hover_opacity', 'btn_border_size')
 							)
 						)
 					),
@@ -570,6 +609,24 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'maxlength'     => '3',
 						'size'          => '5',
 						'placeholder'   => '0'
+					),
+					'btn_bg_hover_opacity' => array(
+						'type'          => 'text',
+						'label'         => __('Background Hover Opacity', 'fl-builder'),
+						'default'       => '0',
+						'description'   => '%',
+						'maxlength'     => '3',
+						'size'          => '5',
+						'placeholder'   => '0'
+					),
+					'btn_button_transition' => array(
+						'type'          => 'select',
+						'label'         => __('Transition', 'fl-builder'),
+						'default'       => 'disable',
+						'options'       => array(
+							'disable'        => __('Disabled', 'fl-builder'),
+							'enable'         => __('Enabled', 'fl-builder')
+						)
 					)
 				)  
 			),

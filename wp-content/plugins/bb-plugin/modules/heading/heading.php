@@ -11,9 +11,10 @@ class FLHeadingModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Heading', 'fl-builder'),
-			'description'   => __('Display a title/page heading.', 'fl-builder'),
-			'category'      => __('Basic Modules', 'fl-builder')
+			'name'          	=> __('Heading', 'fl-builder'),
+			'description'   	=> __('Display a title/page heading.', 'fl-builder'),
+			'category'      	=> __('Basic Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 	}
 }
@@ -35,7 +36,8 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'preview'         => array(
 							'type'            => 'text',
 							'selector'        => '.fl-heading-text'
-						)
+						),
+						'connections'     => array( 'string' )
 					)
 				)
 			),
@@ -47,7 +49,8 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'label'         => __('Link', 'fl-builder'),
 						'preview'         => array(
 							'type'            => 'none'
-						)
+						),
+						'connections'     => array( 'url' )
 					),
 					'link_target'   => array(
 						'type'          => 'select',
@@ -75,7 +78,7 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'type'          => 'color',
 						'show_reset'    => true,
 						'label'         => __('Text Color', 'fl-builder')
-					)
+					),
 				)
 			),
 			'structure'     => array(
@@ -109,6 +112,18 @@ FLBuilder::register_module('FLHeadingModule', array(
 							'h6'            =>  'h6'
 						)
 					),
+					'font'          => array(
+						'type'          => 'font',
+						'default'		=> array(
+							'family'		=> 'Default',
+							'weight'		=> 300
+						),
+						'label'         => __('Font', 'fl-builder'),
+						'preview'         => array(
+							'type'            => 'font',
+							'selector'        => '.fl-heading-text'
+						)					
+					),
 					'font_size'     => array(
 						'type'          => 'select',
 						'label'         => __('Font Size', 'fl-builder'),
@@ -127,6 +142,50 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'type'          => 'text',
 						'label'         => __('Custom Font Size', 'fl-builder'),
 						'default'       => '24',
+						'maxlength'     => '3',
+						'size'          => '4',
+						'description'   => 'px'
+					),
+					'line_height'     => array(
+						'type'          => 'select',
+						'label'         => __('Line Height', 'fl-builder'),
+						'default'       => 'default',
+						'options'       => array(
+							'default'       =>  __('Default', 'fl-builder'),
+							'custom'        =>  __('Custom', 'fl-builder')
+						),
+						'toggle'        => array(
+							'custom'        => array(
+								'fields'        => array('custom_line_height')
+							)
+						)
+					),
+					'custom_line_height' => array(
+						'type'          => 'text',
+						'label'         => __('Custom Line Height', 'fl-builder'),
+						'default'       => '1.4',
+						'maxlength'     => '4',
+						'size'          => '4',
+						'description'   => 'em'
+					),
+					'letter_spacing'     => array(
+						'type'          => 'select',
+						'label'         => __('Letter Spacing', 'fl-builder'),
+						'default'       => 'default',
+						'options'       => array(
+							'default'       =>  __('Default', 'fl-builder'),
+							'custom'        =>  __('Custom', 'fl-builder')
+						),
+						'toggle'        => array(
+							'custom'        => array(
+								'fields'        => array('custom_letter_spacing')
+							)
+						)
+					),
+					'custom_letter_spacing' => array(
+						'type'          => 'text',
+						'label'         => __('Custom Letter Spacing', 'fl-builder'),
+						'default'       => '0',
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px'
@@ -178,9 +237,6 @@ FLBuilder::register_module('FLHeadingModule', array(
 							'custom'        => array(
 								'fields'        => array('r_custom_font_size')
 							)
-						),
-						'preview'         => array(
-							'type'            => 'none'
 						)
 					),
 					'r_custom_font_size' => array(
@@ -189,10 +245,50 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'default'       => '24',
 						'maxlength'     => '3',
 						'size'          => '4',
-						'description'   => 'px',
-						'preview'         => array(
-							'type'            => 'none'
+						'description'   => 'px'
+					),
+					'r_line_height'     => array(
+						'type'          => 'select',
+						'label'         => __('Line Height', 'fl-builder'),
+						'default'       => 'default',
+						'options'       => array(
+							'default'       =>  __('Default', 'fl-builder'),
+							'custom'        =>  __('Custom', 'fl-builder')
+						),
+						'toggle'        => array(
+							'custom'        => array(
+								'fields'        => array('r_custom_line_height')
+							)
 						)
+					),
+					'r_custom_line_height' => array(
+						'type'          => 'text',
+						'label'         => __('Custom Line Height', 'fl-builder'),
+						'default'       => '1.4',
+						'maxlength'     => '4',
+						'size'          => '4'
+					),
+					'r_letter_spacing'     => array(
+						'type'          => 'select',
+						'label'         => __('Letter Spacing', 'fl-builder'),
+						'default'       => 'default',
+						'options'       => array(
+							'default'       =>  __('Default', 'fl-builder'),
+							'custom'        =>  __('Custom', 'fl-builder')
+						),
+						'toggle'        => array(
+							'custom'        => array(
+								'fields'        => array('r_custom_letter_spacing')
+							)
+						)
+					),
+					'r_custom_letter_spacing' => array(
+						'type'          => 'text',
+						'label'         => __('Custom Letter Spacing', 'fl-builder'),
+						'default'       => '0',
+						'maxlength'     => '3',
+						'size'          => '4',
+						'description'   => 'px'
 					)
 				)
 			)

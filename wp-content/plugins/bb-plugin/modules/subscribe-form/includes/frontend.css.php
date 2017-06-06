@@ -1,5 +1,5 @@
-.fl-subscribe-form .fl-form-field input,
-.fl-subscribe-form .fl-form-field input[type=text] {
+.fl-node-<?php echo $id; ?> .fl-subscribe-form .fl-form-field input,
+.fl-node-<?php echo $id; ?> .fl-subscribe-form .fl-form-field input[type=text] {
 	font-size: <?php echo $settings->btn_font_size; ?>px;
 	line-height: <?php echo $settings->btn_font_size + 2; ?>px;
 	padding: <?php echo $settings->btn_padding . 'px ' . ( $settings->btn_padding * 2 ) . 'px'; ?>;
@@ -7,11 +7,11 @@
 	-moz-border-radius: <?php echo $settings->btn_border_radius; ?>px;
 	-webkit-border-radius: <?php echo $settings->btn_border_radius; ?>px;
 }
-.fl-subscribe-form-inline .fl-form-field input,
-.fl-subscribe-form-inline .fl-form-field input[type=text] {
+.fl-node-<?php echo $id; ?> .fl-subscribe-form-inline .fl-form-field input,
+.fl-node-<?php echo $id; ?> .fl-subscribe-form-inline .fl-form-field input[type=text] {
 	height: <?php echo ( $settings->btn_padding * 2 )  + ( $settings->btn_font_size + 4 ); ?>px;
 }
-.fl-subscribe-form-inline a.fl-button {
+.fl-node-<?php echo $id; ?> .fl-subscribe-form-inline a.fl-button {
 	height: <?php echo ( $settings->btn_padding * 2 )  + ( $settings->btn_font_size + 4 ); ?>px;
 	line-height: <?php echo $settings->btn_font_size; ?>px !important;
 }
@@ -23,10 +23,13 @@ FLBuilder::render_module_css('button', $id, array(
 	'bg_color'          => $settings->btn_bg_color,
 	'bg_hover_color'    => $settings->btn_bg_hover_color,
 	'bg_opacity'        => $settings->btn_bg_opacity,
+	'bg_hover_opacity'  => $settings->btn_bg_hover_opacity,
+	'button_transition' => $settings->btn_button_transition,
 	'border_radius'     => $settings->btn_border_radius,
 	'border_size'       => $settings->btn_border_size,
 	'font_size'         => $settings->btn_font_size,
 	'icon'              => $settings->btn_icon,
+	'icon_position'     => $settings->btn_icon_position,
 	'link'              => '#',
 	'link_target'       => '_self',
 	'padding'           => $settings->btn_padding,

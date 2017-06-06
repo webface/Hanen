@@ -11,7 +11,7 @@ if($settings->three_d && !empty($settings->bg_hover_color)) {
 
 ?>
 <?php // Alignment ?>
-<?php if(!isset($settings->exclude_wrapper)) : ?>
+<?php if(!isset($settings->exclude_wrapper) && !empty($settings->align)) : ?>
 .fl-node-<?php echo $id; ?>.fl-module-icon {
 	text-align: <?php echo $settings->align; ?>
 }
@@ -69,3 +69,10 @@ if($settings->three_d && !empty($settings->bg_hover_color)) {
 .fl-node-<?php echo $id; ?> .fl-module-content .fl-icon-text {
 	height: <?php echo $settings->size * 1.75; ?>px;
 }
+<?php if($global_settings->responsive_enabled && ($settings->r_align == 'custom')) : ?>
+@media (max-width: <?php echo $global_settings->responsive_breakpoint; ?>px) {
+	.fl-node-<?php echo $id; ?>.fl-module-icon {
+		text-align: <?php echo $settings->r_custom_align ?> !important;
+	}
+}
+<?php endif; ?>

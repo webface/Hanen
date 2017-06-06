@@ -1,19 +1,12 @@
-<?php if($settings->layout == 'grid') : // GRID ?>
+<?php
+	
+$layout = $module->get_layout_slug();
+$file   = $module->dir . 'includes/post-' . $layout;	
+$custom = isset( $settings->post_layout ) && 'custom' == $settings->post_layout;
 
-.fl-post-grid-post {    
-	margin-bottom: <?php echo $settings->post_spacing; ?>px;
-	width: <?php echo $settings->post_width; ?>px;
+if ( file_exists( $file . '-common.css.php' ) ) {
+	include $file . '-common.css.php';
 }
-.fl-post-grid-sizer {
-	width: <?php echo $settings->post_width; ?>px;
+if ( ! $custom && file_exists( $file . '.css.php' ) ) {
+	include $file . '.css.php';
 }
-
-@media screen and (max-width: <?php echo $settings->post_width + $settings->post_spacing; ?>px) {
-	.fl-post-grid,
-	.fl-post-grid-post,
-	.fl-post-grid-sizer {
-		width: 100% !important;
-	}
-}
-
-<?php endif; ?>

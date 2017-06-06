@@ -11,16 +11,33 @@ class FLGalleryModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Gallery', 'fl-builder'),
-			'description'   => __('Display multiple photos in a gallery view.', 'fl-builder'),
-			'category'      => __('Advanced Modules', 'fl-builder'),
-			'editor_export'  => false
+			'name'          	=> __('Gallery', 'fl-builder'),
+			'description'   	=> __('Display multiple photos in a gallery view.', 'fl-builder'),
+			'category'      	=> __('Advanced Modules', 'fl-builder'),
+			'editor_export'  	=> false,
+			'partial_refresh'	=> true
 		));
 
+		$this->add_styles_scripts();
+	}
+
+	/**
+	 * @method add_styles_scripts()
+	 */
+	public function add_styles_scripts()
+	{
 		$this->add_js('jquery-wookmark');
 		$this->add_js('jquery-mosaicflow');
-		$this->add_js('jquery-magnificpopup');
-		$this->add_css('jquery-magnificpopup');
+
+		$override_lightbox = apply_filters( 'fl_builder_override_lightbox', false );
+		if ( ! $override_lightbox ) {
+			$this->add_js('jquery-magnificpopup');
+			$this->add_css('jquery-magnificpopup');
+		}
+		else {
+			wp_dequeue_script('jquery-magnificpopup');
+			wp_dequeue_style('jquery-magnificpopup');
+		}
 	}
 
 	/**
@@ -72,13 +89,20 @@ class FLGalleryModule extends FLBuilderModule {
 			$photo = FLBuilderPhoto::get_attachment_data($id);
 
 			// Use the cache if we didn't get a photo from the id.
-			if(!$photo) {
+			if ( ! $photo ) {
 
-				if(isset($this->settings->photo_data->{$id})) {
-					$photos[$id] = $this->settings->photo_data->{$id};
+				if ( ! isset( $this->settings->photo_data ) ) {
+					continue;
 				}
-
-				continue;
+				else if ( is_array( $this->settings->photo_data ) ) {
+					$photos[ $id ] = $this->settings->photo_data[ $id ];
+				}
+				else if ( is_object( $this->settings->photo_data ) ) {
+					$photos[ $id ] = $this->settings->photo_data->{$id};
+				}
+				else {
+					continue;
+				}
 			}
 
 			// Only use photos who have the sizes object.
@@ -141,7 +165,7 @@ class FLGalleryModule extends FLBuilderModule {
 		$photos = array();
 
 		// Load the feed into a DOM object.
-		$feed = @simplexml_load_file($this->settings->feed_url);
+		$feed = simplexml_load_file($this->settings->feed_url, 'SimpleXMLElement', LIBXML_NOWARNING);
 
 		if($feed !== false) {
 
@@ -249,7 +273,8 @@ FLBuilder::register_module('FLGalleryModule', array(
 					),
 					'photos'        => array(
 						'type'          => 'multiple-photos',
-						'label'         => __('Photos', 'fl-builder')
+						'label'         => __('Photos', 'fl-builder'),
+						'connections'   => array( 'multiple-photos' )
 					),
 					'feed_url'   => array(
 						'type'          => 'text',

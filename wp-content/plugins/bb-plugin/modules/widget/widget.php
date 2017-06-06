@@ -11,10 +11,11 @@ class FLWidgetModule extends FLBuilderModule {
     public function __construct()
     {
         parent::__construct(array(
-            'name'          => __('Widget', 'fl-builder'),
-            'description'   => __('Display a WordPress widget.', 'fl-builder'),
-            'category'   	=> __('WordPress Widgets', 'fl-builder'),
-            'editor_export' => false
+            'name'          	=> __('Widget', 'fl-builder'),
+            'description'   	=> __('Display a WordPress widget.', 'fl-builder'),
+            'category'   		=> __('WordPress Widgets', 'fl-builder'),
+            'editor_export' 	=> false,
+			'partial_refresh'	=> true
         ));
     }
 
@@ -23,17 +24,14 @@ class FLWidgetModule extends FLBuilderModule {
      */  
     public function update( $settings )
     {
-	    global $wp_widget_factory;
-	    
 	    // Make sure we have a widget.
-	    if ( ! isset( $settings->widget ) || ! isset( $wp_widget_factory->widgets[ $settings->widget ] ) ) {
+	    if ( ! isset( $settings->widget ) || ! class_exists( $settings->widget ) ) {
 		    return $settings;
 	    }
 	    
 	    // Get the widget instance.
-	    $factory  = $wp_widget_factory->widgets[ $settings->widget ];
-	    $class    = get_class( $factory );
-	    $instance = new $class( $factory->id_base, $factory->name, $factory->widget_options );
+	    $class    = $settings->widget;
+	    $instance = new $class();
 	    
 	    // Get the widget settings.
 	    $settings_key = 'widget-' . $instance->id_base;
@@ -50,6 +48,9 @@ class FLWidgetModule extends FLBuilderModule {
 	    if ( is_array( $widget_settings ) ) {
 		    $settings->$settings_key = ( object )$widget_settings;
 	    }
+	    
+	    // Delete the WordPress cache for this widget.
+	    wp_cache_delete( $settings->widget, 'widget' );
 	    
 	    // Return the settings.
 	    return $settings;

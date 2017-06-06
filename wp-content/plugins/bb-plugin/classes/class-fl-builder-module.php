@@ -106,6 +106,15 @@ class FLBuilderModule {
 	public $editor_export = true;
 	
 	/** 
+	 * Whether partial refresh should be enabled
+	 * for this module or not.
+	 *
+	 * @since 1.7
+	 * @var boolean $partial_refresh
+	 */
+	public $partial_refresh = false;
+	
+	/** 
 	 * The module settings object.
 	 *
 	 * @since 1.0
@@ -134,20 +143,30 @@ class FLBuilderModule {
 	 * 
 	 * @since 1.0
 	 */
-	public function __construct($params)
+	public function __construct( $params )
 	{
 		$class_info             = new ReflectionClass($this);
 		$class_path             = $class_info->getFileName();
 		$dir_path               = dirname($class_path);
-		$this->name             = $params['name'];
-		$this->description      = $params['description'];
-		$this->category         = $params['category'];
 		$this->slug             = basename($class_path, '.php');
 		$this->enabled          = isset($params['enabled']) ? $params['enabled'] : true;
 		$this->editor_export    = isset($params['editor_export']) ? $params['editor_export'] : true;
+		$this->partial_refresh  = isset($params['partial_refresh']) ? $params['partial_refresh'] : false;
+		
+		$details = apply_filters( 'fl_builder_module_details', array(
+			'name'        => $params['name'],
+			'description' => $params['description'],
+			'category'    => $params['category']
+		), $this->slug );
+		
+		$this->name             = $details['name'];
+		$this->description      = $details['description'];
+		$this->category         = $details['category'];
 		
 		// We need to normalize the paths here since path comparisons 
 		// break on Windows because they use backslashes.
+		$abspath                    = str_replace( '\\', '/', ABSPATH );
+		$fl_builder_dir             = str_replace( '\\', '/', FL_BUILDER_DIR );
 		$dir_path                   = str_replace( '\\', '/', $dir_path );
 		$stylesheet_directory       = str_replace( '\\', '/', get_stylesheet_directory() );
 		$stylesheet_directory_uri   = str_replace( '\\', '/', get_stylesheet_directory_uri() );
@@ -156,16 +175,24 @@ class FLBuilderModule {
 		
 		// Find the right paths.
 		if(is_child_theme() && stristr($dir_path, $stylesheet_directory)) {
-			$this->url = str_replace($stylesheet_directory, $stylesheet_directory_uri, $dir_path) . '/';
-			$this->dir = $dir_path . '/';
+			$this->url = trailingslashit(str_replace($stylesheet_directory, $stylesheet_directory_uri, $dir_path));
+			$this->dir = trailingslashit($dir_path);
 		}
 		else if(stristr($dir_path, $template_directory)) {
-			$this->url = str_replace($template_directory, $template_directory_uri, $dir_path) . '/';
-			$this->dir = $dir_path . '/';
+			$this->url = trailingslashit(str_replace($template_directory, $template_directory_uri, $dir_path));
+			$this->dir = trailingslashit($dir_path);
+		}
+		else if(isset($params['url']) && isset($params['dir'])) {
+			$this->url = trailingslashit($params['url']);
+			$this->dir = trailingslashit($params['dir']);
+		}
+		else if(!stristr($dir_path, $fl_builder_dir)) {
+			$this->url = trailingslashit(str_replace(trailingslashit($abspath), trailingslashit(home_url()), $dir_path));
+			$this->dir = trailingslashit($dir_path);
 		}
 		else {                
-			$this->url = isset($params['url']) ? $params['url'] : FL_BUILDER_URL . 'modules/' . $this->slug . '/';
-			$this->dir = isset($params['dir']) ? $params['dir'] : FL_BUILDER_DIR . 'modules/' . $this->slug . '/';
+			$this->url = trailingslashit(FL_BUILDER_URL . 'modules/' . $this->slug);
+			$this->dir = trailingslashit(FL_BUILDER_DIR . 'modules/' . $this->slug);
 		}
 	}
 
@@ -219,6 +246,18 @@ class FLBuilderModule {
 	}
 
 	/** 
+	 * Enqueues the needed styles for any font fields
+	 * in this module.
+	 *
+	 * @since 1.6.3
+	 * @return void
+	 */      
+	public function enqueue_font_styles()
+	{
+		FLBuilderFonts::add_fonts_for_module( $this );
+	}
+
+	/** 
 	 * Should be overridden by subclasses to enqueue
 	 * additional css/js using the add_css and add_js methods.
 	 *
@@ -244,13 +283,29 @@ class FLBuilderModule {
 	}
 
 	/** 
-	 * Should be overridden by subclasses to
-	 * work with a module before it is deleted.
+	 * Should be overridden by subclasses to work with a module before 
+	 * it is deleted. Please note, this method is called when a module
+	 * is updated and when it's actually removed from the page and should
+	 * be used for things like clearing photo cache from the builder's 
+	 * cache directory. If only need to run logic when a module is 
+	 * actually removed from the page, use the remove method instead.
 	 *
 	 * @since 1.0
 	 * @return void
 	 */      
 	public function delete()
+	{
+
+	}
+
+	/**
+	 * Should be overridden by subclasses to work with a module when 
+	 * it is actually removed from the page.
+	 *
+	 * @since 1.0
+	 * @return void
+	 */
+	public function remove()
 	{
 
 	}

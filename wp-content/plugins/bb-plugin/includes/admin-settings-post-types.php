@@ -41,8 +41,9 @@
 				<?php
 	
 				$saved_post_types   = FLBuilderModel::get_post_types();
-				$post_types         = get_post_types(array('public' => true), 'objects');
-	
+				$post_types			= get_post_types( array( 'public' => true ), 'objects' );
+				$post_types         = apply_filters( 'fl_builder_admin_settings_post_types', $post_types );
+				
 				foreach($post_types as $post_type) :
 	
 					$checked = in_array($post_type->name, $saved_post_types) ? 'checked' : '';

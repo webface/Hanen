@@ -39,15 +39,6 @@
 .fl-module-content {
 	zoom:1;
 }
-.fl-row,
-.fl-row-content {
-	margin-left: auto;
-	margin-right: auto;
-}
-.fl-col {
-	float: left;
-	min-height: 1px;
-}
 .fl-clear {
 	clear: both;
 }
@@ -72,12 +63,29 @@
 
 .fl-visible-medium,
 .fl-visible-medium-mobile,
-.fl-visible-mobile {
+.fl-visible-mobile,
+.fl-col-group .fl-visible-medium.fl-col,
+.fl-col-group .fl-visible-medium-mobile.fl-col,
+.fl-col-group .fl-visible-mobile.fl-col {
 	display: none;
 }
 
 /* Rows
 ------------------------------------------------------ */
+
+.fl-row,
+.fl-row-content {
+	margin-left: auto;
+	margin-right: auto;
+}
+.fl-row-content-wrap {
+	position: relative;
+}
+
+/* Photo Bg */
+.fl-builder-mobile .fl-row-bg-photo .fl-row-content-wrap {
+	background-attachment: scroll;
+}
 
 /* Video Bg */
 .fl-row-bg-video,
@@ -98,6 +106,18 @@
 	position: absolute;
 	right: 0;
 	top: 0px;
+}
+.fl-row-bg-video .fl-bg-video iframe {
+	pointer-events: none;
+	width: 100vw;
+  	height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
+  	max-width: none;
+  	min-height: 100vh;
+  	min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
 }
 .fl-bg-video-fallback {
 	background-position: 50% 50%;
@@ -133,10 +153,7 @@
 	top: 0;
 }
 
-/* Bg Overlay */
-.fl-row-bg-overlay .fl-row-content-wrap {
-	position: relative;
-}
+/* Row Bg Overlay */
 .fl-row-bg-overlay .fl-row-content-wrap:after {
 	content: '';
 	display: block;
@@ -152,6 +169,216 @@
 	z-index: 1;
 }
 
+/* Full Height Rows */
+.fl-row-full-height .fl-row-content-wrap {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;	
+	min-height: 100vh;
+	
+}
+.fl-row-full-height .fl-row-content {
+  -webkit-box-flex: 1 1 auto;
+  	 -moz-box-flex: 1 1 auto;
+  	  -webkit-flex: 1 1 auto;
+  		  -ms-flex: 1 1 auto;
+  			  flex: 1 1 auto;
+}
+.fl-row-full-height .fl-row-full-width.fl-row-content {
+	max-width: 100%;
+	width: 100%;
+}
+
+/* IE 11 - Row full height - vertical alignment center/bottom fix */
+.fl-builder-ie-11 .fl-row.fl-row-full-height {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+/* Stupid IE Full Height Row Fixes */
+.fl-builder-ie-11 .fl-row-full-height .fl-row-content-wrap {
+	height: auto;
+}
+
+.fl-builder-ie-11 .fl-row-full-height .fl-row-content {
+	flex: 0 0 auto;
+	flex-basis: 100%;
+	margin: 0;
+}
+
+.fl-builder-ie-11 .fl-row-full-height.fl-row-align-top .fl-row-content,
+.fl-builder-ie-11 .fl-row-full-height.fl-row-align-bottom .fl-row-content {
+    margin: 0 auto;
+}
+
+.fl-builder-ie-11 .fl-row-full-height.fl-row-align-center .fl-col-group:not(.fl-col-group-equal-height) {	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-align: center;
+	-ms-flex-pack: center;
+}
+
+/* Full height align center */
+.fl-row-full-height.fl-row-align-center .fl-row-content-wrap {
+	align-items: center;
+	justify-content: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-align: center;
+	-ms-flex-pack: center;
+}
+
+/* Full height align bottom */
+.fl-row-full-height.fl-row-align-bottom .fl-row-content-wrap {
+	align-items: flex-end;
+	justify-content: flex-end;
+	-webkit-align-items: flex-end;
+	-webkit-justify-content: flex-end;
+	-webkit-box-align: end;
+	-webkit-box-pack: end;
+	-ms-flex-align: end;
+	-ms-flex-pack: end;
+}
+
+/* IE 11 - height bottom > row align bottom - center fix */
+.fl-builder-ie-11 .fl-row-full-height.fl-row-align-bottom .fl-row-content-wrap {
+	justify-content: flex-start;
+	-webkit-justify-content: flex-start;
+}
+
+/* Full height iPad with portrait orientation. */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait){
+  .fl-row-full-height .fl-row-content-wrap{
+    min-height: 1024px;
+  }
+}
+
+/* Full height iPad with landscape orientation. */
+@media all and (device-width: 1024px) and (device-height: 768px) and (orientation:landscape){
+  .fl-row-full-height .fl-row-content-wrap{
+    min-height: 768px;
+  }
+}
+
+/* Full height iPhone 5. You can also target devices with aspect ratio. */
+@media screen and (device-aspect-ratio: 40/71) {
+  .fl-row-full-height .fl-row-content-wrap {
+    min-height: 500px;
+  }
+}
+
+/* Column Groups
+------------------------------------------------------ */
+
+.fl-col-group-equal-height,
+.fl-col-group-equal-height .fl-col,
+.fl-col-group-equal-height .fl-col-content{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+.fl-col-group-equal-height{
+    -webkit-flex-wrap: wrap;
+    	-ms-flex-wrap: wrap;
+    		flex-wrap: wrap;
+}
+.fl-col-group-equal-height .fl-col,
+.fl-col-group-equal-height .fl-col-content{
+  -webkit-box-flex: 1 1 auto;
+  	 -moz-box-flex: 1 1 auto;
+  	  -webkit-flex: 1 1 auto;
+  		  -ms-flex: 1 1 auto;
+  			  flex: 1 1 auto;
+}
+.fl-col-group-equal-height .fl-col-content{
+	    -webkit-box-orient: vertical;
+	 -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+			   flex-shrink: 1;
+			     min-width: 1px;
+            	 max-width: 100%;
+            	 	 width: 100%;
+}
+.fl-col-group-equal-height:before,
+.fl-col-group-equal-height .fl-col:before,
+.fl-col-group-equal-height .fl-col-content:before,
+.fl-col-group-equal-height:after,
+.fl-col-group-equal-height .fl-col:after,
+.fl-col-group-equal-height .fl-col-content:after{
+	content: none;
+}
+
+/* Equal height align center */
+.fl-col-group-equal-height.fl-col-group-align-center .fl-col-content {
+	align-items: center;
+	justify-content: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-align: center;
+	-ms-flex-pack: center;
+}
+
+/* Equal height align bottom */
+.fl-col-group-equal-height.fl-col-group-align-bottom .fl-col-content {
+	justify-content: flex-end;
+	-webkit-justify-content: flex-end;
+	-webkit-box-align: end;
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+}
+
+.fl-col-group-equal-height.fl-col-group-align-center .fl-module,
+.fl-col-group-equal-height.fl-col-group-align-center .fl-col-group {
+	width: 100%;
+}
+
+/* IE11 fix for images with height:auto in equal height columns. */
+.fl-builder-ie-11 .fl-col-group-equal-height .fl-module,
+.fl-col-group-equal-height.fl-col-group-align-center .fl-col-group  {
+	min-height: 1px;
+}
+
+/* Columns
+------------------------------------------------------ */
+
+.fl-col {
+	float: left;
+	min-height: 1px;
+}
+
+/* Column Bg Overlay */
+.fl-col-bg-overlay .fl-col-content {
+	position: relative;
+}
+.fl-col-bg-overlay .fl-col-content:after {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 0;
+}
+.fl-col-bg-overlay .fl-module {
+	position: relative;
+	z-index: 2;
+}
+
 /* Modules
 ------------------------------------------------------ */
 
@@ -159,17 +386,23 @@
 	max-width: 100%;
 } 
 
+/* Module Templates
+------------------------------------------------------ */
+
+.fl-builder-module-template {
+	margin: 0 auto;
+	max-width: 1100px;
+	padding: 20px;
+}
+
 /* Buttons
 ------------------------------------------------------ */
 
 .fl-builder-content a.fl-button,
 .fl-builder-content a.fl-button:visited {
-	background: #fafafa;
-	border: 1px solid #ccc;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
-	color: #333;
 	display: inline-block;
 	font-size: 16px;
 	font-weight: normal;
@@ -177,10 +410,6 @@
 	padding: 12px 24px;
 	text-decoration: none;
 	text-shadow: none;
-}
-.fl-builder-content a.fl-button *,
-.fl-builder-content a.fl-button:visited * {
-	color: #333;
 }
 .fl-builder-content .fl-button:hover {
 	text-decoration: none;
@@ -213,6 +442,10 @@
 	margin-right:8px;
 	vertical-align: middle;
 	width: auto;
+}
+.fl-builder-content .fl-button i.fl-button-icon-after {
+	margin-left: 8px;
+	margin-right: 0;
 }
 .fl-builder-content .fl-button-has-icon .fl-button-text {
 	vertical-align: middle;
@@ -255,6 +488,7 @@
 ------------------------------------------------------ */
 
 .fl-photo {
+	line-height: 0;
 	position: relative;
 }
 .fl-photo-align-left {
@@ -272,11 +506,13 @@
 	position: relative;
 	max-width: 100%;
 }
+.fl-photo-img-svg {
+	width: 100%;
+}
 .fl-photo-content img {
 	display: inline;
-	height: auto !important;
+	height: auto;
 	max-width: 100%;
-	width: auto !important;
 }
 .fl-photo-crop-circle img {
 	-webkit-border-radius: 100%;
@@ -379,12 +615,7 @@
 /* Lightbox
 ------------------------------------------------------ */
 
-.mfp-wrap button {
-	background: transparent !important;
-	box-shadow: none !important;
-	-moz-box-shadow: none !important;
-	-webkit-box-shadow: none !important;
-}
+.mfp-wrap button.mfp-arrow,
 .mfp-wrap button.mfp-arrow:active, 
 .mfp-wrap button.mfp-arrow:hover, 
 .mfp-wrap button.mfp-arrow:focus {
@@ -393,7 +624,11 @@
 	outline: none;
 	position: absolute;
 	top: 50%;
+	box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
 }
+.mfp-wrap .mfp-close,
 .mfp-wrap .mfp-close:active,
 .mfp-wrap .mfp-close:hover,
 .mfp-wrap .mfp-close:focus {
@@ -402,12 +637,25 @@
 	outline: none;
 	position: absolute;
 	top: 0;
+	box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+}
+.admin-bar .mfp-wrap .mfp-close,
+.admin-bar .mfp-wrap .mfp-close:active,
+.admin-bar .mfp-wrap .mfp-close:hover,
+.admin-bar .mfp-wrap .mfp-close:focus {
+	top: 32px!important;
 }
 img.mfp-img {
 	padding: 0;
 }
 .mfp-counter {
 	display: none;
+}
+
+.mfp-wrap .mfp-preloader.fa {
+	font-size: 30px;
 }
 
 /* Form Fields
@@ -437,7 +685,7 @@ img.mfp-img {
 .fl-animation {
 	opacity: 0;
 }
-.fl-builder-touch .fl-animation,
+.fl-builder-mobile .fl-animation,
 .fl-builder-edit .fl-animation,
 .fl-animated {
 	opacity: 1;
@@ -536,4 +784,37 @@ img.mfp-img {
 @-moz-keyframes fl-slide-down {
 	0% { opacity: 0; -moz-transform: translateY(-10%); }            
 	100% { opacity: 1; -moz-transform: translateY(0%); }
+}
+
+/* Button Icon Animation */
+.fl-button.fl-button-icon-animation i {
+	width: 0 !important;
+	opacity: 0;
+	-ms-filter: "alpha(opacity=0)";
+	transition: all 0.2s ease-out;
+	-webkit-transition: all 0.2s ease-out;
+}
+.fl-button.fl-button-icon-animation:hover i {
+	opacity: 1! important;
+    -ms-filter: "alpha(opacity=100)";
+}
+.fl-button.fl-button-icon-animation i.fl-button-icon-after {
+	margin-left: 0px !important;
+}
+.fl-button.fl-button-icon-animation:hover i.fl-button-icon-after {
+	margin-left: 10px !important;
+}
+.fl-button.fl-button-icon-animation i.fl-button-icon-before {
+	margin-right: 0 !important;
+}
+.fl-button.fl-button-icon-animation:hover i.fl-button-icon-before {
+	margin-right: 20px !important;
+    margin-left: -10px;
+}
+
+/* Templates
+------------------------------------------------------ */
+
+.single:not(.woocommerce).single-fl-builder-template .fl-content {
+	width: 100%;
 }

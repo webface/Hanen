@@ -9,6 +9,9 @@
 	position: relative;
 	top: -5px;
 }
+.fl-social-button.fl-fb iframe {
+	max-width: none;
+}
 
 /* Alignment */
 .fl-social-buttons-left {

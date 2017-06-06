@@ -11,9 +11,10 @@ class FLContentSliderModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Content Slider', 'fl-builder'),
-			'description'   => __('Displays multiple slides with an optional heading and call to action.', 'fl-builder'),
-			'category'      => __('Advanced Modules', 'fl-builder')
+			'name'          	=> __('Content Slider', 'fl-builder'),
+			'description'   	=> __('Displays multiple slides with an optional heading and call to action.', 'fl-builder'),
+			'category'      	=> __('Advanced Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 
 		$this->add_css('jquery-bxslider');
@@ -27,19 +28,16 @@ class FLContentSliderModule extends FLBuilderModule {
 	{
 		// Background photo
 		if($slide->bg_layout == 'photo' && !empty($slide->bg_photo_src)) {
-
-			echo '<div class="fl-slide-bg-photo" style="background-image: url(' . $slide->bg_photo_src . ');">';
-
-			if(!empty($slide->link) && $slide->cta_type == 'none') {
-				echo '<a href="' . $slide->link . '" target="' . $slide->link_target. '"></a>';
-			}
-
-			echo '</div>';
+			echo '<div class="fl-slide-bg-photo" style="background-image: url(' . $slide->bg_photo_src . ');"></div>';
 		}
-
 		// Background video
 		elseif($slide->bg_layout == 'video' && !empty($slide->bg_video)) {
 			echo '<div class="fl-slide-bg-video">' . $slide->bg_video . '</div>';
+		}
+		
+		// Background link
+		if(!empty($slide->link) && ($slide->bg_layout == 'photo' || $slide->bg_layout == 'color')) {
+			echo '<a class="fl-slide-bg-link" href="' . $slide->link . '" target="' . $slide->link_target. '"></a>';
 		}
 	}
 
@@ -48,23 +46,26 @@ class FLContentSliderModule extends FLBuilderModule {
 	 */
 	public function render_content($slide)
 	{
-		if($slide->content_layout != 'none' && $slide->bg_layout != 'video') {
-
-			echo '<div class="fl-slide-content-wrap">';
-			echo '<div class="fl-slide-content">';
-
-			if(!empty($slide->title)) {
-				echo '<' . $slide->title_tag . ' class="fl-slide-title">' . $slide->title . '</' . $slide->title_tag . '>';
-			}
-			if(!empty($slide->text)) {
-				echo '<div class="fl-slide-text">' . $slide->text . $this->render_link($slide) . '</div>';
-			}
-
-			$this->render_button($slide);
-
-			echo '</div>';
-			echo '</div>';
+		global $wp_embed;
+	
+		if($slide->content_layout == 'none' || $slide->bg_layout == 'video') {
+			return;
 		}
+		
+		echo '<div class="fl-slide-content-wrap">';
+		echo '<div class="fl-slide-content">';
+
+		if(!empty($slide->title)) {
+			echo '<' . $slide->title_tag . ' class="fl-slide-title">' . $slide->title . '</' . $slide->title_tag . '>';
+		}
+		if(!empty($slide->text)) {
+			echo '<div class="fl-slide-text">' . wpautop( $wp_embed->autoembed( $slide->text ) ) . $this->render_link($slide) . '</div>';
+		}
+
+		$this->render_button($slide);
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	/**
@@ -72,11 +73,28 @@ class FLContentSliderModule extends FLBuilderModule {
 	 */
 	public function render_media($slide)
 	{
+		if($slide->content_layout == 'none' || $slide->bg_layout == 'video') {
+			return;
+		}
+		
 		// Photo
 		if($slide->content_layout == 'photo' && !empty($slide->fg_photo_src)) {
+			
+			$alt = get_post_meta($slide->fg_photo, '_wp_attachment_image_alt', true);
+			
 			echo '<div class="fl-slide-photo-wrap">';
 			echo '<div class="fl-slide-photo">';
-			echo '<img class="fl-slide-photo-img" src="' . $slide->fg_photo_src . '" />';
+			
+			if(!empty($slide->link)) {
+				echo '<a href="' . $slide->link . '" target="' . $slide->link_target. '">';
+			}
+			
+			echo '<img class="fl-slide-photo-img wp-image-' . $slide->fg_photo . '" src="' . $slide->fg_photo_src . '" alt="' . esc_attr( $alt ) . '" />';
+			
+			if(!empty($slide->link)) {
+				echo '</a>';
+			}
+			
 			echo '</div>';
 			echo '</div>';
 		}
@@ -93,21 +111,30 @@ class FLContentSliderModule extends FLBuilderModule {
 	 */
 	public function render_mobile_media($slide)
 	{
+		if($slide->bg_layout == 'video') {
+			return;
+		}
+		
 		// Photo
 		if($slide->content_layout == 'photo') {
 
 			$src = '';
+			$alt = '';
 
 			if($slide->r_photo_type == 'main' && !empty($slide->fg_photo_src)) {
+				$id  = $slide->fg_photo;
 				$src = $slide->fg_photo_src;
+				$alt = get_post_meta($slide->bg_photo, '_wp_attachment_image_alt', true);
 			}
 			else if($slide->r_photo_type == 'another' && !empty($slide->r_photo_src)) {
+				$id  = $slide->r_photo;
 				$src = $slide->r_photo_src;
+				$alt = get_post_meta($slide->r_photo, '_wp_attachment_image_alt', true);
 			}
 
 			if(!empty($src)) {
 				echo '<div class="fl-slide-mobile-photo">';
-				echo '<img class="fl-slide-mobile-photo-img" src="' . $src . '" />';
+				echo '<img class="fl-slide-mobile-photo-img wp-image-' . $id . '" src="' . $src . '" alt="' . esc_attr( $alt ) . '" />';
 				echo '</div>';
 			}
 		}
@@ -119,17 +146,22 @@ class FLContentSliderModule extends FLBuilderModule {
 		elseif($slide->bg_layout == 'photo') {
 
 			$src = '';
+			$alt = '';
 
 			if($slide->r_photo_type == 'main' && !empty($slide->bg_photo_src)) {
+				$id  = $slide->bg_photo;
 				$src = $slide->bg_photo_src;
+				$alt = get_post_meta($slide->bg_photo, '_wp_attachment_image_alt', true);
 			}
 			else if($slide->r_photo_type == 'another' && !empty($slide->r_photo_src)) {
+				$id  = $slide->r_photo;
 				$src = $slide->r_photo_src;
+				$alt = get_post_meta($slide->r_photo, '_wp_attachment_image_alt', true);
 			}
 
 			if(!empty($src)) {
 				echo '<div class="fl-slide-mobile-photo">';
-				echo '<img class="fl-slide-mobile-photo-img" src="' . $src . '" />';
+				echo '<img class="fl-slide-mobile-photo-img wp-image-' . $id . '" src="' . $src . '" alt="' . esc_attr( $alt ) . '" />';
 				echo '</div>';
 			}
 		}
@@ -165,7 +197,10 @@ class FLContentSliderModule extends FLBuilderModule {
 				'border_size'       => isset( $slide->btn_border_size ) ? $slide->btn_border_size : 2,
 				'font_size'         => $slide->btn_font_size,
 				'icon'              => isset( $slide->btn_icon ) ? $slide->btn_icon : '',
+				'icon_position'     => isset( $slide->btn_icon_position ) ? $slide->btn_icon_position : 'before',
+				'icon_animation'    => isset( $slide->btn_icon_animation ) ? $slide->btn_icon_animation : 'before',
 				'link'              => $slide->link,
+				'link_nofollow'		=> isset( $slide->link_nofollow ) ? $slide->link_nofollow : 'no',
 				'link_target'       => $slide->link_target,
 				'padding'           => $slide->btn_padding,
 				'style'             => ( isset( $slide->btn_3d ) && $slide->btn_3d ) ? 'gradient' : $slide->btn_style,
@@ -215,15 +250,6 @@ FLBuilder::register_module('FLContentSliderModule', array(
 							)
 						)
 					),
-					'play_pause'    => array(
-						'type'          => 'select',
-						'label'         => __('Show Play/Pause', 'fl-builder'),
-						'default'       => '0',
-						'options'       => array(
-							'0'             => __('No', 'fl-builder'),
-							'1'             => __('Yes', 'fl-builder')
-						)
-					),
 					'delay'         => array(
 						'type'          => 'text',
 						'label'         => __('Delay', 'fl-builder'),
@@ -231,6 +257,15 @@ FLBuilder::register_module('FLContentSliderModule', array(
 						'maxlength'     => '4',
 						'size'          => '5',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' )
+					),
+					'loop'          => array(
+						'type'          => 'select',
+						'label'         => __('Loop', 'fl-builder'),
+						'default'       => 'true',
+						'options'       => array(
+							'false'            	=> __('No', 'fl-builder'),
+							'true'				=> __('Yes', 'fl-builder'),
+						)
 					),
 					'transition'    => array(
 						'type'          => 'select',
@@ -248,6 +283,15 @@ FLBuilder::register_module('FLContentSliderModule', array(
 						'maxlength'     => '4',
 						'size'          => '5',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' )
+					),
+					'play_pause'    => array(
+						'type'          => 'select',
+						'label'         => __('Show Play/Pause', 'fl-builder'),
+						'default'       => '0',
+						'options'       => array(
+							'0'             => __('No', 'fl-builder'),
+							'1'             => __('Yes', 'fl-builder')
+						)
 					),
 					'arrows'       => array(
 						'type'          => 'select',
@@ -415,6 +459,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 						'text'          => array(
 							'type'          => 'editor',
 							'media_buttons' => false,
+							'wpautop'		=> false,
 							'rows'          => 16
 						)
 					)
@@ -585,6 +630,18 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 								'_self'         => __('Same Window', 'fl-builder'),
 								'_blank'        => __('New Window', 'fl-builder')
 							)
+						),
+						'link_nofollow'          => array(
+							'type'          => 'select',
+							'label'         => __('Link No Follow', 'fl-builder'),
+							'default'       => 'no',
+							'options' 		=> array(
+								'yes' 			=> __('Yes', 'fl-builder'),
+								'no' 			=> __('No', 'fl-builder'),
+							),
+							'preview'       => array(
+								'type'          => 'none'
+							)
 						)
 					)
 				),
@@ -606,8 +663,8 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 									'fields'        => array('cta_text')
 								),
 								'button'        => array(
-									'fields'        => array('cta_text', 'btn_icon'),
-									'sections'      => array('btn_colors', 'btn_structure')
+									'fields'        => array('cta_text', 'btn_icon', 'btn_icon_position', 'btn_icon_animation'),
+									'sections'      => array('btn_style', 'btn_colors', 'btn_structure')
 								)
 							)
 						),
@@ -619,7 +676,25 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'type'          => 'icon',
 							'label'         => __('Button Icon', 'fl-builder'),
 							'show_remove'   => true
+						),
+						'btn_icon_position' => array(
+							'type'          => 'select',
+							'label'         => __('Button Icon Position', 'fl-builder'),
+							'default'       => 'before',
+							'options'       => array(
+								'before'        => __('Before Text', 'fl-builder'),
+								'after'         => __('After Text', 'fl-builder')
+							)
+						),
+						'btn_icon_animation' => array(
+						'type'          => 'select',
+						'label'         => __('Icon Visibility', 'fl-builder'),
+						'default'       => 'disable',
+						'options'       => array(
+							'disable'        => __('Always Visible', 'fl-builder'),
+							'enable'         => __('Fade In On Hover', 'fl-builder')
 						)
+					)
 					)
 				),
 				'btn_colors'     => array(
@@ -663,7 +738,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							),
 							'toggle'        => array(
 								'transparent'   => array(
-									'fields'        => array('btn_bg_opacity', 'btn_border_size')
+									'fields'        => array('btn_bg_opacity', 'btn_bg_hover_opacity', 'btn_border_size')
 								)
 							)
 						),
@@ -684,6 +759,24 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'maxlength'     => '3',
 							'size'          => '5',
 							'placeholder'   => '0'
+						),
+						'btn_bg_hover_opacity' => array(
+							'type'          => 'text',
+							'label'         => __('Background Hover Opacity', 'fl-builder'),
+							'default'       => '0',
+							'description'   => '%',
+							'maxlength'     => '3',
+							'size'          => '5',
+							'placeholder'   => '0'
+						),
+						'btn_button_transition' => array(
+							'type'          => 'select',
+							'label'         => __('Transition', 'fl-builder'),
+							'default'       => 'disable',
+							'options'       => array(
+								'disable'        => __('Disabled', 'fl-builder'),
+								'enable'         => __('Enabled', 'fl-builder')
+							)
 						)
 					)  
 				),

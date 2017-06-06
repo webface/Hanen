@@ -22,9 +22,10 @@ class FLPhotoModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Photo', 'fl-builder'),
-			'description'   => __('Upload a photo or display one from the media library.', 'fl-builder'),
-			'category'      => __('Basic Modules', 'fl-builder')
+			'name'          	=> __('Photo', 'fl-builder'),
+			'description'   	=> __('Upload a photo or display one from the media library.', 'fl-builder'),
+			'category'      	=> __('Basic Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 	}
 
@@ -33,9 +34,17 @@ class FLPhotoModule extends FLBuilderModule {
 	 */
 	public function enqueue_scripts()
 	{
+		$override_lightbox = apply_filters( 'fl_builder_override_lightbox', false );
+		
 		if($this->settings && $this->settings->link_type == 'lightbox') {
-			$this->add_js('jquery-magnificpopup');
-			$this->add_css('jquery-magnificpopup');
+			if ( ! $override_lightbox ) {
+				$this->add_js('jquery-magnificpopup');
+				$this->add_css('jquery-magnificpopup');
+			}
+			else {
+				wp_dequeue_script('jquery-magnificpopup');
+				wp_dequeue_style('jquery-magnificpopup');
+			}
 		}
 	}
 
@@ -51,11 +60,7 @@ class FLPhotoModule extends FLBuilderModule {
 		}
 
 		// Cache the attachment data.
-		$data = FLBuilderPhoto::get_attachment_data($settings->photo);
-
-		if($data) {
-			$settings->data = $data;
-		}
+		$settings->data = FLBuilderPhoto::get_attachment_data($settings->photo);
 
 		// Save a crop if necessary.
 		$this->crop();
@@ -128,13 +133,20 @@ class FLPhotoModule extends FLBuilderModule {
 			}
 
 			// Make sure we have enough memory to crop.
-			@ini_set('memory_limit', '300M');
+			try{
+				ini_set('memory_limit', '300M');
+			} catch( Exception $e ) {
+				//
+			}
 
 			// Crop the photo.
 			$editor->resize($new_width, $new_height, true);
 
 			// Save the photo.
 			$editor->save($cropped_path['path']);
+
+			// Let third party media plugins hook in.
+			do_action( 'fl_builder_photo_cropped', $cropped_path );
 
 			// Return the new url.
 			return $cropped_path['url'];
@@ -175,6 +187,39 @@ class FLPhotoModule extends FLBuilderModule {
 		}
 
 		return $this->data;
+	}
+
+	/**
+	 * @method get_classes
+	 */
+	public function get_classes()
+	{
+		$classes = array( 'fl-photo-img' );
+
+		if ( $this->settings->photo_source == 'library' && ! empty( $this->settings->photo ) ) {
+
+			$data = self::get_data();
+
+			if ( is_object( $data ) ) {
+
+				if( isset( $data->id ) ) {
+					$classes[] = 'wp-image-' . $data->id;
+				}
+
+				if ( isset( $data->sizes ) ) {
+
+					foreach ( $data->sizes as $key => $size ) {
+
+						if ( $size->url == $this->settings->photo_src ) {
+							$classes[] = 'size-' . $key;
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+		return implode( ' ', $classes );
 	}
 
 	/**
@@ -263,6 +308,31 @@ class FLPhotoModule extends FLBuilderModule {
 	}
 
 	/**
+	 * @method get_attributes
+	 */
+	public function get_attributes()
+	{
+		$photo = $this->get_data();
+		$attrs = '';
+		
+		if ( isset( $this->settings->attributes ) ) {
+			foreach ( $this->settings->attributes as $key => $val ) {
+				$attrs .= $key . '="' . $val . '" ';
+			}
+		}
+		
+		if ( is_object( $photo ) && isset( $photo->sizes ) ) {
+			foreach ( $photo->sizes as $size ) {
+				if ( $size->url == $this->settings->photo_src ) {
+					$attrs .= 'height="' . $size->height . '" width="' . $size->width . '" ';
+				}
+			}
+		}
+		
+		return $attrs;
+	}
+
+	/**
 	 * @method _has_source
 	 * @protected
 	 */
@@ -314,14 +384,26 @@ class FLPhotoModule extends FLBuilderModule {
 			$filename    = uniqid(); // Return a file that doesn't exist.
 		}
 		else {
-			$pathinfo    = pathinfo($url);
-			$dir         = $pathinfo['dirname'];
-			$ext         = $pathinfo['extension'];
-			$name        = wp_basename($url, ".$ext");
-			$new_ext     = strtolower($ext);
-			$filename    = "{$name}-{$crop}.{$new_ext}";
+			
+			if ( stristr( $url, '?' ) ) {
+				$parts = explode( '?', $url );
+				$url   = $parts[0];
+			}
+			
+			$pathinfo = pathinfo($url);
+			
+			if ( isset( $pathinfo['extension'] ) ) {
+				$dir      = $pathinfo['dirname'];
+				$ext      = $pathinfo['extension'];
+				$name     = wp_basename($url, ".$ext");
+				$new_ext  = strtolower($ext);
+				$filename = "{$name}-{$crop}.{$new_ext}";
+			}
+			else {
+				$filename = $pathinfo['filename'] . "-{$crop}.png";
+			}
 		}
-
+		
 		return array(
 			'filename' => $filename,
 			'path'     => $cache_dir['path'] . $filename,
@@ -389,7 +471,8 @@ FLBuilder::register_module('FLPhotoModule', array(
 					),
 					'photo'         => array(
 						'type'          => 'photo',
-						'label'         => __('Photo', 'fl-builder')
+						'label'         => __('Photo', 'fl-builder'),
+						'connections'   => array( 'photo' )
 					),
 					'photo_url'     => array(
 						'type'          => 'text',
@@ -401,7 +484,7 @@ FLBuilder::register_module('FLPhotoModule', array(
 						'label'         => __('Crop', 'fl-builder'),
 						'default'       => '',
 						'options'       => array(
-							''              => _x( 'None', 'Crop.', 'fl-builder' ),
+							''              => _x( 'None', 'Photo Crop.', 'fl-builder' ),
 							'landscape'     => __('Landscape', 'fl-builder'),
 							'panorama'      => __('Panorama', 'fl-builder'),
 							'portrait'      => __('Portrait', 'fl-builder'),
@@ -441,7 +524,7 @@ FLBuilder::register_module('FLPhotoModule', array(
 				)
 			),
 			'link'          => array(
-				'title'         => 'Link',
+				'title'         => __('Link', 'fl-builder'),
 				'fields'        => array(
 					'link_type'     => array(
 						'type'          => 'select',
@@ -471,7 +554,8 @@ FLBuilder::register_module('FLPhotoModule', array(
 						'label'         => __('Link URL', 'fl-builder'),
 						'preview'         => array(
 							'type'            => 'none'
-						)
+						),
+						'connections'   => array( 'url' )
 					),
 					'link_target'   => array(
 						'type'          => 'select',

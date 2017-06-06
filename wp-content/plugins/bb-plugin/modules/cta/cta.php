@@ -11,9 +11,10 @@ class FLCtaModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Call to Action', 'fl-builder'),
-			'description'   => __('Display a heading, subheading and a button.', 'fl-builder'),
-			'category'      => __('Advanced Modules', 'fl-builder')
+			'name'          	=> __('Call to Action', 'fl-builder'),
+			'description'   	=> __('Display a heading, subheading and a button.', 'fl-builder'),
+			'category'      	=> __('Advanced Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 	}
 
@@ -45,7 +46,10 @@ class FLCtaModule extends FLBuilderModule {
 			'border_size'       => $this->settings->btn_border_size,
 			'font_size'         => $this->settings->btn_font_size,
 			'icon'              => $this->settings->btn_icon,
+			'icon_position'		=> $this->settings->btn_icon_position,
+			'icon_animation'	=> $this->settings->btn_icon_animation,
 			'link'              => $this->settings->btn_link,
+			'link_nofollow'     => $this->settings->btn_link_nofollow,
 			'link_target'       => $this->settings->btn_link_target,
 			'padding'           => $this->settings->btn_padding,
 			'style'             => $this->settings->btn_style,
@@ -76,7 +80,8 @@ FLBuilder::register_module('FLCtaModule', array(
 						'preview'       => array(
 							'type'          => 'text',
 							'selector'      => '.fl-cta-title'
-						)
+						),
+						'connections'   => array( 'string' )
 					)
 				)
 			),
@@ -87,11 +92,13 @@ FLBuilder::register_module('FLCtaModule', array(
 						'type'          => 'editor',
 						'label'         => '',
 						'media_buttons' => false,
+						'wpautop'		=> false,
 						'default'       => __('Drop us a line today for a free quote!', 'fl-builder'),
 						'preview'       => array(
 							'type'          => 'text',
 							'selector'      => '.fl-cta-text-content'
-						)
+						),
+						'connections'   => array( 'string' )
 					)
 				)
 			)
@@ -223,12 +230,31 @@ FLBuilder::register_module('FLCtaModule', array(
 						'preview'         => array(
 							'type'            => 'text',
 							'selector'        => '.fl-button-text'
-						)
+						),
+						'connections'   => array( 'string' )
 					),
 					'btn_icon'      => array(
 						'type'          => 'icon',
 						'label'         => __('Icon', 'fl-builder'),
 						'show_remove'   => true
+					),
+					'btn_icon_position' => array(
+						'type'          => 'select',
+						'label'         => __('Icon Position', 'fl-builder'),
+						'default'       => 'before',
+						'options'       => array(
+							'before'        => __('Before Text', 'fl-builder'),
+							'after'         => __('After Text', 'fl-builder')
+						)
+					),
+					'btn_icon_animation' => array(
+						'type'          => 'select',
+						'label'         => __('Icon Visibility', 'fl-builder'),
+						'default'       => 'disable',
+						'options'       => array(
+							'disable'        => __('Always Visible', 'fl-builder'),
+							'enable'         => __('Fade In On Hover', 'fl-builder')
+						)
 					)
 				)
 			),
@@ -240,7 +266,8 @@ FLBuilder::register_module('FLCtaModule', array(
 						'label'         => __('Link', 'fl-builder'),
 						'preview'       => array(
 							'type'          => 'none'
-						)
+						),
+						'connections'   => array( 'url' )
 					),
 					'btn_link_target' => array(
 						'type'          => 'select',
@@ -252,6 +279,18 @@ FLBuilder::register_module('FLCtaModule', array(
 						),
 						'preview'       => array(
 							'type'          => 'none'
+						)
+					),
+					'btn_link_nofollow' => array(
+						'type'          	=> 'select',
+						'label' 	        => __('Link No Follow', 'fl-builder'),
+						'default'       => 'no',
+						'options' 			=> array(
+							'yes' 				=> __('Yes', 'fl-builder'),
+							'no' 				=> __('No', 'fl-builder'),
+						),
+						'preview'       	=> array(
+							'type'          	=> 'none'
 						)
 					)
 				)
@@ -305,7 +344,7 @@ FLBuilder::register_module('FLCtaModule', array(
 						),
 						'toggle'        => array(
 							'transparent'   => array(
-								'fields'        => array('btn_bg_opacity', 'btn_border_size')
+								'fields'        => array('btn_bg_opacity', 'btn_bg_hover_opacity', 'btn_border_size')
 							)
 						)
 					),
@@ -326,6 +365,24 @@ FLBuilder::register_module('FLCtaModule', array(
 						'maxlength'     => '3',
 						'size'          => '5',
 						'placeholder'   => '0'
+					),
+					'btn_bg_hover_opacity' => array(
+						'type'          => 'text',
+						'label'         => __('Background Hover Opacity', 'fl-builder'),
+						'default'       => '0',
+						'description'   => '%',
+						'maxlength'     => '3',
+						'size'          => '5',
+						'placeholder'   => '0'
+					),
+					'btn_button_transition' => array(
+						'type'          => 'select',
+						'label'         => __('Transition', 'fl-builder'),
+						'default'       => 'disable',
+						'options'       => array(
+							'disable'        => __('Disabled', 'fl-builder'),
+							'enable'         => __('Enabled', 'fl-builder')
+						)
 					)
 				)  
 			),

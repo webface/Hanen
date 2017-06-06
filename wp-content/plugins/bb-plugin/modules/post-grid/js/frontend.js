@@ -1,13 +1,19 @@
-var FLBuilderPostGrid;
-
 (function($) {
 
 	FLBuilderPostGrid = function(settings)
 	{
-		this.settings       = settings;
-		this.nodeClass      = '.fl-node-' + settings.id;
-		this.wrapperClass   = this.nodeClass + ' .fl-post-' + this.settings.layout;
-		this.postClass      = this.wrapperClass + '-post';
+		this.settings    = settings;
+		this.nodeClass   = '.fl-node-' + settings.id;
+		this.matchHeight = settings.matchHeight;
+		
+		if ( 'columns' == this.settings.layout ) {
+			this.wrapperClass = this.nodeClass + ' .fl-post-grid';
+			this.postClass    = this.nodeClass + ' .fl-post-column';
+		}
+		else {
+			this.wrapperClass = this.nodeClass + ' .fl-post-' + this.settings.layout;
+			this.postClass    = this.wrapperClass + '-post';
+		}
 		
 		if(this._hasPosts()) {
 			this._initLayout();
@@ -32,6 +38,10 @@ var FLBuilderPostGrid;
 		{
 			switch(this.settings.layout) {
 				
+				case 'columns':
+				this._columnsLayout();
+				break;
+				
 				case 'grid':
 				this._gridLayout();
 				break;
@@ -42,12 +52,23 @@ var FLBuilderPostGrid;
 			}
 			
 			$(this.postClass).css('visibility', 'visible');
+			
+			FLBuilderLayout._scrollToElement( $( this.nodeClass + ' .fl-paged-scroll-to' ) );
+		},
+		
+		_columnsLayout: function()
+		{
+			$(this.wrapperClass).imagesLoaded( $.proxy( function() {
+				this._gridLayoutMatchHeight();
+			}, this ) );
+			
+			$( window ).on( 'resize', $.proxy( this._gridLayoutMatchHeight, this ) );
 		},
 	  
 		_gridLayout: function()
 		{
 			var wrap = $(this.wrapperClass);
-				
+			
 			wrap.masonry({
 				columnWidth         : this.nodeClass + ' .fl-post-grid-sizer',
 				gutter              : parseInt(this.settings.postSpacing),
@@ -56,9 +77,28 @@ var FLBuilderPostGrid;
 				transitionDuration  : 0
 			});
 				
-			wrap.imagesLoaded(function() {
+			wrap.imagesLoaded( $.proxy( function() {
+				this._gridLayoutMatchHeight();
 				wrap.masonry();
-			});
+			}, this ) );
+		},
+	  
+		_gridLayoutMatchHeight: function()
+		{
+			var highestBox = 0;
+			
+			if ( 0 === this.matchHeight ) {
+				return;
+			}
+			
+            $(this.nodeClass + ' .fl-post-grid-post').css('height', '').each(function(){
+                
+                if($(this).height() > highestBox) {
+                	highestBox = $(this).height();
+                }
+            });
+                
+            $(this.nodeClass + ' .fl-post-grid-post').height(highestBox);
 		},
 		
 		_galleryLayout: function()
@@ -87,7 +127,7 @@ var FLBuilderPostGrid;
 				loading         : {
 					msgText         : 'Loading',
 					finishedMsg     : '',
-					img             : flBuilderUrl + 'img/ajax-loader-grey.gif',
+					img             : FLBuilderLayoutConfig.paths.pluginUrl + 'img/ajax-loader-grey.gif',
 					speed           : 1
 				}
 			}, $.proxy(this._infiniteScrollComplete, this));
@@ -103,11 +143,18 @@ var FLBuilderPostGrid;
 			
 			elements = $(elements);
 			
-			if(this.settings.layout == 'grid') {
-				wrap.imagesLoaded(function() {
+			if(this.settings.layout == 'columns') {
+				wrap.imagesLoaded( $.proxy( function() {
+					this._gridLayoutMatchHeight();
+					elements.css('visibility', 'visible');
+				}, this ) );
+			}
+			else if(this.settings.layout == 'grid') {
+				wrap.imagesLoaded( $.proxy( function() {
+					this._gridLayoutMatchHeight();
 					wrap.masonry('appended', elements);
 					elements.css('visibility', 'visible');
-				});
+				}, this ) );
 			}
 			else if(this.settings.layout == 'gallery') {
 				this.gallery.resize();

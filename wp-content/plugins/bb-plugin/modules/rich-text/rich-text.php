@@ -11,9 +11,10 @@ class FLRichTextModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Text Editor', 'fl-builder'),
-			'description'   => __('A WYSIWYG text editor.', 'fl-builder'),
-			'category'      => __('Basic Modules', 'fl-builder')
+			'name'          	=> __('Text Editor', 'fl-builder'),
+			'description'   	=> __('A WYSIWYG text editor.', 'fl-builder'),
+			'category'      	=> __('Basic Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 	}
 }
@@ -31,11 +32,13 @@ FLBuilder::register_module('FLRichTextModule', array(
 					'text'          => array(
 						'type'          => 'editor',
 						'label'         => '',
-						'rows'          => 16,
+						'rows'          => 13,
+						'wpautop'		=> false,
 						'preview'         => array(
 							'type'             => 'text',
 							'selector'         => '.fl-rich-text'  
-						)
+						),
+						'connections'   => array( 'string' )
 					)
 				)
 			)

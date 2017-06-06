@@ -1,5 +1,7 @@
-<div class="fl-post-gallery-post" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+<div <?php $module->render_post_class(); ?> itemscope itemtype="<?php FLPostGridModule::schema_itemtype(); ?>">
 
+	<?php FLPostGridModule::schema_meta(); ?>
+	
 	<a class="fl-post-gallery-link" href="<?php the_permalink(); ?>" alt="<?php the_title_attribute(); ?>">
 	
 		<?php
@@ -22,13 +24,29 @@
 		
 		<div class="fl-post-gallery-text-wrap">
 			<div class="fl-post-gallery-text">
+
+				<?php if( $settings->has_icon == 'yes' && $settings->icon_position == 'above' ) : ?>
+					<span class="fl-gallery-icon">
+						<i class="<?php echo $settings->icon; ?>"></i> 
+					</span>
+				<?php endif; ?>
 			
 				<h2 class="fl-post-gallery-title" itemprop="headline"><?php the_title(); ?></h2>
+				
+				<?php do_action( 'fl_builder_post_gallery_before_meta', $settings, $module ); ?>
 			
 				<?php if ( $settings->show_date ) : ?>
-				<span class="fl-post-gallery-date" itemprop="datePublished" datetime="<?php echo the_time('Y-m-d'); ?>">
-					<?php the_time($settings->date_format); ?>
+				<span class="fl-post-gallery-date">
+					<?php FLBuilderLoop::post_date($settings->date_format); ?>
 				</span>
+				<?php endif; ?>
+				
+				<?php do_action( 'fl_builder_post_gallery_after_meta', $settings, $module ); ?>
+
+				<?php if( $settings->has_icon == 'yes' && $settings->icon_position == 'below' ) : ?>
+					<span class="fl-gallery-icon">
+						<i class="<?php echo $settings->icon; ?>"></i> 
+					</span>
 				<?php endif; ?>
 				
 			</div>

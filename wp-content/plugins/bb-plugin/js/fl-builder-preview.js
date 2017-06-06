@@ -12,7 +12,12 @@
 		this.type = o.type;
 		
 		// Save the current state.
-		this._saveState();
+		if(o.state != 'undefined' && o.state) {
+			this.state = o.state;
+		}
+		else {
+			this._saveState();
+		}
 		
 		// Render an initial preview?
 		if(o.layout != 'undefined' && o.layout) {
@@ -22,6 +27,16 @@
 			this._init();
 		}
 	};
+
+	/**
+	 * Stores all the fonts and weights of all font fields. 
+	 * This is used to render the stylesheet with Google Fonts.
+	 *
+	 * @since 1.6.3
+	 * @access private
+	 * @property {Array} _fontsList
+	 */  
+	FLBuilderPreview._fontsList = {};
 
 	/**
 	 * Prototype for new instances.
@@ -75,6 +90,15 @@
 		state               : null,
 		
 		/**
+		 * Node settings saved when the preview was initalized.
+		 *
+		 * @since 1.7
+		 * @access private
+		 * @property {Object} _savedSettings
+		 */  
+		_savedSettings       : null,
+		
+		/**
 		 * An instance of FLStyleSheet for the current preview.
 		 *
 		 * @since 1.3.3
@@ -84,6 +108,24 @@
 		_styleSheet         : null,
 		
 		/**
+		 * An instance of FLStyleSheet for the medium device preview.
+		 *
+		 * @since 1.9
+		 * @access private
+		 * @property {FLStyleSheet} _styleSheetMedium
+		 */  
+		_styleSheetMedium   : null,
+		
+		/**
+		 * An instance of FLStyleSheet for the responsive device preview.
+		 *
+		 * @since 1.9
+		 * @access private
+		 * @property {FLStyleSheet} _styleSheet
+		 */  
+		_styleSheetResponsive : null,
+		
+		/**
 		 * A timeout object for delaying the current preview refresh.
 		 *
 		 * @since 1.3.3
@@ -91,6 +133,16 @@
 		 * @property {Object} _timeout
 		 */  
 		_timeout            : null,
+		
+		/**
+		 * A timeout object for delaying when we show the loading 
+		 * graphic for refresh previews.
+		 *
+		 * @since 1.10
+		 * @access private
+		 * @property {Object} _loaderTimeout
+		 */  
+		_loaderTimeout       : null,
 		
 		/**
 		 * Stores the last classname for a classname preview.
@@ -109,7 +161,7 @@
 		 * @property {String} _xhr
 		 */  
 		_xhr                : null,
-	
+
 		/**
 		 * Initializes a builder preview.
 		 *
@@ -121,11 +173,20 @@
 		{
 			// Node Id
 			this.nodeId = $('.fl-builder-settings').data('node');
+			
+			// Save settings
+			this._saveSettings();
 	
 			// Elements and Class Names
 			this._initElementsAndClasses();
 			
-			// Default field previews.
+			// Create the preview stylesheets
+			this._createSheets();
+			
+			// Responsive previews
+			this._initResponsivePreviews();
+			
+			// Default field previews
 			this._initDefaultFieldPreviews();
 	
 			// Init
@@ -143,6 +204,37 @@
 				this._initModule();
 				break;
 			}
+		},
+
+		/**
+		 * Saves the current settings to be checked to see if
+		 * anything has changed when a preview is canceled.
+		 *
+		 * @since 1.7
+		 * @access private
+		 * @method _saveSettings
+		 */
+		_saveSettings: function()
+		{
+			var form = $('.fl-builder-settings-lightbox .fl-builder-settings');
+			
+			this._savedSettings = FLBuilder._getSettings( form );
+		},
+
+		/**
+		 * Checks to see if the settings have changed.
+		 *
+		 * @since 1.7
+		 * @access private
+		 * @method _settingsHaveChanged
+		 * @return bool
+		 */
+		_settingsHaveChanged: function()
+		{
+			var form 	 = $('.fl-builder-settings-lightbox .fl-builder-settings'),
+				settings = FLBuilder._getSettings( form );
+			
+			return JSON.stringify( this._savedSettings ) != JSON.stringify( settings );
 		},
 	
 		/**
@@ -170,7 +262,7 @@
 				settings        : '.fl-builder-' + this.type + '-settings',
 				settingsHeader  : '.fl-builder-' + this.type + '-settings .fl-lightbox-header',
 				node            : FLBuilder._contentClass + ' .fl-node-' + this.nodeId,
-				content         : FLBuilder._contentClass + ' .fl-node-' + this.nodeId + ' ' + contentClass
+				content         : FLBuilder._contentClass + ' .fl-node-' + this.nodeId + ' > ' + contentClass
 			});
 			
 			// Elements
@@ -183,6 +275,48 @@
 		},
 	
 		/**
+		 * Creates the stylesheets for default, medium 
+		 * and responsive previews.
+		 *
+		 * @since 1.9
+		 * @method _createSheets
+		 */
+		_createSheets: function()
+		{
+			if ( ! this._styleSheet ) {
+				this._styleSheet = new FLStyleSheet( { id : 'fl-builder-preview' } );          
+			}
+			if ( ! this._styleSheetMedium ) {
+				this._styleSheetMedium = new FLStyleSheet( { id : 'fl-builder-preview-medium' } );          
+			}
+			if ( ! this._styleSheetResponsive ) {
+				this._styleSheetResponsive = new FLStyleSheet( { id : 'fl-builder-preview-responsive' } );          
+			}
+		},
+	
+		/**
+		 * Destroys all preview sheets.
+		 *
+		 * @since 1.9
+		 * @method _destroySheets
+		 */
+		_destroySheets: function()
+		{
+			if ( this._styleSheet ) {
+				this._styleSheet.destroy();      
+				this._styleSheet = null;
+			}
+			if ( this._styleSheetMedium ) {
+				this._styleSheetMedium.destroy();      
+				this._styleSheetMedium = null;        
+			}
+			if ( this._styleSheetResponsive ) {
+				this._styleSheetResponsive.destroy();
+				this._styleSheetResponsive = null;
+			}
+		},
+	
+		/**
 		 * Updates a CSS rule for this preview.
 		 *
 		 * @since 1.3.3
@@ -191,15 +325,9 @@
 		 * @param {String} property The CSS property to update.
 		 * @param {String} value The CSS value to update.
 		 */
-		updateCSSRule: function(selector, property, value)
+		updateCSSRule: function( selector, property, value )
 		{
-			// Make sure we have a stylesheet.
-			if(!this._styleSheet) {
-				this._styleSheet = new FLStyleSheet();          
-			}
-			
-			// Update the rule.
-			this._styleSheet.updateRule(selector, property, value);
+			this._styleSheet.updateRule( selector, property, value );
 		},
 	
 		/**
@@ -225,7 +353,7 @@
 		 */
 		_cancelDelay: function()
 		{
-			if(this._timeout != null) {
+			if(this._timeout !== null) {
 				clearTimeout(this._timeout);
 			}
 		},
@@ -261,6 +389,70 @@
 			return isNaN(parseFloat(value)) ? 0 : parseFloat(value);
 		},
 		
+		/* Responsive Previews
+		----------------------------------------------------------*/
+	
+		/**
+		 * Initializes logic for responsive previews.
+		 *
+		 * @since 1.9
+		 * @method _initResponsivePreviews
+		 */
+		_initResponsivePreviews: function()
+		{
+			FLBuilder.addHook( 'responsive-editing-switched', $.proxy( this._responsiveEditingSwitched, this ) );
+		},
+		
+		/**
+		 * Destroys responsive preview events.
+		 *
+		 * @since 1.9
+		 * @method _destroyResponsivePreviews
+		 */
+		_destroyResponsivePreviews: function()
+		{
+			FLBuilder.removeHook( 'responsive-editing-switched' );
+		},
+	
+		/**
+		 * Initializes logic for responsive previews.
+		 *
+		 * @since 1.9
+		 * @method _responsiveEditingSwitched
+		 */
+		_responsiveEditingSwitched: function( e, mode )
+		{
+			if ( 'default' == mode ) {
+				this._styleSheetMedium.disable();
+				this._styleSheetResponsive.disable();
+			}
+			else if ( 'medium' == mode ) {
+				this._styleSheetMedium.enable();
+				this._styleSheetResponsive.disable();
+			}
+			else if ( 'responsive' == mode ) {
+				this._styleSheetMedium.disable();
+				this._styleSheetResponsive.enable();
+			}
+		},
+	
+		/**
+		 * Updates a CSS rule for responsive preview.
+		 *
+		 * @since 1.9
+		 * @method updateResponsiveCSSRule
+		 * @param {String} selector The CSS selector to update.
+		 * @param {String} property The CSS property to update.
+		 * @param {String} value The CSS value to update.
+		 */
+		updateResponsiveCSSRule: function( selector, property, value )
+		{
+			var mode     = FLBuilderResponsiveEditing._mode,
+				sheetKey = 'default' == mode ? '' : mode.charAt(0).toUpperCase() + mode.slice(1);
+			
+			this[ '_styleSheet' + sheetKey ].updateRule( selector, property, value );
+		},
+		
 		/* States
 		----------------------------------------------------------*/
 		
@@ -273,8 +465,8 @@
 		 */
 		_saveState: function() 
 		{
-			var post    = $('#fl-post-id').val(),
-				css     = $('#fl-builder-layout-' + post + '-css').attr('href'),
+			var post    = FLBuilderConfig.postId,
+				css     = $('link[href*="/cache/' + post + '"]').attr('href'),
 				js      = $('script[src*="/cache/' + post + '"]').attr('src'),
 				html    = $(FLBuilder._contentClass).html();
 				
@@ -302,7 +494,7 @@
 
 			// Make a new preview request.
 			this._xhr = FLBuilder.ajax({
-				action          : 'fl_builder_render_preview',
+				action          : 'render_layout',
 				node_id         : nodeId,
 				node_preview    : settings
 			}, $.proxy(this._renderPreview, this));
@@ -319,22 +511,26 @@
 			var heading         = typeof e == 'undefined' ? [] : $(e.target).closest('tr').find('th'),
 				widgetHeading   = $('.fl-builder-widget-settings .fl-builder-settings-title'),
 				lightboxHeading = $('.fl-builder-settings .fl-lightbox-header'),
-				loaderSrc       = flBuilderUrl + 'img/ajax-loader-small.gif',
+				loaderSrc       = FLBuilderLayoutConfig.paths.pluginUrl + 'img/ajax-loader-small.svg',
 				loader          = $('<img class="fl-builder-preview-loader" src="' + loaderSrc + '" />');
+				
+			this.delay(1000, $.proxy(this.preview, this));
 			
-			$('.fl-builder-preview-loader').remove();
+			this._loaderTimeout = setTimeout( function() {
+				
+				$('.fl-builder-preview-loader').remove();
 			
-			if(heading.length > 0) {
-				heading.append(loader);
-			}
-			else if(widgetHeading.length > 0) {
-				widgetHeading.append(loader);
-			}
-			else if(lightboxHeading.length > 0) {
-				lightboxHeading.append(loader);
-			}
-			
-			this.delay(1000, $.proxy(this.preview, this));  
+				if(heading.length > 0) {
+					heading.append(loader);
+				}
+				else if(widgetHeading.length > 0) {
+					widgetHeading.append(loader);
+				}
+				else if(lightboxHeading.length > 0) {
+					lightboxHeading.append(loader);
+				}
+				
+			}, 1500 );
 		},
 	
 		/**
@@ -376,8 +572,17 @@
 		 */
 		_renderPreviewComplete: function() 
 		{
+			// Refresh the preview styles.
+			this._destroySheets();
+			this._createSheets();
+			
 			// Refresh the elements.
 			this._initElementsAndClasses();
+			
+			// Clear the loader timeout.
+			if(this._loaderTimeout !== null) {
+				clearTimeout(this._loaderTimeout);
+			}
 			
 			// Remove the loading graphic.
 			$('.fl-builder-preview-loader').remove();
@@ -395,17 +600,11 @@
 		 */
 		revert: function() 
 		{
-			// Canel any preview delays or requests.
-			this._cancelDelay();
-			this._cancelPreview();
-			
-			// Remove the preview stylesheet.
-			if(this._styleSheet) {
-				this._styleSheet.remove();
-			}
+			// Clear the preview.
+			this.clear();
 			
 			// Render the layout.
-			FLBuilder._renderLayout(this.state);
+			FLBuilder._renderLayout( this.state );
 		},
 	
 		/**
@@ -421,13 +620,13 @@
 			this._cancelDelay();
 			this._cancelPreview();
 			
-			// Remove the preview stylesheet.
-			if(this._styleSheet) {
-				this._styleSheet.remove();
-				this._styleSheet = null;
-			}
+			// Destroy the preview stylesheet.
+			this._destroySheets();
+			
+			// Destroy responsive editing previews.
+			this._destroyResponsivePreviews();
 		},
-		
+
 		/* Node Text Color Settings
 		----------------------------------------------------------*/
 	
@@ -442,11 +641,17 @@
 		{
 			// Elements
 			$.extend(this.elements, {
-				textColor : $(this.classes.settings + ' input[name=text_color]')
+				textColor    : $(this.classes.settings + ' input[name=text_color]'),
+				linkColor    : $(this.classes.settings + ' input[name=link_color]'),
+				hoverColor 	 : $(this.classes.settings + ' input[name=hover_color]'),
+				headingColor : $(this.classes.settings + ' input[name=heading_color]')
 			});
 			
 			// Events
 			this.elements.textColor.on('change', $.proxy(this._textColorChange, this));
+			this.elements.linkColor.on('change', $.proxy(this._textColorChange, this));
+			this.elements.hoverColor.on('change', $.proxy(this._textColorChange, this));
+			this.elements.headingColor.on('change', $.proxy(this._textColorChange, this));
 		},
 		
 		/**
@@ -460,30 +665,72 @@
 		 */
 		_textColorChange: function(e)
 		{
-			var val = this.elements.textColor.val();
+			var textColor    = this.elements.textColor.val(),
+				linkColor    = this.elements.linkColor.val(),
+				hoverColor   = this.elements.hoverColor.val(),
+				headingColor = this.elements.headingColor.val();
 			
-			if(val == '') {
-				this.updateCSSRule(this.classes.node, 'color', 'inherit');
-				this.updateCSSRule(this.classes.node + ' a', 'color', 'inherit');
-				this.updateCSSRule(this.classes.node + ' h1', 'color', 'inherit');
-				this.updateCSSRule(this.classes.node + ' h2', 'color', 'inherit');
-				this.updateCSSRule(this.classes.node + ' h3', 'color', 'inherit');
-				this.updateCSSRule(this.classes.node + ' h4', 'color', 'inherit');
-				this.updateCSSRule(this.classes.node + ' h5', 'color', 'inherit');
-				this.updateCSSRule(this.classes.node + ' h6', 'color', 'inherit');
-			}
-			else {
-				this.delay(100, $.proxy(function(){
-					this.updateCSSRule(this.classes.node, 'color', '#' + val);
-					this.updateCSSRule(this.classes.node + ' a', 'color', '#' + val);
-					this.updateCSSRule(this.classes.node + ' h1', 'color', '#' + val);
-					this.updateCSSRule(this.classes.node + ' h2', 'color', '#' + val);
-					this.updateCSSRule(this.classes.node + ' h3', 'color', '#' + val);
-					this.updateCSSRule(this.classes.node + ' h4', 'color', '#' + val);
-					this.updateCSSRule(this.classes.node + ' h5', 'color', '#' + val);
-					this.updateCSSRule(this.classes.node + ' h6', 'color', '#' + val);
-				}, this));   
-			}
+			linkColor 	 = linkColor === '' ? textColor : linkColor;
+			hoverColor 	 = hoverColor === '' ? textColor : hoverColor;
+			headingColor = headingColor === '' ? textColor : headingColor;
+			
+			this.delay(100, $.proxy(function(){
+			
+				// Update Text color.
+				if(textColor === '') {
+					this.updateCSSRule(this.classes.node, 'color', 'inherit');
+				}
+				else {
+					this.updateCSSRule(this.classes.node, 'color', '#' + textColor);
+				}
+				
+				// Update Link Color
+				if ( linkColor === '' ) {
+					this.updateCSSRule(this.classes.node + ' a', 'color', 'inherit');
+				}
+				else {
+					this.updateCSSRule(this.classes.node + ' a', 'color', '#' + linkColor);
+				}
+				
+				// Hover Color
+				if(hoverColor === '') {
+					this.updateCSSRule(this.classes.node + ' a:hover', 'color', 'inherit');
+				}
+				else {
+					this.updateCSSRule(this.classes.node + ' a:hover', 'color', '#' + hoverColor);
+				}
+				
+				// Heading Color
+				if(headingColor === '') {
+					this.updateCSSRule(this.classes.node + ' h1', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h2', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h3', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h4', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h5', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h6', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h1 a', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h2 a', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h3 a', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h4 a', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h5 a', 'color', 'inherit');
+					this.updateCSSRule(this.classes.node + ' h6 a', 'color', 'inherit');
+				}
+				else {
+					this.updateCSSRule(this.classes.node + ' h1', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h2', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h3', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h4', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h5', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h6', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h1 a', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h2 a', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h3 a', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h4 a', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h5 a', 'color', '#' + headingColor);
+					this.updateCSSRule(this.classes.node + ' h6 a', 'color', '#' + headingColor);
+				}
+				
+			}, this));
 		},
 		
 		/* Node Bg Settings
@@ -509,7 +756,9 @@
 				bgPosition                  : $(this.classes.settings + ' select[name=bg_position]'),
 				bgAttachment                : $(this.classes.settings + ' select[name=bg_attachment]'),
 				bgSize                      : $(this.classes.settings + ' select[name=bg_size]'),
+				bgVideoSource               : $(this.classes.settings + ' select[name=bg_video_source]'),
 				bgVideo                     : $(this.classes.settings + ' input[name=bg_video]'),
+				bgVideoServiceUrl           : $(this.classes.settings + ' input[name=bg_video_service_url]'),
 				bgVideoFallbackSrc          : $(this.classes.settings + ' select[name=bg_video_fallback_src]'),
 				bgSlideshowSource           : $(this.classes.settings + ' select[name=ss_source]'),
 				bgSlideshowPhotos           : $(this.classes.settings + ' input[name=ss_photos]'),
@@ -521,7 +770,7 @@
 				bgOverlayColor              : $(this.classes.settings + ' input[name=bg_overlay_color]'),
 				bgOverlayOpacity            : $(this.classes.settings + ' input[name=bg_overlay_opacity]')
 			});
-			
+		
 			// Events
 			this.elements.bgType.on(                'change', $.proxy(this._bgTypeChange, this));
 			this.elements.bgColor.on(               'change', $.proxy(this._bgColorChange, this));
@@ -531,6 +780,7 @@
 			this.elements.bgPosition.on(            'change', $.proxy(this._bgPhotoChange, this));
 			this.elements.bgAttachment.on(          'change', $.proxy(this._bgPhotoChange, this));
 			this.elements.bgSize.on(                'change', $.proxy(this._bgPhotoChange, this));
+			this.elements.bgVideoServiceUrl.on(   	'change', $.proxy(this._bgVideoChange, this));
 			this.elements.bgSlideshowSource.on(     'change', $.proxy(this._bgSlideshowChange, this));
 			this.elements.bgSlideshowPhotos.on(     'change', $.proxy(this._bgSlideshowChange, this));
 			this.elements.bgSlideshowFeedUrl.on(    'keyup',  $.proxy(this._bgSlideshowChange, this));
@@ -581,21 +831,25 @@
 			
 			// Photo
 			else if(val == 'photo') {
+				this.elements.bgColor.trigger('change');
 				this.elements.bgImageSrc.trigger('change');
 			}
 			
 			// Video
-			else if(val == 'video' && this.elements.bgVideo.val() != '') {
-				this.preview();
+			else if(val == 'video') {
+				this.elements.bgColor.trigger('change');
+				this._bgVideoChange();				
 			}
 			
 			// Slideshow
 			else if(val == 'slideshow') {
+				this.elements.bgColor.trigger('change');
 				this._bgSlideshowChange();
 			}
 			
 			// Parallax
 			else if(val == 'parallax') {
+				this.elements.bgColor.trigger('change');
 				this.elements.bgParallaxImageSrc.trigger('change');
 			}
 		},
@@ -613,13 +867,13 @@
 		{
 			var rgb, alpha, value;
 			
-			if(this.elements.bgColor.val() == '' || isNaN(this.elements.bgOpacity.val())) {
+			if(this.elements.bgColor.val() === '' || isNaN(this.elements.bgOpacity.val())) {
 				this.updateCSSRule(this.classes.content, 'background-color', 'transparent');  
 			}
 			else {
 			
-				rgb    = this.hexToRgb(this.elements.bgColor.val()),
-				alpha  = this.parseFloat(this.elements.bgOpacity.val())/100,
+				rgb    = this.hexToRgb( this.elements.bgColor.val() );
+				alpha  = this.parseFloat(this.elements.bgOpacity.val())/100;
 				value  = 'rgba(' + rgb.join() + ', ' + alpha + ')';
 					
 				this.delay(100, $.proxy(function(){
@@ -663,6 +917,52 @@
 					'background-size'       : this.elements.bgSize.val()
 				});
 			}
+			else {
+				this.updateCSSRule(this.classes.content, {
+					'background-image'      : 'none'
+				});
+			}
+		},
+
+		/**
+		 * Fires when the background video field of 
+		 * a node changes.
+		 *
+		 * @since 1.9.2
+		 * @access private
+		 * @method _bgVideoChange
+		 * @param {Object} e An event object.
+		 */
+		_bgVideoChange: function(e)
+		{
+			var eles        	= this.elements,
+				source 			= eles.bgVideoSource.val(),
+				video 			= eles.bgVideo.val(),
+				videoUrl		= eles.bgVideoServiceUrl.val(),
+				youtubePlayer 	= 'https://www.youtube.com/iframe_api',
+				vimeoPlayer		= 'https://player.vimeo.com/api/player.js',
+				scriptTag  		= $( '<script>' );
+
+			// Only load the required API script library
+			if(source == 'video_service' && videoUrl != '') {
+				if (/^(?:(?:(?:https?:)?\/\/)?(?:www.)?(?:youtu(?:be.com|.be))\/(?:watch\?v\=|v\/|embed\/)?([\w\-]+))/i.test(videoUrl)
+					&& $( 'script[src*="youtube.com"' ).length < 1) {
+					scriptTag.attr('src', youtubePlayer);
+				}
+				else if(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/.test(videoUrl) 
+					&& $( 'script[src*="vimeo.com"' ).length < 1) {
+					scriptTag.attr('src', vimeoPlayer);
+				}
+				
+				scriptTag
+					.attr('type', 'text/javascript')
+					.appendTo('head');
+
+				this.delay(500, $.proxy(this.preview, this));
+			}
+			else if(video != '') {
+				this.preview();
+			}
 		},
 		
 		/**
@@ -683,10 +983,10 @@
 				speed       = eles.bgSlideshowSpeed.val(),
 				transSpeed  = eles.bgSlideshowTransSpeed.val();
 			
-			if(source == 'wordpress' && photos == '') {
+			if(source == 'wordpress' && photos === '') {
 				return;
 			}
-			else if(source == 'smugmug' && feed == '') {
+			else if(source == 'smugmug' && feed === '') {
 				return;
 			}
 			else if(isNaN(parseInt(speed))) {
@@ -735,23 +1035,33 @@
 		{
 			var rgb, alpha, value;
 			
-			if(this.elements.bgOverlayColor.val() == '' || isNaN(this.elements.bgOverlayOpacity.val())) {
+			if(this.elements.bgOverlayColor.val() === '' || isNaN(this.elements.bgOverlayOpacity.val())) {
 				this.elements.node.removeClass('fl-row-bg-overlay');
+				this.elements.node.removeClass('fl-col-bg-overlay');
 				this.updateCSSRule(this.classes.content + ':after', 'background-color', 'transparent');  
 			}
 			else {
 			
-				rgb    = this.hexToRgb(this.elements.bgOverlayColor.val()),
-				alpha  = this.parseFloat(this.elements.bgOverlayOpacity.val())/100,
+				rgb    = this.hexToRgb(this.elements.bgOverlayColor.val());
+				alpha  = this.parseFloat(this.elements.bgOverlayOpacity.val())/100;
 				value  = 'rgba(' + rgb.join() + ', ' + alpha + ')';
 					
 				this.delay(100, $.proxy(function(){
-					this.elements.node.addClass('fl-row-bg-overlay');
-					this.updateCSSRule(this.classes.content + ':after', 'background-color', value);
+					
+					if ( this.elements.node.hasClass( 'fl-col' ) ) {
+						this.elements.node.addClass( 'fl-col-bg-overlay' );
+					}
+					else {
+						this.elements.node.addClass( 'fl-row-bg-overlay' );
+					}
+					
+					this.updateCSSRule( this.classes.content + ':after', 'background-color', value );
+					
 				}, this));
 	
 			}
 		},
+		
 		/**
 		 * Fires when a background overlay color is cleared.
 		 *
@@ -764,7 +1074,7 @@
 		{
 			this.elements.bgOverlayColor.prev('.fl-color-picker-clear').trigger('click');
 		},
-		
+
 		/* Node Border Settings
 		----------------------------------------------------------*/
 	
@@ -782,21 +1092,13 @@
 				borderType              : $(this.classes.settings + ' select[name=border_type]'),
 				borderColor             : $(this.classes.settings + ' input[name=border_color]'),
 				borderColorPicker       : $(this.classes.settings + ' .fl-picker-border_color'),
-				borderOpacity           : $(this.classes.settings + ' input[name=border_opacity]'),
-				borderTopWidth          : $(this.classes.settings + ' input[name=border_top]'),
-				borderBottomWidth       : $(this.classes.settings + ' input[name=border_bottom]'),
-				borderLeftWidth         : $(this.classes.settings + ' input[name=border_left]'),
-				borderRightWidth        : $(this.classes.settings + ' input[name=border_right]')
+				borderOpacity           : $(this.classes.settings + ' input[name=border_opacity]')
 			});
 			
 			// Events
-			this.elements.borderType.on(            'change', $.proxy(this._borderTypeChange, this));
-			this.elements.borderColor.on(           'change', $.proxy(this._borderColorChange, this));
-			this.elements.borderOpacity.on(         'keyup',  $.proxy(this._borderOpacityChange, this));
-			this.elements.borderTopWidth.on(        'keyup',  $.proxy(this._borderWidthChange, this));
-			this.elements.borderBottomWidth.on(     'keyup',  $.proxy(this._borderWidthChange, this));
-			this.elements.borderLeftWidth.on(       'keyup',  $.proxy(this._borderWidthChange, this));
-			this.elements.borderRightWidth.on(      'keyup',  $.proxy(this._borderWidthChange, this));
+			this.elements.borderType.on(    'change', $.proxy(this._borderTypeChange, this));
+			this.elements.borderColor.on(   'change', $.proxy(this._borderColorChange, this));
+			this.elements.borderOpacity.on( 'keyup',  $.proxy(this._borderOpacityChange, this));
 		},
 		
 		/**
@@ -813,11 +1115,11 @@
 			var val = this.elements.borderType.val();
 				
 			this.updateCSSRule(this.classes.content, {
-				'border-style'  : val == '' ? 'none' : val
+				'border-style'  : val === '' ? 'none' : val
 			});
 			
 			this.elements.borderColor.trigger('change');
-			this.elements.borderTopWidth.trigger('keyup');
+			this.elements.borderTop.trigger('keyup');
 		},
 		
 		/**
@@ -833,13 +1135,13 @@
 		{
 			var rgb, alpha, value;
 			
-			if(this.elements.borderColor.val() == '' || isNaN(this.elements.borderOpacity.val())) {
+			if(this.elements.borderColor.val() === '' || isNaN(this.elements.borderOpacity.val())) {
 				this.updateCSSRule(this.classes.content, 'border-color', 'transparent');  
 			}
 			else {
 			
-				rgb    = this.hexToRgb(this.elements.borderColor.val()),
-				alpha  = parseInt(this.elements.borderOpacity.val())/100,
+				rgb    = this.hexToRgb(this.elements.borderColor.val());
+				alpha  = parseInt(this.elements.borderOpacity.val())/100;
 				value  = 'rgba(' + rgb.join() + ', ' + alpha + ')';
 					
 				this.delay(100, $.proxy(function(){
@@ -862,68 +1164,6 @@
 			this.elements.borderColor.trigger('change');
 		},
 		
-		/**
-		 * Get the border widths from a node preview event.
-		 *
-		 * @since 1.3.3
-		 * @access private
-		 * @method _getBorderWidths
-		 * @param {Object} e An event object.
-		 * @return {Object} An object with tblr border widths.
-		 */
-		_getBorderWidths: function(e)
-		{
-			var top     = this.elements.borderTopWidth.val(),
-				bottom  = this.elements.borderBottomWidth.val(),
-				left    = this.elements.borderLeftWidth.val(),
-				right   = this.elements.borderRightWidth.val();
-			
-			if(top == '') {
-				top = this.elements.borderTopWidth.attr('placeholder');
-			}
-			if(bottom == '') {
-				bottom = this.elements.borderBottomWidth.attr('placeholder');
-			}
-			if(left == '') {
-				left = this.elements.borderLeftWidth.attr('placeholder');
-			}
-			if(right == '') {
-				right = this.elements.borderRightWidth.attr('placeholder');
-			}
-			
-			return {
-				top     : this.parseFloat(top),
-				bottom  : this.parseFloat(bottom),
-				left    : this.parseFloat(left),
-				right   : this.parseFloat(right)
-			};
-		},
-		
-		/**
-		 * Fires when the border width fields of 
-		 * a node change.
-		 *
-		 * @since 1.3.3
-		 * @access private
-		 * @method _borderWidthChange
-		 * @param {Object} e An event object.
-		 */
-		_borderWidthChange: function(e)
-		{
-			var widths = this._getBorderWidths();
-			
-			this.elements.borderColor.trigger('change');
-			
-			this.updateCSSRule(this.classes.content, {
-				'border-top-width'      : widths.top + 'px',
-				'border-bottom-width'   : widths.bottom + 'px',
-				'border-left-width'     : widths.left + 'px',
-				'border-right-width'    : widths.right + 'px',
-			});
-			
-			this._positionAbsoluteBgs();
-		},
-		
 		/* Node Class Name Settings
 		----------------------------------------------------------*/
 	
@@ -943,6 +1183,7 @@
 			
 			// Events
 			this.elements.className.on('keyup', $.proxy(this._classNameChange, this));
+			this._lastClassName = this.elements.className.val();
 		},
 		
 		/**
@@ -957,7 +1198,7 @@
 		{
 			var className = this.elements.className.val();
 			
-			if(this._lastClassName != null) {
+			if(this._lastClassName !== null) {
 				this.elements.node.removeClass(this._lastClassName);
 			}
 			
@@ -969,172 +1210,137 @@
 		----------------------------------------------------------*/
 	
 		/**
-		 * Initializes node margin previews.
+		 * Initializes node responsive dimension previews for things
+		 * like margins, padding and borders.
 		 *
-		 * @since 1.3.3
+		 * @since 1.9
 		 * @access private
-		 * @method _initMargins
+		 * @method _initResponsiveDimensions
 		 */
-		_initMargins: function()
+		_initResponsiveDimensions: function( property )
 		{
-			// Elements
-			$.extend(this.elements, {
-				marginTop       : $(this.classes.settings + ' input[name=margin_top]'),
-				marginBottom    : $(this.classes.settings + ' input[name=margin_bottom]'),
-				marginLeft      : $(this.classes.settings + ' input[name=margin_left]'),
-				marginRight     : $(this.classes.settings + ' input[name=margin_right]')
-			});
+			var elements      = {},
+				dimensions    = [ 'Top', 'Bottom', 'Left', 'Right' ],
+				devices       = [ '', 'Medium', 'Responsive' ],
+				settingsClass = this.classes.settings,
+				elementKey    = '',
+				inputName     = '',
+				i             = null,
+				k             = null;
+				
+			for ( i = 0; i < dimensions.length; i++ ) {
+				
+				for ( k = 0; k < devices.length; k++ ) {
+					
+					elementKey = property + dimensions[ i ] + devices[ k ];
+					inputName  = property + '_' + dimensions[ i ].toLowerCase();
+					
+					if ( '' != devices[ k ] ) {
+						inputName += '_' + devices[ k ].toLowerCase();
+					}
+					
+					elements[ elementKey ] = $( settingsClass + ' input[name=' + inputName + ']');
+					elements[ elementKey ].on( 'keyup', $.proxy( this._responsiveDimensionChange, this, property ) );
+				}
+			}
 			
-			// Events
-			this.elements.marginTop.on(     'keyup', $.proxy(this._marginChange, this));
-			this.elements.marginBottom.on(  'keyup', $.proxy(this._marginChange, this));
-			this.elements.marginLeft.on(    'keyup', $.proxy(this._marginChange, this));
-			this.elements.marginRight.on(   'keyup', $.proxy(this._marginChange, this));
+			$.extend( this.elements, elements );
 		},
 		
 		/**
-		 * Get the margins from a node preview event.
+		 * Get all dimensions from a node preview event.
 		 *
-		 * @since 1.3.3
+		 * @since 1.9
 		 * @access private
-		 * @method _getMargins
-		 * @param {Object} e An event object.
-		 * @return {Object} An object with tblr margin data.
+		 * @method _getDimensions
+		 * @param {String} property
+		 * @return {Object} An object with tblr data.
 		 */
-		_getMargins: function(e)
+		_getDimensions: function( property )
 		{
-			var top     = this.elements.marginTop.val(),
-				bottom  = this.elements.marginBottom.val(),
-				left    = this.elements.marginLeft.val(),
-				right   = this.elements.marginRight.val();
-			
-			if(top == '') {
-				top = this.elements.marginTop.attr('placeholder');
+			var mode          = FLBuilderResponsiveEditing._mode,
+				dimensions    = [ 'Top', 'Bottom', 'Left', 'Right' ],
+				device        = 'default' == mode ? '' : mode.charAt(0).toUpperCase() + mode.slice(1),
+				values        = {},
+				i             = 0;
+				
+			for ( ; i < dimensions.length; i++ ) {
+				values[ dimensions[ i ].toLowerCase() ] = this.elements[ property + dimensions[ i ] + device ].val();
 			}
-			if(bottom == '') {
-				bottom = this.elements.marginBottom.attr('placeholder');
-			}
-			if(left == '') {
-				left = this.elements.marginLeft.attr('placeholder');
-			}
-			if(right == '') {
-				right = this.elements.marginRight.attr('placeholder');
-			}
-			
-			return {
-				top     : this.parseFloat(top),
-				bottom  : this.parseFloat(bottom),
-				left    : this.parseFloat(left),
-				right   : this.parseFloat(right)
-			};
+
+			return this._normalizeDimensionValues( values, property );
 		},
 		
 		/**
-		 * Fires when a margin field of a node changes.
+		 * Fires when a dimension field of a node changes.
 		 *
-		 * @since 1.3.3
+		 * @since 1.9
 		 * @access private
-		 * @method _marginChange
-		 * @param {Object} e An event object.
+		 * @method _responsiveDimensionChange
+		 * @param {String} property
 		 */
-		_marginChange: function(e)
+		_responsiveDimensionChange: function( property )
 		{
-			var margins = this._getMargins();
-			
-			this.updateCSSRule(this.classes.content, {
-				'margin-top'      : margins.top + 'px',
-				'margin-bottom'   : margins.bottom + 'px',
-				'margin-left'     : margins.left + 'px',
-				'margin-right'    : margins.right + 'px',
-			});
-			
+			var newDimensions = this._getDimensions( property ),
+			    newRules      = {},
+			    isBorder      = 'border' == property;
+
+			$.each( newDimensions, function( dir, val ) {
+				newRules[ property + '-' + dir + ( isBorder ? '-width' : '' ) ] = val;
+			} );
+
+			this.updateResponsiveCSSRule( this.classes.content, newRules );
 			this._positionAbsoluteBgs();
 		},
 		
-		/* Node Padding Settings
-		----------------------------------------------------------*/
-	
 		/**
-		 * Initializes node padding previews.
+		 * Normalize CSS dimension values.
 		 *
-		 * @since 1.3.3
+		 * @since 1.9
 		 * @access private
-		 * @method _initPadding
+		 * @method _normalizeDimensionValues
+		 * @param {Object} values Object of margins/paddings/border widths values.
+		 * @param {String} property CSS property to get, can be 'margin', 'padding' or 'border-width'.
+		 * @return {Object} An object of normalized margins/paddings/border widths values with units.
 		 */
-		_initPadding: function()
+		_normalizeDimensionValues: function( values, property )
 		{
-			// Elements
-			$.extend(this.elements, {
-				paddingTop       : $(this.classes.settings + ' input[name=padding_top]'),
-				paddingBottom    : $(this.classes.settings + ' input[name=padding_bottom]'),
-				paddingLeft      : $(this.classes.settings + ' input[name=padding_left]'),
-				paddingRight     : $(this.classes.settings + ' input[name=padding_right]')
-			});
-			
-			// Events
-			this.elements.paddingTop.on(     'keyup', $.proxy(this._paddingChange, this));
-			this.elements.paddingBottom.on(  'keyup', $.proxy(this._paddingChange, this));
-			this.elements.paddingLeft.on(    'keyup', $.proxy(this._paddingChange, this));
-			this.elements.paddingRight.on(   'keyup', $.proxy(this._paddingChange, this));
-		},
-		
-		/**
-		 * Get the padding from a node preview event.
-		 *
-		 * @since 1.3.3
-		 * @access private
-		 * @method _getPadding
-		 * @param {Object} e An event object.
-		 * @return {Object} An object with tblr padding data.
-		 */
-		_getPadding: function(e)
-		{
-			var top     = this.elements.paddingTop.val(),
-				bottom  = this.elements.paddingBottom.val(),
-				left    = this.elements.paddingLeft.val(),
-				right   = this.elements.paddingRight.val();
-			
-			if(top == '') {
-				top = this.elements.paddingTop.attr('placeholder');
+			var parent = this,
+				mode   = FLBuilderResponsiveEditing._mode,
+				device = 'default' == mode ? '' : mode.charAt(0).toUpperCase() + mode.slice(1),
+
+			// Separate property name from property suffix
+			property = property.split( '-' );
+
+			// Set correct property suffix
+			if ( 'undefined' === typeof property[1] ) {
+				property[1] = '';
+			} else {
+				property[1] = property[1].charAt( 0 ).toUpperCase() + property[1].slice( 1 );
 			}
-			if(bottom == '') {
-				bottom = this.elements.paddingBottom.attr('placeholder');
-			}
-			if(left == '') {
-				left = this.elements.paddingLeft.attr('placeholder');
-			}
-			if(right == '') {
-				right = this.elements.paddingRight.attr('placeholder');
-			}
-			
-			return {
-				top     : this.parseFloat(top),
-				bottom  : this.parseFloat(bottom),
-				left    : this.parseFloat(left),
-				right   : this.parseFloat(right)
-			};
-		},
-		
-		/**
-		 * Fires when the padding field of a node changes.
-		 *
-		 * @since 1.3.3
-		 * @access private
-		 * @method _paddingChange
-		 * @param {Object} e An event object.
-		 */
-		_paddingChange: function(e)
-		{
-			var padding = this._getPadding();
-			   
-			this.updateCSSRule(this.classes.content, {
-				'padding-top'      : padding.top + 'px',
-				'padding-bottom'   : padding.bottom + 'px',
-				'padding-left'     : padding.left + 'px',
-				'padding-right'    : padding.right + 'px',
-			});
-			
-			this._positionAbsoluteBgs();
+
+			$.map( values, function( val, key ) {
+				val = val.toLowerCase().replace( /[^a-z0-9%.\-]/g, '' );
+
+				// Fall back to placeholder if the value is empty
+				if ( '' === val ) {
+					var option      = property[0] + key.charAt( 0 ).toUpperCase() + key.slice( 1 ) + property[1] + device,
+					    placeholder = parent.elements[ option ].attr( 'placeholder' );
+
+					if ( placeholder ) {
+						val = placeholder;
+					}
+				}
+
+				// Fall back to pixels when numeric value set
+				if ( null !== val && '' !== val && ! isNaN( val ) ) {
+					val = parseFloat( val ) + 'px';
+				}
+
+				values[ key ] = val;
+			} );
+
+			return values;
 		},
 		
 		/* Absolutely Positioned Backgrounds
@@ -1150,35 +1356,39 @@
 		 */
 		_positionAbsoluteBgs: function()
 		{
+			// @todo  Oliver: Why is this actually needed???
 			var slideshow = this.elements.node.find('.fl-bg-slideshow'),
-				video     = this.elements.node.find('.fl-bg-video'),
-				margins   = null,
-				borders   = null;
-				
-			if(slideshow.length > 0 || video.length > 0) {
-			
-				margins = this._getMargins();
-				borders = this._getBorderWidths();
-				
-				if(slideshow.length > 0) {
-				 
-					this.updateCSSRule(this.classes.node + ' .fl-bg-slideshow', {
-						'top'      : (margins.top + borders.top) + 'px',
-						'bottom'   : (margins.bottom + borders.bottom) + 'px',
-						'left'     : (margins.left + borders.left) + 'px',
-						'right'    : (margins.right + borders.right) + 'px',
-					});
-				
+			    video     = this.elements.node.find('.fl-bg-video'),
+			    margins   = null,
+			    borders   = null,
+			    position  = {
+			    	'top'    : 0,
+			    	'bottom' : 0,
+			    	'left'   : 0,
+			    	'right'  : 0,
+			    };
+
+			if ( slideshow.length > 0 || video.length > 0 ) {
+				margins = this._getDimensions( 'margin' );
+				borders = this._getDimensions( 'border' );
+
+				$.map( position, function( val, key ) {
+					if ( margins[ key ] && borders[ key ] ) {
+						position[ key ] = 'calc(' + margins[ key ] + '+' + borders[ key ] + ')';
+					} else if ( margins[ key ] ) {
+						position[ key ] = margins[ key ];
+					} else if ( borders[ key ] ) {
+						position[ key ] = borders[ key ];
+					}
+				} );
+
+				if ( slideshow.length > 0 ) {
+					this.updateCSSRule( this.classes.node + ' .fl-bg-slideshow', position );
 					FLBuilder._resizeLayout();
 				}
-				if(video.length > 0) {
-				 
-					this.updateCSSRule(this.classes.node + ' .fl-bg-video', {
-						'top'      : (margins.top + borders.top) + 'px',
-						'bottom'   : (margins.bottom + borders.bottom) + 'px',
-						'left'     : (margins.left + borders.left) + 'px',
-						'right'    : (margins.right + borders.right) + 'px',
-					});
+
+				if ( video.length > 0 ) {
+					this.updateCSSRule( this.classes.node + ' .fl-bg-video', position );
 				}
 			}
 		},
@@ -1198,20 +1408,25 @@
 			// Elements
 			$.extend(this.elements, {
 				width          : $(this.classes.settings + ' select[name=width]'),
-				contentWidth   : $(this.classes.settings + ' select[name=content_width]')
+				contentWidth   : $(this.classes.settings + ' select[name=content_width]'),
+				height         : $(this.classes.settings + ' select[name=full_height]'),
+				align          : $(this.classes.settings + ' select[name=content_alignment]')
 			});
 			
 			// Events
 			this.elements.width.on(         'change', $.proxy(this._rowWidthChange, this));
 			this.elements.contentWidth.on(  'change', $.proxy(this._rowContentWidthChange, this));
+			this.elements.height.on(        'change', $.proxy(this._rowHeightChange, this));
+			this.elements.align.on(         'change', $.proxy(this._rowHeightChange, this));
 			
 			// Common Elements
 			this._initNodeTextColor();
 			this._initNodeBg();
-			this._initNodeBorder();
 			this._initNodeClassName();
-			this._initMargins();
-			this._initPadding();
+			this._initNodeBorder();
+			this._initResponsiveDimensions( 'border' );
+			this._initResponsiveDimensions( 'margin' );
+			this._initResponsiveDimensions( 'padding' );
 		},
 		
 		/**
@@ -1233,6 +1448,31 @@
 			else {
 				row.removeClass('fl-row-full-width');
 				row.addClass('fl-row-fixed-width');
+			}
+		},
+
+		/**
+		 * Fires when the height field of a row changes.
+		 *
+		 * @since 1.6.3
+		 * @access private
+		 * @method _rowHeightChange
+		 * @param {Object} e An event object.
+		 */
+		_rowHeightChange: function(e)
+		{
+			var row = this.elements.node;
+			
+			row.removeClass('fl-row-align-top');
+			row.removeClass('fl-row-align-center');
+			row.removeClass('fl-row-align-bottom');
+			
+			if(this.elements.height.val() == 'full') {
+				row.addClass('fl-row-full-height');
+				row.addClass('fl-row-align-' + this.elements.align.val());
+			}
+			else {
+				row.removeClass('fl-row-full-height');
 			}
 		},
 		
@@ -1272,19 +1512,26 @@
 		{
 			// Elements
 			$.extend(this.elements, {
-				size : $(this.classes.settings + ' input[name=size]')
+				size         	: $(this.classes.settings + ' input[name=size]'),
+				columnHeight 	: $(this.classes.settings + ' select[name=equal_height]'),
+				columnAlign     : $(this.classes.settings + ' select[name=content_alignment]'),
+				responsiveOrder : $(this.classes.settings + ' select[name=responsive_order]')
 			});
 			
 			// Events
-			this.elements.size.on('keyup', $.proxy(this._colSizeChange, this));
+			this.elements.size.on(   		   'keyup', $.proxy( this._colSizeChange, this ) );
+			this.elements.columnHeight.on(     'change', $.proxy( this._colHeightChange, this ) );
+			this.elements.columnAlign.on(      'change', $.proxy( this._colHeightChange, this ) );
+			this.elements.responsiveOrder.on(  'change', $.proxy( this._colResponsiveOrder, this ) );
 			
 			// Common Elements
 			this._initNodeTextColor();
 			this._initNodeBg();
-			this._initNodeBorder();
 			this._initNodeClassName();
-			this._initMargins();
-			this._initPadding();
+			this._initNodeBorder();
+			this._initResponsiveDimensions( 'border' );
+			this._initResponsiveDimensions( 'margin' );
+			this._initResponsiveDimensions( 'padding' );
 		},
 		
 		/**
@@ -1297,7 +1544,7 @@
 		_colSizeChange: function()
 		{
 			var preview         = this,
-				minWidth        = 10,
+				minWidth        = 8,
 				maxWidth        = 100 - minWidth,
 				size            = parseFloat(this.elements.size.val()),
 				prev            = this.elements.node.prev('.fl-col'),
@@ -1336,6 +1583,50 @@
 			sibling.css('width', (100 - siblingsWidth - size) + '%');
 			this.elements.node.css('width', size + '%');
 		},
+
+		/**
+		 * Fires when the equal height field of a column changes.
+		 *
+		 * @since 1.6.3
+		 * @access private
+		 * @method _colHeightChange
+		 */
+		_colHeightChange: function()
+		{
+			var parent = this.elements.node.parent('.fl-col-group');
+			
+			parent.removeClass('fl-col-group-align-top');
+			parent.removeClass('fl-col-group-align-center');
+			parent.removeClass('fl-col-group-align-bottom');
+			
+			if(this.elements.columnHeight.val() == 'yes') {
+				parent.addClass('fl-col-group-equal-height');
+				parent.addClass('fl-col-group-align-' + this.elements.columnAlign.val());
+			}
+			else {
+				parent.removeClass('fl-col-group-equal-height');
+			}
+		},
+
+		/**
+		 * Fires when the responsive order field of a column changes.
+		 *
+		 * @since 1.8
+		 * @access private
+		 * @method _colResponsiveOrder
+		 */
+		_colResponsiveOrder: function()
+		{
+
+			var parent = this.elements.node.parent('.fl-col-group');
+			
+			if(this.elements.responsiveOrder.val() == 'reversed') {
+				parent.addClass('fl-col-group-responsive-reversed');
+			}
+			else {
+				parent.removeClass('fl-col-group-responsive-reversed');
+			}
+		},
 		
 		/* Module Settings
 		----------------------------------------------------------*/
@@ -1350,7 +1641,7 @@
 		_initModule: function()
 		{
 			this._initNodeClassName();
-			this._initMargins();
+			this._initResponsiveDimensions( 'margin' );
 		},
 		
 		/* Default Field Previews
@@ -1388,6 +1679,9 @@
 				}
 				if(preview.type == 'widget') {
 					this._initFieldWidgetPreview(field);
+				}
+				if(preview.type == 'font') {
+					this._initFieldFontPreview(field);
 				}
 			}
 		},
@@ -1440,6 +1734,10 @@
 					field.find('input').on('change', callback);
 				break;
 				
+				case 'multiple-audios':
+					field.find('input').on('change', callback);
+				break;
+
 				case 'icon':
 					field.find('input').on('change', callback);
 				break;
@@ -1462,7 +1760,17 @@
 				
 				case 'suggest':
 					field.find('.as-values').on('change', callback);
+					field.find('select').on('change', callback);
 				break;
+						
+				case 'unit':
+					field.find('input[type=number]').on('keyup', callback);
+				break;
+						
+				case 'ordering':
+					field.find('input[type=hidden]').on('change', callback);
+				break;
+
 			}
 		},
 		
@@ -1486,6 +1794,10 @@
 					field.find('input[type=text]').on('keyup', callback);
 				break;
 				
+				case 'unit':
+					field.find('input[type=number]').on('keyup', callback);
+				break;
+				
 				case 'textarea':
 					field.find('textarea').on('keyup', callback);
 				break;
@@ -1499,7 +1811,7 @@
 				break;
 			}
 		},
-		
+
 		/**
 		 * Runs a real time preview for text fields.
 		 *
@@ -1588,33 +1900,187 @@
 				editor.on('keyup', callback);
 			}
 		},
+
+		/**
+		 * Initializes a font preview for a field.
+		 *
+		 * @since 1.3.3
+		 * @access private
+		 * @method _initFieldFontPreview
+		 * @param {Object} field The field to preview.
+		 */
+		_initFieldFontPreview: function(field)
+		{
+			var fieldType = field.data('type'),
+				preview   = field.data('preview');
+
+			// store field id
+			preview.id = field.attr( 'id' );
+
+			var callback  = $.proxy(this._previewFont, this, preview);
+			
+			if( fieldType == 'font' ){
+				field.find('.fl-font-field').on('change', 'select', callback);
+			}
+
+		},
+
+		/**
+		 * Gets the selected font and weight, and make the necessary updates for live preview.
+		 *
+		 * @since 1.6.3
+		 * @access private
+		 * @see _getPreviewSelector
+		 * @see _buildFontStylesheet
+		 * @see updateCSSRule
+		 *
+		 * @method _previewFont
+		 * @param  {Object} preview An object with data about the current field and css selector.
+		 * @param  {[type]} e       The current field.
+		 */
+		_previewFont: function( preview, e ){
+			var parent     = $( e.delegateTarget ),
+				font       = parent.find( '.fl-font-field-font' ),
+				selected   = $( font ).find( ':selected' ),
+				fontGroup  = selected.parent().attr( 'label' ),
+				weight     = parent.find( '.fl-font-field-weight' ),
+				uniqueID   = preview.id + '-' + this.nodeId,
+				selector = this._getPreviewSelector( this.classes.node, preview.selector );
+
+			// If the selected font is a Google Font, build the font stylesheet
+			if( fontGroup == 'Google' ){
+				this._buildFontStylesheet( uniqueID, font.val(), weight.val() );
+			}
+
+			if( font.val() == 'Default' ){
+				this.updateCSSRule( selector, 'font-family', '' );
+				this.updateCSSRule( selector, 'font-weight', '' );
+			} else {
+				// Updated CSS rules
+				this.updateCSSRule( selector, 'font-family', font.val() );
+				this.updateCSSRule( selector, 'font-weight', weight.val() );				
+			}
+
+		},
+
+		/**
+		 * Gets all fonts store insite FLBuilderPreview._fontsList and renders the respective 
+		 * link tag with Google Fonts.
+		 *
+		 * @since 1.6.3
+		 * @access private
+		 *
+		 * @method _buildFontStylesheet
+		 * @param  {String} id     The field unique ID.
+		 * @param  {String} font   The selected font.
+		 * @param  {String} weight The selected weight.
+		 */
+		_buildFontStylesheet: function( id, font, weight ){
+			var url     = FLBuilderConfig.googleFontsUrl,
+				href    = '',
+				fontObj = {},
+				fontArray = {};
+
+			// build the font family / weight object
+			fontObj[ font ] = [ weight ];
+
+			// adds to the list of fonts for this font setting
+		    FLBuilderPreview._fontsList[ id ] = fontObj;
+
+			// iterate over the keys of the FLBuilderPreview._fontsList object      
+			Object.keys( FLBuilderPreview._fontsList ).forEach( function( fieldFont ) {
+			
+				var field = FLBuilderPreview._fontsList[ fieldFont ];
+
+				// iterate over the font / weight object
+				Object.keys( field ).forEach( function( key ) {
+
+					// get the weights of this font
+					var weights = field[ key ];
+					fontArray[ key ] = fontArray[ key ] || [];
+
+					// remove duplicates from the values array
+					weights = weights.filter( function( weight ) {
+				        return fontArray[ key ].indexOf( weight ) < 0;
+				    });
+
+					fontArray[ key ] = fontArray[ key ].concat( weights );						
+						
+				});
+
+			});
+
+			$.each( fontArray, function( font, weight ){
+				href += font + ':' + weight.join() + '|';
+			} );
+
+			// remove last character and replace spaces with plus signs
+			href = url + href.slice( 0, -1 ).replace( ' ', '+' );
+
+			if( $( '#fl-builder-google-fonts-preview' ).length < 1 ){
+				$( '<link>' )
+					.attr( 'id', 'fl-builder-google-fonts-preview' )
+					.attr( 'type', 'text/css' )
+					.attr( 'rel', 'stylesheet' )
+					.attr( 'href', href )
+					.appendTo('head');			
+			} else{
+				$( '#fl-builder-google-fonts-preview' ).attr( 'href', href );
+			}
+
+		},
 		
 		/**
 		 * Initializes CSS previews for a node.
 		 *
 		 * @since 1.3.3
+		 * @since 1.6.1 Reworked to accept a preview.rules array.
 		 * @access private
 		 * @method _initFieldCSSPreview
 		 * @param {Object} field A field object.
 		 */
-		_initFieldCSSPreview: function(field)
+		_initFieldCSSPreview: function( field )
 		{
-			var fieldType = field.data('type'),
-				preview   = field.data('preview'),
-				callback  = $.proxy(this._previewCSS, this, preview);
-			
-			switch(fieldType) {
+			var preview = field.data( 'preview' ),
+				i 		= null;
+				
+			if ( 'undefined' != typeof preview.rules ) {
+				for ( i in preview.rules ) {
+					this._initFieldCSSPreviewCallback( field, preview.rules[ i ] );
+				}
+			}
+			else {
+				this._initFieldCSSPreviewCallback( field, preview );
+			}
+		},
+		
+		/**
+		 * Initializes CSS preview callbacks for a field.
+		 *
+		 * @since 1.6.1
+		 * @access private
+		 * @method _initFieldCSSPreviewCallback
+		 * @param {Object} field A field object.
+		 * @param {Object} preview The preview data object.
+		 */
+		_initFieldCSSPreviewCallback: function( field, preview )
+		{
+			switch( field.data( 'type' ) ) {
 				
 				case 'text':
-					field.find('input[type=text]').on('keyup', callback);
+					field.find( 'input[type=text]' ).on( 'keyup', $.proxy( this._previewCSS, this, preview ) );
+				break;
+				
+				case 'unit':
+					field.find( 'input[type=number]' ).on( 'keyup', $.proxy( this._previewCSS, this, preview ) );
 				break;
 				
 				case 'select':
-					field.find('select').on('change', callback);
+					field.find( 'select' ).on( 'change', $.proxy( this._previewCSS, this, preview ) );
 				break;
 				
 				case 'color':
-					field.find('.fl-color-picker-value').on('change', $.proxy(this._previewColor, this, preview));
+					field.find( '.fl-color-picker-value' ).on( 'change', $.proxy( this._previewColor, this, preview ) );
 				break;
 			}
 		},
@@ -1630,19 +2096,25 @@
 		 */
 		_previewCSS: function(preview, e)
 		{
-			var selector = this.classes.node + ' ' + preview.selector,
+			var selector = this._getPreviewSelector( this.classes.node, preview.selector ),
 				property = preview.property,
 				unit     = typeof preview.unit == 'undefined' ? '' : preview.unit,
-				value    = $(e.target).val();
+				input    = $(e.target),
+				value    = input.val();
 				
 			if(unit == '%') {
 				value = parseInt(value)/100;
 			}
-			else {
+			else if ( '' !== value ) {
 				value += unit;
 			}
 			
-			this.updateCSSRule(selector, property, value);
+			if ( input.closest( '.fl-field-responsive-setting' ).length ) {
+				this.updateResponsiveCSSRule( selector, property, value );
+			}
+			else {
+				this.updateCSSRule( selector, property, value );
+			}
 		},
 		
 		/**
@@ -1656,11 +2128,21 @@
 		 */
 		_previewColor: function(preview, e)
 		{
-			var selector = this.classes.node + ' ' + preview.selector,
-				val      = $(e.target).val(),
-				color    = val == '' ? 'inherit' : '#' + val;
+			var selector = this._getPreviewSelector( this.classes.node, preview.selector ),
+				input    = $(e.target),
+				val      = input.val(),
+				color    = val === '' ? 'inherit' : '#' + val;
 			
-			this.updateCSSRule(selector, preview.property, color);
+			if ( /^rgb/.test( val.replace(/\s+/g, '') ) ) {
+				color = val;
+			}
+
+			if ( input.closest( '.fl-field-responsive-setting' ).length ) {
+				this.updateResponsiveCSSRule( selector, preview.property, color );
+			}
+			else {
+				this.updateCSSRule( selector, preview.property, color );
+			}
 		},
 		
 		/**
@@ -1679,6 +2161,33 @@
 			field.find('input[type=checkbox]').on('click', callback);
 			field.find('textarea').on('keyup', callback);
 			field.find('select').on('change', callback);
+		},
+		
+		/**
+		 * Returns a formatted selector string for a preview.
+		 *
+		 * @since 1.6.1
+		 * @access private
+		 * @method _getPreviewSelector
+		 * @param {String} selector A CSS selector string.
+		 * @return {String}
+		 */
+		_getPreviewSelector: function( prefix, selector )
+		{
+			var formatted = '',
+				parts 	  = selector.split( ',' ),
+				i 	  	  = 0;
+			
+			for ( ; i < parts.length; i++ ) {
+				
+				formatted += prefix + ' ' + parts[ i ];
+				
+				if ( i != parts.length - 1 ) {
+					formatted += ', ';
+				}
+			}
+			
+			return formatted;
 		}
 	};
 

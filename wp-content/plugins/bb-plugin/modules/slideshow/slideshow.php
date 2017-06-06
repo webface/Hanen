@@ -11,10 +11,11 @@ class FLSlideshowModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Slideshow', 'fl-builder'),
-			'description'   => __('Display multiple photos in a slideshow view.', 'fl-builder'),
-			'category'      => __('Advanced Modules', 'fl-builder'),
-			'editor_export' => false
+			'name'          	=> __('Slideshow', 'fl-builder'),
+			'description'   	=> __('Display multiple photos in a slideshow view.', 'fl-builder'),
+			'category'      	=> __('Advanced Modules', 'fl-builder'),
+			'editor_export' 	=> false,
+			'partial_refresh'	=> true
 		));
 
 		$this->add_js('yui3');
@@ -72,13 +73,20 @@ class FLSlideshowModule extends FLBuilderModule {
 			$photo = FLBuilderPhoto::get_attachment_data($id);
 
 			// Use the cache if we didn't get a photo from the id.
-			if(!$photo) {
+			if ( ! $photo ) {
 
-				if(isset($this->settings->photo_data->{$id})) {
-					$photos[$id] = $this->settings->photo_data->{$id};
+				if ( ! isset( $this->settings->photo_data ) ) {
+					continue;
 				}
-
-				continue;
+				else if ( is_array( $this->settings->photo_data ) ) {
+					$photos[ $id ] = $this->settings->photo_data[ $id ];
+				}
+				else if ( is_object( $this->settings->photo_data ) ) {
+					$photos[ $id ] = $this->settings->photo_data->{$id};
+				}
+				else {
+					continue;
+				}
 			}
 
 			// Only use photos who have the sizes object.
@@ -279,7 +287,8 @@ FLBuilder::register_module('FLSlideshowModule', array(
 					),
 					'photos'        => array(
 						'type'          => 'multiple-photos',
-						'label'         => __('Photos', 'fl-builder')
+						'label'         => __('Photos', 'fl-builder'),
+						'connections'   => array( 'multiple-photos' )
 					),
 					'feed_url'      => array(
 						'type'          => 'text',

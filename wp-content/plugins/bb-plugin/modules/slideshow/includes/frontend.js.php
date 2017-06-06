@@ -60,5 +60,7 @@ YUI({'logExclude': { 'yui': true } }).use('fl-slideshow', function(Y){
 	}
 
 	newSlideshow.render('.fl-node-<?php echo $id; ?> .fl-slideshow-container');
+	
+	Y.one('.fl-node-<?php echo $id; ?> .fl-slideshow-container').setStyle( 'height', 'auto' );
 });
 <?php endif; ?>

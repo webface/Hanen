@@ -11,9 +11,10 @@ class FLTabsModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Tabs', 'fl-builder'),
-			'description'   => __('Display a collection of tabbed content.', 'fl-builder'),
-			'category'      => __('Advanced Modules', 'fl-builder')
+			'name'          	=> __('Tabs', 'fl-builder'),
+			'description'   	=> __('Display a collection of tabbed content.', 'fl-builder'),
+			'category'      	=> __('Advanced Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 		
 		$this->add_css('font-awesome');
@@ -81,7 +82,8 @@ FLBuilder::register_settings_form('items_form', array(
 					'fields'        => array(       
 						'label'         => array(
 							'type'          => 'text',
-							'label'         => __('Label', 'fl-builder')
+							'label'         => __('Label', 'fl-builder'),
+							'connections'   => array( 'string' )
 						)
 					)
 				),
@@ -90,7 +92,9 @@ FLBuilder::register_settings_form('items_form', array(
 					'fields'        => array( 
 						'content'       => array(
 							'type'          => 'editor',
-							'label'         => ''
+							'label'         => '',
+							'wpautop'		=> false,
+							'connections'   => array( 'string' )
 						)
 					)
 				)

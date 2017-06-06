@@ -8,25 +8,43 @@
 final class FLBuilderAdminPosts {
 	
 	/** 
+	 * Initialize hooks.
+	 *
+	 * @since 1.8
+	 * @return void
+	 */
+	static public function init()
+	{
+		/* Actions */
+		add_action('current_screen',                __CLASS__ . '::init_rendering');
+		
+		/* Filters */
+		add_filter('redirect_post_location',        __CLASS__ . '::redirect_post_location');
+		add_filter('page_row_actions',              __CLASS__ . '::render_row_actions_link');
+		add_filter('post_row_actions',              __CLASS__ . '::render_row_actions_link');
+	}
+	
+	/** 
 	 * Sets the body class, loads assets and renders the UI
 	 * if we are on a post type that supports the builder.
 	 *
 	 * @since 1.0
 	 * @return void
 	 */
-	static public function init()
+	static public function init_rendering()
 	{
 		global $pagenow;
 		
 		if ( in_array( $pagenow, array( 'post.php', 'post-new.php') ) ) {
 			
+			$render_ui  = apply_filters( 'fl_builder_render_admin_edit_ui', true );
 			$post_types = FLBuilderModel::get_post_types();
 			$screen		= get_current_screen();
 
-			if ( in_array( $screen->post_type, $post_types ) ) {
-				add_filter( 'admin_body_class', 'FLBuilderAdminPosts::body_class' );
-				add_action( 'admin_enqueue_scripts', 'FLBuilderAdminPosts::styles_scripts' );
-				add_action( 'edit_form_after_title', 'FLBuilderAdminPosts::render' );
+			if ( $render_ui && in_array( $screen->post_type, $post_types ) ) {
+				add_filter( 'admin_body_class',         __CLASS__ . '::body_class', 99 );
+				add_action( 'admin_enqueue_scripts',    __CLASS__ . '::styles_scripts' );
+				add_action( 'edit_form_after_title',    __CLASS__ . '::render' );
 			}
 		}
 	}
@@ -88,7 +106,9 @@ final class FLBuilderAdminPosts {
 	{
 		global $post;
 		
-		$enabled = FLBuilderModel::is_builder_enabled();
+		$post_type_obj 	= get_post_type_object( $post->post_type );
+		$post_type_name = strtolower( $post_type_obj->labels->singular_name );
+		$enabled 		= FLBuilderModel::is_builder_enabled();
 		
 		include FL_BUILDER_DIR . 'includes/admin-posts.php';
 	}
@@ -104,12 +124,16 @@ final class FLBuilderAdminPosts {
 	{
 		global $post;
 			
-		if ( current_user_can( 'edit_post', $post->ID ) && wp_check_post_lock( $post->ID ) === false ) {
+		if ( 'trash' != $post->post_status && current_user_can( 'edit_post', $post->ID ) && wp_check_post_lock( $post->ID ) === false ) {
 			
-			$post_types = FLBuilderModel::get_post_types();
+			$is_post_editable = (bool) apply_filters( 'fl_builder_is_post_editable', true, $post );
 
-			if ( in_array( $post->post_type, $post_types ) ) {
-				$actions['fl-builder'] = '<a href="' . FLBuilderModel::get_edit_url() . '">' . FLBuilderModel::get_branding() . '</a>';
+			$post_types = FLBuilderModel::get_post_types();
+			
+			if ( in_array( $post->post_type, $post_types ) && $is_post_editable ) {
+				$enabled = get_post_meta( $post->ID, '_fl_builder_enabled', true );
+				$dot = ' <span style="color:' . ( $enabled ? '#6bc373' : '#d9d9d9' ) . '; font-size:18px;">&bull;</span>';
+				$actions['fl-builder'] = '<a href="' . FLBuilderModel::get_edit_url() . '">' . FLBuilderModel::get_branding() . $dot . '</a>';
 			}
 		}
 		
@@ -132,3 +156,5 @@ final class FLBuilderAdminPosts {
 		return $location;
 	}
 }
+
+FLBuilderAdminPosts::init();

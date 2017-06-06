@@ -16,9 +16,10 @@ class FLVideoModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Video', 'fl-builder'),
-			'description'   => __('Render a WordPress or embedable video.', 'fl-builder'),
-			'category'      => __('Basic Modules', 'fl-builder')
+			'name'          	=> __('Video', 'fl-builder'),
+			'description'   	=> __('Render a WordPress or embedable video.', 'fl-builder'),
+			'category'      	=> __('Basic Modules', 'fl-builder'),
+			'partial_refresh'	=> true
 		));
 
 		$this->add_js('jquery-fitvids');
@@ -42,6 +43,11 @@ class FLVideoModule extends FLBuilderModule {
 				$this->data->poster     = isset($this->settings->poster_src) ? $this->settings->poster_src : '';
 				$this->data->loop       = isset($this->settings->loop) && $this->settings->loop ? ' loop="yes"' : '';
 				$this->data->autoplay   = isset($this->settings->autoplay) && $this->settings->autoplay ? ' autoplay="yes"' : '';
+
+				// WebM format
+				$webm_data = FLBuilderPhoto::get_attachment_data($this->settings->video_webm);
+				$this->data->video_webm = isset($this->settings->video_webm) && $webm_data ? ' webm="'. $webm_data->url .'"' : '';
+				
 			}
 		}
 
@@ -88,7 +94,7 @@ FLBuilder::register_module('FLVideoModule', array(
 						),
 						'toggle'        => array(
 							'media_library'      => array(
-								'fields'      => array('video', 'poster', 'autoplay', 'loop')
+								'fields'      => array('video', 'video_webm', 'poster', 'autoplay', 'loop')
 							),
 							'embed'     => array(
 								'fields'      => array('embed_code')
@@ -97,7 +103,16 @@ FLBuilder::register_module('FLVideoModule', array(
 					),
 					'video'          => array(
 						'type'          => 'video',
-						'label'         => __( 'Video', 'fl-builder' )
+						'label'         => __( 'Video (MP4)', 'fl-builder' ),
+						'help'          => __('A video in the MP4 format. Most modern browsers support this format.', 'fl-builder'),
+					),
+					'video_webm' => array(
+						'type'          => 'video',
+						'label'         => __('Video (WebM)', 'fl-builder'),
+						'help'          => __('A video in the WebM format to use as fallback. This format is required to support browsers such as FireFox and Opera.', 'fl-builder'),
+						'preview'         => array(
+							'type'            => 'none'
+						)
 					),
 					'poster'         => array(
 						'type'          => 'photo',
@@ -128,9 +143,12 @@ FLBuilder::register_module('FLVideoModule', array(
 						)
 					),
 					'embed_code'     => array(
-						'type'          => 'textarea',
-						'label'         => __( 'Video Embed Code', 'fl-builder' ),
-						'rows'          => '6'
+						'type'          => 'code',
+						'wrap'          => true,
+						'editor'        => 'html',
+						'label'         => '',
+						'rows'          => '9',
+						'connections'   => array( 'custom_field' )
 					)
 				)
 			)

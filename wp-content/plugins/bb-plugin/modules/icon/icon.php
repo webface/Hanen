@@ -11,10 +11,11 @@ class FLIconModule extends FLBuilderModule {
 	public function __construct()
 	{
 		parent::__construct(array(
-			'name'          => __('Icon', 'fl-builder'),
-			'description'   => __('Display an icon and optional title.', 'fl-builder'),
-			'category'      => __('Advanced Modules', 'fl-builder'),
-			'editor_export' => false
+			'name'          	=> __('Icon', 'fl-builder'),
+			'description'   	=> __('Display an icon and optional title.', 'fl-builder'),
+			'category'      	=> __('Advanced Modules', 'fl-builder'),
+			'editor_export' 	=> false,
+			'partial_refresh'	=> true
 		));
 	}
 }
@@ -36,14 +37,15 @@ FLBuilder::register_module('FLIconModule', array(
 				)
 			),
 			'link'          => array(
-				'title'         => 'Link',
+				'title'         => __('Link', 'fl-builder'),
 				'fields'        => array(
 					'link'          => array(
 						'type'          => 'link',
 						'label'         => __('Link', 'fl-builder'),
 						'preview'       => array(
 							'type'          => 'none'
-						)
+						),
+						'connections'   => array( 'url' )
 					),
 					'link_target'   => array(
 						'type'          => 'select',
@@ -60,12 +62,13 @@ FLBuilder::register_module('FLIconModule', array(
 				)
 			),
 			'text'          => array(
-				'title'         => 'Text',
+				'title'         => __('Text', 'fl-builder'),
 				'fields'        => array(
 					'text'          => array(
 						'type'          => 'editor',
 						'label'         => '',
-						'media_buttons' => false
+						'media_buttons' => false,
+						'connections'   => array( 'string' )
 					)
 				)
 			)
@@ -133,6 +136,35 @@ FLBuilder::register_module('FLIconModule', array(
 							'center'        => __('Center', 'fl-builder'),
 							'left'          => __('Left', 'fl-builder'),
 							'right'         => __('Right', 'fl-builder')
+						)
+					)
+				)
+			),
+			'r_structure'	=>	array( 
+				'title'			=>	__('Mobile Structure', 'fl-builder'),
+				'fields'		=>	array(
+					'r_align'		=> array(
+						'type'			=> 'select',
+						'label'			=> __('Alignment', 'fl-builder'),
+						'default'		=> 'default',
+						'options'		=> array(
+							'default'		=> __('Default', 'fl-builder'),
+							'custom'		=> __('Custom', 'fl-builder'),
+						),
+						'toggle'		=> array(
+							'custom'		=> array(
+								'fields'		=> array('r_custom_align')
+							)
+						)
+					),
+					'r_custom_align'	=> array(
+						'type'				=> 'select',
+						'label'				=> __('Custom Alignment', 'fl-builder'),
+						'default'			=> 'left',
+						'options'			=> array(
+							'left'				=> __('Left', 'fl-builder'),
+							'center'			=> __('Center', 'fl-builder'),
+							'right'				=> __('Right', 'fl-builder')
 						)
 					)
 				)

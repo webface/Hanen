@@ -1,5 +1,6 @@
 .fl-form-field input,
-.fl-form-field input[type=text] {
+.fl-form-field input[type=text],
+.fl-form-field input[type=email] {
 	height: auto;
 	width: 100%;
 }
@@ -15,4 +16,11 @@
 .fl-subscribe-form-inline .fl-form-button {
 	float: left;
 	width: 33.33%;
+}
+.fl-subscribe-form-inline .fl-form-recaptcha {
+	clear: both;
+	float: none;
+	margin: 0;
+	padding-top: 15px;
+	width: auto;
 }
