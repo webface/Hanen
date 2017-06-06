@@ -101,10 +101,12 @@ class Ai1wm_Database_Utility {
 	 * @return string
 	 */
 	public static function escape_mysql( $data ) {
-		return str_replace(
-			array( '\\', '\0', "\n", "\r", "\x1a", "'", '"', "\0" ),
-			array( '\\\\', '\\0', "\\n", "\\r", '\Z', "\'", '\"', '\0' ),
-			$data
+		return strtr(
+			$data,
+			array_combine(
+				array( "\x00", "\n", "\r", '\\', "'", '"', "\x1a" ),
+				array( '\\0', '\\n', '\\r', '\\\\', "\\'", '\\"', '\\Z' )
+			)
 		);
 	}
 
@@ -115,10 +117,12 @@ class Ai1wm_Database_Utility {
 	 * @return string
 	 */
 	public static function unescape_mysql( $data ) {
-		return str_replace(
-			array( '\\\\', '\\0', "\\n", "\\r", '\Z', "\'", '\"', '\0' ),
-			array( '\\', '\0', "\n", "\r", "\x1a", "'", '"', "\0" ),
-			$data
+		return strtr(
+			$data,
+			array_combine(
+				array( '\\0', '\\n', '\\r', '\\\\', "\\'", '\\"', '\\Z' ),
+				array( "\x00", "\n", "\r", '\\', "'", '"', "\x1a" )
+			)
 		);
 	}
 }

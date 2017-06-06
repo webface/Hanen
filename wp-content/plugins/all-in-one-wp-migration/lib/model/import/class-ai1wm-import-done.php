@@ -124,7 +124,7 @@ class Ai1wm_Import_Done {
 				admin_url( 'options-permalink.php#submit' )
 			),
 			__(
-				'Your data has been imported successfuly!',
+				'Your data has been imported successfully!',
 				AI1WM_PLUGIN_NAME
 			)
 		);
