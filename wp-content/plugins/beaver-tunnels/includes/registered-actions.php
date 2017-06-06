@@ -1,7 +1,18 @@
 <?php
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Beaver Tunnels Registered Actions
+ *
+ * @package Beaver_Tunnels
+ */
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Beaver Tunnels Registered Actions class
+ */
 class Beaver_Tunnels_Registered_Actions {
 
 	/**
@@ -30,18 +41,38 @@ class Beaver_Tunnels_Registered_Actions {
 		add_filter( 'beaver_tunnels', array( $this, 'edd' ) );
 		add_filter( 'beaver_tunnels', array( $this, 'givewp' ) );
 		add_filter( 'beaver_tunnels', array( $this, 'woocommerce' ) );
+		add_filter( 'beaver_tunnels', array( $this, 'generatepress' ) );
 
 	}
 
+	/**
+	 * Detect the Beaver Builder Theme and add the actions
+	 *
+	 * @since 1.0
+	 *
+	 * @param  array $actions Actions.
+	 *
+	 * @return array
+	 */
 	public function bb_theme( $actions = array() ) {
 
-		$bb_theme = wp_get_theme('bb-theme');
-		if ( ! $bb_theme->exists() ) {
+		$theme = wp_get_theme( 'bb-theme' );
+		if ( ! $theme->exists() ) {
+			return $actions;
+		}
+
+		$current_theme = wp_get_theme();
+
+		if ( ! is_child_theme() && 'bb-theme' !== $current_theme->stylesheet ) {
+			return $actions;
+		}
+
+		if ( is_child_theme() && 'bb-theme' !== $current_theme->parent()->template ) {
 			return $actions;
 		}
 
 		$actions[] = array(
-			'title'   => __( 'Beaver Builder Theme', 'beaver-tunnels' ),
+			'title'   => Beaver_Tunnels_White_Label::get_bb_theme_branding(),
 			'actions' => array(
 				'fl_body_open',
 				'fl_page_open',
@@ -79,7 +110,7 @@ class Beaver_Tunnels_Registered_Actions {
 				'fl_footer_wrap_close',
 				'fl_page_close',
 				'fl_body_close',
-			)
+			),
 		);
 
 		return $actions;
@@ -91,19 +122,24 @@ class Beaver_Tunnels_Registered_Actions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $actions Available action hooks
+	 * @param  array $actions Available action hooks.
 	 *
 	 * @return array        New array of action hooks
 	 */
 	public function genesis( $actions = array() ) {
 
-		$genesis_theme = wp_get_theme('genesis');
-		if ( ! $genesis_theme->exists() || ! is_child_theme() ) {
+		$theme = wp_get_theme( 'genesis' );
+		if ( ! $theme->exists() ) {
 			return $actions;
 		}
 
 		$current_theme = wp_get_theme();
-		if ( 'genesis' !== $current_theme->parent()->template ) {
+
+		if ( ! is_child_theme() && 'genesis' !== $current_theme->stylesheet ) {
+			return $actions;
+		}
+
+		if ( is_child_theme() && 'genesis' !== $current_theme->parent()->template ) {
 			return $actions;
 		}
 
@@ -164,7 +200,7 @@ class Beaver_Tunnels_Registered_Actions {
 				'genesis_before_comment_form',
 				'genesis_comment_form',
 				'genesis_after_comment_form',
-			)
+			),
 		);
 
 		return $actions;
@@ -176,7 +212,7 @@ class Beaver_Tunnels_Registered_Actions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array $actions Available action hooks
+	 * @param  array $actions Available action hooks.
 	 *
 	 * @return array        New array of action hooks
 	 */
@@ -220,7 +256,7 @@ class Beaver_Tunnels_Registered_Actions {
 				'edd_payment_mode_bottom',
 				'edd_payment_mode_before_gateways',
 				'edd_checkout_form_top',
-			)
+			),
 		);
 
 		return $actions;
@@ -232,7 +268,7 @@ class Beaver_Tunnels_Registered_Actions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $actions Available action hooks
+	 * @param  array $actions Available action hooks.
 	 *
 	 * @return [type]        New array of action hooks
 	 */
@@ -284,13 +320,22 @@ class Beaver_Tunnels_Registered_Actions {
 				'give_render_receipt_in_browser_before',
 				'give_reports_page_bottom',
 				'give_reports_page_top',
-			)
+			),
 		);
 
 		return $actions;
 
 	}
 
+	/**
+	 * WooCommerce Actions
+	 *
+	 * @since 1.0
+	 *
+	 * @param  array $actions Actions.
+	 *
+	 * @return array
+	 */
 	public function woocommerce( $actions = array() ) {
 
 		if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
@@ -377,8 +422,72 @@ class Beaver_Tunnels_Registered_Actions {
 				'woocommerce_thankyou',
 				'woocommerce_view_order',
 				'woocommerce_widget_shopping_cart_before_buttons',
-			)
+			),
 		);
+
+		return $actions;
+
+	}
+
+	/**
+	 * GeneratePress Actions
+	 *
+	 * @since 1.0
+	 *
+	 * @param  array $actions Actions.
+	 *
+	 * @return [type]          [description]
+	 */
+	public function generatepress( $actions = array() ) {
+
+		$theme = wp_get_theme( 'generatepress' );
+		if ( ! $theme->exists() ) {
+			return $actions;
+		}
+
+		$current_theme = wp_get_theme();
+
+		if ( ! is_child_theme() && 'generatepress' !== $current_theme->stylesheet ) {
+			return $actions;
+		}
+
+		if ( is_child_theme() && 'generatepress' !== $current_theme->parent()->template ) {
+			return $actions;
+		}
+
+		$actions[] = array(
+	        'title' => __( 'GeneratePress', 'beaver-tunnels' ),
+	        'actions' => array(
+	            'generate_before_header',
+	            'generate_before_header_content',
+	            'generate_after_header_content',
+	            'generate_after_header',
+	            'generate_inside_navigation',
+	            'generate_inside_mobile_menu',
+	            'generate_inside_container',
+	            'generate_before_main_content',
+	            'generate_after_main_content',
+	            'generate_before_content',
+	            'generate_after_content',
+	            'generate_after_entry_header',
+	            'generate_after_entry_content',
+	            'generate_before_archive_title',
+	            'generate_after_archive_title',
+	            'generate_after_archive_description',
+	            'generate_paging_navigation',
+	            'generate_sidebars',
+	            'generate_before_right_sidebar_content',
+	            'generate_after_right_sidebar_content',
+	            'generate_before_left_sidebar_content',
+	            'generate_after_left_sidebar_content',
+	            'generate_before_footer',
+	            'generate_after_footer_widgets',
+	            'generate_before_footer_content',
+	            'generate_after_footer_content',
+	            'generate_credits',
+	            'generate_copyright_line',
+	        ),
+	    );
 
 		return $actions;
 

@@ -1,22 +1,28 @@
 <?php
+/**
+ * Beaver Tunnels Template
+ *
+ * @package Beaver_Tunnels
+ */
+
 /*
 Template Name: Content Only
 */
 
-// Enqueue Genesis Framework Stylesheet
-if ( function_exists('genesis_enqueue_main_stylesheet') ) {
+// Enqueue Genesis Framework Stylesheet.
+if ( function_exists( 'genesis_enqueue_main_stylesheet' ) ) {
 	genesis_enqueue_main_stylesheet();
 }
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 	<head>
-		<title><?php bloginfo('name'); ?> | <?php is_home() ? bloginfo('description') : wp_title(''); ?></title>
+		<title><?php bloginfo( 'name' ); ?> | <?php is_home() ? bloginfo( 'description' ) : wp_title( '' ); ?></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 		<?php
 		wp_head();
-		// Enqueue Beaver Builder Theme Stylesheets
-		if ( class_exists('FLTheme') ) {
+		// Enqueue Beaver Builder Theme Stylesheets.
+		if ( class_exists( 'FLTheme' ) ) {
 			FLTheme::head();
 		}
 		?>

@@ -1,9 +1,25 @@
 <?php
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Beaver Tunnels Output
+ *
+ * @package Beaver_Tunnels
+ */
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Beaver Tunnels Output class
+ */
 class Beaver_Tunnels_Output {
 
+	/**
+	 * The post object
+	 *
+	 * @var object
+	 */
 	public $post;
 
 	/**
@@ -13,17 +29,62 @@ class Beaver_Tunnels_Output {
 	 */
 	public function __construct() {
 
-		if ( ! is_admin() ) {
-			add_action( 'wp', array( $this, 'set_post' ) );
+		if ( is_admin() ) {
+			return;
 		}
+
+		add_action( 'wp', array( $this, 'set_post' ) );
 		add_action( 'wp', array( $this, 'find_templates' ) );
+		add_action( 'bt_before_render_content', array( $this, 'before_render_content' ) );
+		add_action( 'bt_after_render_content', array( $this, 'after_render_content' ) );
 
 	}
 
+	/**
+	 * Set the post object
+	 *
+	 * @since 1.0
+	 */
 	public function set_post() {
 
 		global $post;
 		$this->post = $post;
+
+	}
+
+	/**
+	 * Before render content
+	 *
+	 * @since 2.0
+	 *
+	 * @return void
+	 */
+	public function before_render_content() {
+
+		/**
+		 * A fix for WooCommerce's reset loop function
+		 */
+		if ( function_exists( 'woocommerce_reset_loop' ) ) {
+			remove_filter( 'loop_end', 'woocommerce_reset_loop' );
+		}
+
+	}
+
+	/**
+	 * After render content
+	 *
+	 * @since 2.0
+	 *
+	 * @return void
+	 */
+	public function after_render_content() {
+
+		/**
+		 * A fix for WooCommerce's reset loop function
+		 */
+		if ( function_exists( 'woocommerce_reset_loop' ) ) {
+			add_filter( 'loop_end', 'woocommerce_reset_loop' );
+		}
 
 	}
 
@@ -36,28 +97,31 @@ class Beaver_Tunnels_Output {
 	 */
 	public function find_templates() {
 
-		if ( is_singular('fl-builder-template') || is_admin() || defined( 'DOING_AUTOSAVE' ) ) {
+		if ( is_singular( 'fl-builder-template' ) || is_admin() || defined( 'DOING_AUTOSAVE' ) ) {
 			return;
 		}
 
-		$templates = $this->get_tunneled_templates();
+		do_action( 'bt_before_find_templates' );
 
-		if ( ! empty( $templates ) ) {
+		$query = $this->get_tunneled_templates();
 
-			foreach( $templates as $template ) {
+		if ( is_object( $query ) && $query->have_posts() ) {
+
+			$templates = $query->get_posts();
+
+			foreach ( $templates as $template ) {
 
 				$rules = $this->get_rules( $template->ID );
 
-				// Continue if the template shouldn't be displayed on this page
+				// Continue if the template shouldn't be displayed on this page.
 				if ( ! $this->show_on_page( $rules ) ) {
 					continue;
 				}
 
-				$hook     = get_post_meta( $template->ID, '_beavertunnels_action', true );
-				$priority = get_post_meta( $template->ID, '_beavertunnels_priority', true );
+				$action = get_post_meta( $template->ID, '_beavertunnels_action', true );
 				$self     = $this;
 
-				add_action( $hook, function() use( $self, $rules, $template ) {
+				add_action( $action['action'], function() use ( $self, $rules, $template ) {
 
 					$content = $self->render_content( $template );
 
@@ -66,23 +130,32 @@ class Beaver_Tunnels_Output {
 					} else {
 						echo $content;
 					}
-				}, $priority );
+				}, $action['priority'] );
 
 			} // foreach
 
 		} // if
 
+		do_action( 'bt_after_find_templates' );
+
 	}
 
+	/**
+	 * Get tunneled templates
+	 *
+	 * @since 1.0
+	 *
+	 * @return object Post objects
+	 */
 	private function get_tunneled_templates() {
 
-		// Check the cache for the query
+		// Check the cache for the query.
 		$templates = wp_cache_get( 'beaver_tunnels_templates' );
 
-		// If the cache is empty, then run the query
+		// If the cache is empty, then run the query.
 		if ( false === $templates ) {
 
-			$templates = get_posts( array(
+			$templates = new WP_Query( array(
 				'posts_per_page' => -1,
 				'post_type'      => 'fl-builder-template',
 				'post_status'    => 'publish',
@@ -95,7 +168,7 @@ class Beaver_Tunnels_Output {
 				),
 			) );
 
-			// Save the query to the cache
+			// Save the query to the cache.
 			wp_cache_set( 'beaver_tunnels_templates', $templates );
 
 		}
@@ -104,52 +177,60 @@ class Beaver_Tunnels_Output {
 
 	}
 
-	private function show_on_page( $rules ) {
-
-		if (
-			( '1' === $rules['all_pages']
-			|| ( 'any' === $rules['conditions'] && $this->match_any_rules( $rules ) )
-			|| ( 'all' === $rules['conditions'] && $this->match_all_rules( $rules ) )
-			) && $this->match_user_rules( $rules )
-		) {
-			return true;
-		}
-
-		return false;
-
-	}
-
+	/**
+	 * Render the content
+	 *
+	 * @since 1.0
+	 *
+	 * @param  object $template Post object.
+	 *
+	 * @return string           HTML output
+	 */
 	public function render_content( $template ) {
+
+		do_action( 'bt_before_render_content' );
 
 		$method = 'render_query';
 
-		switch( $method ) {
+		switch ( $method ) {
 			case 'render_query':
 				ob_start();
 				FLBuilder::render_query( array(
 					'post_type' => 'fl-builder-template',
-					'p'         => $template->ID
+					'p'         => $template->ID,
 				) );
 				$content = ob_get_clean();
 				break;
 
 			case 'shortcode':
-				$content = do_shortcode('[fl_builder_insert_layout id="' . $template->ID . '"]');
+				$content = do_shortcode( '[fl_builder_insert_layout id="' . $template->ID . '"]' );
 				break;
 
 		}
+
+		do_action( 'bt_after_render_content' );
 
 		return $content;
 
 	}
 
+	/**
+	 * Render builder active content
+	 *
+	 * @since 1.0
+	 *
+	 * @param  array  $rules   The array of rules.
+	 * @param  string $content HTML.
+	 *
+	 * @return void
+	 */
 	public function render_builder_active_content( $rules, $content ) {
 
 		wp_enqueue_style( 'beaver-tunnels-fl-builder', BEAVER_TUNNELS_PLUGIN_URL . 'assets/css/fl-builder.css', array(), '1.0.0' );
-		wp_enqueue_script( 'beaver-tunnels-fl-builder', BEAVER_TUNNELS_PLUGIN_URL . 'assets/js/fl-builder.js', array('jquery'), '1.0.0', false );
+		wp_enqueue_script( 'beaver-tunnels-fl-builder', BEAVER_TUNNELS_PLUGIN_URL . 'assets/js/fl-builder.js', array( 'jquery' ),'1.0.0', false );
 		?>
 		<div class="beaver-tunnels-content">
-			<a href="<?php echo get_permalink( $rules['template_id'] ); ?>"></a>
+			<a href="<?php echo esc_attr( add_query_arg( array( 'fl_builder' => '', 'bt_return' => get_permalink() ), get_permalink( $rules['template_id'] ) ) ); ?>"></a>
 			<?php echo $content; ?>
 			<div class="bt-template-overlay">
 				<div class="fl-block-overlay-header">
@@ -170,33 +251,16 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since since 0.9.2
 	 *
-	 * @param  string $template_id The id of the Beaver Builder Template
+	 * @param  string $template_id The id of the Beaver Builder Template.
 	 *
 	 * @return array        The array of display rules
 	 */
 	private function get_rules( $template_id ) {
 
-		$rules_conditions = get_post_meta( $template_id, '_beavertunnels_conditions', true );
-		if ( 0 == strlen( $rules_conditions ) ) {
-			$rules_conditions = 'any';
-		}
-
 		$rules = array(
-			'template_id'   => $template_id,
-			'all_pages'     => get_post_meta( $template_id, '_beavertunnels_all_pages', true ),
-			'conditions'    => $rules_conditions,
-			'posts'         => $this->check_array( get_post_meta( $template_id, '_beavertunnels_posts', true ) ),
-			'pages'         => $this->check_array( get_post_meta( $template_id, '_beavertunnels_pages', true ) ),
-			'templates'     => $this->check_array( get_post_meta( $template_id, '_beavertunnels_templates', true ) ),
-			'archives'      => $this->check_array( get_post_meta( $template_id, '_beavertunnels_archives', true ) ),
-			'singles'       => $this->check_array( get_post_meta( $template_id, '_beavertunnels_singles', true ) ),
-			'taxonomies'    => $this->check_array( get_post_meta( $template_id, '_beavertunnels_taxonomies', true ) ),
-			'term_archives' => $this->check_array( get_post_meta( $template_id, '_beavertunnels_term_archives', true ) ),
-			'terms'         => $this->check_array( get_post_meta( $template_id, '_beavertunnels_terms', true ) ),
-			'user_status'   => get_post_meta( $template_id, '_beavertunnels_user_status', true ),
-			'logged_in'     => get_post_meta( $template_id, '_beavertunnels_logged_in', true ),
-			'users'         => $this->check_array( get_post_meta( $template_id, '_beavertunnels_users', true ) ),
-			'user_roles'    => $this->check_array( get_post_meta( $template_id, '_beavertunnels_user_roles', true ) ),
+			'template_id'	=> $template_id,
+			'all_pages'		=> get_post_meta( $template_id, '_beavertunnels_all_pages', true ),
+			'conditions'	=> get_post_meta( $template_id, '_beavertunnels_conditions', true ),
 		);
 
 		return $rules;
@@ -204,176 +268,183 @@ class Beaver_Tunnels_Output {
 	}
 
 	/**
-	 * Check if any of the user rules match
+	 * Check if the rule group conditions match
 	 *
-	 * @since since 0.9.2
+	 * @param  array $rules The array of rules.
 	 *
-	 * @param  array $rules Array of rules
-	 *
-	 * @return boolean        True / false
+	 * @return boolean        The result. TRUE / FALSE
 	 */
-	private function match_user_rules( $rules ) {
+	private function show_on_page( $rules ) {
 
-		if ( '' === $rules['user_status'] ) {
-			$rules['user_status'] = 'all';
-		}
+		$conditions = $rules['conditions'];
 
-		if ( 'all' === $rules['user_status'] && empty( $rules['users'] ) && empty( $rules['user_roles'] ) ) {
-			return true;
-		}
+		if ( ! is_array( $conditions ) ) {
 
-		if ( 'logged_out' === $rules['user_status'] && ! is_user_logged_in() ) {
-			return true;
-		}
+			if ( '1' === $rules['all_pages'] ) {
+				return true;
+			}
 
-		if ( 'logged_in' === $rules['user_status'] && is_user_logged_in() && empty( $rules['users'] ) && empty( $rules['user_roles'] ) ) {
-			return true;
-		}
-
-		if ( 'logged_in' === $rules['user_status'] && ! is_user_logged_in() ) {
 			return false;
 		}
 
-		if ( in_array( get_current_user_id(), $rules['users'] ) ) {
-			return true;
+		$show = false;
+
+		foreach ( $conditions as $group ) {
+
+			// Setup the arrays to store our results.
+			$group_results = array();
+			$operators = array();
+
+			// If Global is on, default the rule group to TRUE.
+			if ( '1' === $rules['all_pages'] ) {
+				$group_results[] = true;
+				$operators[] = '==';
+			}
+
+			foreach ( $group as $rule ) {
+
+				if ( ! isset( $rule['condition'] ) || 'none' === $rule['condition'] ) {
+					continue;
+				}
+
+				switch ( $rule['condition'] ) {
+
+					case 'post':
+						$result = $this->is_on_post( $rule['value'] );
+						break;
+
+					case 'page':
+						$result = $this->is_on_page( $rule['value'] );
+						break;
+
+					case 'page_parent':
+						$result = $this->parent_page_is( $rule['value'] );
+						break;
+
+					case 'page_template':
+						$result = $this->is_on_page_template( $rule['value'] );
+						break;
+
+					case 'page_type':
+						$result = $this->is_on_page_type( $rule['value'] );
+						break;
+
+					case 'post_archive':
+						$result = $this->is_on_archive( $rule['value'] );
+						break;
+
+					case 'post_singular':
+						$result = $this->is_on_singles( $rule['value'] );
+						break;
+
+					case 'taxonomy_archive':
+						$result = $this->is_on_tax( $rule['value'] );
+						break;
+
+					case 'term_archive':
+						$result = $this->is_on_tax_archive( $rule['value'] );
+						break;
+
+					case 'term_singular':
+						$result = $this->is_on_term( $rule['value'] );
+						break;
+
+					case 'tag_singular':
+						$result = $this->is_on_tag( $rule['value'] );
+						break;
+
+					case 'user_status':
+						$result = is_user_logged_in();
+						break;
+
+					case 'user':
+						$result = false;
+						if ( get_current_user_id() === (int) $rule['value'] ) {
+							$result = true;
+						}
+						break;
+
+					case 'user_role':
+						$result = false;
+						$user = wp_get_current_user();
+						if ( in_array( $rule['value'], (array) $user->roles, true ) ) {
+							$result = true;
+						}
+						break;
+
+					case 'author':
+						$result = $this->is_post_author( $rule['value'] );
+						break;
+
+					case 'before_date':
+						$result = $this->is_before_date( $rule['value'] );
+						break;
+
+					case 'after_date':
+						$result = $this->is_after_date( $rule['value'] );
+						break;
+
+					case 'before_time':
+						$result = $this->is_before_time( $rule['value'] );
+						break;
+
+					case 'after_time':
+						$result = $this->is_after_time( $rule['value'] );
+						break;
+
+					case 'day_of_week':
+						$result = $this->is_day_of_week( $rule['value'] );
+						break;
+
+					default:
+						if ( strpos( $rule['condition'], 'cpt_' ) !== false ) {
+							$result = $this->is_on_post( $rule['value'] );
+						}
+						break;
+
+				}
+
+				// Reverse the result if using the != operator.
+				if ( '!=' === $rule['operator'] ) {
+					$result = ! $result;
+				}
+
+				// Store the results to compare later.
+				$group_results[] = $result;
+				$operators[] = $rule['operator'];
+
+			}
+
+			// Check that all of the conditions were TRUE and that there was at least one == operator.
+			if ( ! in_array( false, $group_results, true ) && in_array( '==', $operators, true ) ) {
+
+				$show = true;
+				break;
+
+			}
 		}
 
-		$user = wp_get_current_user();
-		if ( '0' < count( array_intersect( $rules['user_roles'], (array) $user->roles ) ) ) {
-			return true;
-		}
-
-		return false;
+		return $show;
 
 	}
 
-	/**
-	 * Check if any of the rules match
-	 *
-	 * @since since 1.0.0
-	 *
-	 * @param  array $rules Array of rules
-	 *
-	 * @return boolean        True / false
-	 */
-	private function match_any_rules( $rules ) {
-
-		if ( $this->is_on_page( $rules )
-			|| $this->is_on_post( $rules )
-			|| $this->is_on_page_template( $rules )
-			|| $this->is_on_archive( $rules )
-			|| $this->is_on_singles( $rules )
-			|| $this->is_on_tax( $rules )
-			|| $this->is_on_tax_archive( $rules )
-			|| $this->is_on_term( $rules )
-		) {
-			return true;
-		}
-
-		return false;
-
-	}
-
-	/**
-	 * Check if all of the rules match
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param  array $rules Array of rules
-	 *
-	 * @return boolean        True / false
-	 */
-	private function match_all_rules( $rules ) {
-
-		if ( ! empty( $rules['pages'] ) ) {
-			if ( ! $this->is_on_page( $rules ) ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $rules['posts'] ) ) {
-			if ( ! $this->is_on_post( $rules ) ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $rules['templates'] ) ) {
-			if ( ! $this->is_on_page_template( $rules ) ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $rules['archives'] ) ) {
-			if ( ! $this->is_on_archive( $rules ) ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $rules['singles'] ) ) {
-			if ( ! $this->is_on_singles( $rules ) ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $rules['taxonomies'] ) ) {
-			if ( ! $this->is_on_tax( $rules ) ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $rules['term_archives'] ) ) {
-			if ( ! $this->is_on_tax_archive( $rules ) ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $rules['terms'] ) ) {
-			if ( ! $this->is_on_term( $rules ) ) {
-				return false;
-			}
-		}
-
-		return true;
-
-	}
 
 	/**
 	 * Check if we are on a specific post
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param string $value The value to compare.
 	 *
 	 * @return boolean        True / false
 	 */
-	private function is_on_post( $rules ) {
+	private function is_on_post( $value ) {
 
-		if ( empty( $rules['posts'] ) ) {
-			return false;
+		if ( is_single( $value ) ) {
+		 	return true;
 		}
 
-		$result = false;
-
-		switch ( $rules['conditions'] ) {
-
-			case 'all':
-				$result = true;
-				foreach ( $rules['posts'] as $single_post ) {
-					if ( ! is_single( $single_post ) ) {
-						$result = false;
-					}
-				}
-				break;
-
-			case 'any':
-				if ( is_single( $rules['posts'] ) ) {
-					$result = true;
-				}
-				break;
-
-		}
-
-		return $result;
+		return false;
 
 	}
 
@@ -382,38 +453,41 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param  string $value The value to compare.
 	 *
 	 * @return boolean        True / false
 	 */
-	private function is_on_page( $rules ) {
+	private function is_on_page( $value ) {
 
-		if ( empty( $rules['pages'] ) ) {
+		if ( is_page( $value ) ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if this page is a child of a specific parent page
+	 *
+	 * @since 2.0.2
+	 *
+	 * @param  string $value The value to compare.
+	 *
+	 * @return boolean            True / false
+	 */
+	private function parent_page_is( $value ) {
+
+		if ( empty( $value ) ) {
 			return false;
 		}
 
-		$result = false;
-
-		switch ( $rules['conditions'] ) {
-
-			case 'all':
-				$result = true;
-				foreach( $rules['pages'] as $page ) {
-					if ( ! is_page( $page ) ) {
-						$result = false;
-					}
-				}
-				break;
-
-			case 'any':
-				if ( is_page( $rules['pages'] ) ) {
-					$result = true;
-				}
-				break;
-
+		global $post;
+		if ( is_page() && (int) $value === $post->post_parent ) {
+		    return true;
 		}
 
-		return $result;
+		return false;
 
 	}
 
@@ -422,22 +496,69 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param  string $value The value to compare.
 	 *
 	 * @return boolean            True / false
 	 */
-	private function is_on_page_template( $rules ) {
+	private function is_on_page_template( $value ) {
 
-		if ( empty( $rules['templates'] ) ) {
+		if ( empty( $value ) ) {
 			return false;
 		}
 
-		if ( is_page_template( $rules['templates'] ) ) {
+		if ( is_page_template( $value ) ) {
 			return true;
 		}
 
-		if ( in_array( 'default_template', $rules['templates'] ) && is_page() && ! is_page_template() ) {
+		if ( 'default_template' === $value && is_page() && ! is_page_template() ) {
 			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if we are on a specific page type
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $value The value to compare.
+	 *
+	 * @return boolean            True / false
+	 */
+	private function is_on_page_type( $value ) {
+
+		if ( empty( $value ) ) {
+			return false;
+		}
+
+		switch ( $value ) {
+
+			case '404':
+				return is_404();
+				break;
+
+			case 'search_results':
+				return is_search();
+				break;
+
+			case 'blog_page':
+				return is_home();
+				break;
+
+			case 'front_page':
+				return is_front_page();
+				break;
+
+			case 'rtl':
+				return is_rtl();
+				break;
+
+			case 'first_page':
+				return ! is_paged();
+				break;
+
 		}
 
 		return false;
@@ -449,21 +570,21 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param  string $value The value to compare.
 	 *
 	 * @return boolean           True / false
 	 */
-	private function is_on_archive( $rules ) {
+	private function is_on_archive( $value ) {
 
-		if ( empty( $rules['archives'] ) ) {
+		if ( empty( $value ) ) {
 			return false;
 		}
 
-		if ( is_post_type_archive( $rules['archives'] ) ) {
+		if ( is_post_type_archive( $value ) ) {
 			return true;
 		}
 
-		if ( in_array( 'post', $rules['archives'] ) && is_home() ) {
+		if ( 'post' === $value && is_home() ) {
 			return true;
 		}
 
@@ -476,17 +597,17 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param  string $value The value to compare.
 	 *
 	 * @return boolean          True / false
 	 */
-	private function is_on_singles( $rules ) {
+	private function is_on_singles( $value ) {
 
-		if ( empty( $rules['singles'] ) ) {
+		if ( empty( $value ) ) {
 			return false;
 		}
 
-		if ( is_singular( $rules['singles'] ) ) {
+		if ( is_singular( $value ) ) {
 			return true;
 		}
 
@@ -499,17 +620,25 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param  string $value The value to compare.
 	 *
 	 * @return boolean             True / false
 	 */
-	private function is_on_tax( $rules ) {
+	private function is_on_tax( $value ) {
 
-		if ( empty( $rules['taxonomies'] ) ) {
+		if ( empty( $value ) ) {
 			return false;
 		}
 
-		if ( is_tax( $rules['taxonomies'] ) ) {
+		if ( is_tax( $value ) ) {
+			return true;
+		}
+
+		if ( 'category' === $value && is_category() ) {
+			return true;
+		}
+
+		if ( 'post_tag' === $value && is_tag() ) {
 			return true;
 		}
 
@@ -522,21 +651,40 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param  string $value The value to compare.
 	 *
 	 * @return boolean             True / false
 	 */
-	private function is_on_tax_archive( $rules ) {
+	private function is_on_tax_archive( $value ) {
 
-		if ( empty( $rules['taxonomies'] ) ) {
+		if ( empty( $value ) ) {
 			return false;
 		}
 
-		foreach( $rules['taxonomies'] as $tax ) {
-			$tax_array = explode( '|', $tax );
-			if ( is_tax( $tax_array[0], $tax_array[1] ) || ( ( 'category' == $tax_array[0] ) && is_category( $tax_array[1] ) ) ) {
-				return true;
-			}
+		$tax_array = explode( '|', $value );
+		if ( is_tax( $tax_array[0], $tax_array[1] ) || ( ( 'category' === $tax_array[0] ) && is_category( $tax_array[1] ) ) ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if we are on a specific tag archive
+	 *
+	 * @param  string $value The value to compare.
+	 *
+	 * @return boolean        True / False
+	 */
+	private function is_on_tag_archive( $value ) {
+
+		if ( empty( $value ) ) {
+			return false;
+		}
+
+		if ( is_tag( $value ) ) {
+			return true;
 		}
 
 		return false;
@@ -548,72 +696,166 @@ class Beaver_Tunnels_Output {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  array  $rules Array of rules
+	 * @param  string $value The value to compare.
 	 *
 	 * @return boolean        True / false
 	 */
-	private function is_on_term( $rules ) {
+	private function is_on_term( $value ) {
 
-		if ( empty( $rules['terms'] ) ) {
+		if ( empty( $value ) ) {
 			return false;
 		}
 
-		// Set the $post object
-		global $post;
-		$post_backup = $post;
-		$post        = $this->post;
-
-		if ( ! is_single() ) {
-			$post = $post_backup;
+		if ( ! is_singular() ) {
 			return false;
 		}
 
-		$result = false;
-
-		switch ( $rules['conditions'] ) {
-
-			case 'all':
-				foreach( $rules['terms'] as $term ) {
-					$result = true;
-					$term_array = explode( '|', $term );
-					if ( ! has_term( $term_array[1], $term_array[0] ) && ! ( ( 'category' == $term_array[0] ) && in_category( $term_array[1] ) ) ) {
-						$result = false;
-					}
-				}
-				break;
-
-			case 'any':
-				foreach( $rules['terms'] as $term ) {
-					$term_array = explode( '|', $term );
-					if ( has_term( $term_array[1], $term_array[0] ) && ( ( 'category' == $term_array[0] ) && in_category( $term_array[1] ) ) ) {
-						$result = false;
-					}
-				}
-				break;
-
+		$term_array = explode( '|', $value );
+		if ( has_term( $term_array[1], $term_array[0], get_the_ID() ) || ( ( 'category' === $term_array[0] ) && in_category( $term_array[1] ) ) ) {
+			return true;
 		}
 
-		// Reset the $post object
-		$post = $post_backup;
-
-		return $result;
+		return false;
 
 	}
 
 	/**
-	 * Fixes input that should be an array
+	 * Check the post author of the current post
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  mixed $input Field values
+	 * @param  string $value The value to compare.
 	 *
-	 * @return array        Array of field values
+	 * @return boolean          True / false
 	 */
-	private function check_array( $input ) {
-		if ( ! is_array( $input ) ) {
-			return array();
+	private function is_post_author( $value ) {
+
+		if ( empty( $value ) ) {
+			return false;
 		}
-		return $input;
+
+		if ( ! is_singular() ) {
+			return false;
+		}
+
+		global $post;
+		if ( isset( $post->post_author ) && $value === $post->post_author ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if it is before a certain date
+	 *
+	 * @since 2.0
+	 *
+	 * @param  string $value Date.
+	 *
+	 * @return boolean
+	 */
+	private function is_before_date( $value ) {
+
+		$right_now = current_time( 'timestamp' );
+		$date = strtotime( $value );
+
+		if ( $right_now < $date ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if it is after a certain date
+	 *
+	 * @since 2.0
+	 *
+	 * @param  string $value Date.
+	 *
+	 * @return boolean
+	 */
+	private function is_after_date( $value ) {
+
+		$right_now = current_time( 'timestamp' );
+		$date = strtotime( $value );
+
+		if ( $right_now > $date ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if it is before a certain time
+	 *
+	 * @since 2.0
+	 *
+	 * @param  string $value Time.
+	 *
+	 * @return boolean
+	 */
+	private function is_before_time( $value ) {
+
+		$value = str_replace( ' ', '', $value );
+		$right_now = current_time( 'timestamp' );
+		$time = strtotime( $value, $right_now );
+
+		if ( $right_now < $time ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if it is after a certain time
+	 *
+	 * @since 2.0
+	 *
+	 * @param  string $value Time.
+	 *
+	 * @return boolean
+	 */
+	private function is_after_time( $value ) {
+
+		$value = str_replace( ' ', '', $value );
+		$right_now = current_time( 'timestamp' );
+		$time = strtotime( $value, $right_now );
+
+		if ( $right_now > $time ) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if it is a certain day of the week
+	 *
+	 * @since 2.0
+	 *
+	 * @param  string $value Day number.
+	 *
+	 * @return boolean
+	 */
+	private function is_day_of_week( $value ) {
+
+		$day = current_time( 'w' );
+
+		if ( $day === $value ) {
+			return true;
+		}
+
+		return false;
+
 	}
 
 }

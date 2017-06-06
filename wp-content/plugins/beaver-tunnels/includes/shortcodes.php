@@ -1,10 +1,33 @@
 <?php
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Beaver Tunnels Shortcodes
+ *
+ * @package Beaver_Tunnels
+ */
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Beaver Tunnels Shortcodes class
+ */
 class Beaver_Tunnels_Shortcodes {
 
-	public $post_id;
+	/**
+	 * The Post
+	 *
+	 * @var object
+	 */
+	public $post;
+
+	/**
+	 * The WP_Query
+	 *
+	 * @var object
+	 */
+	public $wp_query;
 
 	/**
 	 * Class constructor
@@ -13,21 +36,50 @@ class Beaver_Tunnels_Shortcodes {
 	 */
 	public function __construct() {
 
-		if ( ! is_admin() ) {
-			add_action( 'wp', array( $this, 'set_post_id' ) );
-		}
 		add_shortcode( 'beaver_tunnels', array( $this, 'beaver_tunnels_shortcode' ) );
 
+		if ( is_admin() ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return;
+		}
+
+		add_action( 'wp', array( $this, 'set_post' ) );
+
 	}
 
-	public function set_post_id() {
+	/**
+	 * Set the post
+	 *
+	 * @since 1.0
+	 */
+	public function set_post() {
 
 		global $post;
-		$this->post_id = $post->ID;
+		global $wp_query;
+
+		$this->wp_query	= $wp_query;
+		$this->post		= get_queried_object();
 
 	}
 
+	/**
+	 * Process the [beaver_tunnels] shortcode
+	 *
+	 * @since 1.0
+	 *
+	 * @param  array  $atts Shortcode attributes.
+	 * @param  string $content	Shortcode content.
+	 *
+	 * @return string
+	 */
 	public function beaver_tunnels_shortcode( $atts = array(), $content = '' ) {
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return;
+		}
 
 		if ( 0 === strlen( trim( $content ) ) ) {
 			return;
@@ -39,13 +91,8 @@ class Beaver_Tunnels_Shortcodes {
 		$wp_query_backup	= $wp_query;
 		$post_backup		= $post;
 
-		$wp_query_args = array(
-			'p'			=> $this->post_id,
-			'post_type'	=> 'any'
-		);
-		$wp_query = new WP_Query( $wp_query_args );
-
-		$post = get_post( $this->post_id, OBJECT );
+		$post		= $this->post;
+		$wp_query	= $this->wp_query;
 
 		$content = do_shortcode( $content );
 

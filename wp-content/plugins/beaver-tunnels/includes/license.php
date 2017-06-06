@@ -2,29 +2,88 @@
 /**
  * Beaver Tunnels License Handler
  *
- * @since       1.0.0
+ * @package Beaver_Tunnels
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
+/**
+ * Beaver Tunnels License class
+ */
 class Beaver_Tunnels_License {
 
+	/**
+	 * File
+	 *
+	 * @var string
+	 */
 	private $file;
+
+	/**
+	 * License
+	 *
+	 * @var string
+	 */
 	private $license;
+
+	/**
+	 * Item Name
+	 *
+	 * @var string
+	 */
 	private $item_name;
+
+	/**
+	 * Item ID
+	 *
+	 * @var string
+	 */
 	private $item_id;
+
+	/**
+	 * Item Shortname
+	 *
+	 * @var string
+	 */
 	private $item_shortname;
+
+	/**
+	 * Version
+	 *
+	 * @var string
+	 */
 	private $version;
+
+	/**
+	 * Author
+	 *
+	 * @var string
+	 */
 	private $author = 'Beaver Tunnels';
+
+	/**
+	 * API URL
+	 *
+	 * @var string
+	 */
 	private $api_url = 'https://beavertunnels.com/';
 
-    /**
-     * Create a new instance
-     */
-    function __construct( $_file, $_item_id, $_item_name, $_version ) {
+	/**
+	 * Class construct
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $_file      Plugin file.
+	 * @param string $_item_id   Item ID.
+	 * @param string $_item_name Item Name.
+	 * @param string $_version   Version.
+	 */
+	function __construct( $_file, $_item_id, $_item_name, $_version ) {
 
-        $this->file				= $_file;
+		$this->file				= $_file;
 		$this->item_name		= $_item_name;
 		$this->item_id			= $_item_id;
 		$this->version			= $_version;
@@ -34,7 +93,7 @@ class Beaver_Tunnels_License {
 		$this->hooks();
 		$this->schedule_license_check();
 
-    }
+	}
 
 	/**
 	 * Include the EDD Sofitware Licensing updater class
@@ -62,25 +121,32 @@ class Beaver_Tunnels_License {
 	 */
 	private function hooks() {
 
-		// Activate the license key when settings are saved
-		add_action( 'admin_init', array( $this, 'activate_license' ) );
+		// Activate the license key when settings are saved.
+		add_action( 'admin_init', array( $this, 'fl_activate_license' ) );
 
-		// Deactivate the license key
-		add_action( 'admin_init', array( $this, 'deactivate_license' ) );
+		// Deactivate the license key.
+		add_action( 'admin_init', array( $this, 'fl_deactivate_license' ) );
 
-		// Register the auto updater
+		// Register the auto updater.
 		add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 
 	}
 
+	/**
+	 * Get the license key
+	 *
+	 * @since 1.0
+	 *
+	 * @return mixed License key or false
+	 */
 	private function get_license_key() {
 		if ( Beaver_Tunnels()->is_network_active() ) {
 			$beaver_tunnels = get_site_option( 'beaver_tunnels', array() );
 		} else {
 			$beaver_tunnels = get_option( 'beaver_tunnels', array() );
 		}
-		if ( isset( $beaver_tunnels[ 'license_key' ] ) ) {
-			return $beaver_tunnels[ 'license_key' ];
+		if ( isset( $beaver_tunnels['license_key'] ) ) {
+			return $beaver_tunnels['license_key'];
 		}
 		return false;
 	}
@@ -114,39 +180,33 @@ class Beaver_Tunnels_License {
 				'license'	=> $this->license,
 				'item_name'	=> $this->item_name,
 				'author'	=> $this->author,
-				'url'		=> home_url()
+				'url'		=> home_url(),
 			)
 		);
 
 	}
 
 	/**
-	 * Activate the license key
+	 * Activate the license
 	 *
-	 * @since 1.0.0
-	 *
-	 * @access public
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
-	public function activate_license() {
+	public function fl_activate_license() {
 
-		if ( ! isset( $_POST['beaver_tunnels'] ) ) {
+		if ( ! isset( $_POST['fl-ft-bt-nonce'] ) || ! wp_verify_nonce( $_POST['fl-ft-bt-nonce'], 'ft-bt' ) ) {
 			return;
 		}
 
-		if ( ! isset( $_POST['beaver_tunnels']['license_key'] ) || '' === $_POST['beaver_tunnels']['license_key'] ) {
+		if ( ! isset( $_POST['ft-bt-license-key'] ) || '' === $_POST['ft-bt-license-key'] ) {
 			return;
 		}
 
-		foreach( $_POST as $key => $value ) {
+		foreach ( $_POST as $key => $value ) {
 			if ( false !== strpos( $key, 'beaver_tunnels_license_deactivate' ) ) {
 				return;
 			}
-		}
-
-		if ( ! wp_verify_nonce( $_POST[ 'beaver_tunnels-nonce'], 'beaver_tunnels-nonce' ) ) {
-			wp_die( __('Beaver Tunnels licensing nonce verification failed.', 'beaver-tunnels'), __('Error', 'beaver-tunnels'), array( 'response' => 403 ) );
 		}
 
 		$license_data = get_option( 'beaver_tunnels_license_data' );
@@ -155,7 +215,7 @@ class Beaver_Tunnels_License {
 			return;
 		}
 
-		$license = sanitize_text_field( $_POST['beaver_tunnels'][ 'license_key' ] );
+		$license = sanitize_text_field( $_POST['ft-bt-license-key'] );
 
 		if ( empty( $license ) ) {
 			return;
@@ -177,12 +237,12 @@ class Beaver_Tunnels_License {
 			)
 		);
 
-		// Check for errors
+		// Check for errors.
 		if ( is_wp_error( $response ) ) {
 			return;
 		}
 
-		// Make WordPress look for updates
+		// Make WordPress look for updates.
 		set_site_transient( 'update_plugins', null );
 
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
@@ -196,29 +256,23 @@ class Beaver_Tunnels_License {
 	}
 
 	/**
-	 * Deactivate the license key
+	 * Deactivate the license
 	 *
-	 * @since 1.0.0
-	 *
-	 * @access public
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
-	public function deactivate_license() {
+	public function fl_deactivate_license() {
 
-		if ( ! isset( $_POST['beaver_tunnels'] ) ) {
+		if ( ! isset( $_POST['fl-ft-bt-nonce'] ) || ! wp_verify_nonce( $_POST['fl-ft-bt-nonce'], 'ft-bt' ) ) {
 			return;
 		}
 
-		if ( ! isset( $_POST['beaver_tunnels'][ 'license_key' ] ) ) {
+		if ( ! isset( $_POST['ft-bt-license-key'] ) || '' === $_POST['ft-bt-license-key'] ) {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_REQUEST[ 'beaver_tunnels-nonce'], 'beaver_tunnels-nonce' ) ) {
-			wp_die( __('Nonce verification failed', 'beaver-tunnels'), __('Error', 'beaver-tunnels'), array( 'response' => 403 ) );
-		}
-
-		if ( isset( $_POST[ 'beaver_tunnels_license_deactivate' ] ) ) {
+		if ( isset( $_POST['beaver_tunnels_license_deactivate'] ) ) {
 
 			$body = array(
 				'edd_action' => 'deactivate_license',
@@ -236,14 +290,14 @@ class Beaver_Tunnels_License {
 				)
 			);
 
-			// Check for errors
+			// Check for errors.
 			if ( is_wp_error( $response ) ) {
 				return;
 			}
 
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			if ( isset( $license_data->success ) && true === $license_data->success ) {
-				if ( $this->is_network_active() ) {
+				if ( Beaver_Tunnels()->is_network_active() ) {
 					update_site_option( 'beaver_tunnels_license_data', $license_data );
 					delete_site_option( 'beaver_tunnels_license_status' );
 				} else {
@@ -251,13 +305,17 @@ class Beaver_Tunnels_License {
 					delete_option( 'beaver_tunnels_license_status' );
 				}
 			}
-
-
-
 		}
 
 	}
 
+	/**
+	 * Schedule the license check
+	 *
+	 * @since 1.0
+	 *
+	 * @return void
+	 */
 	private function schedule_license_check() {
 
 		if ( Beaver_Tunnels()->is_network_active() ) {
@@ -266,17 +324,24 @@ class Beaver_Tunnels_License {
 			$beaver_tunnels = get_option( 'beaver_tunnels', array() );
 		}
 
-		if ( ! isset( $beaver_tunnels[ 'license_key' ] ) ) {
+		if ( ! isset( $beaver_tunnels['license_key'] ) ) {
 			return;
 		}
 
-		if ( FALSE === wp_next_scheduled( 'beaver_tunnels_license_check' ) ) {
+		if ( false === wp_next_scheduled( 'beaver_tunnels_license_check' ) ) {
 			 wp_schedule_event( time(), 'daily', 'beaver_tunnels_license_check' );
 		}
 		add_action( 'beaver_tunnels_license_check', array( $this, 'check_license' ) );
 
 	}
 
+	/**
+	 * Check the license
+	 *
+	 * @since 1.0
+	 *
+	 * @return void
+	 */
 	public function check_license() {
 
 		if ( Beaver_Tunnels()->is_network_active() ) {
@@ -285,7 +350,7 @@ class Beaver_Tunnels_License {
 			$beaver_tunnels = get_option( 'beaver_tunnels', array() );
 		}
 
-		if ( ! isset( $beaver_tunnels[ 'license_key' ] ) ) {
+		if ( ! isset( $beaver_tunnels['license_key'] ) ) {
 			return;
 		}
 
@@ -305,7 +370,7 @@ class Beaver_Tunnels_License {
 			)
 		);
 
-		// Check for errors
+		// Check for errors.
 		if ( is_wp_error( $response ) ) {
 			return;
 		}

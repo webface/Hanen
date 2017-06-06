@@ -1,0 +1,164 @@
+.bt-loading {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255,255,255,.7);
+    z-index: 999;
+}
+.bt-loading img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#beaver_tunnels .inside {
+    padding: 0;
+    margin: 0;
+}
+
+table.bt-form-table .dashicons-editor-help {
+	float: right;
+}
+
+table.bt-form-table,
+table.bt-condition-table {
+    border: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+table.bt-form-table tbody th {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+table.bt-form-table tbody tr td.label {
+    width: 30%;
+    padding: 13px 15px;
+    vertical-align: top;
+    background: #F9F9F9;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #E1E1E1;
+}
+
+@media screen and (min-width: 1023px) {
+	table.bt-form-table tbody tr td.label {
+	    width: 24%;
+	}
+}
+
+table.bt-form-table > tbody > tr > td {
+    border-top: 1px solid #f0f0f0;
+}
+
+table.bt-form-table tbody tr:first-of-type td {
+    border-top: 0;
+}
+
+table.bt-form-table tbody tr td.label label {
+    font-weight: bold;
+}
+
+table.bt-form-table tbody tr td.label .description {
+    font-style: normal;
+    font-size: 0.9em;
+}
+
+table.bt-condition-table td.bt-condition,
+table.bt-condition-table td.bt-operator,
+table.bt-condition-table td.bt-value {
+	display: block;
+	width: 90%;
+}
+
+table.bt-form-table td.bt-action {
+	width: 40%;
+}
+table.bt-form-table td.bt-priority {
+	width: 40%;
+}
+
+@media screen and (min-width: 1023px) {
+
+	table.bt-condition-table td.bt-condition,
+	table.bt-condition-table td.bt-operator {
+		display: table-cell;
+		width: 25%;
+	}
+
+	table.bt-condition-table td.bt-value {
+		display: table-cell;
+		width: auto;
+	}
+
+	table.bt-form-table td.bt-action {
+	    width: 100%;
+	}
+
+}
+
+table.bt-form-table .bt-and {
+    width: 50px;
+    max-width: 50px;
+    min-width: 50px;
+}
+table.bt-form-table .bt-remove {
+    width: 30px;
+}
+
+table.bt-form-table .bt-remove button {
+    visibility: hidden;
+	opacity: 0;
+    padding: 3px;
+	transition: opacity 0.3s ease;
+	background: #d54e21;
+	color: #fff;
+	border-color: #d54e21;
+}
+
+table.bt-form-table table tr:not(:nth-of-type(2)) .bt-remove button {
+	visibility: visible;
+	opacity: 1;
+	background: #d54e21;
+	color: #fff;
+	border-color: #d54e21;
+}
+
+@media screen and (min-width: 1023px) {
+
+	table.bt-form-table table tr:not(:nth-of-type(2)) .bt-remove button {
+		visibility: hidden;
+		opacity: 0;
+	}
+
+	table.bt-form-table table tr:not(:nth-of-type(2)):hover .bt-remove button {
+	    visibility: visible;
+		opacity: 1;
+		background: #d54e21;
+		color: #fff;
+		border-color: #d54e21;
+	}
+}
+
+table.bt-form-table th,
+table.bt-form-table td,
+table.bt-form-table .bt-condition,
+table.bt-form-table .bt-operator,
+table.bt-form-table .bt-value,
+table.bt-form-table .bt-and,
+table.bt-form-table .bt-action,
+table.bt-form-table .bt-priority {
+    padding: 8px 5px;
+}
+
+table.bt-form-table select {
+    width: 100%;
+}
+
+table.bt-form-table input[type=text] {
+	width: 100%;
+}
