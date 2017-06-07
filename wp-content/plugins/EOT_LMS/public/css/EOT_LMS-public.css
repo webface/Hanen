@@ -1,0 +1,16 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+.part-content {
+    background: green;
+    color: #FFF;
+    font-weight: 900;
+    padding: 10px 20px;
+    width: auto;
+}
+
+.red {
+    color: red;
+}
