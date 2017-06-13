@@ -1,0 +1,1636 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, font, img, ins, kbd, q, s, samp, small, strike, sub, sup, tt, var, center, dl, dt, dd, ul, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td
+{
+	background: transparent;
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	padding: 0;
+	outline: 0;
+	vertical-align: baseline;
+}
+li
+{
+	margin-left: 20px;
+}
+td
+{
+	vertical-align: middle;
+}
+table
+{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.right
+{
+	text-align: right;
+}
+
+/* Main Layout */
+.componentheading
+{
+	margin: 15px 0;
+}
+html
+{
+	height: 100%;
+	margin-bottom: 1px;
+}
+body
+{
+	font: 62.5%/1.2 Helvetica, Arial, sans-serif;
+	color: #555;
+}
+h1, h2, h3, h4, .componentheading
+{
+	font-weight: bold;
+}
+h1, .componentheading
+{
+	font-size: 180%;
+}
+h2
+{
+	font-size: 150%;
+}
+h3
+{
+	font-size: 130%;
+}
+h4
+{
+	font-size: 110%;
+}
+a
+{
+	color: #1181C1;
+}
+ul
+{
+	margin: 1em;
+}
+#main
+{
+	font-size: 1.3em;
+	line-height: 140%;
+}
+#main .foreground, #message, #showcase, .leading, #page
+{
+	position: relative;
+}
+#message, #showcase
+{
+	z-index: 0;
+}
+#main-content
+{
+	margin-top: 20px;
+}
+.dp20, .dp25, .dp33, .dp50, .dp100
+{
+	float: left;
+	margin-top: 15px;
+}
+.dp20
+{
+	width: 20%;
+}
+.dp25
+{
+	width: 25%;
+}
+.dp33
+{
+	width: 33.33%;
+}
+.dp50
+{
+	width: 50%;
+}
+.dp100
+{
+	width: 100%;
+	margin-top: 0;
+}
+.clr
+{
+	clear: both;
+	font-size: 0;
+}
+#colmask
+{
+	clear: both;
+	position: relative;
+	width: 100%;
+}
+#maincol, #wrapper
+{
+	position: relative;
+}
+
+.s-c-s #colmid, .s-c-x #colright
+{
+	float: left;
+	left: 0px;
+}
+.s-c-s #colright
+{
+	float: left;
+	left: 50%;
+	position: relative;
+	width: 100%;
+}
+.s-c-s #col1wrap
+{
+	float: right;
+	position: relative;
+	right: 100%;
+	width: 50%;
+}
+.s-c-s #col1pad, .x-c-s #col1, .x-c-s #colmid
+{
+	overflow: hidden;
+}
+.s-c-s #col1
+{
+	overflow: hidden;
+	width: 100%;
+}
+.s-c-s #col2
+{
+	float: left;
+	position: relative;
+	overflow: hidden;
+	margin-left: -50%;
+}
+.s-c-s #col3
+{
+	float: left;
+	position: relative;
+	overflow: hidden;
+	left: 0;
+}
+.s-c-x #col1wrap
+{
+	float: left;
+	right: 0px;
+}
+.s-c-x #col1
+{
+	overflow: hidden;
+	position: relative;
+	width: 687px;
+	margin-left: 0px;
+}
+.s-c-x #col2
+{
+	float: left;
+}
+.x-c-s #colright
+{
+	float: left;
+	position: relative;
+	right: 100%;
+	width: 200%;
+}
+.x-c-s #col1wrap
+{
+	float: left;
+	left: 50%;
+	position: relative;
+	width: 50%;
+}
+.x-c-s #col3
+{
+	float: right;
+	position: relative;
+}
+.s-c-s .ctr-color1, .s-c-s .ckl-color1, .s-c-x .ckl-color1, .x-c-s .cdr-color1
+{
+	background: #eee;
+}
+.s-c-s .ctr-color2, .s-c-s .ckl-color2, .s-c-x .ckl-color2, .x-c-s .cdr-color2
+{
+	
+}
+.s-c-s #col1pad, .s-c-x #colright, .x-c-s #colright, #wrapper, body
+{
+	background: #fff;
+}
+.cols1
+{
+	display: block;
+	float: none;
+	margin: 0;
+	width: 100%;
+}
+.cols2
+{
+	width: 49%;
+	overflow: hidden;
+}
+.cols3
+{
+	width: 30%;
+}
+.column1, .column2
+{
+	position: relative;
+	float: left;
+	margin: 0;
+}
+.colpad
+{
+	padding: 0 10px;
+	position: relative;
+}
+.column2
+{
+	float: right;
+	width: 49%;
+}
+.article_row
+{
+	overflow: hidden;
+	margin: 0 -10px 15px -10px;
+}
+/*
+ .s-c-x #colright {
+ left: 270px;
+ }
+ */
+/* Custom */
+/*#mynav
+{
+	background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/navbar.jpg);
+	background-repeat: no-repeat;
+	width: 960px;
+	height: 37px;
+	margin: 0;
+	padding: 0;
+}*/
+#mynav
+{
+	background-color: #1a81c6;
+	background-repeat: no-repeat;
+	width: 960px;
+	height: 36px;
+	margin: 0;
+	padding: 0;
+	border-radius: 3px;
+}
+
+#navlink
+{
+	background-color: #1a81c6;
+	padding: 8px 15px 8px 15px;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 16px;
+	font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-shadow: 1px 1px #505050;
+	border: none;
+	line-height: 36px;
+}
+
+#navlink:hover 
+{
+	background-color: #2c68a3;
+	color: #ffffff;
+}
+
+#login-button
+{
+	background-color: #cc9900;
+	padding: 9px 26px 8.5px 26px;
+	color: #ffffff;
+	font-size: 16px;
+	text-decoration: none;
+	text-shadow: 1px 1px #505050;
+	border: none;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	line-height: 36px;
+}
+
+#login-button:hover 
+{
+	background-color: #b88a00;
+}
+
+#loginarea
+{
+	text-align: right;
+	width: 100%;
+}
+
+#logout-button
+{
+	margin: 0;
+	background-color: #cc9900;
+	background-image: none;
+	width: 100%;
+	height: 100%;
+	color: #ffffff;
+	font-size: 15px;
+	text-shadow: 1px 1px #505050;
+	border: none;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	line-height: 36px;
+}
+
+#form-login2
+{
+	margin: 0;
+	height: 36px;
+}
+
+#logout-button:hover
+{
+	background-color: #b88a00;
+}
+
+#col2 .module
+{
+	/*margin-left: 20px;*/
+	/*width: 85%;*/
+	width: 100%;
+}
+
+#bannershowcase
+{
+	margin-top: 15px;
+	/*background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/bannerbg.png);*/
+	background-repeat: no-repeat;
+	height: 310px;
+	/*height: 291px;*/
+	/*padding-left: 100px;
+	padding-right: 120px;*/
+}
+#bannershowcasebot
+{
+	background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/meet-talent.png);
+	height: 67px;
+}
+#bannershowcasebot #bot-in
+{
+	float: right;
+	text-align: right;
+	margin-top: 1px;
+}
+#bannershowcasebot img
+{
+	margin-left: 1px;
+}
+
+#bannershowcase div.buttonss
+{
+	margin-top: 200px;
+	padding-left: 10px
+}
+td.video_window
+{
+	width: 310px;
+	/*padding: 12px 0 0 45px; */
+	padding: 25px 30px 0 40px;
+	vertical-align: middle;
+	position: relative;
+}
+.allvideos
+{
+	clear: both;
+	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 8px;
+}
+
+/* Header */
+#logo
+{
+	width: 387px;
+	height: 60px;
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/eot_logo.png) 0 0 no-repeat;
+	display: block;
+	margin: 20px 0px 0 10px;
+}
+#header
+{
+	overflow: hidden;
+}
+#header li
+{
+	list-style: none;
+	float: left;
+	padding-left: 15px;
+	font-weight: bold;
+}
+#nav
+{
+	height: 34px;
+	background: #888;
+	z-index: 1;
+	position: relative;
+}
+#nav ul
+{
+	margin: 0 0 0 15px;
+}
+#nav li
+{
+	list-style: none;
+	float: left;
+	padding-left: 3px;
+	height: 34px;
+	position: relative;
+}
+#nav li a
+{
+	display: block;
+	padding: 0 10px;
+	line-height: 30px;
+	color: #fff;
+	font-weight: bold;
+}
+#nav li.active a
+{
+	background: #fff;
+	color: #34647F;
+}
+#nav li a:hover, #nav li:hover a, #nav li.sfHover a
+{
+	background: #34647F;
+	color: #fff;
+	text-decoration: none;
+}
+#nav li ul
+{
+	position: absolute;
+	width: 170px;
+	left: -999em;
+	margin-left: -1px;
+	border: 1px solid #295770;
+	border-top: 0;
+}
+#nav li ul ul
+{
+	margin: -31px 0 0 170px;
+}
+#nav li:hover ul ul, #nav li:hover ul ul ul, #nav li:hover ul ul ul ul, #nav li.sfHover ul ul, #nav li.sfHover ul ul ul, #nav li.sfHover ul ul ul ul
+{
+	left: -999em;
+}
+#nav li li
+{
+	padding: 0;
+	height: auto;
+	background: #fff;
+	width: 170px;
+}
+#nav li li a, #nav li li.active a, #nav li li a:hover
+{
+	margin: 0;
+	height: 30px;
+	line-height: 30px;
+	background: #fff;
+	border-top: 1px solid #295770;
+	color: #34647F;
+}
+#nav li li a, #nav li.active li a
+{
+	font-weight: normal;
+}
+#nav li:hover ul, #nav li.sfHover ul
+{
+	left: 4px;
+}
+#nav li li:hover ul, #nav li li li:hover ul, #nav li li li li:hover ul, #nav li li.sfHover ul, #nav li li li.sfHover ul, #nav li li li li.sfHover ul
+{
+	left: 0;
+}
+
+/* Showcase */
+#showcase
+{
+	margin: 3px 0 8px 0;
+	position: relative;
+	color: #555;
+}
+#showcase .background 
+{
+	position: absolute;
+	width: 100%;
+	height: 130px;
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 0 -514px repeat-x;
+}
+#showcase .foreground 
+{
+	border: 0px solid #dfeaee;
+	overflow: hidden;
+	padding-bottom: 0px;
+	/*height: 980px;*/
+}
+
+#showcase div#showcase_container 
+{
+	background-color:#1a81c6;
+}
+
+#showcase h1
+{
+	font-weight: normal;
+	font-size: 3.0em;
+	line-height: 105%;
+	margin: 25px 55px 10px 0px;
+}
+#showcase h3
+{
+	font-weight: normal;
+	font-size: 1.4em;
+	font-weight: normal;
+	margin: 0 55px 20px 25px;
+}
+#showcase b
+{
+	color: #333;
+}
+#showcase .pad
+{
+	padding: 0 50px 25px 25px;
+}
+#showcase .num
+{
+	float: left;
+	background: #7F8C51;
+	text-align: center;
+	line-height: 90%;
+	color: #fff;
+	font-size: 2em;
+	padding: 3px 8px;
+}
+#showcase .pad h2
+{
+	font-size: 1.4em;
+	font-weight: bold;
+	margin: 0 0 5px 40px;
+}
+#showcase .pad p
+{
+	margin-left: 40px;
+}
+
+/* button */
+.stats-button
+{
+	text-decoration: none;
+	background-color: #CC9900;
+	padding: 10px 15px 10px 15px;
+	color: #ffffff;
+	font-size: 16px;
+	text-shadow: 1px 1px #505050;
+	border: none;
+	border-radius: 3px;       
+}
+
+.stats-button:hover 
+{
+	background-color: #B88A00;
+}
+
+.small-orange-button
+{
+	text-decoration: none;
+	background-color: #cc9900;
+	padding: 5px 10px 5px 10px;
+	color: #ffffff;
+	font-size: 13px;
+	text-shadow: 1px 1px #505050;
+	border: none;
+	border-radius: 3px;
+}
+
+.small-orange-button:hover 
+{
+	background-color: #b88a00;
+}
+
+/* Content styles */
+p.buttonheading
+{
+	position: absolute;
+	top: 2px;
+	right: 10px;
+	margin: 0;
+}
+.buttonheading .icon
+{
+	display: block;
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin-left: 5px;
+}
+.buttonheading .pdf
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) -57px -366px;
+}
+.buttonheading .print
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) -21px -366px;
+}
+.buttonheading .email
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) -39px -366px;
+}
+.iteminfo
+{
+	font-size: 90%;
+	overflow: hidden;
+	border-bottom: 1px solid #dedede;
+	margin-bottom: 20px;
+	display: block;
+	margin-top: -10px;
+	width: 100%;
+}
+.modifydate, .createdby, .createdate
+{
+	display: block;
+}
+.createdby
+{
+	font-weight: bold;
+}
+a.readon, a.readon2
+{
+	display: block;
+	margin-top: 15px;
+	font-style: italic;
+}
+a.readon2
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 100% -344px;
+	display: block;
+	float: right;
+	color: #fff;
+	font-weight: bold;
+	line-height: 20px;
+}
+a.readon2 span
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 0 -344px;
+	display: block;
+	margin-right: 10px;
+	height: 21px;
+	float: left;
+	padding: 0 5px 0 15px;
+}
+.breadcrumbs-pad
+{
+	padding: 0 1px;
+}
+div.breadcrumbs
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 0 -68px repeat-x;
+	border-bottom: 1px solid #e6e6e6;
+	font-size: 110%;
+	font-weight: bold;
+	margin: 0;
+	padding: 7px 15px 5px;
+	color: #777;
+	border-top: 1px solid #d9d9d9;
+}
+div.breadcrumbs .sep
+{
+	padding: 0 5px;
+}
+.component-pad
+{
+	padding: 5px 28px 35px 22px;
+	overflow: visible !important;
+}
+.banneritem_text
+{
+	margin-bottom: 10px;
+}
+#modlgn_username, #modlgn_passwd
+{
+	border: 1px solid #ccc;
+	padding: 3px;
+}
+.pagination span, .pagination a
+{
+	margin-right: 5px;
+}
+#colmask ul li
+{
+	list-style: circle;
+}
+#colmask ul ul
+{
+	margin-top: 0;
+}
+#colmask ul ul li
+{
+	list-style: disc;
+}
+.colpad h2.contentheading
+{
+	padding-right: 65px;
+}
+.sectiontableheader
+{
+	font-weight: bold;
+	line-height: 25px;
+	text-align: left;
+}
+tr.sectiontableentry0 td, tr.sectiontableentry1 td, tr.sectiontableentry2 td, td.sectiontableentry0, td.sectiontableentry1, td.sectiontableentry2
+{
+	text-align: left;
+	padding: 0 4px;
+	vertical-align: middle;
+	border-top: 1px solid #ddd;
+	line-height: 30px;
+}
+span.attention
+{
+	display: block;
+	margin: 15px 0;
+	padding: 8px 10px 8px 10px;
+	background: #FFF3A3;
+	border: 1px solid #E7BD72;
+	color: #B79000;
+}
+
+/* Modules */
+.module
+{
+	
+}
+.module-title
+{
+	font-size: 110%;
+	font-weight: bold;
+	margin: 0;
+	padding: 7px 15px 5px;
+}
+.module-body
+{
+	
+}
+.color1 .module-title
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 0 -204px repeat-x;
+	border-bottom: 1px solid #ddd;
+	color: #777;
+}
+.color1 .module-body
+{
+	border-top: 1px solid #fff;
+}
+.color2 .module-title
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 0 -136px repeat-x;
+	border-bottom: 1px solid #c3d9e1;
+	color: #50646d;
+}
+.color2 .module-body
+{
+	
+}
+#colmask .m_menu
+{
+	background: #7F8C51;
+	color: #fff;
+}
+#colmask .m_menu .module-title
+{
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 0 -0px repeat-x;
+	border-bottom: 1px solid #6B7643;
+	color: #fff;
+}
+#colmask .m_menu .module-body
+{
+	border-top: 1px solid #97A763;
+}
+#colmask .m_menu a
+{
+	color: #fff;
+}
+#colmask .m_menu ul
+{
+	margin: 0 1em;
+}
+#mainmods, #mainmods2, #mainmods3
+{
+	overflow: hidden;
+	padding-top: 15px;
+}
+#mainmods3
+{
+	background: #eee;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
+}
+.spacer .module
+{
+	float: left;
+}
+.spacer.w99 .module
+{
+	width: 100%;
+}
+.spacer.w49 .module
+{
+	width: 49.2%;
+}
+.spacer.w33 .module
+{
+	width: 32.8%;
+}
+#header .module
+{
+	float: right;
+	margin-left: 325px;
+}
+#main-content li .active a
+{
+	font-weight: normal;
+}
+
+/* Footer */
+#footer
+{
+	background: #FFF;
+	border-top: 1px solid #ddd;
+	margin-top: 1px;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+.footer-pad
+{
+	padding: 10px 15px;
+	overflow: hidden;
+}
+#logo2
+{
+	width: 165px;
+	height: 20px;
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/light4.png) 5px -646px no-repeat;
+	display: block;
+	float: right;
+	margin-left: 15px;
+	margin-top: 15px;
+}
+#footer ul
+{
+	margin: 0;
+}
+#footer li
+{
+	list-style: none;
+	float: left;
+	padding-right: 20px;
+	font-weight: bold;
+}
+.s-c-x #col2
+{
+	background-repeat: no-repeat;
+	min-height: 100%;
+	height: 100%;
+	margin-left: 0px;
+	margin-right: 0px;
+	width: 265px;
+	position: relative;
+	right: 0px;
+	z-index: 10;
+	/*
+	 width: 230px;
+	 margin-left: -40px;
+	 */
+}
+
+
+h1
+{
+	font-family: Arial, sans-serif;
+	font-weight: normal;
+	font-size: 27px;
+	color: #286598;
+	line-height: 33px;
+	margin: 25px 0 10px 0;
+}
+
+h1.article_page_title, h1.componentheading, h1.contentheading
+{
+	font-family: 'Segoe UI', Arial, sans-serif;
+	font-size: 24px;
+	font-weight: bold !important;
+	color: #555555;
+	margin-top: 10px;
+}
+
+.article_page_title, h1.componentheading, h1.contentheading
+{
+	padding-bottom: 8px;
+	border-bottom: 1px solid #14ACD8;
+}
+
+h2
+{
+	font-weight: normal;
+	font-size: 23px;
+	font-family: arial, sans-serif;
+	color: #77A800;
+	line-height: 29px;
+	margin: 30px 0 12px 0;
+}
+h3
+{
+	color: #77A800;
+}
+a
+{
+	color: #1181C1;
+}
+
+table, caption, tbody, tfoot, thead, tr, th, td
+{
+	border: 0pt none;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0pt;
+	padding: 0pt;
+}
+
+hr
+{
+	border: 0;
+	border-top: 1px solid #B7C7CF;
+	border-bottom: 1px solid #E6EEF2;
+	margin: 20px 0;
+}
+
+table.libraryprices
+{
+	border: 1px solid #AAA;
+	border-spacing: 0;
+}
+table.libraryprices td
+{
+	padding: 2px 15px 2px 5px;
+}
+
+table.libraryprices td.price
+{
+	text-align: right;
+}
+
+table.data
+{
+	border: 1px solid #888;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin: 5px 0 15px 0;
+	background-color: #FFF;
+}
+table.data td
+{
+	padding: 2px 7px;
+	border: 1px solid #999;
+}
+#facebox table.data
+{
+	border: 1px solid #888;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin: 5px 0 15px 0;
+	background-color: #FFF;
+}
+#facebox  table.data td
+{
+	padding: 2px 7px;
+	border: 1px solid #999;
+}
+tr.head td
+{
+	background-color: #C8E0EE;
+	font-weight: bold;
+}
+tr.head2 td
+{
+	background-color: #D2D2D2;
+	font-weight: bold;
+}
+table.full
+{
+	width: 100%;//
+	width: 92%;
+}
+
+td.heading
+{
+	background-color: #C8E0EE;
+}
+
+div.highlight_back
+{
+	background-color: #CEE67A;
+	padding: 20px 30px;
+}
+
+tr.spacer
+{
+	height: 12px;
+}
+
+#footer
+{
+	text-align: center;
+	font-size: 11px;
+	font-family: verdana, sans-serif;
+}
+
+div.note
+{
+	border: 1px solid #C8EB5D;
+	background-color: #E9FDAB;
+	padding: 15px 18px;
+	width: 400px;
+	margin: 5px 0 10px 0;
+}
+
+.small, .sm
+{
+	font-size: 11px;
+	font-family: verdana, sans-serif;
+}
+
+input, select
+{
+	margin-bottom: 2px;
+}
+
+td.label
+{
+	padding-right: 10px;
+	font-weight: bold;
+}
+#create_staff_table td.label
+{
+	padding-right: 10px;
+	font-weight: bold;
+}
+td.darklabel
+{
+	background-color: #E9E9F9;
+}
+
+div.pager
+{
+	font-size: 11px;
+	padding: 3px 10px;
+	margin: 15px 0;
+	background-color: #D3E2ED;
+	border: 1px solid #B9CFDF;
+	font-family: verdana, sans-serif;
+}
+div.pager a
+{
+	font-size: 11px;
+	color: #0D72C7;
+}
+
+.redlight
+{
+	background-color: #EBB5A9;
+}
+
+.grey
+{
+	color: #777;
+}
+
+div.boxwhole
+{
+	width: 326px;
+}
+div.boxtop
+{
+	background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/boxtop.jpg);
+	height: 19px;
+	margin: 0;
+	background-repeat: no-repeat;
+}
+div.boxmiddle
+{
+	background-color: #4E84C0;
+	margin: 0;
+	padding: 0 15px;
+	color: #0B3C69;
+}
+div.boxmiddle a
+{
+	color: #0B3C69;
+	text-decoration: none;
+}
+div.boxbottom
+{
+	background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/boxbottom.jpg);
+	height: 16px;
+	margin: 0;
+	background-repeat: no-repeat;
+}
+table.loginbox
+{
+	margin-left: 15px;
+}
+#facebox table.bordered td
+{
+	border: 1px solid #AAA;
+	padding: 3px 4px;
+	text-align: center;
+}
+#facebox table.bordered .errors
+{
+	text-align: left;
+}
+.red
+{
+	color: #C00;
+}
+table.bordered td
+{
+	border: 1px solid #AAA;
+	padding: 3px 4px;
+}
+table.noborders td
+{
+	border: 0;
+}
+
+.indented
+{
+	margin-left: 30px;
+}
+
+.cad
+{
+	display: none;
+}
+.email_large
+{
+	font-size: 16px;
+	font-weight: bold;
+	font-family: arial;
+}
+
+/* Tips, Error, Message, Hightlight*/
+p.error
+{
+	padding-left: 25px;
+	color: #BF0000;
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/icon-error.gif) no-repeat top left;
+}
+
+p.message
+{
+	padding-left: 25px;
+	color: #006699;
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/icon-info.gif) no-repeat top left;
+}
+
+p.tips
+{
+	padding-left: 25px;
+	color: #EE9600;
+	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rt_afterburner_j15/icon-tips.gif) no-repeat top left;
+}
+
+.highlight
+{
+	padding: 1px 5px;
+	background: #FFFFCC;
+	font-weight: bold;
+}
+
+#system-message dd.message ul, #system-message dd.error ul, #system-message dd.notice ul
+{
+	padding: 0;
+	margin: 0;
+	list-style-image: none;
+	list-style-type: none;
+}
+
+#system-message dd.message ul li, #system-message dd.error ul li, #system-message dd.notice ul li
+{
+	/*background-color: #F9907F;*/
+	padding: 20px;
+	margin: 0;
+	color: #000;
+	background-image: none;
+	/*border: 1px solid #EF4C31;*/
+}
+
+/* TARGET - Edited colours */
+/* System Standard Messages */
+#system-message dd.message ul
+{
+	background: #C8EE76;
+	border: none;
+}
+
+/* System Error Messages */
+#system-message dd.error ul
+{
+	background: #F39A85;
+	border: none;
+	color: #000;
+}
+
+/* System Notice Messages */
+#system-message dd.notice ul
+{
+	background: #EE9600;
+	border: none;
+}
+
+/* Clearfix */
+.clearfix:after
+{
+	clear: both;
+	display: block;
+	content: ".";
+	height: 0;
+	visibility: hidden;
+}
+
+p.testimonial
+{
+	color: #575757;
+	/*width: 640px;*/
+}
+p.testimonial em
+{
+	font-size: 15px;
+	font-weight: bold;
+	color: #4D87DD;
+}
+p.testimonial b
+{
+
+	font-size: 13px;
+	font-weight: bold;
+	color: #4D87DD;
+}
+
+img.testimonial
+{
+	float: left;
+	margin-right: 10px;
+}
+
+span.asterisk
+{
+	color: #D00;
+	font-size: 13px;
+	font-family: verdana, sans-serif;
+}
+
+td.standards-heading
+{
+
+}
+td.standards-heading h2
+{
+	margin: 10px;
+	font-size: 18px;
+	color: #4C89BC;
+}
+
+a.subscribe-button
+{
+	margin: 10px 0;
+	display: block;
+}
+
+#login_page
+{
+	width: 350px;
+	margin-left: 40px;
+}
+
+ul.nobullet li
+{
+	list-style-type: none !important;
+}
+
+.checkboxes
+{
+	padding: 12px 25px 17px 25px;
+	background-color: #A4C4F4;
+}
+.checkboxes h2
+{
+	margin: 10px 0;
+	color: #1A57A2;
+}
+
+table.staff_summary
+{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+table.staff_summary td
+{
+	border: 1px solid #AAA;
+	padding: 2px 8px;
+}
+table.staff_summary td.number
+{
+	text-align: right;
+}
+table.staff_summary td.percent
+{
+	text-align: right;
+}
+.staff_summary_label
+{
+	width: auto;
+	padding-right: 15px;
+}
+.staff_summary_label img
+{
+	margin: 0;
+}
+
+.image_left
+{
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+div.progress_bar_small
+{
+	height: 10px;
+	background-color: #C9D6DF;
+	border: 1px solid #888;
+	padding: 3px;
+	margin: 2px;
+}
+div.progress_bar_meter_small
+{
+	background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/progress-bar-meter-small.gif);
+	height: 10px;
+	border-right: 1px solid #629713;
+}
+
+table#topnav
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin: 0;
+	padding: 0;
+}
+table#topnav td
+{
+	padding: 0;
+	margin: 0;
+	vertical-align: top;
+}
+table#topnav td.left
+{
+	width: 85%;
+}
+table#topnav td.right
+{
+	width: 8%;
+	text-align: right;
+}
+img.biopic
+{
+	float: left;
+}
+ul.nobullet li {
+  list-style-type: none !important;
+}
+
+.checkboxes {
+  padding: 12px 25px 17px 25px;
+  background-color: #A4C4F4;
+}
+  .checkboxes h2 {
+    margin: 10px 0;
+    color: #1A57A2;
+  }
+
+table.staff_summary {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+  table.staff_summary td {
+    border: 1px solid #AAA;
+    padding: 2px 8px;
+  }
+  table.staff_summary td.number {
+    text-align: right;
+  }
+  table.staff_summary td.percent {
+    text-align: right;
+  }
+.staff_summary_label {
+  width: auto;
+  padding-right: 15px;
+
+}
+  .staff_summary_label img {
+    margin: 0;
+  }
+
+.image_left {
+  float: left;
+  margin: 0 10px 10px 0;
+}
+
+div.progress_bar_small {
+  height: 10px;
+  background-color: #C9D6DF;
+  border: 1px solid #888;
+  padding: 3px;
+  margin: 2px;
+}
+  div.progress_bar_meter_small {
+    background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/progress-bar-meter-small.gif);
+    height: 10px;
+    border-right: 1px solid #629713;
+  }
+
+table#topnav {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+}
+  table#topnav td {
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+  }
+  table#topnav td.left {
+    width: 85%;
+  }
+  table#topnav td.right {
+    width: 10%;
+    text-align: right;
+  }
+.notop
+{
+	margin-top: 0;
+}
+.nobot
+{
+	margin-bottom: 0;
+}
+.rightbox
+{
+	float: right;
+	margin: 0 0 15px 15px;
+	width: 310px;
+	padding: 0;
+}
+#testimonialbox
+{
+	margin-top: 3px;
+	margin-left: 25px;
+}
+/*#testimonial-top
+{
+	background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/testimonials-header.png);
+	height: 49px;
+	margin: 0;
+	padding: 0;
+}*/
+
+#testimonial-top
+{
+	background-color: #1a81c6;
+	color: #ffffff;
+	font-size: 17px;
+	font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	height: 25px;
+	margin: 0;
+	padding: 10px 5px 0 20px;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+
+   position:relative;
+
+   /* css3 */
+   -webkit-border-top-left-radius:3px;
+   -webkit-border-top-right-radius:3px;
+   background:linear-gradient(top, #f9d835, #f3961c);
+}
+
+/* creates triangle */
+#testimonial-top:after {
+   content:"";
+   display:block; /* reduce the damage in FF3.0 */
+   position:absolute;
+   bottom:-10px;
+   left:30px;
+   width:0;
+   border-width:15px 15px 0;
+   border-style:solid;
+   border-color:#1a81c6 transparent;
+}
+
+.rightbox-body
+{
+	background-image: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/rightbox-bg.png);
+	background-position: bottom left;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	line-height: 17px;
+}
+.rightbox div.content
+{
+	margin: 0;
+	padding: 4px 15px 15px 19px;
+}
+#testimonial2, #testimonial3
+{
+	display: none;
+}
+div.tm
+{
+	padding-top: 15px;
+	height: auto;
+	overflow: hidden;
+}
+.swapper
+{
+	margin: 10px 0 0 0;
+	text-align: right;
+}
+
+.swapper a[href="#"]
+{
+	text-decoration: none;
+}
+img.rotatorbutton
+{
+	margin: 0 0 -8px 0;
+}
+#homeh1
+{
+	width: 540px;
+}
+td.tm_details
+{
+	padding-left: 10px;
+}
+
+dt.error
+{
+	margin: 5px 0;
+	font-weight: bold;
+	font-size: 15px;
+}
+#facebox table.assignment_summary td
+{
+	padding: 2px 8px;
+}
+#facebox  table.staff_summary td
+{
+	border: 1px solid #AAA;
+	padding: 2px 8px;
+}
+
+.sidebar_bg
+{
+	position: absolute;
+	width: 263px;
+	height: 100%;
+	/* fallback */
+	background-color: #d7e9f3;
+	/* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d7e9f3), to(#fff));
+	/* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(top, #fff, #d7e9f3);
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(top, #fff, #d7e9f3);
+	/* IE 10 */
+	background: -ms-linear-gradient(top, #fff, #d7e9f3);
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(top, #fff, #d7e9f3);
+	z-index: 0;
+	top: 0px;
+	left: 0px;
+	border: 1px solid #bccbd4;
+}

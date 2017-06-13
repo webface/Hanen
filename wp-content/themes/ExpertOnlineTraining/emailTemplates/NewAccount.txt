@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<style>
+	body {
+	    font-family: Verdana,sans-serif;
+	    font-size: 15px;
+	    line-height: 1.5;
+	}
+	</style>
+</head>
+<body>
+	<p>Dear %%first_name%%,</p>
+	<p>Welcome aboard! You now have official <b>Account Credentials</b> on ExpertOnlineTraining.com. As you know, EOT hosts the world’s most popular, mobile-friendly content for youth leaders. That’s why more than 6000 camps, parks & recs, and summer schools have joined EOT since we started, in 2008.</p>
+	 
+	<p>Easy <b>Login</b> Instructions:
+		<ol>
+			<li>Go to <a href="%%eot_link%%">ExpertOnlineTraining.com</a> .</li>
+			<li>Click on <b>Login</b> in the top right corner of the screen.</li>
+			<li>Type in your email address: %%email%%.</li>
+			<li>Type in your current password.</li>
+			<ul>
+				<li>If you forgot your password, you can create a new one <a href="%%set_new_password_link%%">here</a>.</li>
+				<li>For your security, our system requires passwords of moderate complexity.</li>
+			</ul>
+		</ol>
+	</p>
+	 
+	<p>What’s next? <b>Dig into our awesome content!</b> We are happy to give you a live tour of the site and provide a free, full-featured demo account.</p>
+
+	<p>Your busy season is around the corner, so contact our Customer Success Team today by calling (877) 237-3931, M-F between 9 and 5 ET. We are always happy to connect and answer your questions. You can even book a consultation with a team member by using our <a href="https://app.hubspot.com/meetings/josh33/schedule-a-demo">online scheduler</a>. We look forward to hearing from you!</p>
+	 
+    <p>Sincerely yours,</p>
+
+    <p>The EOT Team</p>
+    <img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/EOT_Logo_abrv.png" alt="Expert Online Training">
+
+</body>
+</html>

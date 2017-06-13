@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<style>
+	body {
+	    font-family: Verdana,sans-serif;
+	    font-size: 15px;
+	    line-height: 1.5;
+	}
+	</style>
+</head>
+<body>
+	<p>Dear %%first_name%%,</p>
+
+	<p>Congratulations! You’ve just tripled the power of your staff training program by adding a library of video training modules from <a href="%%eot_link%%">ExpertOnlineTraining.com</a>. Your staff can benefit from this exciting content <b>before, during, and after</b> the season. Learn more about our features and benefits <a href="https://www.expertonlinetraining.com/features/">here</a>.</p>
+
+	<p>To set up training for your staff, you have two options:
+		<ol>
+			<li><b>Ready to rock?</b> Simply watch the first few videos in our online <b>Tutorial Library</b>. (Just click the orange HELP tab on the left side of the screen, after you log in.) These step-by-step screencasts were created by EOT co-founder, Dr. Chris Thurber. He’ll coach you through the basics of creating a course, making staff accounts, and assigning staff to courses. After watching just a few video tutorials, you’ll know exactly how to maximize the benefits of your EOT subscription. And when you’re ready, can return to the Tutorial Library to learn some advanced features, such as how to upload your own content and make custom quizzes.</li>
+			<li><b>Want a personal touch?</b> Give our <b>Customer Success Team</b> a call M-F between 9 and 5 ET, toll-free (877) 237-3931. Josh and his team are pros at guiding new and returning subscribers through a customized set-up.  They can even save you time by uploading a spreadsheet of your staff to your account. Tight on time? Book a live demo appointment for a time that fits your schedule. Simply make an appointment using our <a href="https://app.hubspot.com/meetings/josh33/schedule-a-demo">online scheduler</a>.</li>
+		</ol>
+	</p>
+	 
+	<p>Congratulations again on your subscription! We admire your commitment to the young people you serve.</p>
+
+    <p>Sincerely yours,</p>
+
+    <p>The EOT Team</p>
+    <img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/EOT_Logo_abrv.png" alt="Expert Online Training">
+
+</body>
+</html>

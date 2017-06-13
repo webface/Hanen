@@ -1,0 +1,73 @@
+.dp20,.dp25,.dp33,.dp50,.dp100 {margin-left:-0.04em;}
+#showcase .pad .readon span {margin-right: 5px;padding: 0 5px 0 15px;}
+.readon {cursor: pointer;}
+#showcase .foreground {zoom: 1;padding-bottom: 0;}
+#leftcol, #rightcol, .footer-pad, .module-title, .module-body, #mainmods, #mainmods2, #mainmods3, #nav, .breadcrumbs-pad, .article_row, .dp100 {zoom: 1;}
+p.buttonheading {display: inline;}
+#modlgn_username, #modlgn_passwd {width: 90%;}
+#header .module {width: 500px;margin-left: 0;}
+#header .module ul {float: right;}
+#main a.readon2 span {margin-right: 4px;}
+
+#col1 div.component-pad {
+  padding-left: 100px;
+}
+
+div#loginarea {
+  margin-top: 0px;
+}
+
+
+.rightbox {
+  z-index: 1000;
+  width: 310px;
+}
+#testimonialbox {
+  margin-right: -20px;
+  margin-top: 9px;
+}
+#homeh1 {
+  width: 512px !important;
+}
+
+img.biopic {
+  float: none;
+}
+/*
+img.testimonial {
+  float: none;
+  margin-right: 10px;
+}
+p.testimonial {
+  float: none !important;
+}
+div.clear {
+  clear: both;
+  float: none;
+}
+.column1, .cols1 {
+  float: none !important;
+  clear: both !important;
+}*/
+
+#testimonialpage {
+  position: relative;
+  left: 80px;
+}
+
+
+.dashboard_dir {
+  background-image: url(../../../images/dashboard-bg.png);
+  margin-right: -170px;
+}
+
+
+.dashboard_staff {
+  background-image: url(../../../images/dashboard-bg-staff.png);
+  margin-right: -170px;
+}
+
+#homecontent {
+  margin-left: -100px;
+}
+

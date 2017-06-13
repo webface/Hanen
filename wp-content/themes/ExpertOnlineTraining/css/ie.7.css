@@ -1,0 +1,29 @@
+#header .module {width: 500px;margin-left: 0;}
+#header .module ul {float: right;}
+#nav ul li li:hover, #nav ul li li.hover {position: static;}
+#loginarea {
+  margin-top: 0px;
+}
+
+.rightbox-body {
+  background-color: #FFF;
+}
+  .rightbox div.content {
+    margin: 0;
+    padding-top: 0;
+  }
+  
+#testimonialbox {
+  margin-top: 6px;
+}
+#homeh1 {
+  width: 555px;
+}
+div.boxmiddle {
+  margin: 0;
+  padding: 0 0;
+}
+div.boxbottom {
+  margin: 0;
+  padding: 0;
+}

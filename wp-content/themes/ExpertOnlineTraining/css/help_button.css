@@ -1,0 +1,115 @@
+div#helpBtn {
+		/*padding-top: 20px;*/
+		/*margin-left: 255px;*/
+		margin-top: 15px;
+		margin-left: -8px;
+		position: fixed;
+		top: 0px;
+		left: auto;
+		height: 85px;
+		width: 25px;
+		/*background-color: #e19b07;
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+		-moz-border-radius-bottomright: 6px;
+		-moz-border-radius-topright: 6px;*/
+	}
+
+#helpBtn a{
+	display: block;
+	height: 85px;
+	width: 35px;
+	/*margin: 10px 0 0 5px;*/
+	background-color: #e19b07;
+	border-top: 1px solid #cf7d06;
+	border-right: 1px solid #cf7d06;
+	border-bottom: 1px solid #cf7d06;
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-moz-border-radius-topright: 6px
+}
+
+#helpBtn a:hover {
+	background-color: #de8801;
+}
+
+#helpBtn img {
+	padding: 12px 0 0 16px;
+}
+#helpcenter-menu a {
+	text-decoration: none !important;
+}
+#helpcenter-menu
+{
+	padding: 10px;
+	background-color: white;
+    color: black;
+	border: 2px solid #1a81c6;
+	border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    margin: 15px 0 0 50px;
+    cursor: pointer;    	
+}
+#helpcenter-menu:hover
+{
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+#helpcenter-menu a:hover
+{
+	text-decoration: none;
+}
+.orange
+{
+    color: #e19b07;
+	text-decoration: none;
+}
+
+#helpbar {
+	display:none;
+	color: #EFEFEF; 
+	height: 100%;
+}
+#helpBtn {
+	position: relative;
+	z-index: 100;
+}
+#pageslide {
+    /* These styles MUST be included. Do not change. */
+    display: none;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    padding-bottom: 5px;
+    height: 100%;
+    /* Specify the width of your pageslide here */
+    width: 260px;
+}
+iframe {
+    display:block;
+    height: 100%;
+    width: 260px;
+}
+
+@media screen and (max-width:1024px) {
+	#helpBtn a {
+		display:none;
+	}
+}
+
+@media screen and (max-width:420px) {
+	#helpBtn a {
+		display:none;
+	}
+}
+
+
+/* Mobile and iPad Portrait */
+@media only screen and (max-width: 959px) {
+	div#helpBtn {
+		display:none !important;
+	}
+}

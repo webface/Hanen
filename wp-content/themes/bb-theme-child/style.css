@@ -1,0 +1,62 @@
+/*
+Theme Name: Beaver Builder Child Theme
+Theme URI: http://www.wpbeaverbuilder.com
+Version: 1.0
+Description: An example child theme that can be used as a starting point for custom development.
+Author: The Beaver Builder Team
+Author URI: http://www.fastlinemedia.com
+template: bb-theme
+*/
+
+/* Add your custom styles here... */ 
+.page-title-text-shadow h1 {
+    text-shadow: 2px 0 #525050, -2px 0 #525050, 0 2px #525050, 0 -2px #525050;
+}
+.wpmudevevents-buttons {
+	visibility: hidden !important;
+}
+.topic_rec td {
+	padding: 3px 6px;
+	border: 1px solid #AAA;
+	font-size: 11px;
+	line-height: 14px;
+}
+.topic_rec tr.topic td {
+	font-size: 14px;
+	font-weight: bold;
+	color: #48739E;
+	background-color: #D7E9F3;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.topic_rec td.type, .topic_rec td.difficulty {
+	text-align: center;
+}
+.topic_rec td img {
+	margin: 3px 0;
+}
+.topic_rec tr.head td {
+	color: #666;
+	background-color: #DDD;
+	font-weight: normal;
+}
+table.topic_rec tr.head td.one {
+	font-size: 14px !important;
+	width: 178px;
+}
+/* Mobile and iPad Portrait */
+@media only screen and (max-width: 959px) {
+
+}
+
+/* Mobile Landscape and Portrait */
+@media only screen and (max-width: 767px) {
+
+}
+
+/* Mobile Portrait */
+@media only screen and (max-width: 479px) {
+	h1.fl-heading {
+		font-size: 39px !important;
+	}
+}

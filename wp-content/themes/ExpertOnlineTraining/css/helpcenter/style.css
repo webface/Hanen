@@ -1,0 +1,146 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	font-family: helvetica, Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: #666666;
+}
+
+h1 {
+	font-size: 26px;
+}
+
+h2 {
+	font-size: 18px;
+}
+
+.orange {
+	color: #e19b07;
+}
+
+h3 {
+	font-size: 14px;
+}
+
+span.link {
+	font-family: helvetica, Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: #805702;
+	text-decoration: none;
+	/*background-color: red;*/
+}
+
+span.link:hover
+{
+	cursor: hand;
+	cursor: pointer;
+}
+
+#grayArea li {
+	height: auto;
+	/*background-color: red;*/
+	/*display: block;*/
+}
+
+	#grayArea li a {
+		display: block;
+		height: 40px;
+		padding-left: 20px;
+		padding-top: 20px;
+		color: #828282;
+		font-size: 15px;
+		font-weight: normal;
+		text-decoration: none;
+	}
+	
+	#grayArea li a.topic:hover {
+		background-color: #dbdbdb;
+	}
+	
+	#grayArea li a.summary
+	{
+		color: #FFFFFF;
+		background-color: #E19B07; /*#333333;*/
+		padding-bottom: 20px;
+		padding-right: 20px;
+		height: auto;
+		font-size: 11pt;
+		cursor: default;
+	}
+	
+.downArrow {
+	float: right;
+	padding-right: 20px;
+	padding-top: 5px;
+}
+
+div#container {
+	width: 280px;
+	margin: 0 auto;
+}
+
+div#grayArea {
+	background-color: #f0f0f0;
+	width: 251px;
+	height: 100%;
+	float: left;
+	position: absolute;
+	z-index: 1;
+	border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+div#helpBtn {
+	/*padding-top: 20px;*/
+	margin-left: 255px;
+	margin-top: 8px;
+	position: absolute;
+	height: 85px;
+	width: 25px;
+	/*background-color: #e19b07;
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-moz-border-radius-topright: 6px;*/
+}
+
+	#helpBtn a{
+		display: block;
+		height: 85px;
+		width: 25px;
+		/*margin: 10px 0 0 5px;*/
+		background-color: #e19b07;
+		border-top: 1px solid #cf7d06;
+		border-right: 1px solid #cf7d06;
+		border-bottom: 1px solid #cf7d06;
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+		-moz-border-radius-bottomright: 6px;
+		-moz-border-radius-topright: 6px
+	}
+	
+	#helpBtn a:hover {
+		background-color: #de8801;
+	}
+	
+	#helpBtn img {
+		padding: 12px 0 0 8px;
+	}
+
+div.separator {
+	background-image: url(../../images/separator.jpg);
+	background-repeat: repeat-x;
+	height: 2px;
+	padding: 0px;
+} 
+
+#helpTitle {
+	padding: 37px 0 38px 0;
+	text-align: center;
+}
+
+
+	
+
+	
+
+
