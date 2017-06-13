@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Jetpack by WordPress.com - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-05-19 12:27:43+0000\n"
+"PO-Revision-Date: 2017-06-06 12:26:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3535,7 +3535,7 @@ msgstr "Painel"
 #: _inc/jetpack-strings.php:512 _inc/jetpack-strings.php:514
 msgctxt "Navigation item."
 msgid "At a Glance"
-msgstr "Visão Geral"
+msgstr "Resumo"
 
 #: _inc/jetpack-strings.php:522
 msgid "Search for a Jetpack feature."
@@ -3547,7 +3547,7 @@ msgstr "faça upgrade do Jetpack e nosso scanner de segurança de última geraç
 
 #: _inc/jetpack-strings.php:509
 msgid "You can see the information about security scanning in the \"At a Glance\" section."
-msgstr "Você pode ver informações sobre as verificações de segurança na seção \"Visão Geral\"."
+msgstr "Você pode ver informações sobre as verificações de segurança na seção Resumo."
 
 #: _inc/jetpack-strings.php:212 _inc/jetpack-strings.php:508
 msgid "Configure your Security Scans"
@@ -3942,7 +3942,7 @@ msgstr "{{button}}Visualizar estatísticas detalhadas{{/button}}"
 
 #: _inc/jetpack-strings.php:100
 msgid "Security Scanning"
-msgstr "Scanning de segurança"
+msgstr "Verificação de segurança"
 
 #: _inc/jetpack-strings.php:533
 msgid "Upgrade"
@@ -4301,11 +4301,11 @@ msgstr "Erro ao desvincular do WordPress.com. %(error)s"
 #: _inc/jetpack-strings.php:12
 msgctxt "Navigation item."
 msgid "At A Glance"
-msgstr "Agora"
+msgstr "Resumo"
 
 #: _inc/jetpack-strings.php:11
 msgid "At A Glance"
-msgstr "Agora"
+msgstr "Resumo"
 
 #: _inc/jetpack-strings.php:10 _inc/jetpack-strings.php:513
 msgctxt "Navigation item."
