@@ -359,7 +359,7 @@ class Ai1wm_Main_Controller {
 	 * @return void
 	 */
 	public function register_export_scripts_and_styles( $hook ) {
-		if ( 'toplevel_page_site-migration-export' !== $hook ) {
+		if ( 'toplevel_page_site-migration-export' !== strtolower( $hook ) ) {
 			return;
 		}
 
@@ -407,7 +407,7 @@ class Ai1wm_Main_Controller {
 	 * @return void
 	 */
 	public function register_import_scripts_and_styles( $hook ) {
-		if ( 'all-in-one-wp-migration_page_site-migration-import' !== $hook ) {
+		if ( 'all-in-one-wp-migration_page_site-migration-import' !== strtolower( $hook ) ) {
 			return;
 		}
 
@@ -490,7 +490,7 @@ class Ai1wm_Main_Controller {
 	 * @return void
 	 */
 	public function register_backups_scripts_and_styles( $hook ) {
-		if ( 'all-in-one-wp-migration_page_site-migration-backups' !== $hook ) {
+		if ( 'all-in-one-wp-migration_page_site-migration-backups' !== strtolower( $hook ) ) {
 			return;
 		}
 
@@ -543,7 +543,7 @@ class Ai1wm_Main_Controller {
 	 * @return void
 	 */
 	public function register_updater_scripts_and_styles( $hook ) {
-		if ( 'plugins.php' !== $hook ) {
+		if ( 'plugins.php' !== strtolower( $hook ) ) {
 			return;
 		}
 

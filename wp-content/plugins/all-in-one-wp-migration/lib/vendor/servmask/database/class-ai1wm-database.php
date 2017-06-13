@@ -807,7 +807,7 @@ abstract class Ai1wm_Database {
 
 		// Replace serialized values
 		foreach ( $this->get_old_replace_values() as $old_value ) {
-			if ( strpos( $input, $old_value ) !== false ) {
+			if ( strpos( $input, $this->escape( $old_value ) ) !== false ) {
 				$input = preg_replace_callback( "/'(.*?)(?<!\\\\)'/S", array( $this, 'replace_table_values_callback' ), $input );
 				break;
 			}
