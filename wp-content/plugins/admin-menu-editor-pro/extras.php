@@ -1,5 +1,21 @@
 <?php
 
+/**
+ * These flags control how the {@link wsMenuEditorExtras::check_current_user_access} method
+ * deals with users that have multiple roles with different permissions. "RC" stands for "role combination".
+ */
+
+/**
+ * Use only custom role permissions. Roles that don't have explicit settings will be ignored.
+ */
+define('AME_RC_ONLY_CUSTOM', 1);
+
+/**
+ * When a role has no custom settings, use the $default_access argument instead.
+ */
+define('AME_RC_USE_DEFAULT_ACCESS', 2);
+
+
 class wsMenuEditorExtras {
 	/** @var WPMenuEditor */
 	private $wp_menu_editor;
@@ -52,9 +68,9 @@ class wsMenuEditorExtras {
 		}
 		
 		//Output the menu-modification JS after the menu has been generated.
-		//'admin_notices' is, AFAIK, the action that fires the soonest after menu
+		//'in_admin_header' is, AFAIK, the action that fires the soonest after menu
 		//output has been completed, so we use that.
-		add_action('admin_notices', array($this, 'fix_flagged_menus'));
+		add_action('in_admin_header', array($this, 'fix_flagged_menus'));
 
 		//Import/export settings
 		$this->export_settings = array(
@@ -119,12 +135,6 @@ class wsMenuEditorExtras {
 		add_filter('custom_admin_menu', array($this, 'add_menu_fa_icon'), 10, 1);
 		add_filter('admin_menu_editor-icon_selector_tabs', array($this, 'add_fa_selector_tab'), 10, 1);
 		add_action('admin_menu_editor-icon_selector', array($this, 'output_fa_selector_tab'));
-
-		/**
-		 * Modules.
-		 */
-		include dirname(__FILE__) . '/extras/modules/visible-users/visible-users.php';
-		new ameVisibleUsers($this->wp_menu_editor);
 
 		//License management
 		add_filter('wslm_license_ui_title-admin-menu-editor-pro', array($this, 'license_ui_title'), 10, 0);
@@ -702,7 +712,8 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 		$export['total']++; //Export counter. Could be used to make download URLs unique.
 
 		//Compress menu data to make export files smaller.
-		$menu_data = wp_unslash($_POST['data']); //WordPress simulates magic quotes, so we must strip slashes.
+		$post = $this->wp_menu_editor->get_post_params();
+		$menu_data = $post['data'];
 		$menu = ameMenu::load_json($menu_data);
 		$menu_data = ameMenu::to_json(ameMenu::compress($menu));
 
@@ -1186,6 +1197,119 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 		$item['access_decision_reason'] = $reason;
 
 		return $has_access;
+	}
+
+	/**
+	 * Check if the current user has access to something.
+	 *
+	 * This is a general method for checking authorization based on a combination of
+	 * actor-specific and capability-based permissions.
+	 *
+	 * @param array $grants List of grants as an [actorId => boolean] map.
+	 * @param string|null $default_cap
+	 * @param string|null $extra_cap
+	 * @param bool $default_access
+	 * @param int $flags
+	 * @return bool
+	 */
+	public function check_current_user_access(
+		$grants = array(),
+		$default_cap = null,
+		$extra_cap = null,
+		$default_access = false,
+		$flags = AME_RC_ONLY_CUSTOM
+	) {
+		static $is_multisite = null, $user = null, $user_login = '';
+		if ( $is_multisite === null ) {
+			$is_multisite = is_multisite();
+		}
+		if ( $user === null ) {
+			$user = wp_get_current_user();
+			$user_login =  $user->get('user_login');
+		}
+
+		//User-specific settings have the highest priority.
+		if ( isset($grants['user:' . $user_login]) ) {
+			return $grants['user:' . $user_login];
+		}
+
+		//Super Admins have access to *everything* unless explicitly denied.
+		$this->disable_virtual_caps = true;
+		$is_super_admin = $is_multisite && is_super_admin($user->ID);
+		$this->disable_virtual_caps = false;
+
+		if ( $is_super_admin ) {
+			if ( isset($grants['special:super_admin']) ) {
+				return $grants['special:super_admin'];
+			} else {
+				return true;
+			}
+		}
+
+		//Allow the user if at least one of their roles is allowed,
+		//or disallow if all their roles are forbidden.
+		$has_access = null;
+		$roles = $this->wp_menu_editor->get_user_roles($user);
+		foreach ($roles as $role_id) {
+			if ( !isset($grants['role:' . $role_id]) && ($flags & AME_RC_ONLY_CUSTOM) ) {
+				continue;
+			}
+
+			if ( isset($grants['role:' . $role_id]) ) {
+				$role_has_access = $grants['role:' . $role_id];
+			} else if ($flags & AME_RC_USE_DEFAULT_ACCESS) {
+				$role_has_access = $default_access;
+			} else {
+				throw new RuntimeException(sprintf(
+					"Can't determine default permissions for role \"%s\". Check the flags passed to %s().",
+					$role_id,
+					__FUNCTION__
+				));
+			}
+
+			if ( is_null($has_access) ) {
+				$has_access = $role_has_access;
+			} else {
+				$has_access = $has_access || $role_has_access;
+			}
+		}
+
+		if ( $has_access !== null ) {
+			return $has_access;
+		}
+
+		//There are no custom settings for this user. Check if they have the capabilities.
+		if ( isset($default_cap) ) {
+			$this->disable_virtual_caps = true;
+			//Cache capability checks because they're relatively slow.
+			if ( isset($this->cached_user_caps[$default_cap]) ) {
+				$has_access = $this->cached_user_caps[$default_cap];
+			} else {
+				$has_access = $user && $user->has_cap($default_cap);
+				$this->cached_user_caps[$default_cap] = $has_access;
+			}
+			$this->disable_virtual_caps = false;
+		}
+
+		//The extra capability is an optional filter that's applied on top of other settings.
+		//TODO: Check extra cap even if there are user-specific permissions or they are a Super Admin.
+		if ( isset($extra_cap) && $has_access ) {
+			$this->disable_virtual_caps = true;
+			if ( isset($this->cached_user_caps[$extra_cap]) ) {
+				$has_extra_cap = $this->cached_user_caps[$extra_cap];
+			} else {
+				$has_extra_cap = $user && $user->has_cap($extra_cap);
+				$this->cached_user_caps[$extra_cap] = $has_extra_cap;
+			}
+			$this->disable_virtual_caps = false;
+
+			$has_access = $has_access && $has_extra_cap;
+		}
+
+		if ( $has_access !== null ) {
+			return $has_access;
+		}
+		return $default_access;
 	}
 
 	/**
@@ -1752,6 +1876,7 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 
 if ( isset($wp_menu_editor) && !defined('WP_UNINSTALL_PLUGIN') ) {
 	//Initialize extras
+	global $wsMenuEditorExtras;
 	$wsMenuEditorExtras = new wsMenuEditorExtras($wp_menu_editor);
 }
 
@@ -1760,7 +1885,7 @@ if ( !defined('IS_DEMO_MODE') && !defined('IS_MASTER_MODE') ) {
 //Load the custom update checker (requires PHP 5)
 if ( (version_compare(PHP_VERSION, '5.0.0', '>=')) && isset($wp_menu_editor) ){
 	require dirname(__FILE__) . '/plugin-updates/plugin-update-checker.php';
-	$ameProUpdateChecker = PucFactory::buildUpdateChecker(
+	$ameProUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 		'http://adminmenueditor.com/?get_metadata_for=admin-menu-editor-pro',
 		$wp_menu_editor->plugin_file, //Note: This variable is set in the framework constructor
 		'admin-menu-editor-pro',
