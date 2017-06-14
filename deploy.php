@@ -141,7 +141,7 @@ $this->log('would pull in this branch: '. $this->_branch);
 }
 
 // make sure we got the right password
-$cid = if (isset($_REQUEST['cid'])) ? $_REQUEST['cid'] : 0;
+$cid = (isset($_REQUEST['cid'])) ? $_REQUEST['cid'] : 0;
 if ($cid != 'zxasqw12~')
 {
     echo "Wrong Password";
@@ -208,7 +208,7 @@ foreach ( $payload->push->changes as $change )
     }
     else
     {
-        $deploy->log("Branch is not what were looking for. It is: " . $change->new->name)
+        $deploy->log("Branch is not what were looking for. It is: " . $change->new->name);
     }
 }
 
