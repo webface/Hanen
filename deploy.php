@@ -140,6 +140,27 @@ $this->log('would pull in this branch: '. $this->_branch);
 
 }
 
+// make sure we got the right password
+$cid = if (isset($_REQUEST['cid'])) ? $_REQUEST['cid'] : 0;
+if ($cid != 'zxasqw12~')
+{
+    echo "Wrong Password";
+    exit;
+}
+
+// confirm were getting a request from bitbucket
+if (isset($_SERVER['HTTP_X_EVENT_KEY'], $_SERVER['HTTP_X_HOOK_UUID'], $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'])) 
+{
+    $headers = ('*** ' . $_SERVER['HTTP_X_EVENT_KEY'] . ' #' . $_SERVER['HTTP_X_HOOK_UUID'] .
+        ' (' . $_SERVER['HTTP_USER_AGENT'] . ')');
+    $headers .= ('remote addr: ' . $_SERVER['REMOTE_ADDR']);
+} 
+else 
+{
+    echo '*** [unknown http event key] #[unknown http hook uuid] (unknown http user agent)';
+    exit;
+}
+
 $options = array(
     'log' => 'deployments.log',
     'date_format' => 'Y-m-d H:i:sP',
@@ -157,8 +178,40 @@ $deploy->post_deploy = function() use ($deploy) {
     $deploy->log('Updating wordpress database... ');
 };
 
-$deploy->log(print_r($_REQUEST));
+// log the headers
+$deploy->log($headers);
 
-$deploy->execute();
+$payload = json_decode(file_get_contents('php://input'));
+// make sure payload is not empty
+if (empty($payload))
+{
+    echo "No payload";
+    $deploy->log("no payload");
+    exit;
+}
+
+// make sure payload has the right data in it
+if ( !isset($payload->repository->name, $payload->push->changes) ) 
+{
+    $deploy->log("Invalid payload data was received!");
+    echo "Invalid payload data was received!";
+    exit;
+}
+
+// check the payload to make sure were in the branch we require and only execute if its the right branch
+foreach ( $payload->push->changes as $change ) 
+{
+    if ( is_object($change->new) && $change->new->type == "branch" && $change->new->name == $options['branch'] ) 
+    {
+        // the new pushed branch is the same as the one in the options so go ahead and pull it in.
+        $deploy->execute();
+    }
+    else
+    {
+        $deploy->log("Branch is not what were looking for. It is: " . $change->new->name)
+    }
+}
+
+
 
 ?>
