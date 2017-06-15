@@ -6,6 +6,7 @@
 *.swp
 Thumbs.db
 .htaccess
+deployments.log
 
 # wordpress specific
 wp-config.php
