@@ -112,13 +112,14 @@ class Deploy {
     {
         try
         {
+/*
             // Make sure we're in the right directory
             $last_line = system('cd '.$this->_directory, $output);
             $this->log('Changing working directory... '. $last_line . ' returned: ' . $output);
             echo 'Changing working directory... '. $last_line . ' returned: ' . $output . ' <br>\n';
-
+*/
             // Discard any changes to tracked files since our last deploy
-            $last_line = system('git reset --hard HEAD', $output);
+            $last_line = system('cd '.$this->_directory . ' && git reset --hard HEAD', $output);
             $this->log('Reseting repository... '. $last_line . ' returned: ' . $output);
             echo 'Reseting repository... '. $last_line . ' returned: ' . $output . ' <br>\n';
 
@@ -128,7 +129,7 @@ class Deploy {
             echo 'Pulling in changes... '. $last_line . ' returned: ' . $output . ' <br>\n';
 
             // Secure the .git directory
-            $last_line = system('chmod -R og-rx .git');
+            $last_line = system('chmod -R og-rx '.$this->_directory.'/.git');
             $this->log('Securing .git directory... ');
             echo 'Securing .git directory... '. $last_line . ' returned: ' . $output . ' <br>\n';
 
