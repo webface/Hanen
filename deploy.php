@@ -113,19 +113,19 @@ class Deploy {
         try
         {
             // Make sure we're in the right directory
-            system('cd '.$this->_directory, $output);
-            $this->log('Changing working directory... '.implode(' ', $output));
+            $last_line = system('cd '.$this->_directory, $output);
+            $this->log('Changing working directory... '. $last_line . ' returned: ' . $output;
 
             // Discard any changes to tracked files since our last deploy
-            system('git reset --hard HEAD', $output);
-            $this->log('Reseting repository... '.implode(' ', $output));
+            $last_line = system('git reset --hard HEAD', $output);
+            $this->log('Reseting repository... '. $last_line . ' returned: ' . $output;
 
             // Update the local repository
-            system('git pull '.$this->_remote.' '.$this->_branch, $output);
-            $this->log('Pulling in changes... '.implode(' ', $output));
+            $last_line = system('git pull '.$this->_remote.' '.$this->_branch, $output);
+            $this->log('Pulling in changes... '. $last_line . ' returned: ' . $output;
 
             // Secure the .git directory
-            system('chmod -R og-rx .git');
+            $last_line = system('chmod -R og-rx .git');
             $this->log('Securing .git directory... ');
 
             if (is_callable($this->post_deploy))
@@ -177,8 +177,8 @@ $deploy = new Deploy('/opt/bitnami/apps/wordpress/htdocs', $options);
 
 $deploy->post_deploy = function() use ($deploy) {
     // hit the wp-admin page to update any db changes
-    system('curl http://expertonlinetraining.info/wp-admin/upgrade.php?step=upgrade_db');
-    $deploy->log('Updating wordpress database... '.implode(' ', $output));
+    $last_line = system('curl http://expertonlinetraining.info/wp-admin/upgrade.php?step=upgrade_db');
+    $deploy->log('Updating wordpress database... '. $last_line . ' returned: ' . $output;
 };
 
 // log the headers
