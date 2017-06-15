@@ -1,6 +1,4 @@
-
-
-<div class="instagram"></div>
+<div class="instagram-<?php echo $id; ?>"></div>
 
 <?php if($settings->instaPage == 'yes') { ?>
 <div class="insta-menu"  style="text-align: center;">

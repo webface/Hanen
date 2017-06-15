@@ -3,7 +3,7 @@
 Plugin Name: SW Next Page
 Plugin URI: http://www.beaverlodgehq.com
 Description: Add a next page button
-Version: 1.0.1
+Version: 1.0.2
 Author: Jon Mather
 Author URI: http://simplewebsiteinaday.com.au
 */
@@ -202,7 +202,7 @@ function flatten_page_list($exclude = '') {
    $pagelist = get_pages($args);
    $mypages = array();
    if (!empty($exclude)) {
-       $excludes = split(',', $exclude);
+       $excludes = preg_split(',', $exclude);
        foreach ($pagelist as $thispage) {
            if (!in_array($thispage->ID, $excludes)) {
                $mypages[] += $thispage->ID;

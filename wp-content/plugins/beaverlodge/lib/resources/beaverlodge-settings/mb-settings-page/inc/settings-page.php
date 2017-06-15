@@ -23,7 +23,6 @@ class MB_Settings_Page
 
 	/**
 	 * Constructor
-	 *
 	 * @param array $args Page options like ID page_title, menu_title, capability...
 	 */
 	public function __construct( $args = array() )
@@ -32,6 +31,7 @@ class MB_Settings_Page
 
 		// Add hooks
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'rwmb_before', array( $this, 'show_meta_box_tab' ) );
 	}
 
 	/**
@@ -52,6 +52,9 @@ class MB_Settings_Page
 			'parent'        => '', // ID of parent page. Optional.
 			'submenu_title' => '', // Submenu title. Optional.
 			'help_tabs'     => array(),
+			'style'         => 'boxes',
+			'columns'       => 2,
+			'tabs'          => array(),
 		) );
 
 		// Setup optional parameters
@@ -123,24 +126,34 @@ class MB_Settings_Page
 
 	/**
 	 * Output the main admin page
-	 *
-	 * @return void
 	 */
 	public function show()
 	{
+		$class = 'boxes' == $this->args['style'] ? '' : ' class="rwmb-settings-' . esc_attr( $this->args['style'] ) . '"';
 		?>
 		<div class="wrap">
-			<h2><?php echo $this->args['page_title']; ?></h2>
-			<form method="post" action="" enctype="multipart/form-data" id="poststuff">
+			<h1><?php esc_html_e( $this->args['page_title'] ); ?></h1>
+
+			<?php if ( $this->args['tabs'] ) : ?>
+				<h2 class="nav-tab-wrapper">
+					<?php foreach ( $this->args['tabs'] as $id => $title ) : ?>
+						<a href="#<?php echo 'tab-', esc_attr( $id ); ?>" class="nav-tab"><?php echo esc_html( $title ); ?></a>
+					<?php endforeach; ?>
+				</h2>
+			<?php endif; ?>
+
+			<form method="post" action="" enctype="multipart/form-data" id="poststuff"<?php echo $class; ?>>
 				<?php
 				// Nonce for saving meta boxes status (collapsed/expanded) and order
 				wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
 				wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
 				?>
-				<div id="post-body" class="metabox-holder columns-2">
-					<div id="postbox-container-1" class="postbox-container">
-						<?php do_meta_boxes( null, 'side', null ); ?>
-					</div>
+				<div id="post-body" class="metabox-holder columns-<?php echo intval( $this->args['columns'] ); ?>">
+					<?php if ( $this->args['columns'] > 1 ) : ?>
+						<div id="postbox-container-1" class="postbox-container">
+							<?php do_meta_boxes( null, 'side', null ); ?>
+						</div>
+					<?php endif; ?>
 					<div id="postbox-container-2" class="postbox-container">
 						<?php do_meta_boxes( null, 'normal', null ); ?>
 						<?php do_meta_boxes( null, 'advanced', null ); ?>
@@ -155,26 +168,27 @@ class MB_Settings_Page
 
 	/**
 	 * Enqueue scripts and styles for settings page
-	 *
-	 * @return void
 	 */
 	public function admin_print_styles()
 	{
+		list( , $url ) = RWMB_Loader::get_path( dirname( dirname( __FILE__ ) ) );
+		wp_enqueue_style( 'mb-settings-page', $url . 'css/style.css', '', '1.1.2' );
+
 		// For meta boxes
 		wp_enqueue_script( 'common' );
 		wp_enqueue_script( 'wp-lists' );
 		wp_enqueue_script( 'postbox' );
 
 		// Enqueue settings page script and style
-		wp_enqueue_script( 'mb-settings-page', MB_SETTINGS_PAGE_URL . 'js/script.js', array( 'jquery' ), '', true );
+		wp_enqueue_script( 'mb-settings-page', $url . 'js/script.js', array( 'jquery' ), '1.1.2', true );
 		wp_localize_script( 'mb-settings-page', 'MBSettingsPage', array(
 			'pageHook' => $this->page_hook,
+			'tabs'     => array_keys( $this->args['tabs'] ),
 		) );
 	}
 
 	/**
 	 * Register the meta boxes via a custom hook
-	 * @return void
 	 */
 	public function load()
 	{
@@ -196,7 +210,6 @@ class MB_Settings_Page
 
 	/**
 	 * Save settings when submit
-	 * @return void
 	 */
 	public function save()
 	{
@@ -205,7 +218,7 @@ class MB_Settings_Page
 			return;
 		}
 		$data = get_option( $this->args['option_name'], array() );
-		$data = apply_filters( 'mb_settings_pages_data', $data );
+		$data = apply_filters( 'mb_settings_pages_data', $data, $this->args['option_name'] );
 		update_option( $this->args['option_name'], $data );
 
 		add_settings_error( $this->args['id'], 'saved', __( 'Settings saved.', 'mb-settings-page' ), 'updated' );
@@ -214,8 +227,6 @@ class MB_Settings_Page
 	/**
 	 * Display notices
 	 * Use add_settings_error() to add notices
-	 *
-	 * @return void
 	 */
 	public function admin_notices()
 	{
@@ -240,6 +251,18 @@ class MB_Settings_Page
 				$help_tab['id'] = "{$this->args['id']}-help-tab-$k";
 			}
 			$screen->add_help_tab( $help_tab );
+		}
+	}
+
+	/**
+	 * Show tab id of meta box
+	 * @param RW_Meta_Box $obj
+	 */
+	public function show_meta_box_tab( $obj )
+	{
+		if ( ! empty( $obj->meta_box['tab'] ) )
+		{
+			echo '<script type="text/html" class="rwmb-settings-tab" data-tab="', esc_attr( $obj->meta_box['tab'] ), '"></script>';
 		}
 	}
 }

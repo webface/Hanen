@@ -24,7 +24,9 @@ class MB_Conditional_Logic
 	{
 		$conditions 		= $this->get_all_conditions();
 
-		wp_register_script( 'conditional-logic', MBC_JS_URL . 'conditional-logic.min.js', array(), '1.0.0', true );
+		$minify = WP_DEBUG ? '' : '.min';
+
+		wp_register_script( 'conditional-logic', MBC_JS_URL . 'conditional-logic' . $minify . '.js', array(), '1.3.1', true );
 
 		wp_localize_script( 'conditional-logic', 'conditions', $conditions );
 		
@@ -118,40 +120,33 @@ class MB_Conditional_Logic
 		$relation = ( isset( $condition['relation'] ) && in_array( $condition['relation'], array('and', 'or') ) ) 
 					? $condition['relation'] : 'and';
 
-		$when = array();
-
+		$condition_to_normalize = $condition;
 		if ( isset( $condition['when'] ) && is_array( $condition['when'] ) )
-		{
-			foreach ( $condition['when'] as $criteria )
-			{
-				if ( is_array( $criteria ) )
-				{
-					$when[] = $this->normalize_criteria( $criteria );
-				}
-				else 
-				{
-					$when[] = $this->normalize_criteria( $condition['when'] );
-					break;
-				}
-			}
-		}
-		else
-		{
-			foreach ( $condition as $criteria )
-			{
-				if ( is_array( $criteria ) )
-				{
-					$when[] = $this->normalize_criteria( $criteria );
-				}
-				else 
-				{
-					$when[] = $this->normalize_criteria( $condition );
-					break;
-				}
-			}
-		}
+			$condition_to_normalize = $condition['when'];
+		
+		$when = $this->get_normalized_criteria( $condition_to_normalize );
 
 		return compact( 'when', 'relation' );
+	}
+
+	private function get_normalized_criteria( $condition )
+	{
+		$normalized = array();
+
+		foreach ( $condition as $criteria )
+		{
+			if ( is_array( $criteria ) )
+			{
+				$normalized[] = $this->normalize_criteria( $criteria );
+			}
+			else 
+			{
+				$normalized[] = $this->normalize_criteria( $condition );
+				break;
+			}
+		}
+
+		return $normalized;
 	}
 
 	/**
@@ -189,13 +184,10 @@ class MB_Conditional_Logic
 	{
 		global $wpdb;
 		
-		$slugs = (array) $slugs;
+		$slugs 		= (array) $slugs;
+		$sql 		= "SELECT term_id FROM {$wpdb->terms} WHERE slug IN(".implode(', ', array_fill(0, count($slugs), '%s')).")";
+		$prepared 	= call_user_func_array(array($wpdb, 'prepare'), array_merge(array($sql), $slugs));
 
-		$slugs = "'" . implode("','", $slugs) . "'";
-
-		$ids = $wpdb->get_col( "SELECT term_id FROM {$wpdb->terms} WHERE slug IN ($slugs)" );
-		
-		return $ids;
-		
+		return array_map('intval', $wpdb->get_col($prepared));
 	}
 }

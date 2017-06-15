@@ -6,15 +6,13 @@ add_action( 'admin_init', 'sw_beaverlodge_settings_init' );
 
 function sw_beaverlodge_add_admin_menu(  ) { 
     
-    if ( file_exists( FL_BUILDER_DIR . 'includes/admin-settings-branding.php' ) ) {
+
         $options = get_option( 'sw_beaverlodge_settings' );
         $branding = $options['sw_beaverlodge_text_field_6'] . ' Modules Settings';
         if ($branding == ' Modules Settings') {
             $branding =  'BeaverLodgeHQ Settings';
         }
-    } else {
-        $branding =  'BeaverLodgeHQ Settings';
-    }
+
 
 	add_options_page( 'Beaver Lodge HQ', $branding, 'manage_options', 'sw_beaverlodge', 'sw_beaverlodge_options_page' );
 
@@ -25,7 +23,6 @@ function sw_beaverlodge_settings_init(  ) {
 
 	register_setting( 'beaverLodge', 'sw_beaverlodge_settings' );
 
-	if ( file_exists( FL_BUILDER_DIR . 'includes/admin-settings-branding.php' ) ) {
         if (is_admin()) {
             add_settings_field( 
                 'sw_beaverlodge_text_field_6', 
@@ -35,7 +32,7 @@ function sw_beaverlodge_settings_init(  ) {
                 'sw_beaverlodge_beaverLodge_section' 
             );    
         }
-    }
+
     
     add_settings_section(
 		'sw_beaverlodge_beaverLodge_section', 
@@ -108,7 +105,7 @@ function sw_beaverlodge_settings_init(  ) {
 		'sw_beaverlodge_beaverLodge_section' 
 	);
 
-    if ( file_exists( FL_BUILDER_DIR . 'includes/admin-settings-branding.php' ) ) {
+
 	add_settings_field( 
 		'sw_beaverlodge_text_field_8', 
 		__( 'Topbar FadeIn', 'fl_builder' ), 
@@ -116,7 +113,7 @@ function sw_beaverlodge_settings_init(  ) {
 		'beaverLodge', 
 		'sw_beaverlodge_beaverLodge_section' 
 	);
-    }
+
 
 }
 
@@ -319,24 +316,20 @@ function sw_select_bootstrap_render(  ) {
 }
 
 function sw_beaverlodge_settings_section_callback(  ) { 
-    if ( file_exists( FL_BUILDER_DIR . 'includes/admin-settings-branding.php' ) ) {
+
         echo __( '', 'fl-builder' ); 
-    } else {        
-        echo __( '<a href="https://www.wpbeaverbuilder.com/?fla=283">Upgrade to unlock features</a>', 'fl-builder' );
-    }
+
 }
 
 
 function sw_beaverlodge_options_page(  ) { 
-    if ( file_exists( FL_BUILDER_DIR . 'includes/admin-settings-branding.php' ) ) {
+
         $options = get_option( 'sw_beaverlodge_settings' );
         $branding = $options['sw_beaverlodge_text_field_6'] . ' Modules';
         if ($branding == ' Modules') {
             $branding =  'BeaverLodgeHQ Modules';
         }
-    } else {
-        $branding =  'BeaverLodgeHQ Modules';
-    }    
+  
 	?>
 
 	<form action='options.php' method='post'>

@@ -16,11 +16,6 @@ class SWGmapClass extends FLBuilderModule {
             'enabled'       => true, // Defaults to true and can be omitted.
         ));
 
-         $this->add_js('gmap3.js', $this->url . 'js/gmap3.min.js', array(), '', true);      
-         $this->add_js('jquery-ui.min.js', $this->url . 'js/jquery-ui.min.js', array(), '', true);      
-         $this->add_css('jquery-ui.min.css', $this->url . 'css/jquery-ui.min.css' );      
-         $this->add_js('googlemapsapi.js', '//maps.google.com/maps/api/js?sensor=false&amp;language=en&amp;libraries=places', array(), '', true); 
-        
     }    
     
 }
@@ -33,187 +28,86 @@ FLBuilder::register_module( 'SWGmapClass', array(
         'sections'      => array( 
             
               'content_select'  => array(
-                'title'         => __( 'GMap', 'fl-builder' ),
+                'title'         => __( 'GMap Setup', 'fl-builder' ),
                 'fields'        => array(
                     
-                    'center_address'     => array(
-                        'type'      => 'geocomplete',
-                        'label'     => __( 'Main Address', 'fl_builder' ),
-                        'placeholder'  => '1 E 161st St, Bronx, NY 10451, United States',
-                        'default'  => '1 E 161st St, Bronx, NY 10451, United States',
-                    ),  // end address
-                    
-                    'center_description'     => array(
-                        'type'      => 'textarea',
-                        'label'     => __( 'Main Address Pop Up Description', 'fl_builder' ),
-                        'placeholder'  => 'Welcome to Yankee Stadium',
-                        'default'  => 'Welcome to Yankee Stadium',
-                        'rows'      => '6',
-                    ),  // end description
-                    
-                    'custom_center_option'     => array(
-                        'type'      => 'select',
-                        'label'     => __( 'Use Custom Center Field', 'fl_builder' ),
-                        'default'  => 'false',
-                        'options'      => array(
-                            'true'  => 'Yes',
-                            'false' => 'No',
-                        ),
-                        'toggle'        => array(
-                            'true'       => array(
-                                'fields'  => array('custom_center'),
-                            ),
-                        ), // end toggle
-                        'help' => __( 'Also use if center map is not working', 'fl-builder' ),
-                    ),  // end custom_center_option                  
-                    
-                    
-                    'custom_center'     => array(
+                    'apikey'     => array(
                         'type'      => 'text',
-                        'label'     => __( 'Enter Lat,, Long Coordinates', 'fl_builder' ),
-                        'placeholder'  => '40.829095, -73.926601',
-                    ),  // end custom_center
+                        'label'     => __( 'API Key', 'fl-builder' ),
+                        'help'     => __( 'To obtain a API Key visit <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank" style="color: red;">Google Maps</a>', 'fl-builder' ),
+                        'description'     => __( 'To obtain a API Key visit <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank" style="color: red;">Google Maps</a>', 'fl-builder' ),
+                    ),  // end apikey
                     
-                    'custom_center_marker'     => array(
-                        'type'      => 'select',
-                        'label'     => __( 'Use Custom Marker', 'fl_builder' ),
-                        'default'  => 'false',
-                        'options'      => array(
-                            'true'  => 'Yes',
-                            'false' => 'No',
-                        ),
-                        'toggle'        => array(
-                            'true'       => array(
-                                'fields'  => array('center_marker'),
-                            ),
-                        ), // end toggle
-                    ),  // end custom_center_marker
-                    
-                    'center_marker'     => array(
-                        'type'      => 'photo',
-                        'label'     => __( 'Main Address Custom Icon', 'fl_builder' ),
-                        'help'     => __( 'Sizing of icon needs to be no bigger than 32x32px', 'fl_builder' ),
-                        'show_remove'   => true
-                    ),  // end marker 
+                    'address'     => array(
+                        'type'      => 'text',
+                        'label'     => __( 'Center Map Address', 'fl-builder' ),
+                        'placeholder'  => 'Perth, Western Australia',
+                        'default'  => 'Perth, Western Australia',
+                    ),  // end address
                     
                     'address_fields'    => array(
                         'type'          => 'form',
-                        'label'        => __('Additional Addresses', 'fl_builder'),
+                        'label'        => __('Marked Addresses', 'fl-builder'),
                         'form'          => 'content_address_form', 
                         'preview_text'  => 'label',
                         'multiple'      => true
                     ),
                     
+                ) // end fields
+                  
+            ) // end content_select
+            
+        ) // end sections
+        
+    ), // end content-tab 
+    
+    'style-tab'      => array(
+        
+        'title'         => __( 'Style', 'fl-builder' ),
+        'sections'      => array( 
+            
+              'content_select'  => array(
+                'title'         => __( 'GMap Styling', 'fl-builder' ),
+                'fields'        => array(
+                    
+                    'marker' => array(
+                        'type'          => 'photo',
+                        'label'         => __('Custom Marker', 'fl-builder'),
+                        'show_remove'	=> true,
+                        'description'   => 'Size should be 32 x 32 px',
+                    ),
+                    
                     'height'     => array(
                         'type'      => 'text',
-                        'label'     => __( 'Map Height', 'fl_builder' ),
-                        'default'   => '250',
-                        'placeholder'  => '250',
-                        'size'      => '4',
-                        'maxlength' => '5',
-                        'description' => 'px',
+                        'label'     => __( 'Height', 'fl-builder' ),
+                        'default'   => '300',
+                        'maxlength'  => '4',
+                        'size'  => '5',
+                        'description'  => 'px',                        
+                        'help' => __( 'Leave blank for 300px height', 'fl-builder'),
                     ),  // end height
                     
+                    'width'     => array(
+                        'type'      => 'text',
+                        'label'     => __( 'Width', 'fl-builder' ),
+                        'maxlength'  => '4',
+                        'size'  => '5',
+                        'description'  => 'px',
+                        'help' => __( 'Leave blank for 100% width', 'fl-builder'),
+                    ),  // end width
+                    
                     'zoom'     => array(
-                        'type'      => 'text',
-                        'label'     => __( 'Map Zoom', 'fl_builder' ),
-                        'default'   => '14',
-                        'placeholder'  => '14',
-                        'size'      => '4',
-                        'maxlength' => '5',
-                    ),  // end zoom
-                    
-                    'map_syle'     => array(
                         'type'      => 'select',
-                        'label'     => __( 'Map Style', 'fl_builder' ),
-                        'default'   => 'false',
-                        'options'   => array(
-                            'default'  => 'Default',
-                            'desaturate'  => 'Grayscale',
-                            'bluewater'  => 'Blue Water',
-                            'icyblue'  => 'Icy Blue',
-                            'lakechelan'  => 'Lake Chelan',
-                            'redhat'  => 'Red Hat Antwerp',
-                            'routexl'  => 'RouteXL',
-                            'custom' => 'Custom',
+                        'label'     => __( 'Zoom Level', 'fl-builder' ),
+                        'default'       => '10',
+                        'options'       => array(
+                            '1'      => __('World', 'fl-builder'),
+                            '5'      => __('Country', 'fl-builder'),
+                            '10'      => __('City', 'fl-builder'),
+                            '15'      => __('Streets', 'fl-builder'),
+                            '20'      => __('Buildings', 'fl-builder'),
                         ),
-                    ),  // end map_syle
-                    
-                    'scroll'     => array(
-                        'type'      => 'select',
-                        'label'     => __( 'Enable Mouse Scroll', 'fl_builder' ),
-                        'default'   => 'false',
-                        'options'   => array(
-                            'true'  => 'True',
-                            'false' => 'False',
-                        ),
-                    ),  // end scroll
-                    
-                    'drag'     => array(
-                        'type'      => 'select',
-                        'label'     => __( 'Enable Dragging Map', 'fl_builder' ),
-                        'default'   => 'true',
-                        'options'   => array(
-                            'true'  => 'True',
-                            'false' => 'False',
-                        ),
-                    ),  // end drag
-                    
-//                    'placecard'     => array(
-//                        'type'      => 'select',
-//                        'label'     => __( 'Display Placecard', 'fl_builder' ),
-//                        'default'   => 'true',
-//                        'options'   => array(
-//                            'true'  => 'Yes',
-//                            'false' => 'No',
-//                        ),
-//                        'toggle'        => array(
-//                            'true'       => array(
-//                                'fields'  => array('map_icon', 'draggable', 'set_width'),
-//                            ),
-//                        ), // end toggle
-//                    ),  // end placecard
-                    
-                    'set_width'     => array(
-                        'type'      => 'select',
-                        'label'     => __( 'Set Width', 'fl_builder' ),
-                        'default'   => 'true',
-                        'options'   => array(
-                            'true'  => 'Full Width',
-                            'false' => 'Custom Width',
-                        ),
-                        'toggle'        => array(
-                            'false'       => array(
-                                'fields'  => array('map_width'),
-                            ),
-                        ), // end toggle
-                    ),  // end set_width
-                    
-                    'map_width'     => array(
-                        'type'      => 'text',
-                        'label'     => __( 'Map Width', 'fl_builder' ),
-                        'default'   => '300',
-                        'placeholder'  => '300',
-                        'size'      => '4',
-                        'maxlength' => '5',
-                    ),  // end map_width
-                    
-//                    'map_icon'     => array(
-//                        'type'      => 'icon',
-//                        'label'     => __( 'Icon', 'fl_builder' ),
-//                        'default'   => 'fa fa-map',
-//                        'show_remove'   => true
-//                    ),  // end map_icon
-//                    
-//                    'draggable'     => array(
-//                        'type'      => 'select',
-//                        'label'     => __( 'Allow Moving Placecard', 'fl_builder' ),
-//                        'default'   => 'true',
-//                        'options'   => array(
-//                            'true'  => 'Yes',
-//                            'false' => 'No',
-//                        ),
-//                    ),  // end draggable
+                    ),  // end width
                     
                 ) // end fields
                   
@@ -246,42 +140,17 @@ FLBuilder::register_settings_form('content_address_form', array(
 					'title'     => __('Choose Address and Custom Image', 'fl-builder'),
 					'fields'    => array(
                         
-                        'address'     => array(
-                        'type'      => 'geocomplete',
-                        'label'     => __( 'Address', 'fl_builder' ),
-                        'placeholder'  => '1 E 161st St, Bronx, NY 10451, United States',
-                        'default'  => '1 E 161st St, Bronx, NY 10451, United States',
-                    ),  // end address
-                    
-                    'description'     => array(
-                        'type'      => 'textarea',
-                        'label'     => __( 'Pop Up Description', 'fl_builder' ),
-                        'placeholder'  => 'Welcome to Yankee Stadium',
-                        'default'  => 'Welcome to Yankee Stadium',
-                        'rows'      => '6',
-                    ),  // end description
-                    
-                    'custom_marker'     => array(
-                        'type'      => 'select',
-                        'label'     => __( 'Use Custom Marker', 'fl_builder' ),
-                        'default'  => 'false',
-                        'options'      => array(
-                            'true'  => 'Yes',
-                            'false' => 'No',
-                        ),
-                        'toggle'        => array(
-                            'true'       => array(
-                                'fields'  => array('marker'),
-                            ),
-                        ), // end toggle
-                    ),  // end custom_marker
-                    
-                    'marker'     => array(
-                        'type'      => 'photo',
-                        'label'     => __( 'Custom Icon', 'fl_builder' ),
-                        'help'     => __( 'Sizing of icon needs to be no bigger than 32x32px', 'fl_builder' ),
-                        'show_remove'   => true
-                    ),  // end marker            
+                        'extra_address'     => array(
+                            'type'      => 'text',
+                            'label'     => __( 'Address', 'fl-builder' ),
+                            'default'  => 'Perth, Western Australia',
+                        ),  // end address 
+                        
+                        'info_address'     => array(
+                            'type'      => 'editor',
+                            'label'     => __( 'Content Description', 'fl-builder' ),
+                            'default'  => 'Perth, capital of Western Australia, sits where the Swan River meets the southwest coast. Sandy beaches line its suburbs, and the huge, riverside Kings Park and Botanic Garden on Mt. Eliza offer sweeping views of the city. The Perth Cultural Centre houses the state ballet and opera companies, and occupies its own central precinct, including a theatre, art galleries and the Western Australian Museum.',
+                        ),  // end address 
 						
 					)
 				),

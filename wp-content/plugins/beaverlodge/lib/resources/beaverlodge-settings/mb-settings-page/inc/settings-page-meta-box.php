@@ -19,7 +19,6 @@ class MB_Settings_Page_Meta_Box extends RW_Meta_Box
 	/**
 	 * Constructor
 	 * Call parent constructor and add specific hooks
-	 *
 	 * @param array $meta_box
 	 */
 	public function __construct( $meta_box )
@@ -41,10 +40,7 @@ class MB_Settings_Page_Meta_Box extends RW_Meta_Box
 
 	/**
 	 * Add hooks for current settings page
-	 *
 	 * @param array $page_args Settings page arguments
-	 *
-	 * @return void
 	 */
 	public function load( $page_args )
 	{
@@ -75,10 +71,8 @@ class MB_Settings_Page_Meta_Box extends RW_Meta_Box
 
 	/**
 	 * Get field meta value
-	 *
 	 * @param mixed $meta  Meta value
 	 * @param array $field Field parameters
-	 *
 	 * @return mixed
 	 */
 	public function field_meta( $meta, $field )
@@ -102,7 +96,7 @@ class MB_Settings_Page_Meta_Box extends RW_Meta_Box
 		$meta = isset( $data[$field['id']] ) ? $data[$field['id']] : $field['std'];
 
 		// Escape attributes
-		$meta = call_user_func( array( RW_Meta_Box::get_class_name( $field ), 'esc_meta' ), $meta );
+		$meta = call_user_func( array( self::get_class_name( $field ), 'esc_meta' ), $meta );
 
 		// Make sure meta value is an array for clonable and multiple fields
 		if ( $field['clone'] || $field['multiple'] )
@@ -123,16 +117,13 @@ class MB_Settings_Page_Meta_Box extends RW_Meta_Box
 
 	/**
 	 * Save settings fields
-	 *
 	 * @param array $data Array of settings options
-	 *
 	 * @return array
 	 */
 	public function save( $data )
 	{
-		$id    = $this->meta_box['id'];
-		$nonce = isset( $_POST["nonce_{$id}"] ) ? sanitize_key( $_POST["nonce_{$id}"] ) : '';
-		if ( empty( $_POST["nonce_{$id}"] ) || ! wp_verify_nonce( $nonce, "rwmb-save-{$id}" ) )
+		$nonce = (string) filter_input( INPUT_POST, "nonce_{$this->meta_box['id']}" );
+		if ( ! wp_verify_nonce( $nonce, "rwmb-save-{$this->meta_box['id']}" ) )
 		{
 			return $data;
 		}
@@ -179,9 +170,7 @@ class MB_Settings_Page_Meta_Box extends RW_Meta_Box
 
 	/**
 	 * Check if we're on the right edit screen.
-	 *
 	 * @param WP_Screen $screen Screen object. Optional. Use current screen object by default.
-	 *
 	 * @return bool
 	 */
 	public function is_edit_screen( $screen = null )

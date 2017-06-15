@@ -9,7 +9,7 @@ function bl_beaverlodge_add_admin_menu(  ) {
     $field_logo = 'label_logo';
     
     $logo = $labels[$field_logo];
-    $picture = plugins_url( 'lib/images/beaver.png', __FILE__ );
+    $picture = 'dashicons-admin-generic';
     if ( $logo != '' )  {
         $icon = $logo;
     } else {
@@ -33,9 +33,9 @@ function bl_beaverlodge_add_admin_menu(  ) {
     
 //    add_submenu_page( 'beaverlodge_modules', 'License', 'License', 'manage_options', 'beaverlodge_license', 'bl_beaverlodge_license' );
     
-    if ($options['bl_gmap'] == '2') {
-        add_submenu_page( 'beaverlodge_modules', 'gMap', 'gMap', 'manage_options', 'beaverlodge_gmap', 'bl_gmap_options_page' );
-    }
+//    if ($options['bl_gmap'] == '2') {
+//        add_submenu_page( 'beaverlodge_modules', 'gMap', 'gMap', 'manage_options', 'beaverlodge_gmap', 'bl_gmap_options_page' );
+//    }
 
 }
 
@@ -255,19 +255,27 @@ function bl_beaverlodge_settings_init(  ) {
 		'beaverLodge', 
 		'bl_beaverlodge_beaverLodge_section' 
 	); 
-
+    
 	add_settings_field( 
-		'bl_pinterest', 
-		__( 'Pinterest Layout Module', 'fl_builder' ), 
-		'bl_pinterest_render', 
+		'bl_columnizer', 
+		__( 'Paragraph Columnizer Module', 'fl-builder' ), 
+		'bl_columnizer_render', 
 		'beaverLodge', 
 		'bl_beaverlodge_beaverLodge_section' 
-	);
+	);  
 
 	add_settings_field( 
 		'bl_password', 
 		__( 'Password Reset Module', 'fl_builder' ), 
 		'bl_password_render', 
+		'beaverLodge', 
+		'bl_beaverlodge_beaverLodge_section' 
+	);
+
+	add_settings_field( 
+		'bl_pinterest', 
+		__( 'Pinterest Layout Module', 'fl_builder' ), 
+		'bl_pinterest_render', 
 		'beaverLodge', 
 		'bl_beaverlodge_beaverLodge_section' 
 	);
@@ -980,6 +988,32 @@ function bl_next_page_render(  ) {
 }
 
 
+function bl_columnizer_render(  ) { 
+
+	$options = get_option( 'bl_beaverlodge_settings' );
+	?>
+	<hr>
+	
+	<div style="">
+        <div style="width: 150px; float: left">
+            <select name='bl_beaverlodge_settings[bl_columnizer]'>
+                <option value='1' <?php selected( $options['bl_columnizer'], 1 ); ?>>Disabled</option>
+                <option value='2' <?php selected( $options['bl_columnizer'], 2 ); ?>>Enabled</option>
+            </select>
+        </div>
+        <div style="width: 200px; float: left; text-align: center;">
+            <?php echo '<img src="' . plugins_url( 'lib/images/columnizer.png', __FILE__ ) . '" height="100px" style=""> '; ?>
+        </div>
+        <div style="width: 400px; float: left;">
+            <p>The Paragraph Columnizer allows you to split long text passages across multiple columns.</p>
+        </div>
+    </div>
+
+<?php
+
+}
+
+
 function bl_password_render(  ) { 
 
 	$options = get_option( 'bl_beaverlodge_settings' );
@@ -1506,6 +1540,10 @@ function bl_beaverlodge_help() {
     <p>You need to be aware that enabling the Login Module can break your site if you do not finish the setup before logging out.</p>
     <p>This module creates a page called Login (if it doesnt, just create a page ensuring the slug is login) to which you can style however you like.</p>
     <p>The biggest thing you need to ensure is to add the Login Module otherwise you will not be able to login.</p>
+    <br /><hr>
+    <h2>gMap Module</h2>
+    <p>You need to ensure you have an API entered in order for the map to work.</p>
+    <p>To obtain a API Key visit <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">Google Maps API</a></p>
     <?php
     
 }

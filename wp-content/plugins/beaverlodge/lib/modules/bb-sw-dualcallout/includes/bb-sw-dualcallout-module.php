@@ -229,7 +229,7 @@ FLBuilder::register_module( 'SWDualCalloutClass', array(
                         'type'          => 'font',
                         'label'         => __( 'Font', 'fl-builder' ),
                         'default'       => array(
-                            'family'        => 'default',
+                            'family'        => 'Default',
                             'weight'        => 300
                         )
                     ),

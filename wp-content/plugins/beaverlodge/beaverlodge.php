@@ -1,17 +1,19 @@
 <?php
 /**
  * Plugin Name: Beaver Lodge Modules
- * Plugin URI: http://www.beaverlodgehq.com
+ * Plugin URI: https://www.beaverlodgehq.com
  * Description: Extensive modules for using with Beaver Builder
- * Version: 1.2.4
- * Author: Jon Mather
- * Author URI: http://www.simplewebsiteinaday.com.au
+ * Version: 1.3.2
+ * Author: West Coast Digital
+ * Author URI: https://westcoastdigital.com.au
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 // Check BB is active
 if ( class_exists( 'FLBuilder' ) ) {
     
-define( 'EDD_BEAVERLODGE_VERSION', '1.2.4' );
+define( 'EDD_BEAVERLODGE_VERSION', '1.3.2' );
 
 define( 'EDD_BEAVERLODGE_STORE_URL', 'https://beaverlodgehq.com/' );
 
@@ -63,9 +65,9 @@ if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 include( dirname( __FILE__ ) . '/lib/resources/bl-setup.php' );
 
 
-if ( file_exists( FL_BUILDER_DIR . 'includes/admin-settings-branding.php' ) ) {
+
     include( dirname( __FILE__ ) . '/lib/resources/beaverlodge-settings/beaverlodge-settings.php' );
-}
+
 
 // Include MetaBoxes
 function bl_add_meta() {
@@ -292,6 +294,12 @@ function bl_register_required_plugins() {
     if ($options['bl_next_page'] == '2') {
         require_once dirname( __FILE__ ) . '/lib/modules/bb-sw-nextpage/bb-sw-nextpage.php';
         require_once dirname( __FILE__ ) . '/lib/modules/bb-sw-nextpage/includes/bb-sw-nextpage-module.php';
+    }
+                
+    // Include the paragraph columnizer module.
+    if ($options['bl_columnizer'] == '2') {
+        require_once dirname( __FILE__ ) . '/lib/modules/bb-sw-columnizer/bb-sw-columnizer.php';
+        require_once dirname( __FILE__ ) . '/lib/modules/bb-sw-columnizer/includes/bb-sw-columnizer-module.php';
     }
                 
     // Include the pw reset module.

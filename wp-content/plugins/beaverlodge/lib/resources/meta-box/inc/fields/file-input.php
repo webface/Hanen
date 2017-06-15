@@ -1,20 +1,19 @@
 <?php
+
 /**
  * File input field class which uses an input for file URL.
  */
-class RWMB_File_Input_Field extends RWMB_Field
-{
+class RWMB_File_Input_Field extends RWMB_Field {
+
 	/**
 	 * Enqueue scripts and styles
 	 *
 	 * @return void
 	 */
-	static function admin_enqueue_scripts()
-	{
-		// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
+	static function admin_enqueue_scripts() {
 		wp_enqueue_media();
 		wp_enqueue_script( 'rwmb-file-input', RWMB_JS_URL . 'file-input.js', array( 'jquery' ), RWMB_VER, true );
-		wp_localize_script( 'rwmb-file-input', 'rwmbFileInput', array(
+		self::localize_script('rwmb-file-input', 'rwmbFileInput', array(
 			'frameTitle' => __( 'Select File', 'meta-box' ),
 		) );
 	}
@@ -27,8 +26,7 @@ class RWMB_File_Input_Field extends RWMB_Field
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field )
-	{
+	static function html( $meta, $field ) {
 		return sprintf(
 			'<input type="text" class="rwmb-file-input" name="%s" id="%s" value="%s" placeholder="%s" size="%s">
 			<a href="#" class="rwmb-file-input-select button-primary">%s</a>
@@ -51,8 +49,7 @@ class RWMB_File_Input_Field extends RWMB_Field
 	 *
 	 * @return array
 	 */
-	static function normalize( $field )
-	{
+	static function normalize( $field ) {
 		$field = parent::normalize( $field );
 		$field = wp_parse_args( $field, array(
 			'size'        => 30,

@@ -7,7 +7,7 @@
 
 
          
-         $(".instagram").instastream({
+         $(".instagram-<?php echo $id; ?>").instastream({
             instaToken: userToken,
 
             instaUser: userId,

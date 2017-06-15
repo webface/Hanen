@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Meta Box Conditional Logic
-Plugin URI: http://www.metabox.io/plugins/meta-box-conditional-logic
+Plugin URI: https://www.metabox.io/plugins/meta-box-conditional-logic
 Description: Control the Visibility of Meta Boxes and Fields or even HTML elements with ease.
-Version: 1.3
+Version: 1.3.1
 Author: Tan Nguyen
-Author URI: https://www.binaty.org
+Author URI: https://giga.ai
 License: GPL2+
 */
 

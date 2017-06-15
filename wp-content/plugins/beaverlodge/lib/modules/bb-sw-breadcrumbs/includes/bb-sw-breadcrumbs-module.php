@@ -88,13 +88,13 @@ FLBuilder::register_module( 'SWBreadcrumbsClass', array(
 					), // crumb_font_size
                     
                     
-                    'crumb_divider' => array(
-						'type'          => 'text',
-						'label'         => __('Breadcrumb Divider', 'fl-builder'),
-						'default'       => '/',
-						'maxlength'     => '3',
-						'size'          => '4',
-					), // crumb_divider
+//                    'crumb_divider' => array(
+//						'type'          => 'text',
+//						'label'         => __('Breadcrumb Divider', 'fl-builder'),
+//						'default'       => '/',
+//						'maxlength'     => '3',
+//						'size'          => '4',
+//					), // crumb_divider
                     
                     'divider_color' => array(
                         'type'          => 'color',

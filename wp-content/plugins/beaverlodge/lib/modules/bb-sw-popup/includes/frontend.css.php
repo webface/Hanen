@@ -104,6 +104,8 @@ width: 70%;
 
 <?php
 
+if ( ! function_exists( 'hex2rgba' ) ) {
+    
 function hex2rgba($color, $opacity = false) {
  
 	$default = 'rgb(0,0,0)';
@@ -142,4 +144,5 @@ function hex2rgba($color, $opacity = false) {
         return $output;
 }
 
+}
 ?>

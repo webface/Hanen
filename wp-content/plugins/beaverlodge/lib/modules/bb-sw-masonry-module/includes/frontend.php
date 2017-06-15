@@ -9,12 +9,12 @@ $name = $post->post_name;
 $random = $settings->shuffle;
 $lightbox = $settings->lightbox;
 $lightboxhoriz = $settings->horiz_lightbox;
-
+$post_qty = substr_count($post_id, ",") +1;
 
 if ( $layout == 'masonry') {
 
 echo '<div class="' . $id . '-sw-masonry-gallery" style="display:none;">';
-        $args = array( 'post_type' => 'sw-gallery', 'posts_per_page' => 1, 'name' => $name, );
+        $args = array( 'post_type' => 'sw-gallery', 'posts_per_page' => $post_qty, 'name' => $name, );
         $loop = new WP_Query( $args );
         while ( $loop->have_posts() ) : $loop->the_post();
             $images = rwmb_meta( 'sw_gallery_image', 'type=image' );

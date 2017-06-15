@@ -11,11 +11,11 @@ if ($flexAlign == 'flex-start') {
 
 ?>
 
-.sw-callout {
+.fl-node-<?php echo $id; ?> .sw-callout {
     text-align: <?php echo $align; ?>;
 }
 
-i.sw-callout-icon {
+.fl-node-<?php echo $id; ?> i.sw-callout-icon {
     text-align: center;
     font-size: <?php echo $settings->icon_size; ?>px;
     color: #<?php echo $settings->icon_colour; ?>;
@@ -34,7 +34,7 @@ i.sw-callout-icon {
 <?php } ?>
 }
 
-h<?php echo $settings->heading_class; ?>.sw-callout-heading {
+.fl-node-<?php echo $id; ?> h<?php echo $settings->heading_class; ?>.sw-callout-heading {
     color: #<?php echo $settings->heading_colour; ?>;
 <?php if ($settings->heading_font != 'default') { ?>
     font-size: <?php echo $settings->heading_fontsize; ?>px;
@@ -43,7 +43,7 @@ h<?php echo $settings->heading_class; ?>.sw-callout-heading {
     font-weight: <?php echo $settings->heading_font_family[weight]; ?>;
 }
 
-.sw-callout-buttons {
+.fl-node-<?php echo $id; ?> .sw-callout-buttons {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -52,7 +52,7 @@ h<?php echo $settings->heading_class; ?>.sw-callout-heading {
     justify-content: <?php echo $flexAlign; ?>;
 }
 
-a.sw-callout-btn-one {
+.fl-node-<?php echo $id; ?> a.sw-callout-btn-one {
 <?php if($settings->btn_one_style != 'transparent') { ?>
     background-color: #<?php echo $settings->btn_one_bg_color; ?>;
 <?php } ?>
@@ -69,13 +69,13 @@ a.sw-callout-btn-one {
     margin: <?php echo $settings->btn_one_margin_top; ?>px <?php echo $settings->btn_one_margin_sides; ?>px;
 }
 
-a.sw-callout-btn-one:hover {
+.fl-node-<?php echo $id; ?> a.sw-callout-btn-one:hover {
     background-color: #<?php echo $settings->btn_one_bg_hover_color; ?>;
     color: #<?php echo $settings->btn_one_text_hover_color; ?>;
     text-decoration: none;
 }
 
-a.sw-callout-btn-two {
+.fl-node-<?php echo $id; ?> a.sw-callout-btn-two {
 <?php if($settings->btn_two_style != 'transparent') { ?>
     background-color: #<?php echo $settings->btn_two_bg_color; ?>;
 <?php } ?>
@@ -92,7 +92,7 @@ a.sw-callout-btn-two {
     margin: <?php echo $settings->btn_two_margin_top; ?>px <?php echo $settings->btn_two_margin_sides; ?>px;
 }
 
-a.sw-callout-btn-two:hover {
+.fl-node-<?php echo $id; ?> a.sw-callout-btn-two:hover {
     background-color: #<?php echo $settings->btn_two_bg_hover_color; ?>;
     color: #<?php echo $settings->btn_two_text_hover_color; ?>;
     text-decoration: none;

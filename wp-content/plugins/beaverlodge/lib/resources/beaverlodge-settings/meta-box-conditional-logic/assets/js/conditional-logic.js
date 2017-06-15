@@ -254,11 +254,11 @@
 			var $scope = '';
 
 			if (field.parents().hasClass('rwmb-clone'))
-				$scope 	= field.parents('.rwmb-clone');
+				$scope 	= field.closest('.rwmb-clone');
 
 			var logicApply 		= isLogicCorrect(logic, $scope);
 
-			var 	$selector 		= field.parent().hasClass('rwmb-field') ? field.parent() : field.parents('.postbox');
+			var 	$selector 		= field.parent().hasClass('rwmb-field') ? field.parent() : field.closest('.postbox');
 
 			if (logicApply === true)
 				action == 'visible' ? applyVisible($selector) : applyHidden($selector);

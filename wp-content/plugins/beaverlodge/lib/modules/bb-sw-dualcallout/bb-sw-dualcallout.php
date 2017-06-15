@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: SW Callout
- * Plugin URI: http://www.beaverlodgehq.com
+ * Plugin Name: Dual Callout
+ * Plugin URI: https://www.beaverlodgehq.com
  * Description: A double button callout in Beaver Builder.
  * Version: 1.0.0
- * Author: Jon Mather
- * Author URI: http://www.simplewebsiteinaday.com.au
+ * Author: Beaverlodge HQ
+ * Author URI: https://www.beaverlodgehq.com
  */
 
 define( 'SW_DUALCALLOUT_MODULE_DIR', plugin_dir_path( __FILE__ ) );
