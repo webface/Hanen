@@ -1,5 +1,9 @@
 <?php
 
+// deploy script to fetch changes pushed to origin
+// some code was borrowed from: https://bitbucket.org/lilliputten/automatic-bitbucket-deploy
+
+
 date_default_timezone_set('America/Toronto');
 
 class Deploy {
