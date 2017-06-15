@@ -297,7 +297,7 @@ function bl_register_required_plugins() {
     }
                 
     // Include the paragraph columnizer module.
-    if ($options['bl_columnizer'] == '2') {
+    if (isset($options['bl_columnizer']) && $options['bl_columnizer'] == '2') {
         require_once dirname( __FILE__ ) . '/lib/modules/bb-sw-columnizer/bb-sw-columnizer.php';
         require_once dirname( __FILE__ ) . '/lib/modules/bb-sw-columnizer/includes/bb-sw-columnizer-module.php';
     }
