@@ -113,7 +113,7 @@ add_action ('wp', 'user_must_be_logged_in');
  */
 function user_must_be_logged_in () {
 	global $post, $restricted_pages;
-	if (in_array($post->post_name, $restricted_pages) && !is_user_logged_in ()) {
+	if (isset($post->post_name) && in_array($post->post_name, $restricted_pages) && !is_user_logged_in ()) {
 		header ('Location: ' . wp_login_url (get_permalink()));
 	}
 }
