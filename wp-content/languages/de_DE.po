@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-11 11:29:06+0000\n"
+"PO-Revision-Date: 2017-06-14 00:09:17+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2333,19 +2333,19 @@ msgstr "Ungültiger Wert für Wiederholung des Hintergrunds."
 msgid "Invalid value for background attachment."
 msgstr "Ungültiger Wert für Anhang des Hintergrunds."
 
+#: wp-includes/class-wp-customize-manager.php:4217
+msgid "Learn more about CSS"
+msgstr "Mehr über CSS erfahren (engl.)"
+
 #: wp-includes/class-wp-customize-manager.php:4225
 msgid ""
 "You can add your own CSS here.\n"
 "\n"
 "Click the help icon above to learn more."
 msgstr ""
-"Hier kannst du dein eigenes CSS einfügen.\n"
+"Füge deinen eigenen CSS-Code nach diesem Kommentar hinter dem abschließenden Schrägstrich ein. \n"
 "\n"
-"Klicke auf das Hilfe-Symbol oben, um mehr zu lernen."
-
-#: wp-includes/class-wp-customize-manager.php:4217
-msgid "Learn more about CSS"
-msgstr "Lerne mehr über CSS (engl.)"
+"Klicke auf das Hilfe-Symbol oben, um mehr zu erfahren."
 
 #: wp-includes/class-wp-customize-manager.php:4117
 msgid "Original"

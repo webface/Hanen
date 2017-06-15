@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Jetpack by WordPress.com - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-04 21:59:56+0000\n"
+"PO-Revision-Date: 2017-06-14 16:09:33+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -359,7 +359,7 @@ msgstr "Dezautentificare"
 
 #: modules/masterbar/rtl-admin-bar.php:38
 msgid "Toolbar"
-msgstr "Bară de instrumente"
+msgstr "Bară de unelte"
 
 #: modules/masterbar/rtl-admin-bar.php:36
 msgid "Skip to toolbar"

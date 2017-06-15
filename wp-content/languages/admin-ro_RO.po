@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-09 19:48:22+0000\n"
+"PO-Revision-Date: 2017-06-15 08:32:44+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -225,6 +225,10 @@ msgstr "Și mai multă fericire pentru dezvoltator %s"
 #: wp-admin/users.php:167 wp-admin/users.php:207
 msgid "Sorry, you are not allowed to delete users."
 msgstr "Regret, nu ai voie să ștergi utilizatori."
+
+#: wp-admin/user-new.php:23 wp-admin/user-new.php:117
+msgid "Sorry, you are not allowed to create users."
+msgstr "Regret, nu ai voie să creezi utilizatori."
 
 #: wp-admin/customize.php:163
 msgid "The Customizer allows you to preview changes to your site before publishing them. You can navigate to different pages on your site within the preview. Edit shortcuts are shown for some editable elements."
@@ -466,9 +470,9 @@ msgstr "Căutarea pentru modulele instalate va căuta termeni după nume, descri
 msgid "Custom Logo"
 msgstr "Logo personalizat"
 
-#: wp-admin/user-new.php:23 wp-admin/user-new.php:117
-msgid "Sorry, you are not allowed to create users."
-msgstr "Regret, nu ai voie să creezi utilizatori."
+#: wp-admin/users.php:317 wp-admin/users.php:348
+msgid "Sorry, you are not allowed to remove users."
+msgstr "Regret, nu ai voie să înlături utilizatori."
 
 #: wp-admin/user-new.php:16 wp-admin/user-new.php:56
 msgid "Sorry, you are not allowed to add users to this network."
@@ -660,10 +664,6 @@ msgstr "Aceasta va înlocui conținutul actual din editor cu ultima versiune a c
 #: wp-admin/includes/template.php:1523
 msgid "Close media attachment panel"
 msgstr "Închide panoul de atașamente media"
-
-#: wp-admin/users.php:317 wp-admin/users.php:348
-msgid "Sorry, you are not allowed to remove users."
-msgstr "Regret, nu voie să înlături utilizatori."
 
 #: wp-admin/includes/ms.php:1096
 msgid "Info"

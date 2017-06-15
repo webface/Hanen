@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-06 15:47:05+0000\n"
+"PO-Revision-Date: 2017-06-15 14:12:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2271,7 +2271,7 @@ msgstr "Ungültiger Produktsteuer Status."
 
 #: includes/abstracts/abstract-wc-product.php:794
 msgid "Invalid or duplicated SKU."
-msgstr "Ungültige oder doppelte SKU."
+msgstr "Ungültige oder doppelte Art.-Nr."
 
 #: includes/abstracts/abstract-wc-product.php:757
 msgid "Invalid catalog visibility option."
@@ -3897,7 +3897,7 @@ msgstr "Bruttooumsatz der Periode."
 #: includes/api/class-wc-rest-products-controller.php:1996
 #: includes/api/v1/class-wc-rest-products-controller.php:2632
 msgid "Limit result set to products with a specific SKU."
-msgstr "Beschränkt Ergebnismenge auf Produkte mit bestimmter SKU."
+msgstr "Beschränkt Ergebnismenge auf Produkte mit bestimmter Art.-Nr."
 
 #: includes/api/class-wc-rest-products-controller.php:2032
 #: includes/api/v1/class-wc-rest-products-controller.php:2626
@@ -4428,7 +4428,7 @@ msgstr "Titelform des Produktes."
 #: includes/api/legacy/v2/class-wc-api-products.php:928
 #: includes/api/legacy/v3/class-wc-api-products.php:1413
 msgid "The SKU already exists on another product."
-msgstr "Diese SKU ist schon einem anderen Produkt zugeordnet."
+msgstr "Diese Art.-Nr. ist schon einem anderen Produkt zugeordnet."
 
 #: includes/api/class-wc-rest-products-controller.php:1771
 #: includes/api/v1/class-wc-rest-product-tags-controller.php:100
@@ -4934,7 +4934,7 @@ msgstr "Produkt ist ungültig."
 #: includes/api/class-wc-rest-orders-controller.php:557
 #: includes/api/v1/class-wc-rest-orders-controller.php:617
 msgid "Product ID or SKU is required."
-msgstr "Produkt-ID oder SKU wird benötigt."
+msgstr "Produkt-ID oder Art.-Nr. wird benötigt."
 
 #: includes/api/class-wc-rest-orders-controller.php:493
 #: includes/api/legacy/class-wc-rest-legacy-orders-controller.php:248
