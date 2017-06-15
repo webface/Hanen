@@ -113,12 +113,11 @@ class Deploy {
             $this->log('Changing working directory... '.implode(' ', $output));
 
             // Discard any changes to tracked files since our last deploy
-//            exec('git reset --hard HEAD', $output);
+            exec('git reset --hard HEAD', $output);
             $this->log('Reseting repository... '.implode(' ', $output));
 
             // Update the local repository
-//            exec('git pull '.$this->_remote.' '.$this->_branch, $output);
-$this->log('would pull in this branch: '. $this->_branch);
+            exec('git pull '.$this->_remote.' '.$this->_branch, $output);
             $this->log('Pulling in changes... '.implode(' ', $output));
 
             // Secure the .git directory
