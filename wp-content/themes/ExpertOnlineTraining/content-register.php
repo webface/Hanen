@@ -7,5 +7,7 @@
 	<span class="asterisk">*</span> Required fields
 </p>
 <?php 
-	display_register_account_form (); 
+//	display_register_account_form (); 
+	gravity_form('3', false, false, true);
+
 ?>
