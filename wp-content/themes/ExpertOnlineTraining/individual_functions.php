@@ -1,16 +1,14 @@
 <?php
 /**
  * This file handles all the functions involved with an individual
- * @author Patrick Roy
 **/
 
 add_action ('init', 'add_individual_custom_post_type');
 add_action('save_post', 'save_indiv_meta', 12, 2);
 
-
 $indiv_info = array (
 	'indiv_title' => array (
-		'label' => 'Camp/Individual Name',
+		'label' => 'Org/Individual Name',
 		'type' => 'text'
 	),
         'user_email' => array (

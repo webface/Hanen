@@ -3010,51 +3010,57 @@ function remove_author_links($author_link, $args)
 /******************************
  * Boolean if(org_has_maxed_staff())
  */
-function org_has_maxed_staff($org_id,$subscription_id)
+function org_has_maxed_staff($org_id = 0, $subscription_id = 0)
 {
-            $subscription = getSubscriptions($subscription_id,0,1); // Subscription details
-            $staff_credits = $subscription->staff_credits; // The staff credits
-            // Add upgrade number of staff
-            $upgrades = getUpgrades ($subscription_id);
-            if($upgrades)
-            {
-                foreach($upgrades as $upgrade)
-                {
-                    $staff_credits += $upgrade->accounts;
-                }
-            }
-            $response = getEotUsers($org_id);
-            if ($response['status'] == 1)
-            {
-            $users = $response['users'];
-            $learners = filterUsers($users, 'learner'); // only the learners
-            }
-            else
-            {
-                    $users = array();
-                    $learners = array();
-            }
-            $num_staff = count($learners); // Number of staff for this organization
-            // Check if the user has enough credits to add more staff members
-            if( $num_staff >= $staff_credits )
-            {
-                return true;
-            }else{
-                return false;
-            }
+  $subscription = getSubscriptions($subscription_id,0,1); // Subscription details
+  $staff_credits = $subscription->staff_credits; // The staff credits
+  
+  // Add upgrade number of staff
+  $upgrades = getUpgrades ($subscription_id);
+  if($upgrades)
+  {
+      foreach($upgrades as $upgrade)
+      {
+          $staff_credits += $upgrade->accounts;
+      }
+  }
+  
+  $response = getEotUsers($org_id); // gets the users for the org
+  if ($response['status'] == 1)
+  {
+    $users = $response['users'];
+    $learners = filterUsers($users, 'learner'); // only the learners
+  }
+  else
+  {
+    $users = array();
+    $learners = array();
+  }
+
+  $num_staff = count($learners); // Number of staff for this organization
+
+  // Check if the user has enough credits to add more staff members
+  if( $num_staff >= $staff_credits )
+  {
+      return true; // no more staff credits
+  }
+  else
+  {
+      return false; // can add more staff
+  }
 }
 
 /**
  * Get all the data of a specific course present in the portal
- *  @param int course_id - the LU course ID
+ *  @param int course_id - the course ID
  *
- *  @return course array()
+ *  @return course array() - an array of course data
  */
-function getCourse($course_id) 
+function getCourse($course_id = 0) 
 {
-global $wpdb; 
-$course=$wpdb->get_row("SELECT * FROM " . TABLE_COURSES . " WHERE id = $course_id", ARRAY_A);
-return $course;
+  global $wpdb; 
+  $course=$wpdb->get_row("SELECT * FROM " . TABLE_COURSES . " WHERE id = $course_id", ARRAY_A);
+  return $course;
 }
 
 /**
@@ -3071,34 +3077,34 @@ function enrollUserInCourse($email = '', $portal_subdomain = DEFAULT_SUBDOMAIN, 
     * Variables required in $data
     * org_id - the organization ID
     * course_name - name of the course the user will be enrolled to
-     * course_id
+    * course_id - the ID of the course to enroll the user into
     */
-   //error_log(Json_encode($data));
     if($email == "")
         return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: invalid user email address.");
 
     if($course_id == null)
-        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: no course name supplied.");
-        $user=  get_user_by('email', $email);
-        global $wpdb;
-        // Save enrollments to the database.
-        $insert = $wpdb->insert(
-          TABLE_ENROLLMENTS, 
-          array( 
-            'course_id' => $course_id, 
-            'email' => $email,
-            'org_id' => $org_id,
-            'status' => 'not_started',
-            'user_id' => $user->ID
-          ), 
-          array( 
-            '%d', 
-            '%s', 
-            '%d',
-            '%d',
-            '%d'
-        ));
-    
+        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: no course id supplied.");
+
+    $user = get_user_by('email', $email);
+    global $wpdb;
+
+    // Save enrollments to the database.
+    $insert = $wpdb->insert(
+      TABLE_ENROLLMENTS, 
+      array( 
+        'course_id' => $course_id, 
+        'email' => $email,
+        'user_id' => $user->ID,
+        'org_id' => $org_id,
+        'status' => 'not_started'
+      ), 
+      array( 
+        '%d', 
+        '%s', 
+        '%d',
+        '%d',
+        '%s'
+    ));
 
     //checks for errors when creating enrollment
     if($insert===FALSE) 
