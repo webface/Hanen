@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-06 23:12:46+0000\n"
+"PO-Revision-Date: 2017-06-19 22:35:28+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -44,7 +44,7 @@ msgstr "Você sabia que o WordPress tem uma próspera comunidade offline com gru
 
 #: wp-admin/about.php:126
 msgid "Have you ever tried updating a link, or the text around a link, and found you can&#8217;t seem to edit it correctly? When you edit the text after the link, your new text also ends up linked. Or you edit the text in the link, but your text ends up outside of it. This can be frustrating! With link boundaries, a great new feature, the process is streamlined and your links will work well. You’ll be happier. We promise."
-msgstr "Alguma vez você já tentou atualizar um link ou o texto de um link e achou que você não pode editar isso corretamente? Quando você edita o texto após o link, seu novo texto também acaba vinculado. Ou você edita o texto no link, mas seu texto termina fora dele. Isso é frustrante! Com limites de link, uma nova funcionalidade, o processo é simplificado e seus links funcionará corretamente. Você ficará feliz! Lhe prometemos."
+msgstr "Você já tentou atualizar um link ou o texto de um link e achou que não conseguiria editá-lo de forma correta? Quando você edita o texto após o link, seu novo texto também acaba vinculado. Ou você edita um texto no link, que acaba ficando fora deste. Isso é frustrante! Com limites de link, uma nova funcionalidade, o processo é simplificado e seus links funcionarão corretamente. Isso vai facilitar a sua vida e você ficará mais feliz, nós prometemos!"
 
 #: wp-admin/about.php:117
 msgid "This feature deserves a parade down the center of town! Rich-text editing capabilities are now native for Text widgets. Add a widget anywhere and format away. Create lists, add emphasis, and quickly and easily insert links. Have fun with your newfound formatting powers, and watch what you can accomplish in a short amount of time."
@@ -225,6 +225,10 @@ msgstr "Ainda mais felicidade para os desenvolvedores %s"
 #: wp-admin/users.php:167 wp-admin/users.php:207
 msgid "Sorry, you are not allowed to delete users."
 msgstr "Você não tem permissão para excluir usuários."
+
+#: wp-admin/user-new.php:23 wp-admin/user-new.php:117
+msgid "Sorry, you are not allowed to create users."
+msgstr "Sem permissão para criar usuários."
 
 #: wp-admin/customize.php:163
 msgid "The Customizer allows you to preview changes to your site before publishing them. You can navigate to different pages on your site within the preview. Edit shortcuts are shown for some editable elements."
@@ -466,9 +470,9 @@ msgstr "A busca por plugins instalados irá procurar os termos no nome, descriç
 msgid "Custom Logo"
 msgstr "Logo personalizada"
 
-#: wp-admin/user-new.php:23 wp-admin/user-new.php:117
-msgid "Sorry, you are not allowed to create users."
-msgstr "Sem permissão para criar usuários."
+#: wp-admin/users.php:317 wp-admin/users.php:348
+msgid "Sorry, you are not allowed to remove users."
+msgstr "Sem permissão para remover usuários."
 
 #: wp-admin/user-new.php:16 wp-admin/user-new.php:56
 msgid "Sorry, you are not allowed to add users to this network."
@@ -660,10 +664,6 @@ msgstr "Isso irá substituir o editor de conteúdo atual com a última versão d
 #: wp-admin/includes/template.php:1523
 msgid "Close media attachment panel"
 msgstr "Fechar painel de mídia"
-
-#: wp-admin/users.php:317 wp-admin/users.php:348
-msgid "Sorry, you are not allowed to remove users."
-msgstr "Sem permissão para remover usuários."
 
 #: wp-admin/includes/ms.php:1096
 msgid "Info"

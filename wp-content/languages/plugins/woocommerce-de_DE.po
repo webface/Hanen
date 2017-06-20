@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-15 14:12:00+0000\n"
+"PO-Revision-Date: 2017-06-16 18:03:51+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,10 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: de\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
+
+#: includes/api/class-wc-rest-authentication.php:538
+msgid "Unknown request method."
+msgstr "Unbekannte Anfragemethode."
 
 #: includes/admin/meta-boxes/class-wc-meta-box-order-actions.php:86
 msgid "Create"
@@ -76,7 +80,7 @@ msgstr "Ungültige Produkt ID"
 #: includes/api/class-wc-rest-setting-options-controller.php:386
 #: includes/api/v1/class-wc-rest-product-reviews-controller.php:179
 msgid "Sorry, you cannot edit this resource."
-msgstr "Leider können Sie diese Ressource nicht bearbeiten."
+msgstr "Leider kannst du diese Ressource nicht bearbeiten."
 
 #: includes/admin/views/html-bulk-edit-product.php:28
 msgid "Increase existing price by (fixed amount or %):"
@@ -363,8 +367,8 @@ msgstr "%s Admin Bereich besuchen:"
 #: includes/log-handlers/class-wc-log-handler-email.php:172
 msgid "You have received the following WooCommerce log message:"
 msgid_plural "You have received the following WooCommerce log messages:"
-msgstr[0] "Sie haben die folgende WooCommerce Log Nachricht erhalten:"
-msgstr[1] "Sie haben die folgende WooCommerce Log Nachrichten erhalten:"
+msgstr[0] "Du hast die folgende WooCommerce Log Nachricht erhalten:"
+msgstr[1] "Du hast die folgenden WooCommerce Log Nachrichten erhalten:"
 
 #: includes/log-handlers/class-wc-log-handler-email.php:151
 msgid "[%1$s] %2$s: %3$s WooCommerce log message"
@@ -388,7 +392,7 @@ msgstr "%1$s - Bestellung #%2$s"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:118
 msgid "Optionally enter the URL to a 150x50px image displayed as your logo in the upper left corner of the PayPal checkout pages."
-msgstr "Geben Sie optional die URL für ein 150x50px Bild ein, das als Ihr Logo in der oberen linken Ecke der PayPal Checkout Seiten anzeigt."
+msgstr "Gib optional die URL für ein 150x50px Bild ein, das als dein Logo in der oberen linken Ecke der PayPal Checkout Seiten anzeigt wird."
 
 #: includes/gateways/paypal/includes/settings-paypal.php:116
 msgid "Image url"
@@ -1232,7 +1236,7 @@ msgstr "Beschränkt Ergebnismenge auf Produkte mit einem bestimmten Steuersatz."
 
 #: includes/api/class-wc-rest-products-controller.php:2002
 msgid "Limit result set to featured products."
-msgstr "Beschränkt Ergebnismenge auf empfohlene Produkte."
+msgstr "Beschränkt Ergebnismenge auf hervorgehobene Produkte."
 
 #: includes/api/class-wc-rest-products-controller.php:1913
 msgid "List of variations IDs."
@@ -1530,7 +1534,7 @@ msgstr "Von %1$s bis %2$s"
 
 #: includes/admin/views/html-notice-theme-support.php:14
 msgid "<strong>Your theme does not declare WooCommerce support</strong> &#8211; Please read our <a href=\"%1$s\" target=\"_blank\">integration</a> guide or check out our <a href=\"%2$s\" target=\"_blank\">Storefront</a> theme which is totally free to download and designed specifically for use with WooCommerce."
-msgstr "<strong>Ihr Theme bietet keine WooCommerce Unterstützung</strong> - Bitte lesen Sie unseren <a href=\"%1$s\" target=\"_blank\">Leitfaden zur Integration</a> oder testen Sie unser <a href=\"%2$s\" target=\"_blank\">Storefront Theme</a>, das völlig kostenlos heruntergeladen werden kann und speziell für den Einsatz mit WooCommerce entwickelt wurde."
+msgstr "<strong>Dein Theme bietet keine WooCommerce Unterstützung</strong> - Bitte lese unseren <a href=\"%1$s\" target=\"_blank\">Leitfaden zur Integration</a> oder teste unser <a href=\"%2$s\" target=\"_blank\">Storefront Theme</a>, das völlig kostenlos heruntergeladen werden kann und speziell für den Einsatz mit WooCommerce entwickelt wurde."
 
 #: includes/admin/views/html-bulk-edit-product.php:54
 msgid "Set to regular price decreased by (fixed amount or %):"
@@ -1561,7 +1565,7 @@ msgstr "— Keine Änderung —"
 
 #: includes/admin/views/html-admin-page-status-report.php:680
 msgid "Learn how to update"
-msgstr "Erfahren Sie, wie Sie aktualisieren können"
+msgstr "Erfahre, wie du aktualisieren kannst"
 
 #: includes/admin/views/html-admin-page-status-report.php:678
 msgid "Outdated templates"
@@ -1618,7 +1622,7 @@ msgstr "Die MaxMind GeoIP Datenbank existiert nicht - Die Ortung (Geolokalisieru
 
 #: includes/admin/views/html-admin-page-status-report.php:321
 msgid "How to update your database table prefix"
-msgstr "So aktualisieren Sie Ihr Datenbanktabellenpräfix"
+msgstr "So aktualisierst du das Datenbanktabellenpräfix"
 
 #: includes/admin/views/html-admin-page-status-report.php:321
 msgid "%1$s - We recommend using a prefix with less than 20 characters. See: %2$s"
@@ -1630,11 +1634,11 @@ msgstr "Datenbankpräfix"
 
 #: includes/admin/views/html-admin-page-status-report.php:277
 msgid "wp_remote_get() failed. Contact your hosting provider."
-msgstr "wp_remote_get() ist fehlgeschlagen. Wenden Sie sich an Ihren Hosting-Provider."
+msgstr "wp_remote_get() ist fehlgeschlagen. Wende dich an deinen Hosting-Provider."
 
 #: includes/admin/views/html-admin-page-status-report.php:266
 msgid "wp_remote_post() failed. Contact your hosting provider."
-msgstr "wp_remote_post() ist fehlgeschlagen. Wenden Sie sich an Ihren Hosting-Provider."
+msgstr "wp_remote_post() ist fehlgeschlagen. Wende dich an deinen Hosting-Provider."
 
 #: includes/admin/views/html-admin-page-status-report.php:249
 msgid "Multibyte string"
@@ -1658,7 +1662,7 @@ msgstr "fsockopen/cURL"
 
 #: includes/admin/views/html-admin-page-status-report.php:64
 msgid "To allow logging, make %1$s writable or define a custom %2$s."
-msgstr "Um Logging zu aktivieren, machen Sie %1$s beschreibbar oder definieren Sie eine benutzerdefinierte %2$s."
+msgstr "Um Logging zu aktivieren, mache %1$s beschreibbar oder definiere eine benutzerdefinierte %2$s."
 
 #: includes/admin/views/html-admin-page-status-logs.php:17
 msgid "Delete log"
@@ -1666,7 +1670,7 @@ msgstr "Log löschen"
 
 #: includes/admin/views/html-admin-page-status-logs-db.php:23
 msgid "Are you sure you want to clear all logs from the database?"
-msgstr "Sind Sie sicher, dass Sie alle Logs aus der Datenbank löschen möchten?"
+msgstr "Bist du sicher, dass du alle Logs aus der Datenbank löschen möchtest?"
 
 #: includes/admin/views/html-admin-page-status-logs-db.php:17
 msgid "Flush all logs"
@@ -1829,7 +1833,7 @@ msgstr "Seiteninhalt: [%s]"
 
 #: includes/admin/reports/class-wc-report-sales-by-product.php:398
 msgid "Choose a product to view stats"
-msgstr "Wählen Sie ein Produkt aus, um Statistiken anzuzeigen"
+msgstr "Wähle ein Produkt aus, um Statistiken anzuzeigen"
 
 #. translators: 1: total refunds 2: total refunded orders 3: refunded items
 #: includes/admin/reports/class-wc-report-sales-by-date.php:506
@@ -1853,7 +1857,7 @@ msgstr "Datei hinzufügen"
 
 #: includes/admin/meta-boxes/views/html-variation-admin.php:309
 msgid "Enter an optional description for this variation."
-msgstr "Geben Sie eine optionale Beschreibung für diese Variante ein."
+msgstr "Gib eine optionale Beschreibung für diese Variante ein."
 
 #: includes/admin/meta-boxes/views/html-variation-admin.php:241
 msgid "Length x width x height in decimal form"
@@ -1889,7 +1893,7 @@ msgstr "Maße (%s)"
 
 #: includes/admin/meta-boxes/views/html-product-data-linked-products.php:49
 msgid "This lets you choose which products are part of this group."
-msgstr "Hier können Sie auswählen, welche Produkte diese Gruppe beinhaltet."
+msgstr "Hier kannst du auswählen, welche Produkte diese Gruppe beinhaltet."
 
 #: includes/admin/meta-boxes/views/html-product-data-linked-products.php:37
 msgid "Grouped products"
@@ -1976,7 +1980,7 @@ msgstr "Import abgeschlossen – %s Steuersätze importiert."
 #. translators: %s: five stars
 #: includes/admin/class-wc-admin.php:223
 msgid "If you like <strong>WooCommerce</strong> please leave us a %s rating. A huge thanks in advance!"
-msgstr "Wenn Sie <strong>WooCommerce</strong> mögen, schreiben Sie uns bitte eine %s Bewertung. Einen großen Dank im Voraus!"
+msgstr "Wenn Du <strong>WooCommerce</strong> magsten, schreib uns bitte eine %s Bewertung. Einen großen Dank im Voraus!"
 
 #. translators: 1: items count (i.e. 8 items) 2: current page 3: total pages
 #: includes/admin/class-wc-admin-webhooks.php:519
@@ -1997,7 +2001,7 @@ msgstr "WooCommerce kann sowohl Online- als auch Offline-Zahlungen akzeptieren. 
 
 #: includes/admin/class-wc-admin-setup-wizard.php:604
 msgid "A modern and robust way to accept credit card payments on your store. <a href=\"%s\" target=\"_blank\">Learn more about Stripe</a>."
-msgstr "Eine moderne und robuste Art, Kreditkartenzahlungen in Ihrem Onlineshop zu akzeptieren. <a href=\"%s\" target=\"_blank\">Erfahren Sie mehr über Stripe</a>."
+msgstr "Eine moderne und robuste Art, Kreditkartenzahlungen in Ihrem Onlineshop zu akzeptieren. <a href=\"%s\" target=\"_blank\">Erfahre mehr über Stripe</a>."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:590
 #: includes/admin/class-wc-admin-setup-wizard.php:597
@@ -2271,7 +2275,7 @@ msgstr "Ungültiger Produktsteuer Status."
 
 #: includes/abstracts/abstract-wc-product.php:794
 msgid "Invalid or duplicated SKU."
-msgstr "Ungültige oder doppelte Art.-Nr."
+msgstr "Ungültige oder doppelte Artikelnummer"
 
 #: includes/abstracts/abstract-wc-product.php:757
 msgid "Invalid catalog visibility option."
@@ -3897,7 +3901,7 @@ msgstr "Bruttooumsatz der Periode."
 #: includes/api/class-wc-rest-products-controller.php:1996
 #: includes/api/v1/class-wc-rest-products-controller.php:2632
 msgid "Limit result set to products with a specific SKU."
-msgstr "Beschränkt Ergebnismenge auf Produkte mit bestimmter Art.-Nr."
+msgstr "Beschränkt Ergebnismenge auf Produkte mit bestimmter Artikelnummer."
 
 #: includes/api/class-wc-rest-products-controller.php:2032
 #: includes/api/v1/class-wc-rest-products-controller.php:2626
@@ -4428,7 +4432,7 @@ msgstr "Titelform des Produktes."
 #: includes/api/legacy/v2/class-wc-api-products.php:928
 #: includes/api/legacy/v3/class-wc-api-products.php:1413
 msgid "The SKU already exists on another product."
-msgstr "Diese Art.-Nr. ist schon einem anderen Produkt zugeordnet."
+msgstr "Diese Artikelnummer ist schon einem anderen Produkt zugeordnet."
 
 #: includes/api/class-wc-rest-products-controller.php:1771
 #: includes/api/v1/class-wc-rest-product-tags-controller.php:100
@@ -4934,7 +4938,7 @@ msgstr "Produkt ist ungültig."
 #: includes/api/class-wc-rest-orders-controller.php:557
 #: includes/api/v1/class-wc-rest-orders-controller.php:617
 msgid "Product ID or SKU is required."
-msgstr "Produkt-ID oder Art.-Nr. wird benötigt."
+msgstr "Produkt-ID oder Artikelnummer wird benötigt."
 
 #: includes/api/class-wc-rest-orders-controller.php:493
 #: includes/api/legacy/class-wc-rest-legacy-orders-controller.php:248
@@ -5206,7 +5210,7 @@ msgstr "Webhooks unterstützen keine Löschvorgänge."
 #: includes/api/legacy/v3/class-wc-api-orders.php:1352
 #: includes/api/v1/class-wc-rest-order-notes-controller.php:230
 msgid "Cannot create order note, please try again."
-msgstr "Bestellhinweis kann nicht erstellt werden. Bitte versuchen Sie es erneut. "
+msgstr "Bestellhinweis kann nicht erstellt werden. Bitte versuche es erneut. "
 
 #: includes/data-stores/abstract-wc-order-item-type-data-store.php:117
 msgid "Invalid order item."
@@ -6854,7 +6858,7 @@ msgstr "Ungültige Produkt-Schlagwort ID"
 #: includes/api/legacy/v3/class-wc-api-products.php:871
 #: includes/api/legacy/v3/class-wc-api-products.php:907
 msgid "You do not have permission to read product tags"
-msgstr "Sie haben keine Berechtigung, um Produkt-Schlagwörter zu lesen"
+msgstr "Du hast keine Berechtigung um Produkt-Schlagwörter zu lesen"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:844
 msgid "Could not delete the category"
@@ -7002,7 +7006,7 @@ msgstr "Wo wird der Name des Absenders in den ausgehenden WooCommerce E-Mails an
 
 #: includes/admin/settings/class-wc-settings-emails.php:56
 msgid "Email notifications sent from WooCommerce are listed below. Click on an email to configure it."
-msgstr "Die WooCommerce E-Mail-Benachrichtigungen sind unten aufgelistet. Klicken Sie auf eine E-Mail, um sie zu konfigurieren."
+msgstr "Die WooCommerce E-Mail-Benachrichtigungen sind unten aufgelistet. Klicke auf eine E-Mail, um sie zu konfigurieren."
 
 #: includes/admin/settings/class-wc-settings-emails.php:56
 msgid "Email notifications"
@@ -7288,7 +7292,7 @@ msgstr[1] "Kategorien:"
 #: includes/admin/meta-boxes/views/html-order-item.php:24
 #: templates/single-product/meta.php:31
 msgid "SKU:"
-msgstr "Art.-Nr.:"
+msgstr "Artikelnummer:"
 
 #: templates/single-product/add-to-cart/variable.php:32
 msgid "This product is currently out of stock and unavailable."
@@ -7823,7 +7827,7 @@ msgstr "Produkte im Angebot"
 
 #: includes/widgets/class-wc-widget-products.php:46
 msgid "Featured products"
-msgstr "Empfohlene Produkte"
+msgstr "Hervorgehobene Produkte"
 
 #: includes/widgets/class-wc-widget-products.php:45
 msgid "All products"
@@ -8388,7 +8392,7 @@ msgstr "Gib einen Benutzernamen oder eine E-Mail-Adresse ein."
 
 #: includes/shortcodes/class-wc-shortcode-checkout.php:239
 msgid "The order totals have been updated. Please confirm your order by pressing the \"Place order\" button at the bottom of the page."
-msgstr "Die Bestellsummen wurden aktualisiert. Bitte bestätigen Sie Ihre Bestellung durch Drücken der Schaltfläche \"Zahlungspflichtig bestellen\" am unteren Rand der Seite."
+msgstr "Die Bestellsummen wurden aktualisiert. Bitte bestätige deine Bestellung durch Drücken der Schaltfläche \"Zahlungspflichtig bestellen\" am unteren Rand der Seite."
 
 #: includes/shortcodes/class-wc-shortcode-checkout.php:140
 #: templates/checkout/thankyou.php:51
@@ -8554,7 +8558,7 @@ msgstr "Berechnungsart"
 #: includes/shipping/flat-rate/includes/settings-flat-rate.php:64
 #: includes/shipping/legacy-flat-rate/includes/settings-flat-rate.php:91
 msgid "No shipping class cost"
-msgstr "Kostenfreie Versandklasse"
+msgstr "Keine Kosten für Versandklasse"
 
 #. translators: %s: shipping class name
 #: includes/shipping/flat-rate/includes/settings-flat-rate.php:55
@@ -10868,7 +10872,7 @@ msgstr "Das Attribut konnte nicht bearbeitet werden"
 #: includes/api/legacy/v3/class-wc-api-products.php:2644
 #: includes/api/legacy/v3/class-wc-api-products.php:2956
 msgid "You do not have permission to edit product attributes"
-msgstr "Sie haben nicht die Berechtigung um Produkt-Attribute zu bearbeiten"
+msgstr "Du hast keine Berechtigung um Produkt-Attribute zu bearbeiten"
 
 #: includes/api/legacy/v2/class-wc-api-products.php:2002
 #: includes/api/legacy/v3/class-wc-api-products.php:2561
@@ -11059,7 +11063,7 @@ msgstr "Angegebene Produkt-ID stimmt nicht mit diesem Artikel überein"
 #: includes/api/legacy/v2/class-wc-api-orders.php:861
 #: includes/api/legacy/v3/class-wc-api-orders.php:909
 msgid "Product ID or SKU is required"
-msgstr "Produkt-ID oder Art.-Nr. erforderlich"
+msgstr "Produkt-ID oder Artikelnummer erforderlich"
 
 #: includes/api/legacy/v2/class-wc-api-orders.php:518
 #: includes/api/legacy/v2/class-wc-api-orders.php:1574
@@ -13679,7 +13683,7 @@ msgstr "Meta hinzufügen"
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:387
 #: includes/api/v1/class-wc-rest-orders-controller.php:1212
 msgid "Product SKU."
-msgstr "Art.-Nr. des Produkts."
+msgstr "Artikelnummer des Produkts."
 
 #: includes/admin/meta-boxes/views/html-order-item.php:28
 msgid "Variation ID:"
@@ -13803,7 +13807,7 @@ msgstr "Los"
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:70
 #: includes/admin/meta-boxes/views/html-variation-admin.php:375
 msgid "Download expiry"
-msgstr "Download-Ablaufdatum"
+msgstr "Ablauf des Downloads"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:97
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:69
@@ -15466,7 +15470,7 @@ msgstr "Hervorgehobenes Produkt"
 
 #: includes/admin/class-wc-admin-post-types.php:1815
 msgid "Enable this option to feature this product."
-msgstr "Aktiviere diese Option, um das Produkt zu empfehlen bzw. hervorzuheben (Featured)."
+msgstr "Aktiviere diese Option, um das Produkt zu empfehlen bzw. hervorzuheben."
 
 #: includes/admin/class-wc-admin-post-types.php:1793
 msgid "Catalog visibility:"
@@ -15664,7 +15668,7 @@ msgstr "Ja"
 
 #: includes/admin/class-wc-admin-post-types.php:425
 msgid "Toggle featured"
-msgstr "„Empfohlenes Produkt“ an-/ausschalten"
+msgstr "Hervorgehoben an-/ausschalten"
 
 #: includes/admin/class-wc-admin-post-types.php:401
 msgid "Variable"
@@ -15814,7 +15818,7 @@ msgstr "Lager"
 #: includes/admin/meta-boxes/views/html-variation-admin.php:64
 #: includes/admin/views/html-quick-edit-product.php:22
 msgid "SKU"
-msgstr "Art.-Nr."
+msgstr "Artikelnummer"
 
 #: includes/admin/class-wc-admin-post-types.php:253
 #: includes/admin/class-wc-admin-taxonomies.php:319
@@ -16708,7 +16712,7 @@ msgstr "Kein Kunde ausgewählt"
 #: includes/admin/views/html-bulk-edit-product.php:199
 #: includes/admin/views/html-quick-edit-product.php:157
 msgid "Featured"
-msgstr "Empfohlen"
+msgstr "Hervorgehoben"
 
 #: includes/admin/class-wc-admin-assets.php:259
 msgid "Load the customer's shipping information? This will remove any currently entered shipping information."

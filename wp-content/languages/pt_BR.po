@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-06 22:36:12+0000\n"
+"PO-Revision-Date: 2017-06-19 22:46:45+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2428,11 +2428,6 @@ msgstr "Não autorizado a modificar configuração devido a capacidade."
 msgid "New page title"
 msgstr "Novo título de página"
 
-#. translators: %s: current user's display name
-#: wp-includes/admin-bar.php:217
-msgid "Howdy, %s"
-msgstr "Olá %s"
-
 #: wp-includes/class-wp-customize-control.php:624
 msgid "New page title&hellip;"
 msgstr "Título da nova página&hellip;"
@@ -2461,6 +2456,11 @@ msgstr "Esse link não pode ser pré-visualizado."
 #: wp-includes/feed.php:542
 msgid "PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension."
 msgstr "A extensão XML do PHP não está disponível. Entre em contato com seu serviço de hospedagem para ativá-la."
+
+#. translators: %s: current user's display name
+#: wp-includes/admin-bar.php:217
+msgid "Howdy, %s"
+msgstr "Olá, %s"
 
 #: wp-includes/customize/class-wp-customize-nav-menu-location-control.php:80
 msgid "Edit selected menu"
@@ -3442,10 +3442,6 @@ msgstr "Não foi possível salvar a chave de redefinição de senha no banco de 
 msgid "Nicename may not be longer than 50 characters."
 msgstr "O nome amigável não pode ter mais de 50 caracteres."
 
-#: wp-includes/user.php:142
-msgid "<strong>ERROR</strong>: Invalid username."
-msgstr "<strong>ERRO</strong>: NOME DE USUÁRIO Inválido."
-
 #: wp-includes/taxonomy.php:513
 msgid "Tags list"
 msgstr "Lista de tags"
@@ -3461,6 +3457,10 @@ msgstr "Navegação da lista de tags"
 #: wp-includes/taxonomy.php:512
 msgid "Categories list navigation"
 msgstr "Navegação da listas de categorias"
+
+#: wp-includes/user.php:142
+msgid "<strong>ERROR</strong>: Invalid username."
+msgstr "<strong>ERRO</strong>: Nome de usuário inválido."
 
 #. translators: 1: function name, 2: WordPress version number
 #: wp-includes/rest-api.php:500 wp-includes/rest-api.php:524
@@ -3852,7 +3852,7 @@ msgstr "Mostrar senha"
 
 #: wp-includes/class-wp-customize-nav-menus.php:418
 msgid "Menu Name"
-msgstr "Nome do Menu"
+msgstr "Nome do menu"
 
 #: wp-includes/customize/class-wp-customize-site-icon-control.php:70
 #: wp-includes/media-template.php:1253
@@ -3935,7 +3935,7 @@ msgstr "O ícone do site é utilizado como ícone em navegadores e aplicativos p
 
 #: wp-includes/class-wp-customize-manager.php:3793
 msgid "Site Identity"
-msgstr "Identidade do Site"
+msgstr "Identidade do site"
 
 #. translators: 1: Title of a menu item, 2: Type of a menu item
 #: wp-includes/class-wp-customize-nav-menus.php:917
@@ -4070,11 +4070,6 @@ msgstr ""
 "Equipe ###SITENAME###\n"
 "###SITEURL###"
 
-#. translators: User password change notification email subject. 1: Site name
-#: wp-includes/user.php:1837
-msgid "[%s] Notice of Password Change"
-msgstr "[%s] Aviso de Alteração de Senha"
-
 #. translators: Do not translate USERNAME, ADMIN_EMAIL, EMAIL, SITENAME,
 #. SITEURL: those are placeholders.
 #: wp-includes/user.php:1821
@@ -4101,6 +4096,11 @@ msgstr ""
 "Atenciosamente,\n"
 "Equipe ###SITENAME###\n"
 "###SITEURL###"
+
+#. translators: User password change notification email subject. 1: Site name
+#: wp-includes/user.php:1837
+msgid "[%s] Notice of Password Change"
+msgstr "[%s] Aviso de alteração de senha"
 
 #. translators: %s: shortcode tag
 #: wp-includes/shortcodes.php:320
@@ -4364,7 +4364,7 @@ msgstr "Itens adicionais encontrados: %d"
 #. translators: %s: title of menu item in draft status
 #: wp-includes/class-wp-customize-nav-menus.php:432
 msgid "%s (Pending)"
-msgstr "%s (Pendente)"
+msgstr "%s (pendente)"
 
 #: wp-includes/class-wp-customize-nav-menus.php:425
 msgid "Menu item moved out of submenu"
@@ -4406,7 +4406,7 @@ msgstr "Item de menu excluído"
 #: wp-includes/class-wp-customize-nav-menus.php:159
 msgctxt "nav menu home label"
 msgid "Home"
-msgstr "Home"
+msgstr "Início"
 
 #: wp-includes/customize/class-wp-customize-new-menu-control.php:36
 msgid "Create Menu"
@@ -4773,7 +4773,7 @@ msgstr "Modo de escrita sem distrações"
 #. translators: 1: Theme support 2: hook name
 #: wp-includes/theme.php:2419
 msgid "Theme support for %1$s should be registered before the %2$s hook."
-msgstr "O Suporte para o tema %1 deve ser registrado antes do gancho %2"
+msgstr "O suporte para o tema %1$s deve ser registrado antes do gancho %2$s."
 
 #: wp-includes/class-wp-customize-widgets.php:776
 msgid "Widget moved down"
@@ -4786,10 +4786,6 @@ msgstr "Mover widget para cima"
 #: wp-includes/class-wp-editor.php:1252
 msgid "Elements path"
 msgstr "Caminho dos elementos"
-
-#: wp-includes/class-wp-editor.php:1251
-msgid "Editor toolbar"
-msgstr "Barra de ferramentas do Editor"
 
 #: wp-includes/class-wp-editor.php:1261
 msgid "To move focus to other buttons use Tab or the arrow keys. To return focus to the editor press Escape or use one of the buttons."
@@ -4806,6 +4802,10 @@ msgstr "Atalhos de foco:"
 #: wp-includes/class-wp-editor.php:1213
 msgid "Rich Text Area. Press Alt-Shift-H for help."
 msgstr "Área de rich text. Pressione Alt+Shift+H para obter ajuda."
+
+#: wp-includes/class-wp-editor.php:1251
+msgid "Editor toolbar"
+msgstr "Barra de ferramentas do editor"
 
 #. translators: 1: month, 2: day of month
 #: wp-includes/date.php:460
@@ -4957,33 +4957,14 @@ msgstr "Ano: %s"
 msgid "Reply to %s"
 msgstr "Responder para %s"
 
-#: wp-includes/class-wp-editor.php:1186
-msgctxt "vertical table cell alignment"
-msgid "V Align"
-msgstr "Alinhamento Vertical"
-
-#: wp-includes/class-wp-editor.php:1181
-msgctxt "horizontal table cell alignment"
-msgid "H Align"
-msgstr "Alinhamento Horizontal"
-
 #: wp-includes/class-wp-editor.php:1152
 msgid "Border color"
 msgstr "Cor da borda"
-
-#: wp-includes/class-wp-editor.php:1144
-msgid "Add to Dictionary"
-msgstr "Adicionar ao Dicionário"
 
 #. translators: 1: year, 2: month, 3: day of month
 #: wp-includes/date.php:443
 msgid "The following values do not describe a valid date: year %1$s, month %2$s, day %3$s."
 msgstr "Os seguintes valores não correspondem a uma data válida: ano %1$s, mês %2$s, dia %3$s."
-
-#: wp-includes/general-template.php:1495 wp-includes/general-template.php:2075
-msgctxt "daily archives date format"
-msgid "F j, Y"
-msgstr "F j, Y"
 
 #: wp-includes/class-wp-editor.php:1235
 msgid "No alignment"
@@ -5021,6 +5002,25 @@ msgstr "Notas"
 msgid "Invalid value %1$s for %2$s. Expected value should be between %3$s and %4$s."
 msgstr "%1$s é um valor inválido para %2$s. O valor esperado deve ser entre %3$s e %4$s."
 
+#: wp-includes/class-wp-editor.php:1181
+msgctxt "horizontal table cell alignment"
+msgid "H Align"
+msgstr "Alinhamento horizontal"
+
+#: wp-includes/class-wp-editor.php:1186
+msgctxt "vertical table cell alignment"
+msgid "V Align"
+msgstr "Alinhamento vertical"
+
+#: wp-includes/class-wp-editor.php:1144
+msgid "Add to Dictionary"
+msgstr "Adicionar ao dicionário"
+
+#: wp-includes/general-template.php:1495 wp-includes/general-template.php:2075
+msgctxt "daily archives date format"
+msgid "F j, Y"
+msgstr "j \\d\\e F \\d\\e Y"
+
 #: wp-includes/class-wp-editor.php:1120
 msgid "Color"
 msgstr "Cor"
@@ -5034,15 +5034,6 @@ msgstr "Cor personalizada"
 msgid "No image selected"
 msgstr "Nenhuma imagem selecionada"
 
-#: wp-includes/customize/class-wp-customize-image-control.php:35
-#: wp-includes/customize/class-wp-customize-image-control.php:40
-msgid "Select Image"
-msgstr "Selecionar Imagem"
-
-#: wp-includes/customize/class-wp-customize-media-control.php:66
-msgid "Choose File"
-msgstr "Escolher Arquivo"
-
 #: wp-includes/customize/class-wp-customize-media-control.php:64
 msgid "No file selected"
 msgstr "Nenhum arquivo selecionado"
@@ -5051,14 +5042,23 @@ msgstr "Nenhum arquivo selecionado"
 msgid "Change File"
 msgstr "Alterar arquivo"
 
-#: wp-includes/class-wp-editor.php:1123
-msgid "No color"
-msgstr "Nenhuma Cor"
-
 #: wp-includes/class-wp-editor.php:1122
 msgctxt "label for custom color"
 msgid "Custom..."
 msgstr "Personalizada..."
+
+#: wp-includes/customize/class-wp-customize-media-control.php:66
+msgid "Choose File"
+msgstr "Escolher arquivo"
+
+#: wp-includes/customize/class-wp-customize-image-control.php:35
+#: wp-includes/customize/class-wp-customize-image-control.php:40
+msgid "Select Image"
+msgstr "Selecionar imagem"
+
+#: wp-includes/class-wp-editor.php:1123
+msgid "No color"
+msgstr "Nenhuma cor"
 
 #: wp-includes/class-wp-editor.php:1037
 msgctxt "list style"
@@ -5127,13 +5127,13 @@ msgstr "Pressione return ou enter para abrir este painel"
 msgid "Bulk Select"
 msgstr "Seleção em massa"
 
-#: wp-includes/media.php:3522
-msgid "Cancel Selection"
-msgstr "Cancelar Seleção"
-
 #: wp-includes/media.php:3525
 msgid "Delete Selected"
-msgstr "Excluir Selecionado"
+msgstr "Excluir selecionado"
+
+#: wp-includes/media.php:3522
+msgid "Cancel Selection"
+msgstr "Cancelar seleção"
 
 #: wp-includes/class-wp-customize-nav-menus.php:412
 #: wp-includes/script-loader.php:764
@@ -5162,14 +5162,6 @@ msgstr "Fechar o painel de mídia"
 #: wp-includes/media-template.php:233
 msgid "Maximum upload file size: %s."
 msgstr "O tamanho máximo do arquivo de upload: %s."
-
-#: wp-includes/media-template.php:343
-msgid "File name:"
-msgstr "Nome do Arquivo:"
-
-#: wp-includes/media-template.php:344
-msgid "File type:"
-msgstr "Tipo do Arquivo:"
 
 #: wp-includes/media-template.php:345
 msgid "Uploaded on:"
@@ -5239,17 +5231,9 @@ msgstr "Não anexada"
 msgid "This site is no longer available."
 msgstr "Este site não está mais disponível."
 
-#: wp-includes/media.php:3530
-msgid "Search Media"
-msgstr "Pesquisar Mídia"
-
 #: wp-includes/media.php:2187
 msgid "Bitrate"
 msgstr "Taxa de bits"
-
-#: wp-includes/media.php:2188
-msgid "Bitrate Mode"
-msgstr "Modo de Taxa de bits"
 
 #: wp-includes/media-template.php:360
 msgid "Bitrate:"
@@ -5262,6 +5246,22 @@ msgstr "Seu navegador não suporta o acesso direto à área de transferência. U
 #: wp-includes/script-loader.php:720
 msgid "No plugins found. Try a different search."
 msgstr "Nenhum plugin encontrado. Tente uma pesquisa diferente."
+
+#: wp-includes/media.php:3530
+msgid "Search Media"
+msgstr "Pesquisar mídia"
+
+#: wp-includes/media.php:2188
+msgid "Bitrate Mode"
+msgstr "Modo de taxa de bits"
+
+#: wp-includes/media-template.php:344
+msgid "File type:"
+msgstr "Tipo do arquivo:"
+
+#: wp-includes/media-template.php:343
+msgid "File name:"
+msgstr "Nome do arquivo:"
 
 #. translators: %s: the site/panel title in the Customizer
 #: wp-includes/class-wp-customize-panel.php:382
@@ -5312,7 +5312,7 @@ msgstr "Apesar de poder cortar as imagens como quiser depois de clicar em <stron
 
 #: wp-includes/class-wp-editor.php:1245
 msgid "Keyboard Shortcuts"
-msgstr "Atalhos do Teclado"
+msgstr "Atalhos do teclado"
 
 #. translators: 1: Browser cookie documentation URL
 #: wp-login.php:800
@@ -10363,10 +10363,6 @@ msgstr "Os comentários para este item estão fechados."
 msgid "&laquo; Previous Page"
 msgstr "&laquo; Página anterior"
 
-#: wp-includes/link-template.php:2217 wp-includes/link-template.php:2353
-msgid "Next Page &raquo;"
-msgstr "Próxima Página &raquo;"
-
 #. translators: Comments feed title. 1: Post title
 #: wp-includes/feed-atom-comments.php:33
 msgid "Comments on %s"
@@ -10379,14 +10375,6 @@ msgstr "Powered by WordPress, uma plataforma semântica de vanguarda para public
 #: wp-includes/comment-template.php:1524
 msgid "Enter your password to view comments."
 msgstr "Digite sua senha para ver os comentários."
-
-#: wp-includes/comment-template.php:920
-msgid "No Comments"
-msgstr "Nenhum Comentário"
-
-#: wp-includes/comment-template.php:922
-msgid "1 Comment"
-msgstr "1 Comentário"
 
 #. translators: %s: login URL
 #: wp-includes/comment-template.php:2222
@@ -10544,6 +10532,18 @@ msgstr "Formato de hora"
 msgid "Date Format"
 msgstr "Formato de data"
 
+#: wp-includes/link-template.php:2217 wp-includes/link-template.php:2353
+msgid "Next Page &raquo;"
+msgstr "Próxima página &raquo;"
+
+#: wp-includes/comment-template.php:920
+msgid "No Comments"
+msgstr "Nenhum comentário"
+
+#: wp-includes/comment-template.php:922
+msgid "1 Comment"
+msgstr "1 comentário"
+
 #: wp-includes/category-template.php:524
 #: wp-includes/theme-compat/sidebar.php:97
 #: wp-includes/widgets/class-wp-widget-categories.php:31
@@ -10613,10 +10613,6 @@ msgstr "Publicar"
 #: wp-includes/revision.php:36
 msgid "Excerpt"
 msgstr "Resumo"
-
-#: wp-includes/taxonomy.php:111
-msgid "Link Categories"
-msgstr "Categorias de Links"
 
 #: wp-includes/taxonomy.php:116
 msgid "Edit Link Category"
@@ -10974,6 +10970,10 @@ msgstr "Todas as categorias"
 #: wp-includes/media.php:3485
 msgid "Add Media"
 msgstr "Adicionar mídia"
+
+#: wp-includes/taxonomy.php:111
+msgid "Link Categories"
+msgstr "Categorias de links"
 
 #: wp-includes/class-wp-customize-manager.php:412
 #: wp-includes/class-wp-customize-manager.php:477
