@@ -109,10 +109,13 @@ define ('TABLE_QUESTION_MODIFICATIONS', $wpdb->prefix."questionnaire_modificatio
 define ('TABLE_API_LOGS', $wpdb->prefix."api_logs");
 define ('TABLE_POSTMETA', $wpdb->prefix."postmeta");
 define ('TABLE_RESOURCES', $wpdb->prefix."resources");
+define('TABLE_ENROLLMENTS',$wpdb->prefix.'eot_enrollments');
 define ('TABLE_CERTIFICATES', $wpdb->prefix."certificate");
 define ('TABLE_CERTIFICATES_SYLLABUS', $wpdb->prefix."certificate_syllabus");
 define ('TABLE_PENDING_USERS', $wpdb->prefix."pending_users");
 define ('TABLE_PENDING_EMAILS', $wpdb->prefix."pending_emails");
+define ('TABLE_INVITATIONS', $wpdb->prefix."eot_invitations");
+define('TABLE_PENDING_SUBSCRIPTIONS',$wpdb->prefix."eot_pending_subscriptions");
 // define LearnUpon Vars
 define('DEFAULT_SUBDOMAIN', 'eot');
 
