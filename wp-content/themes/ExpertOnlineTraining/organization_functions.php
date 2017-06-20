@@ -128,7 +128,7 @@ function wp_org_details() {
 		if ($key == "org_title") { $val = $post->post_title; }
 
 		if ($count == ceil($total/2)) { echo '</div><div class="half">'; }
-
+                if(!isset($data['status'])){$data['status']='enabled';}
 		show_admin_field ($key, $data['label'], $data['type'], $val, $data['status']);
 		$count++;
 	} ?>
@@ -147,7 +147,7 @@ function wp_director_details() {
 		if ($data['type'] == 'director') { $val = $post->post_author; }
 
 		if ($count == ceil($total/2)) { echo '</div><div class="half">'; }
-
+                if(!isset($data['status'])){$data['status']='enabled';}
 		show_admin_field ($key, $data['label'], $data['type'], $val, $data['status']);
 		$count++;
 	} ?>

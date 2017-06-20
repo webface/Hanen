@@ -3006,3 +3006,107 @@ function remove_author_links($author_link, $args)
 	$author_link = preg_replace(array('{<a[^>]*>}','{}'), array(" "), $author_link);
 	return $author_link;
 }
+
+/******************************
+ * Boolean if(org_has_maxed_staff())
+ */
+function org_has_maxed_staff($org_id,$subscription_id)
+{
+            $subscription = getSubscriptions($subscription_id,0,1); // Subscription details
+            $staff_credits = $subscription->staff_credits; // The staff credits
+            // Add upgrade number of staff
+            $upgrades = getUpgrades ($subscription_id);
+            if($upgrades)
+            {
+                foreach($upgrades as $upgrade)
+                {
+                    $staff_credits += $upgrade->accounts;
+                }
+            }
+            $response = getEotUsers($org_id);
+            if ($response['status'] == 1)
+            {
+            $users = $response['users'];
+            $learners = filterUsers($users, 'learner'); // only the learners
+            }
+            else
+            {
+                    $users = array();
+                    $learners = array();
+            }
+            $num_staff = count($learners); // Number of staff for this organization
+            // Check if the user has enough credits to add more staff members
+            if( $num_staff >= $staff_credits )
+            {
+                return true;
+            }else{
+                return false;
+            }
+}
+
+/**
+ * Get all the data of a specific course present in the portal
+ *  @param int course_id - the LU course ID
+ *
+ *  @return course array()
+ */
+function getCourse($course_id) 
+{
+global $wpdb; 
+$course=$wpdb->get_row("SELECT * FROM " . TABLE_COURSES . " WHERE id = $course_id", ARRAY_A);
+return $course;
+}
+
+/**
+ * Enroll the user into the course base on email address and course name
+ *
+ * @param string $email - e-amil of the user
+ * @param string $portal_subdomain - The subdomain name of the portal
+ * @param array $data - user data
+ **/
+function enrollUserInCourse($email = '', $portal_subdomain = DEFAULT_SUBDOMAIN, $data) 
+{
+    extract($data);
+    /*
+    * Variables required in $data
+    * org_id - the organization ID
+    * course_name - name of the course the user will be enrolled to
+     * course_id
+    */
+   //error_log(Json_encode($data));
+    if($email == "")
+        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: invalid user email address.");
+
+    if($course_id == null)
+        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: no course name supplied.");
+        $user=  get_user_by('email', $email);
+        global $wpdb;
+        // Save enrollments to the database.
+        $insert = $wpdb->insert(
+          TABLE_ENROLLMENTS, 
+          array( 
+            'course_id' => $course_id, 
+            'email' => $email,
+            'org_id' => $org_id,
+            'status' => 'not_started',
+            'user_id' => $user->ID
+          ), 
+          array( 
+            '%d', 
+            '%s', 
+            '%d',
+            '%d',
+            '%d'
+        ));
+    
+
+    //checks for errors when creating enrollment
+    if($insert===FALSE) 
+    {
+        return array('status' => 0, 'message' => "Error in enrollUserInCourse");
+    }    
+    else
+    {
+        return array('status' => 1);
+    } 
+}

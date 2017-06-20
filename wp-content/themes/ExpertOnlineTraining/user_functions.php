@@ -15,7 +15,7 @@ remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
 add_action( 'admin_head', 'eot_profile_start' );
 /* removes some of the fields on the edit user page that are not needed */
 add_action( 'admin_footer', 'eot_profile_end' );
-
+add_action( 'gform_user_registered', 'after_submission_register', 10, 4 );
 /**
  * Displays the new registration form on FRONT-END which registers the director and creates a new organization
  * Outputs the form in a 2-step format using the 'jquery-steps' plugin
@@ -190,6 +190,119 @@ function display_register_account_form () {
 <?php
 }
 
+function after_submission_register($user_id, $feed, $entry, $user_pass){
+    global $wpdb;
+    
+    //var_dump ($entry);
+    //var_dump($user_id);
+    $email=$entry['2'];
+    $campname=$entry['5'];
+    //$subdomain=$entry['6'];
+    $website=$entry['8'];
+    $phone=$entry['7'];
+    $address1=$entry['9.1'];
+    $address2=$entry['9.2'];
+    $city=$entry['9.3'];
+    $state=$entry['9.4'];
+    $country=$entry['9.6'];
+    $zip=$entry['9.5'];
+        
+    if($entry['4']==="Camp Director"){
+
+        $new_org = array(
+				'post_title' => $entry['5'],
+				'post_author' => $user_id,
+				'post_type' => 'org',
+				'post_status' => 'publish',
+				'post_content' => ''
+			);
+
+			$org_id = wp_insert_post ($new_org);
+			if (is_wp_error($org_id)) { /* if error creating new organization, output to director on screen */
+				echo $org_id->get_error_message();
+			} else{
+                            update_user_meta ($user_id, 'org_id', $org_id);
+                            //update_post_meta($org_id, 'org_subdomain', $subdomain);
+                            update_post_meta($org_id, 'org_address', $address1." ".$address2);
+                            update_post_meta($org_id, 'org_url', $website);
+                            update_post_meta($org_id, 'org_phone', $phone);
+                            update_post_meta($org_id, 'org_city', $city);
+                            update_post_meta($org_id, 'org_state', $state);
+                            update_post_meta($org_id, 'org_country', $country);
+                            update_post_meta($org_id, 'org_zip', $zip);
+                        }
+    }else{ //is student
+        $code = $entry['10'];
+        if($code===""){
+                    $new_indiv = array(
+				'post_title' => $entry['1.3']." ".$entry['1.6'],
+				'post_author' => $user_id,
+				'post_type' => 'indiv',
+				'post_status' => 'publish',
+				'post_content' => ''
+			);
+                        wp_update_user( array( 'ID' => $user_id, 'role' => 'individual' ) );
+			$indiv_id = wp_insert_post ($new_indiv);
+			if (is_wp_error($indiv_id)) { /* if error creating new individual, output to user on screen */
+				echo $indiv_id->get_error_message();
+			} else{
+                            update_user_meta ($user_id, 'indiv_id', $indiv_id);
+                            update_post_meta($indiv_id, 'user_email', $email);
+                            update_post_meta($indiv_id, 'indiv_address', $address1." ".$address2);
+                            update_post_meta($indiv_id, 'indiv_url', $website);
+                            update_post_meta($indiv_id, 'indiv_phone', $phone);
+                            update_post_meta($indiv_id, 'indiv_city', $city);
+                            update_post_meta($indiv_id, 'indiv_state', $state);
+                            update_post_meta($indiv_id, 'indiv_country', $country);
+                            update_post_meta($indiv_id, 'indiv_zip', $zip);
+                        }
+        }else{
+            $sql='SELECT * FROM '.TABLE_INVITATIONS.' WHERE code ="'.$code.'"';
+            $result=$wpdb->get_row($sql,ARRAY_A);//codes should be unique to user
+            //$input = array_map("unserialize", array_unique(array_map("serialize", $results)));
+            $current=$result;
+            if(org_has_maxed_staff($current['org_id'], $current['subscription_id'])){
+                $data=array(
+                    'user_id'=>$user_id,
+                    'org_id'=>$current['org_id'],
+                    'subscription_id'=>$current['subscription_id'],
+                    'course_id'=>$current['course_id'],
+                    'user_email'=>$email
+                );
+                $temp=$wpdb->insert(TABLE_PENDING_SUBSCRIPTIONS,$data,array('%d','%d','%d','%d','%s'));
+                if($temp!==FALSE){
+                    $sql="SELECT user_email FROM wp_users as users LEFT JOIN ".TABLE_SUBSCRIPTIONS." as subscr on users.id = subscr.manager_id WHERE subscr.id =".$current['subscription_id'];
+                    $result=$wpdb->get_row($sql,ARRAY_A);
+                    $to=$result['user_email'];
+                    $subject="New User Registration on EOT";
+                    $message="A new user has subscribed on EOT. You have reached the max amount of staff you can have. You need to upgrade to add more staff"."<br>";
+                    $message.="User:".$email;
+                    if(wp_mail($to, $subject, $message)){
+                        echo "The director has reached their max number of subscriptions. We have contacted them to upgrade their account";
+                    }
+                }
+            }else{
+                add_user_meta($user_id, 'org_id', $current['org_id']);
+                if($current['course_id']!=='0'){
+                    $course=  getCourse($current['course_id']);
+                    $org_id=$current['org_id'];
+                    $course_id=$current['course_id'];
+                    $course_name=$course['course_name'];
+                    $data=compact("org_id","course_id","course_name");
+                    //var_dump($data);
+                    if($email===$current['user_email']){
+                        enrollUserInCourse($email,'',$data);
+                    }
+                }
+
+            }
+            if($current['type']==='user'){
+            $update=$wpdb->update(TABLE_INVITATIONS,array('date_signed_up'=>current_time('Y-m-d')),array('code'=>$code));
+            }
+        }
+    }
+    //exit();
+}
 /**
  * Registers the new account given the information passed through the form
  * Creates new 'inactive' manager account on LearnUpon

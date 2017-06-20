@@ -939,52 +939,6 @@ function getCourses($portal_subdomain = DEFAULT_SUBDOMAIN, $draft = 0, $data = a
 }
 
 /**
- * Get all the data of a specific course present in the portal
- *  @param string $portal_subdomain - the subdomain of the portal you want the courses from
- *  @param int course_id - the LU course ID
- *  @param array $data - user/camp data to access portal keys etc...
- *
- *  @return json encoded list of courses
- */
-function getCourse($portal_subdomain = DEFAULT_SUBDOMAIN, $course_id = 0, $data = array()) {
-  extract($data);
-  /*
-   * Variables required in $data
-   * org_id - the organization ID 
-   */
- 
-  if($course_id < 0)
-    return array('status' => 0, 'message' => "ERROR in getCourse: got Course ID: " . $course_id);
-
-  $url = select_lrn_upon_url ($portal_subdomain, "courses?course_id=$course_id&include_draft=true");
-  
-  if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
-  {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
-    $response = execute_communication($url, '', 'GET', $portal_username, $portal_password); 
-  }
-  else
-  {
-    $response = execute_communication($url, '', 'GET'); 
-  }
-  //checks for errors when creating the portal
-  if(isset($response['message'])) 
-  {
-    return array('status' => 0, 'message' => "LUERROR in getCourse:" . $response['message']);
-  }    
-  else if (isset($response['courses'][0]['id'])) 
-  {
-    // Expecting only 1 course
-    return $response['courses'][0];
-  } 
-  else
-  {
-    return null;
-  }
-}
-
-/**
  * Get all the modules inside a course
  *  @param int $course_ID - the course ID
  *  @param string $portal_subdomain - the subdomain of the portal you want the courses from
@@ -5130,62 +5084,6 @@ function updatePortal_callback () {
     }
     echo json_encode($result);
     wp_die();
-}
-
-/**
- * Enroll the user into the course base on email address and course name
- *
- * @param string $email - e-amil of the user
- * @param string $portal_subdomain - The subdomain name of the portal
- * @param array $data - user data
- **/
-function enrollUserInCourse($email = '', $portal_subdomain = DEFAULT_SUBDOMAIN, $data) {
-    extract($data);
-    /*
-    * Variables required in $data
-    * org_id - the organization ID
-    * course_name - name of the course the user will be enrolled to
-    */
-
-    if($email == "")
-        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: invalid user email address.");
-
-    if($course_name == null)
-        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: no course name supplied.");
-
-    $url = select_lrn_upon_url ($portal_subdomain, "enrollments");
-
-    $user_enrollment = array (
-        'email' => $email,
-        'course_name' => $course_name
-    );
-
-    $send_data = '{"Enrollment":' . json_encode($user_enrollment) . '}';
-
-    if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
-    {
-        $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-        $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
-        $response = execute_communication($url, $send_data, 'POST', $portal_username, $portal_password); 
-    }
-    else
-    {
-        $response = execute_communication($url, $send_data, 'POST'); 
-    }
-
-    //checks for errors when creating enrollment
-    if(isset($response['message'])) 
-    {
-        return array('status' => 0, 'message' => "Error in enrollUserInCourse:" . $response['message']);
-    }    
-    else if (isset($response['id'])) 
-    {
-        return array('status' => 1, 'enrollment_id' => $response['id']);
-    } 
-    else
-    {
-        return null;
-    }
 }
 
 /********************************************************************************************************
