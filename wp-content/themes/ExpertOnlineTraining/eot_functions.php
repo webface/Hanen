@@ -3118,25 +3118,34 @@ function enrollUserInCourse($email = '', $portal_subdomain = DEFAULT_SUBDOMAIN, 
 }
 
 //get users in an organization
-function getEotUsers($org_id){
-    $users_info = get_users( array('meta_key' => 'org_id',
-                                           'meta_value' => $org_id,
-                                           'role' => 'student'
-            ));
-    $learners = array(); // Lists of learners.
-    if( count($users_info) > 0 )
+function getEotUsers($org_id = 0){
+    
+    if (!$org_id)
     {
-      if($users_info && count($users_info) > 0)
+      return array ('status' => 0, 'message' => 'No org id specified');
+    }
+
+    $users_info = get_users( 
+        array(
+            'meta_key' => 'org_id',
+            'meta_value' => $org_id,
+            'role' => 'student'
+        )
+    );
+
+    $learners = array(); // Lists of learners.
+
+    if(!empty($users_info) && count($users_info) > 0)
+    {
+      foreach ($users_info as $user_info) 
       {
-        foreach ($users_info as $user_info) 
-        {
-          $user['first_name'] = get_user_meta ( $user_info->id, "first_name", true);
-          $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
-          $user['email'] = $user_info->user_email;
-          $user['id'] = $user_info->ID;
-          $user['user_type'] = 'learner';
-          array_push($learners, $user);
-        }
+        $user = array();
+        $user['first_name'] = get_user_meta ( $user_info->id, "first_name", true);
+        $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
+        $user['email'] = $user_info->user_email;
+        $user['id'] = $user_info->ID;
+        $user['user_type'] = 'learner';
+        array_push($learners, $user);
       }
     }
       return array('status' => 1, 'users' => $learners);
