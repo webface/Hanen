@@ -3116,3 +3116,28 @@ function enrollUserInCourse($email = '', $portal_subdomain = DEFAULT_SUBDOMAIN, 
         return array('status' => 1);
     } 
 }
+
+//get users in an organization
+function getEotUsers($org_id){
+    $users_info = get_users( array('meta_key' => 'org_id',
+                                           'meta_value' => $org_id,
+                                           'role' => 'student'
+            ));
+    $learners = array(); // Lists of learners.
+    if( count($users_info) > 0 )
+    {
+      if($users_info && count($users_info) > 0)
+      {
+        foreach ($users_info as $user_info) 
+        {
+          $user['first_name'] = get_user_meta ( $user_info->id, "first_name", true);
+          $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
+          $user['email'] = $user_info->user_email;
+          $user['id'] = $user_info->ID;
+          $user['user_type'] = 'learner';
+          array_push($learners, $user);
+        }
+      }
+    }
+      return array('status' => 1, 'users' => $learners);
+}
