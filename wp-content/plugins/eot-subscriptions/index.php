@@ -443,7 +443,7 @@ function handle_steps_callback () {
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
 							'dash_dis' => (isset($_REQUEST['le_dash_disc'])) ? $_REQUEST['le_dash_disc'] : 0.00,	// discount for dashboard
 							'staff_dis' => (isset($_REQUEST['le_staff_disc'])) ? $_REQUEST['le_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => (isset($_REQUEST['le_staff'])) ? $_REQUEST['le_staff'] : LE_MIN_ACC,	// number of staff accounts for subscription
+							'count' => (isset($_REQUEST['le_staff'])) && (!empty($_REQUEST['le_staff'])) ? $_REQUEST['le_staff'] : LE_MIN_ACC,	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -479,7 +479,7 @@ function handle_steps_callback () {
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
 							'dash_dis' => (isset($_REQUEST['le_sp_dc_dash_disc'])) ? $_REQUEST['le_sp_dc_dash_disc'] : 0.00,	// discount for dashboard
 							'staff_dis' => (isset($_REQUEST['le_sp_dc_staff_disc'])) ? $_REQUEST['le_sp_dc_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => ($_REQUEST['le_sp_dc_staff'] ? $_REQUEST['le_sp_dc_staff'] : LE_SP_DC_MIN_ACC),	// number of staff accounts for subscription
+							'count' => (isset($_REQUEST['le_sp_dc_staff']) && (!empty($_REQUEST['le_sp_dc_staff'])) ? $_REQUEST['le_sp_dc_staff'] : LE_SP_DC_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -515,7 +515,7 @@ function handle_steps_callback () {
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
 							'dash_dis' => (isset($_REQUEST['le_sp_oc_dash_disc'])) ? $_REQUEST['le_sp_oc_dash_disc'] : 0.00,	// discount for dashboard
 							'staff_dis' => (isset($_REQUEST['le_sp_oc_staff_disc'])) ? $_REQUEST['le_sp_oc_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => ($_REQUEST['le_sp_oc_staff'] ? $_REQUEST['le_sp_oc_staff'] : LE_SP_OC_MIN_ACC),	// number of staff accounts for subscription
+							'count' => (isset($_REQUEST['le_sp_oc_staff']) && (!empty($_REQUEST['le_sp_oc_staff'])) ? c : LE_SP_OC_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -551,7 +551,7 @@ function handle_steps_callback () {
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
 							'dash_dis' => (isset($_REQUEST['le_sp_prp_dash_disc'])) ? $_REQUEST['le_sp_prp_dash_disc'] : 0.00,	// discount for dashboard
 							'staff_dis' => (isset($_REQUEST['le_sp_prp_staff_disc'])) ? $_REQUEST['le_sp_prp_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => ($_REQUEST['le_sp_prp_staff'] ? $_REQUEST['le_sp_prp_staff'] : LE_SP_PRP_MIN_ACC),	// number of staff accounts for subscription
+							'count' => (isset($_REQUEST['le_sp_prp_staff']) && (!empty($_REQUEST['le_sp_prp_staff'])) ? $_REQUEST['le_sp_prp_staff'] : LE_SP_PRP_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -588,7 +588,7 @@ function handle_steps_callback () {
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
 							'dash_dis' => (isset($_REQUEST['se_dash_disc'])) ? $_REQUEST['se_dash_disc'] : 0.00,	// discount for dashboard
 							'staff_dis' => (isset($_REQUEST['se_staff_disc'])) ? $_REQUEST['se_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => ($_REQUEST['se_staff'] ? $_REQUEST['se_staff'] : SE_MIN_ACC),	// number of staff accounts for subscription
+							'count' => (isset($_REQUEST['se_staff']) && (!empty($_REQUEST['se_staff'])) ? $_REQUEST['se_staff'] : SE_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -654,6 +654,7 @@ function handle_steps_callback () {
 			        array_push($recepients, $recepient);
 			        // send the e-mail
 					$response = sendMail( 'NewSubscription', $recepients, $data );
+                    echo $response;
 				}
 				else
 				{
@@ -673,7 +674,6 @@ function handle_steps_callback () {
 function add_new_subscription ($data) {
 	global $wpdb;
 	extract ($data);
-
 	$sql = "INSERT INTO ".TABLE_SUBSCRIPTIONS." (org_id, manager_id, library_id, start_date, end_date, method, trans_id, trans_date, price, dash_price, staff_price, data_disk_price, dash_discount, staff_discount, staff_credits, status, rep_id, notes) VALUES ($org_id, $manager_id, $lib_id, '$start', '$end', '$method', '$trans_id', '$date', $total, $dash_price, $staff_price, $data_disk_price, $dash_dis, $staff_dis, $count, '$status', '$rep_id', '$notes')";
 
 	if (!$wpdb->query($sql)) {
