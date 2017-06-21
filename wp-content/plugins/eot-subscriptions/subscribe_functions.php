@@ -2,22 +2,34 @@
 /**
   * Functions related to the EOT Subscriptions
 **/
-
-function display_subscriptions () {
-	global $current_user;
+function is_active_subscription($subscription_id){
     global $wpdb;
+    $result=$wpdb->get_row(TABLE_SUBSCRIPTIONS,array('id'=>$subscription_id));
+    if($result->setup===0){
+        return FALSE;
+    }else{
+        return TRUE;
+    }
+}
+function display_subscriptions () {
+    //var_dump($_POST);
+	global $current_user;
+        global $wpdb;
 
 	wp_get_current_user ();
 	$user_id = $current_user->ID;
-	$org_id = get_org_from_user ($user_id);
+	$org_id = get_org_from_user ($user_id,true);
+        if($org_id===""){
+        $org_id =  get_indiv_from_user($user_id);
+        }
 	$org = get_post ($org_id);
-    $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-    $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
+        $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
+        $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
 	$subscriptions = get_current_subscriptions ($org_id);
-
+       // var_dump($org_lrn_upon_id);
 	if (empty ($subscriptions)) 
     { 
-		if (current_user_can ('is_director')) { 
+		if (current_user_can ('is_director')|| current_user_can('is_individual')) { 
 ?>
 			<p>
 				You have no subscriptions associated with this organization. Create a new subscription <a href="<?php bloginfo('url'); ?>/new-subscription/">here</a>.
@@ -35,6 +47,7 @@ function display_subscriptions () {
 	} 
     else 
     {
+            //var_dump($subscriptions);
         foreach($subscriptions as $subscription){
             $library = getLibraries($subscription->library_id);
             $library_id = $subscription->library_id;
@@ -43,7 +56,7 @@ function display_subscriptions () {
 //            if (($subscription->library_id == LE_ID || $subscription->library_id == LEL_ID) && $subscription->setup)
 
 // ignore setup because it takes LU some time to copy over the courses
-            if ($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID)
+            if (($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID)&&$subscription->setup)//
             {
                 // display dashboard
                 display_subscription_dashboard ($subscription);
@@ -53,7 +66,7 @@ function display_subscriptions () {
                 // display the dashboard of library != LE or LEL
                 display_subscription_dashboard($subscription);
             }
-            else
+          if(($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID)&& !$subscription->setup)// 
             {
                 // display group customization
 
@@ -70,21 +83,26 @@ function display_subscriptions () {
         </p>
 <?php
                 $questions = getQuestions($subscription->library_id);
-                $question_number = 1;
-                echo "<form name='group_customization' id='group_customization' method='POST'><fieldset><ol>";
-                foreach($questions as $question)
-                {
-                    echo "<li><b>" . $question -> question . "</b>";
-                    $answers = json_decode($question -> answer, true);
-
-                    for($i = 1; $i <= count($answers); $i++)
+                if(count($questions)>0){
+                    $question_number = 1;
+                    echo "<form name='group_customization' method='POST'><fieldset><ol>";
+                    foreach($questions as $question)
                     {
-                        echo "<div><input type='radio' name='gc_question_" . $question_number . "_answer' id='gc_question_" . $question_number . "_answer_" . $i . "' value='" . $i . "'/><label for='gc_question_" . $question_number . "_answer_" . $i . "'>" . $answers[$i] . "</label></div>";
+                        echo "<li><b>" . $question -> question . "</b>";
+                        $answers = json_decode($question -> answer, true);
+
+                        for($i = 1; $i <= count($answers); $i++)
+                        {
+                            echo "<div><input type='radio' name='gc_question_" . $question->id . "_answer' id='gc_question_" . $question->id . "_answer_" . $i . "' value='" . $i . "'/><label for='gc_question_" . $question->id . "_answer_" . $i . "'>" . $answers[$i] . "</label></div>";
+                        }
+                        echo "</li><br>";
+                        $question_number++;
                     }
-                    echo "</li><br>";
-                    $question_number++;
+                    echo "</ol><input type='hidden' name='sub_id' value='" . $subscription->id . "'><input type='hidden' name='lib_id' value='" . $subscription->library_id . "'><input type='submit' name='btn' value='submit' autofocus  onclick='return true;'/></fieldset></form>";                
+                }else{
+                    echo "<form name='group_customization' method='POST'><fieldset>";
+                    echo "<input type='hidden' name='sub_id' value='" . $subscription->id . "'><input type='hidden' name='lib_id' value='" . $subscription->library_id . "'><input type='submit' name='btn' value='Continue' autofocus  onclick='return true;'/></fieldset></form>";
                 }
-                echo "</ol><input type='hidden' name='sub_id' value='" . $subscription->id . "'><input type='hidden' name='lib_id' value='" . $subscription->library_id . "'><input type='submit' name='btn' value='submit' autofocus  onclick='return true;'/></fieldset></form>";                
             }
 
         }       
@@ -97,12 +115,17 @@ function display_subscriptions () {
             foreach ($base_courses as $course_name => $LU_course_ID)
             {
                 //verify that we have both a course_ID and org_ID
-                if ($LU_course_ID && $org_lrn_upon_id)
+                if ($LU_course_ID && $org_id)// && $org_lrn_upon_id
                 {
                     // Now clone courses into the new portal in draft mode.
-                    $response = cloneCourse($LU_course_ID, $org_lrn_upon_id, 'false');
+                    //$response = cloneCourse($LU_course_ID, $org_lrn_upon_id, 'false');
+                    $subscription_id=$subscription->id;
+                    $course_description=$course_name;
+                    $data=compact("user_id","subscription_id","course_description");
+                    $response=  createCourse($course_name, $org_id, $data);
+                    //error_log(json_encode($response));
                     if (!$response['status']) {
-                        echo "ERROR in DisplaySubscription: Couldnt cloneCourse: $course_name -> $LU_course_ID " . $response['message'];
+                        echo "ERROR in DisplaySubscription: Couldnt Create Course: $course_name -> $LU_course_ID " . $response['message'];
                     }
                 }
             }
@@ -111,14 +134,19 @@ function display_subscriptions () {
             global $questionnaire_base_course_id;
             $data = compact ("org_id");
             
-            $courses = getCourses($org_subdomain, 1, $data); // get all the courses in this portal including draft courses.
+            $courses = getCourses(0,$org_id); // get all the courses in this portal including draft courses.
+
             // create an associative array of LU Course IDs.
             foreach ($courses as $course)
             {
-                $LU_course_IDs[$course['name']] = $course['id'];
+                $LU_course_IDs[$course->course_name] = $course->id;
             }
             
-            $modules = getModules($LU_course_IDs[lrn_upon_LE_Course_TITLE], $org_subdomain, $data); // get all the available modules in this portal
+           // $modules=  getModulesInCourse($LU_course_IDs[lrn_upon_LE_Course_TITLE]);
+            $modules= getModulesByLibrary(LE_ID);
+           // var_dump($LU_course_IDs[lrn_upon_LE_Course_TITLE]);
+           // exit();
+            //$modules = getModules($LU_course_IDs[lrn_upon_LE_Course_TITLE], $org_subdomain, $data); // get all the available modules in this portal
             // create an associative array of LU Module IDs.
             foreach ($modules as $module)
             {
@@ -126,46 +154,51 @@ function display_subscriptions () {
             }
             // get number of questions for our library id
             $lib_id = filter_var($_POST['lib_id'],FILTER_SANITIZE_NUMBER_INT);
-            $query = 'SELECT COUNT(*) FROM ' . TABLE_QUESTIONS . ' WHERE library_id = ' . $lib_id;
-            $question_count = $wpdb->get_var ($query);
+            $query = 'SELECT * FROM ' . TABLE_QUESTIONS . ' WHERE library_id = ' . $lib_id." ORDER BY `order`,`id`";
+            $questions = $wpdb->get_results ($query);
 
-            for($q = 1; $q <= $question_count; $q++) 
+            foreach($questions as $question) 
             {
 //echo "<br><br>Question $q:<br>";
                 // get the answer for this question
-                $answer = filter_var($_POST['gc_question_' . $q . '_answer'], FILTER_SANITIZE_NUMBER_INT);
-                foreach ($questionnaire_base_course_id as $course_name => $course_name_id)
+                if(isset($_POST['gc_question_' . $question->id . '_answer']))
                 {
-                    // get all the actions needed for each question for each base course
-                    $query = 'SELECT * FROM ' . TABLE_QUESTION_MODIFICATIONS . 
-                            ' WHERE library_id = ' . $lib_id .
-                            ' AND question = ' . $q . 
-                            ' AND answer = ' . $answer .
-                            ' AND course_name_id = ' . $course_name_id;
-                    $actions = $wpdb->get_results($query, 'ARRAY_A');
+                    $answer = filter_var($_POST['gc_question_' . $question->id . '_answer'], FILTER_SANITIZE_NUMBER_INT);
+                    foreach ($questionnaire_base_course_id as $course_name => $course_name_id)
+                    {
+                        // get all the actions needed for each question for each base course
+                        $query = 'SELECT * FROM ' . TABLE_QUESTION_MODIFICATIONS . 
+                                ' WHERE library_id = ' . $lib_id .
+                                ' AND question = ' . $question->id . 
+                                ' AND answer = ' . $answer .
+                                ' AND course_name_id = ' . $course_name_id;
+                        $actions = $wpdb->get_results($query, 'ARRAY_A');
 
-//echo "$course_name $course_name_id<br>";
-                    foreach ($actions as $action) {
-//echo "Action: " . $action['action'] . " video id " . $action['video_id'];
-                        $video_name = $wpdb->get_var('SELECT name FROM ' . TABLE_VIDEOS . ' WHERE id = ' . $action['video_id']);
-                        $module_id = $LU_module_IDs[$video_name];
-                        $data = compact("org_id","module_id");
+    //echo "$course_name $course_name_id<br>";
+                        foreach ($actions as $action) {
+    //echo "Action: " . $action['action'] . " video id " . $action['video_id'];
+                            $video_name = $wpdb->get_var('SELECT name FROM ' . TABLE_VIDEOS . ' WHERE id = ' . $action['video_id']);
+                            $module_id = $LU_module_IDs[$video_name];
+                            $data = compact("org_id","module_id");
 
-                        if ($action['action'] == 'Add')
-                        {
-                            // add the module to the course. Dont forget the quiz.
-                            $response = addModule($LU_course_IDs[$course_name], $org_subdomain, $data);
-                            echo "<p>Trying to add $video_name to " . $LU_course_IDs[$course_name] . "</p>";
-                            if (!$response['status'])
-                                echo "ERROR in display subscription: Couldn't add module to course: " . $response['message'] . "<br>";
-                        }
-                        elseif ($action['action'] == 'Remove')
-                        {
-                            // remove the module from the course. Dont forget the quiz.
-                            $response = deleteModule($LU_course_IDs[$course_name], $org_subdomain, $data);
-                            echo "<p>Trying to delete $video_name from " . $LU_course_IDs[$course_name] . "</p>";
-                            if (!$response['status'])
-                                echo "ERROR in display subscription: Couldn't remove module from course: " . $response['message'] . "<br>";
+                            if ($action['action'] == 'Add')
+                            {
+                                // add the module to the course. Dont forget the quiz.
+                                //$response = addModule($LU_course_IDs[$course_name], $org_subdomain, $data);
+                                $response=$wpdb->insert(TABLE_COURSES_MODULES, array('course_id'=>$LU_course_IDs[$course_name],'module_id'=>$module_id));
+                                echo "<p>Trying to add $video_name to " . $LU_course_IDs[$course_name] . "</p>";
+                                if ($response=== false)
+                                    echo "ERROR in display subscription: Couldn't add module to course: " . $wpdb->last_error . "<br>";
+                            }
+                            elseif ($action['action'] == 'Remove')
+                            {
+                                // remove the module from the course. Dont forget the quiz.
+                                //$response = deleteModule($LU_course_IDs[$course_name], $org_subdomain, $data);
+                                $response =$wpdb->delete(TABLE_COURSES_MODULES, array('course_id' => $LU_course_IDs[$course_name],'module_id'=>$module_id));
+                                echo "<p>Trying to delete $video_name from " . $LU_course_IDs[$course_name] . "</p>";
+                                if ($response=== false)
+                                    echo "ERROR in display subscription: Couldn't remove module from course: " . $wpdb->last_error . "<br>";
+                            }
                         }
                     }
                 }
@@ -173,10 +206,12 @@ function display_subscriptions () {
 
             // set subscription set up variable to 1 to indicate it was set up. 
             $sub_id = filter_var($_POST['sub_id'],FILTER_SANITIZE_NUMBER_INT);
-            $wpdb->update( $wpdb->subscriptions, array( 'setup' => '1' ), array( 'id' => $sub_id ) );
+            $upd=$wpdb->update(TABLE_SUBSCRIPTIONS, array( 'setup' => '1' ), array( 'id' => $sub_id ) );
+            wp_redirect(site_url('/dashboard'));
+            exit();
 
         }
-	}
+    }
 }
 
 function get_current_subscriptions ($org_id) {
@@ -211,8 +246,12 @@ function new_subscription ($user_id = 0) {
     {
         $user = $current_user;
     }
-
-	$org_id = get_org_from_user ($user->ID);
+        $type='org';
+        $org_id = get_org_from_user ($user->ID,true);
+        if($org_id===""){
+        $type="indiv";
+        $org_id =  get_indiv_from_user($user->ID,true);
+        };
 	$org = get_post ($org_id);
 ?>
 	<form id="new-subscription" data-user_id="" action="#">
@@ -285,7 +324,13 @@ function new_subscription ($user_id = 0) {
                             No. of staff accounts:
                         </td>
                         <td>
+                            <?php if($type==='org'){ ?>
                             <input type="text" name="le_staff">
+                            <?php }
+                                else {
+                            ?>
+                            <input type="text" name="le_staff" value="1" disabled="">
+                                <?php } ?>
                         </td>
                     </tr>
                 </tbody>
@@ -437,6 +482,14 @@ function new_subscription ($user_id = 0) {
             $country = get_post_meta ($org_id, 'org_country', true);
             $zip = get_post_meta ($org_id, 'org_zip', true);
             $phone = get_post_meta ($org_id, 'org_phone', true);
+            if($type==='indiv'){
+                            $address = get_post_meta ($org_id, 'indiv_address', true);
+                            $city = get_post_meta ($org_id, 'indiv_city', true);
+                            $state = get_post_meta ($org_id, 'indiv_state', true);
+                            $country = get_post_meta ($org_id, 'indiv_country', true);
+                            $zip = get_post_meta ($org_id, 'indiv_zip', true);
+                            $phone = get_post_meta ($org_id, 'indiv_phone', true);
+            }
         ?>
             <h2>Please complete your payment details:</h2>
             <table class="staff_accounts subscription_confirm Tstandard data" id="total_table_payment">
@@ -543,7 +596,23 @@ function new_subscription ($user_id = 0) {
 
 <?php
 }
+function in_multiarray($elem, $array,$field)
+{
+    $top = sizeof($array) - 1;
+    $bottom = 0;
+    while($bottom <= $top)
+    {
+        if($array[$bottom][$field] == $elem)
+            return true;
+        else 
+            if(is_array($array[$bottom][$field]))
+                if(in_multiarray($elem, ($array[$bottom][$field])))
+                    return true;
 
+        $bottom++;
+    }        
+    return false;
+}
 // show the dashboard box for the subscription
 function display_subscription_dashboard ($subscription) {
     global $wpdb;
@@ -552,8 +621,8 @@ function display_subscription_dashboard ($subscription) {
     $org_id = get_org_from_user ($user_id); // Organization ID
     $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
     $data = compact ("org_id");
-    $staff_accounts = getUsers($portal_subdomain, $data); // Staff accounts registered in this portal.
-    $courses = getCourses($portal_subdomain, '0', $data); // All the published courses in the subdomain.
+    $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
+    $courses = getCoursesById($org_id,$subscription->id); // All the published courses in the subdomain.
 
     // get the library title
     $sql = "SELECT name from ".TABLE_LIBRARY." WHERE id = ".$subscription->library_id;
@@ -569,15 +638,27 @@ function display_subscription_dashboard ($subscription) {
             $staff_credits += $upgrade->accounts;
         }
     }
-
-    $learners = '';
-
-    // check if we have staff accounts and filter out everyone other than learners
-    if( isset($staff_accounts['status']) && $staff_accounts['status'] )
-    {
-        $users = (isset($staff_accounts['users'])) ? $staff_accounts['users'] : ''; // All users in the portal
-        $learners = filterUsers($users, 'learner'); // only the learners
+    
+    $learners=array();
+    foreach($courses as $course){
+        $users=  getEotUsersInCourse($course['id']);
+        foreach($users as $user){
+            //echo $user['id']."<br>";
+            //echo in_multiarray($user['id'], $learners, 'id')."<br>";
+            if(!in_multiarray($user['id'], $learners, 'id')){
+                array_push($learners, $user);
+            }
+        }
     }
+    //array_unique($learners);
+//    $learners = '';
+//
+//    // check if we have staff accounts and filter out everyone other than learners
+//    if( isset($staff_accounts['status']) && $staff_accounts['status'] )
+//    {
+//        $users = (isset($staff_accounts['users'])) ? $staff_accounts['users'] : ''; // All users in the portal
+//        $learners = filterUsers($users, 'learner'); // only the learners
+//    }
 
 ?>      
     <div class="dashboard_border">
@@ -606,19 +687,6 @@ function display_subscription_dashboard ($subscription) {
                 <h1>Administration</h1>
                 <br>
                 Create courses and staff accounts
-            </div>
-          </a>
-        </div>
-        
-        <div class="menu">
-          <a href="?part=customer_success&subscription_id=<?= $subscription->id ?>">
-            <div class="thumbnail">
-                <i class="fa fa-rocket" alt="Blast Off"></i>
-            </div>
-            <div class="para">
-                <h1>Blast Off</h1>
-                <br>
-                Quick tips to harness the power of EOT
             </div>
           </a>
         </div>
@@ -665,24 +733,24 @@ function display_subscription_dashboard ($subscription) {
         </tbody>
       </table>
       <br>
-
+<!--
         <div class="dashboard_button">
-          <a href="?part=staff_lounge&subscription_id=<?= $subscription->id ?>" onclick="load('load_staff_lounge')">
+          <a href="#VirtualStaffLonge">
             <div class="title" style="padding-top: 5px;">
               <b>Virtual Staff Lounge</b>
               <br>Manage your Forum
             </div>
           </a>
         </div>
-
         <div class="dashboard_button" style="margin-top:5px; padding-top:5px;">
-          <a href="?part=directors_corner&subscription_id=<?= $subscription->id ?>">
+          <a href="#Director's Corner">
             <div class="title">
               <b>Director's Corner</b>
               <br>Tips and Guides
             </div>
           </a>
-        </div>   
+        </div>
+-->        
     </div>
   </div>
 <?php
