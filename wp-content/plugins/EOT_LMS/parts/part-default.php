@@ -3,7 +3,7 @@
 global $current_user;
 $user_id = $current_user->ID; // Wordpress user ID
 $email = $current_user->user_email; // Wordpres e-mail address
-
+require_once(get_template_directory() . '/kint/Kint.class.php');
 //echo "<h1>part default</h1>default - $email";
 
 
