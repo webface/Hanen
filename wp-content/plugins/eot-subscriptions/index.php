@@ -682,8 +682,6 @@ function handle_steps_callback () {
 function add_new_subscription ($data) {
 	global $wpdb;
 	extract ($data);
-        //require_once(get_template_directory() . '/kint/Kint.class.php');
-        error_log(json_encode($data));
 	$sql = "INSERT INTO ".TABLE_SUBSCRIPTIONS." (org_id, manager_id, library_id, start_date, end_date, method, trans_id, trans_date, price, dash_price, staff_price, data_disk_price, dash_discount, staff_discount, staff_credits, status, rep_id, notes) VALUES ($org_id, $manager_id, $lib_id, '$start', '$end', '$method', '$trans_id', '$date', $total, $dash_price, $staff_price, $data_disk_price, $dash_dis, $staff_dis, $count, '$status', '$rep_id', '$notes')";
 
 	if (!$wpdb->query($sql)) {
