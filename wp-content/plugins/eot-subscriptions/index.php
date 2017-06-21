@@ -625,9 +625,9 @@ function handle_steps_callback () {
 						}
 					}
 
-					if ($usr_lrn_upon_id && $org_subdomain) {
+					//if ($usr_lrn_upon_id && $org_subdomain) {
 						$data = compact ("org_id", "org_subdomain", "user_id", "usr_lrn_upon_id", "org_lrn_upon_id", "number_of_licenses");
-						echo json_encode (communicate_with_learnupon ('activate_account', $data));
+						//echo json_encode (communicate_with_learnupon ('activate_account', $data));
 
 						// Send e-mail message
 						$first_name = get_user_meta ( $user_id, 'first_name', true ); // Director's First Name
@@ -659,9 +659,9 @@ function handle_steps_callback () {
 				        array_push($recepients, $recepient);
 				        // send the e-mail
 						$response = sendMail( 'NewSubscription', $recepients, $data );
-					} else {
-						throw new Exception ('There is some information missing (ID or Subdomain).');
-					}
+					//} else {
+					//	throw new Exception ('There is some information missing (ID or Subdomain).');
+					//}
 				}
 				else
 				{

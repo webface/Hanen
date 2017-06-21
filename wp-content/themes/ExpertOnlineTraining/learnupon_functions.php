@@ -12,7 +12,7 @@
  **/
 function select_lrn_upon_url ($subdomain, $path) {
 
-    $url = "https://$subdomain.". LRN_UPON_URL ."/api/v1/$path";
+    $url = "https://$subdomain./api/v1/$path";
 
     return $url;
 }

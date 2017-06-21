@@ -4,9 +4,9 @@ global $current_user;
 $user_id = $current_user->ID; // Wordpress user ID
 $email = $current_user->user_email; // Wordpres e-mail address
 
-echo "<h1>part default</h1>default - $email";
+//echo "<h1>part default</h1>default - $email";
 
-/*
+
 $org_id = get_org_from_user($user_id); // Organization ID
 $org_name = get_the_title($org_id);
 $portal_subdomain = get_post_meta($org_id, 'org_subdomain', true); // Subdomain of the user
@@ -17,25 +17,6 @@ $page_title = "Dashboard";
 // Camp Director
 if (current_user_can("is_director")) 
 {
-    // This creates the portal, if the portal does not exsist.
-    $isPortalFound = getPortalByTitle(DEFAULT_SUBDOMAIN, $org_name);
-    if (!isset($isPortalFound[0]['id'])) 
-    {
-        // no portal found so create it
-        $org_subdomain = $portal_subdomain;
-        $first_name = $current_user->user_firstname;
-        $last_name = $current_user->user_lastname;
-        $password = wp_generate_password('8', false);
-        $portal_data = compact("org_id", "org_name", "org_subdomain", "user_id", "first_name", "last_name", "email", "password");
-        // Create the Portal
-        $result = communicate_with_learnupon('create_account', $portal_data);
-
-        // Check for errors.
-        if (isset($result['status']) && !$result['status']) 
-        {
-            $error_message = $result['message'];
-        }
-    }
 
     if (current_user_can("is_uber_manager")) 
     {
@@ -141,7 +122,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
         /**
          * This calculates the total amount of all subscriptions in this library.
          * also counts the subscriptions that are not active.
-         * /
+         */
         foreach ($subscriptions as $subscription) 
         {
             $price = $subscription->price; // Sold Price for this subscription
@@ -217,7 +198,7 @@ else if (current_user_can("is_student"))
     }
     /*
      * This process the creation of the URL for the SQSSO 
-     * /
+     */
     // looking for the LU user ID
     $lrn_upon_id = get_user_meta($current_user->ID, 'lrn_upon_id', TRUE);
     if ($lrn_upon_id > 0) 
@@ -359,5 +340,5 @@ else
     }
     wp_die("Please contact the administrator. I could not find your role.");
 }
-*/
+
 ?>
