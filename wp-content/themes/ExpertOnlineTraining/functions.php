@@ -25,7 +25,7 @@ include_once ('user_functions.php');
 include_once ('eot_functions.php');
 include_once ('organization_functions.php');
 include_once ('individual_functions.php');
-include_once ('learnupon_functions.php');
+//include_once ('learnupon_functions.php');
 
 add_action('after_setup_theme', 'eot_setup');
 /**

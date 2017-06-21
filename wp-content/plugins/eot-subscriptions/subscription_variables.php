@@ -119,6 +119,14 @@ define ('TABLE_PENDING_SUBSCRIPTIONS', $wpdb->prefix."pending_subscriptions");
 define ('TABLE_USERS', $wpdb->prefix."users");
 define('TABLE_COURSES', $wpdb->prefix.'courses');
 
+// base courses (course name => course description)
+$base_courses = array (
+	"New Staff" => 'for new staff',
+	"Returning Staff" => 'for returning staff',
+	"Program Staff" => 'for program staff',
+	"Supervisory Staff" => 'for supervisors'
+);
+
 // define LearnUpon Vars
 define ('DEFAULT_SUBDOMAIN', 'eot');
 

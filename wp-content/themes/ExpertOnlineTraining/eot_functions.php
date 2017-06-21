@@ -8,14 +8,14 @@ function getLibraries ($library_id = 0)
 {
 	global $wpdb;
 	$sql = "SELECT id, name, price from " . TABLE_LIBRARY;
-	$inc_library = ($library_id > 0) ? " where `id` = " . $library_id . " " : "";
+	$inc_library = ($library_id > 0) ? " where `ID` = " . $library_id . " " : "";
 	$sql .= $inc_library;
 	$results = ($library_id > 0) ? $wpdb->get_row ($sql) : $wpdb->get_results ($sql);
 	return $results;
 }
 
 /*
- * Get the library based on the subscription id
+ * Get the library based on the library id
  * return the Library information
  */
 function getLibrary ($library_id = 0) {
@@ -26,7 +26,7 @@ function getLibrary ($library_id = 0) {
         return;
     }
     global $wpdb;
-    $sql = "SELECT * from ".TABLE_LIBRARY." WHERE id = $library_id";
+    $sql = "SELECT * from ".TABLE_LIBRARY." WHERE ID = $library_id";
     $results = $wpdb->get_row ($sql);
 
     return $results;
@@ -3150,3 +3150,115 @@ function getEotUsers($org_id = 0){
     }
       return array('status' => 1, 'users' => $learners);
 }
+
+ /**
+ * Creates a course for the org
+ *
+ * @param string $course_name - the name of the course
+ * @param string $org_id - Organization ID
+ * @param array $data - user data
+ */
+function createCourse($course_name = '', $org_id = 0, $data = array()) {
+    extract($data);
+    /*
+     * Variables required in $data
+     * user_id - the wordpress/EOT userID 
+     * course_due_date - OPTIONAL - the due date of the course
+     * course_description - the course description.
+     * subscription_id - the subscription id
+     */
+    if($course_name == "") 
+    {
+      return array('status' => 0, 'message' => "createCourse error: The course name cannot be blank.");
+    }
+    else if (!isset($org_id) || $org_id <= 0 || empty($org_id))
+    {
+      return array('status' => 0, 'message' => "createCourse error: The organization ID cannot be blank.");
+    }
+    else if (!isset($user_id) || $user_id <= 0 || empty($user_id))
+    {
+      return array('status' => 0, 'message' => "createCourse error: The Owner ID cannot be blank.");
+    }
+    else if (!isset($subscription_id) || $subscription_id <= 0 || empty($subscription_id))
+    {
+      return array('status' => 0, 'message' => "createCourse error: The Subscription ID cannot be blank.");
+    }
+
+
+    // filter user input and make sure parameters are included
+    $course_name = filter_var($course_name, FILTER_SANITIZE_STRING);
+    $course_description = (isset($course_description)) ? filter_var($course_description, FILTER_SANITIZE_STRING) : '';
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    $course_due_date = (isset($course_due_date)) ? $course_due_date : '0000-00-00 00:00:00';
+
+    global $wpdb;
+    $insert = $wpdb->insert( 
+      TABLE_COURSES, 
+      array( 
+        'course_name' => $course_name, 
+        'course_description' => $course_description,
+        'org_id' => $org_id,
+        'owner_id' => $user_id,
+        'due_date_after_enrollment' => $course_due_date,
+        'subscription_id'=>$subscription_id
+      ), 
+      array( 
+        '%s', 
+        '%s', 
+        '%d',
+        '%d',
+        '%s',
+        '%d' 
+      ));
+
+    //checks for errors when create the course
+    if( !$insert ) 
+    {
+      return array('status' => 0, 'message' => "createCourse error:" . $wpdb->last_error);
+    }    
+    else if( $wpdb->insert_id )
+    {
+      return array('status' => 1, 'id' => $wpdb->insert_id);
+    }
+    else
+    {
+      return false;
+    }
+}
+
+/**
+ *  Get the courses present in the org based on a parameter that's passed. Either by course id, all courses in org_id, all courses in subscription_id
+ *  @param int $course_id - the course id
+ *  @param int $org_id - the course id
+ *  @param int $subscription_id - the course id
+ *
+ *  @return array of objects of the courses
+ */
+function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
+  global $wpdb;
+
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+  $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+
+  if($course_id > 0)
+  {
+    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE course_id = $course_id", OBJECT_K); 
+  }
+  else if($org_id > -1) // org_id == 0 belongs to EOT
+  {
+    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id", OBJECT_K); 
+  }
+  else if($subscription_id > 0)
+  {
+    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE subscription_id = $subscription_id", OBJECT_K); 
+  }
+  else
+  {
+    return array('status' => 0, 'message' => "ERROR in getCourses: Invalid parameters");
+  }
+  return $courses;
+}
+
