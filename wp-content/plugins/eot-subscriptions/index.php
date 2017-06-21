@@ -625,10 +625,9 @@ function handle_steps_callback () {
 						}
 					}
 
-					//if ($usr_lrn_upon_id && $org_subdomain) {
+					if ($usr_lrn_upon_id && $org_subdomain) {
 						$data = compact ("org_id", "org_subdomain", "user_id", "usr_lrn_upon_id", "org_lrn_upon_id", "number_of_licenses");
-//error_log(json_encode($data));						
-//echo json_encode (communicate_with_learnupon ('activate_account', $data));
+						echo json_encode (communicate_with_learnupon ('activate_account', $data));
 
 						// Send e-mail message
 						$first_name = get_user_meta ( $user_id, 'first_name', true ); // Director's First Name
@@ -641,18 +640,14 @@ function handle_steps_callback () {
 							'lost_password' => wp_lostpassword_url(),
 							'camp_name' => $_REQUEST['org_name'] // The name of the camp
 						);
-                                                //error_log(json_encode($vars));
 						$fileLocation = get_template_directory_uri() . '/emailTemplates/NewSubscription.txt'; // Template message
-						//$body = wp_remote_fopen($fileLocation, "r");
-                                                $body = file_get_contents($fileLocation, true);
-                                                ////error_log(json_encode($body));
+						$body = wp_remote_fopen($fileLocation, "r");
 						$subject = 'Your new Subscription Purchase on EOT';
 						/* Replace %%VARIABLE%% using vars*/
 						foreach($vars as $key => $value)
 						{
 							$body = preg_replace('/%%' . $key . '%%/', $value, $body);
 						}
-                                               // error_log(json_encode($body));
 						$recepients = array(); // List of recepients
 						// Recepient information
 				        $recepient = array (
@@ -661,15 +656,12 @@ function handle_steps_callback () {
 				            'message' => $body,
 				            'subject' => $subject
 				        );
-                                        //error_log(json_encode($recipient));
 				        array_push($recepients, $recepient);
 				        // send the e-mail
-                                       // error_log(json_encode($recipients));
 						$response = sendMail( 'NewSubscription', $recepients, $data );
-                                                echo $response;
-//					} else {
-//						throw new Exception ('There is some information missing (ID or Subdomain).');
-//					}
+					} else {
+						throw new Exception ('There is some information missing (ID or Subdomain).');
+					}
 				}
 				else
 				{
