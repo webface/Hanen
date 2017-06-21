@@ -125,18 +125,15 @@ class SubscriptionTemplates {
         public function view_project_template( $template ) {
 
                 global $post;
+                $page_template = get_post_meta( $post->ID, '_wp_page_template', true );
 
-                if (!isset($this->templates[get_post_meta( 
-                    $post->ID, '_wp_page_template', true 
-                )] ) ) {
+                if (!isset($this->templates[$page_template] ) ) {
                     
                         return $template;
                         
                 } 
 
-                $file = plugin_dir_path(__FILE__). get_post_meta( 
-                    $post->ID, '_wp_page_template', true 
-                );
+                $file = plugin_dir_path(__FILE__). $page_template;
                 
                 // Just to be safe, we check if the file exist first
                 if( file_exists( $file ) ) {
