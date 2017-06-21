@@ -606,9 +606,6 @@ function handle_steps_callback () {
 				}
 				else if (!$skip_activate_account) // if they already have the subscription, skip creating the account.
 				{
-					$usr_lrn_upon_id = get_user_meta ($user_id, 'lrn_upon_id', true);
-					$org_subdomain = get_post_meta ($org_id, 'org_subdomain', true);
-					$org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true);
 
 					// if part of an umbrella group, add a user meta field and post meta field
 					if (isset($_REQUEST['ugroup_id']) && $_REQUEST['ugroup_id'])
@@ -625,43 +622,38 @@ function handle_steps_callback () {
 						}
 					}
 
-					//if ($usr_lrn_upon_id && $org_subdomain) {
-						$data = compact ("org_id", "org_subdomain", "user_id", "usr_lrn_upon_id", "org_lrn_upon_id", "number_of_licenses");
-						//echo json_encode (communicate_with_learnupon ('activate_account', $data));
+					$data = compact ("org_id", "user_id", "number_of_licenses");
 
-						// Send e-mail message
-						$first_name = get_user_meta ( $user_id, 'first_name', true ); // Director's First Name
-						$last_name = get_user_meta ( $user_id, 'last_name', true ); // Director's Last Name
+					// Send e-mail message
+					$first_name = get_user_meta ( $user_id, 'first_name', true ); // Director's First Name
+					$last_name = get_user_meta ( $user_id, 'last_name', true ); // Director's Last Name
 
-						$vars = array(
-							'eot_link' => get_site_url(),
-							'username' => $_REQUEST['email'],
-							'first_name' => $first_name,
-							'lost_password' => wp_lostpassword_url(),
-							'camp_name' => $_REQUEST['org_name'] // The name of the camp
-						);
-						$fileLocation = get_template_directory_uri() . '/emailTemplates/NewSubscription.txt'; // Template message
-						$body = wp_remote_fopen($fileLocation, "r");
-						$subject = 'Your new Subscription Purchase on EOT';
-						/* Replace %%VARIABLE%% using vars*/
-						foreach($vars as $key => $value)
-						{
-							$body = preg_replace('/%%' . $key . '%%/', $value, $body);
-						}
-						$recepients = array(); // List of recepients
-						// Recepient information
-				        $recepient = array (
-				            'name' => $first_name . " " . $last_name,
-				            'email' => $_REQUEST['email'],
-				            'message' => $body,
-				            'subject' => $subject
-				        );
-				        array_push($recepients, $recepient);
-				        // send the e-mail
-						$response = sendMail( 'NewSubscription', $recepients, $data );
-					//} else {
-					//	throw new Exception ('There is some information missing (ID or Subdomain).');
-					//}
+					$vars = array(
+						'eot_link' => get_site_url(),
+						'username' => $_REQUEST['email'],
+						'first_name' => $first_name,
+						'lost_password' => wp_lostpassword_url(),
+						'camp_name' => $_REQUEST['org_name'] // The name of the camp
+					);
+					$fileLocation = get_template_directory_uri() . '/emailTemplates/NewSubscription.txt'; // Template message
+					$body = wp_remote_fopen($fileLocation, "r");
+					$subject = 'Your new Subscription Purchase on EOT';
+					/* Replace %%VARIABLE%% using vars*/
+					foreach($vars as $key => $value)
+					{
+						$body = preg_replace('/%%' . $key . '%%/', $value, $body);
+					}
+					$recepients = array(); // List of recepients
+					// Recepient information
+			        $recepient = array (
+			            'name' => $first_name . " " . $last_name,
+			            'email' => $_REQUEST['email'],
+			            'message' => $body,
+			            'subject' => $subject
+			        );
+			        array_push($recepients, $recepient);
+			        // send the e-mail
+					$response = sendMail( 'NewSubscription', $recepients, $data );
 				}
 				else
 				{

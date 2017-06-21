@@ -3,13 +3,9 @@
 global $current_user;
 $user_id = $current_user->ID; // Wordpress user ID
 $email = $current_user->user_email; // Wordpres e-mail address
-
-//echo "<h1>part default</h1>default - $email";
-
-
 $org_id = get_org_from_user($user_id); // Organization ID
 $org_name = get_the_title($org_id);
-$portal_subdomain = get_post_meta($org_id, 'org_subdomain', true); // Subdomain of the user
+$portal_subdomain = ''; // Subdomain of the user REMOVE THIS LATER
 $data = compact("org_id");
 $image = get_field('dashboard_logo', 'user_' . $org_id); // Advance custom fields. Field for the dashboard_logo
 $page_title = "Dashboard";
