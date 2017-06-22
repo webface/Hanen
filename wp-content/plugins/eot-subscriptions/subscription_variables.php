@@ -118,6 +118,7 @@ define ('TABLE_INVITATIONS', $wpdb->prefix."invitations");
 define ('TABLE_PENDING_SUBSCRIPTIONS', $wpdb->prefix."pending_subscriptions");
 define ('TABLE_USERS', $wpdb->prefix."users");
 define('TABLE_COURSES', $wpdb->prefix.'courses');
+define('TABLE_COURSES_MODULES', $wpdb->prefix.'course_module');
 
 // base courses (course name => course description)
 $base_courses = array (
