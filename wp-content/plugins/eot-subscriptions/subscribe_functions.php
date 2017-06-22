@@ -110,9 +110,9 @@ function display_subscriptions ()
                     $subscription_id = $subscription->ID;
                     $data = compact("user_id","subscription_id", "course_description");
                     $response = createCourse($course_name, $org_id, $data);
-                    if (isset($response['status'] && !$response['status']) {
+                    if (isset($response['status']) && (!$response['status'])) {
                         echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
-                        error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'])
+                        error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message']);
                     }
                 }
             }
@@ -126,7 +126,7 @@ function display_subscriptions ()
             // create an associative array of LU Course IDs.
             foreach ($courses as $course)
             {
-                $LU_course_IDs[$course->course_name] = $course->id;
+                $LU_course_IDs[$course->course_name] = $course->ID;
             }
             
            // $modules=  getModulesInCourse($LU_course_IDs[lrn_upon_LE_Course_TITLE]);
@@ -566,6 +566,23 @@ function new_subscription ($user_id = 0) {
 <?php
 }
 
+function in_multiarray($elem, $array,$field)
+{
+    $top = sizeof($array) - 1;
+    $bottom = 0;
+    while($bottom <= $top)
+    {
+        if($array[$bottom][$field] == $elem)
+            return true;
+        else 
+            if(is_array($array[$bottom][$field]))
+                if(in_multiarray($elem, ($array[$bottom][$field])))
+                    return true;
+
+        $bottom++;
+    }        
+    return false;
+}
 // show the dashboard box for the subscription
 function display_subscription_dashboard ($subscription) {
     global $wpdb;
@@ -574,15 +591,15 @@ function display_subscription_dashboard ($subscription) {
     $org_id = get_org_from_user ($user_id); // Organization ID
     $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
     $data = compact ("org_id");
-    $staff_accounts = getUsers($portal_subdomain, $data); // Staff accounts registered in this portal.
-    $courses = getCourses($portal_subdomain, '0', $data); // All the published courses in the subdomain.
+    $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
+    $courses = getCoursesById($org_id,$subscription->ID); // All the published courses in the subdomain.
 
     // get the library title
-    $sql = "SELECT name from ".TABLE_LIBRARY." WHERE id = ".$subscription->library_id;
+    $sql = "SELECT name from ".TABLE_LIBRARY." WHERE ID = ".$subscription->library_id;
     $results = $wpdb->get_results ($sql);
     $library_title = (!empty($results)) ? $results[0]->name : "Unknown Library";
     $staff_credits = $subscription->staff_credits; // Maximum # Staff
-    $upgrades = getUpgrades ($subscription->id);
+    $upgrades = getUpgrades ($subscription->ID);
     // Add upgrade number of staff
     if($upgrades)
     {
@@ -591,14 +608,17 @@ function display_subscription_dashboard ($subscription) {
             $staff_credits += $upgrade->accounts;
         }
     }
-
-    $learners = '';
-
-    // check if we have staff accounts and filter out everyone other than learners
-    if( isset($staff_accounts['status']) && $staff_accounts['status'] )
-    {
-        $users = (isset($staff_accounts['users'])) ? $staff_accounts['users'] : ''; // All users in the portal
-        $learners = filterUsers($users, 'learner'); // only the learners
+    
+    $learners=array();
+    foreach($courses as $course){
+        $users=  getEotUsersInCourse($course['ID']);
+        foreach($users as $user){
+            //echo $user['id']."<br>";
+            //echo in_multiarray($user['id'], $learners, 'id')."<br>";
+            if(!in_multiarray($user['id'], $learners, 'id')){
+                array_push($learners, $user);
+            }
+        }
     }
 
 ?>      
@@ -608,7 +628,7 @@ function display_subscription_dashboard ($subscription) {
     <div class="content_right">
         <div class="clear"></div>
         <div class="menu">
-            <a href="?part=view_library&subscription_id=<?= $subscription->id ?>" onclick="load('load_view_library')">
+            <a href="?part=view_library&subscription_id=<?= $subscription->ID ?>" onclick="load('load_view_library')">
               <div class="thumbnail">
                   <i class="fa fa-youtube-play" alt="Content"></i>
               </div>
@@ -620,7 +640,7 @@ function display_subscription_dashboard ($subscription) {
             </a>
         </div>
         <div class="menu">
-          <a href="?part=administration&subscription_id=<?= $subscription->id ?>" onclick="load('load_administration')">
+          <a href="?part=administration&subscription_id=<?= $subscription->ID ?>" onclick="load('load_administration')">
             <div class="thumbnail">
                 <i class="fa fa-cogs" alt="Administration"></i>
             </div>
@@ -633,7 +653,7 @@ function display_subscription_dashboard ($subscription) {
         </div>
         
         <div class="menu">
-          <a href="?part=customer_success&subscription_id=<?= $subscription->id ?>">
+          <a href="?part=customer_success&subscription_id=<?= $subscription->ID ?>">
             <div class="thumbnail">
                 <i class="fa fa-rocket" alt="Blast Off"></i>
             </div>
@@ -645,7 +665,7 @@ function display_subscription_dashboard ($subscription) {
           </a>
         </div>
         <div class="menu">
-          <a href="?part=statistics&subscription_id=<?= $subscription->id ?>" onclick="load('load_statistics')">
+          <a href="?part=statistics&subscription_id=<?= $subscription->ID ?>" onclick="load('load_statistics')">
             <div class="thumbnail">
                 <i class="fa fa-bar-chart-o" alt="Statistics"></i> 
             </div>
@@ -662,7 +682,7 @@ function display_subscription_dashboard ($subscription) {
         <tbody>
           <tr>
             <td>
-              Max. Staff <br>(<a href="?part=upgradesubscription&subscription_id=<?= $subscription->id ?>">Add More Staff</a>)
+              Max. Staff <br>(<a href="?part=upgradesubscription&subscription_id=<?= $subscription->ID ?>">Add More Staff</a>)
             </td>
             <td>
                 <?= $staff_credits; ?>
@@ -689,7 +709,7 @@ function display_subscription_dashboard ($subscription) {
       <br>
 
         <div class="dashboard_button">
-          <a href="?part=staff_lounge&subscription_id=<?= $subscription->id ?>" onclick="load('load_staff_lounge')">
+          <a href="?part=staff_lounge&subscription_id=<?= $subscription->ID ?>" onclick="load('load_staff_lounge')">
             <div class="title" style="padding-top: 5px;">
               <b>Virtual Staff Lounge</b>
               <br>Manage your Forum
@@ -698,7 +718,7 @@ function display_subscription_dashboard ($subscription) {
         </div>
 
         <div class="dashboard_button" style="margin-top:5px; padding-top:5px;">
-          <a href="?part=directors_corner&subscription_id=<?= $subscription->id ?>">
+          <a href="?part=directors_corner&subscription_id=<?= $subscription->ID ?>">
             <div class="title">
               <b>Director's Corner</b>
               <br>Tips and Guides

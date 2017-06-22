@@ -3262,3 +3262,58 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
   return $courses;
 }
 
+/**
+ * Get the modules in a library
+ * @global type $wpdb
+ * @param type $library_id
+ * @return type
+ */
+function getModulesByLibrary($library_id = 0)
+{
+  global $wpdb;
+  $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
+  $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE library_id = $library_id" , ARRAY_A);
+  return $modules;  
+}
+/**
+ * Get courses based on org and subscription ids
+ * @global type $wpdb
+ * @param type $org_id
+ * @param type $subscription_id
+ * @return type
+ */
+function getCoursesById($org_id = 0,$subscription_id = 0)
+{
+    global $wpdb;
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id AND subscription_id = $subscription_id", ARRAY_A);
+    return $courses;
+}
+
+/**
+ * Get users in a specific course
+ * @global type $wpdb
+ * @param type $course_id
+ * @return array
+ */
+function getEotUsersInCourse($course_id = 0){
+    global $wpdb;
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    // Get the enrollments who are enrolled in the course.
+    $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+    $users = array(); // Lists of users who are enrolled in the course.
+    if($enrollments && count($enrollments) > 0)
+    {
+      foreach ($enrollments as $enrollment) 
+      {
+        $user['first_name'] = get_user_meta ( $enrollment['user_id'], "first_name", true);
+        $user['last_name'] = get_user_meta ( $enrollment['user_id'], "last_name", true);
+        $user['id']= $enrollment['user_id'];
+        $user['user_type'] = 'learner';
+        array_push($users, $user);
+      }
+    }
+    return $users;
+}
+
