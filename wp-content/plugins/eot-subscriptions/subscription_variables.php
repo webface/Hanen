@@ -118,6 +118,10 @@ define ('TABLE_INVITATIONS', $wpdb->prefix."invitations");
 define ('TABLE_PENDING_SUBSCRIPTIONS', $wpdb->prefix."pending_subscriptions");
 define ('TABLE_USERS', $wpdb->prefix."users");
 define('TABLE_COURSES', $wpdb->prefix.'courses');
+define('TABLE_MODULES',$wpdb->prefix.'eot_modules');
+define('TABLE_EOT_RESOURCES', $wpdb->prefix . "eot_resources");
+define('TABLE_MODULE_RESOURCES',$wpdb->prefix.'eot_modules_resources');
+define('TABLE_QUIZ', $wpdb->prefix . 'eot_quiz');
 
 // define LearnUpon Vars
 define ('DEFAULT_SUBDOMAIN', 'eot');
