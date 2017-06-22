@@ -1,82 +1,52 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 4541
-#
-# http://www.sequelpro.com/
-# https://github.com/sequelpro/sequelpro
-#
-# Host: localhost (MySQL 5.6.35)
-# Database: eot_china_dev
-# Generation Time: 2017-06-22 18:34:52 +0000
-# ************************************************************
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
-# Dump of table wp_video
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `wp_video`;
-
 CREATE TABLE `wp_video` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_id` int(11) NOT NULL,
-  `presenter_id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(80) NOT NULL DEFAULT '',
-  `subtitle` varchar(120) DEFAULT NULL,
-  `desc` text,
-  `video_name` varchar(25) NOT NULL COMMENT 'This is the short name of the video. It should not change, ever!',
-  `shortname` varchar(80) NOT NULL DEFAULT '',
-  `shortname_medium` varchar(80) NOT NULL DEFAULT '',
-  `shortname_low` varchar(80) NOT NULL DEFAULT '',
-  `spanish` varchar(80) DEFAULT NULL,
-  `image` varchar(80) DEFAULT NULL,
-  `thumbnail` varchar(50) DEFAULT NULL,
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `module_id` bigint(20) unsigned NOT NULL,
+  `presenter_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `subtitle` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `desc` text COLLATE utf8mb4_unicode_520_ci,
+  `video_name` varchar(25) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'This is the short name of the video. It should not change, ever!',
+  `shortname` varchar(80) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `shortname_medium` varchar(80) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `shortname_low` varchar(80) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `spanish` varchar(80) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `image` varchar(80) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `thumbnail` varchar(50) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `order` decimal(7,2) NOT NULL DEFAULT '50.00',
   `new` tinyint(1) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `sample` tinyint(1) NOT NULL DEFAULT '0',
-  `standards_aca` varchar(120) DEFAULT NULL,
-  `standards_oca` varchar(120) DEFAULT NULL,
-  `standards_sca` varchar(120) DEFAULT NULL,
-  `standards_cans` varchar(120) DEFAULT NULL,
-  `standards_acq` varchar(120) DEFAULT NULL,
-  `standards_nbca` varchar(120) DEFAULT NULL,
-  `standards_bcca` varchar(120) DEFAULT NULL,
-  `standards_mca` varchar(120) DEFAULT NULL,
-  `standards_alberta` varchar(120) DEFAULT NULL,
-  `secs` int(11) DEFAULT NULL,
+  `standards_aca` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_oca` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_sca` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_cans` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_acq` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_nbca` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_bcca` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_mca` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `standards_alberta` varchar(120) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `secs` int(11) unsigned DEFAULT NULL,
   `next_id` int(11) DEFAULT NULL,
-  `year` int(11) DEFAULT '2009',
-  `difficulty` tinyint(4) NOT NULL,
-  `ns` tinyint(1) NOT NULL,
-  `rs` tinyint(1) NOT NULL,
-  `ps` tinyint(1) NOT NULL,
-  `ss` tinyint(1) NOT NULL,
-  `director` tinyint(1) NOT NULL,
-  `width` int(11) NOT NULL DEFAULT '640',
-  `medium_width` int(11) NOT NULL DEFAULT '640',
-  `low_width` int(11) NOT NULL DEFAULT '640',
-  `height` int(11) NOT NULL DEFAULT '360',
-  `medium_height` int(11) NOT NULL DEFAULT '360',
-  `low_height` int(11) NOT NULL DEFAULT '360',
+  `year` smallint(4) unsigned DEFAULT '2009',
+  `difficulty` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  `ns` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `rs` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `ps` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `ss` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `director` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `width` smallint(4) NOT NULL DEFAULT '640',
+  `medium_width` smallint(4) NOT NULL DEFAULT '640',
+  `low_width` smallint(4) NOT NULL DEFAULT '640',
+  `height` smallint(4) NOT NULL DEFAULT '360',
+  `medium_height` smallint(4) NOT NULL DEFAULT '360',
+  `low_height` smallint(4) NOT NULL DEFAULT '360',
   `hd` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `video_name` (`video_name`),
-  UNIQUE KEY `video_name_2` (`video_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `video_name` (`video_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
-LOCK TABLES `wp_video` WRITE;
-/*!40000 ALTER TABLE `wp_video` DISABLE KEYS */;
 
-INSERT INTO `wp_video` (`id`, `module_id`, `presenter_id`, `name`, `subtitle`, `desc`, `video_name`, `shortname`, `shortname_medium`, `shortname_low`, `spanish`, `image`, `thumbnail`, `order`, `new`, `active`, `sample`, `standards_aca`, `standards_oca`, `standards_sca`, `standards_cans`, `standards_acq`, `standards_nbca`, `standards_bcca`, `standards_mca`, `standards_alberta`, `secs`, `next_id`, `year`, `difficulty`, `ns`, `rs`, `ps`, `ss`, `director`, `width`, `medium_width`, `low_width`, `height`, `medium_height`, `low_height`, `hd`)
+INSERT INTO `wp_video` (`ID`, `module_id`, `presenter_id`, `name`, `subtitle`, `desc`, `video_name`, `shortname`, `shortname_medium`, `shortname_low`, `spanish`, `image`, `thumbnail`, `order`, `new`, `active`, `sample`, `standards_aca`, `standards_oca`, `standards_sca`, `standards_cans`, `standards_acq`, `standards_nbca`, `standards_bcca`, `standards_mca`, `standards_alberta`, `secs`, `next_id`, `year`, `difficulty`, `ns`, `rs`, `ps`, `ss`, `director`, `width`, `medium_width`, `low_width`, `height`, `medium_height`, `low_height`, `hd`)
 VALUES
 	(9,447,77,'We Squashed It! - Physical Aggression','Collaborative Problem Solving for High-Conflict Situations','Kids expect that grown-ups will punish and lecture them after a conflict. But research with explosive children shows that the best solution involves a combination of empathy, exploring needs, and teaching skills in self-expression, hypothetical thinking, and emotion regulation. By focusing on wants and needs after physical altercations (more characteristic of boys than girls) this module illustrates the best way to promote durable behavior change.','wesquashedit','wesquashedit-high','wesquashedit-medium','wesquashedit-low','wesquashedit-es','WeSquashedIt.jpg','wesquashedit_thumb.png',50.00,1,1,0,'HR.16, HR.17','MA-18, MA-21',NULL,'R.5.4',NULL,NULL,NULL,NULL,NULL,499,21,2009,3,0,1,1,1,1,440,400,400,330,300,300,0),
 	(10,372,77,'Rules Were Made to Be Positive','Creating Expectations Campers Want to Live Up To','Because your brain first processes the positive in any statement, it can be confusing and ineffective to give campers a string of negative admonishments. A better way to achieve compliant behavior is to explain games, rules, and activities using positive statements. The examples in this original module show you how to turn \"Don\'t cross the line\" into \"Stay on your side\" with marvelous results.','rules','rules-high','rules-medium','rules-low','rules-es','rules.jpg','rules_thumb.png',51.00,1,1,0,'HR.15, PD.3, PD.5','MA-18, MA-21',NULL,NULL,NULL,NULL,NULL,NULL,NULL,452,22,2009,1,1,0,1,0,0,440,400,400,330,300,300,0),
@@ -213,15 +183,3 @@ VALUES
 	(166,394,206,'Shockingly Professional Talk, Part II','Self-Reflection Skills for Sensitive Issues','Controversial, thoughtless, or inflammatory comments and questions can throw even the most talented youth leaders into a tailspin. In Part II of Sensitive Issues, Jaha-Echols and Thurber complete their discussion of conversational skills and offer three powerful self-reflection skills for staying calm, understanding personal triggers, and responding with respect and discretion. ','shockinglyprotalk2','shockinglyprotalk2-high','shockinglyprotalk2-medium','shockinglyprotalk2-low',NULL,'shockinglyprotalk2.jpg','shockinglyprotalk2-png',50.00,1,1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,912,NULL,2017,0,0,0,0,0,0,640,640,640,360,360,360,1),
 	(167,66,47,'Awesome Archery, Part I','Range Design and Safety Procedures','Set your archery program up for success by upgrading the design of you range and the procedures you use to keep both participants and spectators out of harm’s way. From boundary markers to shooting commands, this module covers the most important elements of a professional archery program. Before you focus on expert shooting instruction, take the time to verify a safe set-up.','awsomearchery1','awsomearchery1-high','awsomearchery1-medium','awsomearchery1-low',NULL,'awsomearchery1-jpg','awsomearchery1-png',50.00,1,1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,650,NULL,2017,0,0,0,0,0,0,640,640,640,360,360,360,1),
 	(168,68,47,'Awesome Archery, Part II','Step-by-Step Shooting Success','Think you know everything about the world’s oldest and most popular target sport? Think again. This detailed video reveals ten frequently overlooked elements of accurate archery, such as relaxed bow grip, open stance, back muscle drawing, and aligned follow-through. Plus, the safety tips and coaching techniques make this module the perfect complement to any certification course.','awsomearchery2','awsomearchery2-high','awsomearchery2-medium','awsomearchery2-low',NULL,'awsomearchery2-jpg','awsomearchery2-png',50.00,1,1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,884,NULL,2017,0,0,0,0,0,0,640,640,640,360,360,360,1);
-
-/*!40000 ALTER TABLE `wp_video` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

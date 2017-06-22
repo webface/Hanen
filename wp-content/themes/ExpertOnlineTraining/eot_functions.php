@@ -2403,9 +2403,10 @@ function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_dat
     {
         $sql .= " WHERE subscription_id = $subscription_id";
     }
-    else if($start_date != "0000-00-00" && $end_date != "0000-00-00")
+    
+    if($start_date != "0000-00-00" && $end_date != "0000-00-00")
     {
-      $sql .= "  WHERE date >= '$start_date' AND date <= '$end_date'";
+      $sql .= " AND date >= '$start_date' AND date <= '$end_date'";
     }
     $results = $wpdb->get_results ($sql);
     return $results;
@@ -3118,7 +3119,7 @@ function enrollUserInCourse($email = '', $portal_subdomain = DEFAULT_SUBDOMAIN, 
 }
 
 //get users in an organization
-function getEotUsers($org_id = 0){
+function getEotUsers($org_id = 0, $role = 'student'){
     
     if (!$org_id)
     {
@@ -3129,7 +3130,7 @@ function getEotUsers($org_id = 0){
         array(
             'meta_key' => 'org_id',
             'meta_value' => $org_id,
-            'role' => 'student'
+            'role' => $role
         )
     );
 
@@ -3144,7 +3145,7 @@ function getEotUsers($org_id = 0){
         $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
         $user['email'] = $user_info->user_email;
         $user['id'] = $user_info->ID;
-        $user['user_type'] = 'learner';
+//        $user['user_type'] = 'learner';  // @TODO remove if not used
         array_push($learners, $user);
       }
     }
@@ -3282,7 +3283,7 @@ function getModulesByLibrary($library_id = 0)
  * @param type $subscription_id
  * @return type
  */
-function getCoursesById($org_id = 0,$subscription_id = 0)
+function getCoursesById($org_id = 0, $subscription_id = 0)
 {
     global $wpdb;
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
@@ -3310,10 +3311,29 @@ function getEotUsersInCourse($course_id = 0){
         $user['first_name'] = get_user_meta ( $enrollment['user_id'], "first_name", true);
         $user['last_name'] = get_user_meta ( $enrollment['user_id'], "last_name", true);
         $user['id']= $enrollment['user_id'];
-        $user['user_type'] = 'learner';
+//        $user['user_type'] = 'learner'; // @TODO remove if not used
         array_push($users, $user);
       }
     }
     return $users;
 }
 
+/**
+ * Get enrolled users in a specific course
+ * @param int $course_id - the course ID
+ * @return array of enrolled users or NULL if none exist
+ */
+function getEnrolledUsersInCourse($course_id = 0)
+{
+    global $wpdb;
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+
+    // Get the enrollments who are enrolled in the course.
+    $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+
+    if($enrollments && count($enrollments) > 0)
+    {
+      return $enrollments;
+    }
+    return NULL;
+}

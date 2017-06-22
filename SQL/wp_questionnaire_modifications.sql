@@ -1,45 +1,17 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 4541
-#
-# http://www.sequelpro.com/
-# https://github.com/sequelpro/sequelpro
-#
-# Host: localhost (MySQL 5.6.35)
-# Database: eot_china_dev
-# Generation Time: 2017-06-21 20:38:52 +0000
-# ************************************************************
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
-# Dump of table wp_questionnaire_modifications
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `wp_questionnaire_modifications`;
 
 CREATE TABLE `wp_questionnaire_modifications` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `library_id` int(3) DEFAULT NULL,
-  `question` int(3) DEFAULT NULL,
-  `answer` int(3) DEFAULT NULL,
-  `course_name_id` int(3) DEFAULT NULL,
-  `action` enum('Add','Remove') DEFAULT NULL,
-  `video_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `library_id` bigint(20) unsigned DEFAULT NULL,
+  `question` int(11) unsigned DEFAULT NULL,
+  `answer` int(11) unsigned DEFAULT NULL,
+  `course_name_id` bigint(20) unsigned DEFAULT NULL,
+  `action` enum('Add','Remove') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `video_id` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-LOCK TABLES `wp_questionnaire_modifications` WRITE;
-/*!40000 ALTER TABLE `wp_questionnaire_modifications` DISABLE KEYS */;
 
-INSERT INTO `wp_questionnaire_modifications` (`id`, `library_id`, `question`, `answer`, `course_name_id`, `action`, `video_id`)
+INSERT INTO `wp_questionnaire_modifications` (`ID`, `library_id`, `question`, `answer`, `course_name_id`, `action`, `video_id`)
 VALUES
 	(38,1,1,1,1,'Add',66),
 	(40,1,1,1,1,'Remove',62),
@@ -152,15 +124,3 @@ VALUES
 	(191,7,11,1,1,'Add',18),
 	(192,7,11,1,1,'Add',19),
 	(193,7,11,1,1,'Add',20);
-
-/*!40000 ALTER TABLE `wp_questionnaire_modifications` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
