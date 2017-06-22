@@ -13,7 +13,27 @@ $page_title = "Dashboard";
 // Camp Director
 if (current_user_can("is_director")) 
 {
-
+//Org name is the same as portal in LU
+//   // This creates the portal, if the portal does not exsist.
+//    $isPortalFound = getPortalByTitle(DEFAULT_SUBDOMAIN, $org_name);
+//    if (!isset($isPortalFound[0]['id'])) 
+//    {
+//        // no portal found so create it
+//        $org_subdomain = $portal_subdomain;
+//        $first_name = $current_user->user_firstname;
+//        $last_name = $current_user->user_lastname;
+//        $password = wp_generate_password('8', false);
+//        $portal_data = compact("org_id", "org_name", "org_subdomain", "user_id", "first_name", "last_name", "email", "password");
+//        // Create the Portal
+//        $result = communicate_with_learnupon('create_account', $portal_data);
+//
+//        // Check for errors.
+//        if (isset($result['status']) && !$result['status']) 
+//        {
+//            $error_message = $result['message'];
+//        }
+//    }
+    
     if (current_user_can("is_uber_manager")) 
     {
         $page_title = "Uber Manager Dashboard";
