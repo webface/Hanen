@@ -3257,6 +3257,123 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     }
 }
 
+/*
+ * Get modules in course
+ * @param int $course_id - The course ID
+ * @param string $type - Module type. (Page,scorm). Empty $type will return all the module types.
+ */
+function getModulesInCourse($course_id=0, $type = "page"){
+    global $wpdb;
+    $course_id  = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
+    $sql = "SELECT m.* "
+                . "FROM " . TABLE_MODULES . " AS m "
+                . "LEFT JOIN " . TABLE_COURSES_MODULES . " AS cm ON cm.module_id = m.id "
+                . "WHERE cm.course_id = $course_id ";
+    if( $type )
+    {
+      switch ($type)
+      {
+        case "page":
+          $sql .= ' AND component_type = "page"';
+          break;
+        case "scorm":
+          $sql .= ' AND component_type = "scorm"';
+          break;
+        default:
+      }
+    }
+    $course_modules = $wpdb->get_results($sql, ARRAY_A);
+    return $course_modules;
+}
+
+//Ajax get modules for a course. Called from part-manage_courses
+add_action('wp_ajax_getModules', 'getModules_callback'); // Executes Courses_Modules functions actions only for log in users
+function getModules_callback() {
+    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['portal_subdomain'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['subscription_id'] ))
+    {
+
+        // Get the Post ID from the URL
+        $course_id          = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
+        $portal_subdomain   = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+        $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $subscription_id    = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+        $course_status      = ""; //  The course status
+
+
+        $info_data = array("org_id" => $org_id);
+
+
+        // check if user has admin/manager permissions
+        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can ('is_sales_manager') )
+        {
+            $result['data'] = 'failed';
+            $result['message'] = 'LU Error: Sorry, you do not have permisison to view this page. ';
+        }
+        else
+        {
+            // Build the response if successful
+            // get modules of the course
+            $modules=  getModulesInCourse($course_id);
+            /*********************************************************************************************
+            * Create HTML template and return it back as message. this will return an HTML div set to the 
+            * javascript and the javascript will inject it into the HTML page.
+            **********************************************************************************************/
+            $html = '<div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "width: 350px">';
+            $html.= '  <div style = "width:100%;">';
+
+            $num_modules_type_page = 0;
+            if( $modules && count($modules) > 0 ) 
+            {
+                foreach( $modules as $module )
+                {   
+                    /* 
+                     * Include only the courses modules
+                     */
+                    if($module['component_type'] == "page")
+                    {
+                        
+                        $module_description_text = $module['description_text']; 
+                        $module_title     = $module['title'];
+                        //$html.= ' <div class = "staff_and_assignment_list_row" onmouseover="Tip(\''.str_replace('"','&quot;',addslashes($module_description_text)).'\', WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\',TITLE,\'Description\')" onmouseout="UnTip()">';
+                        $html.= ' <div class = "staff_and_assignment_list_row">';
+                        $html.= '  <span class="staff_name" >'.$module_title.'</span>';
+                        $html.= ' </div>';
+                        $num_modules_type_page++;
+                    }
+                }
+                $html.= '   </div>'; 
+                $html.= '</div>';  
+                $result['video_count'] = $num_modules_type_page;
+                $result['data'] = 'success';
+                $result['message'] = $html;
+                $result['group_id'] = $course_id; // if not included, when clicking on manage assignment/course, it will not open the dialog box.
+                $result['course_status'] = $course_status; // The course status, to determine if the user is allowed to use manage module button.
+            }
+            else if( count($modules) == 0 )
+            {
+                $result['video_count'] = 0; // No videos.
+                $result['group_id'] = $course_id; // course ID. This is still required on the template so that the user will be able to click the "Manage Courses" button.
+                $result['data'] = 'failed';
+                $result['message'] = '<p>There are no modules available in this course.</p>';
+                $result['course_status'] = $course_status; // The course status, to determine if the user is allowed to use manage module button.
+            }
+            else 
+            {
+                $result['data'] = 'failed';
+                $result['message'] = 'Error in getting modules for course id: ('. $course_id .')';
+            }
+        }
+    }
+    else
+    {
+        $result['data'] = 'failed';
+        $result['message'] = '<p>Unable to process your request</p>';
+    }
+
+    echo json_encode($result);
+    wp_die();
+
+}
 /**
  *  Get the courses present in the org based on a parameter that's passed. Either by course id, all courses in org_id, all courses in subscription_id
  *  @param int $course_id - the course id
@@ -3379,7 +3496,7 @@ function getCourseForm_callback ( ) {
         $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
         $form_name = filter_var($_REQUEST['form_name'],FILTER_SANITIZE_STRING);
         $user_id = $current_user->ID;
-
+        error_log($form_name);
         if($form_name == "create_course_group")
         {
             $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
@@ -3435,12 +3552,11 @@ function getCourseForm_callback ( ) {
             </div>      
             <div class="popup_footer">
                 <div class="buttons">
-                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="save_create" style="display:none"></i>
                     <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                         <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
                         Cancel
                     </a>
-                        <a active = '0' acton = "create_staff_group" rel = "submit_button" class="positive" onclick="jQuery('#save_create').show();">
+                        <a active = '0' acton = "create_staff_group" rel = "submit_button" class="positive">
                         <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
                         Save
                     </a>
@@ -3511,12 +3627,11 @@ function getCourseForm_callback ( ) {
             </div>      
             <div class="popup_footer">
                 <div class="buttons">
-                  <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="save_uber" style="display:none"></i>
                   <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
                       Cancel
                   </a>
-                  <a active = '0' acton = "create_uber_camp_director" rel = "submit_button" class="positive" onclick="jQuery('#save_uber').show();">
+                  <a active = '0' acton = "create_uber_camp_director" rel = "submit_button" class="positive">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
                     Save
                   </a>
@@ -3531,7 +3646,9 @@ function getCourseForm_callback ( ) {
             $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
             $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
             $data = compact("org_id");
-            $course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
+            //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
+            global $wpdb;
+        $course_data = getCourse($course_id);
             ob_start();
         ?>
             <div class="title">
@@ -3544,7 +3661,7 @@ function getCourseForm_callback ( ) {
                           <td class="label"> 
                             <label for="field_name">Name:</label> 
                           <td class="value"> 
-                            <input  type="text" name="name" id="field_name" size="35" value="<?= $course_data['name'] ?>"/><span class="asterisk">*</span> 
+                            <input  type="text" name="name" id="field_name" size="35" value="<?= $course_data['course_name'] ?>"/><span class="asterisk">*</span> 
                           </td>
                         </tr> 
                         <tr >
@@ -3584,12 +3701,11 @@ function getCourseForm_callback ( ) {
             </div>      
             <div class="popup_footer">
                 <div class="buttons">
-                  <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="save_group" style="display:none"></i>
                   <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
                       Cancel
                   </a>
-                  <a active = '0' acton = "edit_staff_group" rel = "submit_button" class="positive" onclick="jQuery('#save_group').show();">
+                  <a active = '0' acton = "edit_staff_group" rel = "submit_button" class="positive">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
                     Save
                   </a>
@@ -3767,24 +3883,57 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "add_video_group")
         {
+            global $wpdb;
             $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
             $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING);
             $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
-            $course_modules = getModules($course_id, $portal_subdomain, $data); // all the modules in the specified course
-if (empty($course_modules))
-{
-  $course_modules = array();
-}
+            $course_modules = getModulesInCourse($course_id); // all the modules in the specified course
+            $course_quizzes=  getQuizzesInCourse($course_id);
+            $course_resources=getResourcesInCourse($course_id);
+            //var_dump($course_resources);
             $course_modules_titles = array_column($course_modules, 'title'); // only the titles of the modules in the specified course
-            $modules_in_portal = getModules(0,$portal_subdomain,$data); // all the modules in this portal
+            $course_quizzes_titles = array_column($course_quizzes, 'name');
+            $course_resources_titles = array_column($course_resources, 'name');
+            //var_dump($course_quizzes_titles);
+            $modules_in_portal = getModules($org_id);// all the modules in this portal
+            //var_dump($modules_in_portal);
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
-            $master_course = getCourseByName(lrn_upon_LE_Course_TITLE, $portal_subdomain, $data); // Get the master course. Cloned LE
+            $master_course = getCourseByName(lrn_upon_LE_Course_TITLE); // Get the master course. Cloned LE
             $master_course_id = $master_course['id']; // Master library ID
-            $master_modules = getModules($master_course_id, $portal_subdomain, $data); // Get all the modules from the master library (course).
+            $master_modules = getModulesByLibrary(1);// Get all the modules from the master library (course).            
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
-            $course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
-            $due_date = $course_data['due_date_after_enrollment']; // the due date of the specified course
+            $master_module_ids=array_column($master_modules, 'id');
+            $modules_in_portal_ids = array_column($modules_in_portal, 'id');
+            $all_module_ids=  array_merge($master_module_ids, $modules_in_portal_ids);
+            $all_module_ids_string=implode(',',$all_module_ids);
+            $exams=array();  
+            $resources=getQuizResourcesInModules($all_module_ids_string);
+            //var_dump($resources);
+            foreach($resources as $resource){
+                if(isset($exams[$resource['module_id']]))
+                {
+                    array_push($exams[$resource['module_id']], array('id'=>$resource['id'],'name'=>$resource['name']));
+                }else{
+                $exams[$resource['module_id']]=array();
+                array_push($exams[$resource['module_id']], array('id'=>$resource['id'],'name'=>$resource['name']));
+                }
+            }
+            $handouts=array();
+            $handout_resources=  getHandoutResourcesInCourseModules($all_module_ids_string);
+            //var_dump($handout_resources);
+            foreach($handout_resources as $handout){
+                if(isset($handouts[$handout['module_id']]))
+                {
+                    array_push($handouts[$handout['module_id']], array('id'=>$handout['id'],'name'=>$handout['name']));
+                }else{
+                $handouts[$handout['module_id']]=array();
+                array_push($handouts[$handout['module_id']], array('id'=>$handout['id'],'name'=>$handout['name']));
+                }
+            }
+            //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
+            $course_data=getCourse($course_id);
+            $due_date =$course_data['due_date_after_enrollment']!==NULL? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])):NULL; // the due date of the specified course
             $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
             $videoCount = count($course_modules_titles);
             $quizCount = count($course_modules_titles);
@@ -3856,7 +4005,7 @@ if (empty($course_modules))
                         <td style="padding:12px;font-size:12px;">
                           <center>
                             <?php
-                              if ($due_date == "") {
+                              if ($due_date === NULL) {
                             ?>
                                 <p class='curr_duedate'><strong>Due Date:</strong> No due date set.</p>
                                 <div id="datepicker"></div>
@@ -3902,17 +4051,16 @@ if (empty($course_modules))
       <div class="title">
         <div class="title_h2"><?= $course_name ?></div>
       </div>
-      <div>
-        <img style="margin-right:60em;" class="loader" src="<?= get_template_directory_uri() . "/images/loading.gif"?>" hidden>
-      </div>
       <div class="middle" style ="padding:0px;clear:both;">  
         <div id="video_listing" display="video_list" group_id="null" class="holder osX">
           <div id="video_listing_pane" class="scroll-pane" style="padding:0px 0px 0px 10px;width: 600px">
             <form name = "add_video_group" id = "add_video_group">
               <ul class="tree organizeassignment">
                 <?php 
+                    $videos = $wpdb->get_results("SELECT name, secs FROM " . TABLE_VIDEOS, OBJECT_K); // All videos name and their time in seconds.
                     $subscription = getSubscriptions($subscription_id,0,1); // get the current subscription
                     $library = getLibrary ($subscription->library_id); // The library information base on the user current subscription
+                   // var_dump($library);
                     // Check if the library exsist
                     if( isset($library) )
                     {
@@ -3937,7 +4085,8 @@ if (empty($course_modules))
                                 */
                             array_shift($pieces); // Remove the category in this array and left with the library codes.
                                 if (in_array($library_tag, $pieces)) 
-                                {
+                                {   
+                                    //echo "inarray<br>";
                                     $new_module = new module( $module['id'], $module['title'], $category_name, $module['component_type']); // Make a new module.
                                     array_push($modules, $new_module); // Add the new module to the modules array.
                                     /*
@@ -3965,8 +4114,10 @@ if (empty($course_modules))
                             *************************************************************************************************/
                             foreach( $modules as $key => $module )
                             {
+                                 
                                 if($module->type == "page") 
                                 { // Print the course modules.
+                                    
                                     if ( $module->category == $category )
                                     {
                                         $video_active = 0; // variable to indicate whether module is currently in the portal course
@@ -3987,44 +4138,64 @@ if (empty($course_modules))
                                                   }
                                                 }
                                             }
+                                            $module_time = ($videos[$module->title]) ? $videos[$module->title]->secs/60 : lrn_upon_Module_Video_Length; // The module time, divided by 60 to convert them in minutes.
                                     ?>
-                                            <input collection="add_remove_from_group" video_length="<?= lrn_upon_Module_Video_Length ?>" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> assignment_id="<?= $course_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
+                                            <input collection="add_remove_from_group" video_length="<?= $module_time ?>" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> assignment_id="<?= $course_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
                                             <label for="chk_video_<?= $module_id ?>">
                                                 <span name="video_title" class="<?=$video_class?> video_title">
                                                   <b>Video</b> - <span class="vtitle"><?= $module->title ?></span>
                                                 </span>
                                             </label>
+                                            <div video_id=<?= $module_id ?> class="<?=$video_class?> item" <?=(!$video_active)?' org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" style="display:none"':'';?> >
                                             <?php
+                                               
+                                            ?>
+                                                <?php
+                                               
                                                 /* 
                                                  * Check if there is a an exam for this module
                                                  * The exam checkbox input will not be shown, if there are no exam uploaded in LU.
                                                  * Find the ID of this exam in the modules array.
                                                  */
-                                                $exam_name = $module->title . " - Exam"; // Name of the exam
-                                                if(in_array($exam_name, $user_modules_titles))
+                                                //var_dump($exams[$module->id]);
+                                                if($exams[$module->id])
                                                 {
-                                                ?>
-                                                  <div video_id=<?= $module_id ?> class="<?=$video_class?> item" <?=((in_array($exam_name, $course_modules_titles) && in_array($exam_name, $user_modules_titles)) || (in_array($exam_name, $user_modules_titles) && in_array($module->title, $course_modules_titles)) )?' org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>"':'style="display:none"';?> >
-                                                <?php
-                                                    foreach($modules_in_portal as $exam)
-                                                    {
-                                                        if($exam['title'] == $exam_name)
-                                                        {
+                                                    foreach($exams[$module->id] as $exam){
                                                             $exam_id = $exam['id']; 
-                                                            continue;
-                                                        }
-                                                    }
+                                                   
                                             ?>
-                                                    <input item="quiz" quiz_length="<?= lrn_upon_Quiz_Length ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam_name, $course_modules_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
+                                                    <input item="quiz" quiz_length="<?= lrn_upon_Quiz_Length ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   group_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
                                                     <label for="chk_defaultquiz_<?= $module_id ?>">
-                                                      <i>Exam</i> (<?= $module->title ?>) 
-                                                    </label>
-                                                  </div>
+                                                      <i>Exam</i> (<?= $exam['name'] ?>) 
+                                                    </label><br>
                                             <?php
+                                                 }
                                                 }
+                                                /* 
+                                                 * Check if there is a handout for this module
+                                                 * The resource checkbox input will not be shown, if there are no resources.
+                                                 * Find the ID of this exam in the modules array.
+                                                 */
+                                                //var_dump($exams[$module->id]);
+                                                if($handouts[$module->id])
+                                                {
+                                                    foreach($handouts[$module->id] as $handout){
+                                                            $handout_id = $handout['id']; 
+                                                   
                                             ?>
+                                                    <input item="resource" quiz_length="<?= lrn_upon_Quiz_Length ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($handout['name'], $course_resources_titles) ? ' checked="checked"':''; $handout_id = 0; // Reset Exam ID?> /> 
+                                                    <label for="chk_defaultresource_<?= $handout_id ?>">
+                                                      <i>Resource</i> (<?= $handout['name'] ?>) 
+                                                    </label><br>
+                                            <?php
+                                                 }
+                                                }      
+                                            ?>
+                                            </div>
                                         </li> 
                                     <?php
+                                        //$resources =  getResourcesInModule($module->id);
+                                        //var_dump($resources);
                                         unset( $modules[$key] ); // remove this module in the modules array
                                     }
                                 }
@@ -4067,9 +4238,7 @@ if (empty($course_modules))
                                   // displpay the module title but disable the checkbox and if clicked alert a message
 ?>
                                   <li class="video_item" video_id="<?= $module['id'] ?>" >
-                                  <input item="custom_quiz" disabled readonly collection="add_remove_from_group" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> video_length="<?= lrn_upon_Module_Video_Length ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> 
-class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course using this interface. Please go to <b>Administration -> Manage Your Custom Content</b> to add a custom quiz to this course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"
-                                  /> 
+                                  <input collection="add_remove_from_group" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> video_length="<?= lrn_upon_Module_Video_Length ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
                                   <label for="chk_video_<?= $module['id'] ?>">
                                   <span name="video_title" class="<?=$module_class?> video_title">
 <?php
@@ -4086,22 +4255,25 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
                                 }
 ?>
 
-<?php
-                                if ($module['component_type'] == "page")
-                                {
-                                  echo "<b>Page</b> - ";
-                                }
-                                else if ($module['component_type'] == "exam")
-                                {
-                                  echo "<b>Quiz</b> - ";
-                                }
-                                else if ($module['component_type'] == "scorm")
-                                {
-                                  echo "<b>SCORM</b> - ";
-                                }
-?>
+
                                   <span class="vtitle"><?= $module['title'] ?></span>
-                                </span>
+                                  </span><br>
+                                      <?php
+                                if($exams[$module['id']])
+                                                {
+                                                    foreach($exams[$module['id']] as $exam){
+                                                            $exam_id = $exam['id']; 
+                                                   
+                                            ?>
+                                                    <input item="quiz" quiz_length="<?= lrn_upon_Quiz_Length ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
+                                                    <label for="chk_defaultquiz_<?= $module_id ?>">
+                                                      <i>Exam</i> (<?= $exam['name'] ?>) 
+                                                    </label><br>
+                                            <?php
+                                                 }
+                                                }
+                                                
+?>
                                 </label>
                                 </li>
                       <?php
@@ -4150,11 +4322,17 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
             $staff_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id );
-            $response = getUser($portal_subdomain, $staff_id, $data);
-            if ($response['status'] == 1)
-            {
-              $user = $response['user'];
-            }
+//            $response = getUser($portal_subdomain, $staff_id, $data);
+//            if ($response['status'] == 1)
+//            {
+//              $user = $response['user'];
+//            }
+            $theuser =  get_user_by('id', $staff_id);
+            //var_dump($theuser);
+            $user['email']=$theuser->user_email;
+            $user['first_name']= get_user_meta($staff_id, 'first_name', true);
+            $user['last_name']= get_user_meta($staff_id, 'last_name', true);
+            //var_dump($user);
             ob_start();
         ?>
             <div class="title">
@@ -4219,12 +4397,11 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             </div>      
             <div class="popup_footer">
               <div class="buttons">
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="update_staff" style="display:none"></i>
                 <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                   <img src="<?php bloginfo('template_directory'); ?>/images/cross.png" alt=""/>
                     Cancel
                 </a>
-                <a active = "0" acton = "edit_staff_account" rel = "submit_button" class="positive" onclick="jQuery('#update_staff').show();">
+                <a active = "0" acton = "edit_staff_account" rel = "submit_button" class="positive">
                   <img src="<?php bloginfo('template_directory'); ?>/images/tick.png" alt=""/> 
                   Update
                 </a>        
@@ -4234,15 +4411,54 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             $html = ob_get_clean();
         }
         else if($form_name == "create_staff_account")
-        {
+        {   
+            $subscription_id=filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
             $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);            
             $data = array( "org_id" => $org_id );
-            $courses_in_portal = getCourses($portal_subdomain, '0', $data); // get all the published courses in the portal
+            $courses_in_portal = getCoursesById($org_id,$subscription_id); // get all the published courses in the portal
             $course_id = 0; // The course ID
             if(isset($_REQUEST['group_id']))
             {
                 $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_STRING);
             }
+            if(!org_has_maxed_staff($org_id, $subscription_id) ){
+                                    ob_start();
+        ?>
+                    <div class="title">
+                        <div class="title_h2">Unable to Create Staff</div>
+                    </div>
+                    <div class="middle" style ="font-size:11px;clear:both;">
+                        <div class="fixed_fb_width">
+                            <div class="msgboxcontainer_no_width">
+                                <div class="msg-tl">
+                                    <div class="msg-tr"> 
+                                        <div class="msg-bl">
+                                        <div class="msg-br">
+                                            <div class="msgbox">
+                                                <p>You have reached the maximum number of staff you can have. To add more staff, you need first to upgrade your subscription</p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="popup_footer" style = "background-color:#FFF; padding:15px 15px 5px 15px;">
+                        <div class="buttons" >        
+                                <a onclick="jQuery(document).trigger('close.facebox');">
+                                  <div style="height:15px;padding-top:2px;"> Cancel</div>
+                                </a>
+                                      
+                            <div style="clear:both">
+                            </div>                      
+                        </div>
+                    </div>
+        <?php
+        $html = ob_get_clean();
+            }else{
+            ob_start();
         ?>
             <div class="title">
               <div class="title_h2">Create Staff Account</div>
@@ -4269,7 +4485,7 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
                         Enroll in course:
                       </td>
                       <td class="field">
-                        <select name="course_name">                          
+                        <select name="course_id">                          
                           <?php
                             foreach ($courses_in_portal as $key => $course)
                             {
@@ -4278,17 +4494,17 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
                                 {
                                     if($course['id'] == $course_id)
                                     {
-                                        echo "<option name='course_name' value='" . $course['name'] . "' selected>" . $course['name'] . "</option>";
+                                        echo "<option name='course_id' value='" . $course['id'] . "' selected>" . $course['course_name'] . "</option>";
                                     }
                                     else
                                     {
-                                        echo "<option name='course_name' value='" . $course['name'] . "'>" . $course['name'] . "</option>";
+                                        echo "<option name='course_id' value='" . $course['id'] . "'>" . $course['course_name'] . "</option>";
                                     }
                                 }
                                 // There's no course to be selected.
                                 else
                                 {
-                                    echo "<option name='course_name' value='" . $course['name'] . "'>" . $course['name'] . "</option>";
+                                    echo "<option name='course_id' value='" . $course['id'] . "'>" . $course['course_name'] . "</option>";
                                 }               
                             }
                           ?>
@@ -4361,12 +4577,11 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             </div>      
             <div class="popup_footer">
               <div class="buttons">
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="creating_staff" style="display:none"></i>
                 <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                   <img src="<?php bloginfo('template_directory'); ?>/images/cross.png" alt=""/>
                     Cancel
                 </a>
-                <a active="0" acton="create_staff_account" rel="submit_button" class="positive" onclick="jQuery('#creating_staff').show();">
+                <a active="0" acton="create_staff_account" rel="submit_button" class="positive">
                   <img src="<?php bloginfo('template_directory'); ?>/images/tick.png" alt=""/> 
                   Create
                 </a>        
@@ -4374,6 +4589,7 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             </div>
         <?php
             $html = ob_get_clean();
+            }
         }
         else if($form_name == "send_message")
         {        
@@ -4452,15 +4668,14 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             </div>      
             <div class="popup_footer">
               <div class="buttons">
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="sending_message" style="display:none"></i>
-                <a onclick="jQuery(document).trigger('close.facebox');"  class="negative">
+                <a onclick="jQuery(document).trigger('close.facebox');">
                   <div style="height:15px;padding-top:2px;"> Cancel</div>
                 </a>
-                <a active='0' acton="send_message" rel="submit_button" class="positive" onclick="jQuery('#sending_message').show();">
+                <a active='0' acton="send_message" rel="submit_button" >
                   <div style="height:15px;padding-top:2px;"> Send Message</div>
                 </a>
               </div>
-            </div>    
+            </div>      
         <?php
         $html = ob_get_clean();
         }
@@ -4468,131 +4683,149 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
         {        
             $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
             $course_name = filter_var($_REQUEST['group_name'],FILTER_SANITIZE_STRING);
-            $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);  
-            $data = array( "org_id" => $org_id );
-            $org_subdomain = filter_var($_REQUEST['org_subdomain'],FILTER_SANITIZE_STRING);
-            $response = getUsers($org_subdomain, $data);
-            if($response['status'] == 1)
+            $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); 
+            $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); 
+            $users_info = get_users( array('meta_key' => 'org_id',
+                                           'meta_value' => $org_id,
+                                           'role' => 'student'
+            ));
+            $learners = array(); // Lists of learners.
+            if( count($users_info) > 0 )
             {
-                $users = $response['users'];  // All users available base on portal subdomain
-                usort($users, "sort_first_name"); // sort the users by first name.
-                $enrollments = getEnrollment( $course_id, $org_subdomain, $data ); // The lists of enrollment status including the info of the users registered in the course.
-                if (!$enrollments['status'])
+              if($users_info && count($users_info) > 0)
+              {
+                foreach ($users_info as $user_info) 
                 {
-                  // create an associative array for userID => enroolement
-                  $enrollments_associative_array = array();
-                  foreach ($enrollments as $enrollment)
-                  {
-                    $enrollments_associative_array[$enrollment['user_id']] = $enrollment;
-                  }
-                    $user_ids_in_course = array();
-                    $user_ids_in_course = array_column($enrollments, 'user_id'); // Lists of enrollments with the info of users that are registered in this course.
-                    ?>
-                    <div class="title">
-                        <div class="title_h2"><?= $course_name ?></div>
-                    </div>
-                    <div class="middle" style="padding:0px;clear:both;">
-                        <div class="fixed_fb_width">
-                            <form id="add_staff_to_group" frm_name="add_staff_to_group" rel="submit_form" hasError=0> 
-                                <div  id="staff_listing" display="staff_list" group_id="null" class="holder osX">
-                                    <div  id="staff_listing_pane" class="scroll-pane" style="width: 600px">  
-                                        <div style="width:100%;">
-                                            <div class="errorbox" style="display:none;"></div>
-                                            <?php 
-                                                foreach($users as $user)
-                                                {
-                                                    // we dont want to display super admins in the user list so skip the loop if its an admin
-                                                    if ($user['user_type'] == 'admin') 
-                                                    {
-                                                        continue;
-                                                    }
-                                                    $name = $user['first_name'] . " " . $user['last_name'];
-                                                    $email = $user['email'];
-                                                    $user_id = $user['id'];
-                                                    $enrollment_id = $enrollments_associative_array[$user['id']]['id'];
-                                                    $nonce = wp_create_nonce ('add/deleteEnrollment-userEmail_' . $email);
-                                                    if(in_array($user_id, $user_ids_in_course))
-                                                    {      
-                                            ?>
-                                                    <div class="staff_and_assignment_list_row" style="width:600px;padding:7px 155px 7px 5px;background-color:#D7F3CA" >  
-                                                        <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
-                                                        <span class="staff_name" style="font-size:12px;"><?= $email ?></span>
-                                                        <div style="width:140px;text-align:center;float:right;padding-right:35px;">
-                                                            <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="remove" org_id="<?= $org_id ?>" enrollment_id="<?= $enrollment_id ?>" course_name="<?= $course_name ?>" portal_subdomain="<?= $org_subdomain ?>" nonce="<?= $nonce ?>" >
-                                                                Remove from course
-                                                            </a>
-                                                        </div>
-                                                        <div style="clear:both;">
-                                                        </div> 
+                  $user['first_name'] = get_user_meta ( $user_info->id, "first_name", true);
+                  $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
+                  $user['email'] = $user_info->user_email;
+                  $user['id'] = $user_info->ID;
+                  array_push($learners, $user);
+                }
+              }
+              usort($learners, "sort_first_name"); // sort learners by first name.
+              global $wpdb;
+              $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A); // Lists of enrollments base on course ID
+                $user_ids_in_course = array_column($enrollments, 'user_id'); // Lists of Ids that are enrolled in the specified course.
+                ?>
+                <div class="title">
+                    <div class="title_h2"><?= $course_name ?></div>
+                </div>
+                <div class="middle" style="padding:0px;clear:both;">
+                    <div class="fixed_fb_width">
+                        <form id="add_staff_to_group" frm_name="add_staff_to_group" rel="submit_form" hasError=0> 
+                            <div  id="staff_listing" display="staff_list" group_id="null" class="holder osX">
+                                <div  id="staff_listing_pane" class="scroll-pane" style="width: 600px">  
+                                    <div style="width:100%;">
+                                        <div class="errorbox" style="display:none;"></div>
+                                        <?php 
+                                            foreach($learners as $user)
+                                            {
+                                              $name = $user['first_name'] . " " . $user['last_name']; // Learner's First and last name.
+                                              $email = $user['email']; // Learner's email.
+                                              $user_id = $user['id']; // Learner's user ID
+                                              $nonce = wp_create_nonce ('add/deleteEnrollment-userEmail_' . $email);
+                                              if(in_array($user_id, $user_ids_in_course))
+                                              {      
+                                        ?>
+                                                <div class="staff_and_assignment_list_row" style="width:600px;padding:7px 155px 7px 5px;background-color:#D7F3CA" >  
+                                                    <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
+                                                    <span class="staff_name" style="font-size:12px;"><?= $email ?></span>
+                                                    <div style="width:140px;text-align:center;float:right;padding-right:35px;">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="remove" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" enrollment_id="<?= $enrollment_id ?>" course_name="<?= $course_name ?>" portal_subdomain="<?= $org_subdomain ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>" >
+                                                            Remove from course
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both;">
                                                     </div> 
+                                                </div> 
 
-                                                <?php
-                                                    }
-                                                    else 
-                                                    {
-                                                ?>
-                                                    <div class="staff_and_assignment_list_row" style="width:600px;padding:7px 155px 7px 5px;" >  
-                                                        <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
-                                                        <span class="staff_emai" style="font-size:12px;"><?= $email ?></span>
-                                                        <div style="width:140px;text-align:center;float:right;padding-right:35px;">
-                                                            <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="add" org_id="<?= $org_id ?>" course_name="<?= $course_name ?>" portal_subdomain="<?= $org_subdomain ?>" nonce="<?= $nonce ?>">
-                                                                Add to course
-                                                            </a>
-                                                        </div>
-                                                        <div style="clear:both;">
-                                                        </div> 
-                                                    </div> 
                                             <?php
-                                                    }
-                                                }                      
+                                                }
+                                                else 
+                                                {
                                             ?>
+                                                <div class="staff_and_assignment_list_row" style="width:600px;padding:7px 155px 7px 5px;" >  
+                                                    <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
+                                                    <span class="staff_emai" style="font-size:12px;"><?= $email ?></span>
+                                                    <div style="width:140px;text-align:center;float:right;padding-right:35px;">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="add" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" course_name="<?= $course_name ?>" portal_subdomain="<?= $org_subdomain ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>">
+                                                            Add to course
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both;">
+                                                    </div> 
+                                                </div> 
+                                        <?php
+                                                }
+                                            }                      
+                                        ?>
 
-                                        </div>
                                     </div>
-                                </div>     
-                            </form>
-                        </div>
-                    </div>      
-                    <div class="popup_footer" style="background-color:#FFF; padding:15px 15px 5px 15px;">
-                        <div class="buttons" style="padding-right:20px;">
-                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="edit_staff" style="display:none"></i>
-                            <a active='0' acton="add_staff_to_group" rel="done_button" onclick="jQuery('#edit_staff').show();">
-                                <!--<img src="/images/tick.png" alt=""/>--> 
-                                Done
-                            </a>
-                            <a active='0' acton="add_staff_to_group" collection="add_remove_from_group" rel="unselect_all_button" >
-                                <!--<img src="/images/selectall.png" alt=""/>-->  
-                                Remove All
-                            </a> 
-                            <a active='0' acton="add_staff_to_group" collection="add_remove_from_group" rel="select_all_button" >
-                                <!--<img src="/images/icon-user.gif" alt=""/> --> 
-                                Add All
-                            </a>
-<!--
-                            <a active='0' acton="add_staff_to_group" href="#" id="invite_staff_fb">
-                                Invite To Register
-                            </a>          
-                            <a active='0' acton="add_staff_to_group" id="upload_spreadsheet_fb">
-                                Upload Spreadsheet
-                            </a>
--->
-                            <a active='0' acton="add_staff_to_group" href='#' id="create_staff_fb">
-                                <!--<img src="/images/icon-user.gif" alt=""/> --> 
-                                Create Staff
-                            </a>
-                            <div style="clear:both"></div>                      
-                        </div>
+                                </div>
+                            </div>     
+                        </form>
                     </div>
+                </div>      
+                <div class="popup_footer" style="background-color:#FFF; padding:15px 15px 5px 15px;">
+                    <div class="buttons" style="padding-right:20px;">
+                        <a active='0' acton="add_staff_to_group" rel="done_button" >
+                            <!--<img src="/images/tick.png" alt=""/>--> 
+                            Done
+                        </a>
+                        <a active='0' acton="add_staff_to_group" collection="add_remove_from_group" rel="unselect_all_button" >
+                            <!--<img src="/images/selectall.png" alt=""/>-->  
+                            Remove All
+                        </a> 
+                        <a active='0' acton="add_staff_to_group" collection="add_remove_from_group" rel="select_all_button" >
+                            <!--<img src="/images/icon-user.gif" alt=""/> --> 
+                            Add All
+                        </a>
+  <!--
+                        <a active='0' acton="add_staff_to_group" href="#" id="invite_staff_fb">
+                            Invite To Register
+                        </a>          
+                        <a active='0' acton="add_staff_to_group" id="upload_spreadsheet_fb">
+                            Upload Spreadsheet
+                        </a>
+  -->
+                        <a active='0' acton="add_staff_to_group" href='#' id="create_staff_fb">
+                            <!--<img src="/images/icon-user.gif" alt=""/> --> 
+                            Create Staff
+                        </a>
+<!--                        <a active='0' acton="add_staff_to_group" href='#' id="invite_staff_fb">
+                            <img src="/images/icon-user.gif" alt=""/>  
+                            Invite To Register
+                        </a>-->
+                        <div style="clear:both"></div>                      
+                    </div>
+                </div>
                 <?php
-                }
-                else
-                {
-                     echo "getCourseForm_callback error: add_staff_to_group form: " . $enrollments['message'];
-                }
             }
-            else if($enrollments['status'] == 0)
+            else
             {
-                echo "getCourseForm_callback error: add_staff_to_group form: " . $enrollments['message'];
+                ob_start();
+        ?>
+        <div class="title" style="width:320px">
+            <div class="title_h2">No Staff Accounts</div>
+        </div>
+        <div class="middle">
+            Please go to Administration > Manage Staff Accounts to add staff. 
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" class="positive">
+                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/>
+                    Ok
+                </a>
+
+            </div>
+        </div>
+
+
+        <?php
+        $html = ob_get_clean();
+        echo $html;
             }
         ?>
 
@@ -4610,28 +4843,12 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             <div class="title">
                 <div class="title_h2">Publish Course?</div>
             </div>
-            <div class="middle publish_modules">
-                <p><b>IMPORTANT:</b> Once a course is published, you can no longer add/remove modules from this course. If you still need to finalize your modules, please do so prior to publishing this course.</p>
-
-                <p>Please confirm that this course has the modules you intended it to have. If you notice any extra or missing modules, please contact us for assistance <b>BEFORE</b> publishing the course:</p>
-
-                <p>
-                  <ol>
-<?php
-                    $modules = getModules($course_id, $portal_subdomain, compact("org_id"));
-                    foreach ($modules as $module)
-                    {
-                      echo "<li>" . $module['title'] . "</li>";
-                    }
-?>                  
-                  </ol>
-                </p>
-
-                <p><b>Publish <?= $course_name ?> Course?</b></p>
+            <div class="middle">
                 <form id= "change_course_status" frm_name="change_course_status" frm_action="changeCourseStatus" rel="submit_form" hasError=0> 
                     <input type="radio" name="status" value="draft" <?php echo ( $status == "draft" ) ? 'checked' : ' '; ?> >No<br>
                     <input type="radio" name="status" value="published" <?php echo ( $status == "published" ) ? 'checked' : ' '; ?> >Yes<br>
 
+                    <p><b>Note:</b> Once a course is published, you can no longer add/remove modules to this course. If you still need to finalize your modules, please do so prior to publishing a course.</p>
 
                     <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
                     <input type="hidden" name="group_id" value="<?= $course_id ?>" />
@@ -4641,12 +4858,11 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
             </div>      
             <div class="popup_footer">
                 <div class="buttons">
-                  <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="change_status" style="display:none"></i>
                   <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
                       Cancel
                   </a>
-                  <a active = '0' acton = "change_course_status" rel = "submit_button" class="positive" onclick="jQuery('#change_status').show();">
+                  <a active = '0' acton = "change_course_status" rel = "submit_button" class="positive">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
                     Save
                   </a>
@@ -4657,81 +4873,124 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
         }
         else if($form_name == "invite_staff_register")
         {        
-            $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
-            $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-            $status = filter_var($_REQUEST['status'],FILTER_SANITIZE_STRING);
-            ob_start();
+            $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+            $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+
+            // Check if the user has enough credits to add more staff members
+            //if(org_has_maxed_staff($org_id, $subscription_id) )
+            if(2>3)
+            {
+                    ob_start();
         ?>
-        <div class="title">
-            <div class="title_h2">Invite Staff to Register</div>
-        </div>
-        <div class="middle" style ="font-size:11px;clear:both;">
-            <div class="fixed_fb_width">
-                <div class="msgboxcontainer_no_width">
-                    <div class="msg-tl">
-                        <div class="msg-tr"> 
-                            <div class="msg-bl">
-                            <div class="msg-br">
-                                <div class="msgbox">
-                                    <p>Staff will receive an e-mail with a hyperlink (containing a unique code) that lets them register
-                            and be automatically placed in the <b>Group 1</b> Group.</p>
+                    <div class="title">
+                        <div class="title_h2">Unable to Invite Staff</div>
+                    </div>
+                    <div class="middle" style ="font-size:11px;clear:both;">
+                        <div class="fixed_fb_width">
+                            <div class="msgboxcontainer_no_width">
+                                <div class="msg-tl">
+                                    <div class="msg-tr"> 
+                                        <div class="msg-bl">
+                                        <div class="msg-br">
+                                            <div class="msgbox">
+                                                <p>You have reached the maximum number of staff you can have. To add more staff, you need first to upgrade your subscription</p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
+                            
                         </div>
                     </div>
-                </div>
-                <h2>Choose an Invitation Method:</h2>
-                <ol>
-                    <li>
-                        <h3>Use our Invitation Sender</h3>
-                        <ul>
-                            <li>
-                                Just copy-and-paste the staff e-mail addresses and we'll send out the invitation e-mail.
-                            </li>
-                            <li>
-                                You can <b>Track</b> those who haven't registered yet by viewing the <b>Invite List Report</b>.
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <h3>Use your own E-mail (Hotmail, GMail, etc.)</h3>
-                        <ul>
-                            <li>
-                                We give you the hyperlink to copy-and-paste into an e-mail and you send it yourself.
-                            </li>
-                            <li>
-                                You <b><u>cannot</u> Track</b> those who haven't registered yet.
-                            </li>
-                        </ul>
-                    </li>
-                </ol>
-            </div>
-        </div>
-        <div class="popup_footer" style = "background-color:#FFF; padding:15px 15px 5px 15px;">
-            <div class="buttons" >        
-                <a class="back_fb" data-curr_view="invite_staff" data-prev_view="main">
-                    <div style="height:15px;padding-top:2px;"> 
-                        Back
+                    <div class="popup_footer" style = "background-color:#FFF; padding:15px 15px 5px 15px;">
+                        <div class="buttons" >        
+                            <a class="back_fb" data-curr_view="invite_staff" data-prev_view="main">
+                                <div style="height:15px;padding-top:2px;"> 
+                                    Back
+                                </div>
+                            </a>
+                                      
+                            <div style="clear:both">
+                            </div>                      
+                        </div>
                     </div>
-                </a>
-                <a class = "use_own_email" >
-                    <div style="height:15px;padding-top:2px;"> 
-                        Use your own Email
-                    </div>
-                </a>
-                <a class = "use_invitation_email" >
-                    <div style="height:15px;padding-top:2px;"> 
-                        Use our Invitation Sender
-                    </div>
-                </a>            
-                <div style="clear:both">
-                </div>                      
-            </div>
-        </div>
         <?php
         $html = ob_get_clean();
+            }else{
+                            ob_start();
+        ?>
+                    <div class="title">
+                        <div class="title_h2">Invite Staff to Register</div>
+                    </div>
+                    <div class="middle" style ="font-size:11px;clear:both;">
+                        <div class="fixed_fb_width">
+                            <div class="msgboxcontainer_no_width">
+                                <div class="msg-tl">
+                                    <div class="msg-tr"> 
+                                        <div class="msg-bl">
+                                        <div class="msg-br">
+                                            <div class="msgbox">
+                                                <p>Staff will receive an e-mail with a hyperlink (containing a unique code) that lets them register
+                                        and be automatically placed in the <b>Group 1</b> Group.</p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2>Choose an Invitation Method:</h2>
+                            <ol>
+                                <li>
+                                    <h3>Use our Invitation Sender</h3>
+                                    <ul>
+                                        <li>
+                                            Just copy-and-paste the staff e-mail addresses and we'll send out the invitation e-mail.
+                                        </li>
+                                        <li>
+                                            You can <b>Track</b> those who haven't registered yet by viewing the <b>Invite List Report</b>.
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h3>Use your own E-mail (Hotmail, GMail, etc.)</h3>
+                                    <ul>
+                                        <li>
+                                            We give you the hyperlink to copy-and-paste into an e-mail and you send it yourself.
+                                        </li>
+                                        <li>
+                                            You <b><u>cannot</u> Track</b> those who haven't registered yet.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="popup_footer" style = "background-color:#FFF; padding:15px 15px 5px 15px;">
+                        <div class="buttons" >        
+                            <a class="back_fb" data-curr_view="invite_staff" data-prev_view="main">
+                                <div style="height:15px;padding-top:2px;"> 
+                                    Back
+                                </div>
+                            </a>
+                            <a class = "use_own_email" >
+                                <div style="height:15px;padding-top:2px;"> 
+                                    Use your own Email
+                                </div>
+                            </a>
+                            <a class = "use_invitation_email" >
+                                <div style="height:15px;padding-top:2px;"> 
+                                    Use our Invitation Sender
+                                </div>
+                            </a>            
+                            <div style="clear:both">
+                            </div>                      
+                        </div>
+                    </div>
+        <?php
+        $html = ob_get_clean();
+            }
+
         }
         else if($form_name == "use_invitation_email")
         {        
@@ -4836,11 +5095,10 @@ jane@email.com
             </div>      
             <div class="popup_footer">
               <div class="buttons">
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="delete_staff" style="display:none"></i>
                 <a onclick="jQuery(document).trigger('close.facebox');" >
                   <div style="height:15px;padding-top:2px;"> Cancel</div>
                 </a>
-                <a active = '0' acton = "delete_staff_account" rel = "submit_button" onclick="jQuery('#delete_staff').show();">
+                <a active = '0' acton = "delete_staff_account" rel = "submit_button" >
                   <div style="height:15px;padding-top:2px;"> Delete</div>
                 </a>
               </div>
@@ -4856,7 +5114,7 @@ jane@email.com
             $all_videos = grabVideos();                                                             //list of all exisiting videos
 
             //List of all courses
-            $courses = getCourses(DEFAULT_SUBDOMAIN, 1);
+            $courses = getCourses(0,0);
 
             //This variable will contain all course ids based on their name
             $course_ids = array();
@@ -4864,9 +5122,9 @@ jane@email.com
             //this loop will put the course ids based on name into course_ids
             foreach ($courses as $course)
             {
-                $course_ids[$course['name']] = $course['id'];
+                $course_ids[$course->course_name] = $course->id;
             }
-            
+            //var_dump($course_ids);
             ob_start();
         ?>
             <div class="title">
@@ -4902,7 +5160,7 @@ jane@email.com
 
                                 //grab all conditions
                                 $all_conditions = grabConditions($question_number, $answer_number, 1);
-
+                                //var_dump($all_conditions);
                                 //this variable will contain the conditions in a desired format 
                                 $all_conditions_fixed = array();
 
@@ -4913,8 +5171,8 @@ jane@email.com
                                 }
 
                                 //Getting all modules of New Staff course
-                                $new_staff_modules = getModules($course_ids['New Staff'], DEFAULT_SUBDOMAIN);
-
+                                $new_staff_modules = getModulesByLibrary($course_ids['New Staff']);
+                                //var_dump($new_staff_modules);
                                 //this variable will contain the modules for New Staff course in a desired format
                                 $new_staff_videos = array();
 
@@ -4980,7 +5238,7 @@ jane@email.com
                                 }
 
                                 //Getting all modules of Returning Staff course
-                                $returning_staff_modules = getModules($course_ids['Returning Staff'], DEFAULT_SUBDOMAIN);
+                                $returning_staff_modules = getModulesByLibrary($course_ids['Returning Staff']);
 
                                 //this variable will contain the modules for Returning Staff course in a desired format
                                 $returning_staff_videos = array();
@@ -5047,7 +5305,7 @@ jane@email.com
                                 }
 
                                 //Getting all modules of Program Staff course
-                                $program_staff_modules = getModules($course_ids['Program Staff'], DEFAULT_SUBDOMAIN);
+                                $program_staff_modules = getModulesByLibrary($course_ids['Program Staff']);
 
                                 //this variable will contain the modules for Program Staff course in a desired format
                                 $program_staff_videos = array();
@@ -5114,7 +5372,7 @@ jane@email.com
                                 }
 
                                 //Getting all modules of Supervisory Staff course
-                                $supervisory_staff_modules = getModules($course_ids['Supervisory Staff'], DEFAULT_SUBDOMAIN);
+                                $supervisory_staff_modules = getModulesByLibrary($course_ids['Supervisory Staff']);
 
                                 //this variable will contain the modules for Supervisory Staff course in a desired format
                                 $supervisory_staff_videos = array();
@@ -5419,12 +5677,183 @@ jane@email.com
                 });
 
                 $('i.minus').live("click", function()
-                {
-                    $(this).parent().parent().parent().remove();
+                {   
+                    var $answers=$('input.answer');
+                    //console.log($answers.length);
+                    if($answers.length>1){
+                        $(this).parent().parent().parent().remove();
+                    }
                 });
             </script>
         <?php
         $html = ob_get_clean();
+        }else if($form_name == "use_invitation_msg")
+        {
+            global $current_user;
+            get_currentuserinfo();
+            $user_email = $current_user->user_email;
+            $org_id =  filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+            $subscription_id =  filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+            $group_id =  filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
+            $group_name =  filter_var($_REQUEST['group_name'], FILTER_SANITIZE_STRING);
+            
+            
+            ob_start();
+            ?>
+                        <div class="title">
+              <div class="title_h2">Invite Staff To Register</div>
+            </div>
+            <div class="middle">
+              <form id= "use_invitation_msg" frm_name="use_invitation_msg" frm_action="sendInvitationMsg" rel="submit_form" hasError=0> 
+                <table padding=0 class="form">
+                    <tr>
+                        <td>
+                            <div class="fixed_fb_width">
+                            <div class="msgboxcontainer_no_width">
+                                <div class="msg-tl">
+                                      <div class="msg-tr"> 
+                                            <div class="msg-bl">
+                                                  <div class="msg-br">
+                                                          <div class="msgbox">
+                                                                  <p>This message (below) will be sent to your staff. For your convenience we've written a sample letter that you can customize to your liking. Once you are done, click <strong>Send Invitations</strong>. <br><br>Your message <strong>must</strong> include the following code:<br>http://expertonlinetraining.net/register.html?key=EME4YG</p>
+                                                          </div>
+                                                </div>
+                                          </div>
+                                         </div>
+                                </div>
+		           </div>
+                            </div>
+                        </td>
+                    </tr>
+                  <tr> 
+                    <td class="value"> 
+                      <textarea class="tinymce" id="composed_message" name="msg" style="margin-left:1px;width: 100%; height: 300px">
+                            <b>Welcome</b>, <br><br>
+                           
+                            <p><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" alt="EOT Logo" style="width: 125px; height: 94px; float: left;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" data-mce-style="width: 150px; height: 113px; float: left;"> 
+                            
+                            <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> has invited you to join the camp with this code:<br><br>
+
+                            <strong><?= wp_hash($user_email);?></strong>
+
+                            <br><br>
+                            <b>Got Questions?</b> If you get stuck, call us at <b>877-237-3931</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.<br><br>
+
+                            Enjoy your training!<br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
+                            Dr. Chris Thurber<br> 
+                            EOT Co-Founder &amp;<br> 
+                            Director of Content
+                          </textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td>
+                            <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" /> 
+                            <input type="hidden" name="subscription_id" id="subscription_id" value="<?= $subscription_id ?>" /> 
+                            <input type="hidden" name="group_id" id="group_id" value=" <?= $group_id ?>" />
+                            <input type="hidden" name="group_name" value="<?= $group_name ?>" />
+                      </td>
+                  </tr>
+                </table> 
+              </form>
+            </div>      
+            <div class="popup_footer">
+              <div class="buttons">
+                  <a class="back_fb update_email_textbox" data-curr_view="invite_send_msg" data-prev_view="invite_send_email">
+                        <div style="height:15px;padding-top:2px;"> 
+                            Back
+                        </div>
+                    </a>
+                <a class="send_invitations" >
+                  <div style="height:15px;padding-top:2px;"> Send Invitation</div>
+                </a>
+              </div>
+            </div>
+            <?php
+            $html = ob_get_clean();
+        }else if($form_name == "use_own_email")
+        {
+            global $current_user;
+            get_currentuserinfo();
+            $user_email = $current_user->user_email;
+            $org_id =  filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+            $subscription_id =  filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+            $group_id =  filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
+            $group_name =  filter_var($_REQUEST['group_name'], FILTER_SANITIZE_STRING);
+            
+            
+            ob_start();
+            ?>
+                        <div class="title">
+              <div class="title_h2">Use your own email account to send message</div>
+            </div>
+            <div class="middle">
+              <form id= "use_invitation_msg" frm_name="use_own_email" frm_action="sendInvitationMsg" rel="submit_form" hasError=0> 
+                <table padding=0 class="form">
+                    <tr>
+                        <td>
+                            <div class="fixed_fb_width">
+                            <div class="msgboxcontainer_no_width">
+                                <div class="msg-tl">
+                                      <div class="msg-tr"> 
+                                            <div class="msg-bl">
+                                                  <div class="msg-br">
+                                                          <div class="msgbox">
+                                                                  <p>For your convenience we've written a sample letter that you can customize to your liking. Once you are done, click <strong>Send Invitations</strong>. <br><br>Your message <strong>must</strong> include the following code:<br>http://expertonlinetraining.net/register.html?key=EME4YG</p>
+                                                          </div>
+                                                </div>
+                                          </div>
+                                         </div>
+                                </div>
+		           </div>
+                            </div>
+                        </td>
+                    </tr>
+                  <tr> 
+                    <td class="value"> 
+                      <div class="" id="composed_message" name="message" style="margin-left:1px;height: 300px;max-width:600px">
+                            <b>Welcome</b>, <br><br>
+                           
+                            <p><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" alt="EOT Logo" style="width: 125px; height: 94px; float: left;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" data-mce-style="width: 150px; height: 113px; float: left;"> 
+                            
+                            <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> has invited you to join the camp with this code:<br><br>
+
+                            
+                            <b>Got Questions?</b> If you get stuck, call us at <b>877-237-3931</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.<br><br>
+
+                            Enjoy your training!<br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
+                            Dr. Chris Thurber<br> 
+                            EOT Co-Founder &amp;<br> 
+                            Director of Content
+                          </div>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td>
+                            <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" /> 
+                            <input type="hidden" name="subscription_id" id="subscription_id" value="<?= $subscription_id ?>" /> 
+                            <input type="hidden" name="group_id" id="group_id" value=" <?= $group_id ?>" />
+                            <input type="hidden" name="group_name" value="<?= $group_name ?>" />
+                      </td>
+                  </tr>
+                </table> 
+              </form>
+            </div>      
+            <div class="popup_footer">
+              <div class="buttons">
+                  <a class="back_fb update_email_textbox" data-curr_view="use_own_email" data-prev_view="invite_staff">
+                        <div style="height:15px;padding-top:2px;"> 
+                            Back
+                        </div>
+                    </a>
+                <a onclick="jQuery(document).trigger('close.facebox');" class="positive">
+                    <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/>
+                      Done
+                  </a>
+              </div>
+            </div>
+            <?php
+            $html = ob_get_clean();
         }
         else
         {
