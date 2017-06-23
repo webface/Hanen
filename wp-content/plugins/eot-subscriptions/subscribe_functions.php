@@ -114,7 +114,7 @@ function display_subscriptions ()
                     //$response = cloneCourse($LU_course_ID, $org_lrn_upon_id, 'false');
                     $subscription_id = $subscription->ID;
                     $data = compact("user_id", "subscription_id");//course description is ommitted in this case
-                    $response = createCourse($course_name, $org_id, $data , 1 , $course_id);
+                    $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
                     if (isset($response['status']) && !$response['status']) 
                     {
                         echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
@@ -177,7 +177,7 @@ function display_subscriptions ()
                         foreach ($actions as $action) {
     //echo "Action: " . $action['action'] . " video id " . $action['video_id'];
                             $video_name = $wpdb->get_var('SELECT name FROM ' . TABLE_VIDEOS . ' WHERE id = ' . $action['video_id']);
-                            $module_id = $module_IDs[$video_name];
+                            $module_id = isset($module_IDs[$video_name]) ? $module_IDs[$video_name] : 0;
                             $data = compact("org_id","module_id");
 
                             if ($action['action'] == 'Add')

@@ -27,8 +27,8 @@ DROP TABLE IF EXISTS `wp_course_module`;
 
 CREATE TABLE `wp_course_module` (
   `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `course_id` bigint(20) unsigned DEFAULT NULL,
-  `module_id` bigint(20) unsigned DEFAULT NULL,
+  `course_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `module_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

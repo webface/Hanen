@@ -3170,7 +3170,7 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
      * course_description - the course description.
      * subscription_id - the subscription id
      */
-     global $wpdb;
+    global $wpdb;
     if($course_name == "") 
     {
       return array('status' => 0, 'message' => "createCourse error: The course name cannot be blank.");
@@ -3190,12 +3190,14 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
 
     
     // filter user input and make sure parameters are included
-    $course_name = filter_var($course_name, FILTER_SANITIZE_STRING);
+    $course_name = trim(filter_var($course_name, FILTER_SANITIZE_STRING));
     if(isset($course_description))
     {
-        $course_description = filter_var($course_description, FILTER_SANITIZE_STRING);
-    }else if($copy)
+        $course_description = trim(filter_var($course_description, FILTER_SANITIZE_STRING));
+    }
+    else if($copy && $copy_course_id > 0) // get course description from table cause were copying a course
     {
+        $copy_course_id = filter_var($copy_course_id, FILTER_SANITIZE_NUMBER_INT);
         $course = $wpdb->get_row("SELECT * FROM ".TABLE_COURSES." WHERE ID = $copy_course_id",OBJECT);
         $course_description = $course->course_description;
     }
@@ -3203,8 +3205,7 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
-    $course_due_date = (isset($course_due_date)) ? $course_due_date : '0000-00-00 00:00:00';
-
+    $course_due_date = (isset($course_due_date)) ? $course_due_date : '1000-01-01 00:00:00';
    
     $insert = $wpdb->insert( 
       TABLE_COURSES, 
@@ -3230,25 +3231,25 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     {
       return array('status' => 0, 'message' => "createCourse error:" . $wpdb->last_error);
     }    
-    else if( $wpdb->insert_id )
+    else if( $wpdb->insert_id ) // no errors when inserting
     {
-      if(!$copy)
+      if(!$copy) // return the newly created course ID
       {
           return array('status' => 1, 'id' => $wpdb->insert_id);
       }
-      else if($copy_course_id > 0) 
-     {
-         $sql = "INSERT INTO ".TABLE_COURSES_MODULES." (course_id,module_id) SELECT ".$wpdb->insert_id.", m.module_id FROM ".TABLE_COURSES_MODULES." m WHERE m.course_id = $copy_course_id ";
-         $result = $wpdb->query($sql);
-         if($result !== FALSE)
-         {
-            return array('status' => 1, 'id' => $wpdb->insert_id); 
-         }
-        else 
-         {
-            return array('status' => 0, 'message' => "copyCourse error:" . $wpdb->last_error);
+      else if($copy && $copy_course_id > 0) // copy all the modules from the course
+      {
+        $sql = "INSERT INTO ".TABLE_COURSES_MODULES." (course_id, module_id) SELECT ".$wpdb->insert_id.", m.module_id FROM ".TABLE_COURSES_MODULES." m WHERE m.course_id = $copy_course_id ";
+        $result = $wpdb->query($sql);
+        if($result !== FALSE) // return the course id of the copied course
+        {
+          return array('status' => 1, 'id' => $wpdb->insert_id); 
         }
-     }
+        else // error
+        {
+          return array('status' => 0, 'message' => "copyCourse error:" . $wpdb->last_error);
+        }
+      }
     }
     else
     {
