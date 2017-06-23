@@ -119,7 +119,11 @@ define ('TABLE_PENDING_SUBSCRIPTIONS', $wpdb->prefix."pending_subscriptions");
 define ('TABLE_USERS', $wpdb->prefix."users");
 define ('TABLE_COURSES', $wpdb->prefix.'courses');
 define ('TABLE_COURSES_MODULES', $wpdb->prefix.'course_module');
+define('TABLE_COURSES_QUIZZES',$wpdb->prefix.'eot_course_quizzes');
+define('TABLE_COURSES_RESOURCES',$wpdb->prefix.'eot_course_resources');
 define ('TABLE_MODULES', $wpdb->prefix.'modules');
+define('TABLE_QUIZ', $wpdb->prefix . 'quiz');
+define('TABLE_EOT_RESOURCES', $wpdb->prefix . "eot_resources");
 
 // base courses (course name => course description)
 $base_courses = array (

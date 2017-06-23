@@ -3483,6 +3483,41 @@ function getEnrolledUsersInCourse($course_id = 0)
     return NULL;
 }
 
+/**
+ * get the quizzes in a course
+ * @param $course_id
+ * @return array of quizzes in course
+ */
+function getQuizzesInCourse($course_id = 0)
+{
+    global $wpdb;
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $sql = "SELECT q.* "
+                . "FROM " . TABLE_QUIZ . " AS q "
+                . "LEFT JOIN " . TABLE_COURSES_QUIZZES . " AS cq ON cq.quiz_id = q.id "
+                . "WHERE cq.course_id = $course_id ";
+    $course_quizzes = $wpdb->get_results($sql, ARRAY_A);
+    return $course_quizzes;
+}
+
+/**
+ * get the handouts in a course
+ * @param $course_id
+ * @return array of handouts in course
+ */
+function getResourcesInCourse($course_id = 0)
+{
+    global $wpdb;
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $sql = "SELECT r.* "
+                . "FROM " . TABLE_EOT_RESOURCES . " AS r "
+                . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.id "
+                . "WHERE cr.course_id = $course_id ";
+    $course_resources = $wpdb->get_results($sql, ARRAY_A);
+    return $course_resources;
+
+}        
+
 /********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
  * javascript and the javascript will inject it into the HTML page.
