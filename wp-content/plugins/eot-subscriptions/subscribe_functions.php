@@ -108,13 +108,13 @@ function display_subscriptions ()
             global $base_courses;
             if ($org_id) // make sure we have an org to add these courses to
             {
-                foreach ($base_courses as $course_name => $course_description)
+                foreach ($base_courses as $course_name => $course_id)
                 {
                     // Now create the default courses into the new org.
                     //$response = cloneCourse($LU_course_ID, $org_lrn_upon_id, 'false');
                     $subscription_id = $subscription->ID;
-                    $data = compact("user_id", "subscription_id", "course_description");
-                    $response = createCourse($course_name, $org_id, $data);
+                    $data = compact("user_id", "subscription_id");//course description is ommitted in this case
+                    $response = createCourse($course_name, $org_id, $data , 1 , $course_id);
                     if (isset($response['status']) && !$response['status']) 
                     {
                         echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];

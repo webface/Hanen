@@ -123,10 +123,10 @@ define ('TABLE_MODULES', $wpdb->prefix.'modules');
 
 // base courses (course name => course description)
 $base_courses = array (
-	"New Staff" => 'for new staff',
-	"Returning Staff" => 'for returning staff',
-	"Program Staff" => 'for program staff',
-	"Supervisory Staff" => 'for supervisors'
+	"New Staff" => 1,
+	"Returning Staff" => 2,
+	"Program Staff" => 3,
+	"Supervisory Staff" => 4
 );
 
 // define LearnUpon Vars
