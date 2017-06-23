@@ -21,46 +21,6 @@
 
     if(isset($true_subscription['status']) && $true_subscription['status'])
     {
-      // check that the current LE course in the portal has the same number of modules as the master LE course, otherwise do not allow user to modify courses
-      $response = getCourse($portal_subdomain = DEFAULT_SUBDOMAIN, lrn_upon_LE_Course_ID, array()); 
-      if (isset($response['status']) && !$response['status'])
-      {
-        echo "ERROR: Couldn't get number of modules from main library. Please try again in 5 minutes.";
-        return;
-      }     
-      else
-      {
-        if (isset($response['number_of_modules']))
-        {
-          $num_modules_master_LE_course = $response['number_of_modules'];
-
-          // now get the number of modules in this portal's LE course
-          $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-          $master_course = getCourseByName(lrn_upon_LE_Course_TITLE, $portal_subdomain, compact ("org_id")); // Get the master course. Cloned LE
-          $num_modules_cloned_master_course = $master_course['number_of_modules'];
-
-          if ($num_modules_master_LE_course == $num_modules_cloned_master_course || $num_modules_cloned_master_course == 190)
-          {
-            // were good to proceed.
-          }
-          else if ($num_modules_master_LE_course > $num_modules_cloned_master_course)
-          {
-            echo "We are currently cloning <b>$num_modules_cloned_master_course out of $num_modules_master_LE_course modules</b> from our master library into your portal. This may take a few minutes. Once cloning is complete, you will be able to create/edit/delete courses for your staff. <br><br> Please check back in a few minutes...";
-            return;
-          }
-          else
-          {
-            echo "ERROR: couldn't confirm that the master library was cloned properly. Please contact the administrator.";
-            return;
-          }
-        }
-        else
-        {
-          echo "ERROR: got the module list from the main library but couldn't get a count. Please try again in 5 minutes.";
-          return;
-        }
-      }
-
       if(current_user_can( "is_director" ))
       {
         $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
@@ -81,9 +41,9 @@
         {
             echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
             return;
-        }
-?>
+          }
 
+?>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.min.js'?>"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery-ui.min.js'?>"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.dataTables.js'?>"></script>
@@ -101,8 +61,8 @@
             </div>
           </div>
         </div>
-        <div class="jScrollPaneContainer jScrollPaneScrollable" tabindex="0" style="height: 250px;">
-          <div id="pane2" class="scroll-pane" style="width: 250px; overflow: hidden; height: 250px; padding-right: 0px;">
+        <div class="jScrollPaneContainer jScrollPaneScrollable" tabindex="0" style="height: 250px;width:250px;">
+          <div id="pane2" class="scroll-pane" style="overflow: hidden; height: 250px; padding-right: 0px;">
             <div style="width:100%;">
               <?php 
                 /**
@@ -110,14 +70,16 @@
                  * Display how many modules/videos are there in a course
                  * If there's no course, it will display an error.
                  */
-                $courses = getCourses($org_subdomain, '1', $data);
+                global $wpdb;
+                $courses = getCoursesById($org_id,$subscription_id);
+        
                 // If status is not set, assuming there is no error.
                 if($courses)
                 {
                   foreach($courses as $key => $course) 
                   {
                     $course_id = $course['id'];   // Course ID
-                    $course_name = $course['name']; // Course Name                  
+                    $course_name = $course['course_name']; // Course Name                  
                     $request_uri = ""; // edit url is not displaying properly because it's looking for this undefine variable. Will use dummy data for now.
                     $published_status = $course['published_status_id'];
                     // Do not display the cloned leadership essential
@@ -134,15 +96,6 @@
                             <span class="video_count"></span>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="loading_course_subscription_info" style="display:none"></i>
                           </p>
-                          <div class="group_list_published_row" style="left: 198px;">
-                              <?php if($published_status == "published") : ?>
-                                 <i class="fa fa-eye published tooltip" onmouseover="Tip('This course is already published. You can not make any module changes to a published course!', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" aria-hidden="true"></i>
-                              <?php else : ?>      
-                                <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=change_course_status_form&amp;status=<?= $published_status?>&amp;course_name=<?= $course_name ?>&amp;org_id=<?= $org_id ?>&amp;course_id=<?= $course_id ?>&amp;portal_subdomain=<?= $org_subdomain ?>" class="dasdfdasfelete_group" rel="facebox">
-                                  <i class="fa fa-eye draft tooltip" onmouseover="Tip('Publish the course', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" aria-hidden="true"></i>
-                                </a>
-                              <?php endif; ?>
-                          </div>
                           <div class="group_list_edit_row" style="left: 215px;">
                           <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=edit_course_group&amp;course_name=<?= $course_name ?>&amp;org_id=<?= $org_id ?>&amp;course_id=<?= $course_id ?>&amp;portal_subdomain=<?= $org_subdomain ?>" class="dasdfdasfelete_group" rel="facebox">
                               <i class="fa fa-pencil tooltip" onmouseover="Tip('Edit course name.', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" aria-hidden="true"></i>
@@ -171,7 +124,6 @@
                   echo "There is an error in getting the courses: " . $error_message;
                 }
               ?>                  
-
             </div>
           </div>
         </div>
@@ -229,32 +181,6 @@
       </div>
       <br />
       <br />
-      <div style="display:none;" id="publishCourseError" rel="facebox">
-        <div class="title">
-          <div class="title_h2">This course is already published.</div>
-        </div>
-        <div id="faceboxMiddle">  
-         <p>This course is already published. You can not make any module changes to a published course!</p>
-        </div>
-        <div class="popup_footer" style="padding:15px 0px 5px 15px;">
-          <div class="buttons">
-            <a rel="done_button" active="0"> Ok </a>
-          </div>
-        </div>
-      </div>
-      <div style="display:none;" id="AddStaffInDraftCourseError" rel="facebox">
-        <div class="title">
-          <div class="title_h2">Add/Remove Staff Accounts Error</div>
-        </div>
-        <div id="faceboxMiddle">  
-         <p>You can not add or remove staff accounts in a draft course. If you have finalized the modules in this course please publish it by clicking the eye icon next to the course prior to enrolling staff into this course.</p>
-        </div>
-        <div class="popup_footer" style="padding:15px 0px 5px 15px;">
-          <div class="buttons">
-            <a rel="done_button" active="0"> Ok </a>
-          </div>
-        </div>
-      </div>
      <!-- End of right container-->
      <div style="clear: both;"></div>
      <div class="dashboard_border" style="padding: 0; padding-left: 23px; width: 91%;">
@@ -262,12 +188,12 @@
           <legend>Legend</legend>
         </h1>
        <fieldset style="margin-top: -20px">
-          <p>
+<!--          <p>
             <i class="fa fa-eye draft tooltip"></i> The course is in <b>draft</b> mode. You can still make changes.
           </p>
           <p>
             <i class="fa fa-eye published tooltip"></i> The course is <b>published</b>. You can no longer make changes.
-          </p>
+          </p>-->
           <p>
             <i class="fa fa-pencil tooltip"></i> <b>Edit</b> the course name. Works for published and unpublished courses.
           </p>
@@ -284,6 +210,7 @@
      </div>
       <!-- CSS File goes here. -->
        <style type = "text/css">
+
         div.tablehead-tr {
           background-image:url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/target/reports-tr.gif);
           background-position:right top;
@@ -420,7 +347,6 @@
           margin-left:10px;
         cursor: pointer;
         }
-
         a.display_options
         {
           clear:both;
@@ -468,7 +394,6 @@
       }
        </style>
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.mousewheel.js'?>"></script>
-      <!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>--> 
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jScrollPane.js'?>"></script> 
       <link rel="stylesheet" type="text/css" media="all" href="<?= get_template_directory_uri() . "/css/jScrollPane.css"?>" /> 
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.rotate.js'?>"></script>
@@ -553,17 +478,23 @@
       function updateTimeToComplete() {
         $ = jQuery;
         
-        var video_count = $('input:checked[name*="chk_video_"]').length
+        var video_time_count = 0;
+        var video_checked = $('input:checked[name*="chk_video_"]');
+        // Count video time.
+        $.each(video_checked, function(key, value) 
+        {
+          video_time_count += parseInt($(this).attr("video_length"));
+        });
         var quiz_count = $('input:checked[item="quiz"]').length
         var resource_count = $('input:checked[item="resource"]').length
+        var video_count = $('input:checked[name*="chk_video_"]').length
         var avg_video_length = <?= AVG_VIDEO_LENGTH ?>;
         var avg_exam_length = <?= AVG_EXAM_LENGTH ?>;
         
         $('#videoCount').html(video_count);
         $('#quizCount').html(quiz_count);
         $('#resourceCount').html(resource_count);
-        
-        total_time = ((video_count * avg_video_length) + (quiz_count * avg_exam_length)) * 60; // Total time in seconds: Exams will be 10 minutes each while watching 1 video module will be 5 minutes.
+        total_time = ((video_time_count) + (quiz_count * avg_exam_length)) * 60; // Total time in seconds: Exams will be 10 minutes each while watching 1 video module will be 5 minutes.
         
         $('#timeToComplete').html(total_time.toHoursMinutes());
         //updateCertificateProgress();
@@ -579,21 +510,12 @@
               setTimeout(function(){animateProgressBars()},1);  
             }
           );
-          $('.update_msg_textbox').live('click', function() {
-              $("textarea[name='msg']").html($("textarea[name='msg']").attr('value'));
-              invite_send_msg_text = $('textarea[name="msg"]').val();    
-          });
-          
-          $('.update_email_textbox').live('click', function() {
-              
-          });
                 
           $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
           $('a[rel*=facebox]').facebox();
           
           // Do not initialize with "var" because we want these to be global variables
           prevObj = false;
-          prevent_click=false;
           invite_staff = false;
           invite_send_email = false;
           invite_send_msg = false;
@@ -613,137 +535,9 @@
             invite_own = false;
             spreadsheet_users = false;
           });       
-     
-          /******************************************************************************************
-          * Binds a live function to the "More Users" button on add/remove staff list
-          *******************************************************************************************/  
-          $('#more_users_row').live('click', function() {
-                    if (!loading_list) {
-                        loading_list = true;
-                        sub_id = $("#group_list").attr("subscription_id");
-                        group_id = $("#staff_and_assignment_list").attr("group_id");
-                org_id = $("#group_list").attr("org_id");
-                        
-                var element = $(this);
-                        element.html('<img src="'+ajax_object.template_url+'images/ajax_loading_list.gif" />');
-                var start_from = parseInt(element.attr("data-start_from"));
-                
-                var url = 'http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=get_more_users_in_org&format=ajax'; 
-                $.ajax({url:url,data: "start_from="+start_from+"&sub_id="+sub_id+"&group_id="+group_id+"&org_id="+org_id, dataType: 'json', type: 'POST', success:
-                  function(data) {
-                    if (data.success) {
-                                  if (data.has_more) {
-                          $(data.html).insertBefore(element); 
-                                      element.attr('data-start_from',start_from+1);
-                                      $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});  
-                        } else {
-                                      $(data.html).insertBefore(element);
-                          element.fadeOut('slow', function() {
-                                        $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});  
-                                      });
-                        }
-                                } else {
-                                    element.fadeOut('slow', function() {
-                                        $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});  
-                                    });    
-                                }
-                                element.html('View More &#9660;');
-                                loading_list = false;
-                  }
-                });
-                    }
-          });
-                
-          /******************************************************************************************
-          * Binds a live function to the "Back" button on several facebox pages
-          * Changes the view by checking if it exists
-          *******************************************************************************************/  
-          $('.back_fb').live('click', function() {
-            var curr_view = $(this).attr('data-curr_view');
-            var prev_view = $(this).attr('data-prev_view');
-            if (curr_view == "invite_send_msg") {
-              invite_send_msg_text = $('textarea[name="msg"]').val();
-            } else {
-              window[curr_view] = $('.content').html();
-            }
-            if (prev_view == "main") {
-              redirect_to_main();
-            } else {
-              $('.content').fadeOut(300, function() {
-                $('.content').html(window[prev_view]);
-                $('.content').fadeIn(300);
-              });
-            }
-          });
-          
-          /**********************************************************************************
-          * Binds a live function to the "Send Invitations" button
-          ***********************************************************************************/  
-          $('.send_invitations').live('click', function() {
-                    $("textarea[name='msg']").html($("textarea[name='msg']").attr('value'));
-            invite_send_msg_text = $('textarea[name="msg"]').val();
-            group_id = $("#staff_and_assignment_list").attr("group_id");
-            $('body').append('<div id="tmp_hidden"></div>');
-            var send_emails = $('#tmp_hidden').hide().html(invite_send_email).find('textarea[name="emails"]').val();
-            var send_msg = $('textarea[name="msg"]').val();
-            var search_text = new RegExp($('textarea[name="msg"]').attr('data-group_code') + "");
-            var code_found = send_msg.search(search_text);
-            $('#tmp_hidden').html('').remove();
-            
-            // If group code was found in the message, proceed with ajax call
-            if (code_found != -1) {
-              var url = 'http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=send_email_invites&format=ajax'; 
-              /*$.ajax({url:url,data: "group_id="+group_id+"&emails="+send_emails+"&msg="+send_msg, dataType: 'json', type: 'POST', success:*/
-              $.ajax(
-                {
-                  url:url,
-                  data: 
-                  {
-                    'group_id' : group_id,
-                    'emails' : send_emails,
-                    'msg':send_msg
-                  },
-                  dataType: 'json',
-                  type: 'POST',
-                  success:
-                   function(data)
-                   {
-                     if (data.success)
-                     {
-                      change_fb_view(data.data);
-                     } else
-                     {
-                      change_fb_view(data.data); 
-                     }
-                    }
-               });
-            } else {
-              alert('You removed the signup link from the message. It must be present in the message so that users can sign up with it.');
-            }
-            return false;
-          });
-          
-          // The back button which takes the user back to the send_email view
-          $('#back_to_send_msg').live('click', function() {
-            group_id = $("#staff_and_assignment_list").attr("group_id");
-            org_id = $("#group_list").attr("org-id");
-            sub_id = $("#group_list").attr("subscription-id");
-            group_name = group_name_global;
-            
-            if (invite_send_email != false) {
-              change_fb_view(invite_send_email);
-            } else {
-              var url =  'http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=display_form&format=ajax&form_name=use_invitation_email&org_id='+org_id+'&subscription_id='+sub_id+"&group_id="+group_id+"&group_name="+group_name;
-              $.ajax({url:url,success:
-                function(data)
-                {
-                  change_fb_view(data);
-                }
-              });
-            }
-            return false;
-          });
-          
+//          $('input[item="quiz"]').live('click',function(){
+//              console.log($(this).attr('item_id'));
+//          })  
           /******************************************************************************************
           * Binds a live function to the "Create Staff" button on the "Add/Remove Staff" facebox view
           *******************************************************************************************/    
@@ -752,7 +546,7 @@
             org_id = $("#group_list").attr("org_id");
             sub_id = $("#group_list").attr("subscription_id");
             portal_subdomain = $("#group_list").attr("org_subdomain");
-            var url =  ajax_object.ajax_url + "?action=getCourseForm&form_name=create_staff_account&org_id="+org_id+"&group_id="+group_id+"&group_name="+group_name+"&portal_subdomain="+portal_subdomain;
+            var url =  ajax_object.ajax_url + "?action=getCourseForm&form_name=create_staff_account&org_id="+org_id+"&group_id="+group_id+"&group_name="+group_name+"&portal_subdomain="+portal_subdomain+'&subscription_id='+sub_id;
             prevObj = $('.content').html();
             $('.content').html('<img src="'+ajax_object.template_url+'/images/loading.gif">').html();
             $.ajax({url:url,
@@ -774,202 +568,6 @@
             return false;
           });
           
-          /******************************************************************************************
-          * Binds a live function to the "Invite to Register" button on the "Add/Remove Staff" facebox view
-          *******************************************************************************************/    
-          $('#invite_staff_fb').live('click', function() {
-            group_id = $("#staff_and_assignment_list").attr("group_id");
-            org_id = $("#group_list").attr("org_id");
-            sub_id = $("#group_list").attr("subscription_id");
-            group_name = group_name_global;
-            
-            if (invite_staff != false) {
-              change_fb_view(invite_staff);
-            } else {
-              group_id = $("#staff_and_assignment_list").attr("group_id");
-              org_id = $("#group_list").attr("org_id");
-              sub_id = $("#group_list").attr("subscription_id");
-              portal_subdomain = $("#group_list").attr("org_subdomain");
-              var url =  ajax_object.ajax_url + "?action=getCourseForm&form_name=invite_staff_register&org_id="+org_id+"&subscription_id="+sub_id+"&group_id="+group_id+"&group_name="+group_name;
-              $.ajax({url:url,success:
-                function(data)
-                {
-                  change_fb_view(data);
-                }
-              });
-            }
-            return false;
-          });
-          
-          /******************************************************************************************
-          * Binds a live function to the "Use our Invitation Sender" button on the "Invite Staff" facebox view
-          *******************************************************************************************/    
-          $('.use_invitation_email').live('click', function() {
-            group_id = $("#staff_and_assignment_list").attr("group_id");
-            org_id = $("#group_list").attr("org_id");
-            sub_id = $("#group_list").attr("subscription_id");
-            group_name = group_name_global;
-            
-            // Store current view(invite_staff) in variable
-            invite_staff = $('.content').html();
-            
-            if (invite_send_email != false) {
-              change_fb_view(invite_send_email);
-            } else {
-              group_id = $("#staff_and_assignment_list").attr("group_id");
-              org_id = $("#group_list").attr("org_id");
-              sub_id = $("#group_list").attr("subscription_id");
-              portal_subdomain = $("#group_list").attr("org_subdomain");
-              var url =  ajax_object.ajax_url + "?action=getCourseForm&form_name=use_invitation_email&org_id="+org_id+"&subscription_id="+sub_id+"&group_id="+group_id+"&group_name="+encodeURIComponent(group_name);
-              $.ajax({url:url,success:
-                function(data)
-                {
-                  change_fb_view(data);
-                }
-              });
-            }
-            return false;
-          });
-          
-          /******************************************************************************************
-          * Binds a live function to the "Send Emails for spreadsheet" button
-          *******************************************************************************************/    
-          $('.send_spreadsheet_emails').live('click', function() {
-            var spreadsheet_subject = $("input[name='subject']").val();
-            var spreadsheet_message = $("textarea[name='message']").val();
-            var search_text = new RegExp("%name%");
-            var name_found = spreadsheet_message.search(search_text);
-            var search_text = new RegExp("%logininfo%");
-            var login_found = spreadsheet_message.search(search_text);
-            
-            if (name_found == -1 || login_found == -1) {
-              alert("Error: The message must contain both the name and login info shortcodes, as explained in the instructions.");
-            } else {
-              url = 'my-dashboard.html?task=do_ajax&ajax_task=send_emails_spreadsheet&format=ajax';
-              $.post(url, { user_emails: JSON.stringify(spreadsheet_users), subject: spreadsheet_subject, message: spreadsheet_message }, function(data){
-                if (data.success == true) {
-                  // To update the staff list
-                  $('#staff_and_assignment_list').attr("refresh", "1");
-                  redirect_to_main();
-                } else {
-                  alert('Error: ' + data.error);
-                }
-              }, 'json');
-            }
-            return false;
-          });
-          
-          /******************************************************************************************
-          * Binds a live function to the "Use your own email" button on the "Invite Staff" facebox view
-          *******************************************************************************************/    
-          $('.use_own_email').live('click', function() {
-            group_id = $("#staff_and_assignment_list").attr("group_id");
-            org_id = $("#group_list").attr("org_id");
-            sub_id = $("#group_list").attr("subscription_id");
-            group_name = group_name_global;
-            
-            // Store current view(invite_staff) in variable
-            invite_staff = $('.content').html();
-            
-            if (invite_own != false) {
-              change_fb_view(invite_own);
-            } else {
-              var url =  'http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=display_form&format=ajax&form_name=use_own_email&org_id='+org_id+'&subscription_id='+sub_id+"&group_id="+group_id+"&group_name="+encodeURIComponent(group_name);
-              $.ajax({url:url,success:
-                function(data)
-                {
-                  change_fb_view(data);
-                  
-                }
-              });
-            }
-            return false;
-          });
-          
-          /******************************************************************************************
-          * Binds a live function to the "Next" button on the "Invite Staff Email" facebox view
-          *******************************************************************************************/    
-          $('.use_invitation_msg').live('click', function() {
-            group_id = $("#staff_and_assignment_list").attr("group_id");
-            org_id = $("#group_list").attr("org_id");
-            sub_id = $("#group_list").attr("subscription_id");
-            group_name = group_name_global;
-
-                    $("textarea[name='emails']").html($("textarea[name='emails']").attr('value'));
-                    var myarr = $("textarea[name='emails']").html().split(/,|\s/);
-                    var clean_array = new Array();
-                    var counter = 0;
-                    for(my in myarr) {
-                        if (myarr[my].length > 0) {
-                            clean_array[counter] = $.trim(myarr[my]);
-                            counter++; 
-                        }
-                    }
-                    var final_string = clean_array.join(',');
-                    $("textarea[name='emails']").html(final_string);
-            // Store current view(invite_send_email) in variable
-            invite_send_email = $('.content').html();
-            
-            if (invite_send_msg_text != false) {
-              $('.content').fadeOut(300, function() {
-                $('.content').html(invite_send_msg).fadeIn(300, function() {
-                  $('textarea[name="msg"]').val(invite_send_msg_text);
-                  $('textarea.tinymce').tinymce({
-                    script_url : 'libraries/tinymce/jscripts/tiny_mce/tiny_mce.js',
-                    mode : "textareas",
-                    theme : "advanced",
-                    entity_encoding : "named", 
-                    entities : "&nbsp;",
-                    theme_advanced_buttons1 : "bold,italic,underline,|,justifyleft,justrifycenter,justifyright,justifyfull,|,bullist,numlist,|,code",
-                    theme_advanced_buttons2 : "",
-                    theme_advanced_buttons3 : "",
-                    theme_advanced_toolbar_location : "top",
-                    theme_advanced_toolbar_align : "left",
-                    theme_advanced_resizing : true  
-                  });
-                });
-              });
-            } else {
-              var url =  'http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=display_form&format=ajax&form_name=use_invitation_msg&org_id='+org_id+'&subscription_id='+sub_id+"&group_id="+group_id+"&group_name="+encodeURIComponent(group_name);
-              $.ajax({url:url,success:
-                function(data)
-                {
-                  $('.content').fadeOut(300, function() {
-                    $('.content').html(data).fadeIn(300, function() {
-                      invite_send_msg = $('.content').html();
-                      $('textarea.tinymce').tinymce({
-                        script_url : 'libraries/tinymce/jscripts/tiny_mce/tiny_mce.js',
-                        mode : "textareas",
-                        theme : "advanced",
-                        entity_encoding : "named", 
-                        entities : "&nbsp;",
-                        theme_advanced_buttons1 : "bold,italic,underline,|,justifyleft,justrifycenter,justifyright,justifyfull,|,bullist,numlist,|,code",
-                        theme_advanced_buttons2 : "",
-                        theme_advanced_buttons3 : "",
-                        theme_advanced_toolbar_location : "top",
-                        theme_advanced_toolbar_align : "left",
-                        theme_advanced_resizing : true  
-                      });
-                    });
-                  });
-                }
-              });
-            }
-            return false;
-          });
-          
-          /*************************************************************
-          * Binds a live function to the "Upload Spreadsheet" button
-          **************************************************************/    
-          $('#upload_spreadsheet_fb').live('click', function() {
-            load_spreadsheet();
-            return false;
-          });
-          
-          $('#back_to_spreadsheet').live('click', function() {
-            load_spreadsheet();
-            return false;
-          });
           
            /******************************************************************************************
           * Binds a function to the success event of the create_staff_account form
@@ -999,12 +597,6 @@
           $('#show_add_to_group').click(function () {
             if($("#staff_and_assignment_list").attr("group_id")!="null")
             {
-              // Show a facebox error when clicking Add/Remove Staff for a draft course.
-              if($("#staff_and_assignment_list").attr("course-status") == "draft")
-              {
-                $.facebox($("#AddStaffInDraftCourseError").html());
-                return;
-              }
               //this binds the scrollpane reinit to the facebox reveal. Should handle the issue of the scroll bar not showing up.
               var scrollbar_handler = function() {
                $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5}); 
@@ -1016,9 +608,10 @@
               org_id = $("#group_list").attr("org_id");
               sub_id = $("#group_list").attr("subscription_id");
               org_subdomain = $("#group_list").attr("org_subdomain");
+              subscription_id = $("#group_list").attr("subscription_id");
               group_name = group_name_global;
               enrollment_id = 0;
-              var url =  ajax_object.ajax_url + "?action=getCourseForm&form_name=add_staff_to_group&org_id="+org_id+"&group_id="+group_id+"&group_name="+encodeURIComponent(group_name)+"&org_subdomain="+org_subdomain;
+              var url =  ajax_object.ajax_url + "?action=getCourseForm&form_name=add_staff_to_group&org_id="+org_id+"&subscription_id="+subscription_id+"&group_id="+group_id+"&group_name="+encodeURIComponent(group_name)+"&org_subdomain="+org_subdomain;
               jQuery.facebox(
               function(){
                 $.ajax({url:url,success: function(data) {
@@ -1059,7 +652,7 @@
               $(this).replaceWith(loading_img);
               var btn = $(this);
 
-              $.getJSON( ajax_object.ajax_url + '?action='+task+'&group_id='+group_id+'&email='+encodeURIComponent($(this).attr("email"))+'&org_id='+$(this).attr("org_id")+'&course_name='+encodeURIComponent($(this).attr("course_name"))+'&portal_subdomain='+$(this).attr("portal_subdomain")+'&nonce='+$(this).attr("nonce")+'&enrollment_id='+enrollment_id,
+              $.getJSON( ajax_object.ajax_url + '?action='+task+'&group_id='+group_id+'&email='+encodeURIComponent($(this).attr("email"))+'&org_id='+$(this).attr("org_id")+'&subscription_id='+$(this).attr("subscription_id")+'&user_id='+$(this).attr("user_id")+'&course_name='+encodeURIComponent($(this).attr("course_name"))+'&portal_subdomain='+$(this).attr("portal_subdomain")+'&nonce='+$(this).attr("nonce")+'&enrollment_id='+enrollment_id,
                 function (json)
                 {
                 if(json.success)
@@ -1095,14 +688,9 @@
           * Handles "Manage Courses" Button which lets the director manage which videos are in
           * the course as well as setting the due date for the assignment
           *******************************************************************************************/
-          $('#show_edit_videos_in_group').click(function() {
+          $('#show_edit_videos_in_group').click(function() { //beginning of statement
             if($("#staff_and_assignment_list").attr("group_id")!="null")
             {
-              if($("#staff_and_assignment_list").attr("course-status") == "published")
-              { 
-                $.facebox($("#publishCourseError").html());
-                return;
-              }
               $("#display_videos_icon").click();
               group_id = $("#staff_and_assignment_list").attr("group_id");
               org_id = $("#group_list").attr("org_id");
@@ -1244,10 +832,6 @@
                             org_id: org_id_e,
                             portal_subdomain: subdomain,
                         }
-                        //show spinner and disable all checkboxes
-                        obj.before("<i class='fa fa-spinner fa-pulse' aria-hidden='true'></i>");
-                        var checkboxes = $(".organizeassignment").find("input[type=checkbox]");
-                        checkboxes.attr("disabled", true);
 
                         $.ajax( {
                           type: "GET",
@@ -1266,14 +850,7 @@
                             }
                             else
                             {
-                              var isQuizLoading =  $('.organizeassignment').find('.fa-spinner.quiz');
-                              //removed the video spinner because the the quiz isn't loading.
-                              if( isQuizLoading.length == 0 )
-                              {
-                                $('.organizeassignment').find('.fa-spinner').remove();
-                                var checkBoxes = $(".organizeassignment").find("input[type=checkbox]");
-                                checkBoxes.removeAttr("disabled");
-                              }
+                              // We are not expecting any message HTML response here. The script is going to continue below.
                             }
                           },
                           // If it fails on the other hand.
@@ -1295,23 +872,10 @@
                         function()
                         {
                         var obj = $(this);
-
-                        //show spinner and disable all checkboxes for quizzes
-                        obj.before("<i class='fa fa-spinner quiz fa-pulse' aria-hidden='true'></i>");
-                        var checkboxes = $(".organizeassignment").find("input[type=checkbox]");
-                        checkboxes.attr("disabled", true);
-
+                        console.log('Ive already been clicked');
                         $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&org_id='+obj.attr("org_id")+'&portal_subdomain='+obj.attr("portal_subdomain"),
                           function(json)
                           {
-                          if(json.task == "deleted")
-                          {
-                            obj.attr("checked", false);
-                          }
-                          if(json.task == "added")
-                          {
-                            obj.attr("checked", true);
-                          }
                           if(json.action=="added")
                           {
                             obj.parent().removeClass("disabled")
@@ -1325,15 +889,6 @@
                             $(document).trigger('updateAssignmentSummary',[0,-1,0]);
                           }
                           updateCertificateProgress(); 
-
-                          //remove spinner and enable all checkboxes again
-                          $('.organizeassignment').find('.fa-spinner').remove();
-                          checkboxes.removeAttr("disabled");
-
-                          // disable all custom quiz checkboxes
-                          var custom_checkboxes = $(".organizeassignment").find('input[item = custom_quiz][ type=checkbox]');
-                          custom_checkboxes.attr("disabled", true);
-                          custom_checkboxes.attr("readonly", true);
                           }
                         )
                         }
@@ -1343,14 +898,9 @@
                       .click(
                         function()
                         {
-                        var obj = $(this);
-
-                        //show spinner and disable all checkboxes
-                        obj.before("<i class='fa fa-spinner' aria-hidden='true'></i>");
-                        var checkboxes = $(".organizeassignment").find("input[type=checkbox");
-                        checkboxes.attr("disabled", true);
+                        var obj = $(this)
                         
-                        $.getJSON('http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=toggleItemInAssignment&format=ajax&assignment_id='+obj.attr("assignment_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id"),
+                        $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&org_id='+obj.attr("org_id")+'&portal_subdomain='+obj.attr("portal_subdomain"),
                           function(json)
                           {
                           if(json.action=="added")
@@ -1366,9 +916,6 @@
                             $(document).trigger('updateAssignmentSummary',[0,0,-1]);
                           }
                            
-                          //remove spinner and enable all checkboxes again
-                          obj.parent().find('.fa-spinner').remove();
-                          checkboxes.removeAttr("disabled");
                           }
                         )
                         }
@@ -1378,76 +925,60 @@
                       * Handle Custom Quizzes and Resources
                       *                        
                       *********************************************/
-                      $('#custom_quizzes_and_resources')
-                      .find('input[item = quiz][ type=checkbox]')
-                      .click(
-                        function()
-                        {
-                        var obj = $(this);
-
-                        //show spinner and disable all checkboxes
-                        obj.before("<i class='fa fa-spinner' aria-hidden='true'></i>");
-                        var checkboxes = $(".organizeassignment").find("input[type=checkbox");
-                        checkboxes.attr("disabled", true);
-                        
-                        $.getJSON('http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=toggleItemInAssignment&format=ajax&assignment_id='+obj.attr("assignment_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id"),
-                          function(json)
-                          {
-                          if(json.action=="added")
-                          {
-                            obj.parent().removeClass("disabled")
-                            obj.parent().addClass("enabled")
-                            $(document).trigger('updateAssignmentSummary',[0,1,0]);
-                          }
-                          else
-                          {
-                            obj.parent().removeClass("enabled")
-                            obj.parent().addClass("disabled")
-                            $(document).trigger('updateAssignmentSummary',[0,-1,0]);
-                          }
-                           
-                          //remove spinner and enable all checkboxes again
-                          obj.parent().find('.fa-spinner').remove();
-                          checkboxes.removeAttr("disabled");
-                          }
-                        )
-                        }
-                      ) 
-                      .end()
-                      .find('input[item = resource][ type=checkbox]')
-                      .click(
-                        function()
-                        {
-                        var obj = $(this);
-
-                        //show spinner and disable all checkboxes
-                        obj.before("<i class='fa fa-spinner' aria-hidden='true'></i>");
-                        var checkboxes = $(".organizeassignment").find("input[type=checkbox");
-                        checkboxes.attr("disabled", true);
-                        
-                        $.getJSON('http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=toggleItemInAssignment&format=ajax&assignment_id='+obj.attr("assignment_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id"),
-                          function(json)
-                          {
-                          if(json.action=="added")
-                          {
-                            obj.parent().removeClass("disabled")
-                            obj.parent().addClass("enabled")
-                            $(document).trigger('updateAssignmentSummary',[0,0,1]);
-                          }
-                          else
-                          {
-                            obj.parent().removeClass("enabled")
-                            obj.parent().addClass("disabled")
-                            $(document).trigger('updateAssignmentSummary',[0,0,-1]);
-                          }
-                           
-                          //remove spinner and enable all checkboxes again
-                          obj.parent().find('.fa-spinner').remove();
-                          checkboxes.removeAttr("disabled");
-                          }
-                        )
-                        }
-                      ) 
+//                      $('#custom_quizzes_and_resources')
+//                      .find('input[item = quiz][ type=checkbox]')
+//                      .click(
+//                        function()
+//                        {
+//                        var obj = $(this)
+//                        console.log('wtf');
+//                        $.getJSON('http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=toggleItemInAssignment&format=ajax&assignment_id='+obj.attr("assignment_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id"),
+//                          function(json)
+//                          {
+//                          if(json.action=="added")
+//                          {
+//                            obj.parent().removeClass("disabled")
+//                            obj.parent().addClass("enabled")
+//                            $(document).trigger('updateAssignmentSummary',[0,1,0]);
+//                          }
+//                          else
+//                          {
+//                            obj.parent().removeClass("enabled")
+//                            obj.parent().addClass("disabled")
+//                            $(document).trigger('updateAssignmentSummary',[0,-1,0]);
+//                          }
+//                           
+//                          }
+//                        )
+//                        }
+//                      ) 
+//                      .end()
+//                      .find('input[item = resource][ type=checkbox]')
+//                      .click(
+//                        function()
+//                        {
+//                        var obj = $(this)
+//                        
+//                        $.getJSON('http://www.expertonlinetraining.com/my-dashboard.html?task=do_ajax&ajax_task=toggleItemInAssignment&format=ajax&assignment_id='+obj.attr("assignment_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id"),
+//                          function(json)
+//                          {
+//                          if(json.action=="added")
+//                          {
+//                            obj.parent().removeClass("disabled")
+//                            obj.parent().addClass("enabled")
+//                            $(document).trigger('updateAssignmentSummary',[0,0,1]);
+//                          }
+//                          else
+//                          {
+//                            obj.parent().removeClass("enabled")
+//                            obj.parent().addClass("disabled")
+//                            $(document).trigger('updateAssignmentSummary',[0,0,-1]);
+//                          }
+//                           
+//                          }
+//                        )
+//                        }
+//                      ) 
                     }
                   });
                  /******************************************************************
@@ -1457,7 +988,7 @@
                 }, null, "Loading your modules", null, "Please wait while we process your modules...");
               // End of jQuery.facebox(
               }
-          });
+          });//end of statement
           
           /****************************************************
           * Handles the click events for each course group row
@@ -1622,11 +1153,6 @@
                       <span class="staff_count"> 0 </span> Staff Members<br> \
                       <span class="video_count"> 0 </span> Videos Assigned \
                     </p> \
-                    <div class=\"group_list_published_row\" style="left: 198px;\"> \
-                      <a href=\"<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=change_course_status_form&amp;status=draft&amp;course_name='+data.group_name+'&amp;org_id='+data.org_id+'&amp;course_id='+data.group_id+'&amp;portal_subdomain='+data.portal_subdomain+'\" class=\"dasdfdasfelete_group\" rel=\"facebox\"> \
-                        <i class=\"fa fa-eye draft tooltip\" onmouseover=\"Tip(\'Publish the course\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')\" onmouseout=\"UnTip()\" aria-hidden=\"true\"></i> \
-                      </a> \
-                    </div> \
                     <div class=\"group_list_edit_row\" style=\"left: 215px;\"> \
                       <a href=\"<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_course_group&amp;course_name='+data.group_name+'&amp;org_id='+data.org_id+'&amp;course_id='+data.group_id+'&amp;portal_subdomain='+data.portal_subdomain+'\" class=\"dasdfdasfelete_group\" rel=\"facebox\"> \
                         <i class=\"fa fa-pencil tooltip\" onmouseover=\"Tip(\'Edit course name.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')\" onmouseout=\"UnTip()\" aria-hidden=\"true\"></i> \
@@ -1775,19 +1301,19 @@
           ********************************************************************/                
           $(".table_header_images").click(
             function (){
-            if($("#staff_and_assignment_list").attr("display")!=$(this).attr("name")&&$("#staff_and_assignment_list").attr("group_id")!="null"&&!prevent_click)
+            if($("#staff_and_assignment_list").attr("display")!=$(this).attr("name")&&$("#staff_and_assignment_list").attr("group_id")!="null")
             {
               if($(this).attr("name") == "staff_list")
               {
-                $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon.png");
-                $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon_clicked.png");
-                $(".display_options").html("Show videos in group..."); 
+              $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon.png");
+              $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon_clicked.png");
+              $(".display_options").html("Show videos in group..."); 
               }
               else
               {
-                $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon_clicked.png");
-                $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon.png");
-                $(".display_options").html("Show staff in group..."); 
+              $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon_clicked.png");
+              $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon.png");
+              $(".display_options").html("Show staff in group..."); 
               }
               $("#staff_and_assignment_list").attr("display",$(this).attr("name"));
               load_list();
@@ -1799,7 +1325,7 @@
           $("#display_options").click(
             function ()
             {
-              if($("#staff_and_assignment_list").attr("group_id")!="null" && !prevent_click)
+              if($("#staff_and_assignment_list").attr("group_id")!="null")
               {
               if($("#staff_and_assignment_list").attr("display") != "staff_list")
               
@@ -1970,7 +1496,6 @@
         *****************************************************/
         function load_list()
         {
-          prevent_click=true;  
           var action = "";
           var loading_message = "";
           if($("#staff_and_assignment_list").attr("display")=="staff_list")
@@ -2066,14 +1591,12 @@
 
                   $('#staff_and_assignment_list').attr("refresh",0);
                 }
-                prevent_click=false;
               }
             },
             // If it fails on the other hand.
             error: function(XMLHttpRequest, textStatus, errorThrown) 
             {
                alert( "POST Sent failed: " + textStatus );
-               prevent_click=false;
             }
           });
         }
