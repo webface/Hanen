@@ -78,17 +78,17 @@
                 {
                   foreach($courses as $key => $course) 
                   {
-                    $course_id = $course['id'];   // Course ID
+                    $course_id = $course['ID'];   // Course ID
                     $course_name = $course['course_name']; // Course Name                  
                     $request_uri = ""; // edit url is not displaying properly because it's looking for this undefine variable. Will use dummy data for now.
-                    $published_status = $course['published_status_id'];
+                    //$published_status = $course['published_status_id'];
                     // Do not display the cloned leadership essential
                     if($course_name == lrn_upon_LE_Course_TITLE)
                     {
                       continue;
                     }
                 ?>
-                      <div class="group_list_table_row" group_id="<?= $course_id ?>" course-id="<?= $course_id ?>" portal-subdomain="<?= $org_subdomain ?>" org-id="<?= $org_id ?>" subscription-id="<?= $subscription_id?>" course-status="<?= $published_status ?>">
+                      <div class="group_list_table_row" group_id="<?= $course_id ?>" course-id="<?= $course_id ?>" portal-subdomain="<?= $org_subdomain ?>" org-id="<?= $org_id ?>" subscription-id="<?= $subscription_id?>">
                         <div class="group_name"><?= $course_name ?></div>
                           <p class="group_description" style="display:none;">
                             <span class="staff_count"></span>
