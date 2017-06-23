@@ -3150,3 +3150,38 @@ function getEotUsers($org_id = 0){
     }
       return array('status' => 1, 'users' => $learners);
 }
+/**
+ * Get all the modules by the library ID
+ *  @param int library_id - the library id
+ *
+ *  @return modules array() - an array of modules data
+ */
+function getModulesByLibrary($library_id) {
+  global $wpdb;
+  $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE library_id = $library_id" , ARRAY_A);
+  return $modules;  
+}
+/**
+ * Get the quiz resources by module ids
+ *  @param string module_ids - the module ids separated by comma.
+ *
+ *  @return array() - an array of QuizResources data
+ */
+function getQuizResourcesInModules($module_ids){
+    global $wpdb;
+    $resources=$wpdb->get_results("SELECT mr.module_id,q.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_QUIZ." q "
+            . "ON mr.resource_id = q.id "
+            . "WHERE mr.module_id IN (".$module_ids.") AND mr.resource_type='exam' GROUP BY q.name ORDER BY mr.order ASC",ARRAY_A);
+    return $resources;
+}
+/**
+ * Get all the quiz handouts
+ *
+ *  @return array() - an array of quiz handouts data
+ */
+function getHandouts()
+{
+    global $wpdb;
+    $handouts=$wpdb->get_results( "SELECT * FROM ".TABLE_EOT_RESOURCES, ARRAY_A );
+    return $handouts;
+}
