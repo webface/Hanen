@@ -143,7 +143,7 @@ function display_subscriptions ()
             
             $modules = getModulesByLibrary(LE_ID); // get all the modules in the LE library
 
-            //$modules = getModules($course_IDs[lrn_upon_LE_Course_TITLE], $org_subdomain, $data); // get all the available modules in this portal
+            //$modules = getModules($course_IDs[LE_LIBRARY_TITLE], $org_subdomain, $data); // get all the available modules in this portal
 
             // create an associative array of LU Module IDs.
             foreach ($modules as $module)
