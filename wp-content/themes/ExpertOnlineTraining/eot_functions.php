@@ -3290,7 +3290,7 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
 }
 
 /**
- * Get the modules in a library
+ * Get the modules in a library order them alphabetically
  * @global type $wpdb
  * @param type $library_id
  * @return type
@@ -3299,7 +3299,7 @@ function getModulesByLibrary($library_id = 0)
 {
   global $wpdb;
   $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
-  $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE library_id = $library_id" , ARRAY_A);
+  $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE library_id = $library_id ORDER BY title" , ARRAY_A);
   return $modules;  
 }
 
@@ -3373,6 +3373,9 @@ function getEnrolledUsersInCourse($course_id = 0)
  */
 function getQuizResourcesInModules($module_ids = '')
 {
+    if (empty($module_ids))
+      return NULL;
+
     global $wpdb;
     $resources = $wpdb->get_results("SELECT mr.module_id, q.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_QUIZ." q "
             . "ON mr.resource_id = q.id "
@@ -3381,30 +3384,48 @@ function getQuizResourcesInModules($module_ids = '')
 }
 
 /**
- * Get all the quiz handouts
+ * Get all the quiz handouts by modules ids
  *
  *  @return array() - an array of quiz handouts data
  */
-function getHandouts()
+function getHandouts($module_ids = '')
 {
+    if (empty($module_ids))
+      return NULL;
+
     global $wpdb;
-    $handouts=$wpdb->get_results( "SELECT * FROM ".TABLE_RESOURCES, ARRAY_A );
+    $handouts=$wpdb->get_results( "SELECT * FROM ". TABLE_RESOURCES ." WHERE module_id IN ($module_ids)", ARRAY_A );
     return $handouts;
 }
 
 /**
- * Get the category by ID, or all
+ * Get the category by ID, or by library id
  * @param $id - Category ID
- *  @return array objects - an object arrays of category data
+ * @param $library_id - The library ID
+ * @return array objects - an object arrays of category data
  */
-function getCategory2($id = 0)
+function getLibraryCategory($id = 0, $library_id = 0)
 {
-    global $wpdb;
-    $sql = "SELECT id, name FROM " . TABLE_CATEGORIES;
-    if($id > 0)
-    {
-      $sql .= " AND where id = $id";
-    }
-    $categories = $wpdb->get_results( $sql, OBJECT_K );
-    return $categories;
+  // check we got the right parameters
+  if (!$id && !$library_id)
+    return NULL;
+
+  // sanitize input
+  $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+  $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
+
+  global $wpdb;
+  $sql = "SELECT ID, name FROM " . TABLE_CATEGORIES;
+
+  if($id > 0)
+  {
+    $sql .= " WHERE ID = $id";
+  }
+  else if ($library_id > 0)
+  {
+    $sql .= " WHERE library_id = $library_id ORDER BY `order`";
+  }
+
+  $categories = $wpdb->get_results( $sql, OBJECT_K ); // returns an array of objects with the key as the ID
+  return $categories;
 }

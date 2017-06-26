@@ -5,18 +5,18 @@
 --
 
 CREATE TABLE `wp_category` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `library_id` int(11) NOT NULL,
-  `order` int(3) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `library_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `order` int(4) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `wp category`
 --
 
-INSERT INTO `wp_category` (`id`, `name`, `library_id`, `order`) VALUES
+INSERT INTO `wp_category` (`ID`, `name`, `library_id`, `order`) VALUES
 (1, 'Physical and Emotional Safety', 1, 4),
 (2, 'Supervision', 1, 5),
 (3, 'Leadership', 1, 1),

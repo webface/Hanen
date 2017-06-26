@@ -35,8 +35,7 @@
         </span>
       <?php
         $modules = array(); // Array of Module objects
-        $categories = array(); // Array of the name of the categories
-        $categoryLibrary = getCategory2(); // All categories name
+        $categoriesInLibrary = getLibraryCategory(0, $library_id); // All categories in this library
         if (isset($library_modules))
         {  
           foreach($library_modules as $key => $module)
@@ -45,43 +44,35 @@
              * This populates the modules array.
              */
             // if the module does not belong to any of our categories. Skip...
-            if( !isset( $categoryLibrary[$module['category_id']] ) )
+            if( !isset( $categoriesInLibrary[$module['category_id']] ) )
             {
-              continue;
+              $new_module = new module( $module['ID'], $module['title'], 'Custom'); // Make a new module in the 'Custom' category
+              array_push($modules, $new_module); // Add the new module to the modules array.
             }
-            $category_name = $categoryLibrary[$module['category_id']]->name; // The category name of this module.
-           /*
-            * Include only the modules that are in the same library of the subscription.
-            */
-            if ($module['library_id'] == $library_id)
+            else
             {
-                $new_module = new module( $module['ID'], $module['title'], $category_name); // Make a new module.
-                array_push($modules, $new_module); // Add the new module to the modules array.
-                /*
-                 * Populate the category name array if the category name is not yet in the array.
-                 */
-                if(!in_array($category_name, $categories))
-                {
-                    array_push($categories, $category_name);
-                }
-                
+              $category_name = $categoriesInLibrary[$module['category_id']]->name; // The category name of this module.
+              $new_module = new module( $module['ID'], $module['title'], $category_name); // Make a new module object.
+              array_push($modules, $new_module); // Add the new module to the modules array.
             }
           }
         }
-        usort($categories, "category_sort"); // Sort the categories based on the function below.
+
         /*  
          * Display the category and display its modules
          */
         //Grabs the video times and wordpress id of presenter in an array with video titles as keys
         $video_times = videoTimes();
-        $handouts=array();
-        $quizzes=array();
-        $module_ids=  array_map(function($e) {
-              return is_object($e) ? $e->id : $e['id'];
-        }, $modules);//same as array_column but for objects.
+        $handouts = array();
+        $quizzes = array();
+        $module_ids = array_map(function($e) 
+          {
+            return is_object($e) ? $e->id : $e['id'];
+          }, $modules);//same as array_column but for objects.
         $module_ids_string = implode(',',$module_ids);
-        $exams =  getQuizResourcesInModules($module_ids_string);
-        $resources = getHandouts();
+        $exams = getQuizResourcesInModules($module_ids_string);
+        $resources = getHandouts($module_ids_string);
+
         // Process the exams.
         foreach($exams as $quiz)
         {
@@ -95,6 +86,7 @@
             array_push($quizzes[$quiz['module_id']], array('id'=>$quiz['ID'],'name'=>$quiz['name']));
           }
         }
+
         // Process the resources
         foreach($resources as $handout)
         {
@@ -109,9 +101,9 @@
           }
         }
 
-        foreach($categories as $category)
+        foreach($categoriesInLibrary as $category)
         {
-          $category_name = str_replace("_", " ", $category);// The category name. Replace Coma with spaces.
+          $category_name = $category->name; 
 ?>
           <div class="item_list" category_name="<?= $category_name ?>">
             <i style="float:right;" class="fa fa-arrow-down" aria-hidden="true"></i>
@@ -125,7 +117,7 @@
 <?php
               foreach( $modules as $key => $module )
               {
-                if ( $module->category == $category )
+                if ( $module->category == $category_name )
                 {
                   $title = $module->title; // The title of the module
 ?>
