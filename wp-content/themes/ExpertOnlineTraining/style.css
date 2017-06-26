@@ -743,6 +743,7 @@ div.boxbottom {
 	overflow: hidden;
 	box-shadow: 5px 3px 5px #888888;
 	margin: 10px 0px;
+	width: 624px;
 }
 .dashboard_border.student{
 	background-repeat: repeat-x; 
@@ -1959,7 +1960,6 @@ ul
 }
 #main-content
 {
-	width: 960px;
 	margin: auto auto;
 	margin-top: 20px;
 }
@@ -2030,7 +2030,7 @@ ul
 {
 	overflow: hidden;
 	position: relative;
-	width: 687px;
+	width: 935px;
 	margin-left: 0px;
 }
 .s-c-x #col2
@@ -4178,6 +4178,9 @@ div#whiteSpacer {
 		padding-left:2%;
 		padding-right:2%;
 		float:none;
+	}
+	.dashboard_border {
+		width: auto;
 	}
 }
 
