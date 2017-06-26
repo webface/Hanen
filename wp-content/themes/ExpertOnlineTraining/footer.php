@@ -31,7 +31,7 @@
 						<div class="fl-module fl-module-rich-text fl-node-57a8e3e10b01d" data-node="57a8e3e10b01d" data-animation-delay="0.0">
 							<div class="fl-module-content fl-node-content">
 								<div class="fl-rich-text">
-									<p style="text-align: center;"><span style="font-size: 14px;">© Copyright 2008-2016 <a href="http://www.campspirit.com/" target="_blank">CampSpirit, LLC</a> and <a href="http://www.targetdirectories.com/" target="_blank">Target Directories Corp</a>. All rights reserved. Designed by Gem Webb.</span></p>
+									<p style="text-align: center;"><span style="font-size: 14px;">© Copyright 2008 - <?= date("Y"); ?> <a href="http://www.campspirit.com/" target="_blank">CampSpirit, LLC</a> and <a href="http://www.targetdirectories.com/" target="_blank">Target Directories Corp</a>. All rights reserved.</span></p>
 								</div>
 							</div>
 						</div>
