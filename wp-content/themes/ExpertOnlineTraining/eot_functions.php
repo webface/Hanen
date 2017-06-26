@@ -3510,13 +3510,272 @@ function getResourcesInCourse($course_id = 0)
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT r.* "
-                . "FROM " . TABLE_EOT_RESOURCES . " AS r "
+                . "FROM " . TABLE_RESOURCES . " AS r "
                 . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.id "
                 . "WHERE cr.course_id = $course_id ";
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
 
-}        
+}
+
+/**
+ * Get Modules in Org
+ * @global type $wpdb
+ * @param type $org_id
+ * @return array of modules in org
+ * 
+ */
+function getModules($org_id = 0) 
+{
+    global $wpdb;
+    $org_id = filter_var($org_id,FILTER_SANITIZE_NUMBER_INT);
+    $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE org_id = $org_id" , ARRAY_A);
+    return $modules;
+}
+
+/**
+ * get all quizzes
+ * @global type $wpdb
+ * @return quizzes array
+ * 
+ */
+function getQuizzes()
+{
+    global $wpdb;
+    $quizzes=$wpdb->get_results("SELECT * FROM ".TABLE_QUIZ,ARRAY_A);
+    return $quizzes;    
+}
+
+/**
+ * get all handouts
+ * @global type $wpdb
+ * @return array handouts
+ * 
+ */
+function getHandouts()
+{
+    global $wpdb;
+    $handouts=$wpdb->get_results("SELECT * FROM ".TABLE_RESOURCES,ARRAY_A);
+    return $handouts;
+}
+
+/**
+ * Get Handout Resources in a course's modules
+ * @global type $wpdb
+ * @param type $module_ids
+ * @return array handouts
+ * 
+ */
+function getHandoutResourcesInCourseModules($module_ids)
+{
+    global $wpdb;
+    $handouts=$wpdb->get_results("SELECT r.* FROM ".TABLE_RESOURCES. " r WHERE r.module_id IN (".$module_ids.")" ,ARRAY_A);
+    return $handouts;
+}
+
+/**
+ * Get Quiz Resources in a single module
+ * @global type $wpdb
+ * @param type $module_id
+ * @return array quizzes
+ * 
+ */
+function getQuizResourcesInModule($module_id){
+    global $wpdb;
+    $module_id = filter_var($module_id,FILTER_SANITIZE_NUMBER_INT);
+    $resources=$wpdb->get_results("SELECT mr.module_id,q.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_QUIZ." q "
+            . "ON mr.resource_id = q.id "
+            . "WHERE mr.module_id = $module_id AND mr.resource_type='exam' GROUP BY q.name ORDER BY mr.order ASC",ARRAY_A);
+    return $resources;
+}
+
+/**
+ * Get quiz resources in modules
+ * @global type $wpdb
+ * @param type $module_ids comma seperated modules_ids string
+ * @return array Quizzes
+ */
+function getQuizResourcesInModules($module_ids){
+    global $wpdb;
+    $module_ids = filter_var($module_ids,FILTER_SANITIZE_STRING);
+    $resources=$wpdb->get_results("SELECT mr.module_id,q.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_QUIZ." q "
+            . "ON mr.resource_id = q.ID "
+            . "WHERE mr.module_id IN (".$module_ids.") AND mr.resource_type='exam' GROUP BY q.name ORDER BY mr.order ASC",ARRAY_A);
+    return $resources;
+}
+
+/**
+ *  Handles the add and remove of the module in a course
+ *  @param int $course_ID - the course ID
+ *  @param string $portal_subdomain - the subdomain of the portal you want the courses from
+ *  @param array $data - user/camp data to access portal keys etc...
+ *
+ *  @return json encoded list of modules
+ */
+function toggleItemInAssignment($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $data = array()) {
+  extract($data);
+  /*
+   * Variables required in $data
+   * org_id - the organization ID
+   * module_id - the module ID in master library
+   */
+  global $wpdb;
+  $info_data = array("org_id" => $org_id, "module_id" => $module_id);
+  $modules=$wpdb->get_results("SELECT m.* "
+                . "FROM " . TABLE_MODULES . " AS m "
+                . "LEFT JOIN " . TABLE_COURSES_MODULES . " AS cm ON cm.module_id = m.ID "
+                . "WHERE cm.course_id = $course_id ", ARRAY_A); // All the modules registered in the course.
+  $course_module_ids = array_column($modules, 'ID'); // Modules IDS
+
+  // Check if the module id is in the course
+  if(in_array($module_id, $course_module_ids))
+  {
+     // var_dump($course_id);
+     // var_dump($module_id);
+      $result = $wpdb->delete(TABLE_COURSES_MODULES, array('course_id' => $course_id,'module_id'=>$module_id));
+            if ($result === false) {
+                return false;
+            } else {
+                return true;
+            }
+  }
+  else
+  {
+    //return addModule($course_id, $portal_subdomain, $info_data);
+    $result = $wpdb->insert(TABLE_COURSES_MODULES, array('course_id'=>$course_id,'module_id'=>$module_id));
+            if ($result === false) {
+                return false;
+            } else {
+                return true;
+            }
+  }
+
+}
+/**
+ *  Handles the add and remove of the module in a course
+ *  @param int $course_ID - the course ID
+ *  @param string $portal_subdomain - the subdomain of the portal you want the courses from
+ *  @param array $data - user/camp data to access portal keys etc...
+ *
+ *  @return json encoded list of modules
+ */
+function toggleQuizInAssignment($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $data = array()) {
+  extract($data);
+  /*
+   * Variables required in $data
+   * org_id - the organization ID
+   * quiz_id - 
+   */
+  global $wpdb;
+  $info_data = array("org_id" => $org_id, "quiz_id" => $quiz_id);
+  $quizzes=$wpdb->get_results("SELECT q.* "
+                . "FROM " . TABLE_QUIZ . " AS q "
+                . "LEFT JOIN " . TABLE_COURSES_QUIZZES . " AS cq ON cq.quiz_id = q.ID "
+                . "WHERE cq.course_id = '$course_id' ", ARRAY_A); // All the modules registered in the course.
+  $course_quizzes_ids = array_column($quizzes, 'ID'); // Modules IDS
+
+  // Check if the module id is in the course
+  if(in_array($quiz_id, $course_quizzes_ids))
+  {
+     // var_dump($course_id);
+     // var_dump($module_id);
+      $result = $wpdb->delete(TABLE_COURSES_QUIZZES, array('course_id' => $course_id,'quiz_id'=>$quiz_id));
+            if ($result === false) {
+                return false;
+            } else {
+                return true;
+            }
+  }
+  else
+  {
+    //return addModule($course_id, $portal_subdomain, $info_data);
+    $result = $wpdb->insert(TABLE_COURSES_QUIZZES, array('course_id'=>$course_id,'quiz_id'=>$quiz_id));
+            if ($result === false) {
+                return false;
+            } else {
+                return true;
+            }
+  }
+
+}
+
+function toggleResourceInAssignment($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $data = array()) {
+  extract($data);
+  /*
+   * Variables required in $data
+   * org_id - the organization ID
+   * resource_id - the 
+   */
+  global $wpdb;
+  $info_data = array("org_id" => $org_id, "resource_id" => $resource_id);
+  $resources=$wpdb->get_results("SELECT r.* "
+                . "FROM " . TABLE_EOT_RESOURCES . " AS r "
+                . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.ID "
+                . "WHERE cr.course_id = '$course_id' ", ARRAY_A); // All the modules registered in the course.
+  $course_resource_ids = array_column($resources, 'ID'); // Modules IDS
+
+  // Check if the module id is in the course
+  if(in_array($resource_id, $course_resource_ids))
+  {
+     // var_dump($course_id);
+     // var_dump($module_id);
+      $result = $wpdb->delete(TABLE_COURSES_RESOURCES, array('course_id' => $course_id,'resource_id'=>$resource_id));
+            if ($result === false) {
+                return false;
+            } else {
+                return true;
+            }
+  }
+  else
+  {
+    //return addModule($course_id, $portal_subdomain, $info_data);
+    $result = $wpdb->insert(TABLE_COURSES_RESOURCES, array('course_id'=>$course_id,'resource_id'=>$resource_id));
+            if ($result === false) {
+                return false;
+            } else {
+                return true;
+            }
+  }
+
+}
+/********************************************************************************************************
+ * Toogle on and off module in a course
+ *******************************************************************************************************/
+add_action('wp_ajax_toggleItemInAssignment', 'toggleItemInAssignment_callback'); 
+function toggleItemInAssignment_callback() {
+
+    if( isset ( $_REQUEST['group_id'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['portal_subdomain'] ) && isset ( $_REQUEST['item'] ) && isset ( $_REQUEST['item_id'] ) )
+    {
+        $course_id          = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
+        $item               = filter_var($_REQUEST['item'],FILTER_SANITIZE_STRING);
+        $item_id            = filter_var($_REQUEST['item_id'],FILTER_SANITIZE_NUMBER_INT);
+        $portal_subdomain   = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+        $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        
+        //$type               =filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
+        // get modules of the course
+        //deleteModule($course_id, $portal_subdomain, $info_data);
+        //$result['message'] = AddModule($course_id, $portal_subdomain, $info_data);
+        switch($item){
+            case "video":
+                $info_data          = array("org_id" => $org_id, "module_id" => $item_id);
+                $response = toggleItemInAssignment($course_id, $portal_subdomain, $info_data);
+                break;
+            case "quiz":
+                $info_data          = array("org_id" => $org_id, "quiz_id" => $item_id);
+                $response=  toggleQuizInAssignment($course_id, $portal_subdomain, $info_data);
+                break;
+            case "resource":
+                $info_data          = array("org_id" => $org_id, "resource_id" => $item_id);
+                $response= toggleResourceInAssignment($course_id, $portal_subdomain, $info_data);
+                break;
+        }
+        
+
+        echo json_encode($response);
+    }
+    wp_die();
+}
 
 /********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
@@ -3683,7 +3942,7 @@ function getCourseForm_callback ( ) {
             $data = compact("org_id");
             //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
             global $wpdb;
-        $course_data = getCourse($course_id);
+            $course_data = getCourse($course_id);
             ob_start();
         ?>
             <div class="title">
@@ -3924,9 +4183,10 @@ function getCourseForm_callback ( ) {
             $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             $course_modules = getModulesInCourse($course_id); // all the modules in the specified course
+            
             $course_quizzes=  getQuizzesInCourse($course_id);
             $course_resources=getResourcesInCourse($course_id);
-            //var_dump($course_resources);
+            
             $course_modules_titles = array_column($course_modules, 'title'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_resources_titles = array_column($course_resources, 'name');
@@ -3934,36 +4194,38 @@ function getCourseForm_callback ( ) {
             $modules_in_portal = getModules($org_id);// all the modules in this portal
             //var_dump($modules_in_portal);
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
-            $master_course = getCourseByName(lrn_upon_LE_Course_TITLE); // Get the master course. Cloned LE
-            $master_course_id = $master_course['id']; // Master library ID
+            //$master_course = getCourseByName(lrn_upon_LE_Course_TITLE); // Get the master course. Cloned LE
+            //$master_course_id = $master_course['id']; // Master library ID
             $master_modules = getModulesByLibrary(1);// Get all the modules from the master library (course).            
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
-            $master_module_ids=array_column($master_modules, 'id');
-            $modules_in_portal_ids = array_column($modules_in_portal, 'id');
+            $master_module_ids=array_column($master_modules, 'ID');
+            $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
             $all_module_ids=  array_merge($master_module_ids, $modules_in_portal_ids);
             $all_module_ids_string=implode(',',$all_module_ids);
-            $exams=array();  
+            $exams=array();
+            
             $resources=getQuizResourcesInModules($all_module_ids_string);
+            //ddd($course_modules,$master_modules,$master_module_ids,$master_modules_titles,$all_module_ids);
             //var_dump($resources);
             foreach($resources as $resource){
                 if(isset($exams[$resource['module_id']]))
                 {
-                    array_push($exams[$resource['module_id']], array('id'=>$resource['id'],'name'=>$resource['name']));
+                    array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
                 }else{
                 $exams[$resource['module_id']]=array();
-                array_push($exams[$resource['module_id']], array('id'=>$resource['id'],'name'=>$resource['name']));
+                array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
                 }
             }
             $handouts=array();
             $handout_resources=  getHandoutResourcesInCourseModules($all_module_ids_string);
-            //var_dump($handout_resources);
+            d($handout_resources);
             foreach($handout_resources as $handout){
                 if(isset($handouts[$handout['module_id']]))
                 {
-                    array_push($handouts[$handout['module_id']], array('id'=>$handout['id'],'name'=>$handout['name']));
+                    array_push($handouts[$handout['module_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
                 }else{
                 $handouts[$handout['module_id']]=array();
-                array_push($handouts[$handout['module_id']], array('id'=>$handout['id'],'name'=>$handout['name']));
+                array_push($handouts[$handout['module_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
                 }
             }
             //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
@@ -4122,7 +4384,7 @@ function getCourseForm_callback ( ) {
                                 if (in_array($library_tag, $pieces)) 
                                 {   
                                     //echo "inarray<br>";
-                                    $new_module = new module( $module['id'], $module['title'], $category_name, $module['component_type']); // Make a new module.
+                                    $new_module = new module( $module['ID'], $module['title'], $category_name, $module['component_type']); // Make a new module.
                                     array_push($modules, $new_module); // Add the new module to the modules array.
                                     /*
                                      * Populate the category name array if the category name is not yet in the array.
@@ -4157,7 +4419,7 @@ function getCourseForm_callback ( ) {
                                     {
                                         $video_active = 0; // variable to indicate whether module is currently in the portal course
                                         $video_class = 'disabled'; // variable to indicate whther module is currently in the portal course
-                                        $module_id = $module->id; // The module ID 
+                                        $module_id = $module->ID; // The module ID 
                                         echo '<li class="video_item" video_id="' . $module_id . '">';
                                             if(in_array($module->title, $course_modules_titles))
                                             {   
@@ -4168,7 +4430,7 @@ function getCourseForm_callback ( ) {
                                                 {
                                                   if ($value['title'] == $module->title)
                                                   {
-                                                    $module_id =  $value['id']; // overwrite the module id originally from master modules with the module id from this specific course
+                                                    $module_id =  $value['ID']; // overwrite the module id originally from master modules with the module id from this specific course
                                                     break;
                                                   }
                                                 }
@@ -4193,10 +4455,10 @@ function getCourseForm_callback ( ) {
                                                  * Find the ID of this exam in the modules array.
                                                  */
                                                 //var_dump($exams[$module->id]);
-                                                if($exams[$module->id])
+                                                if($exams[$module->ID])
                                                 {
-                                                    foreach($exams[$module->id] as $exam){
-                                                            $exam_id = $exam['id']; 
+                                                    foreach($exams[$module->ID] as $exam){
+                                                            $exam_id = $exam['ID']; 
                                                    
                                             ?>
                                                     <input item="quiz" quiz_length="<?= lrn_upon_Quiz_Length ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   group_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
@@ -4212,10 +4474,10 @@ function getCourseForm_callback ( ) {
                                                  * Find the ID of this exam in the modules array.
                                                  */
                                                 //var_dump($exams[$module->id]);
-                                                if($handouts[$module->id])
+                                                if($handouts[$module->ID])
                                                 {
-                                                    foreach($handouts[$module->id] as $handout){
-                                                            $handout_id = $handout['id']; 
+                                                    foreach($handouts[$module->ID] as $handout){
+                                                            $handout_id = $handout['ID']; 
                                                    
                                             ?>
                                                     <input item="resource" quiz_length="<?= lrn_upon_Quiz_Length ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($handout['name'], $course_resources_titles) ? ' checked="checked"':''; $handout_id = 0; // Reset Exam ID?> /> 
