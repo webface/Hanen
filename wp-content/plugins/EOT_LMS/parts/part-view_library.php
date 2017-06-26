@@ -10,9 +10,9 @@
       $library = getLibrary($subscription->library_id); // The library information base on the user current subscription
       if($library)
       {
-        $library_tag = $library->tag; // The library Tag for this subscription
         $library_name = $library->name; // The name of the library
         $description = $library->desc; // The library description
+        $library_id = $library->ID; // the library ID
         ?>
         <div class="breadcrumb">
           <?= CRUMB_DASHBOARD ?>    
@@ -36,42 +36,35 @@
       <?php
         $modules = array(); // Array of Module objects
         $categories = array(); // Array of the name of the categories
+        $categoryLibrary = getCategory2(); // All categories name
         if (isset($library_modules))
         {  
           foreach($library_modules as $key => $module)
           {
-            // make sure were only looking for videos. Not exams.
-            if ($module['component_type'] == 'page')
+            /* 
+             * This populates the modules array.
+             */
+            // if the module does not belong to any of our categories. Skip...
+            if( !isset( $categoryLibrary[$module['category_id']] ) )
             {
-                /* 
-                 * This populates the modules array.
+              continue;
+            }
+            $category_name = $categoryLibrary[$module['category_id']]->name; // The category name of this module.
+           /*
+            * Include only the modules that are in the same library of the subscription.
+            */
+            if ($module['library_id'] == $library_id)
+            {
+                $new_module = new module( $module['ID'], $module['title'], $category_name); // Make a new module.
+                array_push($modules, $new_module); // Add the new module to the modules array.
+                /*
+                 * Populate the category name array if the category name is not yet in the array.
                  */
-                $pieces = explode(" ", $module['tags']); // Expected result is [String category Library Codes] : The library code could be more than one.
-                $category_name = $pieces[0]; // The category for this module
-                array_shift($pieces); // Remove the category in this array and left with the library codes.
-               /*
-                * Create a module object and category if the module belongs to this subscription.
-                * Otherwise, skip them.
-                */
-                if($category_name) // Check if there are tags set in LU
+                if(!in_array($category_name, $categories))
                 {
-                   /*
-                    * Include only the modules that are in the same library tag
-                    */
-                    if (in_array($library_tag, $pieces)) 
-                    {
-                        $new_module = new module( $module['ID'], $module['title'], $category_name, $module['component_type']); // Make a new module.
-                        array_push($modules, $new_module); // Add the new module to the modules array.
-                        /*
-                         * Populate the category name array if the category name is not yet in the array.
-                         */
-                        if(!in_array($category_name, $categories))
-                        {
-                            array_push($categories, $category_name);
-                        }
-                        
-                    }
+                    array_push($categories, $category_name);
                 }
+                
             }
           }
         }
@@ -81,7 +74,6 @@
          */
         //Grabs the video times and wordpress id of presenter in an array with video titles as keys
         $video_times = videoTimes();
-        $wp_videos = grabVideos(); // Video information
         $handouts=array();
         $quizzes=array();
         $module_ids=  array_map(function($e) {
@@ -108,12 +100,12 @@
         {
           if(isset($handouts[$handout['module_id']]))
           {
-            array_push($handouts[$handout['module_id']], array('id'=>$handout['id'],'name'=>$handout['name'],'url'=>$handout['url']));
+            array_push($handouts[$handout['module_id']], array('id'=>$handout['ID'],'name'=>$handout['name'],'url'=>$handout['url']));
           }
           else
           {
             $handouts[$handout['module_id']]=array();
-            array_push($handouts[$handout['module_id']], array('id'=>$handout['id'],'name'=>$handout['name'],'url'=>$handout['url']));
+            array_push($handouts[$handout['module_id']], array('id'=>$handout['ID'],'name'=>$handout['name'],'url'=>$handout['url']));
           }
         }
 

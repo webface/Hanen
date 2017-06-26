@@ -841,14 +841,12 @@ class Module
   var $id; // The Module ID
   var $title; // The title of the Module
   var $category; // The category for the Module
-  var $type; // Type of module: Course or Exam
 
-  function __construct($id, $title, $category, $type)
+  function __construct($id, $title, $category)
   {
     $this->id = $id;
     $this->title = $title;
     $this->category = $category;
-    $this->type = $type;
   }
 }
 
@@ -3392,4 +3390,21 @@ function getHandouts()
     global $wpdb;
     $handouts=$wpdb->get_results( "SELECT * FROM ".TABLE_RESOURCES, ARRAY_A );
     return $handouts;
+}
+
+/**
+ * Get the category by ID, or all
+ * @param $id - Category ID
+ *  @return array objects - an object arrays of category data
+ */
+function getCategory2($id = 0)
+{
+    global $wpdb;
+    $sql = "SELECT id, name FROM " . TABLE_CATEGORIES;
+    if($id > 0)
+    {
+      $sql .= " AND where id = $id";
+    }
+    $categories = $wpdb->get_results( $sql, OBJECT_K );
+    return $categories;
 }
