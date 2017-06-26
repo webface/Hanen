@@ -3755,8 +3755,6 @@ function toggleResourceInAssignment($course_id = 0, $portal_subdomain = DEFAULT_
   // Check if the module id is in the course
   if(in_array($resource_id, $course_resource_ids))
   {
-     // var_dump($course_id);
-     // var_dump($module_id);
       $result = $wpdb->delete(TABLE_COURSES_RESOURCES, array('course_id' => $course_id,'resource_id'=>$resource_id));
             if ($result === false) {
                 return false;
@@ -3766,7 +3764,6 @@ function toggleResourceInAssignment($course_id = 0, $portal_subdomain = DEFAULT_
   }
   else
   {
-    //return addModule($course_id, $portal_subdomain, $info_data);
     $result = $wpdb->insert(TABLE_COURSES_RESOURCES, array('course_id'=>$course_id,'resource_id'=>$resource_id));
             if ($result === false) {
                 return false;
@@ -3784,7 +3781,7 @@ add_action('wp_ajax_toggleItemInAssignment', 'toggleItemInAssignment_callback');
 function toggleItemInAssignment_callback() 
 {
 
-    if( isset ( $_REQUEST['group_id'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['portal_subdomain'] ) && isset ( $_REQUEST['item'] ) && isset ( $_REQUEST['item_id'] ) )
+    if( isset ( $_REQUEST['group_id'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['item'] ) && isset ( $_REQUEST['item_id'] ) )
     {
         $course_id          = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
         $item               = filter_var($_REQUEST['item'],FILTER_SANITIZE_STRING);
@@ -3792,10 +3789,6 @@ function toggleItemInAssignment_callback()
         $portal_subdomain   = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
         $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
         
-        //$type               =filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
-        // get modules of the course
-        //deleteModule($course_id, $portal_subdomain, $info_data);
-        //$result['message'] = AddModule($course_id, $portal_subdomain, $info_data);
         switch($item){
             case "video":
                 $info_data          = array("org_id" => $org_id, "module_id" => $item_id);
@@ -3814,6 +3807,296 @@ function toggleItemInAssignment_callback()
 
         echo json_encode($response);
     }
+    wp_die();
+}
+
+/********************************************************************************************************
+ * This processed the creation of a course.
+ * @param int $org_id - Organization ID
+ * @param int $user_id - User ID from wordpress
+ * @param string $course_name - Name of the course
+ * @param string $course_description - description of the course
+ *******************************************************************************************************/
+add_action('wp_ajax_createCourse', 'createCourse_callback'); 
+function createCourse_callback ( ) 
+{
+    if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['user_id'] ) && isset ( $_REQUEST['subscription_id'] ) )
+    {
+        // This form is generated in getCourseForm function from this file.
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+        $subscription_id    = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+
+        $course_name  = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
+        $course_description  = (isset($course_description)) ? filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING) : "";
+
+        // Check permissions
+        if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'create-course_' . $org_id ) ) 
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'createCourse_callback error: Sorry, your nonce did not verify.';
+        }
+        else if(empty($_REQUEST['name']))
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'createCourse_callback error: Please Enter the <b>Name</b> of the course.';
+        }
+        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+        {
+            $result['display_errors'] = 'success';
+            $result['errors'] = 'createCourse_callback error: Sorry, you do not have permisison to view this page. ';
+        }
+        else 
+        {
+            $course_due_date = ""; //for future use
+            $data = compact( "org_id", "user_id", "course_due_date", "course_description","subscription_id");
+            // Add the course
+            $response = createCourse($course_name, $org_id, $data);
+            if($response['status'] == 0)
+            {
+                // Build the response if create course failed to execute.
+                $result['display_errors'] = true;
+                $result['data'] = 'failed';
+                $result['errors'] = "Response Message: " . $response['message'];
+            }
+            elseif ($response['status'] == 1) 
+            {
+                // Build the response if successful
+                $result['data'] = 'success';
+                $result['org_id'] = $org_id;
+                $result['message'] = 'Course has been created';
+                $result['success'] = true;
+                $result['group_name'] = $course_name;
+                $result['group_id'] = $response['id'];
+                $result['group_desc'] = $course_description;
+                $result['subscription_id'] = $subscription_id;
+            }
+            else
+            {
+                // return an error message
+                $result['display_errors'] = true;
+                $result['success'] = false;
+                $result['errors'] = "ERROR: Could not create the course name.";
+            }
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'updateUser_callback Error: Missing some parameters.';
+    }
+    echo json_encode($result);
+    wp_die();
+}
+
+/********************************************************************************************************
+ * Updating a course name/description
+ *******************************************************************************************************/
+add_action('wp_ajax_updateCourse', 'updateCourse_callback'); 
+function updateCourse_callback ( ) 
+{
+    if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['name'] ) )
+    {
+        // This form is generated in getCourseForm function with $form_name = edit_course_group from this file.
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $course_name  = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
+        $course_description  = filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING);
+        $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
+        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+        
+        if($course_name ===""){
+                // return an error message
+                $result['display_errors'] = true;
+                $result['success'] = false;
+                $result['errors'] = "Course name cannot be blank";
+                echo json_encode($result);
+                wp_die();
+        }
+        // Check permissions
+        if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'edit-course_' . $org_id ) ) 
+        {
+            $result['display_errors'] = 'Failed';
+            $result['success'] = false;
+            $result['errors'] = 'edit course error: Sorry, your nonce did not verify.';
+        }
+        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+        {
+            $result['display_errors'] = 'Failed';
+            $result['success'] = false;
+            $result['errors'] = 'edit course error: Sorry, you do not have permisison to view this page. ';
+        }
+        else 
+        {
+            $data = compact( "org_id", "course_name");
+            // Edit the course
+            global $wpdb;
+            $response = $wpdb->update(TABLE_COURSES, $data,array('ID'=>$course_id));
+            if ($response===FALSE)
+            {
+                // return an error message
+                $result['display_errors'] = true;
+                $result['success'] = false;
+                $result['errors'] = "Response Message: " . $wpdb->last_error;
+
+            }
+            else 
+            {
+                // Build the response if successful
+                $result['data'] = 'success';
+                $result['org_id'] = $org_id;
+                $result['message'] = 'Course has been updated';
+                $result['success'] = true;
+                $result['group_name'] = $course_name;
+                $result['group_id'] = $course_id;
+                $result['group_desc'] = $course_description;
+            }
+            
+
+        }
+        echo json_encode($result);
+    }
+    wp_die();
+}
+
+/**
+ *   Ajax call for a deleting a course.
+ */  
+add_action('wp_ajax_deleteCourse', 'deleteCourse_callback'); //handles actions and triggered when the user is logged in
+
+function deleteCourse_callback() 
+{
+    if( isset ( $_REQUEST['group_id'] ) && isset ( $_REQUEST['org_id'] ) )
+    {
+
+      // Get the Post ID from the URL
+      $course_id          = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
+      $portal_subdomain   = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+      $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+
+      $data = compact("org_id");
+
+      // Check permissions
+      if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'delete-course_' . $course_id ) ) 
+      {
+          $result['display_errors'] = 'failed';
+          $result['success'] = false;
+          $result['errors'] = 'deleteCourse_callback error: Sorry, your nonce did not verify.';
+      }
+      if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+      {
+          $result['display_errors'] = 'failed';
+          $result['success'] = false;
+          $result['errors'] = 'deleteCourse_callback Error: Sorry, you do not have permisison to view this page.';
+      }
+      else 
+      {
+        //$response = deleteCourse($course_id, $portal_subdomain, $data);
+        global $wpdb;
+        $response = $wpdb->delete(TABLE_COURSES, array('ID' => $course_id));
+        if ($response===FALSE)
+        {
+            // return an error message
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Response Message: " . $wpdb->last_error;
+
+        }
+        else 
+        {
+            // Build the response if successful
+            $result['data'] = 'success';
+            $result['message'] = 'Course has been deleted';
+            $result['group_id'] = $course_id;
+            $result['success'] = true;
+        }
+      }
+      echo json_encode( $result );
+    }
+    wp_die();
+}
+
+/********************************************************************************************************
+ * get a list of users enrolled in a course
+ *******************************************************************************************************/
+add_action('wp_ajax_getUsersInCourse', 'getUsersInCourse_callback'); 
+function getUsersInCourse_callback() 
+{
+    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['org_id'] ) )
+    {
+
+        // Get the Post ID from the URL
+        $course_id          = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
+        $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+
+        // check if user has admin/manager permissions
+        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+        {
+            $result['data'] = 'failed';
+            $result['message'] = 'LU Error: Sorry, you do not have permisison to view this page. ';
+        }
+        else
+        {
+            global $wpdb;
+            // Get the enrollments who are enrolled in the course.
+            $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+            $users = array(); // Lists of users who are enrolled in the course.
+            if($enrollments && count($enrollments) > 0)
+            {
+              foreach ($enrollments as $enrollment) 
+              {
+                $user['first_name'] = get_user_meta ( $enrollment['user_id'], "first_name", true);
+                $user['last_name'] = get_user_meta ( $enrollment['user_id'], "last_name", true);
+                array_push($users, $user);
+              }
+            }
+
+            /*********************************************************************************************
+            * Create HTML template and return it back as message. this will return an HTML div set to the 
+            * javascript and the javascript will inject it into the HTML page.
+            **********************************************************************************************/
+            $html = '<div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "width: 350px">';
+            $html .= '  <div style = "width:100%;">';
+            if( $users && count($users) > 0 ) 
+            {
+                usort($users, "sort_first_name"); // sort the users by first name
+                foreach( $users as $user )
+                {
+                    $first_name = get_user_meta( $user['user_id'], "first_name", true ); 
+                    $last_name = get_user_meta( $user['user_id'], "last_name", true );
+                    $html .= '<div class ="staff_and_assignment_list_row">';
+                    $html .= '<span class="staff_name">' . $user['first_name'] . ' ' . $user['last_name']  . '</span>';
+                    $html .= '</div>';
+                }
+                $html .= '   </div>'; 
+                $html .= '</div>';  
+
+                $result['staff_count'] = count($users);
+                $result['data'] = 'success';
+                $result['message'] = $html;
+                $result['group_id'] = $course_id; // if not included, when clicking on manage assignment/course, it will not open the dialog box.
+            }
+            else if( count($users) == 0 )
+            {
+                $result['staff_count'] = 0;
+                $result['data'] = 'failed';
+                $result['message'] = '<p>There are no users enrolled in this course.</p>';
+            }
+            else 
+            {
+                $result['data'] = 'failed';
+                $result['message'] = 'Error in getting enrolled users for course id: ('. $course_id .')';
+            }
+        }
+    }
+    else
+    {
+        $result['data'] = 'failed';
+        $result['message'] = '<p>Unable to process your request</p>';
+    }
+    echo json_encode($result);
     wp_die();
 }
 
@@ -4260,7 +4543,7 @@ function getCourseForm_callback ( ) {
             }
             $handouts=array();
             $handout_resources=  getHandoutResourcesInCourseModules($all_module_ids_string);
-            d($handout_resources);
+            //d($handout_resources);
             foreach($handout_resources as $handout){
                 if(isset($handouts[$handout['module_id']]))
                 {
@@ -5031,8 +5314,8 @@ function getCourseForm_callback ( ) {
               {
                 foreach ($users_info as $user_info) 
                 {
-                  $user['first_name'] = get_user_meta ( $user_info->id, "first_name", true);
-                  $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
+                  $user['first_name'] = get_user_meta ( $user_info->ID, "first_name", true);
+                  $user['last_name'] = get_user_meta ( $user_info->ID, "last_name", true);
                   $user['email'] = $user_info->user_email;
                   $user['id'] = $user_info->ID;
                   array_push($learners, $user);
@@ -5136,6 +5419,8 @@ function getCourseForm_callback ( ) {
                     </div>
                 </div>
                 <?php
+                $html = ob_get_clean();
+                echo $html;
             }
             else
             {
