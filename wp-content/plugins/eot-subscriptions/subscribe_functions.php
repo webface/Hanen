@@ -637,7 +637,7 @@ function display_subscription_dashboard ($subscription)
             {
                 //echo $user['id']."<br>";
                 //echo in_multiarray($user['id'], $learners, 'id')."<br>";
-                if(!in_multiarray($user['id'], $learners, 'id')){
+                if(!in_multiarray($user['ID'], $learners, 'ID')){
                     array_push($learners, $user);
                 }
             }

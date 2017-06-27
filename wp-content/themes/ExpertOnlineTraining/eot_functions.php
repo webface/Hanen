@@ -3139,11 +3139,11 @@ function getEotUsers($org_id = 0, $role = 'student'){
       foreach ($users_info as $user_info) 
       {
         $user = array();
-        $user['first_name'] = get_user_meta ( $user_info->id, "first_name", true);
-        $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
+        $user['first_name'] = get_user_meta ( $user_info->ID, "first_name", true);
+        $user['last_name'] = get_user_meta ( $user_info->ID, "last_name", true);
         $user['email'] = $user_info->user_email;
         $user['id'] = $user_info->ID;
-//        $user['user_type'] = 'learner';  // @TODO remove if not used
+        $user['user_type'] = 'learner';  // @TODO remove if not used(used in manage_staff_accounts line 90)
         array_push($learners, $user);
       }
     }
@@ -4104,6 +4104,307 @@ function getUsersInCourse_callback()
     wp_die();
 }
 
+/**
+ *   Manage the creation of a staff account 
+ */  
+add_action('wp_ajax_createUser', 'createUser_callback'); //handles actions and triggered when the user is logged in
+
+function createUser_callback() 
+{
+    if( isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['lastname'] ) && isset ( $_REQUEST['email'] ) && isset ( $_REQUEST['pw'] ) && isset ( $_REQUEST['org_id'] ))
+    {
+        //$first_name = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING); // User's first name
+        //$last_name = filter_var($_REQUEST['lastname'],FILTER_SANITIZE_STRING); // User's last name
+        
+        $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
+        $first_name = str_replace($chars, "",(trim($_REQUEST['name'])));
+        $first_name  = filter_var($first_name,FILTER_SANITIZE_STRING);
+        
+        $last_name = str_replace($chars, "",(trim($_REQUEST['lastname'])));
+        $last_name  = filter_var($last_name,FILTER_SANITIZE_STRING);
+        
+        $email = sanitize_email( $_REQUEST['email']); // User's e-mail address
+        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+        $password = $_REQUEST['pw']; // User's password
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course name
+        $data = compact("org_id", "first_name", "last_name", "email", "password","course_id");
+        $send_mail = ( isset($_REQUEST['send_mail']) && filter_var($_REQUEST['send_mail'],FILTER_SANITIZE_NUMBER_INT) == 1 ) ? TRUE : FALSE;
+
+
+        // Check permissions
+        if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'create-staff_' . $org_id ) ) 
+        {
+            $result['display_errors'] = 'success';
+            $result['success'] = false;
+            $result['errors'] = 'create staff account error: Sorry, your nonce did not verify.';
+            echo json_encode( $result );
+            wp_die();
+        }
+        if($first_name==""){
+            $result['display_errors'] = 'success';
+            $result['success'] = false;
+            $result['errors'] = 'create staff account error: Please Enter a first name';
+            echo json_encode( $result );
+            wp_die();           
+        }
+        if($last_name==""){
+            $result['display_errors'] = 'success';
+            $result['success'] = false;
+            $result['errors'] = 'create staff account error: Please Enter a last name';
+            echo json_encode( $result );
+            wp_die();           
+        }        
+        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+        {
+            $result['display_errors'] = 'Failed';
+            $result['success'] = false;
+            $result['errors'] = 'create staff account error: Sorry, you do not have permisison to view this page. ';
+        }
+
+        else 
+        {
+
+
+            // check that the user doesnt exist in WP
+            if ( email_exists($email) == false )
+            {
+                
+                    $result['success'] = true;
+                    $result['msg_sent'] = $send_mail;
+                    $result['name'] = $first_name;
+                    $result['lastname'] = $last_name;
+                    $result['org_id'] = $org_id;
+                    $result['email'] = $email;
+                    $result['password'] = $password;
+                    //$result['user_id'] = $response['id']; // LU User ID
+                    $result['portal_subdomain'] = $portal_subdomain;
+
+                    // create the user in WP (student)
+                    $userdata = array (
+                        'user_login' => $email,
+                        'user_pass' => $password,
+                        'role' => 'student',
+                        'user_email' => $email,
+                        'first_name' => $first_name,
+                        'last_name' => $last_name
+                    );
+                    $WP_user_id = wp_insert_user ($userdata);
+                    $result['user_id']= $WP_user_id;
+                    // Newly created WP user needs some meta data values added
+                    //update_user_meta ( $WP_user_id, 'lrn_upon_id', $response['id'] );
+                    update_user_meta ( $WP_user_id, 'org_id', $org_id );
+                    update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+                    //update_user_meta ( $WP_user_id, 'portal', $portal_subdomain );
+                    
+                    // Create enrollment
+                    if($course_id)
+                    {
+                        // Adding the course name in the $data
+                        //$data =  $data  + array("course_name" => $course_name);
+                        $response = enrollUserInCourse($email, $portal_subdomain, $data);    
+                        if($response['status'] == 1)
+                        {
+                            
+                        }
+                        else
+                        {
+                            $result['success'] = false;
+                            $result['display_errors'] = true;
+                            $result['errors'] = "CreateUser_callback Error: " . $response['message'];
+                        }
+                    }
+                    else
+                    {
+                        $result['success'] = false;
+                        $result['display_errors'] = true;
+                        $result['errors'] = "createUser_callback Error: Created user but could not enroll in course because couldn't find the course name.";
+                    }   
+               
+            }
+            else 
+            {
+                $result['success'] = false;
+                $result['display_errors'] = true;
+                $result['errors'] = 'Wordpress error: User already exsists.';
+            } 
+
+        }
+        // This variable will return to part-manage_staff_accounts.php $(document).bind('success.create_staff_account). Line 865
+        echo json_encode( $result );
+    }
+    wp_die();
+}
+
+/********************************************************************************************************
+ * send e-mail base on type
+ *******************************************************************************************************/
+add_action('wp_ajax_sendMail', 'sendMail_callback'); 
+function sendMail_callback() 
+{
+    $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+    $target = filter_var($_REQUEST['target'],FILTER_SANITIZE_STRING);
+
+    // Check permissions
+    if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+    {
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = 'wp_ajax_sendMail error: Sorry, you do not have permisison to view this page. ';
+        return $result;
+    }
+
+    else if( $target == "create_account" )
+    {
+        $message = stripslashes($_REQUEST['composed_message']); // Remove backward slash from GET. This fixed the problem for sending message with colored fonts.
+        $subject = filter_var($_REQUEST['subject'],FILTER_SANITIZE_STRING);
+        $name = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
+        $email = sanitize_email($_REQUEST['email']);
+
+        $recepients = array(); // List of recepients
+
+        $recepient = array (
+            'name' => $name,
+            'email' => $email,
+            'message' => $message,
+            'subject' => $subject
+        );
+
+        array_push($recepients, $recepient);
+        $data = compact( "org_id" );
+
+        $response = sendMail( $target, $recepients, $data );
+
+        if($response['status'] == "0")
+        {
+            // return an error message
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Error in sendMail_callback: " . $response['message'];
+        }
+        else if($response['status'] == "1")
+        {
+            $result['display_errors'] = false;
+            $result['success'] = true;
+        }
+        else
+        {
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "ERROR in sendMail_callback: Could not email the user";
+        }
+    echo json_encode($result);
+    }
+    wp_die();
+}
+
+/**
+ * Processed the sending of the message based on target
+ *
+ * @param string $target - The target action to be taken, eg. create_user, mass mail, etc..
+ * @param array $receipients - an array of associative arrays which contain the receiptients information (name/email/message/subject)
+ * @param array $data - any additional info we need such as org_id
+ */
+function sendMail ( $target = '', $recipients = '', $data ) 
+{
+    extract($data);
+    /*
+     * Variables required in $data
+     * org_id - The organization ID
+     */
+    
+    global $current_user;
+    $current_user = wp_get_current_user();
+    $sender_email = $current_user->user_email;
+    $sender_name = $current_user->user_firstname . " " . $current_user->user_lastname;
+
+    // check that a target is defined.
+    if( $target != null && $target != "" )
+    {
+        // check for at least 1 receipient
+        if (count( $recipients ) > 0)
+        {
+            // we have at least 1 receipient. Check what to do next.
+            if( $target == "create_account" )
+            {  
+                // can expect only 1 recipient, send email and return the response
+                return massMail($sender_email, $sender_name, $recipients);
+            }
+            else if($target == "NewSubscription" || $target == "NewAccount")
+            {
+                return massMail(get_bloginfo( 'admin_email' ),'Expert Online Training', $recipients);
+            }
+            else if($target == "cloudflare_error")
+            {
+                return massMail(get_bloginfo( 'admin_email' ), 'Couldflare error', $recipients);
+            }
+            else if($target == "massmail" )
+            {
+              return massMail($sender_email, $sender_name, $recipients);
+            }
+        }
+        else
+        {
+            // no receipients
+            return array('status' => 0, 'message' => "sendMail error: no recipients.");
+        }
+    }
+    else 
+    {
+        // No target defined. Return error.
+        return array('status' => 0, 'message' => "sendMail error: invalid target.");
+    }
+}
+
+/**
+ * Worker function that sends the email to the specified receipients
+ *
+ * @param string $sender_email - The email of the sender
+ * @param string $sender_name - The name of the sender
+ * @param array $recipients - an array of associative arrays with each receipient and all the email info eg. name, email, subject, message
+ */
+function massMail ( $sender_email = '', $sender_name = '', $recipients = array()) 
+{
+    $status = 1; // status of the send, success or failure.
+
+    // check that we have a name/email for the from field. ie. the sender.
+    if( $sender_email != null && $sender_email != "" && $sender_name != null && $sender_name != "")
+    {
+
+        // using mandrill, can only send emails from our domain. So must set the from email manually.
+        $headers = array(
+            "From: $sender_name <".get_bloginfo('admin_email').">",
+            "Reply-To: $sender_name <$sender_email>",
+            "Content-Type: text/html; charset=UTF-8"
+            );
+
+        // we have the sender info now send them email(s) 
+        foreach ($recipients as $recipient)
+        {
+            if(!wp_mail( $recipient['email'], $recipient['subject'], $recipient['message'], $headers ))
+            {
+              $status = 0;
+              error_log('massmail error: to: ' . $recipient['email'] . ' num reciepients: ' . count($recipients));
+            }
+        }       
+    }
+    else
+    {
+        return array('status' => 0, 'message' => "massMail error: invalid sender name/email.");
+    }
+
+
+    // Check if the mesage sends.
+    if ( $status )
+    {
+        return array('status' => 1, 'message' => 'Your message was sent succesfully.');
+    } 
+    else 
+    {
+        return array('status' => 0, 'message' => 'massMail error: Your messsage failed to send.');
+    }
+}
+
 /********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
  * javascript and the javascript will inject it into the HTML page.
@@ -5043,7 +5344,7 @@ function getCourseForm_callback ( ) {
             {
                 $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_STRING);
             }
-            if(!org_has_maxed_staff($org_id, $subscription_id) ){
+            if(org_has_maxed_staff($org_id, $subscription_id) ){
                                     ob_start();
         ?>
                     <div class="title">
@@ -5114,19 +5415,19 @@ function getCourseForm_callback ( ) {
                                 // If course ID is found, set the dropdown selection to this course.
                                 if($course_id > 0)
                                 {
-                                    if($course['id'] == $course_id)
+                                    if($course['ID'] == $course_id)
                                     {
-                                        echo "<option name='course_id' value='" . $course['id'] . "' selected>" . $course['course_name'] . "</option>";
+                                        echo "<option name='course_id' value='" . $course['ID'] . "' selected>" . $course['course_name'] . "</option>";
                                     }
                                     else
                                     {
-                                        echo "<option name='course_id' value='" . $course['id'] . "'>" . $course['course_name'] . "</option>";
+                                        echo "<option name='course_id' value='" . $course['ID'] . "'>" . $course['course_name'] . "</option>";
                                     }
                                 }
                                 // There's no course to be selected.
                                 else
                                 {
-                                    echo "<option name='course_id' value='" . $course['id'] . "'>" . $course['course_name'] . "</option>";
+                                    echo "<option name='course_id' value='" . $course['ID'] . "'>" . $course['course_name'] . "</option>";
                                 }               
                             }
                           ?>
