@@ -3827,7 +3827,9 @@ function createCourse_callback ( )
         $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
         $subscription_id    = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 
-        $course_name  = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
+        $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
+        $course_name = str_replace($chars, "",(trim($_REQUEST['name'])));
+        $course_name  = filter_var($course_name,FILTER_SANITIZE_STRING);
         $course_description  = (isset($course_description)) ? filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING) : "";
 
         // Check permissions
@@ -3837,7 +3839,7 @@ function createCourse_callback ( )
             $result['success'] = false;
             $result['errors'] = 'createCourse_callback error: Sorry, your nonce did not verify.';
         }
-        else if(empty($_REQUEST['name']))
+        else if($course_name=="")
         {
             $result['display_errors'] = 'failed';
             $result['success'] = false;
@@ -3902,11 +3904,13 @@ function updateCourse_callback ( )
     {
         // This form is generated in getCourseForm function with $form_name = edit_course_group from this file.
         $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-        $course_name  = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
         $course_description  = filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING);
         $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
         $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-        
+        $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
+        $course_name = str_replace($chars, "",(trim($_REQUEST['name'])));
+        $course_name  = filter_var($course_name,FILTER_SANITIZE_STRING);
+        $course_description  = (isset($course_description)) ? filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING) : "";
         if($course_name ===""){
                 // return an error message
                 $result['display_errors'] = true;
