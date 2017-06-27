@@ -46,7 +46,7 @@ p{font-size: 12px}
 	padding-top:5px;
 	margin-left: 10px;
 }
-#helpBtn {
+div#helpBtn, div#helpbar {
 	display: none;
 }
 div#poststuff {
@@ -3777,9 +3777,9 @@ div#accountArea .profile_pic {
 }
 #accountArea ul li {
 	list-style-type: disc;
-	margin-bottom: 5px;
 	line-height: 12px;
 	height: auto;
+	margin: 20px;
 }
 h1.guest {
 	float: none !important;
@@ -4620,4 +4620,8 @@ td.errors {
 /* font size for publish facebox */
 .publish_modules p, .publish_modules li {
 	font-size: medium;
+}
+
+#accountAreaBottom {
+	margin:auto;
 }

@@ -1,28 +1,33 @@
 @charset "utf-8";
 /* CSS Document */
-body {
+#pageslide {
+	overflow-y:auto !important;
+}
+#helpbar body {
 	font-family: helvetica, Verdana, Geneva, sans-serif;
 	font-size: 12px;
 	color: #666666;
+	overflow-y: scroll;
+	height:400px;
 }
 
-h1 {
+#helpbar h1 {
 	font-size: 26px;
 }
 
-h2 {
+#helpbar h2 {
 	font-size: 18px;
 }
 
-.orange {
+#helpbar .orange {
 	color: #e19b07;
 }
 
-h3 {
+#helpbar h3 {
 	font-size: 14px;
 }
 
-span.link {
+#helpbar span.link {
 	font-family: helvetica, Verdana, Geneva, sans-serif;
 	font-size: 12px;
 	color: #805702;
@@ -30,19 +35,19 @@ span.link {
 	/*background-color: red;*/
 }
 
-span.link:hover
+#helpbar span.link:hover
 {
 	cursor: hand;
 	cursor: pointer;
 }
 
-#grayArea li {
+#helpbar #grayArea li {
 	height: auto;
 	/*background-color: red;*/
 	/*display: block;*/
 }
 
-	#grayArea li a {
+#helpbar #grayArea li a {
 		display: block;
 		height: 40px;
 		padding-left: 20px;
@@ -53,11 +58,11 @@ span.link:hover
 		text-decoration: none;
 	}
 	
-	#grayArea li a.topic:hover {
+#helpbar #grayArea li a.topic:hover {
 		background-color: #dbdbdb;
 	}
 	
-	#grayArea li a.summary
+#helpbar #grayArea li a.summary
 	{
 		color: #FFFFFF;
 		background-color: #E19B07; /*#333333;*/
@@ -68,18 +73,18 @@ span.link:hover
 		cursor: default;
 	}
 	
-.downArrow {
+#helpbar .downArrow {
 	float: right;
 	padding-right: 20px;
 	padding-top: 5px;
 }
 
-div#container {
+#helpbar div#container {
 	width: 280px;
 	margin: 0 auto;
 }
 
-div#grayArea {
+#helpbar div#grayArea {
 	background-color: #f0f0f0;
 	width: 251px;
 	height: 100%;
@@ -89,11 +94,9 @@ div#grayArea {
 	border-right: 1px solid rgba(0,0,0,0.2);
 }
 
-div#helpBtn {
+#helpbar div#helpBtn {
 	/*padding-top: 20px;*/
-	margin-left: 255px;
-	margin-top: 8px;
-	position: absolute;
+	margin-left: -8px !important;
 	height: 85px;
 	width: 25px;
 	/*background-color: #e19b07;
@@ -103,7 +106,7 @@ div#helpBtn {
 	-moz-border-radius-topright: 6px;*/
 }
 
-	#helpBtn a{
+#helpbar #helpBtn a{
 		display: block;
 		height: 85px;
 		width: 25px;
@@ -126,14 +129,14 @@ div#helpBtn {
 		padding: 12px 0 0 8px;
 	}
 
-div.separator {
+#helpbar div.separator {
 	background-image: url(../../images/separator.jpg);
 	background-repeat: repeat-x;
 	height: 2px;
 	padding: 0px;
 } 
 
-#helpTitle {
+#helpbar #helpTitle {
 	padding: 37px 0 38px 0;
 	text-align: center;
 }
