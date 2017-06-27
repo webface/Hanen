@@ -124,12 +124,12 @@ class Deploy {
             echo 'Reseting repository... '. $last_line . ' returned: ' . $output . ' <br>\n';
 
             // Update the local repository
-            $last_line = system('git pull '.$this->_remote.' '.$this->_branch, $output);
+            $last_line = system('cd '.$this->_directory . ' && git pull '.$this->_remote.' '.$this->_branch, $output);
             $this->log('Pulling in changes... '. $last_line . ' returned: ' . $output);
             echo 'Pulling in changes... '. $last_line . ' returned: ' . $output . ' <br>\n';
 
             // Secure the .git directory
-            $last_line = system('chmod -R og-rx '.$this->_directory.'/.git');
+            $last_line = system('cd '.$this->_directory . ' && chmod -R og-rx '.$this->_directory.'/.git');
             $this->log('Securing .git directory... ');
             echo 'Securing .git directory... '. $last_line . ' returned: ' . $output . ' <br>\n';
 
