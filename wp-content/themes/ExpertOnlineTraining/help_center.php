@@ -2,6 +2,7 @@
 	$admin_ajax_url = admin_url('admin-ajax.php');
 	if( current_user_can( "is_director" ) )
 	{
+		$views = getHelpForView("dashboard", "director"); // All views for the director in dashboard.
 ?>
 		<!-- help button -->
 		<div id="helpBtn" href="#helpbar">
@@ -72,141 +73,26 @@
               </h1>
               <ul>
                 <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Watch Some Videos" class="topic">Watch Some Videos <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    This page allows you to view the content you have available for your staff members through your purchased subscription.
-                    <br />
-                    <br />
-                    <span class="link" dest="some_videos" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
+<?php
+				// Goes to each views for director in the dashboard.
+                foreach ($views as $view) 
+                {
+?>
+				<li>
+					<a href="#" alt="<?= $view['title'] ?>" class="topic"><?= $view['title'] ?> <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
+					<a href="#" alt="Summary" class="summary" style="display: none;">
+	                    <?= $view['summary'] ?>
+	                    <br />
+	                    <br />
+	                    <span class="link" dest="<?= $view['full_content'] ?>" rel="facebox">
+	                      Watch Tutorial
+	                    </span>
+                  	</a>
                 </li>
                 <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Pick a Default Course" class="topic">Pick a Default Course <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to manage the default courses for your staff members.            
-                    <br />
-                    <br />
-                    <span class="link" dest="default_course" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Modify a Default Course" class="topic">Modify a Default Course <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to modify the default courses for your staff members.
-                    <br />
-                    <br />
-                    <span class="link" dest="modify_default" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Create a New Course" class="topic">Create a New Course <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to create you own custom course for your staff memebers.            
-                    <br />
-                    <br />
-                    <span class="link" dest="create_course" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Publish a Course" class="topic">Publish a Course <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Before you can enroll your staff in a course, it must be published.        
-                    <br />
-                    <br />
-                    <span class="link" dest="publish_course" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Modify a Published Course" class="topic">Modify a Published Course <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to modify a published course.
-                    <br />
-                    <br />
-                    <span class="link" dest="modify_published" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Add Staff Information" class="topic">Add Staff Information <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to add staff and enroll them into courses. 
-                    <br />
-                    <br />
-                    <span class="link" dest="add_staff" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Change Course Enrollment" class="topic">Change Course Enrollment <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" />
-                  </a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to modify user enrollments in specific courses.
-                    <br />
-                    <br />
-                    <span class="link" dest="change_enroll" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Check Statistics" class="topic">Check Statistics <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" />
-                  </a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to get statistics on how your staff is progressing through their assigned courses.
-                    <br />
-                    <br />
-                    <span class="link" dest="check_stats" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Upload Custom Content" class="topic">Upload Custom Content <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" />
-                  </a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to upload your own custom content so that your staff has access to it.
-                    <br />
-                    <br />
-                    <span class="link" dest="upload_custom" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
-                <div class="separator"></div>
-                <li>
-                  <a href="#" alt="Create a Custom Quiz" class="topic">Create a Custom Quiz <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" />
-                  </a>
-                  <a href="#" alt="Summary" class="summary" style="display: none;">
-                    Use this feature to create custom quizes for your staff.
-                    <br />
-                    <br />
-                    <span class="link" dest="create_custom_quiz" rel="facebox">
-                      Watch Tutorial
-                    </span>
-                  </a>
-                </li>
+<?php
+                }
+?>
               </ul>
             </div><!--end grayArea-->
           </div><!--end container--> 
@@ -247,12 +133,10 @@
 				$( "#helpBtn" ).click(function() {
 				  if ($('#helpBtn img').attr("src") == "<?= get_template_directory_uri() . '/images/help_btn_text.png'?>") 
 				  {
-				  	jQuery("#helpBtn").css('margin-left', "-8px");
 				  	jQuery("#helpBtn img").attr("src", "<?= get_template_directory_uri() . '/images/help_btn_text2.png'?>");
 				  }
 				  else
 				  {
-				  	jQuery("#helpBtn").css('margin-left', "0px");
 				  	jQuery("#helpBtn img").attr("src", "<?= get_template_directory_uri() . '/images/help_btn_text.png'?>");
 				  }
 				});

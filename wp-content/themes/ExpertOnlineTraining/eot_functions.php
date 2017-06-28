@@ -3202,3 +3202,22 @@ function getLibraryCategory($id = 0, $library_id = 0)
   $categories = $wpdb->get_results( $sql, OBJECT_K ); // returns an array of objects with the key as the ID
   return $categories;
 }
+
+/**
+ * Get the help for view information by view the name and user role.
+ * @param $view_name - The view name.
+ * @param $role - The role name.
+ * @return arrays of views data
+ */
+function getHelpForView($view_name = "", $role = "")
+{
+  // check we got the right parameters
+  if ( empty($view_name) || empty($role) )
+    return null;
+
+  global $wpdb;
+  $sql = "SELECT title, summary, full_content FROM " . TABLE_HELP_TOPICS . " help_topics INNER JOIN " . TABLE_HELP_TOPICS_FOR_VIEW . " help_topics_view ON help_topics.id=help_topics_view.topic_id WHERE view_name='$view_name' AND role='$role'";
+  
+  $views=$wpdb->get_results( $sql, ARRAY_A ); // returns an array of view information.
+  return $views;
+}
