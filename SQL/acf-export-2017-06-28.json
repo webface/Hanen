@@ -1,0 +1,763 @@
+[
+    {
+        "key": "group_5953bbc46671b",
+        "title": "Compose Message Course Password",
+        "fields": [
+            {
+                "key": "field_5894ec9ed4f40",
+                "label": "Subject",
+                "name": "txt_subject_group_passwrd",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Your Account Credentials on ExpertOnlineTraining.com",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            },
+            {
+                "key": "field_588f9648262f2",
+                "label": "Compose Message",
+                "name": "wysiwyg_compose_message_group_passwrd",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Dear %%name%%,\r\n\r\nYour Camp Director, (%%your_name%%), has created an account for you on www.expertonlinetraining.com. This is an online staff training program for you to complete before you arrive at camp. Make sure to check in with your Camp Director to see if there are deadlines for this training.\r\n\r\nYou can log in with this account information and begin your training:\r\n\r\nE-mail: %%email%%\r\nPassword: %%password%%\r\n\r\nIf you have any trouble with your online training, you can call the Expert Online Training Toll-Free Customer Service line at 877-237-3931 during regular business hours (Monday to Friday from 9:00am to 5:00pm Eastern Standard Time).\r\n\r\nHave a great summer!",
+                "toolbar": "full",
+                "media_upload": 0,
+                "tabs": "all",
+                "delay": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc4a5193",
+        "title": "Compose Message Incomplete\/Complete",
+        "fields": [
+            {
+                "key": "field_5890ad534fae3",
+                "label": "subject",
+                "name": "txt_subject_incomplete_complete",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Your Online Training Status",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5890ad904fae4",
+                "label": "Compose Message",
+                "name": "wysiwyg_compose_message_incomplete_complete",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Dear %%name%%,\r\n\r\n~TYPE MESSAGE BODY HERE~\r\n\r\nYou can log in at www.expertonlinetraining.com with this account information:\r\n\r\nE-mail: %%email%%\r\nPassword: %%password%%\r\n\r\nIf you have any trouble with your online training, you can call the Expert Online Training Toll-Free Customer Service line at 877-237-3931 during regular business hours (Monday to Friday from 9:00am to 5:00pm Eastern Standard Time).\r\n\r\nHave a great summer!\r\n\r\n%%your_name%%",
+                "toolbar": "full",
+                "media_upload": 0,
+                "tabs": "all",
+                "delay": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc4cf279",
+        "title": "Compose Message Staff Members",
+        "fields": [
+            {
+                "key": "field_5893933b558f0",
+                "label": "Subject",
+                "name": "txt_subject_staff_members",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "A note about your online training",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            },
+            {
+                "key": "field_588faba09496d",
+                "label": "Compose Message",
+                "name": "wysiwyg_compose_message_staff_members",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Dear %%name%%,\r\n\r\n~ ADD YOUR MESSAGE BODY HERE ~\r\n\r\nYou can log in at www.expertonlinetraining.com with this account information:\r\n\r\nE-mail: %%email%%\r\nPassword: %%password%%\r\n\r\nIf you have any trouble with your online training, you can call the Expert Online Training Toll-Free Customer Service line at 877-237-3931 during regular business hours (Monday to Friday from 9:00am to 5:00pm Eastern Standard Time).\r\n\r\nHave a great summer!\r\n\r\n%%your_name%%",
+                "toolbar": "full",
+                "media_upload": 0,
+                "tabs": "all",
+                "delay": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc4e97f6",
+        "title": "Compose Message Staff Password",
+        "fields": [
+            {
+                "key": "field_587fcd0c719e9",
+                "label": "Subject",
+                "name": "txt_subject_staff_passwrd",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Your Account Credentials on ExpertOnlineTraining.com",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            },
+            {
+                "key": "field_58ada7e74b2d6",
+                "label": "Compose Message",
+                "name": "wysiwyg_compose_message_staff_passwrd",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Dear %%name%%,\r\n\r\nYour Camp Director, (%%your_name%%), has created an account for you on www.expertonlinetraining.com. This is an online staff training program for you to complete before you arrive at camp. Make sure to check in with your Camp Director to see if there are deadlines for this training.\r\n\r\nYou can log in with this account information and begin your training:\r\n\r\nE-mail: %%email%%\r\nPassword: %%password%%\r\n\r\nIf you have any trouble with your online training, you can call the Expert Online Training Toll-Free Customer Service line at 877-237-3931 during regular business hours (Monday to Friday from 9:00am to 5:00pm Eastern Standard Time).\r\n\r\nHave a great summer!\r\n\r\n%%your_name%%",
+                "toolbar": "full",
+                "media_upload": 0,
+                "tabs": "all",
+                "delay": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc5128cb",
+        "title": "Compose Message Yet to Login",
+        "fields": [
+            {
+                "key": "field_5890af4d805e8",
+                "label": "Subject",
+                "name": "txt_subject_yet_to_login",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "You must complete your online training",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5890af66805e9",
+                "label": "Compose Message",
+                "name": "wysiwyg_compose_message_yet_to_login",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Dear %name%,\r\n\r\nWe have noticed that you have yet to log in and complete your online training at www.expertonlinetraining.com. Please complete your training ASAP.\r\n\r\nYou can log in at www.expertonlinetraining.com with this account information:\r\n\r\nE-mail: %%email%%\r\nPassword: %%password%%\r\n\r\nIf you have any trouble with your online training, you can call the Expert Online Training Toll-Free Customer Service line at 877-237-3931 during regular business hours (Monday to Friday from 9:00am to 5:00pm Eastern Standard Time).\r\n\r\nSincerely,\r\n\r\n%your_name%",
+                "toolbar": "full",
+                "media_upload": 0,
+                "tabs": "all",
+                "delay": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc52a3a9",
+        "title": "Faculty",
+        "fields": [
+            {
+                "key": "field_572b5537388c1",
+                "label": "Presentor Image",
+                "name": "presentor_image",
+                "type": "image",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "preview_size": "thumbnail",
+                "library": "all",
+                "return_format": "id",
+                "min_width": 0,
+                "min_height": 0,
+                "min_size": 0,
+                "max_width": 0,
+                "max_height": 0,
+                "max_size": 0,
+                "mime_types": ""
+            },
+            {
+                "key": "field_572b5556388c2",
+                "label": "URL",
+                "name": "url",
+                "type": "text",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "presenter"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc541294",
+        "title": "Upload Resources",
+        "fields": [
+            {
+                "key": "field_58497c81246cb",
+                "label": "Video Name",
+                "name": "video_name",
+                "type": "select",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": [],
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "placeholder": "",
+                "return_format": "value"
+            },
+            {
+                "key": "field_58497fb1246cc",
+                "label": "Name",
+                "name": "name",
+                "type": "text",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            },
+            {
+                "key": "field_58497c3a246ca",
+                "label": "Order",
+                "name": "order",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 10,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": 1,
+                "max": 10,
+                "step": ""
+            },
+            {
+                "key": "field_584b004063e46",
+                "label": "File or Url?",
+                "name": "file_or_url",
+                "type": "select",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "File": "File",
+                    "Url": "Url"
+                },
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "placeholder": "",
+                "return_format": "value"
+            },
+            {
+                "key": "field_5848242cf9308",
+                "label": "Resource",
+                "name": "resource",
+                "type": "file",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_584b004063e46",
+                            "operator": "==",
+                            "value": "File"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "library": "all",
+                "return_format": "array",
+                "min_size": 0,
+                "max_size": 0,
+                "mime_types": ""
+            },
+            {
+                "key": "field_584b009363e47",
+                "label": "Url",
+                "name": "url",
+                "type": "text",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_584b004063e46",
+                            "operator": "==",
+                            "value": "Url"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "user_role",
+                    "operator": "==",
+                    "value": "all"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "seamless",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc5945cf",
+        "title": "Upload Spreadsheet",
+        "fields": [
+            {
+                "key": "field_590b656a30e30",
+                "label": "Spreadsheet",
+                "name": "file_uploadspreadsheet",
+                "type": "rcwdupload",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "clientpreview": "N",
+                "preview": "N",
+                "filters": "Y",
+                "filter_images": "",
+                "filter_docs": "txt,csv",
+                "filter_compr": "",
+                "filter_others": "",
+                "resize": "N",
+                "max_width": 0,
+                "max_height": 0,
+                "max_quality": 90,
+                "csresize": "N",
+                "autoupload": "Y",
+                "post_id": 0,
+                "rename": "",
+                "clientpreview_max_width": 150,
+                "clientpreview_max_height": 150,
+                "clientpreview_crop": "N",
+                "preview_max_width": 150,
+                "preview_max_height": 150,
+                "preview_crop": "N",
+                "collection": "N",
+                "collection_key": "",
+                "resize_max_width": 0,
+                "resize_max_height": 0,
+                "resize_max_quality": 90,
+                "resize_crop": "N",
+                "chunks": 0,
+                "chunks_max_retries": 3,
+                "sizelimit": "",
+                "sizelimit_type": "kb"
+            },
+            {
+                "key": "field_58176ac838a87",
+                "label": "E-mail User?",
+                "name": "email_user",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "Yes": "Yes, I want my staff to receive an e-mail with their credentials"
+                },
+                "default_value": [],
+                "layout": "vertical",
+                "allow_custom": 0,
+                "save_custom": 0,
+                "toggle": 0,
+                "return_format": "value"
+            },
+            {
+                "key": "field_5818ba8dcbca5",
+                "label": "Instruction",
+                "name": "",
+                "type": "message",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_58176ac838a87",
+                            "operator": "==",
+                            "value": "Yes"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "<div class=\"round_msgbox\">\r\n\t<p>\r\n\tIn the following message, you can customize the email to your liking however you must not remove the following bolded words:\r\n\t<\/p><ul>\r\n\t\t<li><strong>%%name%%<\/strong> * - This text will be changed with the name of the staff member who the email is sent to.<\/li>\r\n\t\t<li><strong>%%logininfo%%<\/strong> * - This string will be replaced by the login info(username\/password) of the staff member who the email is sent to.<\/li>\r\n\t\t<li><strong>%%directorname%%<\/strong> - This text will be replaced with your name.<\/li>\r\n\t\t<li><strong>%%campname%%<\/strong> - This text will be replaced with your camp's name.<\/li>\r\n\t\t<li><strong>%%numvideos%%<\/strong> - This text will be replaced with the number of videos in our library.<\/li>\r\n\t<\/ul>\r\n\tFailure to include any of the above words that have an asterisk (*) beside them will result in an error message and your emails will NOT be sent.\r\n\t<p><\/p>\r\n<\/div>",
+                "esc_html": 0,
+                "new_lines": "wpautop"
+            },
+            {
+                "key": "field_58178cb89cf80",
+                "label": "Subject",
+                "name": "subject",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_58176ac838a87",
+                            "operator": "==",
+                            "value": "Yes"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Your account on ExpertOnlineTraining.com (Camp Training)",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "html",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5817698486cbd",
+                "label": "E-mail message",
+                "name": "email_message",
+                "type": "wysiwyg",
+                "instructions": "<strong>Saved Template: Your changes to the email template below will be saved. So if you make modifications and come back to this screen at a later date, your changes will be saved.<\/strong>",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_58176ac838a87",
+                            "operator": "==",
+                            "value": "Yes"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "<b>Welcome<\/b>, %%name%%!\r\n\r\n<b>Congratulations!<\/b> You are now a member of Expert Online Training (EOT), the world’s best virtual classroom for youth development professionals. By using EOT now, before your job starts at %%campname%%, you will turbocharge your leadership skills, boost your self-confidence, and get even more out of %%campname%%’s on-site training. \r\n\r\n<div style=\"height: 94px;\"><img src=\"https:\/\/www.expertonlinetraining.com\/wp-content\/uploads\/2017\/02\/image1.png\" alt=\"EOT Logo\" style=\"width: 125px; height: 94px; float: left;\"> <b>Take EOT with you.<\/b> We know you are busy, so our new website is mobile-friendly. You can now watch EOT videos and take your quizzes on any smartphone, tablet, or laptop with a WiFi connection. Imagine learning more about behavior management, leadership, supervision, games, and safety while you sit in a café, library, or student lounge!<\/div>\r\n\r\n%%directorname%% just created an account for you with these login credentials:\r\n\r\n%%logininfo%%\r\n\r\nTo watch EOT’s intro vid and log in, <a href=\"https:\/\/www.expertonlinetraining.com\" target=\"_blank\">click here<\/a>.\r\n\r\n<b>When is it due?<\/b> Directors usually require staff to complete their online learning assignment before arriving on-site. If you have not yet received a due-date for your assignment, check with %%directorname%% to get one. As you move through your course, %%directorname%% will have access to an electronic dashboard that allows them to track your progress and quiz scores.\r\n\r\n<b>Got Questions?<\/b> If you get stuck, watch our online help videos or call us at <b>877-237-3931<\/b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.\r\n\r\nEnjoy your training!\r\n<img src=\"https:\/\/www.expertonlinetraining.com\/wp-content\/uploads\/2017\/02\/image2.jpeg\" alt=\"Chris's signature\" style=\"width: 100px; height: 55px;\">\r\nDr. Chris Thurber\r\nEOT Co-Founder &\r\nDirector of Content",
+                "toolbar": "full",
+                "media_upload": 0,
+                "tabs": "all",
+                "delay": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "user_role",
+                    "operator": "==",
+                    "value": "all"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5953bbc5c5a9a",
+        "title": "Customize Dashboard Logo",
+        "fields": [
+            {
+                "key": "field_5728fadb2ed96",
+                "label": "Dashboard Logo",
+                "name": "dashboard_logo",
+                "type": "image",
+                "instructions": "You can brand your staff's Dashboard with your camp logo to make them feel at home while logged into Expert Online Training. Once you upload your logo, it will appear at the top of their Dashboard (as well as yours).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "preview_size": "medium_large",
+                "library": "uploadedTo",
+                "return_format": "array",
+                "min_width": 0,
+                "min_height": 0,
+                "min_size": 0,
+                "max_width": 0,
+                "max_height": 0,
+                "max_size": 0,
+                "mime_types": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "user_role",
+                    "operator": "==",
+                    "value": "all"
+                }
+            ]
+        ],
+        "menu_order": 1,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [],
+        "active": 1,
+        "description": ""
+    }
+]

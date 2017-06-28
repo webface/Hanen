@@ -383,8 +383,8 @@
               {
                 form.find('input[name='+data.error_elements[i]+']').addClass("error");
               });
-              form.parent().parent().find('a[rel*=submit_button]').attr('active',0);
-              form.parent().parent().find('a[rel*=submit_button]').find('img').attr('src','images/tick.png');
+              form.parent().parent().parent().find('a[rel*=submit_button]').attr('active',0);
+              form.parent().parent().parent().find('a[rel*=submit_button]').find('img').attr('src','/wp-content/themes/ExpertOnlineTraining/images/tick.png');
             }
           }
         },

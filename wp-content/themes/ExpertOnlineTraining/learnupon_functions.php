@@ -3016,7 +3016,7 @@ if (empty($course_modules))
             $course_modules_titles = array_column($course_modules, 'title'); // only the titles of the modules in the specified course
             $modules_in_portal = getModules(0,$portal_subdomain,$data); // all the modules in this portal
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
-            $master_course = getCourseByName(lrn_upon_LE_Course_TITLE, $portal_subdomain, $data); // Get the master course. Cloned LE
+            $master_course = getCourseByName(LE_LIBRARY_TITLE, $portal_subdomain, $data); // Get the master course. Cloned LE
             $master_course_id = $master_course['id']; // Master library ID
             $master_modules = getModules($master_course_id, $portal_subdomain, $data); // Get all the modules from the master library (course).
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
@@ -3225,7 +3225,7 @@ if (empty($course_modules))
                                                 }
                                             }
                                     ?>
-                                            <input collection="add_remove_from_group" video_length="<?= lrn_upon_Module_Video_Length ?>" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> assignment_id="<?= $course_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
+                                            <input collection="add_remove_from_group" video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> assignment_id="<?= $course_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
                                             <label for="chk_video_<?= $module_id ?>">
                                                 <span name="video_title" class="<?=$video_class?> video_title">
                                                   <b>Video</b> - <span class="vtitle"><?= $module->title ?></span>
@@ -3252,7 +3252,7 @@ if (empty($course_modules))
                                                         }
                                                     }
                                             ?>
-                                                    <input item="quiz" quiz_length="<?= lrn_upon_Quiz_Length ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam_name, $course_modules_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
+                                                    <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam_name, $course_modules_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
                                                     <label for="chk_defaultquiz_<?= $module_id ?>">
                                                       <i>Exam</i> (<?= $module->title ?>) 
                                                     </label>
@@ -3304,7 +3304,7 @@ if (empty($course_modules))
                                   // displpay the module title but disable the checkbox and if clicked alert a message
 ?>
                                   <li class="video_item" video_id="<?= $module['id'] ?>" >
-                                  <input item="custom_quiz" disabled readonly collection="add_remove_from_group" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> video_length="<?= lrn_upon_Module_Video_Length ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> 
+                                  <input item="custom_quiz" disabled readonly collection="add_remove_from_group" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> 
 class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course using this interface. Please go to <b>Administration -> Manage Your Custom Content</b> to add a custom quiz to this course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"
                                   /> 
                                   <label for="chk_video_<?= $module['id'] ?>">
@@ -3316,7 +3316,7 @@ class="tooltip" onmouseover="Tip('NOTE: You CAN NOT add quizzes to a course usin
                                   // show the input checkbox as ususal
 ?>
                                   <li class="video_item" video_id="<?= $module['id'] ?>" >
-                                  <input collection="add_remove_from_group" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> video_length="<?= lrn_upon_Module_Video_Length ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
+                                  <input collection="add_remove_from_group" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
                                   <label for="chk_video_<?= $module['id'] ?>">
                                   <span name="video_title" class="<?=$module_class?> video_title">
 <?php                                  
@@ -5482,7 +5482,7 @@ var_dump($course_modules);
 var_dump($modules_in_portal);
 wp_die();
 
-            $master_course = getCourseByName(lrn_upon_LE_Course_TITLE, $portal_subdomain, $data); // Get the master course. Cloned LE
+            $master_course = getCourseByName(LE_LIBRARY_TITLE, $portal_subdomain, $data); // Get the master course. Cloned LE
             $master_course_id = $master_course['id']; // Master library ID
             $master_modules = getModules($master_course_id, $portal_subdomain, $data); // Get all the modules from the master library (course).
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
