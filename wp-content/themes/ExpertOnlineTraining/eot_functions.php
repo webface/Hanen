@@ -283,8 +283,8 @@ function getDashboard_callback()
 {
     if( isset ( $_REQUEST['option'] ) && isset ( $_REQUEST['format'] ) && isset ( $_REQUEST['sender'] ) )
     {
-        $option = filter_var($_REQUEST['option'],FILTER_SANITIZE_STRING);
-        $format = filter_var($_REQUEST['format'],FILTER_SANITIZE_STRING);
+        $option = filter_var($_REQUEST['option'], FILTER_SANITIZE_STRING);
+        $format = filter_var($_REQUEST['format'], FILTER_SANITIZE_STRING);
         $sender = sanitize_email( $_REQUEST['sender'] );
         
         if(current_user_can( "is_director" ))
@@ -510,7 +510,7 @@ function displayHelp_callback()
 {
     if( isset ( $_REQUEST['help_name'] ) )
     {
-      $help_name = filter_var($_REQUEST['help_name'],FILTER_SANITIZE_STRING);
+      $help_name = filter_var($_REQUEST['help_name'], FILTER_SANITIZE_STRING);
       if($help_name == "some_videos")
       {
         ob_start();
@@ -970,7 +970,7 @@ function updateAnswers_callback()
 {
   //grab the question number and new answer
   $new_answer = $_REQUEST['new_answer'];
-  $question_number = filter_var($_REQUEST['question_number'],FILTER_SANITIZE_NUMBER_INT);
+  $question_number = filter_var($_REQUEST['question_number'], FILTER_SANITIZE_NUMBER_INT);
 
   global $wpdb;
 
@@ -988,7 +988,7 @@ function updateQuestion_callback()
 {
   //grab the question number and new question
   $new_question = $_REQUEST['new_question'];
-  $question_number = filter_var($_REQUEST['question_number'],FILTER_SANITIZE_NUMBER_INT);
+  $question_number = filter_var($_REQUEST['question_number'], FILTER_SANITIZE_NUMBER_INT);
 
   global $wpdb;
 
@@ -1040,12 +1040,12 @@ add_action('wp_ajax_changeCondition', 'changeCondition_callback');
 //this function is designed to reflect changes to the questionnaire conditions into the database (add and remove)
 function changeCondition_callback()
 {
-  $video_id = filter_var($_REQUEST['video_id'],FILTER_SANITIZE_NUMBER_INT);               //video id
-  $question_number = filter_var($_REQUEST['question_number'],FILTER_SANITIZE_NUMBER_INT); //question id
-  $answer_number = filter_var($_REQUEST['answer_number'],FILTER_SANITIZE_NUMBER_INT);     //answer number
-  $course_name_id = filter_var($_REQUEST['course_name_id'],FILTER_SANITIZE_NUMBER_INT);   //course id
-  $library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);           //library id
-  $change = filter_var($_REQUEST['change'],FILTER_SANITIZE_STRING);                       //this variable contains 'Add' or 'Remove'
+  $video_id = filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT);               //video id
+  $question_number = filter_var($_REQUEST['question_number'], FILTER_SANITIZE_NUMBER_INT); //question id
+  $answer_number = filter_var($_REQUEST['answer_number'], FILTER_SANITIZE_NUMBER_INT);     //answer number
+  $course_name_id = filter_var($_REQUEST['course_name_id'], FILTER_SANITIZE_NUMBER_INT);   //course id
+  $library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT);           //library id
+  $change = filter_var($_REQUEST['change'], FILTER_SANITIZE_STRING);                       //this variable contains 'Add' or 'Remove'
 
   global $wpdb;
 
@@ -1076,8 +1076,8 @@ add_action('wp_ajax_deleteQuestion', 'deleteQuestion_callback');
 //this function deletes questions from the questionnaire
 function deleteQuestion_callback()
 {
-  $question_id = filter_var($_REQUEST['question_id'],FILTER_SANITIZE_NUMBER_INT);         //question id
-  $library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);           //library id
+  $question_id = filter_var($_REQUEST['question_id'], FILTER_SANITIZE_NUMBER_INT);         //question id
+  $library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT);           //library id
 
   global $wpdb;
 
@@ -1092,7 +1092,7 @@ add_action('wp_ajax_addQuestion', 'addQuestion_callback');
 //this function adds questions to the questionnaire
 function addQuestion_callback()
 {
-  $library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);           //library id
+  $library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT);           //library id
   $question = $_REQUEST['question'];                                                      //question
   $answer = $_REQUEST['answer'];                                                          //answer
 
@@ -1192,11 +1192,11 @@ add_action('wp_ajax_updateCustomSettings', 'updateCustomSettings_callback');
 //This function updates the custom fields
 function updateCustomSettings_callback()
 {
-  $meta_key = filter_var($_REQUEST['meta_key'],FILTER_SANITIZE_STRING);
-  $meta_value = filter_var($_REQUEST['meta_value'],FILTER_SANITIZE_STRING);
-  $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
-  $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-  $type = filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
+  $meta_key = filter_var($_REQUEST['meta_key'], FILTER_SANITIZE_STRING);
+  $meta_value = filter_var($_REQUEST['meta_value'], FILTER_SANITIZE_STRING);
+  $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+  $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+  $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
 
   if ($type == "post")
   {
@@ -1214,7 +1214,7 @@ add_action('wp_ajax_switchUser', 'switchUser_callback');
 //this function switches the user
 function switchUser_callback()
 {
-  $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);          //user id
+  $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);          //user id
 
   switch_to_user($user_id);
 
@@ -1228,9 +1228,9 @@ function updateSubscriptionSettings_callback()
 {
   global $wpdb;
   
-  $id = filter_var($_REQUEST['id'],FILTER_SANITIZE_NUMBER_INT);
-  $field = filter_var($_REQUEST['field'],FILTER_SANITIZE_STRING);
-  $value = filter_var($_REQUEST['value'],FILTER_SANITIZE_STRING);
+  $id = filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT);
+  $field = filter_var($_REQUEST['field'], FILTER_SANITIZE_STRING);
+  $value = filter_var($_REQUEST['value'], FILTER_SANITIZE_STRING);
 
   $sql = "UPDATE " . TABLE_SUBSCRIPTIONS . ' SET ' . $field . ' = "' . $value . '" WHERE id = ' . $id;
   $wpdb->query ($wpdb->prepare ($sql));
@@ -1244,9 +1244,9 @@ add_action('wp_ajax_createSubdomainAll', 'createSubdomainAll_callback');
 function createSubdomainAll_callback()
 {
   
-  $org_subdomain = SUBDOMAIN_PREFIX.filter_var($_REQUEST['subdomain'],FILTER_SANITIZE_STRING);   //subdomain
-  $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);                          //org id
-  $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);                        //user id
+  $org_subdomain = SUBDOMAIN_PREFIX.filter_var($_REQUEST['subdomain'], FILTER_SANITIZE_STRING);   //subdomain
+  $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);                          //org id
+  $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);                        //user id
   $first_name = get_user_meta ($user_id, 'first_name', true);                                    //first name
   $last_name = get_user_meta ($user_id, 'last_name', true);                                      //last name
   $email = get_user_by('id', $user_id)->user_login;                                              //email
@@ -1368,10 +1368,10 @@ add_action('wp_ajax_updateDomainName', 'updateDomainName_callback');
 //This function updates the domain name
 function updateDomainName_callback()
 {
-  $original_subdomain = filter_var($_REQUEST['original_subdomain'],FILTER_SANITIZE_STRING);     //original subdomain
-  $subdomain = filter_var($_REQUEST['subdomain'],FILTER_SANITIZE_STRING);                       //new subdomain
-  $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);                       //user id
-  $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);                         //org id
+  $original_subdomain = filter_var($_REQUEST['original_subdomain'], FILTER_SANITIZE_STRING);     //original subdomain
+  $subdomain = filter_var($_REQUEST['subdomain'], FILTER_SANITIZE_STRING);                       //new subdomain
+  $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);                       //user id
+  $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);                         //org id
   $org_name = get_the_title($org_id);                                                           //org name
 
   $cloudflare_id = listCnameRecords($original_subdomain);
@@ -1475,7 +1475,7 @@ add_action('wp_ajax_updateCloudflareSubdomain', 'updateCloudflareSubdomain_callb
 //This function updates the subddomain name on cloudflare only
 function updateCloudflareSubdomain_callback()
 {
-  $new_subdomain = filter_var($_REQUEST['new_subdomain'],FILTER_SANITIZE_STRING);               //new subdomain
+  $new_subdomain = filter_var($_REQUEST['new_subdomain'], FILTER_SANITIZE_STRING);               //new subdomain
   $subdomain_id = $_REQUEST['subdomain_id'];             //subdomain id
 
   //update Cname record on cloudflare
@@ -1591,11 +1591,11 @@ add_action('wp_ajax_updateCreateSalesRep', 'updateCreateSalesRep_callback');
 //this function updates or creates a sales rep (if doesn't exist)
 function updateCreateSalesRep_callback()
 {
-  $first_name = filter_var($_REQUEST['first_name'],FILTER_SANITIZE_STRING);
-  $last_name = filter_var($_REQUEST['last_name'],FILTER_SANITIZE_STRING);
-  $email = filter_var($_REQUEST['email'],FILTER_SANITIZE_STRING);
+  $first_name = filter_var($_REQUEST['first_name'], FILTER_SANITIZE_STRING);
+  $last_name = filter_var($_REQUEST['last_name'], FILTER_SANITIZE_STRING);
+  $email = filter_var($_REQUEST['email'], FILTER_SANITIZE_STRING);
   $password = $_REQUEST['password'];
-  $create_user = filter_var($_REQUEST['create_user'],FILTER_SANITIZE_NUMBER_INT); // int: 1 to create user, 0 or null to update
+  $create_user = filter_var($_REQUEST['create_user'], FILTER_SANITIZE_NUMBER_INT); // int: 1 to create user, 0 or null to update
 
   $new_user = array(
     'user_login' => $email,
@@ -1616,7 +1616,7 @@ function updateCreateSalesRep_callback()
   }
   else
   {
-    $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
     $new_user['ID'] = $user_id;
     $user_id = wp_update_user ($new_user);
   }
@@ -1870,7 +1870,7 @@ function getUmbrellaCamps($org_id = 0, $key = 'umbrella_group_id')
 }
 
 // verify whether or not this user is allowed to modify this page/subscription/view
-// returns boolean true/false
+// returns an array with status boolean true/false
 function verifyUserAccess ()
 {
 
@@ -1880,7 +1880,7 @@ function verifyUserAccess ()
   // get the subscription ID if exists
   if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
   { 
-    $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
   }
   else
   {
@@ -2074,8 +2074,6 @@ function verifyUserAccess ()
     {
       return array( 'status' => 0, 'message' => 'couldn\'t get the manager\'s meta info' );
     }
-
-
   }
   else if (current_user_can("is_director"))
   {
@@ -2161,8 +2159,8 @@ function my_acf_save_post( $post_id )
     $org_id = get_org_from_user ($user_id); // Organization ID
     $data = compact("org_id", "sender_name", "sender_email");
     $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-    $subscription_id=filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-    $target = filter_var($_REQUEST['target'],FILTER_SANITIZE_STRING); // Target. User selected option.
+    $subscription_id=filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+    $target = filter_var($_REQUEST['target'], FILTER_SANITIZE_STRING); // Target. User selected option.
     $user_email_finish = array(); // Lists of email addresses that we already finish sending mail to
     $recepients = array(); // List of recepients
     $users = json_decode(stripslashes( html_entity_decode($_REQUEST['users_info'])) ); // Get the users information
@@ -3066,16 +3064,14 @@ function getCourse($course_id = 0)
  * Enroll the user into the course base on email address and course name
  *
  * @param string $email - e-amil of the user
- * @param string $portal_subdomain - The subdomain name of the portal
  * @param array $data - user data
  **/
-function enrollUserInCourse($email = '', $portal_subdomain = DEFAULT_SUBDOMAIN, $data) 
+function enrollUserInCourse($email = '', $data) 
 {
     extract($data);
     /*
     * Variables required in $data
     * org_id - the organization ID
-    * course_name - name of the course the user will be enrolled to
     * course_id - the ID of the course to enroll the user into
     */
     if($email == "")
@@ -3251,7 +3247,7 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     }
     else
     {
-      return false;
+      return array('status' => 0, 'message' => "createCourse error: Something went wrong!");
     }
 }
 
@@ -3260,58 +3256,44 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
  * @param int $course_id - The course ID
  * @param string $type - Module type. (Page,scorm). Empty $type will return all the module types.
  */
-function getModulesInCourse($course_id=0, $type = "page"){
+function getModulesInCourse($course_id = 0){
     global $wpdb;
-    $course_id  = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT m.* "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSES_MODULES . " AS cm ON cm.module_id = m.id "
-                . "WHERE cm.course_id = $course_id ";
-    if( $type )
-    {
-      switch ($type)
-      {
-        case "page":
-          $sql .= ' AND component_type = "page"';
-          break;
-        case "scorm":
-          $sql .= ' AND component_type = "scorm"';
-          break;
-        default:
-      }
-    }
+                . "WHERE cm.course_id = $course_id";
+
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
     return $course_modules;
 }
 
 //Ajax get modules for a course. Called from part-manage_courses
-add_action('wp_ajax_getModules', 'getModules_callback'); // Executes Courses_Modules functions actions only for log in users
-function getModules_callback() {
-    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['portal_subdomain'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['subscription_id'] ))
+add_action('wp_ajax_getModules', 'getModules_callback'); // Executes Courses_Modules functions actions only for logged in users
+function getModules_callback() 
+{
+    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['subscription_id'] ))
     {
 
         // Get the Post ID from the URL
-        $course_id          = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
-        $portal_subdomain   = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-        $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-        $subscription_id    = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+        $course_id          = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+        $org_id             = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $subscription_id    = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
         $course_status      = ""; //  The course status
 
-
-        $info_data = array("org_id" => $org_id);
-
+        $info_data = compact("org_id");
 
         // check if user has admin/manager permissions
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can ('is_sales_manager') )
         {
             $result['data'] = 'failed';
-            $result['message'] = 'LU Error: Sorry, you do not have permisison to view this page. ';
+            $result['message'] = 'Error: Sorry, you do not have permisison to view this page. ';
         }
         else
         {
             // Build the response if successful
             // get modules of the course
-            $modules=  getModulesInCourse($course_id);
+            $modules = getModulesInCourse($course_id);
             /*********************************************************************************************
             * Create HTML template and return it back as message. this will return an HTML div set to the 
             * javascript and the javascript will inject it into the HTML page.
@@ -3324,20 +3306,13 @@ function getModules_callback() {
             {
                 foreach( $modules as $module )
                 {   
-                    /* 
-                     * Include only the courses modules
-                     */
-                    if($module['component_type'] == "page")
-                    {
-                        
-                        $module_description_text = $module['description_text']; 
-                        $module_title     = $module['title'];
-                        //$html.= ' <div class = "staff_and_assignment_list_row" onmouseover="Tip(\''.str_replace('"','&quot;',addslashes($module_description_text)).'\', WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\',TITLE,\'Description\')" onmouseout="UnTip()">';
-                        $html.= ' <div class = "staff_and_assignment_list_row">';
-                        $html.= '  <span class="staff_name" >'.$module_title.'</span>';
-                        $html.= ' </div>';
-                        $num_modules_type_page++;
-                    }
+                    $module_description_text = $module['description_text']; 
+                    $module_title = $module['title'];
+                    //$html.= ' <div class = "staff_and_assignment_list_row" onmouseover="Tip(\''.str_replace('"','&quot;',addslashes($module_description_text)).'\', WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\',TITLE,\'Description\')" onmouseout="UnTip()">';
+                    $html.= ' <div class = "staff_and_assignment_list_row">';
+                    $html.= '  <span class="staff_name" >'.$module_title.'</span>';
+                    $html.= ' </div>';
+                    $num_modules_type_page++;
                 }
                 $html.= '   </div>'; 
                 $html.= '</div>';  
@@ -3370,8 +3345,8 @@ function getModules_callback() {
 
     echo json_encode($result);
     wp_die();
-
 }
+
 /**
  *  Get the courses present in the org based on a parameter that's passed. Either by course id, all courses in org_id, all courses in subscription_id
  *  @param int $course_id - the course id
@@ -3494,7 +3469,7 @@ function getQuizResourcesInModules($module_ids = '')
       return NULL;
 
     global $wpdb;
-    $module_ids = filter_var($module_ids,FILTER_SANITIZE_STRING);
+    $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
     $resources = $wpdb->get_results("SELECT mr.module_id, q.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN ".TABLE_QUIZ." q "
             . "ON mr.resource_id = q.ID "
             . "WHERE mr.module_id IN (".$module_ids.") AND mr.resource_type = 'exam' GROUP BY q.name ORDER BY mr.order ASC",ARRAY_A);
@@ -3502,7 +3477,8 @@ function getQuizResourcesInModules($module_ids = '')
 }
 
 /**
- * Get all the quiz handouts by modules ids
+ * Get all the course handouts by modules ids
+ *  @param string module_ids - the module ids separated by comma.
  *
  *  @return array() - an array of quiz handouts data
  */
@@ -3512,13 +3488,14 @@ function getHandouts($module_ids = '')
       return NULL;
 
     global $wpdb;
-    $handouts=$wpdb->get_results( "SELECT * FROM ". TABLE_RESOURCES ." WHERE module_id IN ($module_ids)", ARRAY_A );
+    $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
+    $handouts = $wpdb->get_results( "SELECT * FROM ". TABLE_RESOURCES ." WHERE module_id IN ($module_ids)", ARRAY_A );
     return $handouts;
 }
 
 /**
  * get the quizzes in a course
- * @param $course_id
+ * @param $course_id - the course ID
  * @return array of quizzes in course
  */
 function getQuizzesInCourse($course_id = 0)
@@ -3527,16 +3504,16 @@ function getQuizzesInCourse($course_id = 0)
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT q.* "
                 . "FROM " . TABLE_QUIZ . " AS q "
-                . "LEFT JOIN " . TABLE_COURSES_QUIZZES . " AS cq ON cq.quiz_id = q.id "
-                . "WHERE cq.course_id = $course_id ";
+                . "LEFT JOIN " . TABLE_COURSES_QUIZZES . " AS cq ON cq.quiz_id = q.ID "
+                . "WHERE cq.course_id = $course_id";
     $course_quizzes = $wpdb->get_results($sql, ARRAY_A);
     return $course_quizzes;
 }
 
 /**
- * get the handouts in a course
- * @param $course_id
- * @return array of handouts in course
+ * get the resources in a course
+ * @param $course_id - the course ID
+ * @return array of resources in course
  */
 function getResourcesInCourse($course_id = 0)
 {
@@ -3544,39 +3521,25 @@ function getResourcesInCourse($course_id = 0)
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT r.* "
                 . "FROM " . TABLE_RESOURCES . " AS r "
-                . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.id "
-                . "WHERE cr.course_id = $course_id ";
+                . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.ID "
+                . "WHERE cr.course_id = $course_id";
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
-
 }
 
 /**
  * Get Modules in Org
  * @global type $wpdb
- * @param type $org_id
+ * @param type $org_id - the org ID
  * @return array of modules in org
  * 
  */
 function getModules($org_id = 0) 
 {
     global $wpdb;
-    $org_id = filter_var($org_id,FILTER_SANITIZE_NUMBER_INT);
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE org_id = $org_id" , ARRAY_A);
     return $modules;
-}
-
-/**
- * get all quizzes
- * @global type $wpdb
- * @return quizzes array
- * 
- */
-function getQuizzes()
-{
-    global $wpdb;
-    $quizzes=$wpdb->get_results("SELECT * FROM ".TABLE_QUIZ,ARRAY_A);
-    return $quizzes;    
 }
 
 /**
@@ -3614,14 +3577,18 @@ function getLibraryCategory($id = 0, $library_id = 0)
 /**
  * Get Handout Resources in a course's modules
  * @global type $wpdb
- * @param type $module_ids
+ * @param type $module_ids - string of comma seperated module ids
  * @return array handouts
  * 
  */
 function getHandoutResourcesInCourseModules($module_ids = '')
 {
+    if (empty($module_ids))
+      return NULL;
+
     global $wpdb;
-    $handouts=$wpdb->get_results("SELECT r.* FROM ".TABLE_RESOURCES. " r WHERE r.module_id IN (".$module_ids.")" ,ARRAY_A);
+    $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
+    $handouts = $wpdb->get_results("SELECT r.* FROM ".TABLE_RESOURCES. " r WHERE r.module_id IN (".$module_ids.")" ,ARRAY_A);
     return $handouts;
 }
 
@@ -3632,24 +3599,27 @@ function getHandoutResourcesInCourseModules($module_ids = '')
  * @return array quizzes
  * 
  */
-function getQuizResourcesInModule($module_id){
+function getQuizResourcesInModule($module_id = 0){
+
+    if (!$module_id)
+      return NULL;
+
     global $wpdb;
-    $module_id = filter_var($module_id,FILTER_SANITIZE_NUMBER_INT);
-    $resources=$wpdb->get_results("SELECT mr.module_id,q.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_QUIZ." q "
-            . "ON mr.resource_id = q.id "
-            . "WHERE mr.module_id = $module_id AND mr.resource_type='exam' GROUP BY q.name ORDER BY mr.order ASC",ARRAY_A);
+    $module_id = filter_var($module_id, FILTER_SANITIZE_NUMBER_INT);
+    $resources=$wpdb->get_results("SELECT mr.module_id, q.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN ".TABLE_QUIZ." q "
+            . "ON mr.resource_id = q.ID "
+            . "WHERE mr.module_id = $module_id AND mr.resource_type = 'exam' GROUP BY q.name ORDER BY mr.order ASC",ARRAY_A);
     return $resources;
 }
 
 /**
  *  Handles the add and remove of the module in a course
  *  @param int $course_ID - the course ID
- *  @param string $portal_subdomain - the subdomain of the portal you want the courses from
  *  @param array $data - user/camp data to access portal keys etc...
  *
  *  @return json encoded list of modules
  */
-function toggleItemInAssignment($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $data = array()) {
+function toggleItemInAssignment($course_id = 0, $data = array()) {
   extract($data);
   /*
    * Variables required in $data
@@ -3657,121 +3627,136 @@ function toggleItemInAssignment($course_id = 0, $portal_subdomain = DEFAULT_SUBD
    * module_id - the module ID in master library
    */
   global $wpdb;
-  $info_data = array("org_id" => $org_id, "module_id" => $module_id);
-  $modules=$wpdb->get_results("SELECT m.* "
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $modules = $wpdb->get_results("SELECT m.* "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSES_MODULES . " AS cm ON cm.module_id = m.ID "
-                . "WHERE cm.course_id = $course_id ", ARRAY_A); // All the modules registered in the course.
+                . "WHERE cm.course_id = $course_id", ARRAY_A); // All the modules registered in the course.
   $course_module_ids = array_column($modules, 'ID'); // Modules IDS
 
   // Check if the module id is in the course
   if(in_array($module_id, $course_module_ids))
   {
-     // var_dump($course_id);
-     // var_dump($module_id);
-      $result = $wpdb->delete(TABLE_COURSES_MODULES, array('course_id' => $course_id,'module_id'=>$module_id));
-            if ($result === false) {
+      $result = $wpdb->delete(TABLE_COURSES_MODULES, array('course_id' => $course_id, 'module_id'=>$module_id));
+            if ($result === false) 
+            {
                 return false;
-            } else {
+            } 
+            else 
+            {
                 return true;
             }
   }
   else
   {
-    //return addModule($course_id, $portal_subdomain, $info_data);
-    $result = $wpdb->insert(TABLE_COURSES_MODULES, array('course_id'=>$course_id,'module_id'=>$module_id));
-            if ($result === false) {
+    $result = $wpdb->insert(TABLE_COURSES_MODULES, array('course_id'=>$course_id, 'module_id'=>$module_id));
+            if ($result === false) 
+            {
                 return false;
-            } else {
+            } 
+            else 
+            {
                 return true;
             }
   }
-
 }
 
 /**
- *  Handles the add and remove of the module in a course
+ *  Handles the add and remove of a quiz in a course
  *  @param int $course_ID - the course ID
- *  @param string $portal_subdomain - the subdomain of the portal you want the courses from
  *  @param array $data - user/camp data to access portal keys etc...
  *
  *  @return json encoded list of modules
  */
-function toggleQuizInAssignment($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $data = array()) {
+function toggleQuizInAssignment($course_id = 0, $data = array()) {
   extract($data);
   /*
    * Variables required in $data
    * org_id - the organization ID
-   * quiz_id - 
+   * quiz_id - the quiz id
    */
   global $wpdb;
-  $info_data = array("org_id" => $org_id, "quiz_id" => $quiz_id);
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
   $quizzes=$wpdb->get_results("SELECT q.* "
                 . "FROM " . TABLE_QUIZ . " AS q "
                 . "LEFT JOIN " . TABLE_COURSES_QUIZZES . " AS cq ON cq.quiz_id = q.ID "
-                . "WHERE cq.course_id = '$course_id' ", ARRAY_A); // All the modules registered in the course.
+                . "WHERE cq.course_id = $course_id", ARRAY_A); // All the modules registered in the course.
   $course_quizzes_ids = array_column($quizzes, 'ID'); // Modules IDS
 
   // Check if the module id is in the course
   if(in_array($quiz_id, $course_quizzes_ids))
   {
-     // var_dump($course_id);
-     // var_dump($module_id);
-      $result = $wpdb->delete(TABLE_COURSES_QUIZZES, array('course_id' => $course_id,'quiz_id'=>$quiz_id));
-            if ($result === false) {
+      $result = $wpdb->delete(TABLE_COURSES_QUIZZES, array('course_id' => $course_id, 'quiz_id'=>$quiz_id));
+            if ($result === false) 
+            {
                 return false;
-            } else {
+            } 
+            else 
+            {
                 return true;
             }
   }
   else
   {
-    //return addModule($course_id, $portal_subdomain, $info_data);
-    $result = $wpdb->insert(TABLE_COURSES_QUIZZES, array('course_id'=>$course_id,'quiz_id'=>$quiz_id));
-            if ($result === false) {
+    $result = $wpdb->insert(TABLE_COURSES_QUIZZES, array('course_id'=>$course_id, 'quiz_id'=>$quiz_id));
+            if ($result === false) 
+            {
                 return false;
-            } else {
+            } 
+            else 
+            {
                 return true;
             }
   }
-
 }
 
-function toggleResourceInAssignment($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $data = array()) {
+/**
+ *  Handles the add and remove of a resource in a course
+ *  @param int $course_ID - the course ID
+ *  @param array $data - user/camp data to access portal keys etc...
+ *
+ *  @return json encoded list of modules
+ */
+function toggleResourceInAssignment($course_id = 0, $data = array()) {
   extract($data);
   /*
    * Variables required in $data
    * org_id - the organization ID
-   * resource_id - the 
+   * resource_id - the resource ID 
    */
   global $wpdb;
-  $info_data = array("org_id" => $org_id, "resource_id" => $resource_id);
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
   $resources=$wpdb->get_results("SELECT r.* "
                 . "FROM " . TABLE_RESOURCES . " AS r "
                 . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.ID "
-                . "WHERE cr.course_id = '$course_id' ", ARRAY_A); // All the modules registered in the course.
+                . "WHERE cr.course_id = $course_id", ARRAY_A); // All the modules registered in the course.
   $course_resource_ids = array_column($resources, 'ID'); // Modules IDS
 
   // Check if the module id is in the course
   if(in_array($resource_id, $course_resource_ids))
   {
-      $result = $wpdb->delete(TABLE_COURSES_RESOURCES, array('course_id' => $course_id,'resource_id'=>$resource_id));
-            if ($result === false) {
+      $result = $wpdb->delete(TABLE_COURSES_RESOURCES, array('course_id' => $course_id, 'resource_id'=>$resource_id));
+            if ($result === false) 
+            {
                 return false;
-            } else {
+            } 
+            else 
+            {
                 return true;
             }
   }
   else
   {
-    $result = $wpdb->insert(TABLE_COURSES_RESOURCES, array('course_id'=>$course_id,'resource_id'=>$resource_id));
-            if ($result === false) {
+    $result = $wpdb->insert(TABLE_COURSES_RESOURCES, array('course_id'=>$course_id, 'resource_id'=>$resource_id));
+            if ($result === false) 
+            {
                 return false;
-            } else {
+            } 
+            else 
+            {
                 return true;
             }
   }
-
 }
 
 /********************************************************************************************************
@@ -3783,28 +3768,25 @@ function toggleItemInAssignment_callback()
 
     if( isset ( $_REQUEST['group_id'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['item'] ) && isset ( $_REQUEST['item_id'] ) )
     {
-        $course_id          = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
-        $item               = filter_var($_REQUEST['item'],FILTER_SANITIZE_STRING);
-        $item_id            = filter_var($_REQUEST['item_id'],FILTER_SANITIZE_NUMBER_INT);
-        $portal_subdomain   = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-        $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $course_id          = filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
+        $item               = filter_var($_REQUEST['item'], FILTER_SANITIZE_STRING);
+        $item_id            = filter_var($_REQUEST['item_id'], FILTER_SANITIZE_NUMBER_INT);
+        $org_id             = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         
         switch($item){
             case "video":
                 $info_data          = array("org_id" => $org_id, "module_id" => $item_id);
-                $response = toggleItemInAssignment($course_id, $portal_subdomain, $info_data);
+                $response = toggleItemInAssignment($course_id, $info_data);
                 break;
             case "quiz":
                 $info_data          = array("org_id" => $org_id, "quiz_id" => $item_id);
-                $response=  toggleQuizInAssignment($course_id, $portal_subdomain, $info_data);
+                $response=  toggleQuizInAssignment($course_id, $info_data);
                 break;
             case "resource":
                 $info_data          = array("org_id" => $org_id, "resource_id" => $item_id);
-                $response= toggleResourceInAssignment($course_id, $portal_subdomain, $info_data);
+                $response= toggleResourceInAssignment($course_id, $info_data);
                 break;
         }
-        
-
         echo json_encode($response);
     }
     wp_die();
@@ -3823,14 +3805,14 @@ function createCourse_callback ( )
     if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['user_id'] ) && isset ( $_REQUEST['subscription_id'] ) )
     {
         // This form is generated in getCourseForm function from this file.
-        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-        $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
-        $subscription_id    = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+        $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 
-        $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
-        $course_name = str_replace($chars, "",(trim($_REQUEST['name'])));
-        $course_name  = filter_var($course_name,FILTER_SANITIZE_STRING);
-        $course_description  = (isset($course_description)) ? filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING) : "";
+        $chars = array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
+        $course_name = str_replace($chars, "", trim($_REQUEST['name']));
+        $course_name = filter_var($course_name, FILTER_SANITIZE_STRING);
+        $course_description = (isset($_REQUEST['desc'])) ? filter_var($_REQUEST['desc'], FILTER_SANITIZE_STRING) : "";
 
         // Check permissions
         if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'create-course_' . $org_id ) ) 
@@ -3841,7 +3823,7 @@ function createCourse_callback ( )
             echo json_encode($result);
             wp_die();
         }
-        else if($course_name=="")
+        else if($course_name == "")
         {
             $result['display_errors'] = true;
             $result['success'] = false;
@@ -3849,6 +3831,7 @@ function createCourse_callback ( )
             echo json_encode($result);
             wp_die();
         }
+
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
         {
             $result['display_errors'] = 'success';
@@ -3857,7 +3840,7 @@ function createCourse_callback ( )
         else 
         {
             $course_due_date = ""; //for future use
-            $data = compact( "org_id", "user_id", "course_due_date", "course_description","subscription_id");
+            $data = compact( "org_id", "user_id", "course_due_date", "course_description", "subscription_id");
             // Add the course
             $response = createCourse($course_name, $org_id, $data);
             if($response['status'] == 0)
@@ -3890,9 +3873,9 @@ function createCourse_callback ( )
     }
     else
     {
-        $result['display_errors'] = 'failed';
+        $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = 'updateUser_callback Error: Missing some parameters.';
+        $result['errors'] = 'createCourse_callback Error: Missing some parameters.';
     }
     echo json_encode($result);
     wp_die();
@@ -3907,15 +3890,15 @@ function updateCourse_callback ( )
     if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['name'] ) )
     {
         // This form is generated in getCourseForm function with $form_name = edit_course_group from this file.
-        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-        $course_description  = filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING);
-        $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
-        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-        $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
-        $course_name = str_replace($chars, "",(trim($_REQUEST['name'])));
-        $course_name  = filter_var($course_name,FILTER_SANITIZE_STRING);
-        $course_description  = (isset($course_description)) ? filter_var($_REQUEST['desc'],FILTER_SANITIZE_STRING) : "";
-        if($course_name ===""){
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $course_description = filter_var($_REQUEST['desc'], FILTER_SANITIZE_STRING);
+        $course_id = filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
+        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+        $chars = array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
+        $course_name = str_replace($chars, "", trim($_REQUEST['name']));
+        $course_name = filter_var($course_name, FILTER_SANITIZE_STRING);
+        $course_description = (isset($_REQUEST['desc'])) ? filter_var($_REQUEST['desc'], FILTER_SANITIZE_STRING) : "";
+        if($course_name == ""){
                 // return an error message
                 $result['display_errors'] = true;
                 $result['success'] = false;
@@ -3938,17 +3921,16 @@ function updateCourse_callback ( )
         }
         else 
         {
-            $data = compact( "org_id", "course_name");
+            $data = compact( "org_id", "course_name", "course_description");
             // Edit the course
             global $wpdb;
-            $response = $wpdb->update(TABLE_COURSES, $data,array('ID'=>$course_id));
-            if ($response===FALSE)
+            $response = $wpdb->update(TABLE_COURSES, $data, array('ID' => $course_id));
+            if ($response === FALSE)
             {
                 // return an error message
                 $result['display_errors'] = true;
                 $result['success'] = false;
                 $result['errors'] = "Response Message: " . $wpdb->last_error;
-
             }
             else 
             {
@@ -3961,8 +3943,6 @@ function updateCourse_callback ( )
                 $result['group_id'] = $course_id;
                 $result['group_desc'] = $course_description;
             }
-            
-
         }
         echo json_encode($result);
     }
@@ -3980,9 +3960,8 @@ function deleteCourse_callback()
     {
 
       // Get the Post ID from the URL
-      $course_id          = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
-      $portal_subdomain   = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-      $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+      $course_id          = filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
+      $org_id             = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
 
       $data = compact("org_id");
 
@@ -3993,7 +3972,7 @@ function deleteCourse_callback()
           $result['success'] = false;
           $result['errors'] = 'deleteCourse_callback error: Sorry, your nonce did not verify.';
       }
-      if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+      else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
       {
           $result['display_errors'] = 'failed';
           $result['success'] = false;
@@ -4001,10 +3980,9 @@ function deleteCourse_callback()
       }
       else 
       {
-        //$response = deleteCourse($course_id, $portal_subdomain, $data);
         global $wpdb;
         $response = $wpdb->delete(TABLE_COURSES, array('ID' => $course_id));
-        if ($response===FALSE)
+        if ($response === FALSE)
         {
             // return an error message
             $result['display_errors'] = true;
@@ -4036,14 +4014,14 @@ function getUsersInCourse_callback()
     {
 
         // Get the Post ID from the URL
-        $course_id          = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
-        $org_id             = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $course_id          = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+        $org_id             = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
 
         // check if user has admin/manager permissions
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
         {
             $result['data'] = 'failed';
-            $result['message'] = 'LU Error: Sorry, you do not have permisison to view this page. ';
+            $result['message'] = 'Error: Sorry, you do not have permisison to view this page. ';
         }
         else
         {
@@ -4072,8 +4050,6 @@ function getUsersInCourse_callback()
                 usort($users, "sort_first_name"); // sort the users by first name
                 foreach( $users as $user )
                 {
-                    $first_name = get_user_meta( $user['user_id'], "first_name", true ); 
-                    $last_name = get_user_meta( $user['user_id'], "last_name", true );
                     $html .= '<div class ="staff_and_assignment_list_row">';
                     $html .= '<span class="staff_name">' . $user['first_name'] . ' ' . $user['last_name']  . '</span>';
                     $html .= '</div>';
@@ -4117,24 +4093,22 @@ function createUser_callback()
 {
     if( isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['lastname'] ) && isset ( $_REQUEST['email'] ) && isset ( $_REQUEST['pw'] ) && isset ( $_REQUEST['org_id'] ))
     {
-        //$first_name = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING); // User's first name
-        //$last_name = filter_var($_REQUEST['lastname'],FILTER_SANITIZE_STRING); // User's last name
+        //$first_name = filter_var($_REQUEST['name'], FILTER_SANITIZE_STRING); // User's first name
+        //$last_name = filter_var($_REQUEST['lastname'], FILTER_SANITIZE_STRING); // User's last name
         
         $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
-        $first_name = str_replace($chars, "",(trim($_REQUEST['name'])));
-        $first_name  = filter_var($first_name,FILTER_SANITIZE_STRING);
+        $first_name = str_replace($chars, "", trim($_REQUEST['name']));
+        $first_name = filter_var($first_name, FILTER_SANITIZE_STRING);
         
-        $last_name = str_replace($chars, "",(trim($_REQUEST['lastname'])));
-        $last_name  = filter_var($last_name,FILTER_SANITIZE_STRING);
+        $last_name = str_replace($chars, "",trim($_REQUEST['lastname']));
+        $last_name = filter_var($last_name, FILTER_SANITIZE_STRING);
         
         $email = sanitize_email( $_REQUEST['email']); // User's e-mail address
-        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
         $password = $_REQUEST['pw']; // User's password
-        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-        $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course name
-        $data = compact("org_id", "first_name", "last_name", "email", "password","course_id");
-        $send_mail = ( isset($_REQUEST['send_mail']) && filter_var($_REQUEST['send_mail'],FILTER_SANITIZE_NUMBER_INT) == 1 ) ? TRUE : FALSE;
-
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The course ID
+        $data = compact("org_id", "first_name", "last_name", "email", "password", "course_id");
+        $send_mail = ( isset($_REQUEST['send_mail']) && filter_var($_REQUEST['send_mail'], FILTER_SANITIZE_NUMBER_INT) == 1 ) ? TRUE : FALSE;
 
         // Check permissions
         if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'create-staff_' . $org_id ) ) 
@@ -4145,35 +4119,32 @@ function createUser_callback()
             echo json_encode( $result );
             wp_die();
         }
-        if($first_name==""){
+        if($first_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'create staff account error: Please Enter a first name';
             echo json_encode( $result );
             wp_die();           
         }
-        if($last_name==""){
+        if($last_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'create staff account error: Please Enter a last name';
             echo json_encode( $result );
             wp_die();           
         }        
+
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
         {
             $result['display_errors'] = 'Failed';
             $result['success'] = false;
             $result['errors'] = 'create staff account error: Sorry, you do not have permisison to view this page. ';
         }
-
         else 
         {
-
-
             // check that the user doesnt exist in WP
             if ( email_exists($email) == false )
             {
-                
                     $result['success'] = true;
                     $result['msg_sent'] = $send_mail;
                     $result['name'] = $first_name;
@@ -4181,8 +4152,6 @@ function createUser_callback()
                     $result['org_id'] = $org_id;
                     $result['email'] = $email;
                     $result['password'] = $password;
-                    //$result['user_id'] = $response['id']; // LU User ID
-                    $result['portal_subdomain'] = $portal_subdomain;
 
                     // create the user in WP (student)
                     $userdata = array (
@@ -4194,37 +4163,46 @@ function createUser_callback()
                         'last_name' => $last_name
                     );
                     $WP_user_id = wp_insert_user ($userdata);
-                    $result['user_id']= $WP_user_id;
-                    // Newly created WP user needs some meta data values added
-                    //update_user_meta ( $WP_user_id, 'lrn_upon_id', $response['id'] );
-                    update_user_meta ( $WP_user_id, 'org_id', $org_id );
-                    update_user_meta ( $WP_user_id, 'accepted_terms', '0');
-                    //update_user_meta ( $WP_user_id, 'portal', $portal_subdomain );
-                    
-                    // Create enrollment
-                    if($course_id)
+
+                    // check if we successfully inserted the user
+                    if ( ! is_wp_error( $WP_user_id ) ) 
                     {
-                        // Adding the course name in the $data
-                        //$data =  $data  + array("course_name" => $course_name);
-                        $response = enrollUserInCourse($email, $portal_subdomain, $data);    
-                        if($response['status'] == 1)
-                        {
-                            
-                        }
-                        else
-                        {
-                            $result['success'] = false;
-                            $result['display_errors'] = true;
-                            $result['errors'] = "CreateUser_callback Error: " . $response['message'];
-                        }
+                      $result['user_id'] = $WP_user_id;
+                      // Newly created WP user needs some meta data values added
+                      //update_user_meta ( $WP_user_id, 'lrn_upon_id', $response['id'] );
+                      update_user_meta ( $WP_user_id, 'org_id', $org_id );
+                      update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+ 
+                      // Create enrollment
+                      if($course_id)
+                      {
+                          // Adding the course name in the $data
+                          $response = enrollUserInCourse($email, $data);    
+                          if($response['status'] == 1)
+                          {
+                              // success message is set above.
+                          }
+                          else
+                          {
+                              $result['success'] = false;
+                              $result['display_errors'] = true;
+                              $result['errors'] = "CreateUser_callback Error: " . $response['message'];
+                          }
+                      }
+                      else // user created successfully, but no course ID so can't enroll
+                      {
+                          $result['success'] = false;
+                          $result['display_errors'] = true;
+                          $result['errors'] = "createUser_callback Error: Created user but could not enroll in course because couldn't find the course name.";
+                      }   
                     }
                     else
                     {
-                        $result['success'] = false;
-                        $result['display_errors'] = true;
-                        $result['errors'] = "createUser_callback Error: Created user but could not enroll in course because couldn't find the course name.";
-                    }   
-               
+                      // error, couldnt insert the user
+                      $result['display_errors'] = 'Failed';
+                      $result['success'] = false;
+                      $result['errors'] = 'create staff account error: Sorry, we couldnt create the user. ';
+                    }
             }
             else 
             {
@@ -4232,7 +4210,6 @@ function createUser_callback()
                 $result['display_errors'] = true;
                 $result['errors'] = 'Wordpress error: User already exsists.';
             } 
-
         }
         // This variable will return to part-manage_staff_accounts.php $(document).bind('success.create_staff_account). Line 865
         echo json_encode( $result );
@@ -4246,8 +4223,8 @@ function createUser_callback()
 add_action('wp_ajax_sendMail', 'sendMail_callback'); 
 function sendMail_callback() 
 {
-    $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-    $target = filter_var($_REQUEST['target'],FILTER_SANITIZE_STRING);
+    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+    $target = filter_var($_REQUEST['target'], FILTER_SANITIZE_STRING);
 
     // Check permissions
     if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
@@ -4255,14 +4232,12 @@ function sendMail_callback()
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
         $result['errors'] = 'wp_ajax_sendMail error: Sorry, you do not have permisison to view this page. ';
-        return $result;
     }
-
     else if( $target == "create_account" )
     {
         $message = stripslashes($_REQUEST['composed_message']); // Remove backward slash from GET. This fixed the problem for sending message with colored fonts.
-        $subject = filter_var($_REQUEST['subject'],FILTER_SANITIZE_STRING);
-        $name = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
+        $subject = filter_var($_REQUEST['subject'], FILTER_SANITIZE_STRING);
+        $name = filter_var($_REQUEST['name'], FILTER_SANITIZE_STRING);
         $email = sanitize_email($_REQUEST['email']);
 
         $recepients = array(); // List of recepients
@@ -4297,8 +4272,9 @@ function sendMail_callback()
             $result['success'] = false;
             $result['errors'] = "ERROR in sendMail_callback: Could not email the user";
         }
-    echo json_encode($result);
     }
+
+    echo json_encode($result);
     wp_die();
 }
 
@@ -4317,7 +4293,6 @@ function sendMail ( $target = '', $recipients = '', $data )
      * org_id - The organization ID
      */
     
-    global $current_user;
     $current_user = wp_get_current_user();
     $sender_email = $current_user->user_email;
     $sender_name = $current_user->user_firstname . " " . $current_user->user_lastname;
@@ -4418,45 +4393,39 @@ function updateUser_callback()
     if( isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['lastname'] ) && isset($_REQUEST['email']) && isset ( $_REQUEST['old_email'] ))
     {
         $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
-        $first_name = str_replace($chars, "",(trim($_REQUEST['name'])));
-        $first_name  = filter_var($first_name,FILTER_SANITIZE_STRING);
+        $first_name = str_replace($chars, "", trim($_REQUEST['name']));
+        $first_name  = filter_var($first_name, FILTER_SANITIZE_STRING);
         
-        $last_name = str_replace($chars, "",(trim($_REQUEST['lastname'])));
-        $last_name  = filter_var($last_name,FILTER_SANITIZE_STRING);
+        $last_name = str_replace($chars, "", trim($_REQUEST['lastname']));
+        $last_name  = filter_var($last_name, FILTER_SANITIZE_STRING);
         
         $email = sanitize_email( $_REQUEST['email'] );
         $old_email = sanitize_email( $_REQUEST['old_email'] );
-        $user_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_STRING);
-        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_STRING);
+        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         $password = $_REQUEST['pw'];
         $data = compact("org_id", "first_name", "last_name", "email", "user_id", "password");
         $new_user = array();
-        $original_id=$user_id;
+        $original_id = $user_id;
         // Check permissions
         if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'update-staff_' . $user_id ) ) 
         {
             $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'updateUser_callback error: Sorry, your nonce did not verify.';
-            echo json_encode( $result );
-            wp_die();
         }
-        if($first_name==""){
+        else if($first_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'updateuser_callback Error: Please Enter a first name';
-            echo json_encode( $result );
-            wp_die();           
         }
-        if($last_name==""){
+        else if($last_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'updateuser_callback Error: Please Enter a last name';
-            echo json_encode( $result );
-            wp_die();           
         }
-        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+        else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
         {
             $result['display_errors'] = 'failed';
             $result['success'] = false;
@@ -4464,8 +4433,6 @@ function updateUser_callback()
         }
         else 
         {
-            
-
                 // update or insert new user in WP
                 $WP_password = $password ? wp_hash_password($password) : wp_generate_password(); // make sure i have a password for the user
                 $userdata = array (
@@ -4482,7 +4449,7 @@ function updateUser_callback()
                 if ($user_id) 
                 {
                     // check if email was updated because if it was, we need to update the user_login field.
-                    if ($email != $old_email)
+                    if ($email !== $old_email)
                     {
                         global $wpdb;
                         // cant use wp_insert_user because we need to updtate login as well and that function wont do it.
@@ -4521,7 +4488,6 @@ function updateUser_callback()
                     $result['success'] = true;
                     $result['message'] = 'User account information has been successfully updated.';
                     $result['staff_id']=$WP_user_id;
-                    //$result['staff_id']=$user_id->ID;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
                     $result['email']=$email;
@@ -4535,32 +4501,27 @@ function updateUser_callback()
                     $WP_user_id = wp_insert_user ($userdata);
 
                     // Newly created WP user needs some meta data values added
-                    update_user_meta ( $WP_user_id, 'lrn_upon_id', $response['id'] );
                     update_user_meta ( $WP_user_id, 'org_id', $org_id );
                     update_user_meta ( $WP_user_id, 'accepted_terms', '0');
-                    update_user_meta ( $WP_user_id, 'portal', $portal_subdomain );
 
                     // assume we are successful for now... check later.
                     $result['success'] = true;
                     $result['message'] = 'User account information has been successfully updated.';
                     $result['staff_id']=$WP_user_id;
-                    //$result['staff_id']=$user_id->ID;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
                     $result['name']=$first_name;
                     $result['lastname']=$last_name;
                 }   
-      
-            
-
+/* @ TODO remove if not using later on
             // check that previous attempts to update user did not fail. If not, check if we need to update portal name (camp name)
             if (isset($result['success']) && $result['success'])
             {
               // check if we need to update portal name
               if (isset($_REQUEST['portal_id']) && isset($_REQUEST['old_camp_name']) && isset($_REQUEST['camp_name']) && $_REQUEST['old_camp_name'] != $_REQUEST['camp_name'])
               {
-                $camp_name = filter_var($_REQUEST['camp_name'],FILTER_SANITIZE_STRING);
-                $portal_id = filter_var($_REQUEST['portal_id'],FILTER_SANITIZE_NUMBER_INT); // LU Portal ID
+                $camp_name = filter_var($_REQUEST['camp_name'], FILTER_SANITIZE_STRING);
+                $portal_id = filter_var($_REQUEST['portal_id'], FILTER_SANITIZE_NUMBER_INT); // LU Portal ID
                 // update the portal name on LU
                 $portal_data = array('title' => $camp_name);
 
@@ -4587,6 +4548,7 @@ function updateUser_callback()
 
               }
             }
+*/            
         }
     }
     else
@@ -4608,10 +4570,9 @@ function deleteStaffAccount_callback () {
     if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['staff_id'] ) && isset ( $_REQUEST['email'] ) )
     {
         // This form is generated in getCourseForm function with $form_name = change_course_status_form from this file.
-        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); // The Org ID
-        $staff_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_NUMBER_INT); // The staff account ID
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); // The Org ID
+        $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT); // The staff account ID
         $email = sanitize_email( $_REQUEST['email'] ); // wordpress e-mail address
-        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
         $data = compact("org_id");
 
         // Check permissions
@@ -4630,7 +4591,6 @@ function deleteStaffAccount_callback () {
         else
         {
             // Delete the staff account from LU
-           
                 $user = get_user_by( 'email', $email ); // The user in WP
                 if($user)
                 {
@@ -4656,7 +4616,6 @@ function deleteStaffAccount_callback () {
                     $result['success'] = false;
                     $result['errors'] = 'deleteStaffAccount_callback ERROR: Could not find the WP user account.';
                 }
-
         }
     }
     else
@@ -4667,7 +4626,6 @@ function deleteStaffAccount_callback () {
     }
     echo json_encode($result);
     wp_die();
-
 }
 
 
@@ -4682,13 +4640,13 @@ function getCourseForm_callback ( ) {
     if(isset($_REQUEST['org_id']) && isset($_REQUEST['form_name']) )
     {
         global $current_user;
-        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-        $form_name = filter_var($_REQUEST['form_name'],FILTER_SANITIZE_STRING);
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $form_name = filter_var($_REQUEST['form_name'], FILTER_SANITIZE_STRING);
         $user_id = $current_user->ID;
         error_log($form_name);
         if($form_name == "create_course_group")
         {
-            $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+            $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
             ob_start();
         ?>
             <div class="title">
@@ -4758,7 +4716,7 @@ function getCourseForm_callback ( ) {
 
         else if($form_name == "create_uber_camp_director")
         {
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
             $data = compact("org_id");
             ob_start();
         ?>
@@ -4831,9 +4789,9 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "edit_course_group")
         {
-            $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-            $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+            $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+            $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
             $data = compact("org_id");
             //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
             global $wpdb;
@@ -4906,9 +4864,9 @@ function getCourseForm_callback ( ) {
 
         else if($form_name == "delete_course")
         {
-            $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
-            $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+            $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+            $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
             ob_start();
         ?>
             <div class="title">
@@ -4954,7 +4912,7 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "manage_camp_course")
         {
-          $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+          $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The course ID
           $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); // The organization ID
           $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
           $umbrellaCamps = (current_user_can('is_umbrella_manager')) ? getUmbrellaCamps($org_id, 'regional_umbrella_group_id') : getUmbrellaCamps($org_id); // Lists of umbrella camps
@@ -5073,9 +5031,9 @@ function getCourseForm_callback ( ) {
         else if($form_name == "add_video_group")
         {
             global $wpdb;
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-            $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING);
-            $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+            $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
+            $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             $course_modules = getModulesInCourse($course_id); // all the modules in the specified course
             
@@ -5128,7 +5086,7 @@ function getCourseForm_callback ( ) {
             //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
             $course_data=getCourse($course_id);
             $due_date =$course_data['due_date_after_enrollment']!==NULL? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])):NULL; // the due date of the specified course
-            $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
+            $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
             $videoCount = count($course_modules_titles);
             $quizCount = count($course_modules_titles);
             ob_start();
@@ -5509,8 +5467,8 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "edit_staff_account")
         {
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-            $staff_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_NUMBER_INT);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+            $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id );
 //            $response = getUser($portal_subdomain, $staff_id, $data);
 //            if ($response['status'] == 1)
@@ -5602,14 +5560,14 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "create_staff_account")
         {   
-            $subscription_id=filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);            
+            $subscription_id=filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);            
             $data = array( "org_id" => $org_id );
             $courses_in_portal = getCoursesById($org_id,$subscription_id); // get all the published courses in the portal
             $course_id = 0; // The course ID
             if(isset($_REQUEST['group_id']))
             {
-                $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_STRING);
+                $course_id = filter_var($_REQUEST['group_id'], FILTER_SANITIZE_STRING);
             }
             if(org_has_maxed_staff($org_id, $subscription_id) ){
                                     ob_start();
@@ -5783,10 +5741,10 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "send_message")
         {        
-            $name = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
+            $name = filter_var($_REQUEST['name'], FILTER_SANITIZE_STRING);
             $password = $_REQUEST['password'];    
             $email = sanitize_email( $_REQUEST['email'] );
-            $target = filter_var($_REQUEST['target'],FILTER_SANITIZE_STRING);
+            $target = filter_var($_REQUEST['target'], FILTER_SANITIZE_STRING);
             $data = array( "org_id" => $org_id );
             global $current_user;
             wp_get_current_user();
@@ -5871,10 +5829,10 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "add_staff_to_group")
         {        
-            $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
-            $course_name = filter_var($_REQUEST['group_name'],FILTER_SANITIZE_STRING);
-            $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); 
-            $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); 
+            $course_id = filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
+            $course_name = filter_var($_REQUEST['group_name'], FILTER_SANITIZE_STRING);
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); 
+            $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); 
             $users_info = get_users( array('meta_key' => 'org_id',
                                            'meta_value' => $org_id,
                                            'role' => 'student'
@@ -6026,10 +5984,10 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "change_course_status_form")
         {        
-            $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
-            $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-            $status = filter_var($_REQUEST['status'],FILTER_SANITIZE_STRING);
+            $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+            $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+            $status = filter_var($_REQUEST['status'], FILTER_SANITIZE_STRING);
             ob_start();
         ?>
             <div class="title">
@@ -6065,8 +6023,8 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "invite_staff_register")
         {        
-            $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-            $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+            $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
 
             // Check if the user has enough credits to add more staff members
             //if(org_has_maxed_staff($org_id, $subscription_id) )
@@ -6186,10 +6144,10 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "use_invitation_email")
         {        
-            $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT);
-            $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
-            $status = filter_var($_REQUEST['status'],FILTER_SANITIZE_STRING);
+            $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+            $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+            $status = filter_var($_REQUEST['status'], FILTER_SANITIZE_STRING);
             ob_start();
         ?>
             <div class="title">
@@ -6260,9 +6218,9 @@ jane@email.com
         }
         else if($form_name == "delete_staff_account")
         {        
-            $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
-            $staff_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_NUMBER_INT);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+            $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT);
+            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
             $email =  sanitize_email( $_REQUEST['email'] );
             ob_start();
         ?>
@@ -6300,9 +6258,9 @@ jane@email.com
         }
         else if($form_name == "edit_questionnaire_conditions")
         {
-            $question_number = filter_var($_REQUEST['question_number'],FILTER_SANITIZE_NUMBER_INT); //question id
-            $answer_number = filter_var($_REQUEST['answer_number'],FILTER_SANITIZE_NUMBER_INT);     //answer number
-            $library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);           //library id
+            $question_number = filter_var($_REQUEST['question_number'], FILTER_SANITIZE_NUMBER_INT); //question id
+            $answer_number = filter_var($_REQUEST['answer_number'], FILTER_SANITIZE_NUMBER_INT);     //answer number
+            $library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT);           //library id
             $all_videos = grabVideos();                                                             //list of all exisiting videos
 
             //List of all courses
@@ -6690,8 +6648,8 @@ jane@email.com
         }
         else if($form_name == "delete_question_questionnaire")
         {
-            $question_number = filter_var($_REQUEST['question_number'],FILTER_SANITIZE_NUMBER_INT); //question id
-            $library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);           //library id
+            $question_number = filter_var($_REQUEST['question_number'], FILTER_SANITIZE_NUMBER_INT); //question id
+            $library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT);           //library id
             ob_start();
         ?>
             <div class="title">
@@ -6758,7 +6716,7 @@ jane@email.com
         }
         else if($form_name == "add_question_questionnaire")
         {
-            $library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);           //library id
+            $library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT);           //library id
             ob_start();
         ?>
             <div class="title">

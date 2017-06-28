@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Sixteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-05 08:38:05+0000\n"
+"PO-Revision-Date: 2017-06-25 14:23:48+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -98,7 +98,7 @@ msgstr "Autor:"
 
 #: single.php:38
 msgid "Previous post:"
-msgstr "Articolul anterior:"
+msgstr "Articol anterior:"
 
 #: single.php:37
 msgid "Previous"
@@ -106,7 +106,7 @@ msgstr "Precedent"
 
 #: single.php:35
 msgid "Next post:"
-msgstr "Articolul următor:"
+msgstr "Articol următor:"
 
 #: single.php:34
 msgid "Next"

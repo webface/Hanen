@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Fifteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-05 08:30:57+0000\n"
+"PO-Revision-Date: 2017-06-25 14:28:26+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,7 +26,7 @@ msgstr "Lasă un comentariu<span class=\"screen-reader-text\"> pentru %s</span>"
 
 #: single.php:37
 msgid "Previous post:"
-msgstr "Articolul anterior:"
+msgstr "Articol anterior:"
 
 #: single.php:36
 msgid "Previous"
@@ -34,7 +34,7 @@ msgstr "Precedent"
 
 #: single.php:34
 msgid "Next post:"
-msgstr "Articolul următor:"
+msgstr "Articol următor:"
 
 #: single.php:33
 msgid "Next"
@@ -220,7 +220,7 @@ msgstr "Meniu principal"
 msgid "Proudly powered by %s"
 msgstr "Propulsat de %s"
 
-#. #-#-#-#-#  twentyfifteen.pot (Twenty Fifteen 1.7)  #-#-#-#-#
+#. #-#-#-#-#  twentyfifteen.pot (Twenty Fifteen 1.8)  #-#-#-#-#
 #. Author URI of the plugin/theme
 #: footer.php:25
 msgid "https://wordpress.org/"

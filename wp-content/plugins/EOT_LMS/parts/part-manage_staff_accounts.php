@@ -7,17 +7,11 @@
 
   $user_id = $current_user->ID;                  // Wordpress user ID
   $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
-  $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
   $data = compact ("org_id", "user_id");
-  $users = array(); // will store the users of our portal
-  $response = getEotUsers($org_id);
-  if (isset($response['status']) && $response['status'])
-  {
-     // filter out and return an array of learner user types.
-    $users = filterUsers($response['users']);
-  }
-
+  $users = array(); // will store the users of our org
+  $users = getEotUsers($org_id);
   $admin_ajax_url = admin_url('admin-ajax.php');
+
   if( isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'uploadedspreadsheet' )
   {
 ?>
@@ -98,10 +92,10 @@
           $email = $user['email'];
           $staffTableObj->rows[] = array($user['first_name'] . " " . $user['last_name'], // First and last name
                                           $email, // The email address
-                                          '<a href="'. $admin_ajax_url .'?action=getCourseForm&form_name=edit_staff_account&amp;org_id='. $org_id .'&amp;staff_id='.$staff_id.'&amp;portal_subdomain='.$org_subdomain.'" rel="facebox">
+                                          '<a href="'. $admin_ajax_url .'?action=getCourseForm&form_name=edit_staff_account&amp;org_id='. $org_id .'&amp;staff_id='.$staff_id.'" rel="facebox">
                                               <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Edit the staff account details.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i>
                                             </a>&nbsp;&nbsp;&nbsp;
-                                            <a href="'.$admin_ajax_url.'?action=getCourseForm&form_name=delete_staff_account&amp;org_id='.$org_id.'&amp;staff_id='.$staff_id.'&amp;portal_subdomain='.$org_subdomain.'&amp;email='.$email.'" rel="facebox">
+                                            <a href="'.$admin_ajax_url.'?action=getCourseForm&form_name=delete_staff_account&amp;org_id='.$org_id.'&amp;staff_id='.$staff_id.'&amp;email='.$email.'" rel="facebox">
                                               <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Delete the staff account.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i>
                                             </a>' // User options
                                         );
@@ -175,7 +169,7 @@ static $i = 0;
     })(jQuery);
   </script>
 <div class="bottom_buttons">
-  <a class="btn" name="create_staff_account" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_staff_account&amp;org_id=<?= $org_id ?>&amp;portal_subdomain=<?= $org_subdomain ?>&subscription_id=<?= $_REQUEST['subscription_id']?>" rel="facebox">
+  <a class="btn" name="create_staff_account" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_staff_account&amp;org_id=<?= $org_id ?>&subscription_id=<?= $_REQUEST['subscription_id']?>" rel="facebox">
     Create Staff Account
   </a>
 
@@ -256,10 +250,10 @@ static $i = 0;
         // Create a new row for the newly created user.
         staffTable.row.add([data.name + " " + data.lastname, // First and last name
                   data.email, // Email Address
-                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'" email="'+data.email+'" rel="facebox">\
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+"&email="'+data.email+'" rel="facebox">\
                     <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
                   </a>&nbsp;&nbsp;&nbsp;\
-                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.staff_id+'&amp;portal_subdomain='+data.org_subdomain+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
+                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.staff_id+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
                     <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
                   </a>\
                       ' // User options
@@ -335,10 +329,10 @@ static $i = 0;
         // Create the row for the updated information.
         staffTable.row.add([data.first_name + " " + data.last_name, // First and last name
                   data.email, // Email Address
-                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'" email="'+data.email+'" rel="facebox">\
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'" email="'+data.email+'" rel="facebox">\
                     <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
                   </a>&nbsp;&nbsp;&nbsp;\
-                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
+                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
                     <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
                   </a>\
                       ' // User options

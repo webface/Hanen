@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-15 12:19:22+0000\n"
+"PO-Revision-Date: 2017-06-22 23:32:30+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -175,7 +175,7 @@ msgstr "Asiste al próximo evento cerca de %s."
 #. instead of the English name if possible.
 #: wp-admin/includes/dashboard.php:1182
 msgid "Cincinnati"
-msgstr "Sevilla"
+msgstr "Madrid"
 
 #: wp-admin/includes/dashboard.php:1170
 msgid "City:"
