@@ -652,7 +652,7 @@
               $(this).replaceWith(loading_img);
               var btn = $(this);
 
-              $.getJSON( ajax_object.ajax_url + '?action='+task+'&group_id='+group_id+'&email='+encodeURIComponent($(this).attr("email"))+'&org_id='+$(this).attr("org_id")+'&subscription_id='+$(this).attr("subscription_id")+'&user_id='+$(this).attr("user_id")+'&course_name='+encodeURIComponent($(this).attr("course_name"))+'&portal_subdomain='+$(this).attr("portal_subdomain")+'&nonce='+$(this).attr("nonce")+'&enrollment_id='+enrollment_id,
+              $.getJSON( ajax_object.ajax_url + '?action='+task+'&group_id='+group_id+'&email='+encodeURIComponent($(this).attr("email"))+'&org_id='+$(this).attr("org_id")+'&subscription_id='+$(this).attr("subscription_id")+'&user_id='+$(this).attr("user_id")+'&course_name='+encodeURIComponent($(this).attr("course_name"))+'&portal_subdomain='+$(this).attr("portal_subdomain")+'&nonce='+$(this).attr("nonce")+'&enrollment_id='+enrollment_id+'&course_id='+group_id,
                 function (json)
                 {
                 if(json.success)
