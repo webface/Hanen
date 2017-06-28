@@ -10,12 +10,11 @@
   $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
   $data = compact ("org_id", "user_id");
   $users = array(); // will store the users of our portal
-  //$response = getUsers($org_subdomain, $data);
-  $response=  getEotUsers($org_id);
-
+  $response = getEotUsers($org_id);
   if (isset($response['status']) && $response['status'])
   {
-    $users = $response['users'];
+     // filter out and return an array of learner user types.
+    $users = filterUsers($response['users']);
   }
 
   $admin_ajax_url = admin_url('admin-ajax.php');
@@ -35,7 +34,13 @@
               }
               else
               {
-                echo '<br><b>Note:</b> Staff were NOT sent their login credentials. You will need to inform them of their password yourself.';
+                $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+                echo '<br><b>Note:</b> Some staff were NOT sent their login credentials. You can use the <a href="/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">mass mail</a> function to send staff their password.';
+              }
+
+              if (isset($_REQUEST['import_status']) && !empty($_REQUEST['import_status']))
+              {
+                echo "<p> Error Report:<br><br>" . $_REQUEST['import_status'] . "<p>";
               }
             ?>
             </div>
@@ -60,7 +65,9 @@
   if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
   {
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
-
+    $subscription = getSubscriptions($subscription_id,0,1); // get the current subscription
+    $library = getLibrary($subscription->library_id); // The library information base on the user current subscription
+    $library_name = $library->name;
     if(isset($true_subscription['status']) && $true_subscription['status'])
     {
       if(current_user_can( "is_director" ))
@@ -68,96 +75,107 @@
 ?>
 <h1 class="article_page_title">Manage Staff Accounts</h1>
 <div style="float:left;" id="staff_list" class="holder osX" org_id="<?= $org_id ?>" subscription_id="">      
+<?php
+  // Create datatable for staff lists.
+  $staffTableObj = new stdClass();
+  $staffTableObj->rows = array();
+  $staffTableObj->headers = array(
+    'Name' => 'name',
+    'E-mail Address' => 'e-mail',
+    'Action' => 'center'
+  );
+?>
+<br>
+<?php 
+      /*
+       *  Check if there are any learners registered in this organization. 
+       */
+      if( count($users) > 0 )
+      {
+        foreach($users as $user) 
+        { 
+          $staff_id = $user['id'];
+          $email = $user['email'];
+          $staffTableObj->rows[] = array($user['first_name'] . " " . $user['last_name'], // First and last name
+                                          $email, // The email address
+                                          '<a href="'. $admin_ajax_url .'?action=getCourseForm&form_name=edit_staff_account&amp;org_id='. $org_id .'&amp;staff_id='.$staff_id.'&amp;portal_subdomain='.$org_subdomain.'" rel="facebox">
+                                              <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Edit the staff account details.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i>
+                                            </a>&nbsp;&nbsp;&nbsp;
+                                            <a href="'.$admin_ajax_url.'?action=getCourseForm&form_name=delete_staff_account&amp;org_id='.$org_id.'&amp;staff_id='.$staff_id.'&amp;portal_subdomain='.$org_subdomain.'&amp;email='.$email.'" rel="facebox">
+                                              <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Delete the staff account.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i>
+                                            </a>' // User options
+                                        );
+?> 
+
+<?php 
+        }
+      }
+      else
+      {
+        // No staff. Display message to create a staff account.
+        echo '<div id="noStaffAccount" style="width:100%;text-align:center;font-size:140%;">Create a Staff Account...</div>';
+      }
+?>
 <div style="width:625px;" class="tableheadboxcontainer">
   <div class="tablehead-tr">
     <div class="tablehead-tl">
       <div style="padding:7px;margin-left:5px;height:20px">
-        <h3 style="float:left;" class="tablehead-title"> Leadership Essentials <?= SUBSCRIPTION_YEAR ?> Staff Listing</h3><div style="clear:both;"></div>
+        <h3 style="float:left;" class="tablehead-title"> <?= $library_name . " " . SUBSCRIPTION_YEAR ?> Staff Listing</h3><div style="clear:both;"></div>
       </div>  
     </div>
   </div>
 </div>
-<div class="jScrollPaneContainer jScrollPaneScrollable" tabindex="0" style="height: 425px; width: 625px;">
-  <div id="staff_list_pane" class="scroll-pane" style="width: 610px; overflow: visible; height: auto; padding-right: 0px; position: absolute; top: -575.884px;">
-    <div id="staff_list_wrapper" style="width:100%;">   
-      <?php 
-        $user_learner = 0; // Number of learners.
-        /*
-         *  Check if there are any learners registered in this organization. 
-         */
-        foreach($users as $user) 
-        {
-          if($user['user_type'] == 'learner')
-            $user_learner++;
-            continue;
-        }
-        /* 
-         * Check if there are any learners.
-         */
-        if($user_learner > 0)
-        {
-          foreach($users as $user) 
-          {
-            if($user['user_type'] == 'admin')
-              continue;
-            
-            $staff_id = $user['id'];
-            $email = $user['email'];
-        ?> 
-
-            <div class="staff_list_table_row" user_id="<?= $staff_id ?>">
-              <div class="staff_list_clickable_area">
-                <div>
-                  <span class="staff_name"><?= $user['first_name'] ?> <?= $user['last_name'] ?> </span>/ <span class="staff_email"><?= $user['email'] ?></span>               
-                </div>         
-              </div>
-              <div class="staff_list_edit_row" style="left: 575px;">
-                <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=edit_staff_account&amp;org_id=<?= $org_id ?>&amp;staff_id=<?= $staff_id ?>&amp;portal_subdomain=<?= $org_subdomain ?>" rel="facebox">
-                  <img <img src="<?= get_template_directory_uri() . "/images/icon-edit.gif"?>" title="" class="tooltip" style="margin-bottom:2px;" onmouseover="Tip('Edit the staff account details.', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
-                </a>
-              </div>
-              <div class="staff_list_delete_row" style="left: 590px;">
-                <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id=<?= $org_id ?>&amp;staff_id=<?= $staff_id ?>&amp;portal_subdomain=<?= $org_subdomain ?>&amp;email=<?= $email ?>" rel="facebox">
-                        <img src="<?= get_template_directory_uri() . "/images/delete.gif"?>" title="" class="tooltip" style="margin-bottom:2px;" onmouseover="Tip('Delete the staff account.', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
-                      </a>
-                </div>
-              </div>
-
-        <?php 
+<?php
+static $i = 0;
+  $i++;
+  $id = (isset($staffTableObj->id) ? $staffTableObj->$id : "DataTable_$i");
+?>
+  <div class="smoothness">
+    <table class="display" id="<?=$id?>" style="width:100%"></table>
+  </div>
+  <script type="text/javascript">
+    var dataSet_<?=$id?> = <?=str_replace(array('(',')'), array('&#40;','&#41;'), json_encode($staffTableObj->rows))?>;
+    $ = jQuery;
+    (function($){
+      $(function(){
+        $('#<?=$id?>').dataTable( {
+          "iDisplayLength": 25,
+          "aaData": dataSet_<?=$id?>,
+          "bJQueryUI": true,
+          "sPaginationType": "full_numbers",
+          "bAutoWidth": false,
+          "aoColumns": [
+            <?php
+              $columns = array();
+              foreach($staffTableObj->headers as $header => $class) {
+                if (is_array($class)) {
+                  $prop = array();
+                  $prop[] = '"sTitle": "'.addslashes($header).'"';
+                  foreach($class as $field => $val) {
+                    $prop[] .= "\"$field\": \"$val\"";
+                  }
+                  $columns[]= "{ ".implode($prop,',')." }";
+                }
+                else
+                  $columns[]= '{ "sTitle": "'.addslashes($header).'", "sClass": "'.$class.'" }';
+              }
+              echo implode($columns,',');
+            ?>
+          ],
+          fnInitComplete: function(){
+            $.animateProgressBars($('#<?=$id?> .ui-progressbar'));
+          },
+          // bind actions to the edit, delete and click events for newly created account and modified
+          "drawCallback": function( settings ) {
+              $('a[rel*=facebox] > i.fa-pencil, a[rel*=facebox] > i.fa-trash').parent().off();
+              $('a[rel*=facebox] > i.fa-pencil, a[rel*=facebox] >  i.fa-trash').parent().facebox();
           }
-        }
-        else
-        {
-          echo '<div id="noStaffAccount" style="width:100%;text-align:center;padding-top:100px;font-size:140%;">Create a Staff Account...</div>';
-        }
-      ?>
-    </div>
-  </div>
-  <div class="jScrollCap jScrollCapTop" style="height: 0px;">
-  </div>
-  <div class="jScrollPaneTrack" style="width: 15px; height: 393px; top: 16px;">
-    <div class="jScrollPaneDrag" style="width: 15px; height: 104.718px; top: 141.756px;">
-      <div class="jScrollPaneDragTop" style="width: 15px;">
-        
-      </div>
-      <div class="jScrollPaneDragBottom" style="width: 15px;">
-          
-      </div>
-    </div>
-  </div>
-  <div class="jScrollCap jScrollCapBottom" style="height: 0px;">
-  </div>
-  <a href="javascript:;" class="jScrollArrowUp" tabindex="-1" style="width: 15px; top: 0px;">Scroll up</a>
-  <a href="javascript:;" class="jScrollArrowDown" tabindex="-1" style="width: 15px; bottom: 0px;">Scroll down</a>
-</div>
-<div class="listing-footercontainer">
-  <div class="listing-footer-bl">
-    <div class="listing-footer-br">&nbsp;
-    </div>
-  </div>
-</div>
+        } );
+      });
+    })(jQuery);
+  </script>
 <div class="bottom_buttons">
-  <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_staff_account&amp;org_id=<?= $org_id ?>&amp;portal_subdomain=<?= $org_subdomain ?>&subscription_id=<?= $subscription_id?>" rel="facebox">
+  <a class="btn" name="create_staff_account" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_staff_account&amp;org_id=<?= $org_id ?>&amp;portal_subdomain=<?= $org_subdomain ?>&subscription_id=<?= $_REQUEST['subscription_id']?>" rel="facebox">
     Create Staff Account
   </a>
 
@@ -174,20 +192,6 @@
   -->  
 </div>
 </div>
-
-
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.min.js'?>"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery-ui.min.js'?>"></script>
-<link type="text/css" href="<?= get_template_directory_uri() . "/css/jqueryui/jquery-ui-1.8.22.custom.css"?>" rel="stylesheet" />
-<link type="text/css" href="<?= get_template_directory_uri() . "/css/jqueryui/style.css"?>" rel="stylesheet" />
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.dataTables.js'?>"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.eotprogressbar.js'?>"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.eotdatatables.js'?>"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/target2.js'?>"></script>
-<link href="<?= get_template_directory_uri() . "/css/facebox.css"?>" media="screen" rel="stylesheet" type="text/css"/>
-<script src="<?= get_template_directory_uri() . '/js/facebox.js'?>" type="text/javascript"></script>
-<script src="<?= get_template_directory_uri() . '/js/flowplayer.min.js'?>"></script>
-
 <base href="http://www.expertonlinetraining.com/my-dashboard.html" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="robots" content="index, follow" />
@@ -196,7 +200,6 @@
 <meta name="generator" content="ExpertOnlineTraining" />
 <title>Manage Staff Accounts</title>
 <link href="https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
 <script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jquery.mousewheel.js"?>"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jScrollPane.js"?>"></script> 
 <link rel="stylesheet" type="text/css" media="all" href="<?= get_template_directory_uri() . "/css/jScrollPane.css"?>" /> 
@@ -204,11 +207,12 @@
 <script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jquery.tinymce.js"?>"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js'?>"></script> 
 <script type="text/javascript">
+
 (function ($) 
 { 
   $(function()
   {
-      $('a[rel*=facebox]').facebox();
+      $('a[class="btn"][name="create_staff_account"]').facebox(); // Bind facebox to create_staff_account button.
       $('#debugger').click(
       function()
       {
@@ -247,65 +251,19 @@
           if(typeof data.close == "undefined") 
             $(document).trigger('close.facebox')
         }
-        $( "#noStaffAccount" ).remove();
-        //add row to the current list in the right spot
-        var element_list = $('#staff_list .staff_list_table_row');
-        var found = false;
-        var i=0;              
-        var index = 0;
-        // Create a new DIV for the newly created user.
-        var div = '<div class="staff_list_table_row" user_id="'+data.user_id+'">\
-            <div class="staff_list_clickable_area">\
-              <div>\
-                <span class="staff_name">'+data.name+' '+data.lastname+' </span>/ <span class="staff_email">'+data.email+'</span>\
-              </div>\
-          </div>\
-          <div class="staff_list_edit_row" style="left: 590px;">\
-              <a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'" rel="facebox">\
-                <img src="<?= get_template_directory_uri() . "/images/icon-edit.gif"?>" title="" class="tooltip" style="margin-bottom:2px;" onmouseover="Tip("Edit the staff account details.", FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, "#E5E9ED", BORDERCOLOR, "#A1B0C7", PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, "#F1F3F5")" onmouseout="UnTip()">\
-              </a>\
-          </div>\
-          <div class="staff_list_delete_row" style="left: 605px;">\
-              <a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'&amp;email='+data.email+'" rel="facebox">\
-                    <img src="<?= get_template_directory_uri() . "/images/delete.gif"?>" title="" class="tooltip" style="margin-bottom:2px;" onmouseover="Tip("Delete the staff account.", FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, "#E5E9ED", BORDERCOLOR, "#A1B0C7", PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, "#F1F3F5")" onmouseout="UnTip()">\
-                </a>\
-          </div>\
-        </div>';
-        for(i=0;i<element_list.length&&!found;i++)
-        {
-          if ((data.name+' '+data.lastname).toLowerCase()<=(element_list.eq(i).find('span.staff_name').html()).toLowerCase())
-          {  
-        $(div).insertBefore(element_list.eq(i));
-            found = true;
-            index = i;
-          }
-          //if we've reached the last element on the list and still not found, append it on the end
-          if(!found&&i==element_list.length-1)
-          {
-            $(div).insertAfter(element_list.eq(i));
-            index = i+1;
-          }
-        }
-        //if there are no staff accounts created yet
-        if(element_list.length==0)
-        {
-          //$('#staff_list:nth-child(1)').html(div);
-          $('#staff_list_wrapper').html(div);
-        }
-        //bind actions to the edit, delete and click events
-        $('div.staff_list_table_row[user_id = '+data.user_id+']')
-          .find('a[rel*=facebox]').facebox().end()
-          .find('.staff_list_clickable_area').click(
-            function()
-            {
-              $(document).trigger('clicked.staff_list_clickable_area');
-            }
-          );
-        $('div.staff_list_table_row[user_id = '+data.user_id+']')
-        //resize scrollbar
-        $("#staff_list_pane").jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
-        //scroll to the new created staff
-        $("#staff_list_pane")[0].scrollTo($('#staff_list .staff_list_table_row').eq(index).position().top);
+        $( "#noStaffAccount" ).remove(); // Remove message no staff account
+        var staffTable = $('#DataTable_1').DataTable(); // The table for manage staff accounts listing.
+        // Create a new row for the newly created user.
+        staffTable.row.add([data.name + " " + data.lastname, // First and last name
+                  data.email, // Email Address
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'" email="'+data.email+'" rel="facebox">\
+                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
+                  </a>&nbsp;&nbsp;&nbsp;\
+                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.staff_id+'&amp;portal_subdomain='+data.org_subdomain+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
+                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
+                  </a>\
+                      ' // User options
+        ]).draw( false );
       });
     /******************************************************************************************
       * Binds a function to the scroll pane to be executed when scrollpane is init'd and scrollable
@@ -354,23 +312,10 @@
     $(document).bind('success.delete_staff_account',
       function(event,data)
       {
+        var staffTable = $('#DataTable_1').DataTable();
+        staffTable.row( $("td.e-mail:contains('"+data.email+"')").parents('tr') ).remove().draw();
         //close facebox
         $(document).trigger('close.facebox') 
-        //Hide the deleted row
-        $('.staff_list_table_row[user_id = '+data.user_id+']')
-        .hide('slow', 
-          function()
-          {
-            $("#staff_list_pane").jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
-            $(this).remove(); // Remove the DIV
-          }
-        )
-        var element_list = $('#staff_list .staff_list_table_row');  
-        //if there are no staff accounts display a Create A Staff Account Message
-        if(element_list.length==1)
-        {
-          $('#staff_list_wrapper').html('<div id="noStaffAccount" style="width:100%;text-align:center;padding-top:100px;font-size:140%;">Create a Staff Account...</div>');
-        }
       }
     );          
     /******************************************************************************************
@@ -380,41 +325,24 @@
     $(document).bind('success.edit_staff_account',
       function(event,data)
       {
-          console.log(data);
         //close facebox
+        console.log(data);
         jQuery(document).trigger('close.facebox');
-        location.reload();
-        return;
-        var element_list = $('#staff_list .staff_list_table_row');            
-        var found = false;
-        var i=0;
-        var div = $('div.staff_list_table_row[user_id = '+data.staff_id+']');
-        var index = 0;
-        //compare new name to names in the list and move it to new location
-        for(i=0;i<element_list.length&&!found;i++)
-        {
-          if (!found&&((data.name+' '+data.lastname).toLowerCase()<=(element_list.eq(i).find('.staff_name').html()).toLowerCase()))
-          {  
-            found = true;
-            index = i;
-            if(div.attr("user_id")!=element_list.eq(i).attr("user_id"))
-              div.insertBefore(element_list.eq(i));
-          }
-          if(!found&&i==element_list.length-1)
-          {
-            index = i;
-            if(div.attr("user_id")!=element_list.eq(i).attr("user_id"))
-              div.insertAfter(element_list.eq(i));
-          }
-        }
-        div.find(".staff_name").html(data.name+' '+data.lastname).end()
-        if ($("#staff_and_assignment_list").attr("user_id") == data.staff_id)
-        {
-          $("#staff_and_assignment_list").find(".tablehead-title").html(data.name+' '+data.lastname);
-        }
-        div.find(".staff_email").html(data.staff_email);
-        //scroll to new location
-        $('#staff_list_pane')[0].scrollTo(div.position().top);
+        
+        var staffTable = $('#DataTable_1').DataTable(); // Staff Listing Table
+        staffTable.row( $("td.e-mail:contains('"+data.old_email+"')").parents('tr') ).remove().draw(); // Remove the old email
+
+        // Create the row for the updated information.
+        staffTable.row.add([data.first_name + " " + data.last_name, // First and last name
+                  data.email, // Email Address
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'" email="'+data.email+'" rel="facebox">\
+                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
+                  </a>&nbsp;&nbsp;&nbsp;\
+                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;portal_subdomain='+data.portal_subdomain+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
+                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
+                  </a>\
+                      ' // User options
+        ]).draw( false );
       }
     );
     /******************************************************************************************

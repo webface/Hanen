@@ -3838,12 +3838,16 @@ function createCourse_callback ( )
             $result['display_errors'] = 'failed';
             $result['success'] = false;
             $result['errors'] = 'createCourse_callback error: Sorry, your nonce did not verify.';
+            echo json_encode($result);
+            wp_die();
         }
         else if($course_name=="")
         {
-            $result['display_errors'] = 'failed';
+            $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'createCourse_callback error: Please Enter the <b>Name</b> of the course.';
+            echo json_encode($result);
+            wp_die();
         }
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
         {
@@ -4135,21 +4139,21 @@ function createUser_callback()
         // Check permissions
         if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'create-staff_' . $org_id ) ) 
         {
-            $result['display_errors'] = 'success';
+            $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'create staff account error: Sorry, your nonce did not verify.';
             echo json_encode( $result );
             wp_die();
         }
         if($first_name==""){
-            $result['display_errors'] = 'success';
+            $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'create staff account error: Please Enter a first name';
             echo json_encode( $result );
             wp_die();           
         }
         if($last_name==""){
-            $result['display_errors'] = 'success';
+            $result['display_errors'] = true;
             $result['success'] = false;
             $result['errors'] = 'create staff account error: Please Enter a last name';
             echo json_encode( $result );
@@ -4404,6 +4408,269 @@ function massMail ( $sender_email = '', $sender_name = '', $recipients = array()
         return array('status' => 0, 'message' => 'massMail error: Your messsage failed to send.');
     }
 }
+
+/**
+ *   Updating user info.
+ */  
+add_action('wp_ajax_updateUser', 'updateUser_callback'); //handles actions and triggered when the user is logged in
+function updateUser_callback() 
+{
+    if( isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['lastname'] ) && isset($_REQUEST['email']) && isset ( $_REQUEST['old_email'] ))
+    {
+        $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
+        $first_name = str_replace($chars, "",(trim($_REQUEST['name'])));
+        $first_name  = filter_var($first_name,FILTER_SANITIZE_STRING);
+        
+        $last_name = str_replace($chars, "",(trim($_REQUEST['lastname'])));
+        $last_name  = filter_var($last_name,FILTER_SANITIZE_STRING);
+        
+        $email = sanitize_email( $_REQUEST['email'] );
+        $old_email = sanitize_email( $_REQUEST['old_email'] );
+        $user_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_STRING);
+        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $password = $_REQUEST['pw'];
+        $data = compact("org_id", "first_name", "last_name", "email", "user_id", "password");
+        $new_user = array();
+        $original_id=$user_id;
+        // Check permissions
+        if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'update-staff_' . $user_id ) ) 
+        {
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = 'updateUser_callback error: Sorry, your nonce did not verify.';
+            echo json_encode( $result );
+            wp_die();
+        }
+        if($first_name==""){
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = 'updateuser_callback Error: Please Enter a first name';
+            echo json_encode( $result );
+            wp_die();           
+        }
+        if($last_name==""){
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = 'updateuser_callback Error: Please Enter a last name';
+            echo json_encode( $result );
+            wp_die();           
+        }
+        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'updateuser_callback Error: Sorry, you do not have permisison to view this page.';
+        }
+        else 
+        {
+            
+
+                // update or insert new user in WP
+                $WP_password = $password ? wp_hash_password($password) : wp_generate_password(); // make sure i have a password for the user
+                $userdata = array (
+                    'user_login' => $email,
+                    'user_pass' => $WP_password,
+                    'role' => 'student',
+                    'user_email' => $email,
+                    'first_name' => $first_name,
+                    'last_name' => $last_name
+                );
+
+                // check if user exists
+                $user_id = get_user_by( 'email', $old_email ); // The user in WP
+                if ($user_id) 
+                {
+                    // check if email was updated because if it was, we need to update the user_login field.
+                    if ($email != $old_email)
+                    {
+                        global $wpdb;
+                        // cant use wp_insert_user because we need to updtate login as well and that function wont do it.
+                        if ( $wpdb->update( $wpdb->users, array( 'user_login' => $email, 'user_email' => $email ), array( 'ID' => $user_id->ID ) ) )
+                        {
+                            // success
+                            $result['success'] = true;
+                            $result['message'] = 'User account information has been successfully updated.';
+                            $result['staff_id']=$user_id->ID;
+                            $result['staff_email']=$email;
+                            $result['email']=$email;
+                            $result['old_email']= $old_email;
+                            $result['first_name']=$first_name;
+                            $result['last_name']=$last_name;
+                        }
+                        else
+                        {
+                            //failed
+                            $result['display_errors'] = 'failed';
+                            $result['success'] = false;
+                            $result['errors'] = 'updateUser_callback Error: Could not update WP user.';
+                        }
+                    }
+
+                    // set the userID to be updated
+                    $userdata['ID'] = $user_id->ID;
+                    // dont change their password unless they added a new password
+                    if (!$password){
+                        unset($userdata['user_pass']);
+                    }
+
+                    // update the user into WP
+                    $WP_user_id = wp_insert_user ($userdata);
+                    
+                    // success
+                    $result['success'] = true;
+                    $result['message'] = 'User account information has been successfully updated.';
+                    $result['staff_id']=$WP_user_id;
+                    //$result['staff_id']=$user_id->ID;
+                    $result['old_email']= $old_email;
+                    $result['staff_email']=$email;
+                    $result['email']=$email;
+                    $result['first_name']=$first_name;
+                    $result['last_name']=$last_name;
+                }
+                else
+                {
+                    // user doesnt exist to create WP User
+                    // insert the user into WP
+                    $WP_user_id = wp_insert_user ($userdata);
+
+                    // Newly created WP user needs some meta data values added
+                    update_user_meta ( $WP_user_id, 'lrn_upon_id', $response['id'] );
+                    update_user_meta ( $WP_user_id, 'org_id', $org_id );
+                    update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+                    update_user_meta ( $WP_user_id, 'portal', $portal_subdomain );
+
+                    // assume we are successful for now... check later.
+                    $result['success'] = true;
+                    $result['message'] = 'User account information has been successfully updated.';
+                    $result['staff_id']=$WP_user_id;
+                    //$result['staff_id']=$user_id->ID;
+                    $result['old_email']= $old_email;
+                    $result['staff_email']=$email;
+                    $result['name']=$first_name;
+                    $result['lastname']=$last_name;
+                }   
+      
+            
+
+            // check that previous attempts to update user did not fail. If not, check if we need to update portal name (camp name)
+            if (isset($result['success']) && $result['success'])
+            {
+              // check if we need to update portal name
+              if (isset($_REQUEST['portal_id']) && isset($_REQUEST['old_camp_name']) && isset($_REQUEST['camp_name']) && $_REQUEST['old_camp_name'] != $_REQUEST['camp_name'])
+              {
+                $camp_name = filter_var($_REQUEST['camp_name'],FILTER_SANITIZE_STRING);
+                $portal_id = filter_var($_REQUEST['portal_id'],FILTER_SANITIZE_NUMBER_INT); // LU Portal ID
+                // update the portal name on LU
+                $portal_data = array('title' => $camp_name);
+
+                  // Success in updating the portal on LU, now update camp name in WP
+                  $post_data = array (
+                    'ID'          => $org_id,
+                    'post_title'  => $camp_name,
+                    );
+                  
+                  $update_post = wp_update_post($post_data, true);
+
+                  // check if there was an error updating WP camp name. If so, undo LU changes
+                  if (is_wp_error($update_post))
+                  {
+                    $errors = $update_post->get_error_messages();
+                    foreach ($errors as $error) {
+                      write_log($error);
+                    }
+
+                    // undo changes in LU
+                    $portal_data = array('title' => $_REQUEST['old_camp_name']);
+                    $response = updatePortal($portal_id, $org_subdomain, $portal_data);
+                  }
+
+              }
+            }
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'updateUser_callback Error: Missing some parameters.';
+    }
+
+    echo json_encode( $result );
+    wp_die();
+}
+
+/********************************************************************************************************
+ * Delete a staff account.
+ *******************************************************************************************************/
+add_action('wp_ajax_deleteStaffAccount', 'deleteStaffAccount_callback');
+function deleteStaffAccount_callback () {
+    if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['staff_id'] ) && isset ( $_REQUEST['email'] ) )
+    {
+        // This form is generated in getCourseForm function with $form_name = change_course_status_form from this file.
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); // The Org ID
+        $staff_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_NUMBER_INT); // The staff account ID
+        $email = sanitize_email( $_REQUEST['email'] ); // wordpress e-mail address
+        $portal_subdomain = filter_var($_REQUEST['portal_subdomain'],FILTER_SANITIZE_STRING);
+        $data = compact("org_id");
+
+        // Check permissions
+        if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'delete-staff_id-org_id_' . $org_id ) ) 
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'deleteStaffAccount_callback error: Sorry, your nonce did not verify.';
+        }
+        else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'deleteStaffAccount_callback Error: Sorry, you do not have permisison to view this page.';
+        }
+        else
+        {
+            // Delete the staff account from LU
+           
+                $user = get_user_by( 'email', $email ); // The user in WP
+                if($user)
+                {
+                    // Delete the account in WP
+                    if (wp_delete_user( $user->ID ))
+                    {
+                        // Build the response if successful
+                        $result['data'] = 'success';
+                        $result['user_id'] = $staff_id;
+                        $result['success'] = true;
+                        $result['email'] = $email;
+                    } 
+                    else
+                    {
+                        $result['display_errors'] = 'failed';
+                        $result['success'] = false;
+                        $result['errors'] = 'deleteStaffAccount_callback ERROR: Could not delete the WP user account.';
+                    }
+                }
+                else
+                {   
+                    $result['display_errors'] = 'failed';
+                    $result['success'] = false;
+                    $result['errors'] = 'deleteStaffAccount_callback ERROR: Could not find the WP user account.';
+                }
+
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'deleteStaffAccount_callback ERROR: Missing some parameters.';
+    }
+    echo json_encode($result);
+    wp_die();
+
+}
+
+
 
 /********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
