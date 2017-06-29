@@ -299,7 +299,7 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 								{
 									
 											// enroll user in courses	
-											$result2 = enrollUserInCourses($portal_subdomain, $courses, $org_id, $email,$subscription_id);
+											$result2 = enrollUserInCourses($courses, $org_id, $email,$subscription_id);
 											if (isset($result2['status']) && !$result2['status'])
 											{
 												// ERROR in enrolling user
@@ -321,7 +321,7 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 							else
 							{
 								// if user doesnt exist in WP, create user in WP and LU
-								$result = createWpLuUser($portal_subdomain, $data, true, false, 'student'); // Create WP and LU user
+								$result = createWpUser($data,'student'); // Create WP and LU user
 
 								if (isset($result['success']) && $result['success'])
 								{
@@ -361,7 +361,7 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 
                                                                         }
                                                                         // enroll user in courses
-									$result2 = enrollUserInCourses($portal_subdomain, $courses, $org_id, $email,$subscription_id);
+									$result2 = enrollUserInCourses($courses, $org_id, $email,$subscription_id);
 									if (isset($result2['status']) && !$result2['status'])
 									{
 										// ERROR in enrolling user

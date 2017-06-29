@@ -110,7 +110,7 @@ $GLOBALS['pages_with_acf_form'] = array (
 );
 
 // The ID of the ACF upload spreadsheet form
-define ('ACF_UPLOAD_SPREADSHEET', 1206);
+define ('ACF_UPLOAD_SPREADSHEET', 11820);
 
 // The ID of the ACF upload resources form
 define ('ACF_UPLOAD_RESOURCE', 1439);

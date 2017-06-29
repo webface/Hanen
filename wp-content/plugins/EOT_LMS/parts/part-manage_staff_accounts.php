@@ -8,8 +8,8 @@
   $user_id = $current_user->ID;                  // Wordpress user ID
   $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
   $data = compact ("org_id", "user_id");
-  $users = array(); // will store the users of our org
-  $users = getEotUsers($org_id);
+  $user_data = getEotUsers($org_id);
+  $users = $user_data['users'];
   $admin_ajax_url = admin_url('admin-ajax.php');
 
   if( isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'uploadedspreadsheet' )
@@ -88,7 +88,7 @@
       {
         foreach($users as $user) 
         { 
-          $staff_id = $user['id'];
+          $staff_id = $user['ID'];
           $email = $user['email'];
           $staffTableObj->rows[] = array($user['first_name'] . " " . $user['last_name'], // First and last name
                                           $email, // The email address
@@ -201,7 +201,6 @@ static $i = 0;
 <script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jquery.tinymce.js"?>"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js'?>"></script> 
 <script type="text/javascript">
-
 (function ($) 
 { 
   $(function()
@@ -250,7 +249,7 @@ static $i = 0;
         // Create a new row for the newly created user.
         staffTable.row.add([data.name + " " + data.lastname, // First and last name
                   data.email, // Email Address
-                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+"&email="'+data.email+'" rel="facebox">\
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+"&email="+data.email+'" rel="facebox">\
                     <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
                   </a>&nbsp;&nbsp;&nbsp;\
                   <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.staff_id+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
@@ -306,10 +305,11 @@ static $i = 0;
     $(document).bind('success.delete_staff_account',
       function(event,data)
       {
+          console.log(data);
         var staffTable = $('#DataTable_1').DataTable();
         staffTable.row( $("td.e-mail:contains('"+data.email+"')").parents('tr') ).remove().draw();
         //close facebox
-        $(document).trigger('close.facebox') 
+        $(document).trigger('close.facebox'); 
       }
     );          
     /******************************************************************************************
@@ -320,7 +320,7 @@ static $i = 0;
       function(event,data)
       {
         //close facebox
-        console.log(data);
+        //console.log(data);
         jQuery(document).trigger('close.facebox');
         
         var staffTable = $('#DataTable_1').DataTable(); // Staff Listing Table

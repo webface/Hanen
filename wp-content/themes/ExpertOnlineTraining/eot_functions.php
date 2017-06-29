@@ -3138,7 +3138,7 @@ function getEotUsers($org_id = 0, $role = 'student'){
         $user['first_name'] = get_user_meta ( $user_info->ID, "first_name", true);
         $user['last_name'] = get_user_meta ( $user_info->ID, "last_name", true);
         $user['email'] = $user_info->user_email;
-        $user['id'] = $user_info->ID;
+        $user['ID'] = $user_info->ID;
         $user['user_type'] = 'learner';  // @TODO remove if not used(used in manage_staff_accounts line 90)
         array_push($learners, $user);
       }
@@ -3408,6 +3408,17 @@ function getCoursesById($org_id = 0, $subscription_id = 0)
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
     $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id AND subscription_id = $subscription_id", ARRAY_A);
+    return $courses;
+}
+
+/*
+ * Get Courses by org_id
+ * @param $org_id - the org id
+ */
+function getCoursesByOrgId($org_id){
+    global $wpdb;
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id", ARRAY_A);
     return $courses;
 }
 
@@ -4217,6 +4228,102 @@ function createUser_callback()
     wp_die();
 }
 
+function createWpUser($data = array(), $role = 'student')
+{
+   /********************************************************
+   * Create Wordpress User for upload spreadsheet
+   * org_id - The organization ID
+   * first_name - User First Name
+   * last_name - User Last Name
+   * email - User Email
+   * password - User Password
+   * @return json encoded list of completion or errors
+   ********************************************************/    
+  extract($data);
+  // Check if all parameters are available.
+  if( $org_id != "" && $first_name != "" &&  $last_name != "" &&  $email != "" && $password != "" )
+  {
+          // create the user in WP (student)
+          $userdata = array (
+              'user_login' => $email,
+              'user_pass' => wp_hash_password($password),
+              'role' => $role,
+              'user_email' => $email,
+              'first_name' => $first_name,
+              'last_name' => $last_name
+          );
+          
+          
+         $WP_user_id = wp_insert_user ($userdata);
+          
+// check if we successfully inserted the user
+          if ( ! is_wp_error( $WP_user_id ) )
+          {
+          // Newly created WP user needs some meta data values added
+          update_user_meta ( $WP_user_id, 'org_id', $org_id );
+          update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+          $result['success'] = true;
+          $result['name'] = $first_name;
+          $result['lastname'] = $last_name;
+          $result['org_id'] = $org_id;
+          $result['email'] = $email;
+          $result['password'] = $password;
+          $result['user_id'] = $WP_user_id; // LU User ID
+        }
+        else
+            {
+            $result['success'] = false;
+        }
+      }
+
+  return $result;
+}
+
+
+/**
+ *  enroll a user in courses
+ *  @param array $courses - an array of course names to enroll the user in
+ *
+ *  @return result array with succes/failiure
+ */  
+function enrollUserInCourses($courses = array(), $org_id = 0, $email = '',$subscription_id = 0)
+{
+
+// make sure we have the data we need.
+  if ($email == '' || !$org_id)
+  {
+    return array('status' => 0, 'message' => 'Error: Invalid arguments supplied to enrollUserInCourses');
+  }
+  $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+  $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+  $allcourses=  getCoursesById($org_id,$subscription_id);
+  // go through each course and enroll the user
+  foreach($allcourses as $course){
+    foreach ($courses as $course_name)
+    {
+      if($course_name===$course['course_name']){
+        $course_id=$course['ID'];  
+        $data = compact('org_id', 'course_name','course_id');
+        if(user_is_enrolled($email,$course_id)){
+              $result['status'] = 0;
+              $result['message'] = "User is already enrolled in ".$course_name ;
+              return $result;
+        }else{
+            
+            $response = enrollUserInCourse($email,$data);
+            if(isset($response['status']) && !$response['status']) // failed to enroll staff in course
+            {
+              $result['status'] = 0;
+              $result['message'] = "enrollUserInCourses Error: " . $response['message'];
+              return $result;
+            }
+        }
+      }
+    }
+  }
+  return array('status' => 1);
+}
+
 /********************************************************************************************************
  * send e-mail base on type
  *******************************************************************************************************/
@@ -4566,7 +4673,8 @@ function updateUser_callback()
  * Delete a staff account.
  *******************************************************************************************************/
 add_action('wp_ajax_deleteStaffAccount', 'deleteStaffAccount_callback');
-function deleteStaffAccount_callback () {
+function deleteStaffAccount_callback () 
+{
     if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['staff_id'] ) && isset ( $_REQUEST['email'] ) )
     {
         // This form is generated in getCourseForm function with $form_name = change_course_status_form from this file.
@@ -4628,7 +4736,153 @@ function deleteStaffAccount_callback () {
     wp_die();
 }
 
+/**
+ * 
+ * @global type $wpdb
+ * @param type $email - the email of the user
+ * @param type $course_id - the course ID
+ * @return boolean
+ * 
+ */
+function user_is_enrolled($email, $course_id)
+{
+    global $wpdb;
+    $email = filter_var($email , FILTER_SANITIZE_EMAIL);
+    $course_id = filter_var($course_id , FILTER_SANITIZE_NUMBER_INT);
+    $enrollment = $wpdb->get_row("SELECT * FROM ".TABLE_ENROLLMENTS." WHERE email='$email' AND course_id='$course_id'",ARRAY_N);
+    if ( null !== $enrollment ) {
+        // do something with the link 
+        return true;
+      } else {
+        // no link found
+        return false;
+      }
+}
 
+/********************************************************************************************************
+ * Create enrollment for the user
+ *******************************************************************************************************/
+add_action('wp_ajax_enrollUserInCourse', 'enrollUserInCourse_callback'); 
+function enrollUserInCourse_callback () 
+{
+
+    // This form is generated in getCourseForm function with $form_name = add_staff_to_group from this file.
+    $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); // The organization ID
+    $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // The organization ID
+    $email  = filter_var($_REQUEST['email'],FILTER_SANITIZE_STRING); // The Email Address of the user
+    $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT); // The Course ID
+    $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING); // The course Name
+    $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_STRING); // The subscription id
+
+    // Check permissions
+    if(wp_verify_nonce( $_REQUEST['nonce'], 'process-userEmail_' . $email ) )
+    {
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = 'enrollUserInCourse_callback error: Sorry, your nonce did not verify.';
+    }
+    else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+    {
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = 'enrollUserInCourse_callback error: Sorry, you do not have permisison to view this page.';
+    }
+    else 
+    {
+        $data = compact( "org_id", "course_name");
+        global $wpdb;
+        // Save enrollments to the database.
+        $insert = $wpdb->insert(
+          TABLE_ENROLLMENTS, 
+          array( 
+            'course_id' => $course_id, 
+            'email' => $email,
+            'org_id' => $org_id,
+            'subscription_id' => $subscription_id,
+            'user_id' => $user_id
+          ), 
+          array( 
+            '%d', 
+            '%s', 
+            '%d',
+            '%d',
+            '%d' 
+        ));
+        // Didn't saved. return an error.
+        if ($insert===FALSE)
+        {
+            // return an error message
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Response Message: " . $wpdb->last_error;
+        }
+        else
+        {
+          // Build the response if successful
+          $result['message'] = 'User has been enrolled.';
+          $result['success'] = true;
+          $result['enrollment_id'] = $wpdb->insert_id;
+        }
+
+    }
+    echo json_encode($result);
+    wp_die();
+}
+
+/********************************************************************************************************
+ * Delete the enrollment for the user
+ *******************************************************************************************************/
+add_action('wp_ajax_deleteEnrolledUser', 'deleteEnrolledUser_callback'); 
+function deleteEnrolledUser_callback () 
+{
+
+    // This form is generated in getCourseForm function with $form_name = add_staff_to_group from this file.
+    $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+    $email  = filter_var($_REQUEST['email'],FILTER_SANITIZE_STRING);
+    $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
+    $enrollment_id = filter_var($_REQUEST['enrollment_id'],FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+
+    // Check permissions
+    if(wp_verify_nonce( $_REQUEST['nonce'], 'process-userEmail_' . $email ) )
+    {
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = 'deleteEnrolledUser_callback Error: Sorry, your nonce did not verify.';
+    }
+    else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+    {
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = 'deleteEnrolledUser_callback Error: Sorry, you do not have permisison to view this page.';
+    }
+    else 
+    {
+      global $wpdb;
+      // Delete the record from our database.
+      $response = $wpdb->delete(TABLE_ENROLLMENTS, // Table to delete the data from
+                                array('course_id' => $course_id, 
+                                      'user_id' => $user_id));
+      // Something went wrong. Display error message.
+      if ($response===FALSE)
+      {
+            // return an error message
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Response Message: " . $wpdb->last_error;
+      }
+      else 
+      {
+          // Build the response if successful
+          $result['data'] = 'success';
+          $result['message'] = 'the enrollment has been deleted';
+          $result['group_id'] = $course_id;
+          $result['success'] = true;
+      }
+    }
+    echo json_encode($result);
+    wp_die();
+}
 
 /********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
@@ -4636,7 +4890,8 @@ function deleteStaffAccount_callback () {
  * The submit and cancel buttons are handled by javascript in this HTML (part-manage_courses.php for now)  
  *******************************************************************************************************/
 add_action('wp_ajax_getCourseForm', 'getCourseForm_callback'); 
-function getCourseForm_callback ( ) {
+function getCourseForm_callback ( ) 
+{
     if(isset($_REQUEST['org_id']) && isset($_REQUEST['form_name']) )
     {
         global $current_user;
@@ -5036,7 +5291,7 @@ function getCourseForm_callback ( ) {
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             $course_modules = getModulesInCourse($course_id); // all the modules in the specified course
-            
+            d($course_modules);
             $course_quizzes=  getQuizzesInCourse($course_id);
             $course_resources=getResourcesInCourse($course_id);
             
@@ -5467,7 +5722,6 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "edit_staff_account")
         {
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
             $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id );
 //            $response = getUser($portal_subdomain, $staff_id, $data);
@@ -5534,7 +5788,6 @@ function getCourseForm_callback ( ) {
                       <input type="hidden" name="subscription_id" value="" />
                       <input type="hidden" name="org_id" value="<?= $org_id ?>" />
                       <input type="hidden" name="staff_id" value="<?= $staff_id ?>" />
-                      <input type="hidden" name="portal_subdomain" value="<?= $portal_subdomain ?>" />
                       <input type="hidden" name="old_email" value="<?= $user['email'] ?>" />
                       <?php wp_nonce_field( 'update-staff_' . $staff_id ); ?>
                     </td>
@@ -5560,8 +5813,8 @@ function getCourseForm_callback ( ) {
         }
         else if($form_name == "create_staff_account")
         {   
-            $subscription_id=filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);            
+           $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id );
             $courses_in_portal = getCoursesById($org_id,$subscription_id); // get all the published courses in the portal
             $course_id = 0; // The course ID
@@ -5714,7 +5967,6 @@ function getCourseForm_callback ( ) {
                       <td></td>
                       <td class="field">
                         <input type="hidden" name="org_id" value="<?= $org_id ?>" />
-                        <input type="hidden" name="portal_subdomain" value="<?= $portal_subdomain ?>" />
                         <?php wp_nonce_field( 'create-staff_' . $org_id ); ?>
                       </td>
                     </tr>
@@ -5847,7 +6099,7 @@ function getCourseForm_callback ( ) {
                   $user['first_name'] = get_user_meta ( $user_info->ID, "first_name", true);
                   $user['last_name'] = get_user_meta ( $user_info->ID, "last_name", true);
                   $user['email'] = $user_info->user_email;
-                  $user['id'] = $user_info->ID;
+                  $user['ID'] = $user_info->ID;
                   array_push($learners, $user);
                 }
               }
@@ -5871,7 +6123,7 @@ function getCourseForm_callback ( ) {
                                             {
                                               $name = $user['first_name'] . " " . $user['last_name']; // Learner's First and last name.
                                               $email = $user['email']; // Learner's email.
-                                              $user_id = $user['id']; // Learner's user ID
+                                              $user_id = $user['ID']; // Learner's user ID
                                               $nonce = wp_create_nonce ('add/deleteEnrollment-userEmail_' . $email);
                                               if(in_array($user_id, $user_ids_in_course))
                                               {      
@@ -5897,7 +6149,7 @@ function getCourseForm_callback ( ) {
                                                     <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
                                                     <span class="staff_emai" style="font-size:12px;"><?= $email ?></span>
                                                     <div style="width:140px;text-align:center;float:right;padding-right:35px;">
-                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="add" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" course_name="<?= $course_name ?>" portal_subdomain="<?= $org_subdomain ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="add" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" course_name="<?= $course_name ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>">
                                                             Add to course
                                                         </a>
                                                     </div>

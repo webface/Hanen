@@ -387,7 +387,7 @@ jane@email.com
                     $failed = 0;
                     foreach($recip as $recipient)
                     {
-                        $recipient = filter_var($recipient, FILTER_VALIDATE_EMAIL)
+                        $recipient = filter_var($recipient, FILTER_VALIDATE_EMAIL);
                         if ($recipient && !in_array($recipient,$recipients)) 
                         {
                             array_push($recipients, $recipient);
