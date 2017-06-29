@@ -3259,9 +3259,10 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
 function getModulesInCourse($course_id = 0){
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT m.* "
+    $sql = "SELECT m.*,c.name AS category "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSES_MODULES . " AS cm ON cm.module_id = m.id "
+                . "LEFT JOIN ".TABLE_CATEGORIES." AS c ON m.category_id = c.id "            
                 . "WHERE cm.course_id = $course_id";
 
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
@@ -3391,8 +3392,21 @@ function getModulesByLibrary($library_id = 0)
 {
   global $wpdb;
   $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
-  $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE library_id = $library_id ORDER BY title" , ARRAY_A);
+  $modules=$wpdb->get_results("SELECT m.*, c.name AS category FROM " . TABLE_MODULES. " m LEFT JOIN ".TABLE_CATEGORIES." c ON m.category_id = c.id WHERE m.library_id = $library_id ORDER BY m.title" , ARRAY_A);
   return $modules;  
+}
+
+/**
+ * 
+ * @global type $wpdb
+ * @param type $library_id - the library id
+ * @return type Array Categories
+ */
+function getCategoriesByLibrary($library_id = 0){
+    global $wpdb;
+    $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
+    $categories = $wpdb->get_results("SELECT * FROM ".TABLE_CATEGORIES. " WHERE library_id = $library_id");
+    return $categories;
 }
 
 /**
@@ -5291,20 +5305,16 @@ function getCourseForm_callback ( )
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             $course_modules = getModulesInCourse($course_id); // all the modules in the specified course
-            d($course_modules);
             $course_quizzes=  getQuizzesInCourse($course_id);
             $course_resources=getResourcesInCourse($course_id);
-            
             $course_modules_titles = array_column($course_modules, 'title'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_resources_titles = array_column($course_resources, 'name');
-            //var_dump($course_quizzes_titles);
             $modules_in_portal = getModules($org_id);// all the modules in this portal
-            //var_dump($modules_in_portal);
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
-            //$master_course = getCourseByName(LE_LIBRARY_TITLE); // Get the master course. Cloned LE
-            //$master_course_id = $master_course['id']; // Master library ID
+            $categories = getCategoriesByLibrary(1);
             $master_modules = getModulesByLibrary(1);// Get all the modules from the master library (course).            
+            d($course_modules,$master_modules, $categories);
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
             $master_module_ids = array_column($master_modules, 'ID');
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
@@ -5313,7 +5323,6 @@ function getCourseForm_callback ( )
             $exams=array();
             
             $resources=getQuizResourcesInModules($all_module_ids_string);
-//ddd($course_modules,$master_modules,$master_module_ids,$master_modules_titles,$all_module_ids, $all_module_ids_string, $resources);
             foreach($resources as $resource)
             {
               if(isset($exams[$resource['module_id']]))
@@ -5338,8 +5347,7 @@ function getCourseForm_callback ( )
                 array_push($handouts[$handout['module_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
                 }
             }
-            //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
-            $course_data=getCourse($course_id);
+            $course_data=getCourse($course_id);// all the settings for the specified course
             $due_date =$course_data['due_date_after_enrollment']!==NULL? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])):NULL; // the due date of the specified course
             $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
             $videoCount = count($course_modules_titles);
