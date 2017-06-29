@@ -283,7 +283,7 @@ function displayHelp_callback()
 {
     if( isset ( $_REQUEST['help_name'] ) )
     {
-      $help_name = filter_var($_REQUEST['help_name'],FILTER_SANITIZE_STRING);
+      $help_name = filter_var($_REQUEST['help_name'], FILTER_SANITIZE_STRING);
       if($help_name == "some_videos")
       {
         ob_start();
@@ -3204,9 +3204,9 @@ function getLibraryCategory($id = 0, $library_id = 0)
 }
 
 /**
- * Get the help for view information by view the name and user role.
- * @param $view_name - The view name.
- * @param $role - The role name.
+ * Get the help videos for the specified view and user role.
+ * @param string $view_name - The view name.
+ * @param string $role - The role name.
  * @return arrays of views data
  */
 function getHelpForView($view_name = "", $role = "")
@@ -3216,8 +3216,8 @@ function getHelpForView($view_name = "", $role = "")
     return null;
 
   global $wpdb;
-  $sql = "SELECT title, summary, full_content FROM " . TABLE_HELP_TOPICS . " help_topics INNER JOIN " . TABLE_HELP_TOPICS_FOR_VIEW . " help_topics_view ON help_topics.id=help_topics_view.topic_id WHERE view_name='$view_name' AND role='$role'";
+  $sql = "SELECT * FROM " . TABLE_HELP_TOPICS . " ht LEFT JOIN " . TABLE_HELP_TOPICS_FOR_VIEW . " htv ON ht.ID = htv.topic_id WHERE htv.view_name = '$view_name' AND htv.role='$role' ORDER BY ";
   
-  $views=$wpdb->get_results( $sql, ARRAY_A ); // returns an array of view information.
+  $views = $wpdb->get_results( $sql, ARRAY_A ); // returns an array of view information.
   return $views;
 }
