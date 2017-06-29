@@ -4899,6 +4899,76 @@ function deleteEnrolledUser_callback ()
 }
 
 /********************************************************************************************************
+ * Update due date for the course.
+ *******************************************************************************************************/
+add_action('wp_ajax_updateDueDate', 'updateDueDate_callback'); 
+function updateDueDate_callback() 
+{
+    if( isset ( $_REQUEST['action'] ) && isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['task'] ) && isset ( $_REQUEST['org_id'] ) )
+    {
+        if($_REQUEST['task'] == "remove" || $_REQUEST['task'] == "add")
+        {
+            $course_id                   = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+            $org_id                      = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); // The org id
+            $task                        = filter_var($_REQUEST['task'],FILTER_SANITIZE_STRING); // The task
+            
+            // check if user has admin/manager permissions
+            if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+            {
+                $result['display_errors'] = 'Failed';
+                $result['success'] = false;
+                $result['errors'] = 'updateDueDate_callback Error: Sorry, you do not have permisison to view this page.';
+            }
+            else
+            {
+                // This sets the due date
+                if( $task == "remove" )
+                {
+                    $due_date_after_enrollment = "0000-00-00 00:00:00"; // Remove the date.
+                }
+                else if( $task == "add" )
+                {
+                    $due_date_after_enrollment = filter_var($_REQUEST['date'],FILTER_SANITIZE_STRING); // The due date 
+                }
+
+                $data = compact( "org_id", "due_date_after_enrollment");
+                // Edit the course
+                //$response = updateCourse($course_id, $portal_subdomain, $data);
+                global $wpdb;
+                $response=$wpdb->update(TABLE_COURSES, array('due_date_after_enrollment'=>date("Y-m-d H:i:s", strtotime($due_date_after_enrollment))), array('ID' => $course_id));
+                if ($response === false)
+                {
+                    $result['display_errors'] = true;
+                    $result['success'] = false;
+                    $result['errors'] = "updateDueDate_callback ERROR: ". $response['message'];
+
+                }
+                else
+                {
+                    // Build the response if successful
+                    $result['success'] = true;
+                }
+                
+            }
+        }
+        else
+        {
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "updateDueDate_callback ERROR: invalid task.";
+        }
+    }
+    else
+    {
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = "updateDueDate_callback ERROR: Missing parameters";
+    }
+    echo json_encode($result);
+    wp_die();
+}
+
+/********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
  * javascript and the javascript will inject it into the HTML page.
  * The submit and cancel buttons are handled by javascript in this HTML (part-manage_courses.php for now)  
@@ -4937,7 +5007,7 @@ function getCourseForm_callback ( )
                                 <span class="fyi">eg. First-Year Staff, Returning Staff, etc.</span>
                             </td>
                         </tr> 
-                        <!--
+                        
                         <tr> 
                             <td class="label"> 
                                 <label for="field_desc">Description:</label> 
@@ -4955,7 +5025,7 @@ function getCourseForm_callback ( )
                         <tr> 
                         <td class="label"> 
                         </td> 
-                        -->
+                        
                             <td class="value"> 
                                 <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
                                 <input type="hidden" name="user_id" value="<?= $user_id ?>" /> 
@@ -5059,7 +5129,7 @@ function getCourseForm_callback ( )
         else if($form_name == "edit_course_group")
         {
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+//            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
             $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
             $data = compact("org_id");
             //$course_data = getCourse($portal_subdomain, $course_id, $data); // all the settings for the specified course
@@ -5087,12 +5157,12 @@ function getCourseForm_callback ( )
                             </td>
                         </tr> 
                         <tr> 
-                        <!--
+                        
                           <td class="label"> 
                             <label for="field_desc">Description:</label> 
                           </td>
                           <td class="value"> 
-                            <input type="text" name="desc" id="field_desc" size="35" value=""/>  
+                            <input type="text" name="desc" id="field_desc" size="35" value="<?= $course_data['course_description'] ?>"/>  
                           </td> 
                         </tr>
                         <tr >
@@ -5101,14 +5171,14 @@ function getCourseForm_callback ( )
                                 <span class="fyi">(for your own information)</span>
                             </td>
                         </tr>   
-                        -->           
+                                   
                         <tr> 
                             <td class="label"> 
                             </td> 
                             <td class="value"> 
                                 <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
                                 <input type="hidden" name="group_id" value="<?= $course_id ?>" />
-                                <input type="hidden" name="portal_subdomain" value="<?= $portal_subdomain ?>" />
+<!--                                <input type="hidden" name="portal_subdomain" value="<?= $portal_subdomain ?>" />-->
                                 <?php wp_nonce_field( 'edit-course_' . $org_id ); ?>
                             </td> 
                         </tr> 
