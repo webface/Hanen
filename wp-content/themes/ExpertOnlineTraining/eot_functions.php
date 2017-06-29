@@ -281,297 +281,35 @@ function formatStatus($status = '')
 add_action('wp_ajax_displayHelp', 'displayHelp_callback');
 function displayHelp_callback() 
 {
-    if( isset ( $_REQUEST['help_name'] ) )
+    if( isset ( $_REQUEST['video_id'] ) && $_REQUEST['video_id'] > 0)
     {
-      $help_name = filter_var($_REQUEST['help_name'], FILTER_SANITIZE_STRING);
-      if($help_name == "some_videos")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Watch Some Videos</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_1').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
+      $video = getHelpVideoById(filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT));
+      ob_start();
+d($video_id, $video);
+
+?>
+      <div>
+        <div class="title">
+          <div class="title_h2"><?= $video->title; ?></div>
         </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_1" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Watch_Some_Videos.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>       
+        <div class='buttons'>
+          <a onclick="videojs('help_video_<?= $video->ID; ?>').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
+            <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
+          </a>
         </div>
-        <?php
-        $html = ob_get_clean();
-      }
-      else if($help_name == "default_course")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Pick a Default Course</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_2').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_2" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Pick_a_Default_Course.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>       
-        </div>
-        <?php
-        $html = ob_get_clean();
-      }
-      else if($help_name == "modify_default")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Modify a Default Course</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_3').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_3" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Modify_a_Default_Course.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>         
-        </div>       
-        <?php
-      }
-      else if($help_name == "create_course")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Create a New Course</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_4').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_4" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Create_a_New_Course.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>         
-        </div>       
-        <?php
-      }
-      else if($help_name == "publish_course")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Publish a Course</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_5').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_5" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Publish_a_Course.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>         
-        </div>       
-        <?php
-      }
-      else if($help_name == "modify_published")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Modify a Published Course</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_6').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_6" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Modify_a_Published_Course.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>         
-        </div>       
-        <?php
-      }
-      else if($help_name == "add_staff")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Add Staff Information</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_7').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_7" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Add_Staff_Information.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>         
-        </div>       
-        <?php
-      }
-      else if($help_name == "change_enroll")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Change Course Enrollment</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_8').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_8" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Change_Course_Enrollment.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>        
-        </div>       
-        <?php
-      }
-      else if($help_name == "check_stats")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Check Statistics</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_9').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_9" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Analyze_Course_Statistics2.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>          
-        </div>       
-        <?php
-      }
-      else if($help_name == "upload_custom")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Upload Custom Content</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_10').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_10" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Manage_Custom_Content.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>          
-        </div>       
-        <?php
-      }
-      else if($help_name == "create_custom_quiz")
-      {
-        ob_start();
-        ?>
-        <div>
-          <div class="title">
-            <div class="title_h2">Create a Custom Quiz</div>
-          </div>
-          <div class='buttons'>
-            <a onclick="videojs('help_video_11').pause(); jQuery(document).trigger('close.facebox');" class='negative' style='margin-top: -30px; margin-right: 0px; padding-top: 6px; padding-right: 7px;'>
-              <img src='<?php echo get_template_directory_uri() . '/images/cross.png' ?>' alt='' style='margin: 0px !important;'/>
-            </a>
-          </div>
-        </div>
-        <div style="padding: 20px;">
-          <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-          <video id="help_video_11" class="video-js vjs-default-skin" preload="auto" width="500" height="300" data-setup='{"controls": true}'>
-            <source src="https://eot-output.s3.amazonaws.com/tutorial_Make_a_Custom_Quiz.mp4" type='video/mp4'>
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>        
-          </video>          
-        </div>       
-        <?php
-      }
+      </div>
+      <div style="padding: 20px;">
+        <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
+        <video id="help_video_<?= $video->ID; ?>" class="video-js vjs-default-skin" preload="auto" width="640" height="480" data-setup='{"controls": true}'>
+          <source src="https://eot-output.s3.amazonaws.com/<?= $video->video_filename; ?>" type='video/mp4'>
+          <p class="vjs-no-js">
+            To view this video please enable JavaScript, and consider upgrading to a web browser that
+            <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+          </p>        
+        </video>       
+      </div>
+<?php
+      $html = ob_get_clean();
     }
     echo $html;
     wp_die();
@@ -3205,19 +2943,38 @@ function getLibraryCategory($id = 0, $library_id = 0)
 
 /**
  * Get the help videos for the specified view and user role.
- * @param string $view_name - The view name.
+ * @param string $part_name - The view name.
  * @param string $role - The role name.
  * @return arrays of views data
  */
-function getHelpForView($view_name = "", $role = "")
+function getHelpForView($part_name = "", $role = "")
 {
   // check we got the right parameters
-  if ( empty($view_name) || empty($role) )
+  if ( empty($part_name) || empty($role) )
     return null;
 
   global $wpdb;
-  $sql = "SELECT * FROM " . TABLE_HELP_TOPICS . " ht LEFT JOIN " . TABLE_HELP_TOPICS_FOR_VIEW . " htv ON ht.ID = htv.topic_id WHERE htv.view_name = '$view_name' AND htv.role='$role' ORDER BY ";
+  $sql = "SELECT * FROM " . TABLE_HELP_TOPICS . " ht LEFT JOIN " . TABLE_HELP_TOPICS_FOR_VIEW . " htv ON ht.ID = htv.topic_id WHERE htv.part_name = '$part_name' AND htv.role='$role' ORDER BY htv.order";
   
   $views = $wpdb->get_results( $sql, ARRAY_A ); // returns an array of view information.
   return $views;
+}
+
+/**
+ * Get the help video data by ID
+ * @param int $id - The help topic ID.
+ * @return object of video data
+ */
+function getHelpVideoById($id = 0)
+{
+  // check we got the right parameters
+  if ( !$id )
+    return null;
+
+  global $wpdb;
+  $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+  $sql = "SELECT * FROM " . TABLE_HELP_TOPICS . " WHERE ID = $id";
+  
+  $video = $wpdb->get_row( $sql, OBJECT ); // returns an object with the video data.
+  return $video;
 }
