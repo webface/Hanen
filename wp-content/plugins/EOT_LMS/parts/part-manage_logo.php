@@ -8,9 +8,6 @@
 
 	$user_id = $current_user->ID;							     // Wordpress user ID
     $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
-	$org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-  	$data = compact ("org_id", "org_subdomain", "user_id");
-  	$admin_ajax_url = admin_url('admin-ajax.php');
 	$image = get_field( 'dashboard_logo', 'user_' . $org_id ); // Advance custom fields. Field for the dashboard_logo
 	
 ?>
@@ -35,64 +32,12 @@
 				the_content(); 
 				acf_form(
 					array(
-						'field_groups' => array(11815), // The POST ID for dashboard logo
+						'field_groups' => array(ACF_MANAGE_LOGO), // The POST ID for dashboard logo
 						'post_id' => 'user_'.$org_id,
-						'return' => '?part=manage_logo&updated=true&subscription_id=' . $subscription_id,
+						'return' => '?part=manage_logo&updated=true&org_id='.$org_id.'&subscription_id=' . $subscription_id,
 						'updated_message' => __("Dashboard logo updated.", 'acf'),
 					)
 				);
-
-				if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == true)
-				{
-?>
-<script>
-	$ = jQuery;
-	var link = $( ".acf-image-image" ).attr("src");
-		var ajax_url = ajax_object.ajax_url;  
-	var info_data = 
-	{
-		action: 'updatePortal',
-		logo_image_url: '<?php echo $image['sizes']['medium_large']; ?>',
-		portal_subdomain: "<?= $org_subdomain ?>",
-		org_id: "<?= $org_id ?>",
-	}
-	/* Sends request to updatePortal in learnupon function to update the img url.
-	 */
-	$.ajax({
-		type: "POST",
-		data: info_data,
-		url: ajax_url,
-	   	success: function(data)
-	    {
-	      // Sending post is succesful. However, there is something wrong with sending info to admin-ajax.
-	      if( data == 0 )
-	      {
-	        $("#staff_and_assignment_list").find(".scroll-pane-wrapper").fadeTo('fast',0.1, function()
-	        {
-	        // For now, redirect to error page. 
-	        window.location.replace("?part=error");
-	        })
-	      }
-	      else
-	      {
-	      	var obj = jQuery.parseJSON(data);
-	      	if(obj.message)
-	      	{
-	        	// Display error message.
-	        	$("#message p").text(obj.message);
-	      	}
-	      }
-	    },
-		// If it fails on the other hand.
-		error: function(XMLHttpRequest, textStatus, errorThrown) 
-		{
-			alert( "POST Sent failed: " + textStatus );
-		}
-	});	
-</script>
-
-<?php
-				}
       		}
 			else
 			{
@@ -107,7 +52,7 @@
 	// Could not find the subscription ID
 	else
 	{
-	echo "Could not find the subscription ID";
+		echo "Could not find the subscription ID";
 	}
 ?>
 
