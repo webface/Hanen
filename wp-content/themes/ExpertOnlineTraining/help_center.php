@@ -2,15 +2,100 @@
 	$admin_ajax_url = admin_url('admin-ajax.php');
 	if( current_user_can( "is_director" ) )
 	{
+		$views = getHelpForView("dashboard", "director"); // All views for the director in dashboard.
 ?>
 		<!-- help button -->
 		<div id="helpBtn" href="#helpbar">
 			<a href=""><img src="<?= get_template_directory_uri() . '/images/help_btn_text.png'?>" alt="Help"></a>
 		</div>
 
-		<div id="helpbar">
-            <iframe frameBorder="0" scrolling="yes" src="<?= $admin_ajax_url ?>?action=getDashboard&option=com_helpcenter&format=raw&sender=dashboard">
-            </iframe>   
+		<div id="helpbar"">
+          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+          
+          <link rel="stylesheet" href="<?= get_template_directory_uri() . "/css/helpcenter/reset.css" ?>" type="text/css" media="screen" />
+          <link rel="stylesheet" href="<?= get_template_directory_uri() . "/css/helpcenter/style.css" ?>" type="text/css" media="screen" />
+          <script type="text/javascript">
+          window.anim_finished = true;
+          window.anim_speed = 400;
+          
+          jQuery(function($)
+          {   
+            $(document).ready(function()
+            {           
+              //$("#grayArea").height(Math.max($(window).height(), $(document).height(), document.documentElement.clientHeight));
+              
+              $("span[rel*=facebox]").click(function()
+              {
+                parent.toggle_help_center();
+                parent.open_facebox($(this).attr('dest'));
+                return false;
+              });
+              
+              $("#grayArea li a.topic").each(function()
+              {
+                $(this).click(function()
+                {
+                  if (window.anim_finished == false)
+                    return false;
+                  else
+                    window.anim_finished = false;
+                  
+                  $("#grayArea li a.topic").each(function()
+                  {
+                    if ($(this).hasClass("inactive"))
+                    {
+                      $(this).slideDown(window.anim_speed, function()
+                      {
+                        $(this).removeClass("inactive");
+                      }).next().slideUp(window.anim_speed);
+                      return false;
+                    }
+                  });
+                  
+                  $(this).slideUp(window.anim_speed, function()
+                  {
+                    $(this).addClass("inactive");
+                  }).next().slideDown(window.anim_speed);
+                  setTimeout(function() { window.anim_finished = true; }, window.anim_speed + 50);
+                  return false;
+                });
+              })
+            });
+          });
+          </script>
+          <div id="help_center">
+            <div id="grayArea">
+              <h1 id="helpTitle">
+                <span class="orange">
+                  Help
+                </span>
+                Center
+              </h1>
+              <ul>
+                <div class="separator"></div>
+<?php
+				// Goes to each views for director in the dashboard.
+                foreach ($views as $view) 
+                {
+?>
+				<li>
+					<a href="#" alt="<?= $view['title'] ?>" class="topic"><?= $view['title'] ?> <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
+					<a href="#" alt="Summary" class="summary" style="display: none;">
+	                    <?= $view['summary'] ?>
+	                    <br />
+	                    <br />
+	                    <span class="link" dest="<?= $view['full_content'] ?>" rel="facebox">
+	                      Watch Tutorial
+	                    </span>
+                  	</a>
+                </li>
+                <div class="separator"></div>
+<?php
+                }
+?>
+              </ul>
+            </div><!--end grayArea-->
+          </div><!--end container--> 
 		</div>
 	    <script src="<?php echo get_template_directory_uri() . '/js/jquery.pageslide.js' ?>"></script>
 		<script>

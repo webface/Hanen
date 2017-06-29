@@ -2,7 +2,7 @@ div#helpBtn {
 		/*padding-top: 20px;*/
 		/*margin-left: 255px;*/
 		margin-top: 15px;
-		margin-left: -8px;
+		margin-left: 0px;
 		position: fixed;
 		top: 0px;
 		left: auto;
@@ -95,21 +95,31 @@ iframe {
 }
 
 @media screen and (max-width:1024px) {
-	#helpBtn a {
+	#helpBtn a, div#helpbar, #pageslide {
 		display:none;
+		
+	}
+	body {
+		margin-left: 0px !important;
 	}
 }
 
 @media screen and (max-width:420px) {
-	#helpBtn a {
+	#helpBtn a, div#helpbar, #pageslide {
 		display:none;
+	}
+	body {
+		margin-left: 0px !important;
 	}
 }
 
 
 /* Mobile and iPad Portrait */
 @media only screen and (max-width: 959px) {
-	div#helpBtn {
+	div#helpBtn, div#helpbar, #pageslide {
 		display:none !important;
+	}
+	body {
+		margin-left: 0px !important;
 	}
 }

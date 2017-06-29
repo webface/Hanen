@@ -123,6 +123,8 @@ define ('TABLE_MODULES', $wpdb->prefix.'modules');
 define ('TABLE_MODULE_RESOURCES',$wpdb->prefix.'module_resources');
 define ('TABLE_QUIZ', $wpdb->prefix.'quiz');
 define ('TABLE_CATEGORIES', $wpdb->prefix.'category');
+define ('TABLE_HELP_TOPICS', $wpdb->prefix.'help_topics');
+define ('TABLE_HELP_TOPICS_FOR_VIEW', $wpdb->prefix.'help_topics_for_view');
 
 // base courses (course name => course description)
 $base_courses = array (

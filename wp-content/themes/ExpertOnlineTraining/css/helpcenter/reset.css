@@ -6,15 +6,15 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
+#helpbar html, #helpbar body, #helpbar div, #helpbar span, #helpbar applet, #helpbar object, #helpbar iframe,
+#helpbar h1, #helpbar h2, #helpbar h3, #helpbar h4, #helpbar h5, #helpbar h6, #helpbar p, #helpbar blockquote, #helpbar pre,
+#helpbar a, #helpbar abbr, #helpbar acronym, #helpbar address, #helpbar big, #helpbar cite, #helpbar code,
+#helpbar del, #helpbar dfn, #helpbar em, #helpbar font, #helpbar img, #helpbar ins, #helpbar kbd, #helpbar q, #helpbar s, #helpbar samp,
+#helpbar small, #helpbar strike, #helpbar strong, #helpbar sub, #helpbar sup, #helpbar tt, #helpbar var,
+#helpbar b, #helpbar u, #helpbar i, #helpbar center,
+#helpbar dl, #helpbar dt, #helpbar dd, #helpbar ol, #helpbar ul, #helpbar li,
+#helpbar fieldset, #helpbar form, #helpbar label, #helpbar legend,
+#helpbar table, #helpbar caption, #helpbar tbody, #helpbar tfoot, #helpbar thead, #helpbar tr, #helpbar th, #helpbar td {
 margin: 0;
 padding: 0;
 border: 0;
@@ -24,25 +24,25 @@ vertical-align: baseline;
 background: transparent;
 }
 
-body {
+#helpbar body {
 line-height: 1;
 }
 
-ol, ul {
+#helpbar ol, ul {
 list-style: none;
 }
 
-blockquote, q {
+#helpbar blockquote, q {
 quotes: none;
 }
 
-blockquote:before, blockquote:after,
+#helpbar blockquote:before, blockquote:after,
 q:before, q:after {
 content: '';
 content: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+#helpbar h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
 }
 
@@ -52,16 +52,16 @@ outline: 0;
 }
 
 /* remember to highlight inserts somehow! */
-ins {
+#helpbar ins {
 text-decoration: none;
 }
 
-del {
+#helpbar del {
 text-decoration: line-through;
 }
 
 /* tables still need 'cellspacing="0"' in the markup */
-table {
+#helpbar table {
 border-collapse: collapse;
 border-spacing: 0;
 }
