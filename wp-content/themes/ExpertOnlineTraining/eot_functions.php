@@ -285,8 +285,6 @@ function displayHelp_callback()
     {
       $video = getHelpVideoById(filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT));
       ob_start();
-d($video_id, $video);
-
 ?>
       <div>
         <div class="title">
