@@ -1640,16 +1640,16 @@ function category_sort($a, $b)
 {
   $order = array (
     'Leadership' => 1,
-    'Youth_Development_and_Play' => 2,
-    'Mental_Health_and_Behavior' => 3,
-    'Physical_and_Emotional_Safety' => 4,
+    'Youth Development and Play' => 2,
+    'Mental Health and Behavior' => 3,
+    'Physical and Emotional Safety' => 4,
     'Supervision' => 5,
-    'Creative_Literacy' => 6
+    'Creative Literacy' => 6
   );
 
   // make sure there is a value for a category even it its not in our array above
-  $order[$a] = (!isset($order[$a])) ? 100 : $order[$a];
-  $order[$b] = (!isset($order[$b])) ? 100 : $order[$b];
+  //$order[$a] = (!isset($order[$a])) ? 100 : $order[$a];
+  //$order[$b] = (!isset($order[$b])) ? 100 : $order[$b];
 
   if ($order[$a] == $order[$b])
   {
@@ -3405,7 +3405,7 @@ function getModulesByLibrary($library_id = 0)
 function getCategoriesByLibrary($library_id = 0){
     global $wpdb;
     $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
-    $categories = $wpdb->get_results("SELECT * FROM ".TABLE_CATEGORIES. " WHERE library_id = $library_id");
+    $categories = $wpdb->get_results("SELECT * FROM ".TABLE_CATEGORIES. " c WHERE c.library_id = $library_id ORDER BY c.order ASC");
     return $categories;
 }
 
@@ -5384,7 +5384,7 @@ function getCourseForm_callback ( )
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
             $categories = getCategoriesByLibrary(1);
             $master_modules = getModulesByLibrary(1);// Get all the modules from the master library (course).            
-            d($course_modules,$master_modules, $categories);
+            //d($course_modules,$master_modules, $categories);
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
             $master_module_ids = array_column($master_modules, 'ID');
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
@@ -5551,46 +5551,46 @@ function getCourseForm_callback ( )
                     {
                         $library_tag = $library->tag; // The library Tag for this subscription
                         $modules = array(); // Array of Module objects
-                        $categories = array(); // Array of the name of the categories
+                        //$categories = array(); // Array of the name of the categories
                         foreach($master_modules as $key => $module)
                         {
                             /* 
                              * This populates the modules array.
                              */
-                            $pieces = explode(" ", $module['tags']); // Expected result is [String category Library Codes] : The library code could be more than one.
-                            $category_name = $pieces[0]; // The category for this module
+                            //$pieces = explode(" ", $module['tags']); // Expected result is [String category Library Codes] : The library code could be more than one.
+                            //$category_name = $pieces[0]; // The category for this module
                             /*
                              * Create a module object and category if the module belongs to this subscription.
                              * Otherwise, skip them.
                              */
-                            if($category_name) // Check if there are tags set in LU
-                            {
+                           // if($category_name) // Check if there are tags set in LU
+                           // {
                                /*
                                 * Include only the modules that are in the same library tag
                                 */
-                            array_shift($pieces); // Remove the category in this array and left with the library codes.
-                                if (in_array($library_tag, $pieces)) 
-                                {   
+                           // array_shift($pieces); // Remove the category in this array and left with the library codes.
+                              //  if (in_array($library_tag, $pieces)) 
+                               // {   
                                     //echo "inarray<br>";
-                                    $new_module = new module( $module['ID'], $module['title'], $category_name, $module['component_type']); // Make a new module.
+                                    $new_module = new module( $module['ID'], $module['title'], $module['category'], $module['component_type']); // Make a new module.
                                     array_push($modules, $new_module); // Add the new module to the modules array.
                                     /*
                                      * Populate the category name array if the category name is not yet in the array.
                                      */
-                                    if(!in_array($category_name, $categories))
-                                    {
-                                        array_push($categories, $category_name);
-                                    }
-                                }
-                            }
+//                                    if(!in_array($category_name, $categories))
+//                                    {
+//                                        array_push($categories, $category_name);
+//                                    }
+                               // }
+                           // }
                         }
-                        usort($categories, "category_sort"); // Sort the categories based on the function below.
+                        //usort($categories, "category_sort"); // Sort the categories based on the function below.
                         /*  
                          * Display the category and display its modules
                          */
                         foreach($categories as $category)
                         {
-                            $category_name = str_replace("_", " ", $category);// The category name. Replace Coma with spaces.
+                            $category_name = $category->name;// The category name. Replace Coma with spaces.
                         ?>
                             <h3 class="library_topic"><?= $category_name ?></h3>
                         <?php
@@ -5603,7 +5603,7 @@ function getCourseForm_callback ( )
 //                                if($module->type == "page") 
 //                                { // Print the course modules.
                                     
-                                    if ( $module->category == $category )
+                                    if ( $module->category == $category_name )
                                     {
                                         $video_active = 0; // variable to indicate whether module is currently in the portal course
                                         $video_class = 'disabled'; // variable to indicate whther module is currently in the portal course
