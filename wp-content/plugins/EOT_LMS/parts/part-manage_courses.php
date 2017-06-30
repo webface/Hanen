@@ -44,8 +44,9 @@
           }
 
 ?>
-      <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.min.js'?>"></script>
-      <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery-ui.min.js'?>"></script>
+<!--      <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.min.js'?>"></script>
+      <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery-ui.min.js'?>"></script>-->
+      <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.dataTables.js'?>"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.eotprogressbar.js'?>"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.eotdatatables.js'?>"></script>
@@ -541,7 +542,8 @@
           /******************************************************************************************
           * Binds a live function to the "Create Staff" button on the "Add/Remove Staff" facebox view
           *******************************************************************************************/    
-          $('#create_staff_fb').live('click', function() {
+          //$('#create_staff_fb').live('click', function() {
+          $(document).on('click','#create_staff_fb',function(){
             group_id = $("#staff_and_assignment_list").attr("group_id");
             org_id = $("#group_list").attr("org_id");
             sub_id = $("#group_list").attr("subscription_id");
@@ -594,7 +596,8 @@
           /***************************************************************
           * The click event handler for the "Add/Remove Staff" button
           ****************************************************************/
-          $('#show_add_to_group').click(function () {
+          //$('#show_add_to_group').click(function () {
+          $(document).on('click','#show_add_to_group',function(){
             if($("#staff_and_assignment_list").attr("group_id")!="null")
             {
               //this binds the scrollpane reinit to the facebox reveal. Should handle the issue of the scroll bar not showing up.
@@ -629,7 +632,8 @@
             }
             });
             // Manage the add and remove button action.
-            $('.add_remove_btn').live('click', function () {
+            //$('.add_remove_btn').live('click', function () {
+            $(document).on('click','.add_remove_btnp',function(){
               var task = "";
               if ($(this).attr("status")=="add")
               {
@@ -688,7 +692,8 @@
           * Handles "Manage Courses" Button which lets the director manage which videos are in
           * the course as well as setting the due date for the assignment
           *******************************************************************************************/
-          $('#show_edit_videos_in_group').click(function() { //beginning of statement
+          //$('#show_edit_videos_in_group').click(function() { //beginning of statement
+          $(document).on('click','#show_edit_videos_in_group',function(){
             if($("#staff_and_assignment_list").attr("group_id")!="null")
             {
               $("#display_videos_icon").click();
