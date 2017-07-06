@@ -23,29 +23,34 @@
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
 
-class Ai1wm_Status_Controller {
+class Ai1wm_Directory {
 
-	public static function status( $params = array() ) {
+	/**
+	 * Delete directory and its contents
+	 * The method will recursively delete a directory and its contents.
+	 *
+	 * @param string $path Path to the directory
+	 * @return boolean
+	 *
+	 * @throws UnexpectedValueException
+	 */
+	public static function delete( $path ) {
+		// Iterate over directory
+		$iterator = new Ai1wm_Recursive_Directory_Iterator( $path );
 
-		// Set params
-		if ( empty( $params ) ) {
-			$params = stripslashes_deep( $_REQUEST );
+		// Recursively iterate over directory
+		$iterator = new RecursiveIteratorIterator( $iterator, RecursiveIteratorIterator::CHILD_FIRST, RecursiveIteratorIterator::CATCH_GET_CHILD );
+
+		// Remove files and directories
+		foreach ( $iterator as $item ) {
+			if ( $item->isDir() ) {
+				@rmdir( $item->getPathname() );
+			} else {
+				@unlink( $item->getPathname() );
+			}
 		}
 
-		// Set secret key
-		$secret_key = null;
-		if ( isset( $params['secret_key'] ) ) {
-			$secret_key = trim( $params['secret_key'] );
-		}
-
-		try {
-			// Ensure that unauthorized people cannot access status action
-			ai1wm_verify_secret_key( $secret_key );
-		} catch ( Ai1wm_Not_Valid_Secret_Key_Exception $e ) {
-			exit;
-		}
-
-		echo json_encode( get_option( AI1WM_STATUS, array() ) );
-		exit;
+		// Remove path
+		return @rmdir( $path );
 	}
 }
