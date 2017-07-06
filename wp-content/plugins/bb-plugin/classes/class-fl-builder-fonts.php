@@ -262,7 +262,7 @@ final class FLBuilderFonts {
 	static public function combine_google_fonts() {
 		global $wp_styles;
 
-		// Check for any enqueued `fonts.googleapis.com` from themes or plugins
+		// Check for any enqueued `fonts.googleapis.com` from BB theme or plugin
 		if ( isset( $wp_styles->queue ) ) {
 
 			$google_fonts_domain = '//fonts.googleapis.com/css';
@@ -274,7 +274,7 @@ final class FLBuilderFonts {
 			// Collect all enqueued google fonts
 			foreach ( $wp_styles->queue as $key => $handle ) {
 
-				if ( ! isset( $wp_styles->registered[ $handle ] ) ) {
+				if ( ! isset( $wp_styles->registered[ $handle ] ) || strpos( $handle, 'fl-builder-google-fonts-' ) === false ) {
 					continue;
 				}
 
