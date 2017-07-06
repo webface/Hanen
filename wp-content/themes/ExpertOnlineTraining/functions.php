@@ -327,14 +327,11 @@ function acf_load_video_choices( $field ) {
     // reset choices
     $field['choices'] = array();
 
-    $master_modules = getModules(lrn_upon_LE_Course_ID); // Get all the modules from the master LE course.
+    $master_modules = getModules(); // Get all the modules from the master LE course.
 
     // loop through array and add to field 'choices'
     foreach ($master_modules as $module) {
-        if($module['component_type'] == 'page') // filter out only video types
-        {
-            $field['choices'][ $module['title'] ] = $module['title'];
-        }
+        $field['choices'][ $module['title'] ] = $module['title'];
     }
 
     // return the field

@@ -313,7 +313,7 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
 
                     if($email == $current['user_email'])
                     {
-                        enrollUserInCourse($email,'',$data);
+                        enrollUserInCourse($email, $data);
                     }
                 }
             }

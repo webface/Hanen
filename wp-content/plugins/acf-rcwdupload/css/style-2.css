@@ -1,0 +1,14 @@
+.rcwdplupload-filelist{		height: 16px;
+							padding: 5px;
+							background:#fff;
+							border: 1px solid #ddd;
+							-moz-border-radius: 	0;
+							-khtml-border-radius: 	0;
+							-webkit-border-radius: 	0;
+							border-radius: 			0;							
+							-moz-box-shadow: 	inset 0 1px 2px rgba(0, 0, 0, 0.07);		
+							-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+							box-shadow: 		inset 0 1px 2px rgba(0, 0, 0, 0.07);
+}
+.rcwdplupload-remove{		top:6px;
+}

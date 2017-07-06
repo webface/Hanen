@@ -4,13 +4,13 @@
 **/
 
 // define default name for Leadership Essentials - ie. the name of the course in LU in case we need to reference it.
-define ('lrn_upon_LE_Course_TITLE', 'Leadership Essentials');
+define ('LE_LIBRARY_TITLE', 'Leadership Essentials'); // @TODO remove this later on
 
 // define default length of each video/module
-define ('lrn_upon_Module_Video_Length', 10);
+define ('DEFAULT_MODULE_VIDEO_LENGTH', 10);
 
 // define default length of each quiz
-define ('lrn_upon_Quiz_Length', 7);
+define ('DEFAULT_QUIZ_LENGTH', 7);
 
 // define breadcrumb to dashboard page
 define ('CRUMB_DASHBOARD', '<a href="'. get_home_url() .'/dashboard/" onclick="load(\'load_dashboard\')">My Dashboard</a>');
@@ -110,7 +110,7 @@ $GLOBALS['pages_with_acf_form'] = array (
 );
 
 // The ID of the ACF upload spreadsheet form
-define ('ACF_UPLOAD_SPREADSHEET', 1206);
+define ('ACF_UPLOAD_SPREADSHEET', 11842);
 
 // The ID of the ACF upload resources form
 define ('ACF_UPLOAD_RESOURCE', 1439);
