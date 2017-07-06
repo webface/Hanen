@@ -72,7 +72,7 @@ div#poststuff {
 
 /* Mobile Portrait */
 @media only screen and (max-width: 800px) {
-    div.entry-content{ width:443; }
+    div.entry-content{ width:443px; }
 }
 
 /* Mobile Landscape and Portrait */
@@ -91,7 +91,7 @@ div#poststuff {
 /* Ipad */
 @media only screen and (max-width: 1024px) {
 
-    div.entry-content{ width:545; }
+    div.entry-content{ width:545px; }
     #content { width: 400px; }
     #content h1 { font-size: 22px; line-height: 30px; background-color: #000; color: #FFF; padding: 10px; }
     #content ul#nav { display: none; }
@@ -107,27 +107,30 @@ div#poststuff {
 
 /* High end windows phone */
 @media only screen and (max-width: 768px) {
-    div.entry-content{ width:725; }
+    div.entry-content{ width:725px; }
 }
 /* iPhone */
 @media only screen and (max-width: 640px) {
-    div.entry-content{ width:592; }
+    div.entry-content{ width:592px; }
+    a.aMagazine { margin: 0px !important; margin-left: 0px;}
 }
 /* Nexus 6p && Iphone 6 Plus */
 @media only screen and (max-width: 415px) {
-    div.entry-content{ width:363; }
+    div.entry-content{ width:363px; }
+    a.aMagazine { margin: 0px !important; margin-left: 0px;}
 }
 /* iPhone 6 */
 @media only screen and (max-width: 375px) {
-    div.entry-content{ width:332; }
+    div.entry-content{ width:332px; }
+    a.aMagazine { margin: 0px !important; margin-left: 0px;}
 }
 /* Galaxy S5 */
 @media only screen and (max-width: 360px) {
-    div.entry-content{ width:320; }
+    div.entry-content{ width:320px; }
 }
 /* iPhone 5 */
 @media only screen and (max-width: 320px) {
-    div.entry-content{ width:293; }
+    div.entry-content{ width:293px; }
 }
 
 .add_remove_btn {
