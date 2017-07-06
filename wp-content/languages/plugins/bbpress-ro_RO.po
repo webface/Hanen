@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - bbPress - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-05-10 11:28:19+0000\n"
+"PO-Revision-Date: 2017-06-29 16:22:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1282,7 +1282,7 @@ msgstr "Esțti sigur că vrei să ștergi asta definitiv?"
 #: templates/default/bbpress/form-topic-tag.php:88
 #: templates/default/bbpress/form-topic-tag.php:101
 msgid "Delete"
-msgstr "Ștergere"
+msgstr "Șterge"
 
 #: includes/replies/template.php:1695
 msgid "Cancel"
