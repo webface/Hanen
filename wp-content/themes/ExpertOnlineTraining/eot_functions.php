@@ -3233,7 +3233,7 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
       }
       else if($copy && $copy_course_id > 0) // copy all the modules from the course
       {
-        $sql = "INSERT INTO ".TABLE_COURSES_MODULES." (course_id, module_id) SELECT ".$wpdb->insert_id.", m.module_id FROM ".TABLE_COURSES_MODULES." m WHERE m.course_id = $copy_course_id ";
+        $sql = "INSERT INTO ".TABLE_COURSE_MODULE_RESOURCES." (course_id, module_id, resource_id, type) SELECT ".$wpdb->insert_id.", m.module_id,m.resource_id,m.type FROM ".TABLE_COURSE_MODULE_RESOURCES." m WHERE m.course_id = $copy_course_id ";
         $result = $wpdb->query($sql);
         if($result !== FALSE) // return the course id of the copied course
         {
@@ -3259,11 +3259,11 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
 function getModulesInCourse($course_id = 0){
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT m.*,c.name AS category "
+    $sql = "SELECT DISTINCT m.*,c.name AS category "
                 . "FROM " . TABLE_MODULES . " AS m "
-                . "LEFT JOIN " . TABLE_COURSES_MODULES . " AS cm ON cm.module_id = m.id "
+                . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.module_id = m.id "
                 . "LEFT JOIN ".TABLE_CATEGORIES." AS c ON m.category_id = c.id "            
-                . "WHERE cm.course_id = $course_id";
+                . "WHERE cmr.course_id = $course_id";
 
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
     return $course_modules;
@@ -3486,6 +3486,25 @@ function getEnrolledUsersInCourse($course_id = 0)
  * Get the quiz resources by module ids
  *  @param string module_ids - the module ids separated by comma.
  *
+ *  @return array() - an array of VideoResources data
+ */
+function getVideoResourcesInModules($module_ids = '')
+{
+    if (empty($module_ids))
+      return NULL;
+
+    global $wpdb;
+    $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
+    $resources = $wpdb->get_results("SELECT mr.module_id, v.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN ".TABLE_VIDEOS." v "
+            . "ON mr.resource_id = v.ID "
+            . "WHERE mr.module_id IN (".$module_ids.") AND mr.resource_type = 'video' GROUP BY v.name ORDER BY mr.order ASC",ARRAY_A);
+    return $resources;
+}
+
+/**
+ * Get the quiz resources by module ids
+ *  @param string module_ids - the module ids separated by comma.
+ *
  *  @return array() - an array of QuizResources data
  */
 function getQuizResourcesInModules($module_ids = '')
@@ -3538,16 +3557,29 @@ function getQuizzesInCourse($course_id = 0)
 /**
  * get the resources in a course
  * @param $course_id - the course ID
+ * @param $type - the type of resource
  * @return array of resources in course
  */
-function getResourcesInCourse($course_id = 0)
+function getResourcesInCourse($course_id = 0,$type='')
 {
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    switch($type){
+        case 'exam':
+            $table=TABLE_QUIZ;
+            break;
+        case 'video':
+            $table=TABLE_VIDEOS;
+            break;
+        case 'doc':
+            $table=TABLE_RESOURCES;
+            break;
+    }
     $sql = "SELECT r.* "
-                . "FROM " . TABLE_RESOURCES . " AS r "
-                . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.ID "
-                . "WHERE cr.course_id = $course_id";
+                . "FROM " . $table . " AS r "
+                . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cr ON cr.resource_id = r.ID "
+                . "WHERE cr.course_id = $course_id AND cr.type='$type'";
+        error_log($sql);
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
 }
@@ -3606,7 +3638,7 @@ function getLibraryCategory($id = 0, $library_id = 0)
  * @return array handouts
  * 
  */
-function getHandoutResourcesInCourseModules($module_ids = '')
+function getHandoutResourcesInModules($module_ids = '')
 {
     if (empty($module_ids))
       return NULL;
@@ -3644,25 +3676,26 @@ function getQuizResourcesInModule($module_id = 0){
  *
  *  @return json encoded list of modules
  */
-function toggleItemInAssignment($course_id = 0, $data = array()) {
+function toggleVideoInAssignment($course_id = 0, $data = array()) {
   extract($data);
   /*
    * Variables required in $data
    * org_id - the organization ID
-   * module_id - the module ID in master library
+   * module_id - the module ID
+   * video_id - the video ID in videos table
    */
   global $wpdb;
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
   $modules = $wpdb->get_results("SELECT m.* "
                 . "FROM " . TABLE_MODULES . " AS m "
-                . "LEFT JOIN " . TABLE_COURSES_MODULES . " AS cm ON cm.module_id = m.ID "
-                . "WHERE cm.course_id = $course_id", ARRAY_A); // All the modules registered in the course.
+                . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.module_id = m.ID "
+                . "WHERE cmr.course_id = $course_id AND cmr.type='video'", ARRAY_A); // All the modules registered in the course.
   $course_module_ids = array_column($modules, 'ID'); // Modules IDS
 
   // Check if the module id is in the course
   if(in_array($module_id, $course_module_ids))
   {
-      $result = $wpdb->delete(TABLE_COURSES_MODULES, array('course_id' => $course_id, 'module_id'=>$module_id));
+      $result = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'module_id'=>$module_id,'type'=>'video'));
             if ($result === false) 
             {
                 return false;
@@ -3674,7 +3707,7 @@ function toggleItemInAssignment($course_id = 0, $data = array()) {
   }
   else
   {
-    $result = $wpdb->insert(TABLE_COURSES_MODULES, array('course_id'=>$course_id, 'module_id'=>$module_id));
+    $result = $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array('course_id'=>$course_id, 'module_id'=>$module_id,'resource_id'=>$video_id,'type'=>'video'));
             if ($result === false) 
             {
                 return false;
@@ -3698,20 +3731,21 @@ function toggleQuizInAssignment($course_id = 0, $data = array()) {
   /*
    * Variables required in $data
    * org_id - the organization ID
+   * module_id - the module ID
    * quiz_id - the quiz id
    */
   global $wpdb;
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
   $quizzes=$wpdb->get_results("SELECT q.* "
                 . "FROM " . TABLE_QUIZ . " AS q "
-                . "LEFT JOIN " . TABLE_COURSES_QUIZZES . " AS cq ON cq.quiz_id = q.ID "
-                . "WHERE cq.course_id = $course_id", ARRAY_A); // All the modules registered in the course.
+                . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.resource_id = q.ID "
+                . "WHERE cmr.course_id = $course_id AND cmr.type='exam'", ARRAY_A); // All the modules registered in the course.
   $course_quizzes_ids = array_column($quizzes, 'ID'); // Modules IDS
 
   // Check if the module id is in the course
   if(in_array($quiz_id, $course_quizzes_ids))
   {
-      $result = $wpdb->delete(TABLE_COURSES_QUIZZES, array('course_id' => $course_id, 'quiz_id'=>$quiz_id));
+      $result = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'resource_id'=>$quiz_id,'module_id'=>$module_id,'type'=>'exam'));
             if ($result === false) 
             {
                 return false;
@@ -3723,7 +3757,7 @@ function toggleQuizInAssignment($course_id = 0, $data = array()) {
   }
   else
   {
-    $result = $wpdb->insert(TABLE_COURSES_QUIZZES, array('course_id'=>$course_id, 'quiz_id'=>$quiz_id));
+    $result = $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'resource_id'=>$quiz_id,'module_id'=>$module_id,'type'=>'exam'));
             if ($result === false) 
             {
                 return false;
@@ -3747,20 +3781,21 @@ function toggleResourceInAssignment($course_id = 0, $data = array()) {
   /*
    * Variables required in $data
    * org_id - the organization ID
+   * module_id - the module ID
    * resource_id - the resource ID 
    */
   global $wpdb;
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
   $resources=$wpdb->get_results("SELECT r.* "
                 . "FROM " . TABLE_RESOURCES . " AS r "
-                . "LEFT JOIN " . TABLE_COURSES_RESOURCES . " AS cr ON cr.resource_id = r.ID "
-                . "WHERE cr.course_id = $course_id", ARRAY_A); // All the modules registered in the course.
+                . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.resource_id = r.ID "
+                . "WHERE cmr.course_id = $course_id AND cmr.type='doc'", ARRAY_A); // All the modules registered in the course.
   $course_resource_ids = array_column($resources, 'ID'); // Modules IDS
 
   // Check if the module id is in the course
   if(in_array($resource_id, $course_resource_ids))
   {
-      $result = $wpdb->delete(TABLE_COURSES_RESOURCES, array('course_id' => $course_id, 'resource_id'=>$resource_id));
+      $result = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'resource_id'=>$resource_id,'module_id'=>$module_id,'type'=>'doc'));
             if ($result === false) 
             {
                 return false;
@@ -3772,7 +3807,7 @@ function toggleResourceInAssignment($course_id = 0, $data = array()) {
   }
   else
   {
-    $result = $wpdb->insert(TABLE_COURSES_RESOURCES, array('course_id'=>$course_id, 'resource_id'=>$resource_id));
+    $result = $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array('course_id'=>$course_id, 'resource_id'=>$resource_id,'module_id'=>$module_id,'type'=>'doc'));
             if ($result === false) 
             {
                 return false;
@@ -3797,18 +3832,19 @@ function toggleItemInAssignment_callback()
         $item               = filter_var($_REQUEST['item'], FILTER_SANITIZE_STRING);
         $item_id            = filter_var($_REQUEST['item_id'], FILTER_SANITIZE_NUMBER_INT);
         $org_id             = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $module_id          = filter_var($_REQUEST['module_id'], FILTER_SANITIZE_NUMBER_INT);
         
         switch($item){
             case "video":
-                $info_data          = array("org_id" => $org_id, "module_id" => $item_id);
-                $response = toggleItemInAssignment($course_id, $info_data);
+                $info_data          = array("org_id" => $org_id, "video_id" => $item_id,'module_id'=>$module_id);
+                $response = toggleVideoInAssignment($course_id, $info_data);
                 break;
             case "quiz":
-                $info_data          = array("org_id" => $org_id, "quiz_id" => $item_id);
+                $info_data          = array("org_id" => $org_id, "quiz_id" => $item_id,'module_id'=>$module_id);
                 $response=  toggleQuizInAssignment($course_id, $info_data);
                 break;
             case "resource":
-                $info_data          = array("org_id" => $org_id, "resource_id" => $item_id);
+                $info_data          = array("org_id" => $org_id, "resource_id" => $item_id,'module_id'=>$module_id);
                 $response= toggleResourceInAssignment($course_id, $info_data);
                 break;
         }
@@ -5374,12 +5410,13 @@ function getCourseForm_callback ( )
             $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
-            $course_modules = getModulesInCourse($course_id); // all the modules in the specified course
-            $course_quizzes=  getQuizzesInCourse($course_id);
-            $course_resources=getResourcesInCourse($course_id);
-            $course_modules_titles = array_column($course_modules, 'title'); // only the titles of the modules in the specified course
+            $course_videos = getResourcesInCourse($course_id,'video'); // all the modules in the specified course
+            $course_quizzes=  getResourcesInCourse($course_id,'exam');
+            $course_handouts=getResourcesInCourse($course_id,'doc');
+            //d($course_videos,$course_quizzes,$course_handouts);
+            $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
-            $course_resources_titles = array_column($course_resources, 'name');
+            $course_handouts_titles = array_column($course_handouts, 'name');
             $modules_in_portal = getModules($org_id);// all the modules in this portal
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
             $categories = getCategoriesByLibrary(1);
@@ -5390,6 +5427,21 @@ function getCourseForm_callback ( )
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
             $all_module_ids = array_merge($master_module_ids, $modules_in_portal_ids);
             $all_module_ids_string = implode(',',$all_module_ids);
+            $videoos=array();
+            $vids=  getVideoResourcesInModules($all_module_ids_string);
+            foreach($vids as $video)
+            {
+              if(isset($videoos[$video['module_id']]))
+              {
+                array_push($videoos[$video['module_id']], array('ID'=>$video['ID'],'name'=>$video['name']));
+              }
+              else
+              {
+                $videoos[$video['module_id']]=array();
+                array_push($videoos[$video['module_id']], array('ID'=>$video['ID'],'name'=>$video['name']));
+              }
+            }
+            //d($vids,$videoos);
             $exams=array();
             
             $resources=getQuizResourcesInModules($all_module_ids_string);
@@ -5406,7 +5458,7 @@ function getCourseForm_callback ( )
               }
             }
             $handouts=array();
-            $handout_resources=  getHandoutResourcesInCourseModules($all_module_ids_string);
+            $handout_resources=  getHandoutResourcesInModules($all_module_ids_string);
             //d($handout_resources);
             foreach($handout_resources as $handout){
                 if(isset($handouts[$handout['module_id']]))
@@ -5557,37 +5609,15 @@ function getCourseForm_callback ( )
                             /* 
                              * This populates the modules array.
                              */
-                            //$pieces = explode(" ", $module['tags']); // Expected result is [String category Library Codes] : The library code could be more than one.
-                            //$category_name = $pieces[0]; // The category for this module
-                            /*
-                             * Create a module object and category if the module belongs to this subscription.
-                             * Otherwise, skip them.
-                             */
-                           // if($category_name) // Check if there are tags set in LU
-                           // {
-                               /*
-                                * Include only the modules that are in the same library tag
-                                */
-                           // array_shift($pieces); // Remove the category in this array and left with the library codes.
-                              //  if (in_array($library_tag, $pieces)) 
-                               // {   
-                                    //echo "inarray<br>";
                                     $new_module = new module( $module['ID'], $module['title'], $module['category'], $module['component_type']); // Make a new module.
                                     array_push($modules, $new_module); // Add the new module to the modules array.
-                                    /*
-                                     * Populate the category name array if the category name is not yet in the array.
-                                     */
-//                                    if(!in_array($category_name, $categories))
-//                                    {
-//                                        array_push($categories, $category_name);
-//                                    }
-                               // }
-                           // }
+
                         }
                         //usort($categories, "category_sort"); // Sort the categories based on the function below.
                         /*  
                          * Display the category and display its modules
                          */
+                        // d($modules,$exams,$handouts);
                         foreach($categories as $category)
                         {
                             $category_name = $category->name;// The category name. Replace Coma with spaces.
@@ -5597,7 +5627,8 @@ function getCourseForm_callback ( )
                             /************************************************************************************************
                             * Print modules that are in the same category its in.
                             *************************************************************************************************/
-                            foreach( $modules as $key => $module )
+                           
+                        foreach( $modules as $key => $module )
                             {
                                  
 //                                if($module->type == "page") 
@@ -5608,8 +5639,8 @@ function getCourseForm_callback ( )
                                         $video_active = 0; // variable to indicate whether module is currently in the portal course
                                         $video_class = 'disabled'; // variable to indicate whther module is currently in the portal course
                                         $module_id = $module->id; // The module ID 
-                                        echo '<li class="video_item" video_id="' . $module_id . '">';
-                                            if(in_array($module->title, $course_modules_titles))
+                                        echo '<li class="video_item" video_id="' .$module_id . '">';
+                                            if(in_array($module->title, $course_videos_titles))
                                             {   
                                                 $video_active = '1';
                                                 $video_class = 'enabled';
@@ -5624,31 +5655,39 @@ function getCourseForm_callback ( )
                                                 }
                                             }
                                             $module_time = (isset($videos[$module->title])) ? $videos[$module->title]->secs/60 : DEFAULT_MODULE_VIDEO_LENGTH; // The module time, divided by 60 to convert them in minutes.
-                                    ?>
-                                            <input collection="add_remove_from_group" video_length="<?= $module_time ?>" org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" group_id=<?= $course_id ?> assignment_id="<?= $course_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
+                                              if(isset($videoos[$module_id]))
+                                              {
+                                      // echo "Theres a vid";
+                                            foreach($videoos[$module_id] as $video){
+                                                    $vid_id = $video['ID'];
+                                            ?>
+                                            <input collection="add_remove_from_group" video_length="<?= $module_time ?>" org_id=" <?= $org_id ?>" item_id=" <?= $vid_id ?>" portal_subdomain="<?= $portal_subdomain ?>"  group_id=<?= $course_id ?> assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
                                             <label for="chk_video_<?= $module_id ?>">
                                                 <span name="video_title" class="<?=$video_class?> video_title">
                                                   <b>Video</b> - <span class="vtitle"><?= $module->title ?></span>
                                                 </span>
                                             </label>
-                                            <div video_id=<?= $module_id ?> class="<?=$video_class?> item" <?=(!$video_active)?' org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" style="display:none"':'';?> >
                                             <?php
-                                               
+                                                    }
+                                                }
                                             ?>
+                                            <div video_id=<?= $module_id ?> class="<?=$video_class?> item" <?=(!$video_active)?' org_id=" <?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" style="display:none"':'';?> >
+                                            
                                                 <?php
                                                
                                                 /* 
                                                  * Check if there is a an exam for this module
                                                  * The exam checkbox input will not be shown, if there are no exam uploaded in LU.
-                                                 * Find the ID of this exam in the modules array.
+                                                 * Find the ID of this exam in the exams array.
                                                  */
                                                 if(isset($exams[$module_id]))
                                                 {
-                                                    foreach($exams[$module_id] as $exam){
+                                                    foreach($exams[$module_id] as $exam)
+                                                    {
                                                             $exam_id = $exam['ID']; 
                                                    
                                             ?>
-                                                    <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   group_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
+                                                    <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" video_id="<?= $module_id ?>" assignment_id="<?= $module_id ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   group_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
                                                     <label for="chk_defaultquiz_<?= $module_id ?>">
                                                       <i>Exam</i> (<?= $exam['name'] ?>) 
                                                     </label><br>
@@ -5658,7 +5697,7 @@ function getCourseForm_callback ( )
                                                 /* 
                                                  * Check if there is a handout for this module
                                                  * The resource checkbox input will not be shown, if there are no resources.
-                                                 * Find the ID of this exam in the modules array.
+                                                 * Find the ID of this exam in the handouts array.
                                                  */
                                                 if(isset($handouts[$module_id]))
                                                 {
@@ -5666,7 +5705,7 @@ function getCourseForm_callback ( )
                                                             $handout_id = $handout['ID']; 
                                                    
                                             ?>
-                                                    <input item="resource" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($handout['name'], $course_resources_titles) ? ' checked="checked"':''; $handout_id = 0; // Reset Exam ID?> /> 
+                                                    <input item="resource" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" portal_subdomain="<?= $portal_subdomain ?>" <?= in_array($handout['name'], $course_handouts_titles) ? ' checked="checked"':''; $handout_id = 0; // Reset Exam ID?> /> 
                                                     <label for="chk_defaultresource_<?= $handout_id ?>">
                                                       <i>Resource</i> (<?= $handout['name'] ?>) 
                                                     </label><br>

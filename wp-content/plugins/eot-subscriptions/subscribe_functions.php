@@ -184,7 +184,16 @@ function display_subscriptions ()
                             {
                                 // add the module to the course. Dont forget the quiz.
                                 //$response = addModule($course_IDs[$course_name], $org_subdomain, $data);
-                                $response=$wpdb->insert(TABLE_COURSES_MODULES, array('course_id'=>$course_IDs[$course_name],'module_id'=>$module_id));
+                                $response=$wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array('course_id'=>$course_IDs[$course_name],'module_id'=>$module_id,'resource_id'=>$action['video_id'],'type'=>'video'));
+                                $sql="SELECT * FROM ".TABLE_MODULE_RESOURCES." WHERE module_id = $module_id AND resource_type IN ('exam','doc')";
+                                $quizzes_handouts = $wpdb->get_results($sql);
+                                //d($quizzes_handouts);
+                                if(isset($quizzes_handouts) && (count($quizzes_handouts)>0))
+                                {
+                                    foreach ($quizzes_handouts as $qh) {
+                                        $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array('course_id'=>$course_IDs[$course_name],'module_id'=>$module_id,'resource_id'=>$qh->resource_id,'type'=>$qh->resource_type));
+                                    }
+                                }
                                 echo "<p>Trying to add $video_name to " . $course_IDs[$course_name] . "</p>";
                                 if ($response === false)
                                     echo "ERROR in display subscription: Couldn't add module to course: " . $wpdb->last_error . "<br>";
@@ -193,7 +202,7 @@ function display_subscriptions ()
                             {
                                 // remove the module from the course. Dont forget the quiz.
                                 //$response = deleteModule($course_IDs[$course_name], $org_subdomain, $data);
-                                $response =$wpdb->delete(TABLE_COURSES_MODULES, array('course_id' => $course_IDs[$course_name],'module_id'=>$module_id));
+                                $response =$wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_IDs[$course_name],'module_id'=>$module_id));
                                 echo "<p>Trying to delete $video_name from " . $course_IDs[$course_name] . "</p>";
                                 if ($response=== false)
                                     echo "ERROR in display subscription: Couldn't remove module from course: " . $wpdb->last_error . "<br>";

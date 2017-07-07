@@ -823,7 +823,8 @@
                         **********************************************************************************/
                         var group_id = obj.attr("group_id"); // the course id
                         var assignment_id = obj.attr("assignment_id"); // assignment id
-                        var item_id = obj.attr("video_id"); // the item id
+                        var item_id = obj.attr("item_id"); // the item id
+                        var module_id = obj.attr("video_id");//the module id
                         var org_id_e = obj.attr("org_id"); // org_id
                         var subdomain = obj.attr("portal_subdomain"); // portal subdomain
 
@@ -833,6 +834,7 @@
                             group_id: group_id,
                             assignment_id: assignment_id,
                             item_id: item_id,
+                            module_id: module_id,
                             item: 'video',
                             org_id: org_id_e,
                             portal_subdomain: subdomain,
@@ -878,7 +880,7 @@
                         {
                         var obj = $(this);
                         console.log('Ive already been clicked');
-                        $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&org_id='+obj.attr("org_id")+'&portal_subdomain='+obj.attr("portal_subdomain"),
+                        $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&org_id='+obj.attr("org_id")+'&module_id='+obj.attr("video_id")+'&portal_subdomain='+obj.attr("portal_subdomain"),
                           function(json)
                           {
                           if(json.action=="added")
@@ -905,7 +907,7 @@
                         {
                         var obj = $(this)
                         
-                        $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&org_id='+obj.attr("org_id")+'&portal_subdomain='+obj.attr("portal_subdomain"),
+                        $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&module_id='+obj.attr("video_id")+'&org_id='+obj.attr("org_id")+'&portal_subdomain='+obj.attr("portal_subdomain"),
                           function(json)
                           {
                           if(json.action=="added")

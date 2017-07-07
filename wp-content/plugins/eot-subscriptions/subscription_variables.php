@@ -123,6 +123,7 @@ define ('TABLE_COURSES_QUIZZES',$wpdb->prefix.'course_quizzes');
 define ('TABLE_COURSES_RESOURCES',$wpdb->prefix.'course_resources');
 define ('TABLE_MODULES', $wpdb->prefix.'modules');
 define ('TABLE_MODULE_RESOURCES',$wpdb->prefix.'module_resources');
+define ('TABLE_COURSE_MODULE_RESOURCES',$wpdb->prefix.'course_module_resources');
 define ('TABLE_QUIZ', $wpdb->prefix.'quiz');
 define ('TABLE_CATEGORIES', $wpdb->prefix.'category');
 
