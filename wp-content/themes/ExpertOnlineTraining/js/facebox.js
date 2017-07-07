@@ -321,7 +321,8 @@
   
 	//Capture onclick for all save/upload buttons
     //Also disables the button so users don't submit more than once
-    $('a[rel*=submit_button]').live('click', function () {
+    //$('a[rel*=submit_button]').live('click', function () {
+        $(document).on('click','a[rel*=submit_button]',function(){
 		if($(this).attr('active')==1)
 		{
 			return false;
@@ -333,8 +334,9 @@
 		}
 	});
 	  
-    $('form[rel*=submit_form]').live('submit',function()
-    {
+    //$('form[rel*=submit_form]').live('submit',function()
+    //{
+     $(document).on('submit','form[rel*=submit_form]',function(){
   		var form = $(this);
   		var form_name = form.attr('frm_name');
       var form_action = form.attr('frm_action');
@@ -397,21 +399,24 @@
 		return false;
     }); 
 	
-	$('a[rel=done_button]').live('click',
-      function()
-      {
+//	$('a[rel=done_button]').live('click',
+//      function()
+//      {
+$(document).on('click','a[rel=done_button]',function(){
         $(document).trigger('close.facebox');
       }
     );
-    $('a[rel=loading]').live('click',
-      function()
-      {
+//    $('a[rel=loading]').live('click',
+//      function()
+//      {
+$(document).on('click','a[rel=loading]',function(){
         $.facebox.loading();
       }
     );
-    $('a[rel=refresh]').live('click',
-      function()
-      {
+//    $('a[rel=refresh]').live('click',
+//      function()
+//      {
+$(document).on('click','a[rel=refresh]',function(){
         $('#staff_listing_pane').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
       }
     );
@@ -419,9 +424,10 @@
   * "Remove All" button in manage courses
   * This removes enrollments of all the staff members in a course.
   */
-	$('a[rel=unselect_all_button]').live('click',
-      function()
-      {
+//	$('a[rel=unselect_all_button]').live('click',
+//      function()
+//      {
+$(document).on('click','a[rel=unselect_all_button]',function(){
         var form = $('form#'+$(this).attr("acton"));
         form
           .find('[collection='+$(this).attr('collection')+'][status="remove"]')
@@ -445,10 +451,11 @@
     * "Add All" button in manage courses
     * This enroll all the staff members in a course.
     */
-    $('a[rel=select_all_button]').live('click',
-      function()
-      {
-        var form = $('#'+$(this).attr("acton"));
+//    $('a[rel=select_all_button]').live('click',
+//      function()
+//      {
+$(document).on('click','a[rel=select_all_button]',function(){
+    var form = $('#'+$(this).attr("acton"));
         form
           .find('[collection='+$(this).attr('collection')+'][status="add"]')
           .each(
