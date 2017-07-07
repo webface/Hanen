@@ -3656,7 +3656,8 @@ function getHandoutResourcesInModules($module_ids = '')
  * @return array quizzes
  * 
  */
-function getQuizResourcesInModule($module_id = 0){
+function getQuizResourcesInModule($module_id = 0)
+{
 
     if (!$module_id)
       return NULL;
@@ -3676,7 +3677,8 @@ function getQuizResourcesInModule($module_id = 0){
  *
  *  @return json encoded list of modules
  */
-function toggleVideoInAssignment($course_id = 0, $data = array()) {
+function toggleVideoInAssignment($course_id = 0, $data = array()) 
+{
   extract($data);
   /*
    * Variables required in $data
@@ -3726,7 +3728,8 @@ function toggleVideoInAssignment($course_id = 0, $data = array()) {
  *
  *  @return json encoded list of modules
  */
-function toggleQuizInAssignment($course_id = 0, $data = array()) {
+function toggleQuizInAssignment($course_id = 0, $data = array()) 
+{
   extract($data);
   /*
    * Variables required in $data
@@ -3776,7 +3779,8 @@ function toggleQuizInAssignment($course_id = 0, $data = array()) {
  *
  *  @return json encoded list of modules
  */
-function toggleResourceInAssignment($course_id = 0, $data = array()) {
+function toggleResourceInAssignment($course_id = 0, $data = array()) 
+{
   extract($data);
   /*
    * Variables required in $data
