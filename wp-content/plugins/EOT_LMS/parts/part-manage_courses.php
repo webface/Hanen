@@ -633,7 +633,7 @@
             });
             // Manage the add and remove button action.
             //$('.add_remove_btn').live('click', function () {
-            $(document).on('click','.add_remove_btnp',function(){
+            $(document).on('click','.add_remove_btn',function(){
               var task = "";
               if ($(this).attr("status")=="add")
               {
