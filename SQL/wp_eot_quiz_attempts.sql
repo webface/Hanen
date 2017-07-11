@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.6.35)
 # Database: eot_v5
-# Generation Time: 2017-07-11 17:12:03 +0000
+# Generation Time: 2017-07-11 17:12:47 +0000
 # ************************************************************
 
 
@@ -20,19 +20,18 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table wp_course_module_resources
+# Dump of table wp_eot_quiz_attempts
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `wp_course_module_resources`;
+DROP TABLE IF EXISTS `wp_eot_quiz_attempts`;
 
-CREATE TABLE `wp_course_module_resources` (
-  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `course_id` bigint(20) unsigned DEFAULT NULL,
-  `resource_id` bigint(20) unsigned DEFAULT NULL,
-  `module_id` bigint(20) unsigned DEFAULT NULL,
-  `type` enum('exam','doc','link','video','custom_video') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `wp_eot_quiz_attempts` (
+  `quiz_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `score` int(11) DEFAULT NULL,
+  `completed` tinyint(1) DEFAULT NULL,
+  `date_attempted` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 

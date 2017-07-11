@@ -44,13 +44,9 @@
           }
 
 ?>
-<!--      <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.min.js'?>"></script>
-      <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery-ui.min.js'?>"></script>-->
-      <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.dataTables.js'?>"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.eotprogressbar.js'?>"></script>
       <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.eotdatatables.js'?>"></script>
-      <script src="<?= get_template_directory_uri() . '/js/facebox.js'?>" type="text/javascript"></script>
       <!-- Start of left container-->
       <div style="float:left;" id="group_list" class="holder osX" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" org_subdomain="<?= $org_subdomain ?>"> 
         <div style="width:250px;" class="tableheadboxcontainer">
@@ -394,9 +390,10 @@
         padding: 0;
       }
        </style>
+ 
+      <link rel="stylesheet" type="text/css" media="all" href="<?= get_template_directory_uri() . "/css/jquery.jscrollpane.css"?>" /> 
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.mousewheel.js'?>"></script>
-      <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jScrollPane.js'?>"></script> 
-      <link rel="stylesheet" type="text/css" media="all" href="<?= get_template_directory_uri() . "/css/jScrollPane.css"?>" /> 
+      <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.jscrollpane.min.js'?>"></script>
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.rotate.js'?>"></script>
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.tinymce.js'?>"></script>
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js'?>"></script> 
@@ -406,7 +403,8 @@
     <style type ="text/css">
       #pane2  {
         height: 250px;
-      /*  height:250px;*/
+        max-width: 250px;
+        overflow: auto;
       }
       #staff_and_assignment_list_pane
       {
@@ -418,6 +416,8 @@
         background: #F39A85;
         border: 2px solid #F33131
       }
+      .jspHorizontalBar { display: none !important; }
+      
     </style> 
 
 
@@ -512,7 +512,7 @@
             }
           );
                 
-          $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+          $('#pane2').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
           $('a[rel*=facebox]').facebox();
           
           // Do not initialize with "var" because we want these to be global variables
@@ -560,7 +560,7 @@
                 $('.negative').click(function() {
                   $('.content').fadeOut(300, function() {
                     $('.content').html(prevObj).fadeIn(300, function() {
-                      $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+                      $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
                     });
                   });
                 });
@@ -602,7 +602,7 @@
             {
               //this binds the scrollpane reinit to the facebox reveal. Should handle the issue of the scroll bar not showing up.
               var scrollbar_handler = function() {
-               $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5}); 
+               $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5}); 
               };
               $(document).bind('reveal.facebox', scrollbar_handler);
               
@@ -619,7 +619,7 @@
               function(){
                 $.ajax({url:url,success: function(data) {
                 $.facebox(data);
-                setTimeout(function (){$('#staff_listing_pane').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});},2000);
+                setTimeout(function (){$('#staff_listing_pane').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});},2000);
                 $('a[rel=refresh]').click();
                 $(document).unbind('reveal.facebox', scrollbar_handler);
                 }
@@ -758,7 +758,7 @@
                     }, 'json');
                   });
                   
-                  $('#video_listing_pane').css({'height':'550px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
+                  $('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
                       $('li.video_item')
                       .find("[name*=chk_video_]")
                       .click(
@@ -788,7 +788,7 @@
                         .toggle("slow",
                           function()
                           {
-                          $('#video_listing_pane').css({'height':'550px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
+                          $('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
                            var item = $(this).find('input[item = quiz][ type=checkbox],input[item = resource][ type=checkbox]')
                           // Disable the module exam if the video module is disabled.
                           // Enable the exam, if the video module is enabled
@@ -1103,7 +1103,7 @@
                             $(this).html(obj.message);
                             $('#staff_and_assignment_list_pane')
                             .css({'height':'250px'})
-                            .jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
+                            .jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
                     })
                     .fadeTo("slow",1);
                     $("#staff_and_assignment_list").find(".tablehead-title").fadeTo('fast',0.01,function (){$(this).html(shortTitle).fadeTo('fast',1)});
@@ -1126,8 +1126,8 @@
             }
             $(this).children("p").slideToggle("fast",
             function(){
-              $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
-              $('#pane2')[0].scrollTo($(this).parent().position().top);
+              $('#pane2').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+             // $('#pane2')[0].scrollTo($(this).parent().position().top);
               fix_icon_position();
             }
             );
@@ -1136,7 +1136,7 @@
             .slideUp("fast",
             function()
             {
-              $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+              $('#pane2').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
               fix_icon_position(); // Fix display icons when one course is active then chosed another course to be active.
             }
             )
@@ -1237,7 +1237,7 @@
                       }
                       $("#staff_and_assignment_list").find(".tablehead-title").html(shortTitle);
             }
-            $('#pane2')[0].scrollTo(div.position().top);
+            //$('#pane2')[0].scrollTo(div.position().top);
           });
 
           /****************************************************
@@ -1279,7 +1279,7 @@
             {             
               $("#staff_and_assignment_list").find(".tablehead-title").fadeTo('fast',0.01,function (){$(this).html("&lt;NO GROUP SELECTED&gt;").fadeTo('fast',1)});
               $("#staff_and_assignment_list").find(".scroll-pane-wrapper").html('\
-                <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 350px">\
+                <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 250px">\
                  <div style = "width:100%;">\
                 <div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">\
                   Select a group...\
@@ -1380,7 +1380,7 @@
               menu_active_course.find('span.video_count').text(""); // Reload video count.
             }
             $("#staff_and_assignment_list").find(".scroll-pane-wrapper").html('\
-              <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 350px">\
+              <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 250px">\
                  <div style = "width:100%;">\
                 <div style = "width:100%;text-align:center;padding-top:70px;font-size:140%;">\
                     ' + ( task == "getModules" ? "Loading your modules" : "Loading your staff accounts" ) + ' <br /> <br />\
@@ -1516,7 +1516,7 @@
           }
 
           $("#staff_and_assignment_list").find(".scroll-pane-wrapper").html('\
-            <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 350px">\
+            <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 250px">\
               <div style = "width:100%;">\
                 <div style = "width:100%;text-align:center;padding-top:70px;font-size:140%;">\
                     '+loading_message+' <br /> <br /> \

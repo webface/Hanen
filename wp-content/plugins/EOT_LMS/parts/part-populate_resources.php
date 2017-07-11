@@ -21,6 +21,6 @@ foreach ($courses as $course) {
         $resource_id = $module->resource_id;
         $type=$module->resource_type;
         $sql = "INSERT INTO " . TABLE_COURSE_MODULE_RESOURCES . " (course_id,module_id,resource_id,type) VALUES($course_id,$module_id,$resource_id,'$type')";
-        $result = $wpdb->query($sql);
+        //$result = $wpdb->query($sql);
     }
 }
