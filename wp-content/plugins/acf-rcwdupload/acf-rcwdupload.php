@@ -3,7 +3,7 @@
 Plugin Name: Rcwd Upload for Advanced Custom Fields
 Plugin URI: 
 Description: the Rcwd Upload field let you upload with no use of wp media upload.
-Version: 1.2.0.8
+Version: 1.2.1.3
 Author: Roberto Cantarano
 Author URI: http://www.cantarano.com
 License: You should have purchased a license from http://codecanyon.net/ plugin download page
@@ -28,13 +28,16 @@ if(is_admin())
 	
 class acf_rcwdupload_plugin{
 
-	public $version = '1.2.0.8';
+	public $version = '1.2.1.3';
 	
 	function __construct(){
 
 		if(!defined('ACF_RCWDUPLOAD_NAME'))
 			define( 'ACF_RCWDUPLOAD_NAME', 'acf-rcwdupload/acf-rcwdupload.php' );
-		
+
+		if(!defined('RCWD_DS'))
+			define( 'RCWD_DS', DIRECTORY_SEPARATOR );
+					
 		$settings = array(
 		
 			'version' 	=> $this->version,
