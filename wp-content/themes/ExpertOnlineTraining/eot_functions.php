@@ -2585,6 +2585,24 @@ function addPendingUsers ($staff_data = array(), $org_id = 0, $message = '', $su
 }
 
 //triggers mass mailing from ajax.
+add_action('wp_ajax_mass_register_ajax', 'mass_register_ajax_callback');
+function mass_register_ajax_callback()
+{
+
+    $org_id = (isset($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+    $result = processUsers(PENDING_USERS_LIMIT, $org_id);
+
+    if ($org_id == 0)
+    {
+      return $result;
+    }
+
+    echo json_encode($result);
+    wp_die();
+    
+}
+
+//triggers mass mailing from ajax.
 add_action('wp_ajax_mass_mail_ajax', 'mass_mail_ajax_callback');
 function mass_mail_ajax_callback()
 {
@@ -2714,7 +2732,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
 
   /****************************************************************
    * This process the savings of the user accounts 
-   * into WP User Database and create accounts in LU
+   * into WP User Database 
    ****************************************************************/
   $recepients = array(); // List of recepients
   $emailError = '';
@@ -2759,7 +2777,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
                 $has_error = true;
                 $has_user_error = true;
   //              echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-                $import_status .= "$email - ERROR: User exists in WP. Created in LU but couldnt enroll into course: ".$result2['message']."<br>";
+                $import_status .= "$email - ERROR: User exists in WP. But couldnt enroll into course: ".$result2['message']."<br>";
               }
               else
               {

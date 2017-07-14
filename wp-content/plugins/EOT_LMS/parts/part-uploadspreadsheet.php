@@ -353,55 +353,66 @@
 		$org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);			//org id
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);	//subscription id
 		$processing_top = ($processing + PENDING_USERS_LIMIT - 1 > $max) ? $max : $processing + PENDING_USERS_LIMIT - 1;
-			
+		$admin_ajax_url = admin_url('admin-ajax.php');	
 ?>
 		<h1 class="article_page_title">Upload Staff Spreadsheet</h1>
 
-        <div class="spreadsheet_processing round_msgbox">
-			<strong>Please wait while we import your staff accounts: <br>
-			Processing <?= $processing ?> - <?= $processing_top; ?> out of <?= $max ?> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF HAS BEEN IMPORTED.<br><br>You will be redirected to a success page once the import is complete.
+                <div class="spreadsheet_processing round_msgbox">
+			<strong>Please wait while we create your staff accounts: <br>
+			Processing <?= $processing ?> - <?= $processing_top; ?> out of <?= $max ?> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF ACCOUNTS HAVE BEEN CREATED.<br><br>You will be redirected to a success page once the import is complete.
 		</div>
-		<div id="insert_form" style="display:none;"></div>
+                <div id="insert_form" style="display:none;"></div>
+		<script>
+                    var count = 1;
+                    var max = <?=$max?>;
+                    var sent_emails = '';
+                    var overall_status = 1;
+
+                    $(document).ready(function () {
+                        sendMail();
+                    });
+
+                    function sendMail() {
+                        $.ajax({
+                            url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
+                            success: function (result) 
+                            {
+                                result = JSON.parse(result);
+                                console.log(result);
+
+                                    sent_emails += result.import_status;
+                                    count += <?= PENDING_USERS_LIMIT ?>;
+
+                                    // check if there was a problem
+                                    if (result.status == false)
+                                    {
+                                        overall_status = 0;
+                                    }
+
+                                    $('.processing').html("Processing "+count+" out of <?= $max ?>");
+
+                                    // check if we finished sending
+                                    if (count > <?= $max ?>)
+                                    {
+                                        <?php
+                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id . '&sent=1';
+                                        ?>
+                                        $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
+
+    			                document.forms['redirect'].submit();
+                                    }
+                                    else
+                                    {
+                                        sendMail();
+                                    }
+
+                            }});
+                    }
+                </script>
+
 <?php
-		$processing += PENDING_USERS_LIMIT;						//add PENDING_USERS_LIMIT to the counter
-		$result = processUsers(PENDING_USERS_LIMIT, $org_id);	//process PENDING_USERS_LIMIT at a time
-		//if users were processed with no errors
-		if(isset($result['status']) && $result['status'])
-		{
-			$url = '';	//url to redirect to
-			$import_status = (isset($_REQUEST['import_status']) && !empty($_REQUEST['import_status'])) ? $_REQUEST['import_status'] : '';
-			$import_status .= (isset($result['import_status']) && !empty($result['import_status'] )) ? $result['import_status'] : '';
-
-			//if we have processed all users, redirect to success page
-			if($processing > $max)
-			{
-				$url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $result['org_id'] . '&subscription_id=' . $subscription_id . '&sent=' . $result['sent'];
-
-?>
-			<!-- Redirecting (wp_redirect does not load html if headers have already been sent which is the case here so we have to use javascript)-->
-			<script type="text/javascript">
-				$('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="<?= $import_status; ?>" /></form>');
-
-    			document.forms['redirect'].submit();
-			</script>
-<?php				
-			}
-			//if we have not processed all users, redirect to the same page with counter+10
-			else
-			{
-				$url = get_home_url() .'/dashboard/?part=uploadspreadsheet&org_id=' . $org_id . '&subscription_id=' . $subscription_id . '&processing=' . $processing . '&max=' . $max;
-
-?>
-			<!-- Redirecting (wp_redirect does not load html if headers have already been sent which is the case here so we have to use javascript)-->
-			<script type="text/javascript">
-				$('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="<?= $import_status; ?>" /></form>');
-
-    			document.forms['redirect'].submit();
-			</script>
-
-<?php
-			}
-		}
+			
+		
 	}
 	else if( isset($_REQUEST['subscription_id']) )
 	{

@@ -195,8 +195,8 @@ static $i = 0;
 <title>Manage Staff Accounts</title>
 <link href="https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jquery.mousewheel.js"?>"></script>
-<script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jScrollPane.js"?>"></script> 
-<link rel="stylesheet" type="text/css" media="all" href="<?= get_template_directory_uri() . "/css/jScrollPane.css"?>" /> 
+<script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jquery.jscrollpane.min.js"?>"></script> 
+<link rel="stylesheet" type="text/css" media="all" href="<?= get_template_directory_uri() . "/css/jquery.jscrollpane.css"?>" /> 
 <script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jquery.rotate.js"?>"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() . "/js/jquery.tinymce.js"?>"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js'?>"></script> 
