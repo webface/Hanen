@@ -717,6 +717,14 @@ function updateCustomSettings_callback()
   {
     update_user_meta($user_id, $meta_key, $meta_value);
   }
+  else if($type == "posts")
+  {
+    $posts_info = array(
+      'ID'           => $org_id,
+      'post_title'   => $meta_value
+    );
+    wp_update_post( $posts_info );
+  }
   wp_die();
 }
 
@@ -1129,6 +1137,7 @@ function updateCreateSalesRep_callback()
   {
     $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
     $new_user['ID'] = $user_id;
+    $new_user['user_status'] = 1; // Deactivate the user.
     $user_id = wp_update_user ($new_user);
   }
 
@@ -1912,10 +1921,13 @@ function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_dat
     {
         $sql .= " WHERE subscription_id = $subscription_id";
     }
-    
-    if($start_date != "0000-00-00" && $end_date != "0000-00-00")
+    if($subscription_id > 0 && $start_date != "0000-00-00" && $end_date != "0000-00-00")
     {
-      $sql .= " AND date >= '$start_date' AND date <= '$end_date'";
+      $sql .= " AND WHERE date >= '$start_date' AND date <= '$end_date'";
+    }
+    if($subscription_id <= 0 && $start_date != "0000-00-00" && $end_date != "0000-00-00")
+    {
+      $sql .= " WHERE date >= '$start_date' AND date <= '$end_date'";
     }
     $results = $wpdb->get_results ($sql);
     return $results;
@@ -2650,8 +2662,8 @@ function getEotUsers($org_id = 0, $role = 'student'){
       foreach ($users_info as $user_info) 
       {
         $user = array();
-        $user['first_name'] = get_user_meta ( $user_info->id, "first_name", true);
-        $user['last_name'] = get_user_meta ( $user_info->id, "last_name", true);
+        $user['first_name'] = get_user_meta ( $user_info->ID, "first_name", true);
+        $user['last_name'] = get_user_meta ( $user_info->ID, "last_name", true);
         $user['email'] = $user_info->user_email;
         $user['id'] = $user_info->ID;
 //        $user['user_type'] = 'learner';  // @TODO remove if not used
@@ -2783,7 +2795,7 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
 
   if($course_id > 0)
   {
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE course_id = $course_id", OBJECT_K); 
+    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE ID = $course_id", OBJECT_K); 
   }
   else if($org_id > -1) // org_id == 0 belongs to EOT
   {
@@ -2977,4 +2989,318 @@ function getHelpVideoById($id = 0)
   
   $video = $wpdb->get_row( $sql, OBJECT ); // returns an object with the video data.
   return $video;
+}
+
+/**
+ *   Updating user info.
+ */  
+add_action('wp_ajax_updateUser', 'updateUser_callback'); //handles actions and triggered when the user is logged in
+function updateUser_callback() {
+    if( isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['lastname'] ) && isset($_REQUEST['email']) && isset ( $_REQUEST['old_email'] ))
+    {
+        $first_name = filter_var($_REQUEST['name'],FILTER_SANITIZE_STRING);
+        $last_name = filter_var($_REQUEST['lastname'],FILTER_SANITIZE_STRING);
+        $email = sanitize_email( $_REQUEST['email'] );
+        $old_email = sanitize_email( $_REQUEST['old_email'] );
+        $user_id = filter_var($_REQUEST['staff_id'],FILTER_SANITIZE_STRING);
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $password = $_REQUEST['pw'];
+        $original_id=$user_id;
+        // Check permissions
+        if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'update-staff_' . $user_id ) ) 
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'updateUser_callback error: Sorry, your nonce did not verify.';
+        }
+
+        if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'updateuser_callback Error: Sorry, you do not have permisison to view this page.';
+        }
+        else 
+        {
+            // update or insert new user in WP
+            $WP_password = $password ? wp_hash_password($password) : wp_generate_password(); // make sure i have a password for the user
+            $userdata = array (
+                'user_login' => $email,
+                'user_pass' => $WP_password,
+                'user_email' => $email,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'display_name' => $first_name . " " . $last_name
+            );
+
+            // check if user exists
+            $user_id = get_user_by( 'email', $old_email ); // The user in WP
+            if ($user_id) 
+            {
+                // check if email was updated because if it was, we need to update the user_login field.
+                if ($email != $old_email)
+                {
+                    global $wpdb;
+                    // cant use wp_insert_user because we need to updtate login as well and that function wont do it.
+                    if ( $wpdb->update( $wpdb->users, array( 'user_login' => $email, 'user_email' => $email ), array( 'ID' => $user_id->ID ) ) )
+                    {
+                        // success
+                        $result['success'] = true;
+                        $result['message'] = 'User account information has been successfully updated.';
+                        $result['staff_id']=$user_id->ID;
+                        $result['staff_email']=$email;
+                        $result['name']=$first_name;
+                        $result['lastname']=$last_name;
+                    }
+                    else
+                    {
+                        //failed
+                        $result['display_errors'] = 'failed';
+                        $result['success'] = false;
+                        $result['errors'] = 'updateUser_callback Error: Could not update WP user.';
+                    }
+                }
+
+                // set the userID to be updated
+                $userdata['ID'] = $user_id->ID;
+                // dont change their password unless they added a new password
+                if (!$password){
+                    unset($userdata['user_pass']);
+                }
+
+                // update the user into WP
+                $WP_user_id = wp_insert_user ($userdata);
+                
+                // success
+                $result['success'] = true;
+                $result['message'] = 'User account information has been successfully updated.';
+                $result['staff_id']=$WP_user_id;
+                //$result['staff_id']=$user_id->ID;
+                $result['staff_email']=$email;
+                $result['name']=$first_name;
+                $result['lastname']=$last_name;
+            }
+            else
+            {
+                // user doesnt exist to create WP User
+                // insert the user into WP
+                $WP_user_id = wp_insert_user ($userdata);
+
+                // Newly created WP user needs some meta data values added
+                update_user_meta ( $WP_user_id, 'org_id', $org_id );
+                update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+
+                // assume we are successful for now... check later.
+                $result['success'] = true;
+                $result['message'] = 'User account information has been successfully updated.';
+                $result['staff_id']=$WP_user_id;
+                //$result['staff_id']=$user_id->ID;
+                $result['staff_email']=$email;
+                $result['name']=$first_name;
+                $result['lastname']=$last_name;
+            }   
+          // check that previous attempts to update user did not fail. If not, check if we need to update portal name (camp name)
+          if (isset($result['success']) && $result['success'])
+          {
+            // check if we need to update portal name
+            if ( isset($_REQUEST['old_camp_name']) && isset($_REQUEST['camp_name']) && $_REQUEST['old_camp_name'] != $_REQUEST['camp_name'] )
+            {
+              $camp_name = filter_var($_REQUEST['camp_name'],FILTER_SANITIZE_STRING);
+
+              // Success in updating the portal on LU, now update camp name in WP
+              $post_data = array (
+                'ID'          => $org_id,
+                'post_title'  => $camp_name,
+                );
+              
+              $update_post = wp_update_post($post_data, true);
+
+              // check if there was an error updating WP camp name.
+              if (is_wp_error($update_post))
+              {
+                $errors = $update_post->get_error_messages();
+                foreach ($errors as $error) 
+                {
+                  write_log($error);
+                }
+              }
+            }
+          }
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'updateUser_callback Error: Missing some parameters.';
+    }
+
+    echo json_encode( $result );
+    wp_die();
+}
+
+/********************************************************************************************************
+ * Delete a staff account.
+ *******************************************************************************************************/
+add_action('wp_ajax_deleteStaffAccount', 'deleteStaffAccount_callback');
+function deleteStaffAccount_callback () {
+    if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['staff_id'] ) && isset ( $_REQUEST['email'] ) )
+    { 
+        // This form is generated in getCourseForm function with $form_name = change_course_status_form from this file.
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); // The Org ID
+        $email = sanitize_email( $_REQUEST['email'] ); // wordpress e-mail address
+
+        // Check permissions
+        if(  !wp_verify_nonce( $_POST['_wpnonce'] ,  'delete-staff_id-org_id_' . $org_id ) ) 
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'deleteStaffAccount_callback error: Sorry, your nonce did not verify.';
+        }
+        else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'deleteStaffAccount_callback Error: Sorry, you do not have permisison to view this page.';
+        }
+        else
+        {
+            $user = get_user_by( 'email', $email ); // The user in WP
+            $user_id = $user->ID;
+            if($user)
+            {
+                // Delete the account in WP
+                if (wp_delete_user( $user_id ))
+                {
+                    // Build the response if successful
+                    $result['data'] = 'success';
+                    $result['user_id'] = $user_id;
+                    $result['success'] = true;
+                } 
+                else
+                {
+                    $result['display_errors'] = 'failed';
+                    $result['success'] = false;
+                    $result['errors'] = 'deleteStaffAccount_callback ERROR: Could not delete the WP user account.';
+                }
+            }
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'deleteStaffAccount_callback ERROR: Missing some parameters.';
+    }
+    echo json_encode($result);
+    wp_die();
+
+}
+
+
+/**
+ * Processed the sending of the message based on target
+ *
+ * @param string $target - The target action to be taken, eg. create_user, mass mail, etc..
+ * @param array $receipients - an array of associative arrays which contain the receiptients information (name/email/message/subject)
+ * @param array $data - any additional info we need such as org_id
+ */
+function sendMail ( $target = '', $recipients = array(), $data ) {
+    extract($data);
+    
+    /*
+     * Variables required in $data
+     * org_id - The organization ID
+     */
+    
+    global $current_user;
+    $current_user = wp_get_current_user();
+    $sender_email = $current_user->user_email;
+    $sender_name = $current_user->user_firstname . " " . $current_user->user_lastname;
+
+    // check that a target is defined.
+    if( $target != null && $target != "" )
+    {
+        // check for at least 1 receipient
+        if (count( $recipients ) > 0)
+        {
+            // we have at least 1 receipient. Check what to do next.
+            if( $target == "create_account" )
+            {  
+                // can expect only 1 recipient, send email and return the response
+                return massMail($sender_email, $sender_name, $recipients);
+            }
+            else if($target == "NewSubscription" || $target == "NewAccount")
+            {
+                return massMail(get_bloginfo( 'admin_email' ),'Expert Online Training', $recipients);
+            }
+            else if($target == "cloudflare_error")
+            {
+                return massMail(get_bloginfo( 'admin_email' ), 'Couldflare error', $recipients);
+            }
+            else if($target == "massmail" )
+            {
+              return massMail($sender_email, $sender_name, $recipients);
+            }
+        }
+        else
+        {
+            // no receipients
+            return array('status' => 0, 'message' => "sendMail error: no recipients.");
+        }
+    }
+    else 
+    {
+        // No target defined. Return error.
+        return array('status' => 0, 'message' => "sendMail error: invalid target.");
+    }
+}
+
+/**
+ * Worker function that sends the email to the specified receipients
+ *
+ * @param string $sender_email - The email of the sender
+ * @param string $sender_name - The name of the sender
+ * @param array $recipients - an array of associative arrays with each receipient and all the email info eg. name, email, subject, message
+ */
+function massMail ( $sender_email = '', $sender_name = '', $recipients = array()) {
+
+    $status = 1; // status of the send, success or failure.
+
+    // check that we have a name/email for the from field. ie. the sender.
+    if( $sender_email != null && $sender_email != "" && $sender_name != null && $sender_name != "")
+    {
+
+        // using mandrill, can only send emails from our domain. So must set the from email manually.
+        $headers = array(
+            "From: $sender_name <".get_bloginfo('admin_email').">",
+            "Reply-To: $sender_name <$sender_email>",
+            "Content-Type: text/html; charset=UTF-8"
+            );
+
+        // we have the sender info now send them email(s) 
+        foreach ($recipients as $recipient)
+        {
+            if(!wp_mail( $recipient['email'], $recipient['subject'], $recipient['message'], $headers ))
+            {
+              $status = 0;
+              error_log('massmail error: to: ' . $recipient['email'] . ' num reciepients: ' . count($recipients));
+            }
+        }       
+    }
+    else
+    {
+        return array('status' => 0, 'message' => "massMail error: invalid sender name/email.");
+    }
+
+
+    // Check if the mesage sends.
+    if ( $status )
+    {
+        return array('status' => 1, 'message' => 'Your message was sent succesfully.');
+    } 
+    else 
+    {
+        return array('status' => 0, 'message' => 'massMail error: Your messsage failed to send.');
+    }
 }

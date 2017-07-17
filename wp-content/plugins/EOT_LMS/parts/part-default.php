@@ -122,7 +122,6 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
         {
             ?>
             <li><a href="?part=create_sales_report&start_date=<?= SUBSCRIPTION_START ?>&end_date=<?= SUBSCRIPTION_END ?>"><b>Create Sales Report</b></a></li>
-            <li><a href="?part=manage_subdomains"><b>Manage Subdomains (cloudflare)</b></a></li>
             <li><a href="?part=manage_sales_rep"><b>Manage Sales Rep</b></a></li>
             <?php
         }

@@ -654,7 +654,7 @@ function handle_steps_callback () {
 			        array_push($recepients, $recepient);
 			        // send the e-mail
 					$response = sendMail( 'NewSubscription', $recepients, $data );
-                    echo $response;
+                    echo json_encode($response);
 				}
 				else
 				{

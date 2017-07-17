@@ -357,10 +357,14 @@ function eot_register_new_user() {
 	$role = filter_var($_REQUEST['usr_role'],FILTER_SANITIZE_STRING);
 	$org_name = filter_var($_REQUEST['org_name'],FILTER_SANITIZE_STRING);
 
-	if (username_exists ($email)) { /* if username already exists, tell director and ask to sign in */
+	if (username_exists ($email)) 
+	{ /* if username already exists, tell director and ask to sign in */
 		$result['status'] = 0;
 		$result['message'] = 'Username already exists. Please try to <a href="'.$eot_login_url.'">log in</a>';
-	} else { /* otherwise, go ahead and create a new director */
+	} 
+	else 
+	{ 
+		/* otherwise, go ahead and create a new director */
 		$new_user = array(
 			'user_login' => $email,
 			'user_pass' => $password,
@@ -371,13 +375,14 @@ function eot_register_new_user() {
 			'role' => $role
 		);
 		$user_id = wp_insert_user ($new_user);
-		if (is_wp_error($user_id)) { /* if director has error, output to front-end */
+		if (is_wp_error($user_id)) 
+		{ /* if director has error, output to front-end */
 			$result['status'] = 0;
 			$result['message'] = $user_id->get_error_message();
+
 		} 
 		else 
-		{ 
-			/* now director has been created, go ahead and add a new organization with the post_author variable being the new director id */
+		{ 	/* now director has been created, go ahead and add a new organization with the post_author variable being the new director id */
 			$new_org = array(
 				'post_title' => $org_name,
 				'post_author' => $user_id,
@@ -420,26 +425,17 @@ function eot_register_new_user() {
 					$result['status'] = 0;
 					$result['message'] = $user->get_error_message ();
 					} 
-					else 
-					{ 
-						// if no error logging in, communicate the data with LearnUpon to create new account 
-						$data = compact ("org_id", "org_name", "org_subdomain", "user_id", "first_name", "last_name", "email", "password");
-						$result = communicate_with_learnupon ('create_account', $data);
-					}
 				}
 				else
 				{
-					// Communicate the data with LearnUpon to create new account 
-					$data = compact ("org_id", "org_name", "org_subdomain", "user_id", "first_name", "last_name", "email", "password");
-					$result = communicate_with_learnupon ('create_account', $data);
 					$result['user_id'] = $user_id; // WP User ID. Required to determined which user_id to re-direct the director to subscribe the new user. This is required in target.js in eot-subscription plugin
+					$result['status'] = 1;
 				}
 
 				// Generate a link to set a new password
 				$user = get_user_by( 'email',  $email ); 
 				$key = get_password_reset_key( $user );
 				$set_new_password_link = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($email), 'login');
-
 				// Send e-mail message
 				$vars = array(
 					'eot_link' => get_site_url(),
@@ -470,6 +466,7 @@ function eot_register_new_user() {
 				$response = sendMail( 'NewAccount', $recepients, $data );
 			}
 		}
+		json_encode($result);
 	}
 	/* check to ensure the communication with this function is legit, otherwise return to referer */
 	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
