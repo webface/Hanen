@@ -1,10 +1,9 @@
 <?php
     if(current_user_can("is_director"))
     {
-        if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
+        if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
         {
             // Variable declaration
-            global $current_user;
             $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
         ?>
         	<div class="breadcrumb">

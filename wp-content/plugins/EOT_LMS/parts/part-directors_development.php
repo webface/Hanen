@@ -4,11 +4,10 @@
         if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
         {
             // Variable declaration
-            global $current_user;
             $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
             if(isset($_REQUEST['view']) && $_REQUEST['view'] == 1)
             {
-            ?>
+?>
                 <div class="breadcrumb">
                     <?= CRUMB_DASHBOARD ?>    
                     <?= CRUMB_SEPARATOR ?> 
@@ -65,11 +64,11 @@
                 <a href="/features/" class="morebutton" target="_blank">Learn More</a>
                 <a href="/register/" class="morebutton" target="_blank">Subscribe</a>
                 <a href="/contact/" class="morebutton" target="_blank">Contact Us</a>
-            <?php
+<?php
             }
             elseif(isset($_REQUEST['view']) && $_REQUEST['view'] == 2)
             {
-            ?>
+?>
                 <div class="breadcrumb">
                     <?= CRUMB_DASHBOARD ?>    
                     <?= CRUMB_SEPARATOR ?> 
@@ -91,11 +90,11 @@
                         <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                     </p>        
                 </video>
-            <?php
+<?php
             }
             else
             {
-            ?>
+?>
             	<div class="breadcrumb">
             		<?= CRUMB_DASHBOARD ?>    
             		<?= CRUMB_SEPARATOR ?> 
@@ -112,7 +111,7 @@
                     <li>View <a href="?part=directors_development&subscription_id=<?= $subscription_id ?>&view=2">Top Ten Tips for Training Terrific Staff</a> Webinar</li>
                     <li>Read <a href="http://www.campspirit.com/online-articles/">Articles Published by Co-Founder Dr. Chris Thurber </a></li>
               </ul>
-            <?php
+<?php
             }
         }
         else
