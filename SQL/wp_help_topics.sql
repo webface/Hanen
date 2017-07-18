@@ -27,37 +27,28 @@ DROP TABLE IF EXISTS `wp_help_topics`;
 
 CREATE TABLE `wp_help_topics` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `summary` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `video_filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(25) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `summary` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `video_filename` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 LOCK TABLES `wp_help_topics` WRITE;
 /*!40000 ALTER TABLE `wp_help_topics` DISABLE KEYS */;
 
 INSERT INTO `wp_help_topics` (`ID`, `title`, `summary`, `video_filename`)
 VALUES
-	(1,'Add/Remove Staff','Use this feature to add or remove staff from a staff group.','add_remove_staff'),
-	(2,'Intro to My Dashboard','The Dashboard is your central hub for accessing content available for your account.','dashboard'),
-	(3,'Emailing Staff','Use this feature to send out mass emails to staff members.','email_staff'),
-	(4,'Managing Assignments','Use this feature to manage assignments for your staff members.','manage_assignments'),
-	(5,'Managing Staff Accounts','Use this feature to manage your staff accounts and their subscriptions.','manage_staff_accounts'),
-	(6,'Managing Staff Groups','Use this feature to manage groups of your staff members and to assign content to those groups.','manage_staff_groups'),
-	(7,'Viewing Statistics','View statistics about your staff members\' activities and track their progress.','statistics'),
-	(8,'Viewing Content','This page allows you to view the content you have available for your staff members through your purchased subscriptions.','view_content'),
-	(9,'Max Out EOT','Quickly learn how to get the most out of your subscription this season by watching this fact-packed screencast.','get_the_most'),
-	(10,'Watch Some Videos',' This page allows you to view the content you have available for your staff members through your purchased subscription.','some_videos'),
-	(11,'Pick a Default Course','Use this feature to manage the default courses for your staff members.','default_course'),
-	(12,'Modify a Default Course','Use this feature to modify the default courses for your staff members.','modify_default'),
-	(13,'Create a New Course','Use this feature to create you own custom course for your staff memebers.','create_course'),
-	(14,'Publish a Course','Before you can enroll your staff in a course, it must be published.','publish_course'),
-	(15,'Modify a Published Course','Use this feature to modify a published course.','modify_published'),
-	(16,'Add Staff Information','Use this feature to add staff and enroll them into courses. ','add_staff'),
-	(17,'Change Course Enrollment','Use this feature to modify user enrollments in specific courses.','change_enroll'),
-	(18,'Check Statistics','Use this feature to get statistics on how your staff is progressing through their assigned courses.','check_stats'),
-	(19,'Upload Custom Content','Use this feature to upload your own custom content so that your staff has access to it.','upload_custom'),
-	(20,'Create a Custom Quiz','Use this feature to create custom quizes for your staff.','create_custom_quiz');
+	(10,'Watch Some Videos',' This page allows you to view the content you have available for your staff members through your purchased subscription.','tutorial_Watch_Some_Videos.mp4'),
+	(11,'Pick a Default Course','Use this feature to manage the default courses for your staff members.','tutorial_Pick_a_Default_Course.mp4'),
+	(12,'Modify a Default Course','Use this feature to modify the default courses for your staff members.','tutorial_Modify_a_Default_Course.mp4'),
+	(13,'Create a New Course','Use this feature to create you own custom course for your staff memebers.','tutorial_Create_a_New_Course.mp4'),
+	(14,'Publish a Course','Before you can enroll your staff in a course, it must be published.','tutorial_Publish_a_Course.mp4'),
+	(15,'Modify a Published Course','Use this feature to modify a published course.','tutorial_Modify_a_Published_Course.mp4'),
+	(16,'Add Staff Information','Use this feature to add staff and enroll them into courses. ','tutorial_Add_Staff_Information.mp4'),
+	(17,'Change Course Enrollment','Use this feature to modify user enrollments in specific courses.','tutorial_Change_Course_Enrollment.mp4'),
+	(18,'Check Statistics','Use this feature to get statistics on how your staff is progressing through their assigned courses.','tutorial_Analyze_Course_Statistics2.mp4'),
+	(19,'Upload Custom Content','Use this feature to upload your own custom content so that your staff has access to it.','tutorial_Manage_Custom_Content.mp4'),
+	(20,'Create a Custom Quiz','Use this feature to create custom quizes for your staff.','tutorial_Make_a_Custom_Quiz.mp4');
 
 /*!40000 ALTER TABLE `wp_help_topics` ENABLE KEYS */;
 UNLOCK TABLES;

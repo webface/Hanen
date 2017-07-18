@@ -30,6 +30,9 @@
 	{
 		$helpVideos = getHelpForView($part, "student"); // All views for the student.
 	}
+	// Do not display video button if there aren't any.
+	if( isset($helpVideos) && count($helpVideos) > 0 )
+	{
 ?>
 		<!-- help button -->
 		<div id="helpBtn" href="#helpbar">
@@ -172,3 +175,8 @@
 				});
 		  	});
 		</script>
+
+<?php
+	}
+?>
+
