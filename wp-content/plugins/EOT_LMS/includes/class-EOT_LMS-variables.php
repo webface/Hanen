@@ -135,3 +135,6 @@ define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 2737);
 // The POST ID for ACF Message Group Password form
 define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 2738);
 
+// The POST ID for ACF Manage Logo form
+define ('ACF_MANAGE_LOGO', 11813);
+
