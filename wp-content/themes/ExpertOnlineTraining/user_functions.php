@@ -237,8 +237,9 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
     else
     { //is student
         $code = $entry['10'];
-        if($code==="") 
-        { // no code meaning its an individual registrant
+        if($code == "") 
+        { 
+        	// no code meaning its an individual registrant
             $new_indiv = array(
 				'post_title' => $entry['1.3']." ".$entry['1.6'],
 				'post_author' => $user_id,
@@ -270,15 +271,16 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
         }
         else
         { // code exists so its a student being invited to an org
-            $sql = 'SELECT * FROM '.TABLE_INVITATIONS.' WHERE code ="'.$code.'"';
+            $sql = 'SELECT * FROM ' . TABLE_INVITATIONS . ' WHERE code ="'.$code.'"';
             $current = $wpdb->get_row($sql,ARRAY_A);//codes should be unique to user
+            $subscription_id = isset($current['subscription_id']) ? $current['subscription_id'] : '';
 
-            if(org_has_maxed_staff($current['org_id'], $current['subscription_id']))
+            if(org_has_maxed_staff($current['org_id'], $subscription_id))
             { // org doesn't have enough staff credits, so put user in pending table
                 $data=array(
                     'user_id' => $user_id,
                     'org_id' => $current['org_id'],
-                    'subscription_id' => $current['subscription_id'],
+                    'subscription_id' => $subscription_id,
                     'course_id' => $current['course_id'],
                     'user_email' => $email
                 );
@@ -287,7 +289,7 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
                 // if user was successfully added to pending subscriptions table then email the director
                 if($insert_user_into_pending !== FALSE) 
                 {
-                    $sql = "SELECT users.user_email FROM ".TABLE_USERS." as users LEFT JOIN ".TABLE_SUBSCRIPTIONS." as subscr on users.id = subscr.manager_id WHERE subscr.id =".$current['subscription_id'];
+                    $sql = "SELECT users.user_email FROM ".TABLE_USERS." as users LEFT JOIN ".TABLE_SUBSCRIPTIONS." as subscr on users.id = subscr.manager_id WHERE subscr.id =".$subscription_id;
                     $result = $wpdb->get_row($sql,ARRAY_A);
                     $to = $result['user_email']; // the director
                     $subject = "Max staff reached on Expert Online Training";
@@ -305,15 +307,15 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
                 add_user_meta($user_id, 'org_id', $current['org_id']);
                 if($current['course_id'] != '0')
                 {
-                    $course =  getCourse($current['course_id']);
+                    $course = getCourse($current['course_id']);
                     $org_id = $current['org_id'];
                     $course_id = $current['course_id'];
                     $course_name = $course['course_name'];
-                    $data = compact("org_id","course_id","course_name");
+                    $data = compact("org_id", "course_id", "course_name", "subscription_id");
 
                     if($email == $current['user_email'])
                     {
-                        enrollUserInCourse($email,'',$data);
+                        enrollUserInCourse($email, $data);
                     }
                 }
             }

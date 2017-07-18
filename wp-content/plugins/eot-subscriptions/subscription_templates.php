@@ -125,7 +125,7 @@ class SubscriptionTemplates {
         public function view_project_template( $template ) {
 
                 global $post;
-                $page_template = get_post_meta( $post->ID, '_wp_page_template', true );
+                $page_template = get_post_meta( get_the_ID(), '_wp_page_template', true );
 
                 if (!isset($this->templates[$page_template] ) ) {
                     

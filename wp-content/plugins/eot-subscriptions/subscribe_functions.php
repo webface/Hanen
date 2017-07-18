@@ -143,7 +143,7 @@ function display_subscriptions ()
             
             $modules = getModulesByLibrary(LE_ID); // get all the modules in the LE library
 
-            //$modules = getModules($course_IDs[lrn_upon_LE_Course_TITLE], $org_subdomain, $data); // get all the available modules in this portal
+            //$modules = getModules($course_IDs[LE_LIBRARY_TITLE], $org_subdomain, $data); // get all the available modules in this portal
 
             // create an associative array of LU Module IDs.
             foreach ($modules as $module)
@@ -184,18 +184,40 @@ function display_subscriptions ()
                             {
                                 // add the module to the course. Dont forget the quiz.
                                 //$response = addModule($course_IDs[$course_name], $org_subdomain, $data);
-                                $response=$wpdb->insert(TABLE_COURSES_MODULES, array('course_id'=>$course_IDs[$course_name],'module_id'=>$module_id));
+                                $sql = "SELECT * FROM ".TABLE_MODULE_RESOURCES." WHERE module_id = $module_id";
+                                
+                                $module_resources = $wpdb->get_results($sql);
+
+                                if(isset($module_resources) && (count($module_resources) > 0))
+                                {
+                                    foreach ($module_resources as $qh) 
+                                    {
+                                        $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, 
+                                            array(
+                                                'course_id' => $course_IDs[$course_name],
+                                                'module_id' => $module_id,
+                                                'resource_id' => $qh->resource_id,
+                                                'type' => $qh->type
+                                            )
+                                        );
+
+                                        // @TODO check that there are no errors inserting the moudles
+                                    }
+                                }
                                 echo "<p>Trying to add $video_name to " . $course_IDs[$course_name] . "</p>";
-                                if ($response === false)
-                                    echo "ERROR in display subscription: Couldn't add module to course: " . $wpdb->last_error . "<br>";
                             }
                             elseif ($action['action'] == 'Remove')
                             {
                                 // remove the module from the course. Dont forget the quiz.
                                 //$response = deleteModule($course_IDs[$course_name], $org_subdomain, $data);
-                                $response =$wpdb->delete(TABLE_COURSES_MODULES, array('course_id' => $course_IDs[$course_name],'module_id'=>$module_id));
+                                $response = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, 
+                                    array(
+                                        'course_id' => $course_IDs[$course_name],
+                                        'module_id'=>$module_id
+                                    )
+                                );
                                 echo "<p>Trying to delete $video_name from " . $course_IDs[$course_name] . "</p>";
-                                if ($response=== false)
+                                if ($response === false)
                                     echo "ERROR in display subscription: Couldn't remove module from course: " . $wpdb->last_error . "<br>";
                             }
                         }
@@ -205,10 +227,16 @@ function display_subscriptions ()
 
             // set subscription set up variable to 1 to indicate it was set up. 
             $sub_id = filter_var($_POST['sub_id'],FILTER_SANITIZE_NUMBER_INT);
-            $upd=$wpdb->update(TABLE_SUBSCRIPTIONS, array( 'setup' => '1' ), array( 'id' => $sub_id ) );
+            $upd = $wpdb->update(TABLE_SUBSCRIPTIONS, 
+                array( 
+                    'setup' => '1' 
+                ), 
+                array( 
+                    'id' => $sub_id 
+                ) 
+            );
             wp_redirect(site_url('/dashboard'));
             exit();
-
         }
     }
 }
@@ -637,7 +665,7 @@ function display_subscription_dashboard ($subscription)
             {
                 //echo $user['id']."<br>";
                 //echo in_multiarray($user['id'], $learners, 'id')."<br>";
-                if(!in_multiarray($user['id'], $learners, 'id')){
+                if(!in_multiarray($user['ID'], $learners, 'ID')){
                     array_push($learners, $user);
                 }
             }
