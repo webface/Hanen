@@ -27,11 +27,11 @@ DROP TABLE IF EXISTS `wp_help_topics`;
 
 CREATE TABLE `wp_help_topics` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `summary` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `video_filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(25) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `summary` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `video_filename` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 LOCK TABLES `wp_help_topics` WRITE;
 /*!40000 ALTER TABLE `wp_help_topics` DISABLE KEYS */;
