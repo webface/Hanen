@@ -113,3 +113,13 @@
 {
 	margin: 0 -3px 0 0;
 }
+
+.jspDragBottom{
+   position:absolute;
+   display:table-footer-group;
+   bottom:-20px;
+}
+.jspDrapTop{
+    position:absolute;
+    top:0;
+}

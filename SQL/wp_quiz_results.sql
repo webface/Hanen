@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.6.35)
 # Database: eot_v5
-# Generation Time: 2017-07-18 14:50:15 +0000
+# Generation Time: 2017-07-17 18:05:55 +0000
 # ************************************************************
 
 
@@ -20,25 +20,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table wp_pending_users
+# Dump of table wp_quiz_results
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `wp_pending_users`;
+DROP TABLE IF EXISTS `wp_quiz_results`;
 
-CREATE TABLE `wp_pending_users` (
+CREATE TABLE `wp_quiz_results` (
   `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `org_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `subscription_id` bigint(20) unsigned DEFAULT '0',
-  `variables` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `courses` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `isEmail` tinyint(1) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `quiz_id` bigint(20) unsigned DEFAULT NULL,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `question_id` bigint(20) unsigned DEFAULT NULL,
+  `answer_id` bigint(20) unsigned NOT NULL,
+  `answer` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
 

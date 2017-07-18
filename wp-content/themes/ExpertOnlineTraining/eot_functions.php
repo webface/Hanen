@@ -220,6 +220,12 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
             $.animateProgressBars($('#<?=$id?> .ui-progressbar'));
           }
         } );
+        //listen for paged event and re-initialize facebox.
+        $('#<?=$id?>').on( 'page.dt', function () {
+            //console.log("Data Table Paged");
+            setTimeout(function(){$('a[rel*=facebox]').facebox();},500);
+        
+        } );
       });
     })(jQuery);
   </script>
@@ -1989,7 +1995,7 @@ function verifyUserAccess ()
     if ($subscription_id)
     {
       // we have a subscription ID so just check that this umbrella admin is authorized to modify this subscription/org
-      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE id = " . $subscription_id;
+      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
       if ($results)
       {
@@ -2080,7 +2086,7 @@ function verifyUserAccess ()
     // make sure a subscription ID was passed in and this user has access to it.
     if ($subscription_id)
     {
-      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE id = " . $subscription_id;
+      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
       if ($results){
         // verify that the current user is the director for this subscription
