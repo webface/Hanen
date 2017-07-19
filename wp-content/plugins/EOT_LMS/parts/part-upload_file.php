@@ -1,4 +1,6 @@
 <?php
+// verify this user has access to this portal/subscription/page/view
+$true_subscription = verifyUserAccess();
 global $current_user;
 $user_id = $current_user->ID; // Wordpress user ID
 $org_id = get_org_from_user($user_id); // Organization ID
@@ -6,15 +8,25 @@ $org_id = get_org_from_user($user_id); // Organization ID
 $dir = plugin_dir_path(__FILE__);
 require $dir . 'aws/aws-autoloader.php';
 $admin_ajax_url = admin_url('admin-ajax.php');
+
 ?>
 <div class="breadcrumb">
     <?= CRUMB_DASHBOARD ?>    
-    <?= CRUMB_SEPARATOR ?>     
+    <?= CRUMB_SEPARATOR ?>
+    <?= CRUMB_ADMINISTRATOR ?>
+    <?= CRUMB_SEPARATOR ?>
     <span class="current">Upload File</span>     
 </div>
 
 <?php
-if(current_user_can( "is_director" )){
+// Check if the subscription ID is valid.
+if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "") 
+{
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+
+    if (isset($true_subscription['status']) && $true_subscription['status']) 
+    {
+        if(current_user_can( "is_director" )){
     
 ?>
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
@@ -320,11 +332,21 @@ $files =  getUserUploads($org_id, $user_id);
 </div>
 
 <?php 
-}
-else
+        }
+        else 
         {
-            echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
-            return;
-          }
+                echo "Unauthorized!";
+        }
+    } 
+    else 
+    {
+            echo "subscription ID does not belong to you";
+        }
+    }
+// Could not find the subscription ID
+else 
+{
+   echo "Could not find the subscription ID";
+}
 
 ?>
