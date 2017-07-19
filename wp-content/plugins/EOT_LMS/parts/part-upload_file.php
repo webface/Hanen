@@ -48,7 +48,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                     var bucket = new AWS.S3({params: {Bucket: 'eot-resources'}});
                     var fileChooser = document.getElementById('file');
                     var file = fileChooser.files[0];
-                    console.log(Files);
+                    //console.log(Files);
                     for (var i = 0; i < Files.length; i++) 
                     {
                         if (Files[i].file_key ==<?= $org_id; ?> + "_" + file.name) 
@@ -123,12 +123,15 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                 data: data,
                 success: function (data) {
                     console.log(data);
-                    if (data.message == "success") {
+                    if (data.message == "success") 
+                    {
                         //alert("success");
                         $("#urlSaveForm").get(0).reset();
                         load('load_processing');
                         location.reload();
-                    } else {
+                    } 
+                    else 
+                    {
                         alert("There was an error saving your data");
                     }
                 },
