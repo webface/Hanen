@@ -49,20 +49,24 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                     var fileChooser = document.getElementById('file');
                     var file = fileChooser.files[0];
                     console.log(Files);
-                    for (var i = 0; i < Files.length; i++) {
-                        if (Files[i].file_key ==<?= $org_id; ?> + "_" + file.name) {
+                    for (var i = 0; i < Files.length; i++) 
+                    {
+                        if (Files[i].file_key ==<?= $org_id; ?> + "_" + file.name) 
+                        {
                             alert('You have already uploaded this file!');
                             return false;
                         }
                     }
-                    if ($('input[name="title"]').val() == "") {
+                    if ($('input[name="title"]').val() == "") 
+                    {
                         alert('Please give a title to your file. It is what your users will see.');
                         return false;
                     }
 
 
                     console.log(file);
-                    if (file) {
+                    if (file) 
+                    {
                         filekey =<?= $org_id; ?> + "_" + file.name;
                         filetype=file.type;
                         var params = {Key: <?= $org_id; ?> + "_" + file.name, ContentType: file.type, Body: file};
@@ -72,12 +76,15 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                             //console.log("Uploaded :: " + parseInt((evt.loaded * 100) / evt.total) + '%');
 
                         }).send(function (err, data) {
-                            if (err == null) {
+                            if (err == null) 
+                            {
                                 console.log(data);
                                 submit_upload(data);
                                 $("form").get(0).reset();
                                 //$(".progress-bar").css("width", "0%");
-                            } else {
+                            } 
+                            else 
+                            {
                                 alert(err);
                                 $("form").get(0).reset();
                                 //$(".progress-bar").css("width", "0%");
@@ -90,11 +97,13 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
             }});
         $("#urlSaveForm").submit(function (e) {
             e.preventDefault();
-            if ($('input[name="title2"]').val() == "") {
+            if ($('input[name="title2"]').val() == "") 
+            {
                 alert('Please give a title to your file. It is what your users will see.');
                 return false;
             }
-            if ($('input[name="url"]').val() == "") {
+            if ($('input[name="url"]').val() == "") 
+            {
                 alert('Please provide the url to download your file.');
                 return false;
             }
@@ -132,7 +141,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
         });
 
     });
-    function submit_upload(data) {
+    function submit_upload(data) 
+    {
         var data = {
             'action': 'upload_file',
             'user_id': <?= $user_id; ?>,
@@ -151,10 +161,13 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
             data: data,
             success: function (data) {
                 console.log(data);
-                if (data.message == "success") {
+                if (data.message == "success") 
+                {
                     load('load_processing');
                     location.reload();
-                } else {
+                } 
+                else 
+                {
                     alert("There was an error saving your data");
                 }
             },
@@ -168,12 +181,14 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
     $(document).bind('success.update_file_title',
             function (event, data)
             {
-                if (data.success === true) {
+                if (data.success === true) 
+                {
                     location.reload();
                 }
             }
     )
-    function updateFileTitle(id, title) {
+    function updateFileTitle(id, title) 
+    {
         $.facebox(function () {
 
             $.ajax({
@@ -194,12 +209,14 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
     $(document).bind('success.aws_delete_file',
             function (event, data)
             {
-                if (data.success === true) {
+                if (data.success === true) 
+                {
                     location.reload();
                 }
             }
     )
-    function deleteFile(id, key) {
+    function deleteFile(id, key) 
+    {
         $.facebox(function () {
 
             $.ajax({
@@ -237,16 +254,21 @@ $files =  getUserUploads($org_id, $user_id);
             </tr>
         <tbody>
             <?php
-            if (count($files) > 0) {
-                foreach ($files as $file) {
+            if (count($files) > 0) 
+            {
+                foreach ($files as $file) 
+                {
                     ?>
                     <tr id="file_<?= $file['ID']; ?>">
                         <td><?= $file['name']; ?></td>
                         <td>
                             <?php
-                            if ($file['file_key'] == 'url') {
+                            if ($file['file_key'] == 'url') 
+                            {
                                 echo $file['url'];
-                            } else {
+                            } 
+                            else 
+                            {
                                 $split = explode($org_id . '_', $file['file_key']);
                                 echo $split[1];
                             }
@@ -255,15 +277,22 @@ $files =  getUserUploads($org_id, $user_id);
                         <td><?= $file['type']; ?></td>
                         <td>
                             <a href="#" onclick="updateFileTitle(<?= $file['ID']; ?>, '<?= $file['name']; ?>')" title="Update Title" data-toggle="tooltip" data-placement="bottom"><span class="fa fa-pencil"></span></a>&nbsp;
-                            <?php if ($file['file_key'] != 'url') { ?>
+<?php 
+                            if ($file['file_key'] != 'url') 
+                                {
+?>
                                 <a href="<?= $file['url']; ?>" target="_blank" title="Download File" data-toggle="tooltip" data-placement="bottom"><span class="fa fa-download"></span></a>&nbsp;
-                            <?php } ?>
+<?php 
+                                }
+?>
                             <a href="#" onclick="deleteFile(<?= $file['ID']; ?>, '<?= $file['file_key']; ?>')" title="Delete File" data-toggle="tooltip" data-placement="bottom"><span class="fa fa-close"></span></a>
                         </td>
                     </tr>
-                    <?php
+<?php
                 }
-            } else {
+            } 
+            else 
+            {
                 echo '<tr><td>No Resources</td></tr>';
             }
             ?>
@@ -305,7 +334,7 @@ $files =  getUserUploads($org_id, $user_id);
 <span class="clearfix"></span>
 </div>
 <div class="files">
-    <?php
+<?php
 // Instantiate the S3 client with your AWS credentials
     $s3Client = new Aws\S3\S3Client(array(
         'version' => 'latest',
