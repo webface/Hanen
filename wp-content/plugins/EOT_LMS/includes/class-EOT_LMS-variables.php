@@ -20,6 +20,8 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 {
 	define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_administration\')">Administration</a>');
 	
+        define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&amp;subscription_id='. $_REQUEST['subscription_id'].' onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
+        
 	define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_loading\')">Subscription Details</a>');
 	// define breadcrumb to view subscription page. This requires the subscription ID.
 	if(isset($_REQUEST['library_id']) && $_REQUEST['library_id'] != "")
