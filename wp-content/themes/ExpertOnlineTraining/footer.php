@@ -64,7 +64,11 @@
 	  			getLoadingDiv("load_email", "Loading your recepients", "Please wait while we load your recepients..."); // Loading div for loading recepients
 	  			getLoadingDiv("load_email_send", "Sending Message", "Please wait while we send your message to the selected staff members..."); // Loading div for sending e-mail message
 	  			getLoadingDiv("load_staff_lounge", "Loading Staff Lounge", "Please wait while we load the staff lounge..."); // Loading div for sending e-mail message
-	  	?>
+	  	                getLoadingDiv("load_upload_file", "Loading File Uploader", "Please wait while we load the file uploader...");
+                                getLoadingDiv("load_quiz", "Loading the quiz page", "Please wait while we load the quizzes..."); // Loading div for sending e-mail message
+	  			getLoadingDiv("load_edit_quiz", "Loading the quiz page", "Please wait while we load the edit page..."); // Loading div for sending e-mail message
+                                getLoadingDiv("load_processing", "Processing your file", "Please wait ...");
+                                ?>
 	  	<script>
 			$ = jQuery;
 			// Process the loading screen when switching pages 

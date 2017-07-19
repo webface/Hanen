@@ -4602,6 +4602,600 @@ function updateDueDate_callback()
 }
 
 /********************************************************************************************************
+ * get Amazon Web Services S3 Credentials
+ *******************************************************************************************************/
+add_action('wp_ajax_getAwsCredentials', 'getAwsCredentials_callback'); 
+function getAwsCredentials_callback ( ) 
+{
+    
+    if(current_user_can("is_director"))
+    {
+    
+        $credentials=array(
+            'accessKeyId'=> AWS_ACCESS_KEY_ID,
+            'secretAccessKey'=> AWS_SECRET_ACCESS_KEY
+        );
+
+        echo json_encode($credentials);
+        wp_die();
+    }
+    wp_die();
+}
+
+/****
+ * gets AWS user uploads from uploads table
+ * @param org_id - the organization id
+ * @param user_id - the id of the user
+ */
+function getUserUploads($org_id = 0, $user_id = 0)
+{
+    global $wpdb;
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    $uploads = $wpdb->get_results("SELECT * FROM ".TABLE_RESOURCES." WHERE org_id= $org_id AND owner_id= $user_id", ARRAY_A);
+    return $uploads;
+}
+
+/*
+ * Save Data to database for AWS uploads
+ */
+
+add_action( 'wp_ajax_upload_file', 'upload_file' );
+add_action( 'wp_ajax_nopriv_upload_file', 'upload_file' );
+function upload_file() 
+{
+        $filetype=filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
+        $fta=  explode('/', $filetype);
+        $type=$fta[0];
+        $thetype='';
+        switch ($type) {
+            case 'video':
+                $thetype='custom_video';
+                break;
+            case 'image':
+                $thetype='doc';
+                break;
+            default:
+                $thetype='doc';
+                break;
+        }
+	global $wpdb;
+        $data=array(
+            'owner_id'=>filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT),
+            'org_id'=>filter_var($_POST['org_id'],FILTER_SANITIZE_NUMBER_INT),
+            'file_key'=>$_POST['key'],
+            'url'=>filter_var($_POST['url'],FILTER_SANITIZE_URL),
+            'type'=>$thetype,
+            'name'=>filter_var($_POST['title'],FILTER_SANITIZE_STRING)
+        );
+        $insert=$wpdb->insert(TABLE_RESOURCES,$data);
+        if($insert != FALSE)
+        {
+            echo json_encode(array('message'=>'success','id'=>$wpdb->insert_id));
+        }else{
+            echo json_encode(array('message'=>'fail'));
+        }
+        
+	exit();
+}
+/*
+ * Rename User Uploaded File
+ */
+add_action( 'wp_ajax_update_file_title', 'update_file_title' );
+add_action( 'wp_ajax_nopriv_update_file_title', 'update_file_title' );
+
+function update_file_title()
+{
+    $title = filter_var($_REQUEST['title'], FILTER_SANITIZE_STRING);
+    $id = filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT);
+    if($title==="")
+    {
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = "Your title is invalid";
+        echo json_encode($result);
+        exit();
+    }
+    else
+    {
+    global $wpdb;
+        $data=array('name'=>$title);
+        $updt=$wpdb->update(TABLE_RESOURCES,$data, array('ID' => $id));
+        if ($updt === false) {
+             $result['success'] = false;
+            $result['display_errors'] = false;
+        } 
+        else 
+        {
+             $result['success'] = true;
+             $result['display_errors'] = false;
+        }
+        echo json_encode($result);
+        exit();
+    }
+}
+/*
+ * Save URL to database for user uploads
+ */
+
+add_action( 'wp_ajax_save_url', 'save_url' );
+add_action( 'wp_ajax_nopriv_save_url', 'save_url' );
+function save_url() 
+{
+	global $wpdb;
+        $data=array(
+            'owner_id'=>filter_var($_POST['user_id'],FILTER_SANITIZE_NUMBER_INT),
+            'org_id'=>filter_var($_POST['org_id'],FILTER_SANITIZE_NUMBER_INT),
+            'file_key'=>filter_var($_POST['key'], FILTER_SANITIZE_STRING),
+            'url'=>filter_var($_POST['url'],FILTER_SANITIZE_URL),
+            'type'=>'link',
+            'name'=>filter_var($_POST['title'],FILTER_SANITIZE_STRING)
+        );
+        $insert=$wpdb->insert(TABLE_RESOURCES,$data);
+        if($insert != FALSE)
+        {
+            echo json_encode(array('message'=>'success','id'=>$wpdb->insert_id));
+        }
+        else
+        {
+            echo json_encode(array('message'=>'fail'));
+        }
+        
+	exit();
+}
+/*
+ * Delete user uploaded AWS file
+ */
+add_action( 'wp_ajax_aws_delete_file', 'aws_delete_file' );
+add_action( 'wp_ajax_nopriv_aws_delete_file', 'aws_delete_file' );
+function aws_delete_file()
+{
+    $path = WP_PLUGIN_DIR . '/EOT_LMS/';
+    require $path . 'parts/aws/aws-autoloader.php';
+    // Instantiate the S3 client with your AWS credentials
+    $deleted=true;
+    
+    if($_REQUEST['key']!=='url')
+    {
+    $s3Client = new Aws\S3\S3Client(array(
+        'version' => 'latest',
+        'region' => 'us-west-2',
+        'credentials' => array(
+            'key' => AWS_ACCESS_KEY_ID,
+            'secret' => AWS_SECRET_ACCESS_KEY,
+        )
+    ));
+
+    $bucket = 'eot-resources';
+    $keyname = filter_var($_REQUEST['key'], FILTER_SANITIZE_STRING);
+
+    $res = $s3Client->deleteObject(
+        array(
+        'Bucket' => $bucket,
+        'Key'    => $keyname
+            )
+     );
+    
+    $confirm = $s3Client->doesObjectExist($bucket, $keyname);
+        if($confirm)
+        {
+             $deleted=false;
+        }
+        else
+        {
+            $deleted=true;
+        }
+    }
+    
+    if($deleted)
+    {
+        global $wpdb;
+        $id = filter_var($_REQUEST['id'],FILTER_SANITIZE_NUMBER_INT);
+        $del = $wpdb->delete(TABLE_RESOURCES, array('ID' => $id));
+
+        if ($del===false)
+        {
+
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Your file cannot be deleted";
+        } 
+        else 
+        {
+            $result['success'] = true;
+            $result['display_errors'] = false;
+        }
+        echo json_encode($result);
+        exit();
+    }
+    else
+    {
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Your file cannot be deleted";
+            echo json_encode($result);
+            exit();
+    }
+    exit();
+}
+/*
+ * Rename User Uploaded File
+ */
+add_action( 'wp_ajax_get_upload_form', 'get_upload_form' );
+add_action( 'wp_ajax_nopriv_get_upload_form', 'get_upload_form' );
+
+function get_upload_form()
+{
+    switch ($_REQUEST['form_name']) 
+    {
+        case 'update_title':
+        $title = filter_var($_REQUEST['title'], FILTER_SANITIZE_STRING);
+        $id = filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT);
+        ob_start();
+        ?>
+        <div class="title" style="width:320px">
+            <div class="title_h2">Type in or update your title</div>
+        </div>
+        <div class="middle">
+            <span class="errorbox"></span>
+            <form id= "add_title" frm_name="update_file_title" frm_action="update_file_title" rel="submit_form" hasError=0> 
+               
+                        <div class=" bs form_group">
+                            <input class="bs form-control" type="text" name="title" value="<?=$title;?>" /> 
+                            <input type="hidden" name="id" value="<?= $id ?>"
+
+                            <?php wp_nonce_field('update-file-title_' . $id); ?>
+                        </div> 
+                </table> 
+            </form>
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Cancel
+                </a>
+                <a active = '0' acton = "update_file_title" rel = "submit_button" class="positive">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
+                    Submit
+                </a>
+            </div>
+        </div>
+
+
+        <?php
+        $html = ob_get_clean();
+        echo $html;
+        exit();
+        break;
+        case 'delete_file':
+        $key = filter_var($_REQUEST['key'], FILTER_SANITIZE_STRING);
+        $id = filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT);
+        ob_start();
+        ?>
+        <div class="title">
+            <div class="title_h2">Delete This File?</div>
+        </div>
+        <div class="middle">
+            <form id= "delete_quiz" frm_name="aws_delete_file" frm_action="aws_delete_file" rel="submit_form" hasError=0> 
+                <table padding=0 class="form"> 
+                    <tr>
+                        <td class="value">
+                            <p>Are you sure you want to delete this file?</p>
+                            <input type="hidden" name="key" value="<?= $key ?>" /> 
+                            <input type="hidden" name="id" value="<?= $id ?>" />
+
+                            <?php wp_nonce_field('aws-delete-file_' . $key); ?>
+                        </td> 
+                    </tr> 
+                </table> 
+            </form>
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Cancel
+                </a>
+                <a active = '0' acton = "aws_delete_file" rel = "submit_button" class="positive">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
+                    Yes
+                </a>
+            </div>
+        </div>
+
+        <?php
+        $html = ob_get_clean();
+        echo $html;
+        exit();
+        break;
+    default:
+        break;
+    }
+}
+//Actions to support custom module creation
+add_action('wp_ajax_get_module_form','get_module_form');
+function get_module_form(){
+    switch ($_REQUEST['form_name']) {
+        case 'update_title':
+        $title = filter_var($_REQUEST['title'], FILTER_SANITIZE_STRING);
+        $module_id=filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT);
+        ob_start();
+        ?>
+        <div class="title" style="width:320px">
+            <div class="title_h2">Type in or update your title</div>
+        </div>
+        <div class="middle">
+            <span class="errorbox"></span>
+            <form id= "update_module_title" frm_name="update_module_title" frm_action="update_module_title" rel="submit_form" hasError=0> 
+               
+                        <div class=" bs form_group">
+                            <input class="bs form-control" type="text" name="title" value="<?=$title;?>" /> 
+                            <input type="hidden" name="module_id" value="<?= $module_id?>"/>
+
+                            <?php wp_nonce_field('update-module-title_' . $type); ?>
+                        </div> 
+                </table> 
+            </form>
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Cancel
+                </a>
+                <a active = '0' acton = "update_module_title" rel = "submit_button" class="positive">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
+                    Submit
+                </a>
+            </div>
+        </div>
+
+
+        <?php
+        $html = ob_get_clean();
+        echo $html;
+        exit();
+        break;
+        case 'delete_module':
+        $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT);
+        $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+        ob_start();
+        ?>
+        <div class="title">
+            <div class="title_h2">Delete This Module?</div>
+        </div>
+        <div class="middle">
+            <form id= "delete_quiz" frm_name="delete_module" frm_action="delete_module" rel="submit_form" hasError=0> 
+                <table padding=0 class="form"> 
+                    <tr>
+                        <td class="value">
+                            <p>If there are users assigned to this module, all records of the results will be lost</p>
+                            <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" /> 
+                            <input type="hidden" name="module_id" value="<?= $module_id ?>" /> 
+
+                            <?php wp_nonce_field('delete-module_' . $module_id); ?>
+                        </td> 
+                    </tr> 
+                </table> 
+            </form>
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Cancel
+                </a>
+                <a active = '0' acton = "delete_module" rel = "submit_button" class="positive">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
+                    Yes
+                </a>
+            </div>
+        </div>
+
+        <?php
+        $html = ob_get_clean();
+        echo $html;
+        exit();
+        break;
+    case 'delete_resource':
+        $resource_id = filter_var($_REQUEST['resource_id'],FILTER_SANITIZE_NUMBER_INT);
+        $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+        ob_start();
+        ?>
+        <div class="title">
+            <div class="title_h2">Delete This Module Resource?</div>
+        </div>
+        <div class="middle">
+            <form id= "delete_quiz" frm_name="delete_resource" frm_action="delete_resource" rel="submit_form" hasError=0> 
+                <table padding=0 class="form"> 
+                    <tr>
+                        <td class="value">
+                            <p>If there are users assigned to this module resource, all records of the results will be lost</p>
+                            <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" /> 
+                            <input type="hidden" name="resource_id" value="<?= $resource_id ?>" /> 
+
+                            <?php wp_nonce_field('delete-resource_' . $resource_id); ?>
+                        </td> 
+                    </tr> 
+                </table> 
+            </form>
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Cancel
+                </a>
+                <a active = '0' acton = "delete_resource" rel = "submit_button" class="positive">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
+                    Yes
+                </a>
+            </div>
+        </div>
+
+        <?php
+        $html = ob_get_clean();
+        echo $html;
+        exit();
+        break;
+    }
+}
+
+//action to delete module processed from form above
+add_action('wp_ajax_delete_module','delete_module');
+function delete_module()
+{
+        global $wpdb;
+        $module_id = filter_var($_REQUEST['module_id'], FILTER_SANITIZE_NUMBER_INT);
+        $del = $wpdb->delete(TABLE_MODULES, array('ID' => $module_id));
+        
+        if($del)
+        {
+            $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('module_id' => $module_id));
+            echo json_encode(array('success'=>'true'));
+        }
+        else
+        {
+           echo json_encode(array('success'=>'false')); 
+        }
+        exit();
+}
+
+//action to delete resource processed from form above
+add_action('wp_ajax_delete_resource','delete_resource');
+function delete_resource()
+{
+        global $wpdb;
+        $del = $wpdb->delete(TABLE_MODULE_RESOURCES, array('id' => $_REQUEST['resource_id']));
+        if($del)
+        {
+            echo json_encode(array('success'=>'true'));
+        }
+        else
+        {
+           echo json_encode(array('success'=>'false',"errors"=>"There was an error deleting the resource.")); 
+        }
+        exit();
+}
+
+//action to update module title. Called from form above
+add_action('wp_ajax_update_module_title','update_module_title');
+function update_module_title()
+{
+    global $wpdb;
+    $title=filter_var($_REQUEST['title'],FILTER_SANITIZE_STRING);
+    $module_id=filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT);
+    if ($title === "") 
+    {
+
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = "Your module title is invalid";
+    } 
+    else 
+    {
+        $upd=$wpdb->update(TABLE_MODULES,array('title'=>$title),array('id'=>$module_id));
+        if($upd===false)
+        {
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "There was an error changing your title";
+
+        }
+        else
+        {
+            $result['success'] = true;
+            $result['display_errors'] = false;
+            $result['title'] = $title;
+            $result['type'] = $type;
+        }
+    }
+    echo json_encode($result);
+    exit();
+}
+
+
+function getResourcesInModule($module_id){
+    global $wpdb;
+    $module_id = filter_var($module_id,FILTER_SANITIZE_NUMBER_INT);
+    $resources=$wpdb->get_results("SELECT * FROM ". TABLE_MODULE_RESOURCES." as mr WHERE module_id=".$module_id." ORDER BY mr.order ASC",ARRAY_A);
+    
+    $clean_results=array();
+    foreach($resources as $resource){
+        if($resource['resource_type']==='exam'){
+            $thequiz=$wpdb->get_row("SELECT * FROM ".TABLE_QUIZ." WHERE ID=".$resource['resource_id'],ARRAY_A);
+            array_push($clean_results, array('name'=>$thequiz['name'],
+                                                'ID'=>$thequiz['ID'],
+                                                'resource_id'=>$resource['ID'],
+                                                'type'=>'exam',
+                                                'order'=>$resource['order']));
+        }else{
+            $theresource=$wpdb->get_row("SELECT * FROM ".TABLE_RESOURCES." WHERE ID=".$resource['resource_id'],ARRAY_A);
+            array_push($clean_results, array('name'=>$theresource['name'],
+                                                'ID'=>$theresource['ID'],
+                                                'resource_id'=>$resource['ID'],
+                                                'type'=>$theresource['type'],
+                                                'order'=>$resource['order']));
+        }
+    }
+    //error_log(json_encode($clean_results));
+    return $clean_results;
+}
+
+function getModule($id=0)
+{
+    global $wpdb;
+    $module_id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+    $module=$wpdb->get_row("SELECT * FROM " . TABLE_MODULES. " WHERE ID = $module_id" , ARRAY_A);
+    return $module;
+}
+
+
+add_action('wp_ajax_add_resource_to_module','add_resource_to_module');
+function add_resource_to_module()
+{
+    global $wpdb;
+    $module_id=filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT);
+    $resource_id=filter_var($_REQUEST['id'],FILTER_SANITIZE_NUMBER_INT);
+    $order=filter_var($_REQUEST['order'],FILTER_SANITIZE_NUMBER_INT);
+    $type=filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
+    if($type==="quiz")
+    {
+        $thetype="exam";
+    }
+    else
+    {
+        $theresource=$wpdb->get_row("SELECT * FROM ".TABLE_RESOURCES." WHERE ID=".$resource_id,ARRAY_A);
+        $thetype=$theresource['type'];
+    }
+    $data=array(
+        'module_id'=>$module_id,
+        'resource_id'=>$resource_id,
+        'resource_type'=>$thetype,
+        'order'=>$order
+    );
+    $existing=$wpdb->get_row("SELECT * FROM ".TABLE_MODULE_RESOURCES." WHERE module_id=".$module_id." AND resource_id=".$resource_id." AND resource_type='".$thetype."'",ARRAY_A);
+    if($existing)
+    {
+        echo json_encode(array('message'=>'You have already added this resource'));
+    }
+    else
+    {
+        $upd=$wpdb->insert(TABLE_MODULE_RESOURCES,$data);
+        if($upd)
+        {
+            echo json_encode(array('message'=>'success'));
+        }
+        else
+        {
+            echo json_encode(array('message'=>'fail'));
+        }
+    }
+    exit();
+}
+
+/********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
  * javascript and the javascript will inject it into the HTML page.
  * The submit and cancel buttons are handled by javascript in this HTML (part-manage_courses.php for now)  

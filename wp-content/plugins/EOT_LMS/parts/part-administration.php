@@ -84,7 +84,19 @@
             Create custom quizzes for your staff.
           </div>
         </div>
-
+          <div class="row">
+            <div class="col">
+              <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" target="_blank">
+<!--                <img alt="" src="<?php echo bloginfo('template_directory'); ?>/images/anav-documents.gif">-->
+              <i class="fa fa-file-text fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+            </a>
+          </div>
+          <div class="col">
+            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')">Manage Your Custom Content</a>
+            <br>
+            Create and manage your own modules with your videos and quizzes.
+          </div>
+        </div>
         <div class="row">
           <div class="col">
             <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')">
