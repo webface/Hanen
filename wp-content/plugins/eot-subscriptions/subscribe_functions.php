@@ -2655,7 +2655,6 @@ function upgradeSubscription_callback ()
     if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
     {
         $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-
         $ordered_accounts = intval(filter_var($_REQUEST['accounts'],FILTER_SANITIZE_NUMBER_INT));
         $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
         $rep_id = filter_var($_REQUEST['rep_id'],FILTER_SANITIZE_NUMBER_INT);
@@ -2670,7 +2669,6 @@ function upgradeSubscription_callback ()
         {
             $staff_credits = intval($subscription->staff_credits); // The staff credits
             $org_id = $subscription->org_id; // The subscription org ID
-            $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
             /* 
              * Calculate the accounts available for the camp from wp_upgrade subscription table.
              */
@@ -2760,22 +2758,9 @@ function upgradeSubscription_callback ()
                 $results = addSubscriptionUpgrade ($subscription_id, $data);
                 if(isset($results['success']) && $results['success'])
                 {
-                    // Update LU number_licenses_purchased
-                    $portal_id = get_post_meta ( $org_id, 'lrn_upon_id', true ); // the portal ID from WP Postmeta table
-                    $portal_data = array('number_licenses_purchased' => $accounts + 1); // need to always add 1 for the director account on LU
-                    $response = updatePortal($portal_id, $org_subdomain, $portal_data);
-                    if(isset($response['status']) && $response['status'])
-                    {
-                        $result['data'] = 'success';
-                        $result['status'] = true;
-                        $result['library_id'] = $subscription->library_id; // Need for redirect back to admin_view_subscriptions page
-                    }
-                    else
-                    {
-                      // error in updating the portal
-                      $result['status'] = false;
-                      $result['message'] = 'upgradeSubscription_callback Error: There is an error updating users portal: ' . $response['message'];
-                    }
+                    $result['data'] = 'success';
+                    $result['status'] = true;
+                    $result['library_id'] = $subscription->library_id; // Needed for redirect 
                 }
                 else
                 {
@@ -2793,7 +2778,6 @@ function upgradeSubscription_callback ()
             $result['status'] = false;
             $result['message'] = 'upgradeSubscription_callback ERROR: Unable to find this subscription ID. Please contact the administrator.'; 
         }
-        
     }
     else
     {
@@ -2801,7 +2785,6 @@ function upgradeSubscription_callback ()
         $result['message'] = 'upgradeSubscription_callback ERROR: Missing some parameters.'; 
     }
     echo json_encode($result);
-
     wp_die();   
 }
 ?>

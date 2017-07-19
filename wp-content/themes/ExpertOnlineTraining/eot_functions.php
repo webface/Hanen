@@ -708,13 +708,21 @@ function updateCustomSettings_callback()
   $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
   $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
 
-  if ($type == "post")
+  if ($type == "post_meta")
   {
     update_post_meta($org_id, $meta_key, $meta_value);
   }
   else if ($type == "user")
   {
     update_user_meta($user_id, $meta_key, $meta_value);
+  }
+  else if($type == "post" && $meta_key == 'post_title')
+  {
+    $posts_info = array(
+      'ID'           => $org_id,
+      'post_title'   => $meta_value
+    );
+    wp_update_post( $posts_info );
   }
   wp_die();
 }
@@ -1101,11 +1109,11 @@ add_action('wp_ajax_updateCreateSalesRep', 'updateCreateSalesRep_callback');
 //this function updates or creates a sales rep (if doesn't exist)
 function updateCreateSalesRep_callback()
 {
-  $first_name = filter_var($_REQUEST['first_name'], FILTER_SANITIZE_STRING);
-  $last_name = filter_var($_REQUEST['last_name'], FILTER_SANITIZE_STRING);
-  $email = filter_var($_REQUEST['email'], FILTER_SANITIZE_STRING);
-  $password = $_REQUEST['password'];
-  $create_user = filter_var($_REQUEST['create_user'], FILTER_SANITIZE_NUMBER_INT); // int: 1 to create user, 0 or null to update
+  $first_name = isset($_REQUEST['first_name']) ? filter_var($_REQUEST['first_name'], FILTER_SANITIZE_STRING) : 'John';
+  $last_name = isset($_REQUEST['last_name']) ? filter_var($_REQUEST['last_name'], FILTER_SANITIZE_STRING) : 'Doe';
+  $email = isset($_REQUEST['email']) ? sanitize_email($_REQUEST['email']) : 'johndoe@expertonlinetraining.com';
+  $password = isset($_REQUEST['password']) ? $_REQUEST['password'] : '';
+  $create_user = isset($_REQUEST['create_user']) ? filter_var($_REQUEST['create_user'], FILTER_SANITIZE_NUMBER_INT) : 1; // int: 1 to create user, 0 or null to update
 
   $new_user = array(
     'user_login' => $email,
@@ -1115,22 +1123,34 @@ function updateCreateSalesRep_callback()
     'role' => 'salesrep'
   );
 
+  // if we have a password, include it in the user data
   if($password)
   {
     $new_user['user_pass'] = $password;
   }
 
+  // check if we need to create the user or update
   if($create_user)
   {
     $user_id = wp_insert_user ($new_user);
   }
   else
   {
-    $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
-    $new_user['ID'] = $user_id;
-    $user_id = wp_update_user ($new_user);
+    if (isset($_REQUEST['user_id']))
+    {
+      $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+      $new_user['ID'] = $user_id;
+      $new_user['display_name'] = $first_name . " " . $last_name;
+      $user_id = wp_update_user ($new_user);
+    }
+    else
+    {
+      $result['status'] = 0;
+      $result['message'] = "updateCreateSalesRep ERROR: No user id provided.";
+    }
   }
 
+  // check for errors
   if (is_wp_error($user_id))
   {
     $result['status'] = 0;
@@ -1909,11 +1929,16 @@ function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_dat
     {
         $sql .= " WHERE subscription_id = $subscription_id";
     }
-    
-    if($start_date != "0000-00-00" && $end_date != "0000-00-00")
+
+    if($subscription_id <= 0 && $start_date != "0000-00-00" && $end_date != "0000-00-00")
+    {
+      $sql .= " WHERE date >= '$start_date' AND date <= '$end_date'";
+    }
+    else if($start_date != "0000-00-00" && $end_date != "0000-00-00")
     {
       $sql .= " AND date >= '$start_date' AND date <= '$end_date'";
     }
+
     $results = $wpdb->get_results ($sql);
     return $results;
 }
@@ -2885,7 +2910,7 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
 
   if($course_id > 0)
   {
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE course_id = $course_id", OBJECT_K); 
+    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE ID = $course_id", OBJECT_K); 
   }
   else if($org_id > -1) // org_id == 0 belongs to EOT
   {
@@ -4161,6 +4186,11 @@ function updateUser_callback()
         $data = compact("org_id", "first_name", "last_name", "email", "user_id", "password");
         $new_user = array();
         $original_id = $user_id;
+
+        //make sure we preserve the role
+        $accepted_roles = array('manager', 'student', 'uber_manager', 'umbrella_manager');
+        $role = (isset($_REQUEST['role']) && in_array($_REQUEST['role'], $accepted_roles)) ? $_REQUEST['role'] : 'student';
+
         // Check permissions
         if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'update-staff_' . $user_id ) ) 
         {
@@ -4191,10 +4221,11 @@ function updateUser_callback()
                 $userdata = array (
                     'user_login' => $email,
                     'user_pass' => $WP_password,
-                    'role' => 'student',
+                    'role' => $role,
                     'user_email' => $email,
                     'first_name' => $first_name,
-                    'last_name' => $last_name
+                    'last_name' => $last_name,
+                    'display_name' => $first_name . " " . $last_name
                 );
 
                 // check if user exists
@@ -4202,7 +4233,7 @@ function updateUser_callback()
                 if ($user_id) 
                 {
                     // check if email was updated because if it was, we need to update the user_login field.
-                    if ($email !== $old_email)
+                    if ($email != $old_email)
                     {
                         global $wpdb;
                         // cant use wp_insert_user because we need to updtate login as well and that function wont do it.
@@ -4240,7 +4271,7 @@ function updateUser_callback()
                     // success
                     $result['success'] = true;
                     $result['message'] = 'User account information has been successfully updated.';
-                    $result['staff_id']=$WP_user_id;
+                    $result['staff_id'] = $WP_user_id;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
                     $result['email']=$email;
@@ -4266,6 +4297,27 @@ function updateUser_callback()
                     $result['name']=$first_name;
                     $result['lastname']=$last_name;
                 }   
+
+                // check if we need to update the org name
+                if ($org_id && isset($_REQUEST['camp_name']) && $_REQUEST['camp_name'] != "" && isset($_REQUEST['old_camp_name']) && $_REQUEST['camp_name'] != $_REQUEST['old_camp_name'] && isset($_REQUEST['user_id']))
+                {
+                  $this_user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+
+                  // verify the org ID belongs to this user
+                  if ($org_id == get_user_meta($this_user_id, 'org_id', true))
+                  {
+                    // update the camp name
+                    $camp_name = filter_var($_REQUEST['camp_name'], FILTER_SANITIZE_STRING);
+                    $args = array (
+                      'ID' => $org_id,
+                      'post_title' => $camp_name
+                    );
+                    wp_update_post( $args );
+                  }
+                }
+
+
+
 /* @TODO remove if not using later on
             // check that previous attempts to update user did not fail. If not, check if we need to update portal name (camp name)
             if (isset($result['success']) && $result['success'])
@@ -6970,3 +7022,4 @@ jane@email.com
 
     wp_die();
 }
+
