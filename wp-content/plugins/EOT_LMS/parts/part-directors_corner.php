@@ -35,7 +35,7 @@
                                 Your digital subscriptions include access to fantastic articles by EOT faculty 
                                 members Dr. Chris Thurber, Dr. Zach Mural, Scott Arizala and others. Enjoy!<br><br>
                                 <div>
-                                    <a class="aMagazine" style="float; margin-left:21%;" href="http://www.campbusiness.com/" target="_blank">
+                                    <a class="aMagazine" style="margin-left:21%;" href="http://www.campbusiness.com/" target="_blank">
                                         <img style="box-shadow: 5px 5px 5px #591720;" src="/wp-content/uploads/2017/03/campBusiness.jpg" width="144" height="192" alt="Camp Business Magazine"></a>
                                     <a class="aMagazine" style=" margin:7%;" href="http://www.parksandrecbusiness.com/" target="_blank">
                                         <img style="box-shadow: 5px 5px 5px #02330E;" src="/wp-content/uploads/2017/03/prbMagazine.jpg" width="144" height="192" alt="Parks and Rec Business Magazine"></a>
