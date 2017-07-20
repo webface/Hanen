@@ -372,7 +372,8 @@
                         sendMail();
                     });
 
-                    function sendMail() {
+                    function sendMail() 
+                    {
                         $.ajax({
                             url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
                             success: function (result) 

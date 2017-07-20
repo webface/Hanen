@@ -13,7 +13,7 @@ class EotQuizData
         
     }
 
-    public function addQuiz($data) 
+    public function addQuiz($data = array()) 
     {
         global $wpdb;
         global $current_user;
@@ -23,7 +23,7 @@ class EotQuizData
         return $result;
     }
 
-    public function updateQuiz($data, $id) 
+    public function updateQuiz($data = array(), $id = 0) 
     {
         global $wpdb;
         $result = $wpdb->update(TABLE_QUIZ, $data, array('ID' => $id));
@@ -37,7 +37,7 @@ class EotQuizData
         }
     }
 
-    public function getQuizzes($org_id, $user_id) 
+    public function getQuizzes($org_id = 0, $user_id = 0) 
     {
         global $wpdb;
         $quizzes = $wpdb->get_results(""
@@ -50,7 +50,7 @@ class EotQuizData
         return $quizzes;
     }
 
-    public function get_quiz_by_id($id) 
+    public function get_quiz_by_id($id = 0) 
     {
         global $wpdb;
         $quiz = $wpdb->get_row("SELECT q.*,"
@@ -61,7 +61,7 @@ class EotQuizData
         return $quiz;
     }
 
-    public function get_quiz_data($id) 
+    public function get_quiz_data($id = 0) 
     {
         $quiz_data = array();
         $quiz = $this->get_quiz_by_id($id);
@@ -79,7 +79,7 @@ class EotQuizData
         return $quiz_data;
     }
 
-    public function deleteQuiz($id) 
+    public function deleteQuiz($id = 0) 
     {
         global $wpdb;
         $del = $wpdb->delete(TABLE_QUIZ_QUESTION, array('quiz_id' => $id));
@@ -88,7 +88,7 @@ class EotQuizData
         return $del;
     }
 
-    public function addQuestion($data) 
+    public function addQuestion($data = array()) 
     {
         global $wpdb;
         $result = $wpdb->insert(TABLE_QUIZ_QUESTION, $data);
@@ -96,7 +96,7 @@ class EotQuizData
         return $lastid;
     }
 
-    public function updateQuestion($data, $id)
+    public function updateQuestion($data = array(), $id = 0)
     {
         global $wpdb;
         $result = $wpdb->update(TABLE_QUIZ_QUESTION, $data, array('ID' => $id));
@@ -110,14 +110,14 @@ class EotQuizData
         }
     }
 
-    public function get_question_by_id($id)
+    public function get_question_by_id($id = 0)
     {
         global $wpdb;
         $question = $wpdb->get_row("SELECT * FROM " . TABLE_QUIZ_QUESTION . " WHERE ID = $id", ARRAY_A);
         return $question;
     }
 
-    public function get_quiz_questions($quiz_id)
+    public function get_quiz_questions($quiz_id = 0)
     {
         global $wpdb;
         $questions = $wpdb->get_results("SELECT q.ID,q.quiz_question,q.quiz_question_type, "
@@ -130,7 +130,7 @@ class EotQuizData
         return $questions;
     }
 
-    public function deleteQuestion($id) 
+    public function deleteQuestion($id = 0) 
     {
         global $wpdb;
         $del = $wpdb->delete(TABLE_QUIZ_ANSWER, array('question_id' => $id));
@@ -139,7 +139,7 @@ class EotQuizData
         return $del;
     }
 
-    public function addAnswer($data) 
+    public function addAnswer($data = array()) 
     {
         global $wpdb;
         $result = $wpdb->insert(TABLE_QUIZ_ANSWER, $data);
@@ -147,7 +147,7 @@ class EotQuizData
         return $lastid;
     }
 
-    public function updateAnswer($data, $id) 
+    public function updateAnswer($data = array(), $id = 0) 
     {
         global $wpdb;
         $result = $wpdb->update(TABLE_QUIZ_ANSWER, $data, array('ID' => $id));
@@ -161,7 +161,7 @@ class EotQuizData
         }
     }
 
-    public function deleteAnswer($id) 
+    public function deleteAnswer($id = 0) 
     {
         global $wpdb;
         $result = $wpdb->delete(TABLE_QUIZ_ANSWER, array('ID' => $id));
@@ -176,20 +176,20 @@ class EotQuizData
         }
     }
 
-    public function get_question_answers($question_id) 
+    public function get_question_answers($question_id = 0) 
     {
         global $wpdb;
         $answers = $wpdb->get_results("SELECT * FROM " . TABLE_QUIZ_ANSWER . " WHERE question_id = $question_id", ARRAY_A);
         return $answers;
     }
-    public function add_quiz_attempt($data) 
+    public function add_quiz_attempt($data = array()) 
     {
         global $wpdb;
         $result = $wpdb->insert(TABLE_QUIZ_ATTEMPT, $data);
         $lastid = $wpdb->insert_id;
         return $lastid;
     }
-    public function add_quiz_result($data) 
+    public function add_quiz_result($data = array()) 
     {
         global $wpdb;
         $result = $wpdb->insert(TABLE_QUIZ_RESULT, $data);

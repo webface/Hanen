@@ -2,7 +2,8 @@
 /*
  * Used with facebox.js to load pop up forms
  */
-switch ($_REQUEST['form_name']) {
+switch ($_REQUEST['form_name']) 
+{
         case 'update_title':
         $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         ob_start();
@@ -18,7 +19,7 @@ switch ($_REQUEST['form_name']) {
                             <input class="bs form-control" type="text" name="title" value="<?=$title;?>" /> 
                              
 
-                            <?php wp_nonce_field('update-title_' . $type); ?>
+                            <?php wp_nonce_field('update-title'); ?>
                         </div> 
                 </table> 
             </form>

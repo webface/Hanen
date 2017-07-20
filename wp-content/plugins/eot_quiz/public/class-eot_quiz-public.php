@@ -21,7 +21,8 @@
  * @author     Tommy Adeniyi <tommy@targetdirectories.com>
  * ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
  */
-class Eot_quiz_Public {
+class Eot_quiz_Public 
+{
 
     /**
      * The ID of this plugin.
@@ -48,7 +49,8 @@ class Eot_quiz_Public {
      * @param      string    $plugin_name       The name of the plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct($plugin_name, $version) {
+    public function __construct($plugin_name, $version) 
+    {
 
         $this->plugin_name = $plugin_name;
         $this->version = $version;
@@ -59,7 +61,8 @@ class Eot_quiz_Public {
      *
      * @since    1.0.0
      */
-    public function enqueue_styles() {
+    public function enqueue_styles() 
+    {
 
         /**
          * This function is provided for demonstration purposes only.
@@ -81,7 +84,8 @@ class Eot_quiz_Public {
      *
      * @since    1.0.0
      */
-    public function enqueue_scripts() {
+    public function enqueue_scripts() 
+    {
 
         /**
          * This function is provided for demonstration purposes only.
@@ -126,19 +130,22 @@ class Eot_quiz_Public {
         );
     }
 
-    public function register_shortcodes() {
+    public function register_shortcodes() 
+    {
         add_shortcode('eot_quiz_admin', array($this, 'frontend_quiz_admin'));
         add_shortcode('eot_quiz_display', array($this, 'frontend_quiz'));
     }
 
     //Shortcode function to display front end quiz admin
-    public function frontend_quiz_admin($atts) {
+    public function frontend_quiz_admin($atts) 
+    {
         $a = shortcode_atts(array(
             'action' => 'manage_quiz',
             'attr_2' => 'attribute 2 default',
                 // ...etc
                 ), $atts);
-        switch ($a['action']) {
+        switch ($a['action']) 
+        {
             case 'manage_quiz':
                 require_once plugin_dir_path(__FILE__) . 'partials/eot_manage_quiz.php';
                 break;
@@ -158,7 +165,8 @@ class Eot_quiz_Public {
     }
 
     //Shortcode function to display front end quiz
-    public function frontend_quiz($atts) {
+    public function frontend_quiz($atts) 
+    {
         $a = shortcode_atts(array(
             'action' => 'manage_quiz',
             'attr_2' => 'attribute 2 default',
@@ -170,7 +178,8 @@ class Eot_quiz_Public {
 
     //Ajax function to save question
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
-    public function update_question() {
+    public function update_question_callback() 
+    {
         switch ($_POST['type']) {
             case 'radio':
                 require_once plugin_dir_path(__FILE__) . 'partials/ajax_update_radio.php';
@@ -187,20 +196,23 @@ class Eot_quiz_Public {
 
     //Ajax function to manage quiz
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
-    public function quiz_data() {
+    public function quiz_data_callback() 
+    {
 
         require_once plugin_dir_path(__FILE__) . 'partials/ajax_quiz_manager.php';
     }
 
     //Ajax function to get quiz admin forms(facebox)
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
-    public function get_quiz_form() {
+    public function get_quiz_form_callback() 
+    {
         require_once plugin_dir_path(__FILE__) . 'partials/ajax_get_quiz_form.php';
     }
 
     //Ajax function to delete quiz
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
-    public function delete_quiz_callback() {
+    public function delete_quiz_callback() 
+    {
         $path = WP_PLUGIN_DIR . '/eot_quiz/';
         require $path . 'public/class-eot_quiz_data.php';
         $eot_quiz = new EotQuizData();
@@ -216,7 +228,8 @@ class Eot_quiz_Public {
     }
     //Ajax function to delete question
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
-    public function delete_question_callback() {
+    public function delete_question_callback() 
+    {
         $path = WP_PLUGIN_DIR . '/eot_quiz/';
         require $path . 'public/class-eot_quiz_data.php';
         $eot_quiz = new EotQuizData();
@@ -232,7 +245,8 @@ class Eot_quiz_Public {
     }
     //Ajax function to add question title
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
-    public function add_title_callback() {
+    public function add_title_callback() 
+    {
         $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
         if ($title === "") {
@@ -251,7 +265,8 @@ class Eot_quiz_Public {
     }
     //Ajax function to update title
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
-    public function update_title_callback() {
+    public function update_title_callback() 
+    {
         $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         if ($title === "") {
 

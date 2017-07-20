@@ -27,7 +27,8 @@
  * @subpackage Eot_quiz/includes
  * @author     Tommy Adeniyi <tommy@targetdirectories.com>
  */
-class Eot_quiz {
+class Eot_quiz 
+{
 
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -66,7 +67,8 @@ class Eot_quiz {
      *
      * @since    1.0.0
      */
-    public function __construct() {
+    public function __construct() 
+    {
 
         $this->plugin_name = 'eot_quiz';
         $this->version = '1.0.0';
@@ -93,7 +95,8 @@ class Eot_quiz {
      * @since    1.0.0
      * @access   private
      */
-    private function load_dependencies() {
+    private function load_dependencies() 
+    {
 
         /**
          * The class responsible for orchestrating the actions and filters of the
@@ -130,7 +133,8 @@ class Eot_quiz {
      * @since    1.0.0
      * @access   private
      */
-    private function set_locale() {
+    private function set_locale() 
+    {
 
         $plugin_i18n = new Eot_quiz_i18n();
 
@@ -144,7 +148,8 @@ class Eot_quiz {
      * @since    1.0.0
      * @access   private
      */
-    private function define_admin_hooks() {
+    private function define_admin_hooks() 
+    {
 
         $plugin_admin = new Eot_quiz_Admin($this->get_plugin_name(), $this->get_version());
 
@@ -159,26 +164,22 @@ class Eot_quiz {
      * @since    1.0.0
      * @access   private
      */
-    private function define_public_hooks() {
+    private function define_public_hooks() 
+    {
 
         $plugin_public = new Eot_quiz_Public($this->get_plugin_name(), $this->get_version());
         $this->loader->add_action('init', $plugin_public, 'register_shortcodes');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
-        $this->loader->add_action('wp_ajax_update_question', $plugin_public, 'update_question');
-        $this->loader->add_action('wp_ajax_nopriv_update_question', $plugin_public, 'update_question');
-        $this->loader->add_action('wp_ajax_quiz_data', $plugin_public, 'quiz_data');
-        $this->loader->add_action('wp_ajax_nopriv_quiz_data', $plugin_public, 'quiz_data');
-        $this->loader->add_action('wp_ajax_get_quiz_form', $plugin_public, 'get_quiz_form');
-        $this->loader->add_action('wp_ajax_nopriv_get_quiz_form', $plugin_public, 'get_quiz_form');
+        
+        // Quiz Ajax Functions and Callbacks
+        $this->loader->add_action('wp_ajax_update_question', $plugin_public, 'update_question_callback');
+        $this->loader->add_action('wp_ajax_quiz_data', $plugin_public, 'quiz_data_callback');
+        $this->loader->add_action('wp_ajax_get_quiz_form', $plugin_public, 'get_quiz_form_callback');
         $this->loader->add_action('wp_ajax_delete_quiz', $plugin_public, 'delete_quiz_callback');
-        $this->loader->add_action('wp_ajax_nopriv_delete_quiz', $plugin_public, 'delete_quiz_callback');
         $this->loader->add_action('wp_ajax_delete_question', $plugin_public, 'delete_question_callback');
-        $this->loader->add_action('wp_ajax_nopriv_delete_question', $plugin_public, 'delete_question_callback');
         $this->loader->add_action('wp_ajax_add_title', $plugin_public, 'add_title_callback');
-        $this->loader->add_action('wp_ajax_nopriv_add_title', $plugin_public, 'add_title_callback');
         $this->loader->add_action('wp_ajax_update_title', $plugin_public, 'update_title_callback');
-        $this->loader->add_action('wp_ajax_nopriv_update_title', $plugin_public, 'update_title_callback');        
     }
 
     /**
@@ -186,7 +187,8 @@ class Eot_quiz {
      *
      * @since    1.0.0
      */
-    public function run() {
+    public function run() 
+    {
         $this->loader->run();
     }
 
@@ -197,7 +199,8 @@ class Eot_quiz {
      * @since     1.0.0
      * @return    string    The name of the plugin.
      */
-    public function get_plugin_name() {
+    public function get_plugin_name() 
+    {
         return $this->plugin_name;
     }
 
@@ -207,7 +210,8 @@ class Eot_quiz {
      * @since     1.0.0
      * @return    Eot_quiz_Loader    Orchestrates the hooks of the plugin.
      */
-    public function get_loader() {
+    public function get_loader() 
+    {
         return $this->loader;
     }
 
@@ -217,7 +221,8 @@ class Eot_quiz {
      * @since     1.0.0
      * @return    string    The version number of the plugin.
      */
-    public function get_version() {
+    public function get_version() 
+    {
         return $this->version;
     }
 
