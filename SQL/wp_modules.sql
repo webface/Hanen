@@ -8,10 +8,10 @@ CREATE TABLE `wp_modules` (
   `library_id` bigint(11) UNSIGNED DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `org_id` bigint(20) UNSIGNED NOT NULL,
-  `creator_id` bigint(20) UNSIGNED DEFAULT NULL
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `wp_modules` (`ID`, `title`, `description_text`, `created_at`, `updated_at`, `number_of_linked_courses`, `library_id`, `category_id`, `org_id`, `creator_id`) VALUES
+INSERT INTO `wp_modules` (`ID`, `title`, `description_text`, `created_at`, `updated_at`, `number_of_linked_courses`, `library_id`, `category_id`, `org_id`, `user_id`) VALUES
 (2, '15 Passenger Van Safety', '', NULL, NULL, 3, 1, 1, 0, NULL),
 (5, 'Achieving Supervisory Balance', '', NULL, NULL, 3, 1, 2, 0, NULL),
 (9, 'Active Lifeguarding', '', NULL, NULL, 13, 1, 1, 0, NULL),

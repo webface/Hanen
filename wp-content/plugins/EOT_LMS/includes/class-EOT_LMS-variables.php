@@ -27,9 +27,11 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
 		$library_id = '';
 	}
 
+	// define breadcrumb to modules page
+    define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$_REQUEST['subscription_id'].'">Manage Your Custom Modules</a>');
 	define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_administration\')">Administration</a>');
-	
 	define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$_REQUEST["subscription_id"].'&library_id='. $library_id .'" onclick="load(\'load_loading\')">Subscription Details</a>');
+
 	// define breadcrumb to view subscription page. This requires the subscription ID.
 	if(isset($_REQUEST['library_id']) && $_REQUEST['library_id'] !== "")
 	{
@@ -45,6 +47,7 @@ else
 
 // define breadcrumb to view library page
 if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
+        
 	define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_view_library\')">View Library</a>');
 else
 	define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library" onclick="load(\'load_view_library\')>View Library</a>');

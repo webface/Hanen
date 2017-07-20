@@ -88,7 +88,7 @@
 }
 .acfrcwdupload-filext-zip,
 .acfrcwdupload-filext-rar,
-.acfrcwdupload-filext-ace,{		background-image:url(../img/page_white_acrobat.png);
+.acfrcwdupload-filext-ace{		background-image:url(../img/page_white_acrobat.png);
 }
 .rcwdplupload-remove{			position:absolute;
 								top:4px;

@@ -1,7 +1,7 @@
 <div class="breadcrumb">
   <?= CRUMB_DASHBOARD ?>    
   <?= CRUMB_SEPARATOR ?>  
-    <span class="current">Administration</span>     
+  <span class="current">Administration</span>     
 </div>
 <?php
   // verify this user has access to this portal/subscription/page/view
@@ -75,7 +75,7 @@
         <div class="row">
           <div class="col">
             <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_quiz')">
-              <i class="fa fa-question-circle fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-question-circle fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
@@ -84,7 +84,18 @@
             Create custom quizzes for your staff.
           </div>
         </div>
-
+          <div class="row">
+            <div class="col">
+              <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" target="_blank">
+              <i class="fa fa-list-alt fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+            </a>
+          </div>
+          <div class="col">
+            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')">Manage Your Custom Modules</a>
+            <br>
+            Create and manage your own modules with your videos and quizzes.
+          </div>
+        </div>
         <div class="row">
           <div class="col">
             <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')">
