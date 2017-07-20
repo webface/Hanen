@@ -217,6 +217,14 @@ class Eot_quiz_Public
         require $path . 'public/class-eot_quiz_data.php';
         $eot_quiz = new EotQuizData();
         $quiz_id = filter_var($_REQUEST['quiz_id'],FILTER_SANITIZE_NUMBER_INT);
+        if ( ! wp_verify_nonce('delete-quiz_'.$quiz_id ) ) 
+        {
+
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Your nonce did not verify."; 
+
+        }
         $delete = $eot_quiz->deleteQuiz($quiz_id);
         if ($delete) {
             $result['success'] = true;
@@ -234,6 +242,14 @@ class Eot_quiz_Public
         require $path . 'public/class-eot_quiz_data.php';
         $eot_quiz = new EotQuizData();
         $question_id = filter_var($_REQUEST['question_id'],FILTER_SANITIZE_NUMBER_INT);
+        if ( ! wp_verify_nonce('delete-question_'.$question_id ) ) 
+        {
+
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Your nonce did not verify."; 
+
+        }
         $delete = $eot_quiz->deleteQuestion($question_id);
         if ($delete) {
             $result['success'] = true;
@@ -249,6 +265,14 @@ class Eot_quiz_Public
     {
         $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
+        if ( ! wp_verify_nonce('add-title_'.$type ) ) 
+        {
+
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Your nonce did not verify."; 
+
+        }
         if ($title === "") {
 
             $result['display_errors'] = true;
@@ -268,6 +292,14 @@ class Eot_quiz_Public
     public function update_title_callback() 
     {
         $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
+        if ( ! wp_verify_nonce('update-title' ) ) 
+        {
+
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = "Your nonce did not verify."; 
+
+        }
         if ($title === "") {
 
             $result['display_errors'] = true;
