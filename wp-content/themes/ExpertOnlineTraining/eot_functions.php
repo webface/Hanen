@@ -4719,7 +4719,7 @@ function upload_file_callback()
       'file_key' => $_REQUEST['key'],
       'url' => filter_var($_REQUEST['url'],FILTER_SANITIZE_URL),
       'type' => $thetype,
-      'name' => filter_var($_REQUEST['title'],FILTER_SANITIZE_STRING)
+      'name' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']))
   );
   $insert = $wpdb->insert(TABLE_RESOURCES, $data);
   if($insert != FALSE)
@@ -4740,7 +4740,7 @@ function upload_file_callback()
 add_action( 'wp_ajax_update_file_title', 'update_file_title_callback' );
 function update_file_title_callback()
 {
-    $title = filter_var($_REQUEST['title'], FILTER_SANITIZE_STRING);
+    $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
     $id = filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT);
     if($title == "")
     {
@@ -4782,7 +4782,7 @@ function save_url_callback()
       'file_key' => filter_var($_REQUEST['key'], FILTER_SANITIZE_STRING),
       'url' => filter_var($_REQUEST['url'], FILTER_SANITIZE_URL),
       'type' => 'link',
-      'name' => filter_var($_REQUEST['title'], FILTER_SANITIZE_STRING)
+      'name' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']))
   );
   $insert = $wpdb->insert(TABLE_RESOURCES, $data);
   if($insert != FALSE)
@@ -4897,17 +4897,16 @@ function get_upload_form_callback()
             </form>
         </div>      
         <div class="popup_footer">
-            <div class="buttons">
-                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
-                    Cancel
-                </a>
-                <a active = '0' acton = "update_file_title" rel = "submit_button" class="positive">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
-                    Submit
-                </a>
-            </div>
-        </div>
+          <div class="buttons">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="update_file_title" style="display:none"></i>
+            <a onclick="jQuery(document).trigger('close.facebox');" >
+              <div style="height:15px;padding-top:2px;"> Cancel</div>
+            </a>
+            <a active = '0' acton = "update_file_title" rel = "submit_button" onclick="jQuery('#update_file_title').show();">
+              <div style="height:15px;padding-top:2px;"> Submit</div>
+            </a>
+          </div>
+      </div>
 <?php
         $html = ob_get_clean();
         echo $html;
@@ -4938,14 +4937,13 @@ function get_upload_form_callback()
         </div>      
         <div class="popup_footer">
             <div class="buttons">
-                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
-                    Cancel
-                </a>
-                <a active = '0' acton = "aws_delete_file" rel = "submit_button" class="positive">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
-                    Yes
-                </a>
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="aws_delete_file" style="display:none"></i>
+              <a onclick="jQuery(document).trigger('close.facebox');" >
+                <div style="height:15px;padding-top:2px;"> Cancel</div>
+              </a>
+              <a active = '0' acton = "aws_delete_file" rel = "submit_button" onclick="jQuery('#aws_delete_file').show();">
+                <div style="height:15px;padding-top:2px;"> Yes</div>
+              </a>
             </div>
         </div>
 <?php
@@ -4967,7 +4965,7 @@ function get_module_form_callback()
     switch ($_REQUEST['form_name']) 
     {
       case 'update_title':
-        $title = filter_var($_REQUEST['title'], FILTER_SANITIZE_STRING);
+        $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         $module_id = filter_var($_REQUEST['module_id'], FILTER_SANITIZE_NUMBER_INT);
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         ob_start();
@@ -4987,16 +4985,15 @@ function get_module_form_callback()
                 </table> 
             </form>
         </div>      
-        <div class="popup_footer">
+         <div class="popup_footer">
             <div class="buttons">
-                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
-                    Cancel
-                </a>
-                <a active = '0' acton = "update_module_title" rel = "submit_button" class="positive">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
-                    Submit
-                </a>
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="update_module_title" style="display:none"></i>
+              <a onclick="jQuery(document).trigger('close.facebox');" >
+                <div style="height:15px;padding-top:2px;"> Cancel</div>
+              </a>
+              <a active = '0' acton = "update_module_title" rel = "submit_button" onclick="jQuery('#update_module_title').show();">
+                <div style="height:15px;padding-top:2px;"> Submit</div>
+              </a>
             </div>
         </div>
 <?php
@@ -5029,14 +5026,13 @@ function get_module_form_callback()
         </div>      
         <div class="popup_footer">
             <div class="buttons">
-                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
-                    Cancel
-                </a>
-                <a active = '0' acton = "delete_module" rel = "submit_button" class="positive">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
-                    Yes
-                </a>
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="delete_module" style="display:none"></i>
+              <a onclick="jQuery(document).trigger('close.facebox');" >
+                <div style="height:15px;padding-top:2px;"> Cancel</div>
+              </a>
+              <a active = '0' acton = "delete_module" rel = "submit_button" onclick="jQuery('#delete_module').show();">
+                <div style="height:15px;padding-top:2px;"> Yes</div>
+              </a>
             </div>
         </div>
 <?php
@@ -5071,14 +5067,13 @@ function get_module_form_callback()
         </div>      
         <div class="popup_footer">
             <div class="buttons">
-                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
-                    Cancel
-                </a>
-                <a active = '0' acton = "delete_resource" rel = "submit_button" class="positive">
-                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
-                    Yes
-                </a>
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="delete_resource" style="display:none"></i>
+              <a onclick="jQuery(document).trigger('close.facebox');" >
+                <div style="height:15px;padding-top:2px;"> Cancel</div>
+              </a>
+              <a active = '0' acton = "delete_resource" rel = "submit_button" onclick="jQuery('#delete_resource').show();">
+                <div style="height:15px;padding-top:2px;"> Yes</div>
+              </a>
             </div>
         </div>
 <?php
@@ -5175,7 +5170,7 @@ add_action('wp_ajax_update_module_title','update_module_title_callback');
 function update_module_title_callback()
 {
     global $wpdb;
-    $title = filter_var($_REQUEST['title'],FILTER_SANITIZE_STRING);
+    $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
     $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT);
     $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
 
