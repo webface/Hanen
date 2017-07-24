@@ -196,8 +196,8 @@ class acf_field_rcwdupload extends acf_field
 				
 			));
 			
-			get_currentuserinfo();
-
+			$current_user =  wp_get_current_user();
+			
 			if( get_current_user_id() == 1 and $current_user->user_login == 'roberto.c' ){
 				
 				acf_render_field_setting( $field, array(

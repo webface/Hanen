@@ -16,7 +16,7 @@ define ('DEFAULT_QUIZ_LENGTH', 7);
 define ('CRUMB_DASHBOARD', '<a href="'. get_home_url() .'/dashboard/" onclick="load(\'load_dashboard\')">My Dashboard</a>');
 
 // define breadcrumb to dashboard page
-if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
+if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 {
 	if (isset($_REQUEST['library_id']))
 	{
@@ -31,7 +31,7 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
     define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$_REQUEST['subscription_id'].'">Manage Your Custom Modules</a>');
 	define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_administration\')">Administration</a>');
 	define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$_REQUEST["subscription_id"].'&library_id='. $library_id .'" onclick="load(\'load_loading\')">Subscription Details</a>');
-
+    define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&amp;subscription_id='. $_REQUEST['subscription_id'].' onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
 	// define breadcrumb to view subscription page. This requires the subscription ID.
 	if(isset($_REQUEST['library_id']) && $_REQUEST['library_id'] !== "")
 	{

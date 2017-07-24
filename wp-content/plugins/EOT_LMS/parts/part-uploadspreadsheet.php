@@ -1,3 +1,8 @@
+		<style type="text/css">
+			.s-c-x #col1 {
+			    overflow: visible !important;
+			}
+		</style>
 		<div class="breadcrumb">
 		  <?= CRUMB_DASHBOARD ?>    
 		  <?= CRUMB_SEPARATOR ?>     
@@ -9,15 +14,43 @@
 		</div>
 
 <?php
+	// verify this user has access to this portal/subscription/page/view
+	$true_subscription = verifyUserAccess(); 
 
-if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_REQUEST['subscription_id']))
+	// Check if the subscription ID is valid.
+	if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 	{
-		// Ignore user aborts and allow the script
-		// to run for 5 minutes (300 seconds)
-		ignore_user_abort(true);
-		set_time_limit(300);
+		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+		// Variable declaration
+		global $current_user;
+		$user_id = $current_user->ID;                  // Wordpress user ID
+		$org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
 
-    	        global $current_user;
+		if(isset($true_subscription['status']) && $true_subscription['status'])
+		{
+			if(!current_user_can( "is_director" ))
+			{
+				echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+				return;
+			}
+		}
+		else
+		{
+			echo "subscription ID does not belong to you";
+			return;
+		}
+	}
+	// Could not find the subscription ID
+	else
+	{
+		echo "Could not find the subscription ID";
+		return;
+	}
+
+	if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == 'true' && isset($_REQUEST['subscription_id']))
+	{
+
+    	global $current_user;
 		$user_id = $current_user->ID; // Wordpress account user id
 
 		/*****************************************************************
@@ -25,13 +58,15 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 		 *****************************************************************/
 		$message = get_field('email_message', 'user_'.$user_id); // The Composed message
 	 	$isEmail = get_field('email_user', 'user_'.$user_id); // Boolean indicating whether the user wants to send an email.
+      	        $subject = get_field('subject', 'user_'.$user_id); // The Subject
 	 	$file = get_field('file_uploadspreadsheet', 'user_'.$user_id);
 		$fileLink = $file['url']; // The link to the file
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-                if( !current_user_can ('is_director') && !current_user_can ('is_administrator') )
-                {
-                        wp_die('Sorry, you do not have permisison to view this page.');
-                }
+                ///ddd($file,$fileLink,pathinfo($fileLink, PATHINFO_EXTENSION));
+    	if( !current_user_can ('is_director') && !current_user_can ('is_administrator') )
+        {
+         	wp_die('Sorry, you do not have permisison to view this page.');
+        }
 		// Check if the file exsist and is a text or csv file.
 		else if ( pathinfo($fileLink, PATHINFO_EXTENSION) != 'txt' && pathinfo($fileLink, PATHINFO_EXTENSION) != 'csv')
 		{
@@ -62,8 +97,13 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 			array_shift($staff_data); // Delete first element of the array. Delete the headers.
 			fclose($fp);
 		?>
-			<h1 class="article_page_title">Process Report</h1>
-			Here is the process report. It could contain error details.
+			<h1 class="article_page_title">Upload Spreadsheet</h1>
+
+	        <div class="spreadsheet_upload round_msgbox">
+				Processing your staff list ... <i class="fa fa-spinner fa-pulse fa-2x"></i><br><br>
+				This page will refresh itself to show you the progress unless there are errors below.<br><br>
+				Please inspect the table below to see if any errors exist, if so you will need to fix them, otherwise sit tight and we will create your staff accounts.<br>
+			</div>
 			<br/>
 			<br/>
 			<table class="bordered">
@@ -103,28 +143,28 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 					$has_user_error = false; // Boolean indicator for individual user error.
 					$org_id = get_org_from_user ($user_id); // Organization id
 					$portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-					$data = array( "org_id" => $org_id ); // to pass to our functions below
+					$data = compact("org_id"); // to pass to our functions below
 					$courses_in_portal = getCoursesByOrgId($org_id); // All the published courses in the portal
 					$course_names = array_column($courses_in_portal, 'course_name'); // The titles of the modules from the master library
 					$email_finish = array(); // Array of email that has been proceseed or finished
 					$subscription = getSubscriptions($subscription_id,0,1); // Subscription details
 					$staff_credits = $subscription->staff_credits; // The staff credits
+                                        //ddd($courses_in_portal);
+				    // Add upgrade number of staff
+				    $upgrades = getUpgrades ($subscription_id);
+				    if($upgrades)
+				    {
+				        foreach($upgrades as $upgrade)
+				        {
+				            $staff_credits += $upgrade->accounts;
+				        }
+				    }
 
-                                        // Add upgrade number of staff
-                                        $upgrades = getUpgrades ($subscription_id);
-                                        if($upgrades)
-                                        {
-                                            foreach($upgrades as $upgrade)
-                                            {
-                                                $staff_credits += $upgrade->accounts;
-                                            }
-                                        }
-
-					$response = getEotUsers($org_id); // All users in this portal
 					$directorname =	$current_user->display_name; // the directors name
 					$campname =	get_the_title($org_id); // the camp name
+					$response = getEotUsers($org_id); // All users in this portal
 
-					if ($response['status'] == 1)
+					if (isset($response['status']) && $response['status'] == 1)
 					{
 						$users = $response['users'];
 				        $learners = filterUsers($users, 'learner'); // only the learners
@@ -134,19 +174,18 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 						$users = array();
 						$learners = array();
 					}
-					$num_staff = count($learners); // Number of staff for this organization
+					$num_staff = count($learners); // Number of staff (learners) for this organization
 					/********************************************************************** 
 					 * This goes to all the staff specificed in the file
 					 * Prints their information and error if occured.
 					 **********************************************************************/
-                                      //var_dump($staff_data);
 					foreach($staff_data as $staff)
 					{
 						$error_message = ''; // Error message initialization
 						// Check if the required tabs are used
 						if( count($staff) < 5 )
 						{
-							$error_message .= '- Missing fields. Make sure you have all the required fields <br>';
+							$error_message .= '<b>- Missing fields. Make sure you have all the required fields<b> <br>';
 						}
 						$first_name = isset($staff[0]) ? trim($staff[0]) : ''; // User First Name
 						$last_name = isset($staff[1]) ? trim($staff[1]) : ''; // User Last Name
@@ -156,8 +195,8 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 						$course_2 = isset($staff[5]) ? trim($staff[5]) : ''; // User Course 2
 						$course_3 = isset($staff[6]) ? trim($staff[6]) : ''; // User Course 3
 						$course_4 = isset($staff[7]) ? trim($staff[7]) : ''; // User Course 4
-                                                $first_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"\’\”]/", "", $first_name);
-                                                $last_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"\’\”]/", "", $last_name);
+                                                $first_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"`\’\”]/", "", $first_name);
+                                                $last_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"\’`\”]/", "", $last_name);                                                
 				?>
 						<tr>
 							<td class="center">
@@ -189,13 +228,10 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 						  	</td>
 	              		</tr>
 				<?php
-//                                                if($email===""){
-//                                                        $error_message .= '- <b>Email</b> email is missing.<br/>';
-//                                                }                                
 						// Check if the camp director specificed more than 1 course
 						if( $course_1 == '' && $course_2 == '' && $course_3 == '' && $course_4 == '' )
 						{
-							$error_message .= '- You must specify at least 1 <u><b>Course</b></u> for each user.<br>';
+							$error_message .= '<b>- You must specify at least 1 <u>Course</u> for each user.</b><br>';
 						}
 						else
 						{	// Check if any of the course exsist on their portals.
@@ -203,298 +239,130 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 							{
 								if(!in_array($course_1, $course_names))
 								{
-									$error_message .= '- <b>' . $course_1 . '</b> is either not a valid course or is not published yet. <br/>';
+									$error_message .= '- <b>' . $course_1 . ' is either not a valid course or is not published yet. </b><br/>';
 								}
 							}
 							if( !empty($course_2) )
 							{
 								if(!in_array($course_2, $course_names))
 								{
-									$error_message .= '- <b>' . $course_2 . '</b> is either not a valid course or is not published yet. <br/>';
+									$error_message .= '- <b>' . $course_2 . ' is either not a valid course or is not published yet. </b><br/>';
 								}
 							}
 							if( !empty($course_3) )
 							{
 								if(!in_array($course_3, $course_names))
 								{
-									$error_message .= '- <b>' . $course_3 . '</b> is either not a valid course or is not published yet. <br/>';
+									$error_message .= '- <b>' . $course_3 . ' is either not a valid course or is not published yet. </b><br/>';
 								}
 							}
 							if( !empty($course_4) )
 							{
 								if(!in_array($course_4, $course_names))
 								{
-									$error_message .= '- <b>' . $course_4 . '</b> is either not a valid course or is not published yet. <br/>';
+									$error_message .= '- <b>' . $course_4 . ' is either not a valid course or is not published yet. </b><br/>';
 								}
 							}
 						}
-                                                                                                //Check if email is empty
-
 						// Check if this e-mail has already been processed
 						if(in_array($email, $email_finish))
-							$error_message .= '- <b>E-mail address</b> (' . $email . ') is repeated in another row. Is this a duplicate row?<br/>';
+							$error_message .= '- <b>E-mail address (' . $email . ') is repeated in another row. Is this a duplicate row?</b>';
 						else
 							array_push($email_finish, $email);
 						// Check if the user password is set && less than 6 characters
 						if(!empty($password) && strlen($password) < 5)
 						{
-							$error_message .= '- <b>Password</b> must be at least 6 characters in length.<br/>';
+							$error_message .= '- <b>Password must be at least 6 characters in length.</b>';
 						}
-
+						// check if user exists in WP, if he does we dont need to create a new user and dont count it towards his staff
+						if (email_exists($email))
+						{
+							$num_staff--;
+						}
 						// Check if the user has enough credits to add more staff members
 						if( $num_staff >= $staff_credits )
 						{
-							$error_message .= '- Unable to add user. You reached the maximum amount of staff you can have.<br/>';
+							$error_message .= '- <b>Unable to add user. You reached the maximum amount of staff you can have.</b>';
 						}
 						$num_staff++;
 						// check if there is an error message and display it
-						if($error_message)
+						if(!empty($error_message))
 						{
 							$has_error = true;
-				?>
+							error_log("uploadspreadsheet: user had an error, error_message: $error_message");
+?>
 							<tr>
 		                    	<td></td>
-			                    <td class="errors" colspan="12">
+			                    <td class="errors" colspan="8">
 		                      		<?= $error_message ?>                    
 		                      	</td>
 		                  	</tr>
-              	<?php
+<?php
 						}
 					$row_counter++;
 					} // End of foreach
-                                        //var_dump($staff_data);
+
+
 					// no errors. proceed to create accounts.
-					//if($has_error == false)
-					//{
-						/****************************************************************
-						 * This process the savings of the user accounts 
-						 * into WP User Database and create accounts in LU
-						 ****************************************************************/
-				        $recepients = array(); // List of recepients
-				        $emailError = '';
-						foreach($staff_data as $staff)
+					if($has_error == false)
+					{
+						if(is_array($isEmail) && $isEmail[0] = "Yes")
 						{
-							$has_user_error = false;
-							// Create New Account
-							$first_name = $staff[0]; // User first name
-							$last_name = $staff[1]; // User last name
-							$email = $staff[2]; // User e-mail Address
-							$password = ($staff[3] == '') ? wp_generate_password() : $staff[3]; // User Password, generate one if the director didnt include one.
-							$data = compact("org_id", "first_name", "last_name", "email", "password");
-							$courses = array(); // the courses to enroll the user into
-							for ($i = 4; $i < 8; $i++)
-							{
-								if (!empty($staff[$i]))
-								{
-									array_push($courses, $staff[$i]);
-								}	
-							}
-							
-							// check if user exists in WP, if yes make sure they are in the same org. 
-							if ( email_exists($email) )
-							{
-                                                            
-								$staff_id = get_user_by('email', $email)->ID;
-								if ( get_user_meta($staff_id,'org_id', true) === $org_id )
-								{
-									
-											// enroll user in courses	
-											$result2 = enrollUserInCourses($courses, $org_id, $email,$subscription_id);
-											if (isset($result2['status']) && !$result2['status'])
-											{
-												// ERROR in enrolling user
-												$has_error = true;
-												$has_user_error = true;
-												echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-											}
-									
-								}
-								else
-								{
-									// ERROR: WP user exists but in a different org.
-									$has_error = true;
-									$has_user_error = true;
-									echo "<p>ERROR: This user, $email, already exists but is assigned to a different organization.</p>";
-								}
+							$isEmail = 1;
+						}
+						else
+						{
+							$isEmail = 0;
+							$message = '';
+							$subject = '';
+						}
+						//after verification of users, add the required information to the table so it can be processed after
+						$result = addPendingUsers($staff_data, $org_id, $message, $subject, $isEmail, $directorname,$subscription_id);
 
-							}
-							else
-							{
-								// if user doesnt exist in WP, create user in WP and LU
-								$result = createWpUser($data,'student'); // Create WP and LU user
-
-								if (isset($result['success']) && $result['success'])
-								{
-                                                                        /************************************************************
-                                                                        * Check if the camp director wants to send the users an email 
-                                                                        * compose and create recepient with subject and message
-                                                                        *************************************************************/
-                                                                        if($isEmail != '') 
-                                                                        {
-
-                                                                                $loginInfo = 'Username: ' . $email . '<br/>'; // Login Information
-                                                                                $loginInfo .= 'Password: ' . $password;
-                                                                                $subject = get_field('subject', 'user_'.$user_id); // The Subject
-                                                                                $name = $first_name . ' ' . $last_name;
-                                                                                $message = get_field('email_message', 'user_'.$user_id); // File upload e-mail message
-                                                                                        $vars = array(
-                                                                                                'name' => $name,
-                                                                                                'logininfo' => $loginInfo,
-                                                                                                'directorname'	=>	$directorname,
-                                                                                                'campname'	=>	$campname,
-                                                                                                'numvideos'	=>	NUM_VIDEOS,
-                                                                                );
-                                                                                // Need to add extra breakspace, cause on the ACF Wysiwyg Editor uses <p></p> without <br> when adding a line break or <enter>
-                                                                                $message = str_replace("</p>","</p><br/>",$message); 
-                                                                                /* Replace %%VARIABLE%% using vars*/
-                                                                                foreach($vars as $key => $value)
-                                                                                {
-                                                                                        $message = preg_replace('/%%' . $key . '%%/', $value, $message);
-                                                                                }
-                                                                        $recepient = array (
-                                                                            'name' => $name,
-                                                                            'email' => $email,
-                                                                            'message' => $message,
-                                                                            'subject' => $subject
-                                                                        );
-                                                                        array_push($recepients, $recepient);
-
-                                                                        }
-                                                                        // enroll user in courses
-									$result2 = enrollUserInCourses($courses, $org_id, $email,$subscription_id);
-									if (isset($result2['status']) && !$result2['status'])
-									{
-										// ERROR in enrolling user
-										$has_error = true;
-										$has_user_error = true;
-										echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-									}
-								}
-								else
-								{
-									// ERROR in creating user
-									$has_error = true;
-									$has_user_error = true;
-									echo "<p>ERROR: Could not create user: $email ".$result['message']."</p>";
-								}
-							}
-							
-
-                                                        
-             
-                                                           
-						} // End of foreach loop
-                                                if($isEmail != ''){
-                                                    $response=  addPendingEmails($org_id, $directorname, $current_user->user_email, $recepients);
-
-                                                }
-
-                                                if($has_error){
-                                                    echo "Please fix the errors and upload your spreadsheet again";
-                                                }
-					//}
-				?>
-
+						if($result)
+						{
+							//url to redirect to (redirects to a page where users are processed in instances of PENDING_USER_LIMIT users)
+							$url = get_home_url() .'/dashboard/?part=uploadspreadsheet&org_id=' . $org_id . '&subscription_id=' . $subscription_id . '&processing=1&max=' . count($staff_data);
+?>
+							<!-- Redirecting (wp_redirect does not load html if headers have already been sent which is the case here so we have to use javascript)-->
+							<script type="text/javascript">
+								window.location.href = "<?= $url ?>";
+							</script>
+<?php
+						}
+					}
+?>
+					<tr>
+						<td class="errors" colspan="9">
+							<strong>There are errors in your spreadsheet. Please review the errors above and correct them before retrying to upload the spreadsheet. </strong>
+						</td>
+			  		</tr>
 				</tbody>
 			</table>
 			<br>
-			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&subscription_id=' . $subscription_id ?>">Return to Upload. </a>
+			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&subscription_id=' . $subscription_id ?>">Please fix your spreadsheet and upload your file again. </a>
 
-		<?php
-                //echo "Recipients: ".count($recipients);
-                if($isEmail != '' && count($recepients)>0){
-                $processing = 1; //the number out of total users we are processing right now
-                $max = count($recepients);     //total users being processed from this instance of spreadsheet upload
-//                $processing_top = ($processing + PENDING_EMAILS_LIMIT - 1 > $max) ? $max : $processing + PENDING_EMAILS_LIMIT - 1;
-                $admin_ajax_url = admin_url('admin-ajax.php');
- ?>
-                <h3 class="article_page_title">Emailing your staff</h3>
-
-                <div class="spreadsheet_processing round_msgbox">
-                    <strong>Please wait while we send your emails: <br>
-                        <span class="processing">Processing <?= $processing ?> out of <?= $max ?></span> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF HAS BEEN EMAILED.<br><br>You will be redirected to a success page once the process is complete.
-                </div>
-                <script>
-                    var count = 1;
-                    var max = <?=$max?>;
-                    var sent_emails = '';
-                    var overall_status = 1;
-
-                    $(document).ready(function () {
-                        sendMail();
-                    });
-
-                    function sendMail() {
-                        $.ajax({
-                            url: "<?= $admin_ajax_url ?>?action=mass_mail_ajax&org_id=<?= $org_id ?>", 
-                            success: function (result) 
-                            {
-                                result = JSON.parse(result);
-//                                if(result.status == 1)
-//                                {
-                                    sent_emails += result.sent_emails;
-                                    count += <?= PENDING_EMAILS_LIMIT ?>;
-/*
-                                    // calculate the next amount of emails to process
-                                    if (count + <?= PENDING_EMAILS_LIMIT ?> -1 > <?= $max ?>)
-                                    {
-                                        var processing_top = <?= $max ?>;
-                                    }
-                                    else
-                                    {
-                                        var processing_top = count + <?= PENDING_EMAILS_LIMIT ?> -1;
-                                    }
-*/
-                                    // check if there was a problem
-                                    if (result.status == 0)
-                                    {
-                                        overall_status = 0;
-                                    }
-
-                                    $('.processing').html("Processing "+count+" out of <?= $max ?>");
-
-                                    // check if we finished sending
-                                    if (count > <?= $max ?> && overall_status == 1)
-                                    {
-                                        $('.round_msgbox').html("Users Added Successfully!<br><br>" + sent_emails.replace(/,/g, "")); 
-                                    }
-                                    else if (count > <?= $max ?> && overall_status == 0)
-                                    {
-                                        $('.round_msgbox').html("ERROR: Some emails below did not get sent.<br><br>Please contact us for assistance 1-877-239-3931 M-F 9-5 EST.<br><br>Error message is: " + result.message + "<br><br>" + sent_emails.replace(/,/g, "")); 
-                                    }
-                                    else
-                                    {
-                                        sendMail();
-                                    }
-//                                }
-//                                else if(result.status == 0)
-//                                {
-//                                    $('.round_msgbox').html(result.message);
-//                                }
-                            }});
-                    }
-                </script>
-<?php                                    
-            ?>
-                                                                    
-            <?php
-                                                   
-                                                }
+<?php
 		}
 	}
-        else if( isset($_REQUEST['processing']) && isset($_REQUEST['max']) && isset($_REQUEST['subscription_id']) && isset($_REQUEST['org_id']) ){
-                            $processing = filter_var($_REQUEST['processing'], FILTER_SANITIZE_NUMBER_INT); //the number out of total users we are processing right now
-                $max = filter_var($_REQUEST['max'], FILTER_SANITIZE_NUMBER_INT);     //total users being processed from this instance of spreadsheet upload
-//                $processing_top = ($processing + PENDING_EMAILS_LIMIT - 1 > $max) ? $max : $processing + PENDING_EMAILS_LIMIT - 1;
-                $admin_ajax_url = admin_url('admin-ajax.php');
- ?>
-                <h1 class="article_page_title">Emailing your staff</h1>
+	//this part processes users PENDING_USERS_LIMIT each time until it runs out
+	else if( isset($_REQUEST['processing']) && isset($_REQUEST['max']) && isset($_REQUEST['subscription_id']) && isset($_REQUEST['org_id']) )
+	{
+		$processing = filter_var($_REQUEST['processing'],FILTER_SANITIZE_NUMBER_INT);	//the number out of total users we are processing right now
+		$max = filter_var($_REQUEST['max'],FILTER_SANITIZE_NUMBER_INT);					//total users being processed from this instance of spreadsheet upload
+		$org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);			//org id
+		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);	//subscription id
+		$processing_top = ($processing + PENDING_USERS_LIMIT - 1 > $max) ? $max : $processing + PENDING_USERS_LIMIT - 1;
+		$admin_ajax_url = admin_url('admin-ajax.php');	
+?>
+		<h1 class="article_page_title">Upload Staff Spreadsheet</h1>
 
                 <div class="spreadsheet_processing round_msgbox">
-                    <strong>Please wait while we send your emails: <br>
-                        <span class="processing">Processing <?= $processing ?> out of <?= $max ?></span> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF HAS BEEN EMAILED.<br><br>You will be redirected to a success page once the process is complete.
-                </div>
-                <script>
+			<strong>Please wait while we create your staff accounts: <br>
+			Processing <?= $processing ?> - <?= $processing_top; ?> out of <?= $max ?> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF ACCOUNTS HAVE BEEN CREATED.<br><br>You will be redirected to a success page once the import is complete.
+		</div>
+                <div id="insert_form" style="display:none;"></div>
+		<script>
                     var count = 1;
                     var max = <?=$max?>;
                     var sent_emails = '';
@@ -504,29 +372,20 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
                         sendMail();
                     });
 
-                    function sendMail() {
+                    function sendMail() 
+                    {
                         $.ajax({
-                            url: "<?= $admin_ajax_url ?>?action=mass_mail_ajax&org_id=<?= $org_id ?>", 
+                            url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
                             success: function (result) 
                             {
                                 result = JSON.parse(result);
-//                                if(result.status == 1)
-//                                {
-                                    sent_emails += result.sent_emails;
-                                    count += <?= PENDING_EMAILS_LIMIT ?>;
-/*
-                                    // calculate the next amount of emails to process
-                                    if (count + <?= PENDING_EMAILS_LIMIT ?> -1 > <?= $max ?>)
-                                    {
-                                        var processing_top = <?= $max ?>;
-                                    }
-                                    else
-                                    {
-                                        var processing_top = count + <?= PENDING_EMAILS_LIMIT ?> -1;
-                                    }
-*/
+                                console.log(result);
+
+                                    sent_emails += result.import_status;
+                                    count += <?= PENDING_USERS_LIMIT ?>;
+
                                     // check if there was a problem
-                                    if (result.status == 0)
+                                    if (result.status == false)
                                     {
                                         overall_status = 0;
                                     }
@@ -534,32 +393,33 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
                                     $('.processing').html("Processing "+count+" out of <?= $max ?>");
 
                                     // check if we finished sending
-                                    if (count > <?= $max ?> && overall_status == 1)
+                                    if (count > <?= $max ?>)
                                     {
-                                        $('.round_msgbox').html("Messages Sent Successfully!<br><br>" + sent_emails.replace(/,/g, "")); 
-                                    }
-                                    else if (count > <?= $max ?> && overall_status == 0)
-                                    {
-                                        $('.round_msgbox').html("ERROR: Some emails below did not get sent.<br><br>Please contact us for assistance 1-877-239-3931 M-F 9-5 EST.<br><br>Error message is: " + result.message + "<br><br>" + sent_emails.replace(/,/g, "")); 
+                                        <?php
+                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id . '&sent=1';
+                                        ?>
+                                        $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
+
+    			                document.forms['redirect'].submit();
                                     }
                                     else
                                     {
                                         sendMail();
                                     }
-//                                }
-//                                else if(result.status == 0)
-//                                {
-//                                    $('.round_msgbox').html(result.message);
-//                                }
+
                             }});
                     }
                 </script>
+
 <?php
-        }
+			
+		
+	}
 	else if( isset($_REQUEST['subscription_id']) )
 	{
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
 		$subscription = getSubscriptions($subscription_id,0,1); // Subscription details
+
 		global $current_user;
 		$user_id = $current_user->ID; // Wordpress account user id
 		if( !isset($subscription) || $subscription->manager_id != $user_id)
@@ -665,7 +525,7 @@ if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == true && isset($_
 		        <br>
 		        <div class="batch_upload round_msgbox">
         			Please be patient while we create your user accounts ... <br />
-        			<img src="<?= get_template_directory_uri() . '/images/loading.gif'?>" /><br />
+        			<i class="fa fa-spinner fa-pulse fa-2x"></i> <br />
         			If you see this message for more than 60 seconds, please call 877-237-3931 for assistance.  
     			</div>
     			<script type="text/javascript">

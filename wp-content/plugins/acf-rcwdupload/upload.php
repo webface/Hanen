@@ -90,16 +90,17 @@ if( isset($_GET['info']) and isset($_REQUEST["name"]) ){
 	$randomcode		= $info['randomcode'];
 	$overw 		= @(bool)$info['overw'];
 	//$pst		= @$_GET['pst'];
-	$foldercode	= @$_GET['foldercode'];
-	$targetDir 	= ACF_RCWDUPLOAD_UP_TEMP_DIR.DIRECTORY_SEPARATOR.$fkey;
+	//$foldercode	= @$_GET['foldercode'];
+	//$targetDir 	= ACF_RCWDUPLOAD_UP_TEMP_DIR.DIRECTORY_SEPARATOR.$fkey;
+	$targetDir		= $info['path_temp'];
 	
-	if($foldercode != ''){
+	//if($foldercode != ''){
 		
-		$targetDir .= DIRECTORY_SEPARATOR.$foldercode;
+	//$targetDir .= DIRECTORY_SEPARATOR.$foldercode;
+
+	rcwd_clone_wp_mkdir_p($targetDir);
 		
-		rcwd_clone_wp_mkdir_p($targetDir);
-		
-	}
+	//}
 
 	$targetDir 			.= DIRECTORY_SEPARATOR;
 	$renamed			= 0;

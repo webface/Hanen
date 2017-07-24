@@ -45,6 +45,146 @@ class ACFRcwdCommon{
 		
 	}
 	
+	static function upload_info( $field_key, $foldercode = '', $userid = 0 , $rndfldr_ = '' ){
+		
+		global $rndfldr;
+		
+		if($rndfldr_)
+			$rndfldr = $rndfldr_;		
+		
+		$rndfldr 	= !empty($rndfldr) ? $rndfldr : ( isset($_REQUEST["rcwdupload_rndfldr"]) ? $_REQUEST["rcwdupload_rndfldr"] : ACFRcwdCommon::randomcode(array('length' => 15)) );
+		$path_temp	= ACF_RCWDUPLOAD_UP_TEMP_DIR.RCWD_DS.$field_key; //.RCWD_DS.$rndfldr;
+		$path 		= ACF_RCWDUPLOAD_UP_DIR.RCWD_DS.$field_key;
+		$url_temp	= ACF_RCWDUPLOAD_UP_TEMP_URL.'/'.$field_key; //.'/'.$rndfldr;
+		$url		= ACF_RCWDUPLOAD_UP_URL.'/'.$field_key;
+		$blogurl	= get_bloginfo('url');
+		$pfolder	= $foldercode;
+		$args		= array(
+			
+			'field'		=> get_field_object($field_key, false, false, false ),
+			'type'		=> '',
+			'post_type'	=> ''
+			
+		);
+
+		if(class_exists('SitePress')){
+			
+			$pu 		= parse_url($blogurl);
+			$blogurl	= $pu['scheme'].'://'.$pu['host'];
+
+		}
+
+		if(substr( $blogurl, -1 ) != '/')
+			$blogurl .= '/';
+											
+		$purl = $blogurl.'acfrcwdup/';
+
+		if(substr( $foldercode, 0, 8 ) == 'options_'){
+
+			$opfolder = substr( $foldercode, 8 );
+
+			if(empty($opfolder))
+				$foldercode = 'options_rt';
+								
+			$pfolder 		= 'o/'.substr( $foldercode, 8 );
+			$args['type']	= 'option_page';
+			
+		}elseif(substr( $foldercode, 0, 4 ) == 'tax_'){
+			
+			$pfolder 		= 't/'.substr( $foldercode, 4 );
+			$args['type']	= 'tax';
+			
+		}elseif(substr( $foldercode, 0, 5 ) == 'user_'){
+			
+			$pfolder 		= 'u/'.substr( $foldercode, 5 );
+			$args['type']	= 'user';
+		
+		}elseif(substr( $foldercode, 0, 5 ) == 'post_'){
+			
+			$pfolder 			= 'p/'.substr( $foldercode, 5 );
+			$args['type']		= 'post';
+			$args['post_type']	= get_post_type();
+			
+		}
+
+		$inline		= $purl.'0/'.str_replace( 'field_', rand( 10009, 99999 ).'/', $field_key );
+		$attach		= $purl.'1/'.str_replace( 'field_', rand( 10009, 99999 ).'/', $field_key );		
+							
+		if(!empty($pfolder)){
+			
+			$path_temp	.= RCWD_DS.$foldercode;
+			$path		.= RCWD_DS.$foldercode;
+			$url		.= '/'.$foldercode;
+			$inline 	.= '/'.$pfolder;
+			$attach 	.= '/'.$pfolder;
+			
+		}
+
+		wp_mkdir_p($path_temp);
+		wp_mkdir_p($path);				
+
+		if(!file_exists(ACF_RCWDUPLOAD_UP_TEMP_DIR.RCWD_DS."index.html"))
+			self::add_file_index(ACF_RCWDUPLOAD_UP_TEMP_DIR);
+	
+		if(!file_exists($path_temp.RCWD_DS."index.html"))
+			self::add_file_index($path_temp);
+			
+		if(!file_exists(ACF_RCWDUPLOAD_UP_DIR.RCWD_DS."index.html"))
+			self::add_file_index(ACF_RCWDUPLOAD_UP_DIR);
+			
+		if(!file_exists($path.RCWD_DS."index.html"))
+			self::add_file_index($path);
+
+		$path = apply_filters( "acf_rcwdupload_path", $path, $field_key, $foldercode, $args );
+		$url  = apply_filters( "acf_rcwdupload_url", $url, $field_key, $foldercode, $args );
+
+		if(substr( $path_temp, -1 ) != RCWD_DS)
+			$path_temp .= RCWD_DS;
+							
+		if(substr( $path, -1 ) != RCWD_DS)
+			$path .= RCWD_DS;
+			
+		if(substr( $url_temp, -1 ) != '/')
+			$url_temp .= '/';
+							
+		if(substr( $url, -1 ) != '/')
+			$url .= '/';			
+
+		if(substr( $inline, -1 ) != '/')
+			$inline .= '/';
+
+		if(substr( $attach, -1 ) != '/')
+			$attach .= '/';					
+
+		$output = array( 'rndfldr' => $rndfldr, 'path_temp' => $path_temp, 'path' => $path, 'url_temp' => $url_temp, 'url' => $url, 'purl' => array( 'inline' => $inline, 'attach' => $attach ) );
+		
+		return $output;
+						
+	}
+
+    static function add_file_index($dir){
+		
+        if(!is_dir($dir))
+            return;
+
+        if(!($od = opendir($dir)))
+            return;
+
+        set_error_handler(create_function("", "return 0;"), E_ALL);
+
+        if($f = fopen( $dir."/index.html", 'w' ))
+            fclose($f);
+
+        restore_error_handler();
+
+        while((false !== $file = readdir($od)))
+           if(is_dir("$dir/$file") and $file != '.' and $file != '..' )
+               self::add_file_index("$dir/$file");
+
+        closedir($od);
+		
+    }
+		
 	static function get_var($var){
 		
 		switch($var){
@@ -74,6 +214,7 @@ class ACFRcwdCommon{
 					'preview'	 				=> 'N',
 					'preview_max_width'			=> 150,
 					'preview_max_height'		=> 150,
+					'preview_quality'			=> 90,
 					'preview_crop'				=> 'N',					
 					'collection'				=> 'N',
 					'collection_key'			=> '',

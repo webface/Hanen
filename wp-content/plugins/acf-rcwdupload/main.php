@@ -575,13 +575,14 @@ class acf_rcwdup_m{
 	static function create_field($args){		
 
 		if(ACFRcwdCommon::serial_is_valid()){
-		
+
 			global $pagenow;	
 		
 			$v				= $args['v'];
 			$field			= $args['field'];
 			$value			= '';
 			$defaults		= ACFRcwdCommon::get_var('defaults');
+			$rndfldr		= '';
 			$field 			= array_merge( $defaults, $field );
 
 			if( is_array($args['field']) and is_array($args['field']['value']) )
@@ -672,12 +673,12 @@ class acf_rcwdup_m{
 						}
 		
 				}
-
+			
 			// ___________________________________________________________
 			
 			$dofilters 	= $field['filters'];
-			$upfilters 	= '';	
-					
+			$upfilters 	= array();	
+
 			if($dofilters == 'Y'){
 								
 				$filter_images 	= preg_replace('/\s+/', '', strtolower($field['filter_images']));
@@ -696,15 +697,14 @@ class acf_rcwdup_m{
 					
 				if( $filter_others != '')
 					$upfilters[] = array( 'title' => __( 'Various files', 'acf-rcwdupload' ), 'extensions' => $filter_others );
-						
+										
 				if(count($upfilters) > 0)
 					$upfilters = json_encode($upfilters);
+				else
+					$upfilters = '';
 					
 			}
-			
-			wp_mkdir_p(ACF_RCWDUPLOAD_UP_TEMP_DIR.DIRECTORY_SEPARATOR.$field['key']);
-			wp_mkdir_p(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key']);
-			
+					
 			if(is_admin()){
 				
 				if($pagenow == 'admin-ajax.php'){
@@ -840,16 +840,25 @@ class acf_rcwdup_m{
 			else
 				$frc = 0;
 
-			$randomcode	= ACFRcwdCommon::randomcode(array( 'length' => 3, 'uppercase' => false ));
-			$datainfo 	= strrev($randomcode).base64_encode(json_encode(array(
+			$upload_info 	= ACFRcwdCommon::upload_info( $field['key'], $foldercode, 0, $rndfldr );
+			$path_temp		= $upload_info['path_temp'];
+			$path			= $upload_info['path'];
+			$url_temp		= $upload_info['url_temp'];
+			$url			= $upload_info['url'];
+			$rndfldr		= $upload_info['rndfldr'];
+			$randomcode		= ACFRcwdCommon::randomcode(array( 'length' => 3, 'uppercase' => false ));
+			$datainfo 		= strrev($randomcode).base64_encode(json_encode(array(
 			
-				'temp_path'		=> ACF_RCWDUPLOAD_UP_TEMP_DIR,
+				'temp_path'		=> $path_temp,
+				'path_temp'		=> $path_temp,
 				'overw' 		=> $overwrite,
 				'fkey' 			=> $field['key'],
 				'resize_qs'		=> $resize_or,
 				'randomcode'	=> $randomcode
 				
 			)));
+			
+					
 													
 ?>
 			<div id="<?php echo $field['id']?>-acf_rcwdupload" class="acf_rcwdupload">
@@ -863,18 +872,18 @@ class acf_rcwdup_m{
 					}else
 						echo '<p>'.__( 'NOTE: You can change this file only in the original post.', 'acf-rcwdupload' ).'</p>';	
 						
-					if( ( $value != '' and file_exists(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode.DIRECTORY_SEPARATOR.$value) ) or $field['collection'] == 'Y' ){
+					if( ( $value != '' and file_exists($path.$value) ) or $field['collection'] == 'Y' ){
 						
-						if( ( $value != '' and file_exists(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode.DIRECTORY_SEPARATOR.$value) ) ){
+						if( ( $value != '' and file_exists($path.$value) ) ){
 							
-							$file 			= ACF_RCWDUPLOAD_UP_URL.'/'.$field['key'].'/'.$foldercode.'/'.$value;
-							$fsize			= size_format(filesize(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode.DIRECTORY_SEPARATOR.$value));
-							$flnm_pathinfo 	= pathinfo(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode.DIRECTORY_SEPARATOR.$value);
+							$file 			= $url.$value;
+							$fsize			= size_format(filesize($path.$value));
+							$flnm_pathinfo 	= pathinfo($path.$value);
 							$flnm_ext		= strtolower($flnm_pathinfo['extension']);	
 						
 						}else{
 							
-							$file 		= ACF_RCWDUPLOAD_UP_URL.'/'.$field['key'].'/';
+							$file 		= $url;
 							$fsize		= '';							
 							$value		= '';	
 							$flnm_ext	= '';						
@@ -919,7 +928,7 @@ class acf_rcwdup_m{
 ?>  
 					<div id="<?php echo $field['id']?>-temp" class="rcwdplupload-temp">
 						<a id="<?php echo $field['id']?>-removetf" class="rcwdplupload-removetf <?php echo( ($v == 5) ? 'acf-icon -cancel dark' : 'acf-button-delete ir' ) ?>" href="#"><?php echo( ($v == 5) ? '' : __( 'Remove', 'acf-rcwdupload' ) ) ?></a>
-						<div id="<?php echo $field['id']?>-temp-file" class="rcwdplupload-temp-file"><strong><span class="rcwdplupload-temp-file-txt"></span> <a href="<?php echo ACF_RCWDUPLOAD_UP_TEMP_URL.'/'.$field['key'].'/' ?>" target="_blank"></a></strong></div>
+						<div id="<?php echo $field['id']?>-temp-file" class="rcwdplupload-temp-file"><strong><span class="rcwdplupload-temp-file-txt"></span> <a href="<?php echo $url_temp ?>" target="_blank"></a></strong></div>
 						<div id="<?php echo $field['id']?>-temp-size" class="rcwdplupload-temp-size"><strong><?php _e( 'Size:', 'acf-rcwdupload' ) ?></strong> <span></span></div>
 					</div>
 <?php
@@ -952,7 +961,7 @@ class acf_rcwdup_m{
                     <span id="clientpreview-<?php echo $field['id'] ?>" class="rcwdplupload-clientpreview"></span>
 					<span id="<?php echo $field['id']?>-filesize" class="rcwdplupload-filesize"><strong><?php _e( 'Size:', 'acf-rcwdupload' ) ?></strong><span></span></span>
 <?php
-					if($field['collection'] == 'Y'){
+/*					if($field['collection'] == 'Y'){
 ?>
                             </div>
                             <div id="rcwdacflupload-<?php echo $field['id']?>-tab-2">
@@ -1011,7 +1020,7 @@ class acf_rcwdup_m{
                             </div>				   
                         </div>
 <?php
-					}
+					}*/
 ?>                          				   
 				</div>  
 			</div>
@@ -1115,10 +1124,11 @@ class acf_rcwdup_m{
 
 			if(!empty($value)){
 
-				$fnt	= ACF_RCWDUPLOAD_UP_TEMP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode_temp.DIRECTORY_SEPARATOR.$value;
-				$f		= ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode;
-				$fn		= $f.DIRECTORY_SEPARATOR.$value;
-				$ok		= false;
+				$upload_info	= ACFRcwdCommon::upload_info( $field['key'], $foldercode );
+				$fnt			= $upload_info['path_temp'].$value;
+				$f				= $upload_info['path'];
+				$fn				= $f.$value;
+				$ok				= false;
 				
 				if(file_exists($fnt)){
 					
@@ -1191,8 +1201,8 @@ class acf_rcwdup_m{
 				$ftodelete = $ftodelete['file'];
 
 			if( $ftodelete and ( ( $ok === true and $ftodelete != $value ) or $ok === false ) )
-				if(file_exists(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode.DIRECTORY_SEPARATOR.$ftodelete))
-					unlink(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$foldercode.DIRECTORY_SEPARATOR.$ftodelete);
+				if(file_exists($upload_info['path'].$ftodelete))
+					unlink($upload_info['path'].$ftodelete);
 	
 			if($value != '')
 				$value = array( 'file' => $value, 'folder' => $foldercode );
@@ -1244,53 +1254,20 @@ class acf_rcwdup_m{
 			if(is_array($value)){
 				
 				$file 			= $value['file'];	
-				$folder			= $value['folder'];							
-				$pfolder 		= '';
+				$upload_info	= ACFRcwdCommon::upload_info( $field['key'], @$value['folder'] );
+
+				$value 			= array(
 				
-				if(substr( $folder, 0, 8 ) == 'options_'){
-
-					$opfolder = substr( $folder, 8 );
-
-					if(empty($opfolder))
-						$folder = 'options_rt';
+					'file'	=> $file,
+					'path'	=> $upload_info['path'].$file,
+					'url' 	=> $upload_info['url'].$file,
+					'size' 	=> size_format(filesize($upload_info['path'].$file)),
+					'purl' 	=> array(
+					
+						'inline' => $upload_info['purl']['inline'].$file,
+						'attach' => $upload_info['purl']['attach'].$file
 										
-					$pfolder = 'o/'.substr( $folder, 8 );
-					
-				}elseif(substr( $folder, 0, 4 ) == 'tax_'){
-					
-					$pfolder = 't/'.substr( $folder, 4 );
-					
-				}elseif(substr( $folder, 0, 5 ) == 'user_'){
-					
-					$pfolder = 'u/'.substr( $folder, 5 );
-					
-				}elseif(substr( $folder, 0, 5 ) == 'post_'){
-					
-					$pfolder = 'p/'.substr( $folder, 5 );
-					
-				}
-	
-				$fk			= str_replace( 'field_', rand(10009, 99999).'/', $field['key'] );
-				$blogurl	= get_bloginfo('url');				
-				
-				if(class_exists('SitePress')){
-					
-					$pu 		= parse_url($blogurl);
-					$blogurl	= $pu['scheme'].'://'.$pu['host'];
-
-				}
-				
-				if(substr( $blogurl, -1 ) != '/')
-					$blogurl .= '/';
-										
-				$inline	= $blogurl.'acfrcwdup/0/'.$fk.'/'.$pfolder.'/'.$file;
-				$attach	= $blogurl.'acfrcwdup/1/'.$fk.'/'.$pfolder.'/'.$file;
-				$value 	= array( 	'file'	=> $file,
-									'path'	=> ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$folder.DIRECTORY_SEPARATOR.$file,
-									'url' 	=> ACF_RCWDUPLOAD_UP_URL.'/'.$field['key'].'/'.$folder.'/'.$file,
-									'size' 	=> size_format(filesize(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$folder.DIRECTORY_SEPARATOR.$file)),
-									'purl' 	=> array( 	'inline' => $inline,
-														'attach' => $attach ) );	
+					));	
 	
 				$filext = strtolower(substr( strrchr( $file, "." ), 1 ));
 				
@@ -1301,13 +1278,14 @@ class acf_rcwdup_m{
 					case 'jpeg'	:
 					case 'jpg'	:
 					
-						list($width, $height, $type, $attr) = getimagesize(ACF_RCWDUPLOAD_UP_DIR.DIRECTORY_SEPARATOR.$field['key'].DIRECTORY_SEPARATOR.$folder.DIRECTORY_SEPARATOR.$file);
-						$value['width'] 					= $width;
-						$value['height'] 					= $height;
+						list( $width, $height, $type, $attr ) 	= getimagesize($upload_info['path'].$file);
+						$value['width'] 						= $width;
+						$value['height'] 						= $height;
 						
 				}
 																	
 				return $value;
+				
 			}
 
 		}

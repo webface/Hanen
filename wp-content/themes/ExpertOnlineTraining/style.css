@@ -1210,32 +1210,32 @@ div.testimonial_quote {
 }
 
 /* SCROLLPAN CSS*/
-.osX .jScrollPaneTrack {
+.osX .jspTrack,.osX .jspVerticalBar {
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_track.gif) repeat-y;
 }
-.osX .jScrollPaneDrag {
+.osX .jspDrag {
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_drag_middle.gif) repeat-y;
 }
-.osX .jScrollPaneDragTop {
+.osX .jspDragTop {
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_drag_top.gif) no-repeat;
 	height: 6px;
 }
-.osX .jScrollPaneDragBottom {
+.osX .jspDragBottom {
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_drag_bottom.gif) no-repeat;
 	height: 7px;
 }
-.osX a.jScrollArrowUp {
+.osX a.jspArrowUp {
 	height: 24px;
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_arrow_up.png) no-repeat 0 -30px;
 }
-.osX a.jScrollArrowUp:hover {
+.osX a.jspArrowUp:hover {
 	background-position: 0 0;
 }
-.osX a.jScrollArrowDown {
+.osX a.jspArrowDown {
 	height: 24px;
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_arrow_down.png) no-repeat 0 -30px;
 }
-.osX a.jScrollArrowDown:hover {
+.osX a.jspArrowDown:hover {
 	background-position: 0 0;
 }
 .scroll-pane {

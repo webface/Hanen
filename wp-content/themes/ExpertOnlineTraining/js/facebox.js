@@ -153,6 +153,7 @@
     reveal: function(data, klass, title,popup_footer) {
       $(document).trigger('beforeReveal.facebox')
       if (klass) $('#facebox .content').addClass(klass)
+      $('#facebox .content').empty()//prevent multiple content from appearing due to datatable paging.
       $('#facebox .content').append(data)
       $('#facebox .loading').remove()
       $('#facebox .body').children().slideDown(0)

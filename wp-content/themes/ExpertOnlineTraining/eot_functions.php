@@ -220,6 +220,10 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
             $.animateProgressBars($('#<?=$id?> .ui-progressbar'));
           }
         } );
+        //listen for paged event and re-initialize facebox.
+        $('#<?=$id?>').on( 'page.dt', function () {
+            setTimeout(function(){$('a[rel*=facebox]').facebox();},500);
+        } );
       });
     })(jQuery);
   </script>
@@ -1519,7 +1523,7 @@ function verifyUserAccess ()
     if ($subscription_id)
     {
       // we have a subscription ID so just check that this umbrella admin is authorized to modify this subscription/org
-      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE id = " . $subscription_id;
+      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
       if ($results)
       {
@@ -1610,7 +1614,7 @@ function verifyUserAccess ()
     // make sure a subscription ID was passed in and this user has access to it.
     if ($subscription_id)
     {
-      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE id = " . $subscription_id;
+      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
       if ($results){
         // verify that the current user is the director for this subscription
@@ -2092,11 +2096,11 @@ function calc_line_text($words_array, $chars_per_line)
 }
 
 //adds users to a temperory table to process later
-function addPendingUsers ($staff_data = array(), $org_id = 0, $message = '', $subject = '', $isEmail = 0, $directorname = '')
+function addPendingUsers ($staff_data = array(), $org_id = 0, $message = '', $subject = '', $isEmail = 0, $directorname = '', $subscription_id = 0)
 {  
   global $wpdb;
   $remove_chars = array("'", '"');
-
+  $ubscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
   foreach ($staff_data as $staff)
   {
     $first_name = str_replace($remove_chars, "", trim($staff[0]));
@@ -2105,11 +2109,10 @@ function addPendingUsers ($staff_data = array(), $org_id = 0, $message = '', $su
     $password = trim($staff[3]);
     $courses = json_encode(array(trim($staff[4]), trim($staff[5]), trim($staff[6]), trim($staff[7])));
     $variables = json_encode(compact("first_name", "last_name", "directorname"));
-    $sql = "INSERT INTO " . TABLE_PENDING_USERS . " (org_id, variables, email, password, courses, subject, message, isEmail) 
+    $sql = "INSERT INTO " . TABLE_PENDING_USERS . " (org_id, variables, email, password, courses, subject, message, isEmail, subscription_id) 
     VALUES 
-    ($org_id, '$variables', '$email', '$password', '$courses', '".addslashes($subject)."', '" . addslashes($message) . "', $isEmail)";
+    ($org_id, '$variables', '$email', '$password', '$courses', '".addslashes($subject)."', '" . addslashes($message) . "', $isEmail, $subscription_id)";
     $result = $wpdb->query ($sql);
-//error_log("addPendingUsers: added user into DB: $sql");
     if(!$result)
     {
       return false;
@@ -2117,6 +2120,22 @@ function addPendingUsers ($staff_data = array(), $org_id = 0, $message = '', $su
   }
 
   return true;
+}
+
+// triggers mass mailing from ajax.
+add_action('wp_ajax_mass_register_ajax', 'mass_register_ajax_callback');
+function mass_register_ajax_callback()
+{
+    $org_id = (isset($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+    $result = processUsers(PENDING_USERS_LIMIT, $org_id);
+
+    if ($org_id == 0)
+    {
+      return $result; 
+    }
+
+    echo json_encode($result);
+    wp_die();
 }
 
 //triggers mass mailing from ajax.
@@ -2250,13 +2269,13 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
 
   /****************************************************************
    * This process the savings of the user accounts 
-   * into WP User Database and create accounts in LU
+   * into WP User Database 
    ****************************************************************/
   $recepients = array(); // List of recepients
   $emailError = '';
   $org_id = 0;        // the staff's org id
   $isEmail;             //boolean indicating whether we should email the users or not
-  $subscription_id;     //subscription id
+  //$subscription_id;     //subscription id
   $has_error = false;   // Boolean indication if the process has an error
   $has_user_error = false; // Boolean indicator for individual user error.
   $import_status = ''; // will contain a report of import statuses ie. the errors.
@@ -2269,6 +2288,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
     $email = $staff->email; // User e-mail Address
     $password = ($staff->password == '') ? wp_generate_password() : $staff->password; // User Password, generate one if the director didnt include one.
     $org_id = $staff->org_id; // staff org id
+    $subscription_id = $staff->subscription_id;//subscription ID
     $message = stripslashes($staff->message);
     $isEmail = $staff->isEmail; //boolean to see if email should be sent
     $subject = stripslashes($staff->subject); //subject of the email
@@ -2282,18 +2302,18 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
       $staff_id = get_user_by('email', $email)->ID;
       if ( get_user_meta($staff_id, 'org_id', true) == $org_id )
       {
-        // If in same org check if LU user exists by getting user meta data. 
-        if(get_user_meta($staff_id, 'lrn_upon_id', true))
+        $result = createWpUser($data, 'student'); // Create WP user
+        if (isset($result['success']) && $result['success'])
         {
-          // If yes, enroll into courses.
+          // enroll user in courses 
           $result2 = enrollUserInCourses($courses, $org_id, $email, $subscription_id);
           if (isset($result2['status']) && !$result2['status'])
           {
             // ERROR in enrolling user
             $has_error = true;
             $has_user_error = true;
-//            echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-            $import_status .= "$email - ERROR: User exists but couldnt enroll into course: ".$result2['message']."<br>";
+//              echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
+            $import_status .= "$email - ERROR: User exists in WP. But couldnt enroll into course: ".$result2['message']."<br>";
           }
           else
           {
@@ -2303,34 +2323,11 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
         }
         else
         {
-          // if user doesnt exist in LU, create LU user and link to WP user.
-          $result = createWpLuUser($portal_subdomain, $data, false, true, 'student'); // Create LU user
-          if (isset($result['success']) && $result['success'])
-          {
-            // enroll user in courses 
-            $result2 = enrollUserInCourses($portal_subdomain, $courses, $org_id, $email);
-            if (isset($result2['status']) && !$result2['status'])
-            {
-              // ERROR in enrolling user
-              $has_error = true;
-              $has_user_error = true;
-//              echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-              $import_status .= "$email - ERROR: User exists in WP. Created in LU but couldnt enroll into course: ".$result2['message']."<br>";
-            }
-            else
-            {
-              // success
-              $import_status .= "$email - SUCCESS: enrolled in course<br>";
-            }
-          }
-          else
-          {
-            // ERROR in creating user
-            $has_error = true;
-            $has_user_error = true;
+          // ERROR in creating user
+          $has_error = true;
+          $has_user_error = true;
 //            echo "<p>ERROR: Could not create user: $email ".$result['message']."</p>";
-            $import_status .= "$email - ERROR: Could not create user: ".$result['message']."<br>";
-          }
+          $import_status .= "$email - ERROR: Could not create user: ".$result['message']."<br>";
         }
       }
       else
@@ -2344,13 +2341,13 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
     }
     else
     {
-      // if user doesnt exist in WP, create user in WP and LU
-      $result = createWpLuUser($portal_subdomain, $data, true, true, 'student'); // Create WP and LU user
+      // if user doesnt exist in WP, create user in WP 
+      $result = createWpUser($data,'student'); // Create WP and LU user
 
       if (isset($result['success']) && $result['success'])
       {
         // enroll user in courses
-        $result2 = enrollUserInCourses($portal_subdomain, $courses, $org_id, $email);
+        $result2 = enrollUserInCourses($courses, $org_id, $email, $subscription_id);
         if (isset($result2['status']) && !$result2['status'])
         {
           // ERROR in enrolling user
@@ -2410,7 +2407,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
       array_push($recepients, $recepient);
     }
 
-    $sql = "DELETE FROM " . TABLE_PENDING_USERS . " WHERE id = " . $staff->id;
+    $sql = "DELETE FROM " . TABLE_PENDING_USERS . " WHERE ID = " . $staff->ID;
     $wpdb->query ($sql);
   } // End of foreach loop
 
@@ -3890,53 +3887,63 @@ function createWpUser($data = array(), $role = 'student')
   extract($data);
 
   // Check if all parameters are available.
-  if( $org_id !== "" && $first_name !== "" &&  $last_name !== "" &&  $email !== "" && $password !== "" )
+  if( $org_id != "" && $first_name != "" &&  $last_name != "" &&  $email != "" && $password != "" )
   {
+    $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
+    $first_name = str_replace($chars, "", trim($first_name));
+    $first_name = filter_var($first_name, FILTER_SANITIZE_STRING);
+    
+    $last_name = str_replace($chars, "",trim($last_name));
+    $last_name = filter_var($last_name, FILTER_SANITIZE_STRING);
+    
+    $email = sanitize_email( $_REQUEST['email']); // User's e-mail address
+    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
 
-        $chars=array("'",'"',"?","’","”","&quot;",'\"',"\'",'\\');
-        $first_name = str_replace($chars, "", trim($first_name));
-        $first_name = filter_var($first_name, FILTER_SANITIZE_STRING);
+    // check that the user doesnt exist in WP
+    if ( email_exists($email) == false )
+    {  
+      // create the user in WP 
+      $userdata = array (
+          'user_login' => $email,
+          'user_pass' => $password,
+          'role' => $role,
+          'user_email' => $email,
+          'first_name' => $first_name,
+          'last_name' => $last_name
+      );
+      
+      $WP_user_id = wp_insert_user ($userdata);
         
-        $last_name = str_replace($chars, "",trim($last_name));
-        $last_name = filter_var($last_name, FILTER_SANITIZE_STRING);
-        
-        $email = sanitize_email( $_REQUEST['email']); // User's e-mail address
-        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
-
-        // create the user in WP (student)
-        $userdata = array (
-            'user_login' => $email,
-            'user_pass' => $password,
-            'role' => $role,
-            'user_email' => $email,
-            'first_name' => $first_name,
-            'last_name' => $last_name
-        );
-        
-        $WP_user_id = wp_insert_user ($userdata);
-          
-        // check if we successfully inserted the user
-        if ( ! is_wp_error( $WP_user_id ) )
-        {
-          // Newly created WP user needs some meta data values added
-          update_user_meta ( $WP_user_id, 'org_id', $org_id );
-          update_user_meta ( $WP_user_id, 'accepted_terms', '0');
-          $result['success'] = true;
-          $result['name'] = $first_name;
-          $result['lastname'] = $last_name;
-          $result['org_id'] = $org_id;
-          $result['email'] = $email;
-          $result['password'] = $password;
-          $result['user_id'] = $WP_user_id; // LU User ID
-        }
-        else
-        {
-          // error, couldnt insert the user
-          $result['display_errors'] = 'Failed';
-          $result['success'] = false;
-          $result['errors'] = 'createWpUser error: Sorry, we couldnt create the user. ';
-        }
+      // check if we successfully inserted the user
+      if ( ! is_wp_error( $WP_user_id ) )
+      {
+        // Newly created WP user needs some meta data values added
+        update_user_meta ( $WP_user_id, 'org_id', $org_id );
+        update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+        $result['success'] = true;
+        $result['name'] = $first_name;
+        $result['lastname'] = $last_name;
+        $result['org_id'] = $org_id;
+        $result['email'] = $email;
+        $result['password'] = $password;
+        $result['user_id'] = $WP_user_id; // LU User ID
       }
+      else
+      {
+        // error, couldnt insert the user
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = 'createWpUser error: Sorry, we couldnt create the user. ';
+      }
+    }
+    else
+    {
+      // email already exists  
+      $result['success'] = false;
+      $result['message']='User already exists';
+    }
+
+  }
   return $result;
 }
 
