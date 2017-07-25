@@ -168,11 +168,10 @@ class Eot_quiz_Public
     public function frontend_quiz($atts) 
     {
         $a = shortcode_atts(array(
-            'action' => 'manage_quiz',
-            'attr_2' => 'attribute 2 default',
+            'action' => 'view_quiz',
+            'id' => 0,
                 // ...etc
                 ), $atts);
-
         require_once plugin_dir_path(__FILE__) . 'partials/eot_quiz.php';
     }
 

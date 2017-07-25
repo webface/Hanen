@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       EOT_QUIZ
  * Plugin URI:        http://www.expertonlinetraining.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Manage the EOT quizzes
  * Version:           1.0.0
  * Author:            Tommy Adeniyi
  * Author URI:        http://www.expertonlinetraining.com

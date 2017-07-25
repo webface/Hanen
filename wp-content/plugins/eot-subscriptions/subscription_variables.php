@@ -180,7 +180,7 @@ define ('CERTIFICATE_PATH', '/images/certificates/'); // The path to store certi
 
 define ('PENDING_USERS_CRON_LIMIT', 15); // The number of pending users to process via cron job
 define ('PENDING_USERS_CRON_TIME_LIMIT', 2); // The number of hours to wait before processing orphaned users
-define ('PENDING_USERS_LIMIT', 5); // The number of pending users to process via ajax
+define ('PENDING_USERS_LIMIT', 1); // The number of pending users to process via ajax
 
 define ('PENDING_EMAILS_LIMIT', 1); // the number of pending emails to send via ajax
 define ('PENDING_EMAILS_CRON_LIMIT', 100); // The number of pending users to process via cron job

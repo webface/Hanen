@@ -4,22 +4,25 @@
     <span class="current">Quizzes</span>     
 </div>
 <h1 class="article_page_title">Take the quiz</h1>
-<!--DEFINE QUIZ ID-->
-<script>quiz_id=1;</script>
 <?php
-//if(current_user_can( "is_student" )){
-    
-?>
-<?php
-//load quiz
-echo do_shortcode( '[eot_quiz_display action="quiz"]' );
-?>
-<?php 
-//}
-//else
-//        {
-//            echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
-//            return;
-//          }
+	$quiz_id = isset($_REQUEST['quiz_id']) ? filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+	$subscription_id = isset($_REQUEST['subscription_id']) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 
+	// make sure we got a question ID, quiz ID, and subscription ID
+	if (!$quiz_id || !$subscription_id)
+		die();
+
+	$true_subscription = verifyUserAccess();
+
+	if (isset($true_subscription['status']) && $true_subscription['status']) 
+    {
+		echo '<script>var quiz_id = ' . $quiz_id . ';</script>'; // set the quiz ID in JS
+
+		//load quiz
+		echo do_shortcode( '[eot_quiz_display action="view_quiz" id="' . $quiz_id . '"]' );
+    } 
+    else 
+    {
+        echo "subscription ID does not belong to you";
+    }
 ?>

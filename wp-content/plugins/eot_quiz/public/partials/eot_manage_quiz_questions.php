@@ -16,10 +16,8 @@ if (isset($_POST['submit']))
 {
     if ($_POST['type'] == 'choice') 
     {
-        if (
-                !isset($_POST['save_question']) || !wp_verify_nonce($_POST['save_question'], 'save_question')
-        ) {
-
+        if (!isset($_POST['save_question']) || !wp_verify_nonce($_POST['save_question'], 'save_question')) 
+        {
             print 'Sorry, your nonce did not verify.';
             exit;
         }

@@ -12,11 +12,8 @@ $admin_ajax_url = admin_url('admin-ajax.php');
 //echo $title."<br>";
 if (isset($_POST['submit'])) 
 {
-    if (
-            !isset($_POST['submit_quiz']) || !wp_verify_nonce($_POST['submit_quiz'], 'submit_quiz')
-    ) 
+    if (!isset($_POST['submit_quiz']) || !wp_verify_nonce($_POST['submit_quiz'], 'submit_quiz')) 
     {
-
         print 'Sorry, your nonce did not verify.';
         exit;
     }
@@ -131,13 +128,13 @@ else
                         id="quizTime"
                         type="range"
                         min="1"                    
-                        max="30"                  
+                        max="60"                  
                         step="1"                   
-                        value="1"                 
+                        value="20"                 
                         data-orientation="horizontal" 
                         onclick='quizTimeText.value = this.value'
                         >
-                    <input type="text" name="quizTimeText" value="1" readonly>
+                    <input type="text" name="quizTimeText" value="20" readonly>
                 </div>
             </div>
         </div>

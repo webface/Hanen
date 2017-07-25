@@ -53,10 +53,10 @@ class EotQuizData
     public function get_quiz_by_id($id = 0) 
     {
         global $wpdb;
-        $quiz = $wpdb->get_row("SELECT q.*,"
+        $quiz = $wpdb->get_row("SELECT q.*, "
                 . "COUNT(qa.quiz_question) AS questions "
                 . "FROM " . TABLE_QUIZ . " AS q "
-                . "JOIN " . TABLE_QUIZ_QUESTION . " as qa ON q.ID=qa.quiz_id "
+                . "JOIN " . TABLE_QUIZ_QUESTION . " as qa ON q.ID = qa.quiz_id "
                 . "WHERE q.ID = $id", ARRAY_A);
         return $quiz;
     }

@@ -1,29 +1,29 @@
-		<style type="text/css">
-			.s-c-x #col1 {
-			    overflow: visible !important;
-			}
-		</style>
-		<div class="breadcrumb">
-		  <?= CRUMB_DASHBOARD ?>    
-		  <?= CRUMB_SEPARATOR ?>     
-		  <?= CRUMB_ADMINISTRATOR ?>    
-		  <?= CRUMB_SEPARATOR ?>    
-		  <?= CRUMB_MANAGE_STAFF_ACCOUNTS ?>
-		  <?= CRUMB_SEPARATOR ?>
-		    <span class="current">Upload Spreadsheet</span>     
-		</div>
+<style type="text/css">
+	.s-c-x #col1 {
+	    overflow: visible !important;
+	}
+</style>
+<div class="breadcrumb">
+  <?= CRUMB_DASHBOARD ?>    
+  <?= CRUMB_SEPARATOR ?>     
+  <?= CRUMB_ADMINISTRATOR ?>    
+  <?= CRUMB_SEPARATOR ?>    
+  <?= CRUMB_MANAGE_STAFF_ACCOUNTS ?>
+  <?= CRUMB_SEPARATOR ?>
+    <span class="current">Upload Spreadsheet</span>     
+</div>
 
 <?php
 	// verify this user has access to this portal/subscription/page/view
 	$true_subscription = verifyUserAccess(); 
+	global $current_user;
+	$user_id = $current_user->ID;                  // Wordpress user ID
 
 	// Check if the subscription ID is valid.
 	if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 	{
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 		// Variable declaration
-		global $current_user;
-		$user_id = $current_user->ID;                  // Wordpress user ID
 		$org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
 
 		if(isset($true_subscription['status']) && $true_subscription['status'])
@@ -49,10 +49,6 @@
 
 	if(isset($_REQUEST['uploadFile']) && $_REQUEST['uploadFile'] == 'true' && isset($_REQUEST['subscription_id']))
 	{
-
-    	global $current_user;
-		$user_id = $current_user->ID; // Wordpress account user id
-
 		/*****************************************************************
 		 * This triggers when a camp director succesfully uploaded a file.
 		 *****************************************************************/
@@ -62,7 +58,6 @@
 	 	$file = get_field('file_uploadspreadsheet', 'user_'.$user_id);
 		$fileLink = $file['url']; // The link to the file
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-                ///ddd($file,$fileLink,pathinfo($fileLink, PATHINFO_EXTENSION));
     	if( !current_user_can ('is_director') && !current_user_can ('is_administrator') )
         {
          	wp_die('Sorry, you do not have permisison to view this page.');
@@ -144,12 +139,11 @@
 					$org_id = get_org_from_user ($user_id); // Organization id
 					$portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
 					$data = compact("org_id"); // to pass to our functions below
-					$courses_in_portal = getCoursesByOrgId($org_id); // All the published courses in the portal
-					$course_names = array_column($courses_in_portal, 'course_name'); // The titles of the modules from the master library
+					$courses_in_org = getCoursesByOrgId($org_id); // All the courses in this org
+					$course_names = array_column($courses_in_org, 'course_name'); // The titles of the modules from the master library
 					$email_finish = array(); // Array of email that has been proceseed or finished
 					$subscription = getSubscriptions($subscription_id,0,1); // Subscription details
 					$staff_credits = $subscription->staff_credits; // The staff credits
-                                        //ddd($courses_in_portal);
 				    // Add upgrade number of staff
 				    $upgrades = getUpgrades ($subscription_id);
 				    if($upgrades)
@@ -162,7 +156,7 @@
 
 					$directorname =	$current_user->display_name; // the directors name
 					$campname =	get_the_title($org_id); // the camp name
-					$response = getEotUsers($org_id); // All users in this portal
+					$response = getEotUsers($org_id); // All users in this org
 
 					if (isset($response['status']) && $response['status'] == 1)
 					{
@@ -189,15 +183,15 @@
 						}
 						$first_name = isset($staff[0]) ? trim($staff[0]) : ''; // User First Name
 						$last_name = isset($staff[1]) ? trim($staff[1]) : ''; // User Last Name
+                        $first_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"`\’\”]/", "", $first_name);
+                        $last_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"\’`\”]/", "", $last_name);
 						$email = isset($staff[2]) ? trim($staff[2]) : ''; // User e-mail address
 						$password = isset($staff[3]) ? trim($staff[3]) : ''; // User password
 						$course_1 = isset($staff[4]) ? trim($staff[4]) : ''; // User Course 1
 						$course_2 = isset($staff[5]) ? trim($staff[5]) : ''; // User Course 2
 						$course_3 = isset($staff[6]) ? trim($staff[6]) : ''; // User Course 3
 						$course_4 = isset($staff[7]) ? trim($staff[7]) : ''; // User Course 4
-                                                $first_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"`\’\”]/", "", $first_name);
-                                                $last_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"\’`\”]/", "", $last_name);                                                
-				?>
+?>
 						<tr>
 							<td class="center">
 								<i><?= $row_counter ?></i>
@@ -361,67 +355,63 @@
 			<strong>Please wait while we create your staff accounts: <br>
 			Processing <?= $processing ?> - <?= $processing_top; ?> out of <?= $max ?> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF ACCOUNTS HAVE BEEN CREATED.<br><br>You will be redirected to a success page once the import is complete.
 		</div>
-                <div id="insert_form" style="display:none;"></div>
-		<script>
-                    var count = 1;
-                    var max = <?=$max?>;
-                    var sent_emails = '';
-                    var overall_status = 1;
+            <div id="insert_form" style="display:none;"></div>
+			<script>
+                var count = 1;
+                var max = <?=$max?>;
+                var sent_emails = '';
+                var overall_status = 1;
 
-                    $(document).ready(function () {
-                        sendMail();
-                    });
+                $(document).ready(function () {
+                    sendMail();
+                });
 
-                    function sendMail() 
-                    {
-                        $.ajax({
-                            url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
-                            success: function (result) 
-                            {
-                                result = JSON.parse(result);
-                                console.log(result);
+                function sendMail() 
+                {
+                    $.ajax({
+                        url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
+                        success: function (result) 
+                        {
+                            console.log(result);
+                            result = JSON.parse(result);
+                            console.log(result);
 
-                                    sent_emails += result.import_status;
-                                    count += <?= PENDING_USERS_LIMIT ?>;
+                                sent_emails += result.import_status;
+                                count += <?= PENDING_USERS_LIMIT ?>;
 
-                                    // check if there was a problem
-                                    if (result.status == false)
-                                    {
-                                        overall_status = 0;
-                                    }
+                                // check if there was a problem
+                                if (result.status == false)
+                                {
+                                    overall_status = 0;
+                                }
 
-                                    $('.processing').html("Processing "+count+" out of <?= $max ?>");
+                                $('.processing').html("Processing "+count+" out of <?= $max ?>");
 
-                                    // check if we finished sending
-                                    if (count > <?= $max ?>)
-                                    {
-                                        <?php
-                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id . '&sent=1';
-                                        ?>
-                                        $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
+                                // check if we finished sending
+                                if (count > <?= $max ?>)
+                                {
+                                    <?php
+                                    $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id . '&sent=1';
+                                    ?>
+                                    $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
 
-    			                document.forms['redirect'].submit();
-                                    }
-                                    else
-                                    {
-                                        sendMail();
-                                    }
+			                document.forms['redirect'].submit();
+                                }
+                                else
+                                {
+                                    sendMail();
+                                }
 
-                            }});
-                    }
-                </script>
-
+                        }});
+                }
+            </script>
 <?php
-			
-		
 	}
 	else if( isset($_REQUEST['subscription_id']) )
 	{
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-		$subscription = getSubscriptions($subscription_id,0,1); // Subscription details
+		$subscription = getSubscriptions($subscription_id, 0, 1); // get active Subscription details
 
-		global $current_user;
-		$user_id = $current_user->ID; // Wordpress account user id
 		if( !isset($subscription) || $subscription->manager_id != $user_id)
 		{
 			wp_die('You do not have privilege for this subscription.');

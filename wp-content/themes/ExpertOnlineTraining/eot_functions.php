@@ -2259,14 +2259,13 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
   // check if we're calling the function from cron or a user. If cron then org_id = 0 and we should look for records older than PENDING_USERS_CRON_TIME_LIMIT hours ago 
   if($org_id == 0)
   {
-    $sql = "SELECT * FROM " . TABLE_PENDING_USERS . " WHERE time < DATE_SUB(NOW(), INTERVAL 3 HOUR) ORDER BY id asc limit " . $limit;
+    $sql = "SELECT * FROM " . TABLE_PENDING_USERS . " WHERE time < DATE_SUB(NOW(), INTERVAL 3 HOUR) ORDER BY ID ASC LIMIT " . $limit;
   }
   else   //means this function is being called from spreadsheet upload page and we should target the specific org_id
   {
-    $sql = "SELECT * FROM " . TABLE_PENDING_USERS . " WHERE org_id = " . $org_id . " ORDER BY id asc limit " . $limit;
+    $sql = "SELECT * FROM " . TABLE_PENDING_USERS . " WHERE org_id = " . $org_id . " ORDER BY ID ASC LIMIT " . $limit;
   }
   $staff_data = $wpdb->get_results($sql);
-
   /****************************************************************
    * This process the savings of the user accounts 
    * into WP User Database 
@@ -2274,7 +2273,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
   $recepients = array(); // List of recepients
   $emailError = '';
   $org_id = 0;        // the staff's org id
-  $isEmail;             //boolean indicating whether we should email the users or not
+  $isEmail = 0;             //boolean indicating whether we should email the users or not
   //$subscription_id;     //subscription id
   $has_error = false;   // Boolean indication if the process has an error
   $has_user_error = false; // Boolean indicator for individual user error.
@@ -2425,6 +2424,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
       $sent = 0;
     }
   }
+
   $final_result['status'] = false;
 
   // check if there were any errors, if so dont redirect with success message.
@@ -3896,7 +3896,7 @@ function createWpUser($data = array(), $role = 'student')
     $last_name = str_replace($chars, "",trim($last_name));
     $last_name = filter_var($last_name, FILTER_SANITIZE_STRING);
     
-    $email = sanitize_email( $_REQUEST['email']); // User's e-mail address
+    $email = sanitize_email($email); // User's e-mail address
     $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
 
     // check that the user doesnt exist in WP
@@ -3934,6 +3934,7 @@ function createWpUser($data = array(), $role = 'student')
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
         $result['errors'] = 'createWpUser error: Sorry, we couldnt create the user. ';
+        $result['message'] = 'createWpUser error: Sorry, we couldnt create the user. ';
       }
     }
     else
@@ -4404,7 +4405,7 @@ function deleteStaffAccount_callback ()
         else
         {
             // Delete the staff account from LU
-                $user = get_user_by( 'email', $email ); // The user in WP
+                $user = get_user_by( 'ID', $staff_id ); // The user in WP
                 if($user)
                 {
                     // Delete the account in WP
@@ -6916,7 +6917,6 @@ jane@email.com
         {        
             $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
             $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
             $email =  sanitize_email( $_REQUEST['email'] );
             ob_start();
         ?>
@@ -6932,7 +6932,6 @@ jane@email.com
                       <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" /> 
                       <input type="hidden" name="email" id="email" value="<?= $email ?>" /> 
                       <input type="hidden" name="staff_id" id="staff_id" value=" <?= $staff_id ?>" />
-                      <input type="hidden" name="portal_subdomain" value="<?= $portal_subdomain ?>" />
                         <?php wp_nonce_field( 'delete-staff_id-org_id_' . $org_id ); ?>
                     </td>
                   </tr> 

@@ -4,10 +4,10 @@
  */
 switch ($_REQUEST['form_name']) 
 {
-        case 'update_title':
+    case 'update_title':
         $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         ob_start();
-        ?>
+?>
         <div class="title" style="width:320px">
             <div class="title_h2">Type in or update your question</div>
         </div>
@@ -17,8 +17,6 @@ switch ($_REQUEST['form_name'])
                
                         <div class=" bs form_group">
                             <input class="bs form-control" type="text" name="title" value="<?=$title;?>" /> 
-                             
-
                             <?php wp_nonce_field('update-title'); ?>
                         </div> 
                 </table> 
@@ -36,9 +34,7 @@ switch ($_REQUEST['form_name'])
                 </a>
             </div>
         </div>
-
-
-        <?php
+<?php
         $html = ob_get_clean();
         echo $html;
         exit();
@@ -46,7 +42,7 @@ switch ($_REQUEST['form_name'])
     case 'add_title':
         $type = filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
         ob_start();
-        ?>
+?>
         <div class="title" style="width:320px">
             <div class="title_h2">Type in or update your question</div>
         </div>
@@ -57,7 +53,6 @@ switch ($_REQUEST['form_name'])
                         <div class=" bs form_group">
                             <input class="bs form-control" type="text" name="title" value="" /> 
                              <input type="hidden" name="type" value="<?= $type ?>" />
-
                             <?php wp_nonce_field('add-title_' . $type); ?>
                         </div> 
                 </table> 
@@ -75,9 +70,7 @@ switch ($_REQUEST['form_name'])
                 </a>
             </div>
         </div>
-
-
-        <?php
+<?php
         $html = ob_get_clean();
         echo $html;
         exit();
@@ -98,7 +91,6 @@ switch ($_REQUEST['form_name'])
                             <p>If there are users assigned to this quiz, all records of the results will be lost</p>
                             <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" /> 
                             <input type="hidden" name="quiz_id" value="<?= $quiz_id ?>" /> 
-
                             <?php wp_nonce_field('delete-quiz_' . $quiz_id); ?>
                         </td> 
                     </tr> 
@@ -117,8 +109,7 @@ switch ($_REQUEST['form_name'])
                 </a>
             </div>
         </div>
-
-        <?php
+<?php
         $html = ob_get_clean();
         echo $html;
         exit();
@@ -127,7 +118,7 @@ switch ($_REQUEST['form_name'])
         $question_id = filter_var($_REQUEST['question_id'],FILTER_SANITIZE_NUMBER_INT);
         $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
         ob_start();
-        ?>
+?>
         <div class="title">
             <div class="title_h2">Delete This Question and its answers?</div>
         </div>
@@ -158,8 +149,7 @@ switch ($_REQUEST['form_name'])
                 </a>
             </div>
         </div>
-
-        <?php
+<?php
         $html = ob_get_clean();
         echo $html;
         exit();
@@ -167,5 +157,4 @@ switch ($_REQUEST['form_name'])
     default:
         break;
 }
-
-
+?>

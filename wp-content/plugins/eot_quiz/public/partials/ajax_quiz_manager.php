@@ -5,9 +5,11 @@ require $path . 'public/class-eot_quiz_data.php';
 $eot_quiz = new EotQuizData();
 global $current_user;
 $user_id = $current_user->ID; // Wordpress user ID
-//Required for angular cos data array $_POST variables are screwy
+
+//Required for angular because data array $_POST variables are screwy
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
     $_POST = json_decode(file_get_contents('php://input'), true);
+
 $quiz_id = filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT);
 switch ($_REQUEST['part']) 
 {
@@ -35,7 +37,6 @@ switch ($_REQUEST['part'])
         //var_dump($questions);
         foreach ($questions as $question) 
         {
-
             switch ($question['quiz_question_type']) 
             {
                 case 'radio':
@@ -84,6 +85,3 @@ switch ($_REQUEST['part'])
         exit();
         break;
 }
-
-
-

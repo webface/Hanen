@@ -77,7 +77,7 @@ $quiz=$eot_quiz->get_quiz_by_id($quiz_id);
                         id="quizTime"
                         type="range"
                         min="1"                    
-                        max="30"                  
+                        max="60"                  
                         step="1"                   
                         value="<?= date('i', strtotime($quiz['time_limit']))?>"                 
                         data-orientation="horizontal" 

@@ -3,7 +3,7 @@
     <div class="slide-container welcome" ng-controller="welcomeCtrl as welcome" ng-hide="welcome.quizmanager.quizActive || welcome.quizmanager.resultsActive">
         <img class="logo" src="{{welcome.quizmanager.quiz_logo}}"/>
         <div class="preload" ng-show="welcome.quizmanager.quizIsLoading">
-            <i class="fa fa-spinner fa-pulse fa-3x" aria-hidden="true"></i>...loading...
+            <i class="fa fa-spinner fa-pulse fa-3x" aria-hidden="true"></i>
         </div>
         <h1 ng-cloak ng-hide="welcome.quizmanager.quizIsLoading">{{welcome.quizmanager.quiz.quiz.name}}</h1>
         <div class="bs row welcome-message" ng-hide="welcome.quizmanager.quizIsLoading" ng-cloak>
