@@ -32,16 +32,19 @@
             {
                 $module_id = filter_var($_REQUEST['module_id'], FILTER_SANITIZE_NUMBER_INT);
                 // looking for resource order form submission
-                if (isset($_REQUEST['submit'])) 
+                if (isset($_POST['submit'])) 
                 {
                     //parse and update the resource order
-                    foreach ($_REQUEST as $k => $v) 
+                    foreach ($_POST as $k => $v) 
                     {
                         if (strpos($k, 'order_') == 0) 
                         {
                             $parts = explode('order_', $k);
-                            $id = $parts[1];
-                            $upd = $wpdb->update(TABLE_MODULE_RESOURCES, array('order' => $v), array('resource_id' => $id, 'module_id' => $module_id, 'org_id' => $org_id));
+                            if(isset($parts[1]))
+                            {
+                                $id = $parts[1];
+                                $upd = $wpdb->update(TABLE_MODULE_RESOURCES, array('order' => $v), array('resource_id' => $id, 'module_id' => $module_id));
+                            }
                         }
                     }
                 }
@@ -50,6 +53,7 @@
                 //$quizzes = $eot_quiz->getQuizzes($org_id, $user_id);
                 $quizzes= array();
                 $module_resources = getResourcesInModule($module_id); // gets all the current resources in the module
+                d($module_resources);
 ?>
             <h1 class="article_page_title" id="moduleTitle"><?= $module['title'] ?></h1>
             <a class="btn btn-primary float-l" href="#" onclick="rename_module();">Rename Module</a>
