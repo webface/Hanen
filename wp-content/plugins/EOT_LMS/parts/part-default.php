@@ -204,6 +204,7 @@ else if (current_user_can("is_student"))
 {
     $enrollments = getEnrollmentsByUserId($user_id); // All the enrollments of the user.
     $courses = getCourses(0, $org_id);
+
     if (!empty($image)) 
     {
 ?>
@@ -218,15 +219,15 @@ else if (current_user_can("is_student"))
         // Display the enrollments information in the dashboard
         foreach ($enrollments as $enrollment) 
         {
-            $course_id = $enrollment['course_id']; // The course ID
-            // Get all the modules in this enrollment by the course ID
+            $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
+            // Get all the modules in this course
             $modules = getModulesInCourse($course_id);
             $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : "could not find the course name"; // Check if the that course id is in $courses.
             $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
             if ($modules) 
             {
-                $percentage_complete = $enrollment['percentage_complete']; //Show percentage complete.
                 $status = formatStatus($enrollment['status']);
+                $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
                 if ($status == "Failed") 
                 {
                     $status = 'In Progress';
@@ -235,7 +236,6 @@ else if (current_user_can("is_student"))
                 {
                     $percentage_complete = 100;
                 }
-
 ?>
                 <div class="dashboard_border student">
                     <h1><?= $course_name ?>
@@ -243,20 +243,16 @@ else if (current_user_can("is_student"))
                     <div class="content_right">
                         <div class="clear"></div>
                         <div class="menu">
-                            <form action="?part=my_library&course_id=<?= $course_id?>" id="my_library" method="post">
-                                <input type="hidden" name="enrollment" value='<?=json_encode($enrollment)?>'>
-                                <input type="hidden" name="course" value='<?=json_encode($course)?>'>
-                                <a href="" class="my_library">
-                                    <div class="thumbnail">
-                                        <i class="fa fa-youtube-play" alt="Content"></i>
-                                    </div>
-                                    <div class="para">
-                                        <h1>Start Course</h1>
-                                        <br/>
-                                        Watch the videos, take quizzes, see resources
-                                    </div>
-                                </a>
-                            </form>
+                            <a href="?part=my_library&course_id=<?= $course_id?>" class="my_library">
+                                <div class="thumbnail">
+                                    <i class="fa fa-youtube-play" alt="Content"></i>
+                                </div>
+                                <div class="para">
+                                    <h1>Start Course</h1>
+                                    <br/>
+                                    Watch the videos, take quizzes, see resources
+                                </div>
+                            </a>
                         </div> 
                     </div>
                     <div class="content_left student">
@@ -307,16 +303,7 @@ else if (current_user_can("is_student"))
                         </div>\
                         <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
                 </script>
-                <script>
-                $(document).ready(function() {
-                    // Submit enrollment and course info to my_library page.
-                    $('.my_library').click(function( e ) {
-                        e.preventDefault();
-                        $(this).parent().submit();
-                    });
-                })
-                </script>
-                <?php
+<?php
             } 
             else 
             { 

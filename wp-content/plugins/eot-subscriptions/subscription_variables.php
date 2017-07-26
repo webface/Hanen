@@ -125,15 +125,15 @@ define ('TABLE_MODULES', $wpdb->prefix.'modules');
 define ('TABLE_MODULE_RESOURCES',$wpdb->prefix.'module_resources');
 define ('TABLE_COURSE_MODULE_RESOURCES',$wpdb->prefix.'course_module_resources');
 define ('TABLE_QUIZ', $wpdb->prefix.'quiz');
-define('TABLE_QUIZ_QUESTION', $wpdb->prefix . 'quiz_question');
-define('TABLE_QUIZ_ANSWER', $wpdb->prefix . 'quiz_answer');
-define('TABLE_QUIZ_RESULT', $wpdb->prefix . 'quiz_results');
-define('TABLE_QUIZ_IN_COURSE', $wpdb->prefix . 'quiz_in_course');
-define('TABLE_QUIZ_ATTEMPT', $wpdb->prefix . 'quiz_attempts');
+define ('TABLE_QUIZ_QUESTION', $wpdb->prefix . 'quiz_question');
+define ('TABLE_QUIZ_ANSWER', $wpdb->prefix . 'quiz_answer');
+define ('TABLE_QUIZ_RESULT', $wpdb->prefix . 'quiz_results');
+define ('TABLE_QUIZ_IN_COURSE', $wpdb->prefix . 'quiz_in_course');
+define ('TABLE_QUIZ_ATTEMPTS', $wpdb->prefix . 'quiz_attempts');
 define ('TABLE_CATEGORIES', $wpdb->prefix.'category');
 define ('TABLE_HELP_TOPICS', $wpdb->prefix.'help_topics');
-define ('TABLE_HELP_TOPICS_FOR_VIEW', $wpdb->prefix.'help_topics_for_view');
-define ('TABLE_TRACK',$wpdb->prefix.'track');
+define ('TABLE_HELP_TOPICS_FOR_VIEW', $wpdb->prefix . 'help_topics_for_view');
+define ('TABLE_TRACK', $wpdb->prefix . 'track');
 
 // base courses (course name => course description)
 $base_courses = array (

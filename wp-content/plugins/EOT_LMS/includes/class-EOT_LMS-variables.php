@@ -99,7 +99,11 @@ if(isset($_REQUEST['course_id']) )
 {
 	define ('CRUMB_MY_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=my_library&course_id='.$_REQUEST["course_id"].'" onclick="load(\'load_loading\')">My Library</a>');
 }
+else
+{
+	define ('CRUMB_MY_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=my_library&course_id=" onclick="load(\'load_loading\')">My Library</a>');
 
+}
 // define breadcrumb to manage sales rep page
 define ('CRUMB_MANAGESALESREP', '<a href="'. get_home_url() .'/dashboard/?part=manage_sales_rep"">Manage Sales Rep</a>');
 

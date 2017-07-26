@@ -7,7 +7,7 @@
 function getLibraries ($library_id = 0) 
 {
 	global $wpdb;
-	$sql = "SELECT id, name, price from " . TABLE_LIBRARY;
+	$sql = "SELECT ID, name, price from " . TABLE_LIBRARY;
 	$inc_library = ($library_id > 0) ? " where `ID` = " . $library_id . " " : "";
 	$sql .= $inc_library;
 	$results = ($library_id > 0) ? $wpdb->get_row ($sql) : $wpdb->get_results ($sql);
@@ -2589,7 +2589,7 @@ function org_has_maxed_staff($org_id = 0, $subscription_id = 0)
 function getCourse($course_id = 0) 
 {
   global $wpdb; 
-  $course=$wpdb->get_row("SELECT * FROM " . TABLE_COURSES . " WHERE id = $course_id", ARRAY_A);
+  $course = $wpdb->get_row("SELECT * FROM " . TABLE_COURSES . " WHERE id = $course_id", ARRAY_A);
   return $course;
 }
 
@@ -7854,4 +7854,60 @@ function updateVideoProgress_callback()
   wp_die();
 }
 
+/**
+ * Calculate the percentage completion for a given course
+ * @param int $user_id - the user id
+ * @param int $course_id - the course id
+ * returns an int between 0-100 representing the percentage completion 
+ */
+function calc_course_completion($user_id = 0, $course_id = 0)
+{
+  if (!$user_id || !$course_id)
+    return 0;
 
+  $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+
+  // get quizzes in course
+  $quizzes = getQuizzesInCourse($course_id);
+  $num_quizzes = count($quizzes);
+  if ($num_quizzes == 0)
+    return 0; // cant divide by 0
+
+  $quiz_ids = implode(',', array_column($quizzes, 'ID')); // a comma seperated list of quiz ids in this course
+
+  // check how many quizzes the user passed
+  global $wpdb;
+  $query = "SELECT count(*) FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
+  $num_passed = $wpdb->get_var($query);
+
+  // calculate %
+  if ($num_passed == 0)
+    return 0; 
+
+  $percentage_complete = intval($num_passed/$num_quizzes*100);
+  return $percentage_complete;
+}
+
+/**
+ * check whether the current user is enrolled in the course ID.
+ * @param int $course_id - the course id
+ * return true if the current user is inrolled in this course
+ */
+function verify_student_access($course_id = 0)
+{
+  if (!$course_id)
+    return false;
+
+  global $current_user, $wpdb;
+  $user_id = $current_user->ID;
+
+  $query = "SELECT ID FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id AND user_id = $user_id";
+  $enrolled = $wpdb->get_var($query);
+
+  if($enrolled)
+  {
+    return true;
+  }
+  return false;
+}
