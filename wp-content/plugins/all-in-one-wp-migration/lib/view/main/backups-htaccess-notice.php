@@ -8,7 +8,7 @@
 				'<a href="mailto:support@servmask.com">support@servmask.com</a> for assistance.',
 				AI1WM_PLUGIN_NAME
 			),
-			AI1WM_DIRECTORY_INDEX
+			AI1WM_BACKUPS_HTACCESS
 		)
 		?>
 	</p>

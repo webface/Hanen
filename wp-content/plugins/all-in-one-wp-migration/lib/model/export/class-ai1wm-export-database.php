@@ -33,6 +33,13 @@ class Ai1wm_Export_Database {
 			return $params;
 		}
 
+		// Set table index
+		if ( isset( $params['table_index'] ) ) {
+			$table_index = (int) $params['table_index'];
+		} else {
+			$table_index = 0;
+		}
+
 		// Set table offset
 		if ( isset( $params['table_offset'] ) ) {
 			$table_offset = (int) $params['table_offset'];
@@ -48,7 +55,7 @@ class Ai1wm_Export_Database {
 		}
 
 		// What percent of tables have we processed?
-		$progress = (int) ( ( $table_offset / $total_tables_count ) * 100 );
+		$progress = (int) ( ( $table_index / $total_tables_count ) * 100 );
 
 		// Set progress
 		Ai1wm_Status::info( sprintf( __( 'Exporting database...<br />%d%% complete', AI1WM_PLUGIN_NAME ), $progress ) );
@@ -60,18 +67,19 @@ class Ai1wm_Export_Database {
 			$mysql = new Ai1wm_Database_Mysqli( $wpdb );
 		}
 
+		// Replace table prefix on columns
+		$mysql->set_table_prefix_columns( ai1wm_table_prefix() . 'options', array( 'option_name' ) )
+			  ->set_table_prefix_columns( ai1wm_table_prefix() . 'usermeta', array( 'meta_key' ) );
+
 		// Spam comments
 		if ( isset( $params['options']['no_spam_comments'] ) ) {
-			$mysql->set_table_query_clauses( ai1wm_table_prefix() . 'comments', " WHERE comment_approved != 'spam' " );
-			$mysql->set_table_query_clauses( ai1wm_table_prefix() . 'commentmeta', sprintf(
-				" WHERE comment_id IN ( SELECT comment_ID FROM `%s` WHERE comment_approved != 'spam' ) ",
-				ai1wm_table_prefix() . 'comments'
-			) );
+			$mysql->set_table_where_clauses( ai1wm_table_prefix() . 'comments', array( "`comment_approved` != 'spam'" ) );
+			$mysql->set_table_where_clauses( ai1wm_table_prefix() . 'commentmeta', array( sprintf( "`comment_ID` IN ( SELECT `comment_ID` FROM `%s` WHERE `comment_approved` != 'spam' )", ai1wm_table_prefix() . 'comments' ) ) );
 		}
 
 		// Post revisions
 		if ( isset( $params['options']['no_revisions'] ) ) {
-			$mysql->set_table_query_clauses( ai1wm_table_prefix() . 'posts', " WHERE post_type != 'revision' " );
+			$mysql->set_table_where_clauses( ai1wm_table_prefix() . 'posts', array( "`post_type` != 'revision'" ) );
 		}
 
 		$old_table_prefixes = array();
@@ -96,6 +104,7 @@ class Ai1wm_Export_Database {
 		}
 
 		$include_table_prefixes = array();
+		$exclude_table_prefixes = array();
 
 		// Include table prefixes
 		if ( ai1wm_table_prefix() ) {
@@ -110,14 +119,13 @@ class Ai1wm_Export_Database {
 		$mysql->set_old_table_prefixes( $old_table_prefixes )
 			  ->set_new_table_prefixes( $new_table_prefixes )
 			  ->set_include_table_prefixes( $include_table_prefixes )
-			  ->set_table_prefix_columns( ai1wm_table_prefix() . 'options', array( 'option_name' ) )
-			  ->set_table_prefix_columns( ai1wm_table_prefix() . 'usermeta', array( 'meta_key' ) );
+			  ->set_exclude_table_prefixes( $exclude_table_prefixes );
 
 		// Exclude active plugins and status options
-		$mysql->set_table_query_clauses( ai1wm_table_prefix() . 'options', sprintf( " WHERE option_name NOT IN ('%s', '%s', '%s', '%s') ", AI1WM_ACTIVE_PLUGINS, AI1WM_ACTIVE_TEMPLATE, AI1WM_ACTIVE_STYLESHEET, AI1WM_STATUS ) );
+		$mysql->set_table_where_clauses( ai1wm_table_prefix() . 'options', array( sprintf( "`option_name` NOT IN ('%s', '%s', '%s', '%s')", AI1WM_ACTIVE_PLUGINS, AI1WM_ACTIVE_TEMPLATE, AI1WM_ACTIVE_STYLESHEET, AI1WM_STATUS ) ) );
 
 		// Export database
-		if ( $mysql->export( ai1wm_database_path( $params ), $table_offset, 10 ) ) {
+		if ( $mysql->export( ai1wm_database_path( $params ), $table_index, $table_offset, 10 ) ) {
 
 			// Get archive file
 			$archive = new Ai1wm_Compressor( ai1wm_archive_path( $params ) );
@@ -128,6 +136,9 @@ class Ai1wm_Export_Database {
 
 			// Set progress
 			Ai1wm_Status::info( __( 'Done exporting database...', AI1WM_PLUGIN_NAME ) );
+
+			// Unset table index
+			unset( $params['table_index'] );
 
 			// Unset table offset
 			unset( $params['table_offset'] );
@@ -144,10 +155,13 @@ class Ai1wm_Export_Database {
 			$total_tables_count = count( $mysql->get_tables() );
 
 			// What percent of tables have we processed?
-			$progress = (int) ( ( $table_offset / $total_tables_count ) * 100 );
+			$progress = (int) ( ( $table_index / $total_tables_count ) * 100 );
 
 			// Set progress
 			Ai1wm_Status::info( sprintf( __( 'Exporting database...<br />%d%% complete', AI1WM_PLUGIN_NAME ), $progress ) );
+
+			// Set table index
+			$params['table_index'] = $table_index;
 
 			// Set table offset
 			$params['table_offset'] = $table_offset;
@@ -157,7 +171,6 @@ class Ai1wm_Export_Database {
 
 			// Set completed flag
 			$params['completed'] = false;
-
 		}
 
 		return $params;
