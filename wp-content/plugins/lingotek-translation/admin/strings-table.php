@@ -61,12 +61,24 @@ class Lingotek_Strings_Table extends WP_List_Table {
 		$language = $this->pllm->get_language( substr( $column_name, 9 ) );
 		$document = $this->lgtm->get_group( 'string', $item['context'] ); // FIXME.
 
+
+		$workflow_id = Lingotek_Model::get_profile_option('workflow_id', 'string', $language);
+		$workflow = Lingotek_Workflow_Factory::get_workflow_instance( $workflow_id ); // TODO: put workflow_id here. It is currently not set up.
+		$workflow->echo_strings_modal($item['row'], $language->locale);
+
 		$allowed_html = array(
-			'a' => array(
-				'class' => array(),
-				'title' => array(),
-				'href' => array(),
-			),
+				'a' => array(
+					'class' => array(),
+					'title' => array(),
+					'href' => array(),
+				),
+				'img' => array(
+					'src' => array()
+				),
+				'div' => array(
+					'title' => array(),
+					'class' => array(),
+				),
 		);
 		// post ready for upload.
 		if ( $this->lgtm->can_upload( 'string', $item['context'] ) && $language->slug === $this->pllm->options['default_lang'] ) {
@@ -78,7 +90,7 @@ class Lingotek_Strings_Table extends WP_List_Table {
 		elseif ( isset( $document->source ) && $document->source === $language->mo_id ) {
 			echo wp_kses( 'importing' === $document->status ? Lingotek_Actions::importing_icon( $document ) : Lingotek_String_actions::uploaded_icon( $item['context'] ), $allowed_html );
 		} // translations.
-		elseif ( isset( $document->translations[ $language->locale ] ) || (isset( $document->source ) && 'current' === $document->status) ) {
+		elseif ( isset( $document->translations[ $language->locale ] ) || (isset( $document->source ) && 'current' === $document->status) && Lingotek::is_allowed_tms_locale($language->lingotek_locale)) {
 			echo wp_kses( Lingotek_Actions::translation_icon( $document, $language ), $allowed_html );
 		} // no translation.
 		else { 			echo '<div class="lingotek-color dashicons dashicons-no"></div>';
@@ -103,7 +115,7 @@ class Lingotek_Strings_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_cb( $item ) {
-		return sprintf( '<input type="checkbox" name="strings[]" value="%d" />', esc_attr( $item['row'] ) );
+		return sprintf( '<input id="string-select-%s" type="checkbox" name="strings[]" value="%d" />', esc_attr( $item['row'] ), esc_attr( $item['row'] ) );
 	}
 
 	/**

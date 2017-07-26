@@ -2,7 +2,7 @@
 /**
 	Plugin name: Lingotek Translation
 	Plugin URI: http://lingotek.com/wordpress#utm_source=wpadmin&utm_medium=plugin&utm_campaign=wplingotektranslationplugin
-	Version: 1.2.9
+	Version: 1.3.1
 	Author: Lingotek and Frédéric Demarle
 	Author uri: http://lingotek.com
 	Description: Lingotek offers convenient cloud-based localization and translation.
@@ -16,7 +16,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit();
 }
 
-define( 'LINGOTEK_VERSION', '1.2.9' ); // plugin version (should match above meta).
+define( 'LINGOTEK_VERSION', '1.3.1' ); // plugin version (should match above meta).
 define( 'LINGOTEK_MIN_PLL_VERSION', '1.8' );
 define( 'LINGOTEK_BASENAME', plugin_basename( __FILE__ ) ); // plugin name as known by WP.
 define( 'LINGOTEK_PLUGIN_SLUG', 'lingotek-translation' );// plugin slug (should match above meta: Text Domain).
@@ -25,7 +25,7 @@ define( 'LINGOTEK_INC', LINGOTEK_DIR . '/include' );
 define( 'LINGOTEK_ADMIN_INC',  LINGOTEK_DIR . '/admin' );
 define( 'LINGOTEK_WORKFLOWS',  LINGOTEK_ADMIN_INC . '/workflows' );
 define( 'LINGOTEK_URL', plugins_url( '', __FILE__ ) );
-define( 'BRIDGE_URL', 'https://27b9229a.ngrok.io' );
+define( 'BRIDGE_URL', 'https://inside.lingotek.com' );
 
 class Lingotek {
 	/**
@@ -46,118 +46,189 @@ class Lingotek {
 	 *	Array to map Lingotek locales to WP locales.
 	 *	map as 'WP locale' => 'Lingotek locale'.
 	 *
+	 * TODO: update this list!!!!
 	 *	@var array
 	 */
 	public static $lingotek_locales = array(
 		'af' => 'af-ZA',
-	'ak' => 'ak-GH',
-	'am' => 'am-ET',
-	'ar' => 'ar',
-	'as' => 'as-IN',
-	'az' => 'az-AZ',
+		'ak' => 'ak-GH',
+		'am' => 'am-ET',
+		'ar' => 'ar',
+		'ar_AE' => 'ar-AE', 
+		'ar_AF' => 'ar-AF', 
+		'ar_BH' => 'ar-BH', 
+		'ar_DZ' => 'ar-DZ', 
+		'ar_EG' => 'ar-EG', 
+		'ar_IQ' => 'ar-IQ', 
+		'ar_JO' => 'ar-JO', 
+		'ar_LY' => 'ar-LY', 
+		'ar_MA' => 'ar-MA', 
+		'ar_MR' => 'ar-MR', 
+		'ar_OM' => 'ar-OM', 
+		'ar_SA' => 'ar-SA', 
+		'ar_SD' => 'ar-SD', 
+		'ar_SY' => 'ar-SY', 
+		'ar_TD' => 'ar-TD', 
+		'ar_TN' => 'ar-TN', 
+		'ar_UZ' => 'ar-UZ', 
+		'ar_YE' => 'ar-YE',
+		'as' => 'as-IN',
+		'az' => 'az-AZ',
 		'ba' => 'ba-RU',
-	'bel' => 'be-BY',
-	'bg_BG' => 'bg-BG',
-	'bn_BD' => 'bn-BD',
-	'bo' => 'bo-CN',
-	'bs_BA' => 'bs-BA',
+		'bel' => 'be-BY',
+		'bg_BG' => 'bg-BG',
+		'bn_BD' => 'bn-BD',
+		'bo' => 'bo-CN',
+		'bs_BA' => 'bs-BA',
 		'ca' => 'ca-ES',
-	'co' => 'co-FR',
-	'cs_CZ' => 'cs-CZ',
-	'cy' => 'cy-GB',
-	'da_DK' => 'da-DK',
-	'de_CH' => 'de-CH',
+		'ca_ES' => 'ca-ES', 
+		'co' => 'co-FR',
+		'cs_CZ' => 'cs-CZ',
+		'cy' => 'cy-GB',
+		'cy_GB' => 'cy-GB',
+		'de_AT' => 'de-AT', 
+		'da_DK' => 'da-DK',
+		'de_CH' => 'de-CH',
 		'de_DE' => 'de-DE',
-	'dv' => 'dv-MV',
-	'el' => 'el-GR',
-	'en_AU' => 'en-AU',
-	'en_CA' => 'en-CA',
-	'en_GB' => 'en-GB',
+		'dv' => 'dv-MV',
+		'el' => 'el-GR',
+		'el_GR' => 'el-GR',
+		'en_AU' => 'en-AU',
+		'en_CA' => 'en-CA',
+		'en_GB' => 'en-GB',
 		'en_US' => 'en-US',
-	'eo' => 'eo-FR',
-	'es_AR' => 'es-AR',
-	'es_CL' => 'es-CL',
-	'es_CO' => 'es-CO',
-	'es_ES' => 'es-ES',
+		'en_IE' => 'en-IE', 
+		'en_IN' => 'en-IN', 
+		'en_ZA' => 'en-ZA', 
+		'eo' => 'eo-FR',
+		'es_419' => 'es-419', 
+		'es_AR' => 'es-AR',
+		'es_BO' => 'es-BO',
+		'es_CL' => 'es-CL',
+		'es_CO' => 'es-CO',
+		'es_ES' => 'es-ES',
 		'es_MX' => 'es-MX',
-	'es_PE' => 'es-PE',
-	'es_PR' => 'es-PR',
-	'es_VE' => 'es-VE',
-	'et' => 'et-EE',
-	'eu' => 'eu-ES',
+		'es_PE' => 'es-PE',
+		'es_PR' => 'es-PR',
+		'es_VE' => 'es-VE',
+		'es_HN' => 'es-HN', 
+		'es_CR' => 'es-CR', 
+		'es_CU' => 'es-CU', 
+		'es_DO' => 'es-DO', 
+		'es_EC' => 'es-EC', 
+		'es_GT' => 'es-GT', 
+		'es_NI' => 'es-NI', 
+		'es_PA' => 'es-PA', 
+		'es_PY' => 'es-PY', 
+		'es_SV' => 'es-SV', 
+		'es_UY' => 'es-UY', 
+		'es_US' => 'es-US', 
+		'et' => 'et-EE',
+		'et_EE' => 'et-EE',
+		'eu' => 'eu-ES',
 		'fa_IR' => 'fa-IR',
-	'fi' => 'fi-FI',
-	'fr_FR' => 'fr-FR',
-	'ga' => 'ga-IE',
-	'gd' => 'gd-GB',
-	'gl_ES' => 'gl-ES',
+		'fi' => 'fi-FI',
+		'fi_FI' => 'fi-FI',
+		'fr_FR' => 'fr-FR',
+		'fr_BE' => 'fr-BE',
+		'fr_CA' => 'fr-CA',
+		'fr_CH' => 'fr-CH',
+		'fr_US' => 'fr-US', 
+		'ga' => 'ga-IE',
+		'gd' => 'gd-GB',
+		'gl_ES' => 'gl-ES',
 		'gn' => 'gn-BO',
-	'haw_US' => 'haw-US',
-	'he_IL' => 'he-IL',
-	'hi_IN' => 'hi-IN',
-	'hr' => 'hr-HR',
-	'hu_HU' => 'hu-HU',
+		'haw_US' => 'haw-US',
+		'he_IL' => 'he-IL',
+		'hi_IN' => 'hi-IN',
+		'hr' => 'hr-HR',
+		'ht_HT' => 'ht-HT',
+		'hu_HU' => 'hu-HU',
 		'hy' => 'hy-AM',
-	'id_ID' => 'id-ID',
-	'is_IS' => 'is-IS',
-	'it_IT' => 'it-IT',
-	'ja' => 'ja-JP',
-	'jv_ID' => 'jv-ID',
+		'id_ID' => 'id-ID',
+		'is_IS' => 'is-IS',
+		'it_IT' => 'it-IT',
+		'it_CH' => 'it-CH',
+		'ja' => 'ja-JP',
+		'ja_JP' => 'ja-JP',
+		'jv_ID' => 'jv-ID',
 		'ka_GE' => 'ka-GE',
-	'kin' => 'kin-RW',
-	'kk' => 'kk-KZ',
-	'kn' => 'kn-IN',
-	'ko_KR' => 'ko-KR',
-	'ky_KY' => 'ky-KG',
+		'kin' => 'kin-RW',
+		'kk' => 'kk-KZ',
+		'kn' => 'kn-IN',
+		'ko_KR' => 'ko-KR',
+		'ky_KY' => 'ky-KG',
 		'lb_LU' => 'lb-LU',
-	'lo' => 'lo-LA',
-	'lt_LT' => 'lt-LT',
-	'lv' => 'lv-LV',
-	'mg_MG' => 'mg-MG',
-	'mk_MK' => 'mk-MK',
+		'lo' => 'lo-LA',
+		'lt_LT' => 'lt-LT',
+		'lv' => 'lv-LV',
+		'lv_LV' => 'lv-LV',
+		'mg_MG' => 'mg-MG',
+		'mk_MK' => 'mk-MK',
 		'ml_IN' => 'ml-IN',
-	'mn' => 'mn-MN',
-	'mr' => 'mr-IN',
-	'ms_MY' => 'ms-MY',
-	'my_MM' => 'my-MM',
-	'ne_NP' => 'ne-NP',
+		'mn' => 'mn-MN',
+		'mr' => 'mr-IN',
+		'ms_MY' => 'ms-MY',
+		'mt_MT' => 'mt-MT', 
+		'my_MM' => 'my-MM',
+		'ne_NP' => 'ne-NP',
 		'nl_BE' => 'nl-BE',
-	'nl_NL' => 'nl-NL',
-	'nn_NO' => 'nn-NO',
-	'pa_IN' => 'pa-IN',
-	'pl_PL' => 'pl-PL',
-	'ps' => 'ps-AF',
+		'nl_NL' => 'nl-NL',
+		'nn_NO' => 'nn-NO',
+		'no_NO' => 'no-NO', 
+		'pa_IN' => 'pa-IN',
+		'pl_PL' => 'pl-PL',
+		'ps' => 'ps-AF',
 		'pt_BR' => 'pt-BR',
-	'pt_PT' => 'pt-PT',
-	'ro_RO' => 'ro-RO',
-	'ru_RU' => 'ru-RU',
-	'sa_IN' => 'sa-IN',
-	'sd_PK' => 'sd-PK',
+		'pt_PT' => 'pt-PT',
+		'ro_RO' => 'ro-RO',
+		'ru_RU' => 'ru-RU',
+		'sa_IN' => 'sa-IN',
+		'sd_PK' => 'sd-PK',
 		'si_LK' => 'si-LK',
-	'sk_SK' => 'sk-SK',
-	'sl_SI' => 'sl-SI',
-	'so_SO' => 'so-SO',
-	'sq' => 'sq-SQ',
-	'sr_RS' => 'sr-CS',
+		'sk_SK' => 'sk-SK',
+		'sl_SI' => 'sl-SI',
+		// 'so_SO' => 'so-SO',
+		'sq' => 'sq-SQ',
+		'sr_RS' => 'sr-CS',
 		'su_ID' => 'su-ID',
-	'sv_SE' => 'sv-SE',
-	'sw' => 'sw-TZ',
-	'ta_IN' => 'ta-IN',
-	'te' => 'te-IN',
-	'tg' => 'tg-TJ',
+		'sv_SE' => 'sv-SE',
+		'sw' => 'sw-TZ',
+		'sw_TZ' => 'sw-TZ',
+		'ta_IN' => 'ta-IN',
+		'te' => 'te-IN',
+		'tg' => 'tg-TJ',
 		'th' => 'th-TH',
-	'tir' => 'ti-ER',
-	'tl' => 'tl-PH',
-	'tr_TR' => 'tr-TR',
-	'ug_CN' => 'ug-CN',
-	'uk' => 'uk-UA',
+		'th_TH' => 'th-TH',
+		'tir' => 'ti-ER',
+		'tl' => 'tl-PH',
+		'tr_TR' => 'tr-TR',
+		'ug_CN' => 'ug-CN',
+		'uk' => 'uk-UA',
+		'uk_UA' => 'uk-UA',
 		'ur' => 'ur-PK',
-	'uz_UZ' => 'uz-UZ',
-	'vi' => 'vi-VN',
-	'zh_CN' => 'zh-CN',
-	'zh_HK' => 'zh-HK',
-	'zh_TW' => 'zh-TW',
+		'ur_PK' => 'ur-PK',
+		'uz_UZ' => 'uz-UZ',
+		'vi' => 'vi-VN',
+		'vi_VN' => 'vi-VN',
+		'zh_CN' => 'zh-CN',
+		'zh_HK' => 'zh-HK',
+		'zh_TW' => 'zh-TW',
+		'zh_SG' => 'zh-SG', 
 	);
+
+
+	/**
+	 * Verifies that a lingotek-locale (ie. es-ES) is an allowed 
+	 * TMS locale.
+	 *
+	 * @param string $lingotek_locale
+	 * @return boolean
+	 */
+	public static function is_allowed_tms_locale($lingotek_locale)
+	{
+		return isset(self::$lingotek_locales[$lingotek_locale]) || in_array($lingotek_locale, self::$lingotek_locales);
+	}
 
 	/**
 	 *
@@ -245,13 +316,12 @@ class Lingotek {
 	}
 
 	public function do_plugin_updates() {
-		$content_type = get_option('lingotek_content_type');
-		foreach ($content_type as &$content) {
-			if (isset($content['profile']) && 'automatic' === $content['profile']) {
-				$content['profile'] = 'manual';
-			}
+		$cr = get_option('lingotek_community_resources');
+		if (is_array($cr) && isset($cr['workflows'])) {
+			// put Lingotek Professional Translation at the top of the select box.
+			$cr['workflows'] = array_merge(array('ab6c522a-7645-4317-9284-3fbddf516151' => 'Lingotek Professional Translation'), $cr['workflows']);
+			update_option('lingotek_community_resources', $cr);
 		}
-		update_option('lingotek_content_type', $content_type);
  	}
 
 	/**

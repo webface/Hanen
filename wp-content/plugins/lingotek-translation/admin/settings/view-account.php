@@ -119,6 +119,46 @@ if ( ! $community_id ) {
 		</select>
 	  </td>
 	</tr>
+	<tr>
+		<th scope="row"><?php esc_html_e( 'Payment Method', 'lingotek-translation' ) ?></th>
+		<td>
+
+			<?php
+				add_thickbox();
+				wp_enqueue_script( 'lingotek_professional_workflow_account', LINGOTEK_URL . '/js/workflow/professional-workflow-account.js' );
+				$vars = array(
+					'modal_id' => 'payment-portal-screen',
+					'bridge_payment' => BRIDGE_URL . '/#/billing/payment'
+				);
+				wp_localize_script( 'lingotek_professional_workflow_account', 'account_vars', $vars );
+				wp_enqueue_style( 'lingotek_professional_workflow_style', LINGOTEK_URL . '/css/workflow/professional-workflow-style.css', array(), LINGOTEK_VERSION );
+				$ltk_client = new Lingotek_API();
+				$payment_info = $ltk_client->get_user_payment_information();
+				$cc = '';
+				$cc_type = '';
+				if ($payment_method_set = isset($payment_info['payment_info']['payment_profile']['cc'])) {
+					$cc = $payment_info['payment_info']['payment_profile']['cc'];
+					$cc = str_replace('X','', $cc);
+
+					$cc_type = $payment_info['payment_info']['payment_profile']['cc_type'];
+				}
+			?>
+			<div id='modal-window-id-payment-portal-screen' style='display:none;' >
+				<div id='payment-portal-wrapper' class='payment-portal-element'>
+					<img class='payment-portal-element payment-portal-image' src="<?php echo esc_url_raw( LINGOTEK_URL )  ?>/img/translation-logo.png"/>
+					<img class='payment-portal-element payment-portal-loading' src="<?php echo esc_url_raw( LINGOTEK_URL ) ?>/img/loading.gif"/>
+					<span class='payment-portal-element You-are-now-being-re'>You are now being redirected to the Lingotek Secure Payment Portal...</span>
+				</div>
+			</div>
+			<div class='payment-method-setup professional-card-border' style="<?php echo ($payment_method_set) ? 'display:inline-block;' : 'display:none';  ?>">
+				<div class='payment-method-setup blue-radio-button-div'><img id='blue-radio-button' class='payment-method-setup' src="<?php echo esc_url_raw( LINGOTEK_URL ); ?>/img/blue-radio-button.svg"/></div>
+				<div class='payment-method-setup credit-card-dots-div'><img id='credit-card-dots' class='payment-method-setup' src="<?php echo esc_url_raw( LINGOTEK_URL ); ?>/img/credit-dots.svg" /></div>
+				<div class='payment-method-setup last-four-digits-div'><span id='last-four-digits' class='payment-method-setup'><?php echo $cc; ?></span></div>
+				<div class='payment-method-setup credit-card-image-div'><img id='credit-card-image' class='payment-method-setup' src="<?php echo Lingotek_Credit_Card_To_Path::get_cc_type_asset_url($cc_type) ?>"/></div>
+			</div>
+			<div style="height:37px; display:inline-block;padding-left: 10px;"><a id="professional-payment-info-link" href="<?php echo esc_url_raw( BRIDGE_URL ); ?>/#/billing/payment?redirect_url=<?php echo urlencode(  home_url( add_query_arg( NULL, NULL ) ) ); ?>" style="display: table-cell;padding-top: 7%;"><?php echo ($payment_method_set) ? 'Edit Payment Method' : 'Setup Payment Method'; ?></a></div>
+		</td>
+	</tr>
 	</table>
 
 	<?php submit_button( __( 'Save Changes', 'lingotek-translation' ), 'primary', 'submit', false ); ?>

@@ -3,8 +3,8 @@ Contributors: chouby, smithworx, erichie, robertdhanna
 Donate link: http://lingotek.com/
 Tags: automation, bilingual, international, language, Lingotek, localization, multilanguage, multilingual, translate, translation
 Requires at least: 3.8
-Tested up to: 4.7
-Stable tag: 1.2.9
+Tested up to: 4.8
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,12 +122,26 @@ For more, visit the [Lingotek documentation site](https://lingotek.atlassian.net
 
 == Changelog ==
 
+= 1.3.1 (2017-7-13) =
+
+* Added the ability to trigger auto-uploading of custom post statuses (Thanks to Soluto for contributing this feature!)
+* Added a filter hook, lingotek_is_post_valid_for_upload, that allows users to provide custom logic to determine where a document should be auto-uploaded (Thanks to Soluto for contributing this feature!)
+* Fixed a caching issue that was loading an outdated JavaScript file
+* Fixed an issue that caused the Professional Translation Quote Calculator to fail if a language rate had not been set on the API side
+* Fixed an auto-updater issue that was marking disabled languages as enabled
+* Added several styling updates
+
+= 1.3.0 (2017-7-10) =
+
+* Added the Lingotek Professional Translation workflow
+* Fixed a bug that was showing the incorrect profile type
+
 = 1.2.9 (2017-6-15) =
 
-* Fixed a bug that displayed an error upon installing the plugin.
-* Fixed a bug that was breaking the String Groups page.
-* The real-time status updater has been fixed.
-* Statuses are saved correctly when callbacks are received quickly.
+* Fixed a bug that displayed an error upon installing the plugin
+* Fixed a bug that was breaking the String Groups page
+* The real-time status updater has been fixed
+* Statuses are saved correctly when callbacks are received quickly
 
 = 1.2.8 (2017-4-17) =
 
@@ -255,7 +269,7 @@ For more, visit the [Lingotek documentation site](https://lingotek.atlassian.net
 
 = 1.0.7 (2015-08-18) =
 
-* Enhanced custom field support including compatibility with user created custom fields, the Advanced Custom Fields (ACF) plugin, and the use of language configuration files (i.e., wpml-config.xml) for default settings.
+* Enhanced custom field support including compatibility with user created custom fields, the Advanced Custom Fields (ACF) plugin, and the use of language configuration files (i.e., wpml-config.xml) for default settings
 * Fixed issue with sub-category translation
 
 = 1.0.6 (2015-07-30) =
@@ -265,7 +279,7 @@ For more, visit the [Lingotek documentation site](https://lingotek.atlassian.net
 
 = 1.0.5 (2015-07-23) =
 
-* Fixed dashboard reporting issue, reduced workflow select options for new users, and other usability improvements.
+* Fixed dashboard reporting issue, reduced workflow select options for new users, and other usability improvements
 
 = 1.0.4 (2015-07-21) =
 
@@ -273,7 +287,7 @@ For more, visit the [Lingotek documentation site](https://lingotek.atlassian.net
 
 = 1.0.3 (2015-07-20) =
 
-* Minor usability improvements.
+* Minor usability improvements
 
 = 1.0.2 (2015-07-16) =
 

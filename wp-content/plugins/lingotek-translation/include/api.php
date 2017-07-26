@@ -12,10 +12,14 @@ class Lingotek_API extends Lingotek_HTTP {
 	protected $base_url;
 	protected $api_url;
 	protected $client_id;
+	private $auth_temp;
 
 	const PRODUCTION_URL = "https://myaccount.lingotek.com";
 	const SANDBOX_URL = "https://cms.lingotek.com";
 	const CLIENT_ID = "780966c9-f9c8-4691-96e2-c0aaf47f62ff";// Lingotek App ID
+
+
+	private $bridge_url = '';
 
 	/**
 	 * constructor
@@ -30,6 +34,8 @@ class Lingotek_API extends Lingotek_HTTP {
 		$token_details = get_option('lingotek_token');
 		$this->headers['Authorization'] = 'bearer ' . $token_details['access_token'];
 		$this->defaults = get_option('lingotek_defaults');
+
+		$this->bridge_url = BRIDGE_URL . '/api/v2/transaction/translation/';
 	}
 
 	public function get_token_details($access_token) {
@@ -229,7 +235,7 @@ class Lingotek_API extends Lingotek_HTTP {
 
 		if (!is_wp_error($response) && 200 == wp_remote_retrieve_response_code($response)) {
 			$documents = json_decode(wp_remote_retrieve_body($response));
-			foreach ($documents->entities as $doc) {
+		foreach ($documents->entities as $doc) {
 				$docs[] = $doc;
 			}
 		}
@@ -321,6 +327,114 @@ class Lingotek_API extends Lingotek_HTTP {
 		return empty($translations) ? array() : $translations;
 	}
 
+
+	public function get_language_mappings()
+	{
+		$url = 'https://gmc.lingotek.com/v1/locales';
+		$response = $this->get($url);
+		return json_decode(wp_remote_retrieve_body($response),true);
+	}
+
+	/**
+	* Makes an API call to bridge to get the estimated cost for translating a particular document professionally. 
+	*
+	* @param string $lingotek_auth the auth token to make an API call to bridge.
+	* @param string $document_id the id of the specific document. 
+	* @param string $locale the locale of the document being requested.
+	*/
+	public function get_cost_estimate($lingotek_auth, $document_id, $locale) {
+		$this->start_bridge_call();
+
+		$args = array(
+			'document_id' => $document_id,
+			'locale' => $locale
+		);
+		$response = $this->get($this->bridge_url . 'estimate', $args);
+
+		$success = 200 === wp_remote_retrieve_response_code($response);
+
+		$this->end_bridge_call();
+		return array('success' => $success, 'data' => $this->get_response_body_from_bridge($response));
+	}
+
+	/**
+	* Makes an API call to bridge request translation for a document using the professional workflow. 
+	*
+	* @param string $document_id the id of the specific document. 
+	* @param string $locale the locale of the document being requested.
+	* @param string $workflow_id the id used to process the document.
+	*/
+	public function request_professional_translation($document_id, $locale, $workflow_id) {
+		$this->start_bridge_call();
+		
+		$args = array(
+			'document_id' => $document_id,
+			'locale' => $locale,
+			'workflow_id' => $workflow_id,
+		);
+		$response = $this->post($this->bridge_url . 'request', $args);
+		$success = 200 === wp_remote_retrieve_response_code($response);
+
+		$this->end_bridge_call();
+		return array('success' => $success, 'data' => $this->get_response_body_from_bridge($response));
+	}
+
+	/**
+	* Makes an API call to bridge request bulk translations for a document using the professional workflow. 
+	*
+	* @param string $document_id the id of the specific document. 
+	* @param string $locale the locale of the document being requested.
+	* @param string $workflow_id the id used to process the document.
+	*/
+	public function request_professional_translation_bulk($workflow_id, $translations, $total_estimate, $summary) {
+		$this->start_bridge_call();
+		
+		$args = array(
+			'workflow_id' => $workflow_id,
+			'translations' => $translations,
+			'total_estimate' => $total_estimate,
+			'summary' => $summary
+		);
+		$response = $this->post($this->bridge_url . 'request/bulk', $args, 60);
+		$success = 200 === wp_remote_retrieve_response_code($response);
+
+		$this->end_bridge_call();
+		return array('data' => $this->get_response_body_from_bridge($response));
+	}
+
+
+	public function get_lingotek_terms_and_conditions() {
+		$this->start_bridge_call();
+		$response = $this->get(BRIDGE_URL . '/api/v2/transaction/terms/');
+		$success = 200 === wp_remote_retrieve_response_code($response);
+		$this->end_bridge_call();
+		return array('success' => $success, 'data' => $this->get_response_body_from_bridge($response));
+	}
+
+	/**
+	* Makes an API call to bridge to get the payment information about the user.
+	*/
+	public function get_user_payment_information() {
+		$this->start_bridge_call();
+
+		$response = $this->get(BRIDGE_URL . '/api/v2/transaction/payment');
+		$success = 200 === wp_remote_retrieve_response_code($response);
+
+		$this->end_bridge_call();
+		return array('success' => $success, 'payment_info' => $this->get_response_body_from_bridge($response));
+	}
+
+	/**
+	* Helper function to retrieve the response body from bridge.
+	*
+	* @param array $response the response from bridge.
+	*/
+	private function get_response_body_from_bridge($response)
+	{
+		$body = json_decode(wp_remote_retrieve_body($response),true);
+		return isset($body) ? $body : wp_remote_retrieve_body($response);
+	}
+
 	/**
 	 * requests a new translation of a document
 	 *
@@ -374,6 +488,10 @@ class Lingotek_API extends Lingotek_HTTP {
 	 */
 	public function get_translation($doc_id, $locale, $wp_id = null) {
 		$locale = Lingotek::map_to_lingotek_locale($locale);
+		$statuses = $this->get_translations_status($doc_id);
+		if (isset($statuses[$locale]) && $statuses[$locale] != 100) {
+			return false;
+		} 
 		$response = $this->get(add_query_arg(array('locale_code' => $locale, 'auto_format' => 'true') , $this->api_url . '/document/' . $doc_id . '/content'));
 
 		if ($wp_id) {
@@ -476,5 +594,17 @@ class Lingotek_API extends Lingotek_HTTP {
 	public function upload_filter($name, $type, $content) {
 		$args = array('name' => $name, 'type' => $type, 'content' => $content);
 		$response = $this->post($this->api_url . '/filter', $args);
+	}
+
+	private function start_bridge_call() {
+		$this->auth_temp = $this->headers['Authorization'];
+		unset($this->headers['Authorization']);
+		$option = get_option('lingotek_token');
+		$this->headers['Authorization-Lingotek'] = $option['access_token'];
+	}
+
+	private function end_bridge_call() {
+		unset($this->headers['Authorization-Lingotek']);
+		$this->headers['Authorization'] = $this->auth_temp;
 	}
 }

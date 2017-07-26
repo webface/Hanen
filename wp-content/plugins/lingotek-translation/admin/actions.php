@@ -145,6 +145,11 @@ abstract class Lingotek_Actions {
 
 		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_enqueue_scripts' ) );
 
+		add_action( 'wp_ajax_estimate_cost', array( &$this, 'ajax_estimate_cost' ) );
+		add_action( 'wp_ajax_request_professional_translation', array( &$this, 'ajax_request_professional_translation' ) );
+		add_action( 'wp_ajax_get_user_payment_information', array( &$this, 'ajax_get_user_payment_information' ) );
+		add_action( 'wp_ajax_get_ltk_terms_and_conditions', array( &$this, 'ajax_get_ltk_terms_and_conditions' ) ); 
+
 		foreach ( array_keys( self::$actions ) as $action ) {
 			add_action( 'wp_ajax_lingotek_progress_' . $this->type . '_' . $action , array( &$this, 'ajax_' . $action ) );
 		}
@@ -222,8 +227,8 @@ abstract class Lingotek_Actions {
 	 */
 	public static function display_icon( $name, $link, $additional = '' ) {
 		self::link_to_settings_if_not_connected($link);
-		return sprintf('<a class="lingotek-color dashicons dashicons-%s" title="%s" href="%s"%s></a>',
-		self::$icons[ $name ]['icon'], self::$icons[ $name ]['title'], esc_url( $link ), $additional);
+		return sprintf('<a class="lingotek-color dashicons dashicons-%s dashicons-%s-lingotek" title="%s" href="%s"%s></a>',
+		self::$icons[ $name ]['icon'], self::$icons[ $name ]['icon'], self::$icons[ $name ]['title'], esc_url( $link ), $additional);
 	}
 
 	/**
@@ -298,14 +303,16 @@ abstract class Lingotek_Actions {
 				return self::display_icon( $document->translations[ $language->locale ], $link );
 			} elseif ( 'not-current' === $document->translations[ $language->locale ] ) {
 				return  '<div class="lingotek-color dashicons dashicons-no"></div>';
+			} elseif ('current' !== $document->translations[ $language->locale ] && $custom_icon = $document->get_custom_in_progress_icon($language)) {
+				return $custom_icon;
 			} else {
-				self::link_to_settings_if_not_connected($link);
 				$link = self::workbench_link( $document->document_id, $language->lingotek_locale );
+				self::link_to_settings_if_not_connected($link);
 				return self::display_icon( $document->translations[ $language->locale ], $link, ' target="_blank"' );
 			}
 		} else {
+			$link = wp_nonce_url( add_query_arg( array( 'document_id' => $document->document_id, 'locale' => $language->locale, 'action' => 'lingotek-request', 'noheader' => true ), wp_get_referer() ), 'lingotek-request' );
 			self::link_to_settings_if_not_connected($link);
-			$link = wp_nonce_url( add_query_arg( array( 'document_id' => $document->document_id, 'locale' => $language->locale, 'action' => 'lingotek-request', 'noheader' => true ) ), 'lingotek-request' );
 			return self::display_icon( 'request', $link );
 		}
 	}
@@ -370,6 +377,18 @@ abstract class Lingotek_Actions {
 					$actions['lingotek-upload'] = $this->get_action_link( array( $this->type => $id, 'action' => 'upload' ), true );
 				} else {
 					$actions['lingotek-upload'] = $this->get_action_link( array( $this->type => $id, 'action' => 'upload' ) );
+				}
+
+				/**
+				* If a document has been changed but still has translations or is importing we still want to have the
+				* update translation status option.
+				*/
+				if ( 'importing' === $document->status || $document->has_translation_status( 'pending' ) ) {
+					$actions['lingotek-status'] = $this->get_action_link( array( 'document_id' => $document->document_id, 'action' => 'status' ) );
+				}
+
+				if ( $document->has_translation_status( 'ready' ) ) {
+					$actions['lingotek-download'] = $this->get_action_link( array( 'document_id' => $document->document_id, 'action' => 'download' ) );
 				}
 			} else {
 				$actions['lingotek-upload'] = $this->get_action_link( array( $this->type => $id, 'action' => 'upload' ) );
@@ -567,6 +586,60 @@ abstract class Lingotek_Actions {
 		if ( $document = $this->lgtm->get_group( $this->type, filter_input( INPUT_POST, 'id' ) ) ) {
 			$document->disassociate();
 		}
+		die();
+	}
+
+	/**
+	 * Ajax call to get the price estimation of a given document.
+	 */
+	public function ajax_estimate_cost() {
+		check_ajax_referer( 'lingotek_professional', '_lingotek_nonce' );
+		$document_id = filter_input( INPUT_GET, 'document_id' );
+		$locale = filter_input( INPUT_GET, 'locale' );
+		$lingotek_auth = filter_input( INPUT_GET, 'Authorization-Lingotek' );
+		$client = new Lingotek_API();
+		$response = $client->get_cost_estimate($lingotek_auth, $document_id, $locale);
+		echo json_encode($response);
+		die();
+	}
+
+	/**
+	* Ajax call to request professional translation of a document through bridge.
+	*/
+	public function ajax_request_professional_translation() {
+		check_ajax_referer( 'lingotek_professional', '_lingotek_nonce' );
+		$post_vars = filter_input_array(INPUT_POST);
+		$client = new Lingotek_API();
+		$response = $client->request_professional_translation_bulk($post_vars['workflow_id'], $post_vars['translations'], $post_vars['total_estimate'], $post_vars['summary']);
+		if (true === $response['data']['transaction_approved']) {
+			foreach ($post_vars['translations'] as $document_id => $locales) {
+				if ( $document = $this->lgtm->get_group( $post_vars['type'], $post_vars['ids'][$document_id] ) ) {
+					foreach ($locales as $locale) {
+						$locale = $post_vars['lingotek_locale_to_wp_locale'][$locale];
+						$document->update_translation_status($locale, 'pending');
+					}
+				} else {
+					// TODO: what if a document doesn't exists? T_T
+				}
+			}
+		}
+
+		echo json_encode($response);
+		die();
+	}
+
+	public function ajax_get_ltk_terms_and_conditions() {
+		check_ajax_referer( 'lingotek_professional', '_lingotek_nonce' );
+		$client = new Lingotek_API();
+		echo json_encode($client->get_lingotek_terms_and_conditions());
+		die();
+	}
+
+	public function ajax_get_user_payment_information() {
+		check_ajax_referer( 'lingotek_professional', '_lingotek_nonce' );
+		$client = new Lingotek_API();
+		$response = $client->get_user_payment_information();
+		echo json_encode($response);
 		die();
 	}
 

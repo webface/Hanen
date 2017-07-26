@@ -293,11 +293,9 @@ class Lingotek_Group_Post extends Lingotek_Group {
 		remove_filter('content_filtered_save_pre', 'wp_filter_post_kses');
 
 		$client = new Lingotek_API();
-
+		
 		$translation = $client->get_translation($this->document_id, $locale, $this->source);
-
-		if (!$translation || $this->translationNotReady( json_decode($translation, true) )) return; // If the request failed.
-
+		if (!$translation || $this->translation_not_ready( json_decode($translation, true) )) return; // If the request failed.
 		$translation = json_decode($translation, true); // wp_insert_post expects array
 
 		self::$creating_translation = true;
@@ -387,7 +385,7 @@ class Lingotek_Group_Post extends Lingotek_Group {
 	*
 	* @param array $translation the array returned from TMS.
 	*/
-	private function translationNotReady($translation) {
+	private function translation_not_ready($translation) {
 		$trimmed_title = trim( $translation['post']['post_title'] );
 		$trimmed_content = trim( $translation['post']['post_content'] );
 		$trimmed_excerpt = trim($translation['post']['post_excerpt'] );
@@ -436,7 +434,7 @@ class Lingotek_Group_Post extends Lingotek_Group {
 	 * @return bool
 	 */
 	public function is_automatic_upload() {
-		return 'automatic' == Lingotek_Model::get_profile_option('upload', get_post_type($this->source), $this->get_source_language(), false, $this->source);
+		return 'automatic' == Lingotek_Model::get_profile_option('upload', get_post_type($this->source), $this->get_source_language(), false, $this->source) && parent::is_automatic_upload();
 	}
 
 	/*

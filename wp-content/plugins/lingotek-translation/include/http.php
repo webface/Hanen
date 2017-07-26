@@ -46,12 +46,12 @@ class Lingotek_HTTP {
 	 *
 	 * @since 0.1
 	 */
-	public function post($url, $args  = array()) {
+	public function post($url, $args  = array(), $custom_timeout = false) {
     Lingotek::log("POST " . $url);
     if (!empty($args)) {
       Lingotek::log($args);
     }
-    return wp_remote_post($url, array('headers' => $this->headers, 'body' => $args, 'timeout' => self::TIMEOUT));
+    return wp_remote_post($url, array('headers' => $this->headers, 'body' => $args, 'timeout' => ($custom_timeout) ? $custom_timeout : self::TIMEOUT));
 	}
 
 	/*

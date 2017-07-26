@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
   setInterval(function(){
     var rows = $('#the-list').find('tr');
     $(rows).each(function(){
-      if($(this).attr('id').length > 1){
+      if($(this).attr('id') && $(this).attr('id').length > 1){
         var id = $(this).attr('id');
         var object_id = id.replace( /^\D+/g, '');
         current_ids[object_id] = object_id;
@@ -133,12 +133,20 @@ jQuery(document).ready(function($) {
   }
 
   function updateWorkbenchIcon(td, data, key, locale, title, icon){
+    if ('clock' === icon && $(td).find('.lingotek-professional-icon').length > 0)
+    {
+      return;
+    }
+    else
+    {
+      $(td).find('.lingotek-professional-icon').remove();
+    }
     $(td).find('.pll_icon_edit').remove();
     $(td).find('.lingotek-color').remove();
     var request_link = $('<a></a>').attr('href', data[key][locale]['workbench_link'])
       .attr('title',title)
       .attr('target','_blank')
-      .addClass('lingotek-color dashicons dashicons-' + icon);
+      .addClass('lingotek-color dashicons dashicons-' + icon + ' dashicons-' + icon + '-lingotek');
     $(td).prepend(request_link);
   }
 
@@ -199,11 +207,15 @@ jQuery(document).ready(function($) {
       + '&noheader=1'
       + '&_wpnonce=' + data['upload_nonce'])
       .attr('title','Upload Now')
-      .addClass('lingotek-color dashicons dashicons-upload');
+      .addClass('lingotek-color dashicons dashicons-upload dashicons-upload-lingotek');
     $(td).prepend(request_link);
   }
 
   function updateIndicator(td, data, key, locale, action, title, dashicon){
+    if ('download' === dashicon && $(td).find('.lingotek-professional-icon').length > 0)
+    {
+      $(td).find('.lingotek-professional-icon').remove();
+    }
     $(td).find('.lingotek-color').remove();
       var request_link = $('<a></a>').attr('href', relative_url
               + page_params + 'document_id=' + data[key]['doc_id']
@@ -212,7 +224,7 @@ jQuery(document).ready(function($) {
               + '&noheader=1'
               + '&_wpnonce='+data[action + '_nonce'])
         .attr('title', title)
-        .addClass('lingotek-color dashicons dashicons-' + dashicon);
+        .addClass('lingotek-color dashicons dashicons-' + dashicon + ' dashicons-' + dashicon + '-lingotek');
     $(td).prepend(request_link);
   }
 

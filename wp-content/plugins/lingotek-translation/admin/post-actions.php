@@ -24,6 +24,11 @@ class Lingotek_Post_actions extends Lingotek_Actions {
 		// add bulk actions.
 		add_filter( 'bulk_actions-edit-post', array( &$this, 'add_bulk_actions' ) );
 		add_filter( 'bulk_actions-edit-page', array( &$this, 'add_bulk_actions' ) );
+		
+		foreach(PLL()->model->get_translated_taxonomies() as $taxonomy) {
+			add_filter( "bulk_actions-edit-$taxonomy", array( &$this, 'add_bulk_actions' ) );
+		}
+		// add_filter( 'bulk_actions-edit-category', array( &$this, 'add_bulk_actions' ) );
 
 		$polylang_enabled = PLL()->model->get_translated_post_types();
 		$custom_post_types = get_post_types( array( '_builtin' => false ) );
@@ -273,7 +278,7 @@ class Lingotek_Post_actions extends Lingotek_Actions {
 		$profiles = Lingotek::get_profiles();
 		$content_profiles = get_option('lingotek_content_type');
 		$language_profiles = self::retrieve_lang_Profiles($post_type, $profiles, $content_profiles);
-		$default_name = empty($content_profiles) == false ? $profiles[$content_profiles[$post->post_type]['profile']]['name'] : ($post_type == 'page' ? __('Manual', 'lingotek-translation') : __('Automatic', 'lingotek-translation'));
+		$default_name = empty($content_profiles) == false ? $profiles[$content_profiles[$post->post_type]['profile']]['name'] :  __('Manual', 'lingotek-translation');
 		if ( ! isset( $default_name ) || 'disabled' === $default_name )
 		{
 			echo esc_html( __('You must enable translation for this content type in Lingotek\'s Content Type Configuration to enable Translation Profiles.', 'lingotek-translation') );

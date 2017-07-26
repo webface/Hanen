@@ -174,7 +174,7 @@ class Lingotek_Model {
 	 */
 	static public function get_profile_option($item, $type, $source_language, $target_language = false, $post_id = null) {
 		$profile = self::get_profile($type, $source_language, $post_id);
-		if ('disabled' == $profile['profile'])
+		if ('disabled' === $profile['profile'] || is_object($target_language) && isset($profile['targets'][$target_language->slug]) && 'disabled' === $profile['targets'][$target_language->slug])
 			return false;
 
 		if (!empty($target_language) && isset($profile['targets'][$target_language->slug]) && !empty($profile['custom'][$item][$target_language->slug]))
@@ -182,7 +182,7 @@ class Lingotek_Model {
 
 		if (!empty($profile[$item]))
 			return $profile[$item];
-
+		
 		$defaults = get_option('lingotek_defaults');
 		return $defaults[$item];
 	}
@@ -293,6 +293,15 @@ class Lingotek_Model {
 			return;
 
 		$profile = self::get_profile($post->post_type, $language, $post_id);
+
+		/**
+		* Customized workflows have the option to do any sort of pre-processing before a document is uploaded to lingotek.
+		*/
+		$document = $this->get_group('post', $post_id);
+		if ($document) {
+			$document->pre_upload_to_lingotek($post_id, $post->post_type, $language, 'post');
+		}
+
 		if ('disabled' == $profile['profile'])
 			return;
 
@@ -356,6 +365,14 @@ class Lingotek_Model {
 		$profile = self::get_profile($taxonomy, $language);
 		if ('disabled' == $profile['profile'])
 			return;
+
+		/**
+		* Customized workflows have the option to do any sort of pre-processing before a document is uploaded to lingotek.
+		*/
+		$document = $this->get_group('term', $term_id);
+		if ($document) {
+			$document->pre_upload_to_lingotek($term_id, $taxonomy, $language, 'term');
+		}
 
 		$client = new Lingotek_API();
 

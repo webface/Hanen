@@ -15,6 +15,10 @@ class Lingotek_Workflow_Factory {
 	public function __construct() {
 		self::class_load( self::BASE_WORKFLOW );
 		wp_enqueue_script( 'lingotek_workflow_namespace', LINGOTEK_URL . '/js/workflow/workflow.js' );
+		$vars = array(
+			'icon_url' => LINGOTEK_URL . '/img/lingotek-logo-white.png',
+		);
+		wp_localize_script( 'lingotek_workflow_namespace', 'modal_vars', $vars );
 	}
 	/**
 	 *   An associative array that maps a workflowId to a Workflow object.
@@ -22,7 +26,8 @@ class Lingotek_Workflow_Factory {
 	 *   @var array
 	 */
 	private static $map = array(
-		'professional-translation' => 'Lingotek_Professional_Translation_Workflow',
+		'ab6c522a-7645-4317-9284-3fbddf516151' => 'Lingotek_Professional_Translation_Workflow', // prod.
+		'2e3694ae-9912-4a57-be47-cd1f8a08c469' => 'Lingotek_Professional_Translation_Workflow', // cms.
 	);
 
 	/**
@@ -39,7 +44,7 @@ class Lingotek_Workflow_Factory {
 		else
 		{
 			self::class_load( self::$map[ $workflow_id ] );
-			return new self::$map[ $workflow_id ]();
+			return new self::$map[ $workflow_id ]( $workflow_id );
 		}
 	}
 
@@ -49,8 +54,8 @@ class Lingotek_Workflow_Factory {
 	public static function echo_info_modals() {
 		add_thickbox();
 		foreach ( self::$map as $id => $class ) {
-			$workflow = new $class();
-			$workflow->echo_info_modal( $id );
+			$workflow = new $class( $id );
+			$workflow->echo_info_modal();
 		}
 	}
 

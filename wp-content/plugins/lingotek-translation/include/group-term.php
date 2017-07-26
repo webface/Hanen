@@ -168,7 +168,7 @@ class Lingotek_Group_Term extends Lingotek_Group {
 	 * @return bool
 	 */
 	public function is_automatic_upload() {
-		return 'automatic' == Lingotek_Model::get_profile_option('upload', $this->type, $this->get_source_language());
+		return 'automatic' == Lingotek_Model::get_profile_option('upload', $this->type, $this->get_source_language()) && parent::is_automatic_upload();
 	}
 
 	/*

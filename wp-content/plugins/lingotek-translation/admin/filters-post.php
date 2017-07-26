@@ -99,7 +99,7 @@ class Lingotek_Filters_Post extends PLL_Admin_Filters_Post {
 				$profile = $content_profiles[$post_type]['sources'][$post_language->slug];
 				echo $profiles[$profile]['name'];
 			}
-			else if (!empty($content_profiles) && !isset($profiles[$content_profiles[$post_type]['profile']]['name']))
+			else if (!empty($content_profiles) && (!isset($content_profiles[$post_type]) || !isset($profiles[$content_profiles[$post_type]['profile']]['name'])))
 			{
 				echo esc_html( __('Disabled', 'lingotek-translation') );
 			}
@@ -107,12 +107,7 @@ class Lingotek_Filters_Post extends PLL_Admin_Filters_Post {
 				echo $profiles[$content_profiles[$post_type]['profile']]['name'];
 			}
 			else {
-				if ($post_type == 'post') {
-					_e('Automatic', 'lingotek-translation');
-				}
-				else if ($post_type == 'page') {
-					_e('Manual', 'lingotek-translation');
-				}
+				_e('Manual', 'lingotek-translation');
 			}
 		}
 	}
@@ -138,10 +133,18 @@ class Lingotek_Filters_Post extends PLL_Admin_Filters_Post {
 	 * @param bool $update whether it is an update or not
 	 */
 	public function save_post($post_id, $post, $update) {
+
+		$document = $this->lgtm->get_group('post', $post_id);
+		if ($document) {
+			$language = PLL()->model->post->get_language($post_id);
+			$document->pre_save_post($post_id, 'post', $language);
+		}
 		if ($this->can_save_post_data($post_id, $post, true)) {
-			$document = $this->lgtm->get_group('post', $post_id);
 			// updated post
-			if ($document && $post_id == $document->source && $this->post_hash_has_changed($post)) {
+			if ($document && 
+				$post_id == $document->source && 
+				$this->post_hash_has_changed($post) && 
+				$this->is_post_valid_for_upload_by_custom_terms($post_id, false)) {
 				$document->source_edited();
 				if ($document->is_automatic_upload() && Lingotek_Group_Post::is_valid_auto_upload_post_status($post->post_status)) {
 					$this->lgtm->upload_post($post_id);
@@ -154,10 +157,37 @@ class Lingotek_Filters_Post extends PLL_Admin_Filters_Post {
 		// new post
 		if (!isset($_REQUEST['import'])) {
 			parent::save_post($post_id, $post, $update);
-			if (!wp_is_post_revision($post_id) && 'auto-draft' != $post->post_status && 'automatic' == Lingotek_Model::get_profile_option('upload', $post->post_type, PLL()->model->post->get_language($post_id), false, $post_id) && Lingotek_Group_Post::is_valid_auto_upload_post_status($post->post_status) && !(isset($_POST['action']) && 'heartbeat' == $_POST['action']) && $this->lgtm->can_upload('post', $post_id)) {
+			if (!$document && 
+				!wp_is_post_revision($post_id) && 
+				'auto-draft' != $post->post_status && 
+				'automatic' == Lingotek_Model::get_profile_option('upload', $post->post_type, PLL()->model->post->get_language($post_id), false, $post_id) && 
+				Lingotek_Group_Post::is_valid_auto_upload_post_status($post->post_status) && 
+				!(isset($_POST['action']) && 'heartbeat' == $_POST['action']) && 
+				$this->lgtm->can_upload('post', $post_id) &&
+				$this->is_post_valid_for_upload_by_custom_terms($post_id, true)) {
+
 				$this->lgtm->upload_post($post_id);
 			}
 		}
+	}
+
+	/*
+	 * Allows the customer to interrupt the post upload by applying filter.
+	 * By using This filter we are allowing users to implement custom logic on the post upload and check if it is valid
+	 * for upload
+	 *
+	 * @since 1.3.1
+	 * 
+	 * @author Soluto
+	 *
+	 * @param int $post_id
+	 * @param bool $is_new_post
+	 * @return bool
+	 */
+	protected function is_post_valid_for_upload_by_custom_terms($post_id, $is_new_post) {
+		$defaults = array();
+		$results = apply_filters('lingotek_is_post_valid_for_upload', $defaults, $post_id, $is_new_post );
+		return !(in_array(false, $results));
 	}
 
 	/*

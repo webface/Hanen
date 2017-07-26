@@ -107,6 +107,7 @@ class Lingotek_Admin {
 
 					// fills in missing languages, makes life easier for the updater.
 				foreach ( $languages as $language ) {
+					if (!Lingotek::is_allowed_tms_locale($language)) { continue; }
 					foreach ( $content_metadata as $group => $status ) {
 						$language_obj = $pllm->get_language( $source_language );
 						$target_lang_obj = $pllm->get_language( $language );
@@ -348,7 +349,6 @@ class Lingotek_Admin {
 		*	and launches a modal when one of them is selected in the default list.
 		*/
 		Lingotek_Workflow_Factory::echo_info_modals();
-		wp_enqueue_script( 'lingotek_workflow_defaults', LINGOTEK_URL . '/js/workflow/workflow-defaults.js' );
 
 		$resources = get_option( 'lingotek_community_resources' );
 		$options = array(
@@ -482,8 +482,10 @@ class Lingotek_Admin {
 			if ( empty( $diff ) ) {
 				$workflows = array(
 					'c675bd20-0688-11e2-892e-0800200c9a66' => 'Machine Translation',
-					// 'professional-translation' => 'Professional Translation',
 				);
+			}
+			if (Lingotek_Professional_Translation_Workflow::is_allowed_user()) {
+				$workflows['ab6c522a-7645-4317-9284-3fbddf516151'] = 'Lingotek Professional Translation';
 			}
 			natcasesort( $workflows ); // order by title (case-insensitive).
 			$refresh_success['workflows'] = true;

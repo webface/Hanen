@@ -176,19 +176,24 @@ abstract class Lingotek_Group {
 	 * @param string $locale
 	 */
 	public function request_translation($locale) {
-		$client = new Lingotek_API();
-		$language = $this->pllm->get_language($locale);
-		$workflow = Lingotek_Model::get_profile_option('workflow_id', $this->type, $this->get_source_language(), $language, $this->source);
-		$args = $workflow ? array('workflow_id' => $workflow) : array();
+		$workflow = $this->get_workflow_object($this->get_source_language(), $locale, $this->type, $this->source);
+		if ($workflow->has_custom_request_procedure()) {
+			$workflow->do_custom_request();
+		} else {
+			$client = new Lingotek_API();
+			$language = $this->pllm->get_language($locale);
+			$workflow = Lingotek_Model::get_profile_option('workflow_id', $this->type, $this->get_source_language(), $language, $this->source);
+			$args = $workflow ? array('workflow_id' => $workflow) : array();
 
-		if (!$this->is_disabled_target($language) && empty($this->translations[$language->locale])) {
-			// don't change translations to pending if the api call failed
-			if ($client->request_translation($this->document_id, $language->locale, $args, $this->source)) {
-				$this->status = 'current';
-				$this->translations[$language->locale] = 'pending';
+			if (!$this->is_disabled_target($language) && empty($this->translations[$language->locale])) {
+				// don't change translations to pending if the api call failed
+				if ($client->request_translation($this->document_id, $language->locale, $args, $this->source)) {
+					$this->status = 'current';
+					$this->translations[$language->locale] = 'pending';
+				}
+
+				$this->save();
 			}
-
-			$this->save();
 		}
 	}
 
@@ -200,43 +205,59 @@ abstract class Lingotek_Group {
 	 * @param object $source_language language of the source
 	 */
 	protected function _request_translations($source_language) {
+		
 		$type_id;
 		$client = new Lingotek_API();
 
 		foreach ($this->pllm->get_languages_list() as $lang) {
-			if ($source_language->slug != $lang->slug && !$this->is_disabled_target($source_language, $lang) && empty($this->translations[$lang->locale])) {
-				$workflow = Lingotek_Model::get_profile_option('workflow_id', $this->type, $source_language, $lang, $this->source);
-				$args = $workflow ? array('workflow_id' => $workflow) : array();
+			$workflow = $this->get_workflow_object($source_language, $lang->locale, $this->type, $this->source);
+			if ($workflow->has_custom_request_procedure()) {
+				$workflow->do_custom_request();
+			} else {
+				if ($source_language->slug != $lang->slug && !$this->is_disabled_target($source_language, $lang) && empty($this->translations[$lang->locale])) {
+					$workflow = Lingotek_Model::get_profile_option('workflow_id', $this->type, $source_language, $lang, $this->source);
+					$args = $workflow ? array('workflow_id' => $workflow) : array();
 
-				if ($this->type == 'string') {
-					$type_id = $this->name;
-				}
-				else {
-					$type_id = $this->source;
-				}
-				// don't change translations to pending if the api call failed
-				if ($client->request_translation($this->document_id, $lang->locale, $args, $type_id)) {
+					if ($this->type == 'string') {
+						$type_id = $this->name;
+					}
+					else {
+						$type_id = $this->source;
+					}
+					// don't change translations to pending if the api call failed
+					if ($client->request_translation($this->document_id, $lang->locale, $args, $type_id)) {
 
-					/**
-					 * This is a fix that reloads the object before editing & saving it. The problem 
-					 * was that the callbacks were coming back before this method finished so the 
-					 * $this->translations array was out of sync with what was in the database. We fix this
-					 * by reading the DB only when we need to -> make our edit -> save the edit. This keeps us from holding on to
-					 * old data and overwritting the new data.
-					 */
-					if ('post_translations' === $this->taxonomy) {
-						$this->load( PLL()->model->post->get_object_term((int) $this->source, 'post_translations') );
-					} else if ('term_translations' === $this->taxonomy) {
-						$this->load( PLL()->model->term->get_object_term((int) $this->source, 'term_translations') );
+						/**
+						 * This is a fix that reloads the object before editing & saving it. The problem 
+						 * was that the callbacks were coming back before this method finished so the 
+						 * $this->translations array was out of sync with what was in the database. We fix this
+						 * by reading the DB only when we need to -> make our edit -> save the edit. This keeps us from holding on to
+						 * old data and overwritting the new data.
+						 */
+						if ('post_translations' === $this->taxonomy) {
+							$this->load( PLL()->model->post->get_object_term((int) $this->source, 'post_translations') );
+						} else if ('term_translations' === $this->taxonomy) {
+							$this->load( PLL()->model->term->get_object_term((int) $this->source, 'term_translations') );
+						}
+						$this->status = 'current';
+						if (!isset($this->translations[$lang->locale]) || isset($this->translations[$lang->locale]) && $this->translations[$lang->locale] != 'current') {
+							$this->translations[$lang->locale] = 'pending';
+						}
+						$this->save();
 					}
-					$this->status = 'current';
-					if (!isset($this->translations[$lang->locale]) || isset($this->translations[$lang->locale]) && $this->translations[$lang->locale] != 'current') {
-						$this->translations[$lang->locale] = 'pending';
-					}
-					$this->save();
 				}
 			}
 		}
+	}
+
+	/**
+	* Publicly exposes the safe_translation_status_update method that allows us to safely update
+	* translation statuses. This method is used when a request translation call is made to bridge and that 
+	* translation was requested successfully. 
+	*/
+	public function update_translation_status($locale, $status)
+	{
+		$this->safe_translation_status_update($locale, $status);
 	}
 
 	/*
@@ -308,7 +329,7 @@ abstract class Lingotek_Group {
 	 */
 	public function source_edited() {
 		$this->status = 'edited';
-		$this->translations = array_fill_keys(array_keys($this->translations), 'not-current');
+		// $this->translations = array_fill_keys(array_keys($this->translations), 'not-current');
 		$this->save();
 	}
 
@@ -321,7 +342,7 @@ abstract class Lingotek_Group {
 	 * @return bool
 	 */
 	public function has_translation_status($status) {
-		return array_intersect(array_keys($this->translations, $status), $this->pllm->get_languages_list(array('fields' => 'locale')));
+		return isset($this->translations) && array_intersect(array_keys($this->translations, $status), $this->pllm->get_languages_list(array('fields' => 'locale')));
 	}
 
 	/*
@@ -334,6 +355,22 @@ abstract class Lingotek_Group {
 	 */
 	public function is_automatic_download($locale) {
 		return 'automatic' == Lingotek_Model::get_profile_option('download', $this->type, $this->get_source_language(), $this->pllm->get_language($locale), $this->source);
+	}
+
+	public function is_automatic_upload() {
+		$workflow = $this->get_workflow_object($this->get_source_language(), false, $this->type, $this->source);
+		$can_auto_upload = $workflow->auto_upload_allowed();
+		if ($can_auto_upload) {
+			/**
+			 * Check each of the translations and if one of them doesn't allow automatic upload then we don't auto upload the doc.
+			 */
+			foreach ($this->translations as $locale => $progress) {
+				$workflow = $this->get_workflow_object($this->get_source_language(), $locale, $this->type, $this->source);
+				$can_auto_upload = $can_auto_upload && $workflow->auto_upload_allowed();
+			}
+		}
+		
+		return $can_auto_upload;
 	}
 
 	/*
@@ -352,5 +389,136 @@ abstract class Lingotek_Group {
 		else {
 			return isset($profile['targets'][$language->slug]) && ('disabled' == $profile['targets'][$language->slug] || 'copy' == $profile['targets'][$language->slug]);
 		}
+	}
+
+	/**
+	 * Goes through the source document and all locales and calls the pre_upload_to_lingotek() on the Workflow object unless
+	 * a locale has been disabled.
+	 *
+	 * @param string $item_id
+	 * @param string $type
+	 * @param object $source_language
+	 * @return void
+	 */
+	public function pre_upload_to_lingotek($item_id, $type, $source_language, $item_type) {
+		$workflow = $this->get_workflow_object($source_language, false, $type, $item_id);
+		$workflow->pre_upload_to_lingotek($item_id, $item_type);
+		foreach ($this->pllm->get_languages_list() as $lang) {
+			if ($this->_is_disabled_target($lang, $type, $item_id)) {
+				continue;
+			}
+			$workflow = $this->get_workflow_object($source_language, $lang->locale, $type, $item_id);
+			$workflow->pre_upload_to_lingotek($item_id, $item_type);
+		}
+	}
+
+	/**
+	 * Goes through the source document and all locales and calls the save_post_hook() on the Workflow object unless
+	 * a locale has been disabled.
+	 *
+	 * @param string $item_id
+	 * @param string $type
+	 * @param object $source_language
+	 * @return void
+	 */
+	public function pre_save_post($item_id, $type, $source_language) {
+		$workflow = $this->get_workflow_object($source_language, false, $type, $item_id);
+		$workflow->save_post_hook();
+		foreach ($this->pllm->get_languages_list() as $lang) {
+			if ($this->_is_disabled_target($lang, $type, $item_id)) {
+				continue;
+			}
+			$workflow = $this->get_workflow_object($source_language, $lang->locale, $type, $item_id);
+			$workflow->save_post_hook();
+		}
+	}
+
+	/**
+	 * Goes through the source document and all locales and calls the save_term_hook() on the Workflow object unless
+	 * a locale has been disabled.
+	 *
+	 * @param string $item_id
+	 * @param string $type
+	 * @param object $source_language
+	 * @return void
+	 */
+	public function pre_save_terms($item_id, $type, $source_language) {
+		$workflow = $this->get_workflow_object($source_language, false, $type, $item_id);
+		$workflow->save_term_hook();
+		foreach ($this->pllm->get_languages_list() as $lang) {
+			if ($this->_is_disabled_target($lang, $type, $item_id)) {
+				continue;
+			}
+			$workflow = $this->get_workflow_object($source_language, $lang->locale, $type, $item_id);
+			$workflow->save_term_hook();
+		}
+	}
+
+	public function get_custom_in_progress_icon($language) {
+		$workflow = $this->get_workflow_object($this->get_source_language(), $language->locale, $this->type, $this->source);
+		return $workflow->get_custom_in_progress_icon();
+	}
+
+	/**
+	 * Checks the source language and all of its target language's workflows to determine whether a bulk translation request is allowed. 
+	 * If one or more of the workflows return true on has_custom_request_procedure() then the bulk translation request will be aborted.
+	 *
+	 * @param object $source_language
+	 * @param string $type
+	 * @param string $item_id
+	 * @return boolean
+	 */
+	private function can_bulk_request_translations($source_language, $type, $item_id) {
+		$workflow = $this->get_workflow_object($source_language, false, $type, $item_id);
+		if ($workflow->has_custom_request_procedure()) { return false; }
+
+		foreach ($this->pllm->get_languages_list() as $lang) {
+			if ($this->_is_disabled_target($lang, $type, $item_id)) {
+				continue;
+			}
+			$workflow = $this->get_workflow_object($source_language, $lang->locale, $type, $item_id);
+			if ($workflow->has_custom_request_procedure()) { return false; }
+		}
+
+		return true;
+	}
+
+	/**
+	 * Instantiates and returns a workflow object. If only the source language is passed in then it will return the workflow object
+	 * for the source locale; however, if a locale is passed in with the source language then a workflow object will be returned 
+	 * for the locale.
+	 *
+	 * @param string $source_language
+	 * @param boolean | string $locale
+	 * @param string $type
+	 * @param string $item_id
+	 * @return void
+	 */
+	private function get_workflow_object( $source_language, $locale = false, $type,  $item_id ) {
+		$target_language = ($locale) ? $this->pllm->get_language($locale) : false;
+		$source_language = (!$source_language) ? PLL()->model->post->get_language( $this->source ) : $source_language;
+		$workflow_id;
+		if ($type === 'post') {
+			$post = ($item_id) ? get_post($item_id) : get_post( $this->source );
+			$workflow_id = Lingotek_Model::get_profile_option( 'workflow_id', $post->post_type, $source_language, $target_language , $this->source );
+		} else {
+			$workflow_id = Lingotek_Model::get_profile_option( 'workflow_id', $type, $source_language, $target_language );
+		}
+		$workflow = Lingotek_Workflow_Factory::get_workflow_instance( $workflow_id ); 
+		return $workflow;
+	}
+
+	/**
+	 * Checks if a target language has been disabled. Is different than the other is_disabled_target method by 
+	 * allowing the caller to supply all of the arguments used.
+	 *
+	 * @param object $target_language
+	 * @param string $type
+	 * @param string $item_id
+	 * @return void
+	 */
+	private function _is_disabled_target($target_language, $type, $item_id) {
+		$profile = Lingotek_Model::get_profile($type, $target_language, $item_id);
+		return isset($profile['targets'][$target_language->slug]) && ('disabled' == $profile['targets'][$target_language->slug] || 'copy' == $profile['targets'][$target_language->slug]);
 	}
 }

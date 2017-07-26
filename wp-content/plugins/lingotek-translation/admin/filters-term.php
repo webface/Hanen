@@ -60,6 +60,12 @@ class Lingotek_Filters_Term extends PLL_Admin_Filters_Term {
 	 * @param string $taxonomy taxonomy.
 	 */
 	public function save_term( $term_id, $tt_id, $taxonomy ) {
+		$document = $this->lgtm->get_group('term', $term_id);
+		if ($document) {
+			$document->pre_save_terms($term_id, $taxonomy, PLL()->model->term->get_language( $term_id ));
+		}
+
+
 		if ( ! $this->model->is_translated_taxonomy( $taxonomy ) ) {
 			return;
 		}

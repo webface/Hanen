@@ -113,8 +113,9 @@ class Lingotek_Filters_Columns extends PLL_Admin_Filters_Columns {
 		$actions = 'post' === $type ? $GLOBALS['wp_lingotek']->post_actions : $GLOBALS['wp_lingotek']->term_actions;
 
 		$profile = Lingotek_Model::get_profile( $this->content_type, $language, $object_id );
-		$disabled = 'disabled' === $profile['profile'];
-
+		
+		$disabled = 'disabled' === $profile['profile'] || !Lingotek::is_allowed_tms_locale($language->lingotek_locale);
+		// error_log('bool: ' . print_r($disabled, true) . PHP_EOL, 3, '/var/www/html/wp-content/plugins/lingotek-translation/error.log');
 		// post ready for upload.
 		if ( $this->lgtm->can_upload( $type, $object_id ) && $object_id === $id ) {
 			return $disabled ? ('post' === $type ? parent::post_column( $column, $object_id ) : parent::term_column( '', $column, $object_id ))
@@ -131,7 +132,7 @@ class Lingotek_Filters_Columns extends PLL_Admin_Filters_Columns {
 				}
 			}
 		} // translation disabled.
-		elseif ( isset( $document->source ) && $document->is_disabled_target( $source_language, $language ) && ! isset( $document->translations[ $language->locale ] ) ) {
+		elseif ( ( isset( $document->source ) && $document->is_disabled_target( $source_language, $language ) && ! isset( $document->translations[ $language->locale ] ) ) || !Lingotek::is_allowed_tms_locale($language->lingotek_locale) ) {
 			return 'post' === $type ? parent::post_column( $column, $object_id ) : parent::term_column( '', $column, $object_id );
 		} // source post is uploaded.
 		elseif ( isset( $document->source ) && $document->source === $id ) {
@@ -150,7 +151,7 @@ class Lingotek_Filters_Columns extends PLL_Admin_Filters_Columns {
 		} // translations.
 		elseif ( isset( $document->translations[ $language->locale ] ) || (isset( $document->source ) && 'current' === $document->status) ) {
 			return Lingotek_Actions::translation_icon( $document, $language );
-		} elseif ( 'term' === $type && ! isset( $document->translations[ $language->locale ] ) && $document->source !== $object_id ) {
+		} elseif ( ( 'term' === $type && ! isset( $document->translations[ $language->locale ] ) && $document->source !== $object_id ) || !Lingotek::is_allowed_tms_locale($language->lingotek_locale) ) {
 			return parent::term_column( '', $column, $object_id );
 		} // translations exist but are not managed by Lingotek TMS.
 		elseif ( empty( $document->source ) ) {
@@ -181,8 +182,12 @@ class Lingotek_Filters_Columns extends PLL_Admin_Filters_Columns {
 				'target' => array()
 			),
 			'div' => array(
+				'title' => array(),
 				'class' => array(),
 			),
+			'img' => array(
+				'src' => array()
+			)
 		);
 		echo wp_kses( $this->_column( 'post', $column, $post_id ), $allowed_html );
 
@@ -190,11 +195,14 @@ class Lingotek_Filters_Columns extends PLL_Admin_Filters_Columns {
 		*	Setup workflow specific logic for posts.
 		*/
 		$post = get_post( $post_id );
-		$language = PLL()->model->post->get_language( $post_id );
-		$workflow_id = Lingotek_Model::get_profile_option( 'workflow_id', $post->post_type, $language, false, $post_id );
-		$workflow = Lingotek_Workflow_Factory::get_workflow_instance( $workflow_id ); // TODO: put workflow_id here. It is currently not set up.
-		$workflow->override_events( $workflow_id ); // Loads appropriate .js file.
-		$workflow->echo_posts_modal( $workflow_id ); // adds modal html to page.
+		$source_language = PLL()->model->post->get_language( $post_id );
+		$target_language = $this->model->get_language( substr( $column, 9 ) );
+		if (is_object($source_language) && is_object($target_language)) {
+			$workflow_id = Lingotek_Model::get_profile_option( 'workflow_id', $post->post_type, $source_language, $target_language, $post_id );
+			$workflow = Lingotek_Workflow_Factory::get_workflow_instance( $workflow_id ); 
+			// $workflow->override_events( $workflow_id ); // Loads appropriate .js file.
+			$workflow->echo_posts_modal( $post_id, $target_language->locale ); // adds modal html to page.
+		}
 
 		// checking for api errors.
 		$document = $this->lgtm->get_group( 'post', $post_id );
@@ -225,21 +233,29 @@ class Lingotek_Filters_Columns extends PLL_Admin_Filters_Columns {
 				'target' => array()
 			),
 			'div' => array(
+				'title' => array(),
 				'class' => array(),
 			),
 			'span' => array(
 				'class' => array(),
 			),
+			'img' => array(
+				'src' => array()
+			)
 		);
 		$this->content_type = $GLOBALS['taxonomy'];
 
 		/**
 		*	Setup workflow specific logic for terms.
 		*/
-		$workflow_id = Lingotek_Model::get_profile_option( 'workflow_id', $this->content_type, PLL()->model->term->get_language( $term_id ) );
-		$workflow = Lingotek_Workflow_Factory::get_workflow_instance( $workflow_id ); // TODO: put workflow_id here. It is currently not set up.
-		$workflow->override_events( $workflow_id ); // Loads appropriate .js file.
-		$workflow->echo_terms_modal( $workflow_id ); // adds modal html to page.
+		$source_language = PLL()->model->term->get_language( $term_id );
+		$target_language = $this->model->get_language( substr( $column, 9 ) );
+		if (is_object($source_language) && is_object($target_language)) {
+			$workflow_id = Lingotek_Model::get_profile_option( 'workflow_id', $this->content_type, $source_language, $target_language );
+			$workflow = Lingotek_Workflow_Factory::get_workflow_instance( $workflow_id ); 
+			// $workflow->override_events( $workflow_id ); // Loads appropriate .js file.
+			$workflow->echo_terms_modal( $term_id,  $target_language->locale); // adds modal html to page.
+		}
 
 		if ( ! $custom_data ) {
 			echo wp_kses( $this->_column( 'term', $column, $term_id ), $allowed_html );

@@ -1,29 +1,19 @@
 <?php
-
+global $wp_post_statuses;
 $setting_details = array(
 	'download_post_status' => array(
 	'type' => 'dropdown',
 	'label' => __( 'Download translation status', 'lingotek-translation' ),
 	'description' => __( 'The post status for newly downloaded translations', 'lingotek-translation' ),
 	'values' => array(
-	  Lingotek_Group_Post::SAME_AS_SOURCE => __( 'Same as source post', 'lingotek-translation' ),
-	  'draft' => __( 'Draft', 'lingotek-translation' ),
-	  'pending' => __( 'Pending Review', 'lingotek-translation' ),
-	  'publish' => __( 'Published', 'lingotek-translation' ),
-	  'private' => __( 'Privately Published', 'lingotek-translation' ),
+	  Lingotek_Group_Post::SAME_AS_SOURCE => __( 'Same as source post', 'lingotek-translation' )
 	),
 ),
 	'auto_upload_post_statuses' => array( // blacklist.
 	'type' => 'checkboxes',
 	'label' => __( 'Auto upload statuses', 'lingotek-translation' ),
 	'description' => __( 'The post statuses checked above are enabled for automatic upload (when using automatic uploading translation profiles).', 'lingotek-translation' ),
-	'values' => array(
-	  'draft' => __( 'Draft', 'lingotek-translation' ),
-	  'pending' => __( 'Pending Review', 'lingotek-translation' ),
-	  'publish' => __( 'Published', 'lingotek-translation' ),
-	  'future' => __( 'Scheduled', 'lingotek-translation' ),
-	  'private' => __( 'Privately Published', 'lingotek-translation' ),
-	),
+	'values' => array(),
 	),
 	'delete_document_from_tms' => array(
 	'type' => 'checkboxes',
@@ -50,6 +40,25 @@ $setting_details = array(
 	),
 ),
 );
+
+function map_wp_post_status($status){
+	return __( $status->label, 'lingotek-translation' );
+}
+
+function filter_statuses($statuses){
+	$statuses_to_filter = array('auto-draft', 'trash', 'inactive', 'inherit');
+	$ret = array();
+	foreach ($statuses as $status => $value) {
+		if (!in_array($status,$statuses_to_filter)) {
+			$ret[$status] = $value;
+		}
+	}
+	return $ret;
+}
+
+$post_statuses = filter_statuses(array_map("map_wp_post_status", $wp_post_statuses));
+$setting_details["auto_upload_post_statuses"]["values"] = array_merge($post_statuses, $setting_details["auto_upload_post_statuses"]["values"]);
+$setting_details["download_post_status"]["values"] = array_merge($post_statuses, $setting_details["download_post_status"]["values"]);
 
 $page_key = $this->plugin_slug . '_settings&sm=preferences';
 
