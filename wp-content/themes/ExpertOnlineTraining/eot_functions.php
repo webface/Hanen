@@ -3030,16 +3030,14 @@ function getEnrolledUsersInCourse($course_id = 0)
  *
  *  @return array() - an array of VideoResources data
  */
-function getVideoResourcesInModules($module_ids = '')
+function getVideoResourcesInModules($module_ids = '', $user_id = 0)
 {
-    if (empty($module_ids))
+    if (empty($module_ids) || $user_id == 0)
       return NULL;
 
     global $wpdb;
     $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
-    $resources = $wpdb->get_results("SELECT DISTINCT mr.module_id, v.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_VIDEOS . " v "
-            . "ON mr.resource_id = v.ID "
-            . "WHERE mr.module_id IN (" . $module_ids . ") AND mr.type = 'video' ORDER BY mr.order ASC", ARRAY_A);
+    $resources = $wpdb->get_results("SELECT DISTINCT mr.module_id, v.*, t.result, t.video_time, t.ID as track_id, r.url FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_VIDEOS . " v " . "ON mr.resource_id = v.ID LEFT JOIN " . TABLE_RESOURCES . " r ON r.ID = mr.resource_id LEFT JOIN " . TABLE_TRACK. " t ON t.user_id = $user_id AND t.video_id = v.ID" . " WHERE mr.module_id IN (" . $module_ids . ") AND mr.type = 'video' ORDER BY mr.order ASC", OBJECT_K);
     return $resources;
 }
 
@@ -3105,11 +3103,9 @@ function getQuizzesInCourse($course_id = 0)
 function getResourcesInCourse($course_id = 0, $type = '')
 {
     global $wpdb;
-
     // make sure there is a type or else return empty array
-    if ($type = '' )
+    if ($type == '' )
       return array();
-
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     switch($type){
         case 'exam':
@@ -7712,4 +7708,150 @@ jane@email.com
 
     wp_die();
 }
+/**
+ * Get enrolled users in a specific course
+ * @param int $course_id - the course ID
+ * @return array of enrolled users or NULL if none exist
+ */
+function getEnrollmentsByUserId($user_id = 0, $status = "all")
+{
+    global $wpdb;
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+
+    $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE user_id = $user_id";
+
+    // Modify SQL Query for searching by status.
+    if($status == "not_started")
+    {
+      $sql .= " WHERE status == 'not_started'";
+    }
+    // Get the enrollments who are enrolled in the course.
+    $enrollments = $wpdb->get_results($sql, ARRAY_A);
+
+    if($enrollments && count($enrollments) > 0)
+    {
+      return $enrollments;
+    }
+    return NULL;
+}
+
+
+
+/**
+ * Get course modules by the course id
+ * @param type $course_id - the course ID
+ * @return array of modules
+ * 
+ */
+function getCourseModules($course_id = 0) 
+{
+    global $wpdb;
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $modules=$wpdb->get_results("SELECT * FROM " . TABLE_COURSES_MODULES. " WHERE course_id = $course_id" , ARRAY_A);
+    return $modules;
+}
+
+/**
+ * Get the track records
+ * @param int $user_id - WP User ID
+ * @param in $video_id - The Video ID
+ * @param string $type - Type of track
+ * 
+ */
+function getTrack($user_id = 0, $video_id = 0, $type = "all")
+{
+  $type = filter_var($type, FILTER_SANITIZE_STRING); // Type of track
+  // Check if the user ID is valid.  
+  if($user_id <= 0)
+  {
+    return false;
+  }
+  global $wpdb;
+  $sql = "SELECT * FROM " . TABLE_TRACK . " WHERE user_id = $user_id";
+  if($video_id > 0)
+  {
+    $sql .= " AND video_id = $video_id";
+  }
+  $types = array('download_resource','video_started','watch_video','watch_slide','login','failed_login','failed_coupon','massmail','download_video','generate_report','delete_subscription','quiz_taken','certificate_conferred'); // All types of track.
+  // Check if the type is a valid option.
+  if( in_array($type, $types)  )
+  {
+    $sql .= " AND type = '$type'";
+  }
+
+  // Watch video needed a key value pair array. It has its own sql statement.
+  if( $type == "watch_video" || $type == "video_started" )
+  {
+    $sql = "SELECT video_id, t.* FROM " . TABLE_TRACK . " as t WHERE user_id = $user_id and type = '$type'";
+    $results = ($video_id > 0) ? (array) $wpdb->get_row($sql, OBJECT) : $wpdb->get_results($sql, OBJECT_K);
+  }
+  else
+  {
+    $results = ($video_id > 0) ? (array) $wpdb->get_row($sql, OBJECT) : $wpdb->get_results($sql);
+  }
+  return $results;
+}
+
+add_action('wp_ajax_updateVideoProgress', 'updateVideoProgress_callback');
+/*
+ * Update the video progress.
+ */
+function updateVideoProgress_callback()
+{
+  $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // WP User ID
+  $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // Module ID
+  $video_id = filter_var($_REQUEST['video_id'],FILTER_SANITIZE_NUMBER_INT); // Video ID
+  // Validate the user
+  if($user_id == get_current_user_id())
+  {
+    global $wpdb;
+    // Video just started.
+    if( isset($_REQUEST['status']) && $_REQUEST['status'] == "started" )
+    {
+      $org_id = get_user_meta($user_id, "org_id", true);
+      $sql = "INSERT INTO " . TABLE_TRACK . " (type, user_id, org_id, date, video_id, assignment_id, video_time) VALUES ('watch_video', $user_id, $org_id, NOW(), $video_id, $module_id, 1)";
+    }
+    else if( isset($_REQUEST['track_id']) && $_REQUEST['track_id'] )
+    {
+      $track_id = filter_var($_REQUEST['track_id'],FILTER_SANITIZE_NUMBER_INT); // Track ID
+      // Update video time.
+      if(isset($_REQUEST['status']) && $_REQUEST['status'] == "pause" && isset($_REQUEST['time']) && $_REQUEST['time'] > 0 )
+      {
+        $time = filter_var($_REQUEST['time'],FILTER_SANITIZE_STRING); // The time when the video stopped.
+        //update the time for table video status.
+        $sql = "UPDATE " . TABLE_TRACK . " SET video_time=\"" . $time . "\" WHERE ID = $track_id AND user_id = $user_id";
+      }
+      // Update video result 1. Indicating the video has been finished watching.
+      else if( isset($_REQUEST['status']) && $_REQUEST['status'] == "finish" )
+      {
+        //update the time for table video status.
+        $sql = "UPDATE " . TABLE_TRACK . " SET result=1 WHERE ID = $track_id AND user_id = $user_id";
+      }
+    }
+    // New Record. Success.
+    $query_result = $wpdb->query ($wpdb->prepare ($sql));
+    if( $query_result )
+    {
+      $result['data'] = 'success';
+      $result['success'] = true;
+      $result['track_id'] = $wpdb->insert_id;
+    }
+    else
+    {
+      $result['display_errors'] = true;
+      $result['success'] = false;
+      $result['errors'] = 'updateVideoProgress_callback error: Failed to update the database. Please contact the administrator.';
+    }
+  }
+  else
+  {
+    //return an error message
+    $result['display_errors'] = true;
+    $result['success'] = false;
+    $result['errors'] = "updateVideoProgress_callback error: You do not have the privilege to modify other user's video progress.";
+  }
+  echo json_encode( $result );
+  wp_die();
+}
+
 
