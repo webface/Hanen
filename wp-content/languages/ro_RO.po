@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-08 14:28:21+0000\n"
+"PO-Revision-Date: 2017-07-15 10:32:19+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2527,7 +2527,7 @@ msgstr "Sari înapoi %1 secunde"
 msgid "Inexistent terms."
 msgstr "Termeni inexistenți."
 
-#: wp-includes/taxonomy.php:1967 wp-includes/taxonomy.php:2593
+#: wp-includes/taxonomy.php:1970 wp-includes/taxonomy.php:2596
 msgid "A name is required for this term."
 msgstr "Este obligatoriu un nume pentru acest termen."
 
@@ -4550,7 +4550,7 @@ msgstr[2] "%1$s de răspunsuri la %2$s"
 msgid "Your theme supports one menu. Select which menu you would like to use."
 msgstr "Tema ta are suport numai pentru un meniu. Selectează meniul pe care vrei să-l folosești."
 
-#: wp-includes/taxonomy.php:3486
+#: wp-includes/taxonomy.php:3489
 msgid "Could not split shared term."
 msgstr "Nu pot separa termenul partajat."
 
@@ -4835,7 +4835,7 @@ msgstr "Următoarele valori nu descriu o dată validă: lună %1$s, zi %2$s."
 msgid "You need to pass an array of types."
 msgstr "Trebuie să furnizezi o matrice de tipuri."
 
-#: wp-includes/taxonomy.php:2056
+#: wp-includes/taxonomy.php:2059
 msgid "A term with the name provided already exists in this taxonomy."
 msgstr "Un termen cu același nume există deja în această taxonomie."
 
@@ -5156,7 +5156,7 @@ msgstr "Șterge cele selectate"
 
 #. translators: %s: taxonomy label, %l: list of terms formatted as per
 #. $term_template
-#: wp-includes/taxonomy.php:3971
+#: wp-includes/taxonomy.php:3974
 msgid "%s: %l."
 msgstr "%s: %l."
 
@@ -6896,7 +6896,7 @@ msgstr "Selectează culoare"
 msgid "Current Color"
 msgstr "Culoare curentă"
 
-#: wp-includes/taxonomy.php:2301
+#: wp-includes/taxonomy.php:2304
 msgid "Could not insert term relationship into the database"
 msgstr "Nu am putut introduce în baza de date relaționarea termenului"
 
@@ -7130,7 +7130,7 @@ msgstr "Numele termenului nu poate fi gol."
 #: wp-includes/class-wp-xmlrpc-server.php:2026
 #: wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php:405
 #: wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php:511
-#: wp-includes/taxonomy.php:1973 wp-includes/taxonomy.php:2597
+#: wp-includes/taxonomy.php:1976 wp-includes/taxonomy.php:2600
 msgid "Parent term does not exist."
 msgstr "Termenul părinte nu există."
 
@@ -7175,15 +7175,15 @@ msgstr "Regret, nu ai voie să editezi termeni în această clasificare."
 #: wp-includes/taxonomy.php:419 wp-includes/taxonomy.php:639
 #: wp-includes/taxonomy.php:730 wp-includes/taxonomy.php:910
 #: wp-includes/taxonomy.php:1074 wp-includes/taxonomy.php:1835
-#: wp-includes/taxonomy.php:1949 wp-includes/taxonomy.php:2212
-#: wp-includes/taxonomy.php:2355 wp-includes/taxonomy.php:2556
+#: wp-includes/taxonomy.php:1952 wp-includes/taxonomy.php:2215
+#: wp-includes/taxonomy.php:2358 wp-includes/taxonomy.php:2559
 msgid "Invalid taxonomy."
 msgstr "Taxonomie invalidă."
 
 #: wp-includes/class-wp-xmlrpc-server.php:1455
 #: wp-includes/class-wp-xmlrpc-server.php:2002
 #: wp-includes/class-wp-xmlrpc-server.php:2093
-#: wp-includes/class-wp-xmlrpc-server.php:2165 wp-includes/taxonomy.php:1964
+#: wp-includes/class-wp-xmlrpc-server.php:2165 wp-includes/taxonomy.php:1967
 msgid "Invalid term ID."
 msgstr "ID termen invalid."
 
@@ -8292,7 +8292,7 @@ msgstr "Adresa sitului introdusă de tine nu pare a fi un URL valid. Te rog intr
 msgid "The WordPress address you entered did not appear to be a valid URL. Please enter a valid URL."
 msgstr "Adresa WordPress introdusă de tine nu pare a fi un URL valid. Te rog introdu un URL valid."
 
-#: wp-includes/taxonomy.php:2053
+#: wp-includes/taxonomy.php:2056
 msgid "A term with the name provided already exists with this parent."
 msgstr "Un termen cu acest nume există deja pentru acest părinte."
 
@@ -9306,8 +9306,8 @@ msgstr "Se salvează..."
 msgid "Saving Draft&#8230;"
 msgstr "Salvez ciorna&#8230;"
 
-#: wp-includes/taxonomy.php:726 wp-includes/taxonomy.php:2569
-#: wp-includes/taxonomy.php:3840
+#: wp-includes/taxonomy.php:726 wp-includes/taxonomy.php:2572
+#: wp-includes/taxonomy.php:3843
 msgid "Empty Term"
 msgstr "Termen gol"
 
@@ -9589,7 +9589,7 @@ msgstr "Inserează coloană înainte"
 msgid "Insert column after"
 msgstr "Inserează coloană după"
 
-#: wp-includes/taxonomy.php:2077
+#: wp-includes/taxonomy.php:2080
 msgid "Could not insert term into the database"
 msgstr "Nu s-a putut introduce termenul în baza de date"
 
@@ -9627,7 +9627,7 @@ msgid "<strong>ERROR</strong>: The email address isn&#8217;t correct."
 msgstr "<strong>EROARE</strong>: Adresa de email nu este corectă."
 
 #. translators: 1: Taxonomy term slug
-#: wp-includes/taxonomy.php:2655
+#: wp-includes/taxonomy.php:2658
 msgid "The slug &#8220;%s&#8221; is already in use by another term"
 msgstr "Descriptorul &#8222;%s&#8221; este deja folosit de alt termen"
 
@@ -9738,7 +9738,7 @@ msgctxt "widgets"
 msgid "%1$s on %2$s"
 msgstr "%1$s la %2$s"
 
-#: wp-includes/taxonomy.php:4042
+#: wp-includes/taxonomy.php:4045
 msgid "Invalid object ID"
 msgstr "ID obiect invalid"
 
@@ -10107,10 +10107,6 @@ msgstr "Dacă nu-ți activezi numele de utilizator în două zile, va trebui să
 msgid "Page IDs, separated by commas."
 msgstr "ID-uri pagină, separate prin virgulă."
 
-#: wp-includes/general-template.php:984 wp-includes/general-template.php:1199
-msgid "Page not found"
-msgstr "Pagina negăsită"
-
 #: wp-includes/post.php:3303
 msgid "Could not update post in the database"
 msgstr "Nu am putut actualiza articolului în baza de date"
@@ -10245,13 +10241,13 @@ msgstr "Gri"
 msgid "The URL you entered seems to be an external link. Do you want to add the required http:// prefix?"
 msgstr "URL-ul pe care l-ai introdus pare să fie o legătură externă. Vrei să adaugi prefixul http:// necesar?"
 
+#: wp-includes/general-template.php:984 wp-includes/general-template.php:1199
+msgid "Page not found"
+msgstr "Pagină negăsită"
+
 #: wp-includes/class-wp-theme.php:800
 msgid "Blue"
 msgstr "Albastru"
-
-#: wp-includes/taxonomy.php:502
-msgid "Edit Category"
-msgstr "Editare categorie"
 
 #: wp-includes/class-wp-customize-panel.php:385
 #: wp-includes/class-wp-customize-section.php:377
@@ -10584,6 +10580,10 @@ msgstr "Propulsat de WordPress, platformă semantică de publicare personală la
 msgid "Tags: "
 msgstr "Etichete: "
 
+#: wp-includes/taxonomy.php:502
+msgid "Edit Category"
+msgstr "Editează categoria"
+
 #: wp-includes/script-loader.php:564
 msgid "Schedule"
 msgstr "Programează"
@@ -10842,10 +10842,6 @@ msgstr "Descriere"
 msgid "Link Categories"
 msgstr "Categorii legături"
 
-#: wp-includes/taxonomy.php:504
-msgid "Update Category"
-msgstr "Actualizare categorie"
-
 #: wp-includes/post.php:95
 msgid "Revisions"
 msgstr "Revizii"
@@ -10892,10 +10888,6 @@ msgstr "Nu"
 #: wp-includes/taxonomy.php:497
 msgid "Search Categories"
 msgstr "Caută categorii"
-
-#: wp-includes/class-wp-editor.php:1081
-msgid "Media"
-msgstr "Fișiere"
 
 #: wp-includes/deprecated.php:3178
 msgid "The GD image library is not installed."
@@ -11014,6 +11006,14 @@ msgstr "Editare categorie legături"
 #: wp-includes/class-wp-editor.php:1027
 msgid "Redo"
 msgstr "Refacere"
+
+#: wp-includes/taxonomy.php:504
+msgid "Update Category"
+msgstr "Actualizează categoria"
+
+#: wp-includes/class-wp-editor.php:1081
+msgid "Media"
+msgstr "Media"
 
 #: wp-activate.php:123
 msgid "An error occurred during the activation"
