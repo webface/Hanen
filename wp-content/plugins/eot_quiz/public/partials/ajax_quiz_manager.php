@@ -10,7 +10,6 @@ $user_id = $current_user->ID; // Wordpress user ID
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
     $_POST = json_decode(file_get_contents('php://input'), true);
 
-
 switch ($_REQUEST['part']) 
 {
     case 'get_quiz':
@@ -22,7 +21,7 @@ switch ($_REQUEST['part'])
     case 'save_quiz':
 
         $data = array(
-            'quiz_id' => $_POST['ID'],
+            'quiz_id' => filter_var($_POST['ID'], FILTER_SANITIZE_NUMBER_INT),
             'user_id' => $user_id,
             'score' => $_POST['score'],
             'percentage' => $_POST['percentage'],
