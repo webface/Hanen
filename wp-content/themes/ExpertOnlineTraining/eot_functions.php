@@ -2947,7 +2947,7 @@ function getModulesByLibrary($library_id = 0)
 function getCategoriesByLibrary($library_id = 0){
     global $wpdb;
     $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
-    $categories = $wpdb->get_results("SELECT * FROM " . TABLE_CATEGORIES . " c WHERE c.library_id = $library_id ORDER BY c.order ASC");
+    $categories = $wpdb->get_results("SELECT id, c.* FROM " . TABLE_CATEGORIES . " c WHERE c.library_id = $library_id ORDER BY c.order ASC", OBJECT_K);
     return $categories;
 }
 
@@ -5223,7 +5223,6 @@ function getResourcesInModule($module_id = 0)
     global $wpdb;
     $module_id = filter_var($module_id,FILTER_SANITIZE_NUMBER_INT);
     $resources = $wpdb->get_results("SELECT * FROM " . TABLE_MODULE_RESOURCES . " AS mr WHERE mr.module_id = " . $module_id . " ORDER BY mr.order ASC", ARRAY_A);
-    
     $clean_results = array();
     foreach($resources as $resource)
     {
@@ -5238,6 +5237,27 @@ function getResourcesInModule($module_id = 0)
               'ID' => $thequiz['ID'],
               'resource_id' => $resource['ID'],
               'type' => 'exam',
+              'order' => $resource['order']
+            )
+          );
+        }
+      }
+      else if($resource['type'] == 'video')
+      {
+        $thevideo = $wpdb->get_row("SELECT * FROM " . TABLE_VIDEOS . " WHERE ID = " . $resource['resource_id'], ARRAY_A);
+        if($thevideo)
+        {
+          array_push($clean_results, 
+            array(
+              'name' => $thevideo['name'],
+              'ID' => $thevideo['ID'],
+              'desc' => $thevideo['desc'],
+              'secs' => $thevideo['secs'],
+              'shortname' => $thevideo['shortname'],
+              'shortname_medium' => $thevideo['shortname_medium'],
+              'shortname_low' => $thevideo['shortname_low'],
+              'resource_id' => $resource['ID'],
+              'type' => 'video',
               'order' => $resource['order']
             )
           );
@@ -7760,25 +7780,26 @@ function getCourseModules($course_id = 0)
  */
 function getTrack($user_id = 0, $video_id = 0, $type = "all")
 {
-  $type = filter_var($type, FILTER_SANITIZE_STRING); // Type of track
-  // Check if the user ID is valid.  
   if($user_id <= 0)
   {
     return false;
   }
+  $type = filter_var($type, FILTER_SANITIZE_STRING); // Type of track
+
+  // Check if the user ID is valid.  
   global $wpdb;
   $sql = "SELECT * FROM " . TABLE_TRACK . " WHERE user_id = $user_id";
   if($video_id > 0)
   {
     $sql .= " AND video_id = $video_id";
   }
-  $types = array('download_resource','video_started','watch_video','watch_slide','login','failed_login','failed_coupon','massmail','download_video','generate_report','delete_subscription','quiz_taken','certificate_conferred'); // All types of track.
+
+  $types = array('download_resource','video_started','watch_video','watch_slide','login','failed_login','failed_coupon','massmail','download_video','generate_report','delete_subscription','quiz_taken','certificate_conferred'); // Types of track.
   // Check if the type is a valid option.
   if( in_array($type, $types)  )
   {
     $sql .= " AND type = '$type'";
   }
-
   // Watch video needed a key value pair array. It has its own sql statement.
   if( $type == "watch_video" || $type == "video_started" )
   {
@@ -7906,6 +7927,25 @@ function verify_student_access($course_id = 0)
   $enrolled = $wpdb->get_var($query);
 
   if($enrolled)
+  {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * check whether the module is in the specified course
+ * @param int $module_id - the module id
+ * @param int $course_id - the course id
+ * return true if the module is in the course.
+ */
+function verify_module_in_course($module_id = 0, $course_id = 0)
+{
+  if (!$course_id && !$module_id)
+    return false;
+  $course_modules = getModulesInCourse($course_id);
+  $course_modules_ids = array_column($course_modules, 'ID'); // The module id in the course array.
+  if(in_array($module_id, $course_modules_ids))
   {
     return true;
   }
