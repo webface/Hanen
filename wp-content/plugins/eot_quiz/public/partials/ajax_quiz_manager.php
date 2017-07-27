@@ -10,11 +10,11 @@ $user_id = $current_user->ID; // Wordpress user ID
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
     $_POST = json_decode(file_get_contents('php://input'), true);
 
-$quiz_id = filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT);
+
 switch ($_REQUEST['part']) 
 {
     case 'get_quiz':
-        
+        $quiz_id = filter_var($_REQUEST['ID'], FILTER_SANITIZE_NUMBER_INT);
         $quiz = $eot_quiz->get_quiz_data($quiz_id);
         echo json_encode($quiz);
         exit();

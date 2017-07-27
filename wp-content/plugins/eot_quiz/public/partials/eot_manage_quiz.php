@@ -68,7 +68,7 @@ if ($quizzes)
         $quizTableObj->rows[] = array(
             '<span>' . stripslashes($quiz['name']) . '</span>',
             $quiz['questions'],
-            (($quiz['passing_score']) ? $quiz['passing_score'] : 0) . "/" . $quiz['questions'],
+            (($quiz['passing_score']) ? $quiz['passing_score'] : 0) . " of " . $quiz['questions'],
             $time_limit . " minutes",
             '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '">Edit quiz details</a>',
             '<a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '">View quiz</a>',
