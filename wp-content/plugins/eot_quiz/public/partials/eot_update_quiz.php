@@ -19,7 +19,7 @@ if (isset($_POST['submit']))
         'num_attempts'=>$_POST['quizAttempts'],
         'passing_score'=>$_POST['passing_score'],
         'time_limit'=>'00:'.$_POST['quizTimeText'].':00',
-        //'date_created'=>current_time('Y-m-d')
+        'num_questions_to_display'=>$_POST['num_questions_to_display']
     );
 
 
@@ -88,15 +88,22 @@ $quiz=$eot_quiz->get_quiz_by_id($quiz_id);
             </div>
         </div>
         <div class="bs row">
-            <div class="bs col-xs-6"><label for="passing_score">Passing Score../<?= $quiz['questions'];?> questions</label>
+            <div class="bs col-xs-6"><label for="passing_score">Passing Score</label>
                 <input type="text" name="passing_score" class="bs form-control" value="<?= ($quiz['passing_score']) ? $quiz['passing_score']: 0; ?>"/>
             </div>
-            <div class="bs col-xs-6"></div>
+            <div class="bs col-xs-6"><label for="num_questions_to_display">Number of Questions to display. <?= $quiz['questions']?> total</label>
+                <input type="text" name="num_questions_to_display" class="bs form-control" value="<?= ($quiz['num_questions_to_display']) ? $quiz['num_questions_to_display']: 0; ?>"/>
+          </div>
         </div>
-        <input type="hidden" name="quiz_id" value="<?= $quiz_id; ?>">
-        <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>">
-        <input type="submit" class="bs btn btn-primary pull-right" name="submit" value="Update">
-        <span class="clearfix"></span>
+        <div class="bs row">
+            <div class="bs col-xs-6">
+            <input type="hidden" name="quiz_id" value="<?= $quiz_id; ?>">
+            <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>">
+            </div>
+            <div class="bs col-xs-6">
+            <input type="submit" class="bs btn btn-primary pull-right" name="submit" value="Update">
+            </div>
+        </div>
     </form>
 </div>
 

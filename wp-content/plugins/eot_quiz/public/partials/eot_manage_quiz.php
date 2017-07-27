@@ -73,7 +73,7 @@ if ($quizzes)
             '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '">Edit quiz details</a>',
             '<a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '">View quiz</a>',
             '<a href="/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit quiz questions</a>',
-            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" data-type="Quiz" class="delete" rel="facebox"><span class="fa fa-minus-circle"></span></a>',
+            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" data-type="Quiz" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',
         );
     }
     CreateDataTable($quizTableObj); // Print the table in the page
