@@ -52,14 +52,15 @@
 							continue;
 						}
 						$module_title = $videos_resources_in_module[$module_id]->name; // The module name.
-					?>
+						$video_id = $videos_resources_in_module[$module_id]->ID; // the video ID
+?>
                   		<li class="tree_video">
           					<a href="?part=view&course_id=<?= $course_id ?>&module_id=<?=$module_id?>">
           						<i class="fa fa-play" aria-hidden="true"></i>
       						</a> 
       						<b><?= $module_title ?></b> 
       						<span class="small"> - 
-          						<a class="watchVideo" module-id="<?=$module_id?>" course-id="course_id=<?= $course_id ?>" href="">
+          						<a class="watchVideo" module-id="<?=$module_id?>" course-id="course_id=<?= $course_id ?>" video-id="<?=$video_id?>" href="">
           							Watch Video
           						</a> 
           						<?php 
@@ -85,10 +86,10 @@
 							}
 ?>
     					</li> 	                 
-					<?php
+<?php
 					}
 					echo '</ul>';
-					?>
+?>
 					<h2>Your Custom Quizzes</h2>
 
 					<h1 class="article_page_title">Quiz Summary</h1>
@@ -99,6 +100,7 @@
 								e.preventDefault();
 								var course_id = e.target.getAttribute('course-id'); // Course ID
 								var module_id = e.target.getAttribute('module-id'); // Module ID
+								var video_id = e.target.getAttribute('video-id'); // Video ID
 								$('#moduleInfoForm').attr('action', "?part=view&"+course_id+"&module_id="+module_id+"");
 								form = $('#moduleInfoForm').submit();
 							})
@@ -113,7 +115,7 @@
 				            });
 						});
 					</script>
-					<?php
+<?php
 				}
 				else if(count($course_modules) == 0) // User has no modules
 				{

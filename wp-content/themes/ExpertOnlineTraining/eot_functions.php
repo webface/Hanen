@@ -7801,6 +7801,10 @@ function updateVideoProgress_callback()
   $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // WP User ID
   $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // Module ID
   $video_id = filter_var($_REQUEST['video_id'],FILTER_SANITIZE_NUMBER_INT); // Video ID
+
+  $sql = '';
+  $query_result = 0; // defaults for variables in case the if statement below doesn't resolve.
+
   // Validate the user
   if($user_id == get_current_user_id())
   {
@@ -7809,7 +7813,19 @@ function updateVideoProgress_callback()
     if( isset($_REQUEST['status']) && $_REQUEST['status'] == "started" )
     {
       $org_id = get_user_meta($user_id, "org_id", true);
-      $sql = "INSERT INTO " . TABLE_TRACK . " (type, user_id, org_id, date, video_id, assignment_id, video_time) VALUES ('watch_video', $user_id, $org_id, NOW(), $video_id, $module_id, 1)";
+//      $sql = "INSERT INTO " . TABLE_TRACK . " (type, user_id, org_id, date, video_id, module_id, video_time) VALUES ('watch_video', $user_id, $org_id, NOW(), $video_id, $module_id, 1)";
+      $query_result = $wpdb->insert(
+        TABLE_TRACK,
+        array (
+          'type' => 'watch_video',
+          'user_id' => $user_id,
+          'org_id' => $org_id,
+          'date' => 'NOW()',
+          'video_id' => $video_id,
+          'module_id' => $module_id,
+          'video_time' => '1'
+        )
+      );
     }
     else if( isset($_REQUEST['track_id']) && $_REQUEST['track_id'] )
     {
@@ -7819,17 +7835,38 @@ function updateVideoProgress_callback()
       {
         $time = filter_var($_REQUEST['time'],FILTER_SANITIZE_STRING); // The time when the video stopped.
         //update the time for table video status.
-        $sql = "UPDATE " . TABLE_TRACK . " SET video_time=\"" . $time . "\" WHERE ID = $track_id AND user_id = $user_id";
+//        $sql = "UPDATE " . TABLE_TRACK . " SET video_time=\"" . $time . "\" WHERE ID = $track_id AND user_id = $user_id";
+        $query_result = $wpdb->update(
+          TABLE_TRACK,
+          array (
+            'video_time' => $time
+          ),
+          array (
+            'ID' => $track_id,
+            'user_id' => $user_id
+          )
+        );
       }
       // Update video result 1. Indicating the video has been finished watching.
       else if( isset($_REQUEST['status']) && $_REQUEST['status'] == "finish" )
       {
         //update the time for table video status.
-        $sql = "UPDATE " . TABLE_TRACK . " SET result=1 WHERE ID = $track_id AND user_id = $user_id";
+//        $sql = "UPDATE " . TABLE_TRACK . " SET result=1 WHERE ID = $track_id AND user_id = $user_id";
+        $query_result = $wpdb->update(
+          TABLE_TRACK,
+          array (
+            'result' => '1'
+          ),
+          array (
+            'ID' => $track_id,
+            'user_id' => $user_id
+          )
+        );
       }
     }
+
     // New Record. Success.
-    $query_result = $wpdb->query ($wpdb->prepare ($sql));
+//    $query_result = $wpdb->query ($wpdb->prepare ($sql));
     if( $query_result )
     {
       $result['data'] = 'success';
