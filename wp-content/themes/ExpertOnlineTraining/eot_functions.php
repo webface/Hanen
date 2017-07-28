@@ -3374,7 +3374,7 @@ function toggleModuleInAssignment($course_id = 0, $data = array())
   global $wpdb;
 
   // make sure we have a valid course
-  if (!course_id || !$module_id)
+  if (!$course_id || !$module_id)
     return false;
 
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
@@ -3490,15 +3490,15 @@ function toggleItemInAssignment_callback()
                 break;
             case "quiz":
                 $info_data          = array("org_id" => $org_id, "quiz_id" => $item_id, 'module_id' => $module_id);
-                $response=  toggleQuizInAssignment($course_id, $info_data);
+                $response =  toggleQuizInAssignment($course_id, $info_data);
                 break;
             case "resource":
                 $info_data          = array("org_id" => $org_id, "resource_id" => $item_id, 'module_id' => $module_id);
-                $response= toggleResourceInAssignment($course_id, $info_data);
+                $response = toggleResourceInAssignment($course_id, $info_data);
                 break;
             case "module":
                 $info_data          = array("org_id" => $org_id, "resource_id" => $item_id, 'module_id' => $module_id);
-                $response= toggleModuleInAssignment($course_id, $info_data);
+                $response = toggleModuleInAssignment($course_id, $info_data);
                 break;
             
         }
