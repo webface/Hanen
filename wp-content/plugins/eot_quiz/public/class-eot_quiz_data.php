@@ -41,7 +41,7 @@ class EotQuizData
     {
         global $wpdb;
         $quizzes = $wpdb->get_results(""
-                . "SELECT q.ID, q.name,q.time_limit,q.passing_score,COUNT(qa.quiz_question) AS questions "
+                . "SELECT q.ID, q.name,q.time_limit,q.passing_score,q.num_questions_to_display,COUNT(qa.quiz_question) AS questions "
                 . "FROM " . TABLE_QUIZ . " as q "
                 . "LEFT JOIN " . TABLE_QUIZ_QUESTION . " as qa ON q.ID=qa.quiz_id "
                 . "WHERE q.org_id = $org_id and q.user_id= $user_id "

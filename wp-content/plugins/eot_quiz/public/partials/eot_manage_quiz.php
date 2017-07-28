@@ -50,13 +50,12 @@ if ($quizzes)
     $quizTableObj->rows = array();
     $quizTableObj->headers = array(
         'Quiz Name' => 'left',
-        'Number of questions' => 'center',
+        '# Questions' => 'center',
+        'Displayed Questions' => 'center',
         'Passing Score' => 'center',
         'Time Limit' => 'center',
-        'Actions' => 'center',
-        'View' => 'center',
         'Questions' => 'center',
-        'Delete' => 'center'
+        'Actions' => 'center'
     );
 
     // Creating rows for the table
@@ -68,12 +67,15 @@ if ($quizzes)
         $quizTableObj->rows[] = array(
             '<span>' . stripslashes($quiz['name']) . '</span>',
             $quiz['questions'],
-            (($quiz['passing_score']) ? $quiz['passing_score'] : 0) . " of " . $quiz['questions'],
+            $quiz['num_questions_to_display'],
+            (($quiz['passing_score']) ? $quiz['passing_score'] : 0) . " of " . $quiz['num_questions_to_display'],
             $time_limit . " minutes",
-            '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '">Edit quiz details</a>',
-            '<a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '">View quiz</a>',
-            '<a href="/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit quiz questions</a>',
-            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" data-type="Quiz" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',
+            '<a href="/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit Questions</a>',
+            '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+            &nbsp;&nbsp&nbsp;
+            <a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-eye" aria-hidden="true"></i></a>
+            &nbsp;&nbsp&nbsp;
+            <a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" data-type="Quiz" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
         );
     }
     CreateDataTable($quizTableObj); // Print the table in the page
