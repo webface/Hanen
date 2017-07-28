@@ -85,7 +85,7 @@
             { 
               $staff_id = $user['ID'];
               $staff_name = htmlentities( $user['first_name'] . " " . $user['last_name'], ENT_QUOTES, 'UTF-8' );
-              $email = str_replace("@", "\@", $user['email'] );
+              $email = $user['email'];
 
               $staffTableObj->rows[] = array (
                 $staff_name, // First and last name

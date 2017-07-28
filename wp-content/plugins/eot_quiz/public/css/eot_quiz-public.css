@@ -104,3 +104,13 @@
     position: absolute;
     margin-left: -10px;
 }
+
+.panel-title a{
+    display:block;
+}
+.panel-heading{
+    background-image:url('../images/icon-plus.png');
+    background-repeat:no-repeat;
+    background-position-x:100%;
+    background-position-y: 5px;
+}

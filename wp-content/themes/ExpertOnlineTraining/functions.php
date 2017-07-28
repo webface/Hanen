@@ -157,10 +157,11 @@ function eot_enqueue_scripts()
 	wp_enqueue_script('facebox-js', get_template_directory_uri() . '/js/facebox.js', '', '1.0.0');
 	wp_enqueue_script('videojsie8', 'https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js', '', '1.1.2');
 	wp_enqueue_script('videojs', 'https://vjs.zencdn.net/5.8.8/video.js', '', '5.8.8');
-	wp_enqueue_script('datatables-js', get_template_directory_uri() . '/js/jquery.dataTables.min.js', '', '1.10.13');
 	wp_enqueue_script('eot-progress-bar-js', get_template_directory_uri() . '/js/jquery.eotprogressbar.js', '', '1.0.0');
-	wp_enqueue_script('eot-datatables-js', get_template_directory_uri() . '/js/jquery.eotdatatables.js', '', '1.0.0');
 	wp_enqueue_script('jquery-pageslide-js', get_template_directory_uri() . '/js/jquery.pageslide.js', '', '1.0.0');
+	wp_enqueue_script('datatables-js', get_template_directory_uri() . '/js/jquery.dataTables.min.js', '', '1.10.13');
+
+
 
 	
 
