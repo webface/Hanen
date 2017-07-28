@@ -853,12 +853,40 @@
               
                       })
                       .end()
+                      .find('input[item = module][ type=checkbox]')
+                      .click(
+                        function()
+                        {
+                        var obj = $(this);
+                        //console.log('Ive already been clicked');
+                        $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&org_id='+obj.attr("org_id")+'&module_id='+obj.attr("video_id"),
+                          function(json)
+                          {
+                          if(json.action=="added")
+                          {
+                            obj.parent().removeClass("disabled")
+                            obj.parent().addClass("enabled")
+                            $(document).trigger('updateAssignmentSummary',[0,1,0]);
+                          }
+                          else
+                          {
+                            obj.parent().removeClass("enabled")
+                            obj.parent().addClass("disabled")
+                            $(document).trigger('updateAssignmentSummary',[0,-1,0]);
+                          }
+                          updateCertificateProgress();
+                          $('#staff_and_assignment_list').attr("refresh",1);
+                          }
+                        )
+                        }
+                      ) 
+                      .end()
                       .find('input[item = quiz][ type=checkbox]')
                       .click(
                         function()
                         {
                         var obj = $(this);
-                        console.log('Ive already been clicked');
+                        //console.log('Ive already been clicked');
                         $.getJSON(''+ajax_object.ajax_url+'?action=toggleItemInAssignment&group_id='+obj.attr("group_id")+'&item='+obj.attr("item")+'&item_id='+obj.attr("item_id")+'&org_id='+obj.attr("org_id")+'&module_id='+obj.attr("video_id"),
                           function(json)
                           {
