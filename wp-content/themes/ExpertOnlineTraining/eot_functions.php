@@ -3107,22 +3107,25 @@ function getResourcesInCourse($course_id = 0, $type = '')
     global $wpdb;
 
     // make sure there is a type or else return empty array
-    if ($type = '' )
+    if ($type == '' )
+    {
       return array();
+    }
 
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    switch($type){
+    switch($type)
+    {
         case 'exam':
-            $table=TABLE_QUIZ;
+            $table = TABLE_QUIZ;
             break;
         case 'video':
-            $table=TABLE_VIDEOS;
+            $table = TABLE_VIDEOS;
             break;
         case 'doc':
-            $table=TABLE_RESOURCES;
+            $table = TABLE_RESOURCES;
             break;
     }
-    $sql = "SELECT r.* "
+    $sql = "SELECT r.*, cmr.module_id as mid "
                 . "FROM " . $table . " AS r "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.resource_id = r.ID "
                 . "WHERE cmr.course_id = $course_id AND cmr.type = '$type'";
@@ -3229,7 +3232,11 @@ function getHandoutResourcesInModules($module_ids = '')
 
     global $wpdb;
     $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
-    $handouts = $wpdb->get_results("SELECT r.* FROM " . TABLE_RESOURCES . " r WHERE r.module_id IN (" . $module_ids . ")" , ARRAY_A);
+    //$handouts = $wpdb->get_results("SELECT r.* FROM " . TABLE_RESOURCES . " r WHERE r.module_id IN (" . $module_ids . ")" , ARRAY_A);
+    $handouts = $wpdb->get_results("SELECT DISTINCT mr.module_id as mod_id, r.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_RESOURCES.""
+            ." r on mr.resource_id=r.ID where mr.module_id IN (" . $module_ids . ") AND mr.type IN('doc','link')",ARRAY_A);
+    error_log("SELECT DISTINCT mr.module_id as mod_id, r.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_RESOURCES.""
+            ." r on mr.resource_id=r.ID where mr.module_id IN (" . $module_ids . ") AND mr.type IN('doc','link') GROUP BY r.name");
     return $handouts;
 }
 
@@ -3355,6 +3362,59 @@ function toggleQuizInAssignment($course_id = 0, $data = array())
             }
   }
 }
+/**
+ * Handles the add and remove of custom modules in a course
+ * @param $course_id - the course ID
+ * returns true or false
+ */
+function toggleModuleInAssignment($course_id = 0, $data = array())
+{
+  extract($data);
+  /*
+   * Variables required in $data
+   * org_id - the organization ID
+   * module_id - the module ID
+   * resource_id - the resource ID 
+   */
+  global $wpdb;
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $module_resources = $wpdb->get_results("SELECT * FROM ".TABLE_COURSE_MODULE_RESOURCES." "
+          . "WHERE module_id = $module_id"
+          . " AND course_id = $course_id",ARRAY_A);
+  if(count($module_resources)> 0)
+  {
+      $resources = $wpdb->get_results("SELECT * FROM ".TABLE_MODULE_RESOURCES." WHERE module_id=$module_id",ARRAY_A);
+      $result = true;
+      foreach($resources as $resource)
+      {    
+          $delete= $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array(
+              'resource_id'=>$resource['resource_id'],
+              'module_id'=>$resource['module_id'],
+              'type'=>$resource['type']
+          ));
+          if(!$delete)
+          {
+              $result = false;
+          }
+      }
+      
+  }
+  else
+      {
+      $sql = "INSERT INTO " . TABLE_COURSE_MODULE_RESOURCES . " (course_id,module_id,resource_id,type) SELECT $course_id, module_id, resource_id, type "
+              . "FROM ".TABLE_MODULE_RESOURCES." WHERE module_id = $module_id";
+      $result = $wpdb->query($sql);
+              
+  }
+  if ($result === false) 
+  {
+      return false;
+  } 
+  else 
+  {
+      return true;
+  }
+}
 
 /**
  *  Handles the add and remove of a resource in a course
@@ -3435,6 +3495,11 @@ function toggleItemInAssignment_callback()
                 $info_data          = array("org_id" => $org_id, "resource_id" => $item_id, 'module_id' => $module_id);
                 $response= toggleResourceInAssignment($course_id, $info_data);
                 break;
+            case "module":
+                $info_data          = array("org_id" => $org_id, "resource_id" => $item_id, 'module_id' => $module_id);
+                $response= toggleModuleInAssignment($course_id, $info_data);
+                break;
+            
         }
         echo json_encode($response);
     }
@@ -5749,12 +5814,13 @@ function getCourseForm_callback ( )
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             $course_videos = getResourcesInCourse($course_id,'video'); // all the modules in the specified course
-            $course_quizzes=  getResourcesInCourse($course_id,'exam');
-            $course_handouts=getResourcesInCourse($course_id,'doc');
-            //d($course_videos,$course_quizzes,$course_handouts);
+            $course_quizzes = getResourcesInCourse($course_id,'exam');
+            $course_handouts = getResourcesInCourse($course_id,'doc');
+            $course_handouts_module_ids = array_column($course_handouts,'mid');
+            d($course_videos,$course_quizzes,$course_handouts);
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
-            $course_handouts_titles = array_column($course_handouts, 'name');
+            $course_handouts_ids = array_column($course_handouts, 'ID');
             $modules_in_portal = getModules($org_id);// all the modules in this portal
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
             $categories = getCategoriesByLibrary(1);
@@ -5796,23 +5862,24 @@ function getCourseForm_callback ( )
             }
             $handouts=array();
             $handout_resources=  getHandoutResourcesInModules($all_module_ids_string);
-            //d($handout_resources);
+            
             foreach($handout_resources as $handout){
-                if(isset($handouts[$handout['module_id']]))
+                if(isset($handouts[$handout['mod_id']]))
                 {
-                    array_push($handouts[$handout['module_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
+                    array_push($handouts[$handout['mod_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
                 }else{
-                $handouts[$handout['module_id']]=array();
-                array_push($handouts[$handout['module_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
+                $handouts[$handout['mod_id']]=array();
+                array_push($handouts[$handout['mod_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
                 }
             }
+            d($exams,$handouts,$videos_in_course,$modules_in_portal,$handout_resources,$course_handouts_ids);
             $course_data=getCourse($course_id);// all the settings for the specified course
             $due_date =$course_data['due_date_after_enrollment']!==NULL? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])):NULL; // the due date of the specified course
             $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
             $videoCount = count($course_videos);
             $quizCount = count($course_quizzes);
             ob_start();
-        ?>
+?>
 
        <div style="position:absolute;right:-290px;top:0px;">
         <div class="popup"> 
@@ -5878,9 +5945,9 @@ function getCourseForm_callback ( )
                       <tr>
                         <td style="padding:12px;font-size:12px;">
                           <center>
-                            <?php
+<?php
                               if ($due_date === NULL) {
-                            ?>
+?>
                                 <p class='curr_duedate'><strong>Due Date:</strong> No due date set.</p>
                                 <div id="datepicker"></div>
                                 <div id="remove_date" class="buttons" style="display:none;padding-top:10px;">
@@ -5889,12 +5956,12 @@ function getCourseForm_callback ( )
                                       Remove Due Date
                                   </a>
                                 </div>
-                            <?php
+<?php
                               } 
                               else 
                               {
                                 echo "<p class='curr_duedate'><strong>Due Date:</strong> " . date('j F, Y', strtotime($due_date));
-                            ?>
+?>
                                 <div id="datepicker"></div>
                                 <div id="remove_date" class="buttons" style="padding-top:10px;">
                                   <a class="negative" style="margin-right:50px;">
@@ -5902,9 +5969,9 @@ function getCourseForm_callback ( )
                                     Remove Due Date
                                   </a>
                                 </div>
-                            <?php
+<?php
                               }
-                            ?>
+?>
                           </center>
                         </td>
                       </tr>
@@ -5930,7 +5997,7 @@ function getCourseForm_callback ( )
           <div id="video_listing_pane" class="scroll-pane" style="padding:0px 0px 0px 10px;width: 600px">
             <form name = "add_video_group" id = "add_video_group">
               <ul class="tree organizeassignment">
-                <?php 
+<?php 
                     $videos = $wpdb->get_results("SELECT name, secs FROM " . TABLE_VIDEOS, OBJECT_K); // All videos name and their time in seconds.
                     $subscription = getSubscriptions($subscription_id,0,1); // get the current subscription
                     $library = getLibrary ($subscription->library_id); // The library information base on the user current subscription
@@ -5946,7 +6013,7 @@ function getCourseForm_callback ( )
                             /* 
                              * This populates the modules array.
                              */
-                                    $new_module = new module( $module['ID'], $module['title'], $module['category'], $module['component_type']); // Make a new module.
+                                    $new_module = new module( $module['ID'], $module['title'], $module['category']); // Make a new module.
                                     array_push($modules, $new_module); // Add the new module to the modules array.
 
                         }
@@ -5982,20 +6049,20 @@ function getCourseForm_callback ( )
                               // echo "Theres a vid";
                                     foreach($videos_in_course[$module_id] as $video){
                                             $vid_id = $video['ID'];
-                                    ?>
+?>
                                     <input collection="add_remove_from_group" video_length="<?= $module_time ?>" org_id=" <?= $org_id ?>" item_id=" <?= $vid_id ?>" group_id=<?= $course_id ?> assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
                                     <label for="chk_video_<?= $module_id ?>">
                                         <span name="video_title" class="<?=$video_class?> video_title">
                                           <b>Video</b> - <span class="vtitle"><?= $module->title ?></span>
                                         </span>
                                     </label>
-                                    <?php
+<?php
                                             }
                                         }
-                                    ?>
+?>
                                     <div video_id=<?= $module_id ?> class="<?=$video_class?> item" <?=(!$video_active)?' org_id=" <?= $org_id ?>" style="display:none"':'';?> >
                                     
-                                        <?php
+<?php
                                        
                                         /* 
                                          * Check if there is a an exam for this module
@@ -6008,12 +6075,12 @@ function getCourseForm_callback ( )
                                             {
                                                     $exam_id = $exam['ID']; 
                                            
-                                    ?>
+?>
                                             <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" video_id="<?= $module_id ?>" assignment_id="<?= $module_id ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   group_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
                                             <label for="chk_defaultquiz_<?= $module_id ?>">
                                               <i>Exam</i> (<?= $exam['name'] ?>) 
                                             </label><br>
-                                    <?php
+<?php
                                          }
                                         }
                                         /* 
@@ -6026,18 +6093,18 @@ function getCourseForm_callback ( )
                                             foreach($handouts[$module_id] as $handout){
                                                     $handout_id = $handout['ID']; 
                                            
-                                    ?>
-                                            <input item="resource" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($handout['name'], $course_handouts_titles) ? ' checked="checked"':''; $handout_id = 0; // Reset Exam ID?> /> 
+?>
+                                            <input item="resource" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($handout['ID'], $course_handouts_ids) ? ' checked="checked"':''; $handout_id = 0; // Reset Exam ID?> /> 
                                             <label for="chk_defaultresource_<?= $handout_id ?>">
                                               <i>Resource</i> (<?= $handout['name'] ?>) 
                                             </label><br>
-                                    <?php
-                                         }
+<?php
+                                            }
                                         }      
                                     ?>
                                     </div>
                                 </li> 
-                            <?php
+<?php
                                 unset( $modules[$key] ); // remove this module in the modules array
                             }
 
@@ -6051,13 +6118,13 @@ function getCourseForm_callback ( )
                         // Error in getting the library for this subscription ID
                         echo "Invalid library ID.";
                     }
-                ?>
+?>
               </ul>
 
               <div id="custom_quizzes_and_resources">
                 <h2 class="library_topic">Your Custom Modules</h2>
                 <ul class="tree organizeassignment">
-                  <?php
+<?php
                     foreach($modules_in_portal as $key => $module) // go thourh all the modules in our portal
                     {
 //                        if($module['component_type'] == "page" || $module['component_type'] == 'exam')
@@ -6066,63 +6133,70 @@ function getCourseForm_callback ( )
                             $module_class = 'disabled'; // variable to indicate whther module is currently in the portal course
                             // check if portal module exists in master course
                             // if it does, do not display it as a custom module
-                            if(!in_array($module['title'], $master_modules_titles)) 
+                            if(!in_array($module['ID'], $master_module_ids)) 
                             {
                                 // check if the module is in this specific course. if it is, then enable it, otherwise its default disabled.
-                                if(in_array($module['title'], $course_modules_titles))
+                                if(in_array($module['ID'], $course_handouts_module_ids))
                                 {
                                     $module_active = '1';
                                     $module_class = 'enabled';
                                 }
 
-                                if ($module['component_type'] == "exam")
-                                {
-                                  // displpay the module title but disable the checkbox and if clicked alert a message
-?>
-                                  <li class="video_item" video_id="<?= $module['id'] ?>" >
-                                  <input collection="add_remove_from_group" org_id=" <?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
-                                  <label for="chk_video_<?= $module['id'] ?>">
-                                  <span name="video_title" class="<?=$module_class?> video_title">
-<?php
-                                }
-                                else
-                                {
                                   // show the input checkbox as ususal
 ?>
-                                  <li class="video_item" video_id="<?= $module['id'] ?>" >
-                                  <input collection="add_remove_from_group" org_id=" <?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['id'] ?>" id="chk_video_<?= $module['id'] ?>" name="chk_video_<?= $module['id'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
-                                  <label for="chk_video_<?= $module['id'] ?>">
+                                  <li class="video_item" video_id="<?= $module['ID'] ?>" >
+                                  <input collection="add_remove_from_group" item="module" org_id=" <?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['ID'] ?>" item_id="<?= $module['ID']?>" id="chk_module_<?= $module['ID'] ?>" name="chk_module_<?= $module['ID'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
+                                  <label for="chk_module_<?= $module['ID'] ?>">
                                   <span name="video_title" class="<?=$module_class?> video_title">
 <?php                                  
-                                }
+                                
 ?>
 
 
                                   <span class="vtitle"><?= $module['title'] ?></span>
                                   </span><br>
-                                      <?php
-                                if($exams[$module['id']])
-                                                {
-                                                    foreach($exams[$module['id']] as $exam){
-                                                            $exam_id = $exam['id']; 
+<?php
+                                if(isset($exams[$module['ID']]))
+                                {
+                                                    foreach($exams[$module['ID']] as $exam)
+                                                    {
+                                                            $exam_id = $exam['ID']; 
                                                    
-                                            ?>
-                                                    <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
+?>
+<!--                                                    <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> -->
                                                     <label for="chk_defaultquiz_<?= $module_id ?>">
                                                       <i>Exam</i> (<?= $exam['name'] ?>) 
                                                     </label><br>
-                                            <?php
-                                                 }
-                                                }
-                                                
+<?php
+                                                    }
+                                }
+                                                                        /* 
+                                         * Check if there is a handout for this module
+                                         * The resource checkbox input will not be shown, if there are no resources.
+                                         * Find the ID of this exam in the handouts array.
+                                         */
+                                        if(isset($handouts[$module['ID']]))
+                                        {
+                                            foreach($handouts[$module['ID']] as $handout){
+                                                    $handout_id = $handout['ID'];
+                                                    
+                                           
+?>
+<!--                                            <input item="resource" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" assignment_id="<?= $module['ID'] ?>" video_id="<?= $module['ID'] ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($handout_id, $course_handouts_ids) ? ' checked="checked"':''; //$handout_id = 0; // Reset Exam ID?> /> -->
+                                            <label for="chk_defaultresource_<?= $handout_id ?>">
+                                              <i>Resource</i> (<?=$handout['name'] ?>) 
+                                            </label><br>
+<?php
+                                            }
+                                        }                 
 ?>
                                 </label>
                                 </li>
-                      <?php
-                            }
+<?php
+                            }//end if(!in_array)
 //                        }
-                    }
-                  ?>
+                    }//end for each
+?>
                 </ul>
               </div>
             </form>
