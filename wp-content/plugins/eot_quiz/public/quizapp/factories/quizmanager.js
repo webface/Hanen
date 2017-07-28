@@ -99,7 +99,7 @@
         function loadQuiz() 
         {
             var data = {
-                id: quiz_id,
+                ID: quiz_id,
                 action: 'quiz_data',
                 part: 'get_quiz'
             };
@@ -255,7 +255,7 @@
         {
             quizObj.isSaving = true;
             var data = {
-                id: quiz_id,
+                ID: quiz_id,
                 action: 'quiz_data',
                 part: 'save_quiz',
                 score: quizObj.score,

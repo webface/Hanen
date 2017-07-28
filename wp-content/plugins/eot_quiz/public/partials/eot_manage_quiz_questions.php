@@ -392,18 +392,18 @@ $quiz_id = $quiz['ID'];
             $question['quiz_question_type'],
             $question['answers'],
             '<a href="/dashboard?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', // The name of the camp,
-            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" data-type="Question" class="delete" rel="facebox"><span class="fa fa-minus-circle"></span></a>',);
+            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',);
     }
     CreateDataTable($questionsTableObj); // Print the table in the page
-    echo "<a class='bs btn btn-primary pull-right createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary pull-right createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>Add Checkbox Question&nbsp;<span class='fa fa-check-square-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary pull-right createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>Add Text Question&nbsp;<span class='fa fa-file-text-o'></span></a>";
+    echo "<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>Add Checkbox Question&nbsp;<span class='fa fa-check-square-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>Add Text Question&nbsp;<span class='fa fa-file-text-o'></span></a>";
     ?>
     <?php
 } else {
-    echo "<div class='bs'><div class='well well-lg'>No Questions yet!</div></div><a class='bs btn btn-primary pull-right createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary pull-right createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>Add Checkbox Question&nbsp;<span class='fa fa-check-square-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary pull-right createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>Add Text Question&nbsp;<span class='fa fa-file-text-o'></span></a>";
+    echo "<div class='bs'><div class='well well-lg'>No Questions yet!</div></div><a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>Add Checkbox Question&nbsp;<span class='fa fa-check-square-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>Add Text Question&nbsp;<span class='fa fa-file-text-o'></span></a>";
 }
 ?>
 

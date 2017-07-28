@@ -41,7 +41,7 @@ class EotQuizData
     {
         global $wpdb;
         $quizzes = $wpdb->get_results(""
-                . "SELECT q.ID, q.name,q.time_limit,q.passing_score,COUNT(qa.quiz_question) AS questions "
+                . "SELECT q.ID, q.name,q.time_limit,q.passing_score,q.num_questions_to_display,COUNT(qa.quiz_question) AS questions "
                 . "FROM " . TABLE_QUIZ . " as q "
                 . "LEFT JOIN " . TABLE_QUIZ_QUESTION . " as qa ON q.ID=qa.quiz_id "
                 . "WHERE q.org_id = $org_id and q.user_id= $user_id "
@@ -68,10 +68,13 @@ class EotQuizData
         $quiz['time_limit'] = date('i', strtotime($quiz['time_limit']));
         $quiz_data['quiz'] = $quiz;
         $questions = $this->get_quiz_questions($id);
+        $questions =  array_slice($questions, 0, $quiz['num_questions_to_display']);
         $myquestions = array();
         foreach ($questions as $question) 
         {
-            $question['possibilities'] = $this->get_question_answers($question['ID']);
+            $answers = $this->get_question_answers($question['ID']);
+            shuffle($answers);
+            $question['possibilities'] = $answers;
             $myquestions[] = $question;
         }
         shuffle($myquestions);
