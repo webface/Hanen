@@ -227,7 +227,7 @@
 <?php
     global $wpdb;
     $files =  getUserUploads($org_id, $user_id);
-    d($files);
+//d($files);
 ?>
 <script>var Files =<?= json_encode($files); ?></script>
 <h1 class="article_page_title">Manage Your Uploaded Resources</h1>

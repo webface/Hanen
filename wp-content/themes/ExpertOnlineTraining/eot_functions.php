@@ -3233,10 +3233,7 @@ function getHandoutResourcesInModules($module_ids = '')
     global $wpdb;
     $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
     //$handouts = $wpdb->get_results("SELECT r.* FROM " . TABLE_RESOURCES . " r WHERE r.module_id IN (" . $module_ids . ")" , ARRAY_A);
-    $handouts = $wpdb->get_results("SELECT DISTINCT mr.module_id as mod_id, r.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_RESOURCES.""
-            ." r on mr.resource_id=r.ID where mr.module_id IN (" . $module_ids . ") AND mr.type IN('doc','link')",ARRAY_A);
-    error_log("SELECT DISTINCT mr.module_id as mod_id, r.* FROM ". TABLE_MODULE_RESOURCES." mr LEFT JOIN ".TABLE_RESOURCES.""
-            ." r on mr.resource_id=r.ID where mr.module_id IN (" . $module_ids . ") AND mr.type IN('doc','link') GROUP BY r.name");
+    $handouts = $wpdb->get_results("SELECT DISTINCT mr.module_id as mod_id, r.* FROM " . TABLE_MODULE_RESOURCES . " mr LEFT JOIN " .TABLE_RESOURCES . " r on mr.resource_id = r.ID WHERE mr.module_id IN (" . $module_ids . ") AND mr.type NOT IN ('video','exam')",ARRAY_A);
     return $handouts;
 }
 
@@ -3372,18 +3369,22 @@ function toggleModuleInAssignment($course_id = 0, $data = array())
   extract($data);
   /*
    * Variables required in $data
-   * org_id - the organization ID
    * module_id - the module ID
-   * resource_id - the resource ID 
    */
   global $wpdb;
+
+  // make sure we have a valid course
+  if (!course_id || !$module_id)
+    return false;
+
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-  $module_resources = $wpdb->get_results("SELECT * FROM ".TABLE_COURSE_MODULE_RESOURCES." "
-          . "WHERE module_id = $module_id"
-          . " AND course_id = $course_id",ARRAY_A);
-  if(count($module_resources)> 0)
+  $module_id = filter_var($module_id, FILTER_SANITIZE_NUMBER_INT);
+
+
+  $module_resources = $wpdb->get_results("SELECT * FROM " . TABLE_COURSE_MODULE_RESOURCES . " WHERE module_id = $module_id AND course_id = $course_id", ARRAY_A);
+  if(count($module_resources) > 0)
   {
-      $resources = $wpdb->get_results("SELECT * FROM ".TABLE_MODULE_RESOURCES." WHERE module_id=$module_id",ARRAY_A);
+      $resources = $wpdb->get_results("SELECT * FROM " . TABLE_MODULE_RESOURCES . " WHERE module_id = $module_id", ARRAY_A);
       $result = true;
       foreach($resources as $resource)
       {    
@@ -3400,12 +3401,12 @@ function toggleModuleInAssignment($course_id = 0, $data = array())
       
   }
   else
-      {
-      $sql = "INSERT INTO " . TABLE_COURSE_MODULE_RESOURCES . " (course_id,module_id,resource_id,type) SELECT $course_id, module_id, resource_id, type "
-              . "FROM ".TABLE_MODULE_RESOURCES." WHERE module_id = $module_id";
+  {
+      $sql = "INSERT INTO " . TABLE_COURSE_MODULE_RESOURCES . " (course_id, module_id, resource_id, type) SELECT $course_id, module_id, resource_id, type FROM " . TABLE_MODULE_RESOURCES . " WHERE module_id = $module_id";
       $result = $wpdb->query($sql);
-              
   }
+
+  // check if we successfully added/deleted module and return appropraite result.
   if ($result === false) 
   {
       return false;
@@ -5817,7 +5818,7 @@ function getCourseForm_callback ( )
             $course_quizzes = getResourcesInCourse($course_id,'exam');
             $course_handouts = getResourcesInCourse($course_id,'doc');
             $course_handouts_module_ids = array_column($course_handouts,'mid');
-            d($course_videos,$course_quizzes,$course_handouts);
+//d($course_videos,$course_quizzes,$course_handouts);
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_handouts_ids = array_column($course_handouts, 'ID');
@@ -5825,7 +5826,7 @@ function getCourseForm_callback ( )
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
             $categories = getCategoriesByLibrary(1);
             $master_modules = getModulesByLibrary(1);// Get all the modules from the master library (course).            
-            //d($course_modules,$master_modules, $categories);
+//d($course_modules,$master_modules, $categories);
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
             $master_module_ids = array_column($master_modules, 'ID');
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
@@ -5872,7 +5873,7 @@ function getCourseForm_callback ( )
                 array_push($handouts[$handout['mod_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
                 }
             }
-            d($exams,$handouts,$videos_in_course,$modules_in_portal,$handout_resources,$course_handouts_ids);
+//d($exams,$handouts,$videos_in_course,$modules_in_portal,$handout_resources,$course_handouts_ids);
             $course_data=getCourse($course_id);// all the settings for the specified course
             $due_date =$course_data['due_date_after_enrollment']!==NULL? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])):NULL; // the due date of the specified course
             $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
@@ -6021,7 +6022,7 @@ function getCourseForm_callback ( )
                         /*  
                          * Display the category and display its modules
                          */
-                        // d($modules,$exams,$handouts);
+// d($modules,$exams,$handouts);
                         foreach($categories as $category)
                         {
                             $category_name = $category->name;// The category name. Replace Coma with spaces.

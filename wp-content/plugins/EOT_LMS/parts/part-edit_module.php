@@ -11,8 +11,8 @@
     // verify this user has access to this portal/subscription/page/view
     $true_subscription = verifyUserAccess();
     $path = WP_PLUGIN_DIR . '/eot_quiz/';
-    //require $path . 'public/class-eot_quiz_data.php';
-    //$eot_quiz = new EotQuizData();
+    require $path . 'public/class-eot_quiz_data.php';
+    $eot_quiz = new EotQuizData();
     // Variable declaration
     global $current_user;
     global $wpdb;
@@ -42,18 +42,16 @@
                             $parts = explode('order_', $k);
                             if(isset($parts[1]))
                             {
-                                $id = $parts[1];
-                                $upd = $wpdb->update(TABLE_MODULE_RESOURCES, array('order' => $v), array('resource_id' => $id, 'module_id' => $module_id));
+                                $id = filter_var($parts[1], FILTER_SANITIZE_NUMBER_INT);
+                                $upd = $wpdb->update(TABLE_MODULE_RESOURCES, array('order' => filter_var($v, FILTER_SANITIZE_NUMBER_INT)), array('resource_id' => $id, 'module_id' => $module_id));
                             }
                         }
                     }
                 }
                 $module = getModule($module_id); // gets all the table info for this module id.
                 $resources = getUserUploads($org_id, $user_id); // get all the user's uploaded resources
-                //$quizzes = $eot_quiz->getQuizzes($org_id, $user_id);
-                $quizzes= array();
+                $quizzes = $eot_quiz->getQuizzes($org_id, $user_id);
                 $module_resources = getResourcesInModule($module_id); // gets all the current resources in the module
-                d($module_resources);
 ?>
             <h1 class="article_page_title" id="moduleTitle"><?= $module['title'] ?></h1>
             <a class="btn btn-primary float-l" href="#" onclick="rename_module();">Rename Module</a>
