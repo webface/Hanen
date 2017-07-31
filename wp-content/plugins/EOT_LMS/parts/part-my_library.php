@@ -94,11 +94,19 @@
 				          								}
 				          							}
 				          							// display link to the quiz if the video has been watched.
-				          							echo ($isFinished) ? '/ <a href="?part=quiz&module_id='.$module_id .'">Take Quiz</a>' : ' / Take Quiz';
-?> 
-				          						<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
-				      						</span>
-<?php 
+				          							if($isFinished)
+				          							{
+				          								echo '/ <a href="?part=quiz&module_id='.$module_id .'">Take Quiz</a>';
+				          							}
+				          							else
+				          							{
+?>
+			          									/ Take Quiz
+														&nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
+<?php
+				          							}
+
+				      				echo	'</span>';
 				      						if( isset( $resources_doc ) && count($resources_doc) > 1 )
 				      						{
 				      							foreach ($resources_doc as $key => $resource) 
