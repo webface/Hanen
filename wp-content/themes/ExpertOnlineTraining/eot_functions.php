@@ -3030,14 +3030,26 @@ function getEnrolledUsersInCourse($course_id = 0)
  *
  *  @return array() - an array of VideoResources data
  */
-function getVideoResourcesInModules($module_ids = '', $user_id = 0)
+function getVideoResourcesInModules($module_ids = '')
 {
-    if (empty($module_ids) || $user_id == 0)
+    if (empty($module_ids))
       return NULL;
 
     global $wpdb;
     $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
-    $resources = $wpdb->get_results("SELECT DISTINCT mr.module_id, v.*, t.result, t.video_time, t.ID as track_id, r.url FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_VIDEOS . " v " . "ON mr.resource_id = v.ID LEFT JOIN " . TABLE_RESOURCES . " r ON r.ID = mr.resource_id LEFT JOIN " . TABLE_TRACK. " t ON t.user_id = $user_id AND t.video_id = v.ID" . " WHERE mr.module_id IN (" . $module_ids . ") AND mr.type = 'video' ORDER BY mr.order ASC", OBJECT_K);
+    $resources = $wpdb->get_results("SELECT DISTINCT mr.module_id, v.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_VIDEOS . " v "
+            . "ON mr.resource_id = v.ID "
+            . "WHERE mr.module_id IN (" . $module_ids . ") AND mr.type = 'video' ORDER BY mr.order ASC", ARRAY_A);
+
+/*
+    $resources = $wpdb->get_results(
+      "SELECT DISTINCT mr.module_id, v.*, t.result, t.video_time, t.ID as track_id, r.url 
+       FROM " . TABLE_MODULE_RESOURCES . " mr LEFT JOIN " . TABLE_VIDEOS . " v " . "ON mr.resource_id = v.ID 
+       LEFT JOIN " . TABLE_RESOURCES . " r ON r.ID = mr.resource_id 
+       LEFT JOIN " . TABLE_TRACK. " t ON t.user_id = $user_id AND t.video_id = v.ID" . " 
+       WHERE mr.module_id IN (" . $module_ids . ") AND mr.type = 'video' 
+       ORDER BY mr.order ASC", OBJECT_K);
+*/       
     return $resources;
 }
 
@@ -5849,7 +5861,7 @@ function getCourseForm_callback ( )
             $all_module_ids = array_merge($master_module_ids, $modules_in_portal_ids);
             $all_module_ids_string = implode(',',$all_module_ids);
             $videos_in_course = array();
-            $vids=  getVideoResourcesInModules($all_module_ids_string);
+            $vids = getVideoResourcesInModules($all_module_ids_string);
             foreach($vids as $video)
             {
               if(isset($videos_in_course[$video['module_id']]))
@@ -7803,10 +7815,11 @@ jane@email.com
 
     wp_die();
 }
+
 /**
  * Get enrolled users in a specific course
- * @param int $course_id - the course ID
- * @return array of enrolled users or NULL if none exist
+ * @param int $user_id - the user ID
+ * @return array of enrollements for this user or NULL if none exist
  */
 function getEnrollmentsByUserId($user_id = 0, $status = "all")
 {
@@ -7829,8 +7842,6 @@ function getEnrollmentsByUserId($user_id = 0, $status = "all")
     }
     return NULL;
 }
-
-
 
 /**
  * Get course modules by the course id
@@ -8129,4 +8140,69 @@ function getResourcesInModuleInCourse($course_id = 0, $module_id = 0, $type = ''
                 . "WHERE cmr.course_id = $course_id AND cmr.type = '$type' AND cmr.module_id = $module_id";
     $course_module_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_module_resources;
+}
+
+/**
+ * Get enrollement status by enrollment ID or by course/user id
+ * @param int $enrollment_id - the enrollment ID
+ * @param int $user_id - the user ID
+ * @param int $course_id - the course ID
+ * @return string of the enrollement status or NULL if none exist
+ */
+function getEnrollmentStatus($enrollment_id = 0, $user_id = 0, $course_id = 0)
+{
+    global $wpdb;
+    $enrollment_id = filter_var($enrollment_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+
+    if($enrollment_id)
+    {
+      $sql = "SELECT status FROM " . TABLE_ENROLLMENTS . " WHERE ID = $enrollment_id";
+    }
+    elseif ($user_id && $course_id)
+    {
+      $sql = "SELECT status FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id AND user_id = $user_id";
+    }
+    else
+    {
+      return NULL;
+    }
+
+    // Get the enrollments who are enrolled in the course.
+    $enrollment_status = $wpdb->get_var($sql);
+
+    if($enrollment_status)
+    {
+      return $enrollment_status;
+    }
+    return NULL;
+}
+
+/**
+ * update the enrollment status
+ * @param int $enrollment_id - the enrollment ID
+ * @return true if successful, false otherwise
+ */
+add_action('wp_ajax_updateEnrollmentStatus', 'updateEnrollmentStatus_callback');
+function updateEnrollmentStatus_callback()
+{
+    global $wpdb;
+    $enrollment_id = isset($_REQUEST['enrollment_id']) ? filter_var($_REQUEST['enrollment_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+    $status = isset($_REQUEST['status']) ? filter_var($_REQUEST['status'], FILTER_SANITIZE_STRING) : '';
+
+    if($enrollment_id && $status != '')
+    {
+        $update_status = $wpdb->update(
+        TABLE_ENROLLMENTS,
+        array (
+          'status' => $status
+        ),
+        array (
+          'ID' => $enrollment_id
+        )
+      );
+    } 
+
+    wp_die();
 }

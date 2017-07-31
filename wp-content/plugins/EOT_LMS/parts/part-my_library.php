@@ -13,6 +13,24 @@
 				wp_die("You do not have access to this course");
 			}
 
+			// check course status - update in necessary
+			$enrollment_id = isset($_REQUEST['enrollment_id']) ? filter_var($_REQUEST['enrollment_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+			$enrollment_status = getEnrollmentStatus($enrollment_id);
+			if($enrollment_status == 'not_started')
+			{
+				// output the javascript to update enrollment status to in_progress
+?>
+     			<script type='text/javascript'>
+	      			$(document).ready(function() 
+	      			{			
+						var url =  ajax_object.ajax_url + "?action=updateEnrollmentStatus&enrollment_id=<?= $enrollment_id ?>&status=in_progress";
+						$.ajax({
+							url:url
+			            });
+	      			});
+      			</script>	
+<?php
+			}
 			$course_info = getCourse($course_id); // the course info, name, desc, etc...
 	
 			if($course_info)

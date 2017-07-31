@@ -108,7 +108,7 @@ if (current_user_can("is_director"))
 else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager")) 
 {
     $libraries = getLibraries(); // All the libraries in wp_library table
-    ?> 
+?> 
     <h1 class="article_page_title"> Sales Rep Administration Panel</h1>
     <ul>
         <li><a href="?part=user_list" onclick="load('load_manage_staff_accounts')"><b>Manage Users</b></a> | <a href="?part=user_list&ignore=students"><b>Manage Directors Only</b></a></li>
@@ -117,17 +117,17 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
         <li><a href="?part=upload_resources"><b>Upload Resources</b></a></li>
         <li><a href="?part=manage_uber_managers2"><b>Manage Uber/Umbrella Managers</b></a></li>
 
-        <?php
+<?php
         if (current_user_can('sales_manager')) 
         {
-            ?>
+?>
             <li><a href="?part=create_sales_report&start_date=<?= SUBSCRIPTION_START ?>&end_date=<?= SUBSCRIPTION_END ?>"><b>Create Sales Report</b></a></li>
             <li><a href="?part=manage_sales_rep"><b>Manage Sales Rep</b></a></li>
-            <?php
+<?php
         }
-        ?>
+?>
     </ul>
-    <?php
+<?php
     foreach ($libraries as $library) 
     {
         $library_name = $library->name; // The library name
@@ -148,7 +148,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
                 $num_inactive++;
             }
         }
-        ?>
+?>
         <table class="data">
             <tbody>
                 <tr class="head">
@@ -219,7 +219,9 @@ else if (current_user_can("is_student"))
         // Display the enrollments information in the dashboard
         foreach ($enrollments as $enrollment) 
         {
+            $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
             $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
+            $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
             // Get all the modules in this course
             $modules = getModulesInCourse($course_id);
             $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : "could not find the course name"; // Check if the that course id is in $courses.
@@ -243,7 +245,7 @@ else if (current_user_can("is_student"))
                     <div class="content_right">
                         <div class="clear"></div>
                         <div class="menu">
-                            <a href="?part=my_library&course_id=<?= $course_id?>" class="my_library">
+                            <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
                                 <div class="thumbnail">
                                     <i class="fa fa-youtube-play" alt="Content"></i>
                                 </div>
@@ -280,7 +282,7 @@ else if (current_user_can("is_student"))
 
                     </div>
                     <div class="dashboard_button">
-                        <a href="?part=staff_lounge&subscription_id=" onclick="load('load_staff_lounge')">
+                        <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
                             <div class="title" style="padding-top: 5px;">
                                 <b>Virtual Staff Lounge</b>
                                 <br>Manage your Forum
