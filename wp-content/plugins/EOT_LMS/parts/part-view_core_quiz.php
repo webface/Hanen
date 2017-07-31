@@ -2,8 +2,6 @@
     <?= CRUMB_DASHBOARD ?>    
     <?= CRUMB_SEPARATOR ?>     
     <?= CRUMB_ADMINISTRATOR ?>    
-    <?= CRUMB_SEPARATOR ?>    
-    <?=  CRUMB_QUIZ ?>    
     <?= CRUMB_SEPARATOR ?>
     <span class="current">View Quiz</span>     
 </div>
