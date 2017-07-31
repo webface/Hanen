@@ -26,8 +26,8 @@
         }
         // the module data
         $data = array(
-            'title' => filter_var($_REQUEST['moduleName'], FILTER_SANITIZE_STRING),
-            'description_text' => filter_var($_REQUEST['moduleDescription'], FILTER_SANITIZE_STRING),
+            'title' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['moduleName'])),
+            'description_text' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['moduleDescription'])),
             'created_at' => current_time('Y-m-d'),
             'org_id' => filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT),
             'user_id' => filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT)
