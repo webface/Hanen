@@ -188,7 +188,7 @@ class EotQuizData
     public function add_quiz_attempt($data = array()) 
     {
         global $wpdb;
-        $result = $wpdb->insert(TABLE_QUIZ_ATTEMPT, $data);
+        $result = $wpdb->insert(TABLE_QUIZ_ATTEMPTS, $data);
         $lastid = $wpdb->insert_id;
         return $lastid;
     }
