@@ -11,7 +11,7 @@
     $eot_quiz = new EotQuizData();
     $quiz_id = filter_var($_REQUEST['quiz_id'],FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
-    $quiz_data = $eot_quiz->get_quiz_data($quiz_id);
+    $quiz_data = $eot_quiz->get_quiz_data($quiz_id, false);
 ?>
     <h3><?= $quiz_data['quiz']['name']; ?></h3>
     <p><?= $quiz_data['quiz']['description']; ?><p>
