@@ -152,6 +152,9 @@ class Eot_quiz_Public
             case 'view_quiz':
                 require_once plugin_dir_path(__FILE__) . 'partials/eot_view_quiz.php';
                 break;
+            case 'view_core_quiz':
+                require_once plugin_dir_path(__FILE__) . 'partials/eot_view_core_quiz.php';
+                break;
             case 'update_quiz':
                 require_once plugin_dir_path(__FILE__) . 'partials/eot_update_quiz.php';
                 break;
