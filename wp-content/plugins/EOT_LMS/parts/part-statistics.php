@@ -182,11 +182,47 @@
 			    	</div>
 			  	<?= eotprogressbar('12em', $percentage_logged_in, true); ?>
 		  	</div>
-<!--
+		  	<div class="cell-row">
+			        <div class="cell-caption">
+			        	Number of <b>Videos Watched</b>
+			    	</div>
+			        <div class="cell-field number">
+			        	<b><?= 0 ?></b>
+			    	</div>
+			  	
+		  	</div>                        
+		  	<div class="cell-row">
+			        <div class="cell-caption">
+			        	Number of <b>Quizzes Taken</b>
+			    	</div>
+			        <div class="cell-field number">
+			        	<b><?= 0 ?></b>
+			    	</div>
+			  	
+		  	</div>
+		  	<div class="cell-row">
+			        <div class="cell-caption">
+			        	Number of <b>Certificates Conferred</b>
+			    	</div>
+			        <div class="cell-field number">
+			        	<b><?= 0 ?></b>
+			    	</div>
+			  	
+		  	</div>
+		  	<div class="cell-row">
+			        <div class="cell-caption">
+			        	Number of <b>Resources Downloaded</b>
+			    	</div>
+			        <div class="cell-field number">
+			        	<b><?= 0 ?></b>
+			    	</div>
+			  	
+		  	</div>                        
+
   	<div class="cell-row">
 		<a class="stats-button" href="">Export Assignment Summary to Excel</a>
 	</div>
--->	
+	
 			<h2>Courses</h2>
 			<table style="width:100%">            
 				<tbody>
@@ -205,7 +241,9 @@
 						<tr>
 							<td width="20%"><?= $course_name ?></td>
 							<td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Course Stats</a></td>
-						</tr>
+                                                        <td><a href="?part=staffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Staff Stats</a></td>
+                                                        <td><a href="#">Download Excel Report</a></td>
+                                                </tr>
 <?php
 					}
 				}
