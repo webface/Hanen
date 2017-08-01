@@ -1,3 +1,8 @@
+<h4>1.10.6.4 7/28/2017</h4>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+  <li>Fixed PHP error produced by canonical redirection if the post_type is changed to an array by a plugin.</li>
+</ul>
 <h4>1.10.6.3 7/05/2017</h4>
 <p><strong>Bug Fixes</strong></p>
 <ul>

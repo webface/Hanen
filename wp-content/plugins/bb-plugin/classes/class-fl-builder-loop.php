@@ -272,6 +272,7 @@ final class FLBuilderLoop {
 
 			// Disable canonical on CPT single
 			if ( isset( $wp_the_query->query_vars['post_type'] )
+                 && ! is_array( $wp_the_query->query_vars['post_type'] )
 	             && isset( $supported_post_types[ $wp_the_query->query_vars['post_type'] ] )
 	             && true === $wp_the_query->is_singular
 	             && - 1 == $wp_the_query->current_post
