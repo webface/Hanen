@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-07-11 17:34:37+0000\n"
+"PO-Revision-Date: 2017-07-12 04:20:06+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,27 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: pt_BR\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:165
+msgid "Products that the coupon will be applied to, or that need to be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "Produtos que o cupom será aplicado, ou que precisam estar no carrinho para que o \"Desconto fixo de carrinho\" seja aplicado."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:182
+msgid "Products that the coupon will not be applied to, or that cannot be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "Produtos que o cupom não será aplicado, ou que não podem estar no carrinho para que o \"Desconto fixo de carrinho\" seja aplicado."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:218
+msgid "Product categories that the coupon will not be applied to, or that cannot be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "Categorias de produtos que o cupom não será aplicado, ou que não podem estar no carrinho para que o \"Desconto fixo de carrinho\" seja aplicado."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:201
+msgid "Product categories that the coupon will be applied to, or that need to be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "Categorias de produtos que o cupom será aplicado, ou que precisam estar no carrinho para que o \"Desconto fixo de carrinho\" seja aplicado."
+
+#: includes/api/class-wc-rest-shipping-zone-locations-controller.php:90
+#: includes/api/class-wc-rest-shipping-zones-controller.php:170
+msgid "The \"locations not covered by your other zones\" zone cannot be updated."
+msgstr "A área de entrega \"Locais não cobertos por suas outras áreas de entrega\" não pode ser atualizada."
 
 #: includes/wc-product-functions.php:751
 msgid "Search results only"

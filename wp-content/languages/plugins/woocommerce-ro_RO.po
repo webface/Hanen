@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-07-26 08:10:40+0000\n"
+"PO-Revision-Date: 2017-07-31 17:37:58+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9267,10 +9267,6 @@ msgstr "Ai un cupon?"
 msgid "Your order"
 msgstr "Comanda ta"
 
-#: templates/checkout/form-checkout.php:29
-msgid "You must be logged in to checkout."
-msgstr "Trebuie să fii autentificat pentru a plătii."
-
 #: templates/checkout/form-billing.php:61
 msgid "Create an account?"
 msgstr "Creezi un cont?"
@@ -9496,6 +9492,10 @@ msgstr "Există deja un cont înregistrat cu această adresă de email. Te rog a
 #: includes/wc-core-functions.php:347
 msgid "Hungarian forint"
 msgstr "Forint"
+
+#: templates/checkout/form-checkout.php:29
+msgid "You must be logged in to checkout."
+msgstr "Trebuie să fii autentificat pentru a plăti."
 
 #: includes/class-wc-product-variable.php:60
 msgid "Select options"

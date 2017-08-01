@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Jetpack by WordPress.com - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-05-15 14:24:29+0000\n"
+"PO-Revision-Date: 2017-07-20 23:55:52+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4412,7 +4412,7 @@ msgstr "Volver a la configuración del Plan"
 msgid "Every minute"
 msgid_plural "Every %d minutes"
 msgstr[0] "Cada minuto"
-msgstr[1] ""
+msgstr[1] "Cada %d minutos"
 
 #: modules/widgets/contact-info.php:277
 msgid "Google now requires an API key to use their maps on your site. <a href=\"%s\">See our documentation</a> for instructions on acquiring a key."
@@ -6319,7 +6319,7 @@ msgstr "Nombre de la etiqueta"
 
 #: modules/theme-tools/featured-content.php:463
 msgid "Easily feature all posts with the <a href=\"%1$s\">\"featured\" tag</a> or a tag of your choice. Your theme supports up to %2$s posts in its featured content area."
-msgstr "Destaca de manera fácil todas las entradas con la <a href=\"%1$s\">etiqueta \"featured\"</a> o la etiqueta de tu elección. Su tema soporta hasta %2$s entradas en el area de contenido destacado."
+msgstr "Destaca de manera fácil todas las entradas con la <a href=\"%1$s\">etiqueta \"featured\"</a> o la etiqueta de tu elección. Su tema es compatible con hasta %2$s entradas en el área de contenido destacado."
 
 #: modules/theme-tools/featured-content.php:449
 #: modules/theme-tools/featured-content.php:462
@@ -6420,9 +6420,9 @@ msgid ""
 msgstr ""
 "Hola.\n"
 "\n"
-"Se ha abonado recientemente a una entrada de mi blog. Esto significa que recibirá un correo electrónico cuando se publiquen nuevos comentarios.\n"
+"Te has suscrito recientemente a una de mis entradas. Esto significa que recibirás un correo electrónico cuando se publiquen nuevos comentarios.\n"
 "\n"
-"Para activar, seleccione confirmar abajo.  Si cree que esto es un error, ignore este mensaje y no lo molestaremos de nuevo."
+"Para activar, haz clic abajo en confirmar.  Si crees que esto es un error, ignora este mensaje y no te molestaremos de nuevo."
 
 #: modules/subscriptions.php:375
 msgid ""
@@ -6434,9 +6434,9 @@ msgid ""
 msgstr ""
 "Hola.\n"
 "\n"
-"Se ha abonado recientemente a las entradas de este blog. Esto significa que recibirá cada nueva entrada por correo electrónico.\n"
+"Te has suscrito recientemente a las entradas de este blog. Esto significa que recibirás cada nueva entrada por correo electrónico.\n"
 "\n"
-"Para activar, seleccione confirmar abajo. Si cree que esto es un error, ignore este mensaje y no lo molestaremos de nuevo."
+"Para activar, elige abajo confirmar. Si crees que esto es un error, ignora este mensaje y no te molestaremos de nuevo."
 
 #: modules/subscriptions.php:370
 msgid "Introduction text sent when someone follows a post on your blog. (Site and confirmation details will be automatically added for you.)"
@@ -9729,7 +9729,7 @@ msgstr "Descargar"
 
 #: modules/contact-form/grunion-contact-form.php:615
 msgid "All posts"
-msgstr "Todas las entradas"
+msgstr "Todos los mensajes"
 
 #: modules/contact-form/grunion-contact-form.php:613
 msgid "Select feedback to download"
