@@ -10,14 +10,16 @@
 	$data = compact ("org_id");
 	$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 	$courses = getCoursesById($org_id, $subscription_id);// All published courses in the portal.
-        d($courses);
         $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
 	$num_staff_completed_assignment = 0; // Number of staff who have completed all their assignment
 	$num_staff_signed_in = 0; // Number of staff who signed in at least once.
 	$learners = '';
 	$completed_user_ids = array();
 	$incomplete_user_ids = array();
-
+        $num_videos_watched = calculate_videos_watched($org_id);
+        
+        $num_quizzes_taken=calculate_quizzes_taken($org_id, $subscription_id);
+d($courses,$num_videos_watched,$num_quizzes_taken);
     // check if we have staff accounts and filter out everyone other than learners
     if( isset($staff_accounts['status']) && $staff_accounts['status'] )
     {
@@ -187,7 +189,7 @@
 			        	Number of <b>Videos Watched</b>
 			    	</div>
 			        <div class="cell-field number">
-			        	<b><?= 0 ?></b>
+			        	<b><?= $num_videos_watched ?></b>
 			    	</div>
 			  	
 		  	</div>                        
@@ -196,7 +198,7 @@
 			        	Number of <b>Quizzes Taken</b>
 			    	</div>
 			        <div class="cell-field number">
-			        	<b><?= 0 ?></b>
+                                    <b><?= $num_quizzes_taken ?></b>
 			    	</div>
 			  	
 		  	</div>

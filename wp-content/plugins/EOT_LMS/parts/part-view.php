@@ -3,13 +3,14 @@
 	{
     	$module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // The module ID
     	$course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
-
+        $subscription = getSubscriptionByCourse($course_id);
+        $subscription_id = $subscription['ID'];
     	// make sure the user has access to this course
 		$has_access = verify_student_access($course_id);
 		if($has_access) 
 		{
 			// Check if the module belongs to the course.
-			if(verify_module_in_course($module_id, $course_id))
+			if(verify_module_in_course($module_id, $course_id, $type = 'video'))
 			{
 				// get the module data
 				$module = getModule($module_id);
@@ -27,7 +28,19 @@
 				$subLanguage = isset($_REQUEST['subLang']) ? filter_var($_REQUEST['subLang'],FILTER_SANITIZE_STRING) : null; // Video Language
 		   		$resolution = isset($_REQUEST['res']) ? filter_var($_REQUEST['res'],FILTER_SANITIZE_STRING) : null; // Video resolution
 				$module_video_resources = getResourcesInModuleInCourse($course_id, $module_id, $type = 'video'); // get the video resources in this module
+                                $resources_exam = getResourcesInCourse($course_id, "exam");
 
+                                
+                                $exams = array();
+                                foreach($resources_exam as $exam){
+                                    if(isset($exams[$exam['mid']]))
+                                    {
+                                        array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                                    }else{
+                                    $exams[$exam['mid']]=array();
+                                    array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                                    }
+                                }
 				if( isset( $module_video_resources ) )
 				{
 					foreach ($module_video_resources as $key => $video)
@@ -83,8 +96,7 @@
                             } 
 ?>
 
-                            <source src="rtmp://awscdn.expertonlinetraining.com/cfx/st/&mp4:<?= $video_name ?>.mp4#t=<?= $video_last_time ?>" type='rtmp/mp4'>
-                            <source src="http://awscdn2.expertonlinetraining.com/<?= $video_name ?>.mp4#t=<?= $video_last_time ?>" type='video/mp4'>
+                            <source src="https://eot-output.s3.amazonaws.com/<?= $video_name ?>.mp4#t=<?= $video_last_time ?>" type='video/mp4'>
                             <p class="vjs-no-js">
         	                    To view this video please enable JavaScript, and consider upgrading to a web browser that
             	                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
@@ -99,9 +111,16 @@
           			<?= $video['desc']; ?>       
       			</p>
       			<br>
+<?php
+                    if(isset($exams[$module_id]))
+                    {
+                        $exam_data = $exams[$module_id];
+                        $quiz_id = $exam_data[0]['ID'];
+
+?>
       			<center>
       				<div id="quiz" style="display:none">
-						<a class="btn" style="" href="?part=quiz&module_id=<?= $module_id ?> " rel="facebox">
+						<a class="btn" style="" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">
 	    					Take Quiz
   						</a>
 						</div>
@@ -109,7 +128,10 @@
 							<p>Note* You have to <b>finish</b> <b>watching</b> the <b>video</b> to be able to take the quiz.</p>
 						</div>
 					</center>     			
-      			<center>  	
+      			<center>
+<?php
+                    }
+?>
       			<script type='text/javascript'>
       			$(document).ready(function() 
       			{

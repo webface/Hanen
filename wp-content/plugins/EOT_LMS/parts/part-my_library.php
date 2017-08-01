@@ -5,7 +5,10 @@
 
 		if(current_user_can("is_student"))
 	    {
-
+                global $current_user;
+                $user_id = $current_user->ID;
+                $subscription_id = getSubscriptionIdByUser($user_id);
+                d($subscription_id);
 			// verify this user has access to this course
 	    	$has_access = verify_student_access($course_id);
 			if (!$has_access)
@@ -53,6 +56,20 @@
 				$categories = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
 				$resources_doc = getResourcesInCourse($course_id, "doc");
 				$resources_video = getResourcesInCourse($course_id, "video");
+                                $resources_exam = getResourcesInCourse($course_id, "exam");
+
+                                
+                                $exams = array();
+                                foreach($resources_exam as $exam){
+                                    if(isset($exams[$exam['mid']]))
+                                    {
+                                        array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                                    }else{
+                                    $exams[$exam['mid']]=array();
+                                    array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                                    }
+                                }
+                                //d($resources_doc,$resources_video,$resources_exam,$exams);
 				$video_track = getTrack($user_id, 0, "watch_video");
 				$modules = array(); // Array of Module objects
 				$available_categories = array_unique(array_column($modules_in_course, 'category'));
@@ -76,15 +93,15 @@
 					}
 
 			        // Display library and the modules inside it.
-	                foreach($categories as $category)
-	        		{
-	        			$category_name = $category->name;
-	        			// Check if the category has any modules. Otherwise skip it.
-	        			if(in_array($category_name, $available_categories))
-	        			{
+                            foreach($categories as $category)
+                            {
+                                    $category_name = $category->name;
+                                    // Check if the category has any modules. Otherwise skip it.
+                                    if(in_array($category_name, $available_categories))
+                                    {
 		        			echo '<h3 class="library_topic">'.$category_name.'</h3>';
 			              	foreach( $modules as $key => $module )
-		          			{
+		          		{
 			                	if ( $module->category == $category_name )
 		                		{
 		                			echo '<ul class="tree">';
@@ -114,15 +131,24 @@
 				          							// display link to the quiz if the video has been watched.
 				          							if($isFinished)
 				          							{
-				          								echo '/ <a href="?part=quiz&module_id='.$module_id .'">Take Quiz</a>';
-				          							}
+                                                                                                    if(isset($exams[$module_id]))
+                                                                                                    {
+                                                                                                        $exam_data = $exams[$module_id];
+                                                                                                        $quiz_id = $exam_data[0]['ID'];
+				          								echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';
+				          							
+                                                                                                    }
+                                                                                                }
 				          							else
 				          							{
-?>
+                                                                                                    if(isset($exams[$module_id]))
+                                                                                                    {
+?>                                                                                                  
 			          									/ Take Quiz
 														&nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
 <?php
-				          							}
+                                                                                                    }
+                                                                                                }
 
 				      				echo	'</span>';
 				      						if( isset( $resources_doc ) && count($resources_doc) > 1 )
@@ -140,16 +166,16 @@
 				      								}
 				      								unset($resource);
 				      							}
-											}
+										}
 ?>
 				    					</li> 	                 
 									<?php
 									echo '</ul>';
-		                		}
-		                	}
-	                	}
-	        		}
-		        }
+		                		}//end if
+		                	}//end for each
+                                    }//end if
+	        		}//end for each
+		        }//end if
 		        else
 		        {
 		        	echo 'There are no modules in this course. Please contact your camp director.';

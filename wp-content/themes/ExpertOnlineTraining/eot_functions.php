@@ -7969,7 +7969,7 @@ function updateVideoProgress_callback()
           'type' => 'watch_video',
           'user_id' => $user_id,
           'org_id' => $org_id,
-          'date' => 'NOW()',
+          'date' => date('Y-m-d H:i:s'),
           'video_id' => $video_id,
           'module_id' => $module_id,
           'video_time' => '1'
@@ -8091,6 +8091,7 @@ function verify_student_access($course_id = 0)
   $user_id = $current_user->ID;
 
   $query = "SELECT ID FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id AND user_id = $user_id";
+  error_log($query);
   $enrolled = $wpdb->get_var($query);
 
   if($enrolled)
@@ -8106,7 +8107,7 @@ function verify_student_access($course_id = 0)
  * @param int $course_id - the course id
  * return true if the module is in the course.
  */
-function verify_module_in_course($module_id = 0, $course_id = 0)
+function verify_module_in_course($module_id = 0, $course_id = 0, $type = '')
 {
   if (!$course_id || !$module_id)
     return false;
@@ -8115,7 +8116,8 @@ function verify_module_in_course($module_id = 0, $course_id = 0)
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
 
   global $wpdb;
-  $query = "SELECT ID FROM " . TABLE_COURSES_MODULES . " WHERE course_id = $course_id AND module_id = $module_id";
+  $query = "SELECT ID FROM " . TABLE_COURSE_MODULE_RESOURCES . " WHERE course_id = $course_id AND module_id = $module_id AND type = '$type'";
+  error_log($query);
   $exists = $wpdb->get_var($query);
 
   if($exists)
@@ -8243,4 +8245,58 @@ function updateEnrollmentStatus_callback()
     } 
 
     wp_die();
+}
+
+/*
+ * get subscription id from enrollments
+ * @param: $user_id - the user ID
+ */
+function getSubscriptionIdByUser($user_id = 0)
+{
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $enrollment = $wpdb->get_row("SELECT * FROM ". TABLE_ENROLLMENTS ." WHERE user_id = $user_id",ARRAY_A);
+    //error_log("SELECT * FROM ". TABLE_ENROLLMENTS ." WHERE user_id = $user_id AND subscription_id != NULL");
+    return $enrollment['subscription_id'];
+}
+
+
+/**
+ * stats function to calculate videos watched
+ * @param $org_id - ID of the org
+ */
+function calculate_videos_watched($org_id = 0)
+{
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $num_videos_watched = $wpdb->get_row("SELECT COUNT(ID) as count FROM ". TABLE_TRACK." WHERE org_id = $org_id AND result = 1 AND type = 'watch_video'", ARRAY_A);
+    return $num_videos_watched['count'];
+}
+
+
+/**
+ * stats function calculate number of quizzes watched
+ * @param $org_id - ID of the org
+ */
+function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
+{
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    
+    if($org_id == 0 || $subscription_id == 0)
+        return 0;
+    
+    global $wpdb;
+    
+    $quizzes_in_course = $wpdb->get_results("SELECT DISTINCT cmr.resource_id,c.* FROM ".TABLE_COURSE_MODULE_RESOURCES." as cmr LEFT JOIN ". TABLE_COURSES . " as c ON c.ID = cmr.course_id WHERE c.org_id = $org_id AND c.subscription_id = $subscription_id AND cmr.type = 'exam'",ARRAY_A);
+    $quizzes_ids = array_column($quizzes_in_course, 'resource_id');
+    $quiz_ids_string = implode(',',$quizzes_ids);
+    $users_in_org = getEotUsers($org_id);
+    $users_in_org = $users_in_org['users'];
+    $user_ids = array_column($users_in_org, 'ID');
+    $user_ids_string = implode(',',$user_ids);
+
+    $attempts = $wpdb->get_row("SELECT COUNT(ID) as count FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id IN(".$quiz_ids_string.") AND  user_id IN(".$user_ids_string.")",ARRAY_A);
+    error_log("SELECT COUNT(ID) as count FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id IN('".$quiz_ids_string."') AND  user_id IN('".$user_ids_string."')");
+    return $attempts['count'];
 }
