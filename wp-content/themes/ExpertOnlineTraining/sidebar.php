@@ -28,7 +28,7 @@
 							<ul>
 								<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=my_account">Account Settings</a></li>
 <?php
-								if(current_user_can ('is_student'))
+								if(current_user_can ('is_student') || current_user_can ('is_director'))
 								{
 ?>
 									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=mycertificates">My Certificates</a></li>
