@@ -372,3 +372,28 @@ function replace_retrieve_password_message( $message, $key, $user_login, $user_d
     return $msg;
 }
 add_filter( 'retrieve_password_message', 'replace_retrieve_password_message', 10, 4 );
+
+
+function track_logins($user_login, $user) 
+{
+  // declare database
+  global $wpdb;
+  $user_id = $user->ID;
+  $org_id = get_org_from_user ($user_id);
+
+  //I'm assuming you want to check the user role and
+  //check for user role
+  foreach($user->roles as $role){
+      //replace role with the role you assigned to your students
+      if($role === 'student'){
+          $wpdb->insert(TABLE_TRACK,array(
+              'user_id' => $user_id,
+              'org_id' => $org_id,
+              'date' => date('Y-m-d H:i:s'),
+              'type' => 'login'
+              )
+          );
+      }
+  }
+}
+add_action('wp_login', 'track_logins', 10, 2);

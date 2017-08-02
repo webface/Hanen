@@ -12,7 +12,7 @@
 	$courses = getCoursesById($org_id, $subscription_id);// All published courses in the portal.
         $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
 	$num_staff_completed_assignment = 0; // Number of staff who have completed all their assignment
-	$num_staff_signed_in = 0; // Number of staff who signed in at least once.
+	$num_staff_signed_in = calculate_logged_in($org_id); // Number of staff who signed in at least once.
 	$learners = '';
 	$completed_user_ids = array();
 	$incomplete_user_ids = array();

@@ -7,8 +7,8 @@
 	    {
                 global $current_user;
                 $user_id = $current_user->ID;
+                $admin_ajax_url = admin_url('admin-ajax.php');
                 $subscription_id = getSubscriptionIdByUser($user_id);
-                d($subscription_id);
 			// verify this user has access to this course
 	    	$has_access = verify_student_access($course_id);
 			if (!$has_access)
@@ -50,14 +50,21 @@
 <?php
 		       	// Get all the modules in this course by the course ID
 				$user_id = get_current_user_id(); // WP User ID
+                                $org_id = get_org_from_user($user_id);
 				$modules_in_course = getModulesInCourse($course_id);
+                                $modules_in_portal = getModules($org_id);// all the custom modules in this portal
+                                $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
+                                $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
+                                $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
+                                $quizzes_in_custom_modules=getQuizResourcesInModules($modules_in_portal_ids_string);
+                                $resources_in_custom_modules =  getHandoutResourcesInModules($modules_in_portal_ids_string);
 				$subscription = getSubscriptionByCourse($course_id); // get the subscription data
 				$library_id = isset($subscription['library_id']) ? $subscription['library_id'] : 0; // the library ID
 				$categories = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
 				$resources_doc = getResourcesInCourse($course_id, "doc");
 				$resources_video = getResourcesInCourse($course_id, "video");
                                 $resources_exam = getResourcesInCourse($course_id, "exam");
-
+                                //d($modules_in_portal,$videos_in_custom_modules,$quizzes_in_custom_modules,$resources_in_custom_modules);
                                 
                                 $exams = array();
                                 foreach($resources_exam as $exam){
@@ -160,7 +167,7 @@
 					      								$video_id = $resource['video_id'];
 ?>								
 					              						<ul class="inner nobullet">
-					                                        <li><a href="<?= $resource['url'] ?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="<?= $resource['url']?>">Download Handout (PDF)</a></span></li>
+                                                                                                    <li><a onclick="downloadResource(<?= $resource['ID'] ?>,<?= $module_id ?>)"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
 				                                      	</ul>
 <?php 
 				      								}
@@ -176,11 +183,123 @@
                                     }//end if
 	        		}//end for each
 		        }//end if
+                        
 		        else
 		        {
 		        	echo 'There are no modules in this course. Please contact your camp director.';
 		        }
-			}
+                                echo '<h3 class="library_topic">Custom Modules</h3>';
+                                $rcm = array();
+                                foreach($resources_in_custom_modules as $resource)
+                                {
+                                  if(isset($rcm[$resource['mod_id']]))
+                                  {
+                                    array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
+                                  }
+                                  else
+                                  {
+                                    $rcm[$resource['mod_id']]=array();
+                                    array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
+                                  }
+                                }
+                                $exams = array();
+                                foreach($quizzes_in_custom_modules as $resource)
+                                {
+                                  if(isset($exams[$resource['module_id']]))
+                                  {
+                                    array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
+                                  }
+                                  else
+                                  {
+                                    $exams[$resource['module_id']]=array();
+                                    array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
+                                  }
+                                }
+                                //d($exams);
+                                foreach($modules_in_portal as $module)
+                                {
+                                    echo '<ul class="tree">';
+                                    $module_id = $module['ID']; // The module ID
+				    $module_title = $module['title']; // The module name.
+?>
+                                    <li class="tree_video">
+                                        <i class="fa fa-square-o" aria-hidden="true"></i>
+                                            <b><?= $module_title ?></b>
+<?php
+                                            if(isset($rcm[$module_id]))
+                                            {
+                                                foreach($rcm[$module_id] as $resource)
+                                                {
+                                                    switch ($resource['type']) {
+                                                        case 'link':
+                                                            $icon = "fa-link";
+                                                            $url = $resource['url'];
+                                                            $action = 'Visit Url';
+                                                            break;
+                                                        case 'doc':
+                                                            $icon = "fa-sticky-note-o";
+                                                            $url = $resource['url'];
+                                                            $action = 'Download File';
+                                                            break;
+                                                        case 'custom_video':
+                                                            $icon = "fa-play";
+                                                            $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
+                                                            $action = 'Watch Video';
+                                                            break;
+                                                        default:
+                                                            $icon = "fa-sticky-note-o";
+                                                    }
+                                                    
+?>
+                                            <ul class="inner nobullet">
+                                                <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
+                                            </ul>
+<?php
+                                                }
+                                            
+                                            }
+                                            if(isset($exams[$module_id]))
+                                            {
+                                                foreach ($exams[$module_id] as $exam) 
+                                                {
+                                                    $exam_id = $exam['ID'];
+                                                    $exam_title = $exam['name'];
+                                                    $icon = "fa-question-circle-o";
+                                                    $url = "?part=quiz&module_id=$module_id &quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
+?>
+                                            <ul class="inner nobullet">
+                                                <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>">Take Quiz</a></span></li>
+                                            </ul>
+<?php
+                                                }
+                                            }
+?>
+                                    </li>
+                                    <script>
+                                        function downloadResource(resource_id,module_id)
+                                        {
+                                           
+                                            var url =  ajax_object.ajax_url  + "?action=trackAndDownload&user_id=<?= $user_id ?>&module_id="+module_id+"&resource_id="+resource_id;
+                                            $.ajax({
+                                            url:url,
+                                            success:
+                                                function(data)
+                                                {
+                                                                                              
+ 
+                                                }
+                                            });
+                                                                                        
+
+                                        }
+                                    $(document).ready(function(){
+                                        
+                                    });
+                                    </script>
+<?php
+                                    echo '</ul>';
+                                }
+			}//end if course info
 			else
 			{
 				wp_die('Could not find the course. Please report this to the technical support.');
