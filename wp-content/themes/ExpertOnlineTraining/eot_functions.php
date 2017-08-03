@@ -8375,6 +8375,6 @@ function getAllQuizAttempts($course_id = 0)
     $quizzes = getQuizzesInCourse($course_id);
     $quiz_ids = array_column($quizzes, 'ID');
     $quiz_ids_string = implode(',', $quiz_ids);
-    $attempts = $wpdb->get_results("SELECT DISTINCT(quiz_id),user_id,passed,completed FROM ". TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN(".$quiz_ids_string.")",ARRAY_A);
+    $attempts = $wpdb->get_results("SELECT DISTINCT(quiz_id),user_id,passed,completed FROM ". TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN(".$quiz_ids_string.") AND date_attempted BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'",ARRAY_A);
     return $attempts;
 }

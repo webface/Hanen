@@ -31,7 +31,12 @@ switch ($_REQUEST['part'])
             'date_attempted' => current_time('Y-m-d H:i:s'),
         );
         $attempt_id = $eot_quiz->add_quiz_attempt($data);
-
+        
+        if($_POST['passed'] === true)
+        {
+           
+        }
+        
         $questions = $_POST['questions'];
         //var_dump($questions);
         foreach ($questions as $question) 

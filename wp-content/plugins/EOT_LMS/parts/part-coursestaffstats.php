@@ -57,7 +57,7 @@
 		//$login_users = array_column($track_login, 'user_id'); // Assuming the track records have users with the type login.
 		$login_users = array_count_values($track_login); // Return the user ID and the key/times the user has logged in.
 		$watched_users = array_count_values($track_watchVideo); // Return the user ID and the key/times the user has watch the module.
-                //d($login_users, $track_quizzes);
+                d($login_users, $track_quizzes);
 		if (isset($course_data['status']) && $course_data['status'] == 0)
 		{
 			// error received from getCourse
