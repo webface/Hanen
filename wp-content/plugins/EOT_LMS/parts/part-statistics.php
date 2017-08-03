@@ -17,9 +17,9 @@
 	$completed_user_ids = array();
 	$incomplete_user_ids = array();
         $num_videos_watched = calculate_videos_watched($org_id);
-        
+        $num_resources_downloaded = calculate_resources_downloaded($org_id);
         $num_quizzes_taken=calculate_quizzes_taken($org_id, $subscription_id);
-d($courses,$num_videos_watched,$num_quizzes_taken);
+//d($courses,$num_videos_watched,$num_quizzes_taken,$num_resources_downloaded);
     // check if we have staff accounts and filter out everyone other than learners
     if( isset($staff_accounts['status']) && $staff_accounts['status'] )
     {
@@ -216,7 +216,7 @@ d($courses,$num_videos_watched,$num_quizzes_taken);
 			        	Number of <b>Resources Downloaded</b>
 			    	</div>
 			        <div class="cell-field number">
-			        	<b><?= 0 ?></b>
+                                    <b><?= $num_resources_downloaded ?></b>
 			    	</div>
 			  	
 		  	</div>                        
@@ -242,8 +242,8 @@ d($courses,$num_videos_watched,$num_quizzes_taken);
 ?>
 						<tr>
 							<td width="20%"><?= $course_name ?></td>
-							<td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Course Stats</a></td>
-                                                        <td><a href="?part=staffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Staff Stats</a></td>
+							<td><a href="?part=staffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Course Stats</a></td>
+                                                        <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Staff Stats</a></td>
                                                         <td><a href="#">Download Excel Report</a></td>
                                                 </tr>
 <?php
@@ -257,8 +257,8 @@ d($courses,$num_videos_watched,$num_quizzes_taken);
 ?>
 				</tbody>
 			</table>
-			<br>
-			<a href="?part=statistics&subscription_id=<?= $subscription_id ?>&forward=1" class="statsbutton">Detailed Stats</a>
+<!--			<br>
+			<a href="?part=statistics&subscription_id=<?= $subscription_id ?>&forward=1" class="statsbutton">Detailed Stats</a>-->
 <?php
 			}
 	    }

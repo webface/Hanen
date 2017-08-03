@@ -10,22 +10,54 @@
 		$course_id = filter_var($course_id = $_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
 		$course_data = getCourse($course_id); // The course information
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
-		$track_records = getTrack("all", $org_id); // All track records.
+                $quizzes_in_course = getQuizzesInCourse($course_id);
+		$track_records = getAllTrack($org_id); // All track records.
+                $track_quizzes = getAllQuizAttempts($course_id);//All quiz attempts for this course
 		$track_watchVideo = array();
+                $track_login = array();
 		// Goes to each track records. Separating all other types except the login from the track_records array.
 		foreach ($track_records as $key => $record) 
 		{
 			if($record['type'] == "watch_video")
 			{
 				array_push($track_watchVideo, $record['user_id']); // Save the user ID of the users who watch the video.
-				unset($track_records[$key]); // Delete them from the array.
+				//unset($track_records[$key]); // Delete them from the array.
 			}
-			// Separate another type into another array of its own.
+                        if($record['type'] == "watch_custom_video")
+			{
+				array_push($track_watchVideo, $record['user_id']); // Save the user ID of the users who watch the video.
+				//unset($track_records[$key]); // Delete them from the array.
+			}
+			if($record['type'] == "login")
+			{
+				array_push($track_login, $record['user_id']); // Save the user ID of the users who watch the video.
+				//unset($track_records[$key]); // Delete them from the array.
+			}
+                        // Separate another type into another array of its own.
 		}
-		$login_users = array_column($track_records, 'user_id'); // Assuming the track records have users with the type login.
-		$login_users = array_count_values($login_users); // Return the user ID and the key/times the user has logged in.
+                $trackFailed = array();
+                $trackPassed = array();
+                $track_quiz_attempts = array();
+                foreach ($track_quizzes as $key => $record) {
+                    if($record['passed'] == 0)
+                    {
+                      array_push($trackFailed, $record['user_id']); // Save the user ID of the users who failed the quiz.
+                      //unset($track_quizzes[$key]); // Delete them from the array.
+                    }
+                    if($record['passed'] == 1)
+                    {
+                      array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
+                      //unset($track_quizzes[$key]); // Delete them from the array.
+                    }
+                   array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 
+                }
+                $failed_users = array_count_values($trackFailed);
+                $passed_users = array_count_values($trackPassed);
+                $attempt_count = array_count_values($track_quiz_attempts);
+		//$login_users = array_column($track_login, 'user_id'); // Assuming the track records have users with the type login.
+		$login_users = array_count_values($track_login); // Return the user ID and the key/times the user has logged in.
 		$watched_users = array_count_values($track_watchVideo); // Return the user ID and the key/times the user has watch the module.
-
+                //d($login_users, $track_quizzes);
 		if (isset($course_data['status']) && $course_data['status'] == 0)
 		{
 			// error received from getCourse
@@ -33,7 +65,7 @@
 		}
 		else 
 		{
-			if (isset($course_data['id']))
+			if (isset($course_data['ID']))
 			{
 
 				$course_name = $course_data['course_name'];
@@ -128,20 +160,25 @@
         				foreach($enrollments as $enrollment)
         				{
 							$name = get_user_meta ( $enrollment['user_id'], "first_name", true) . " " . get_user_meta ( $enrollment['user_id'], "last_name", true);
-							$percentage_complete = (isset($enrollment['percentage'])) ? $enrollment['percentage'] : $enrollment['percentage_complete']; // Check if percentage exsist for student who failed a course. Otherwise show percentage complete.
 							$status = formatStatus($enrollment['status']);
-							$login_count = ($login_users[$enrollment['user_id']]) ? $login_users[$enrollment['user_id']] : 0; // Number of times the user has log in to our system.
-							$view_count = ($watched_users[$enrollment['user_id']]) ? $watched_users[$enrollment['user_id']] : 0; // Number of times the user has watch the module.
-							if($status == "Failed")
+							$login_count = isset($login_users[$enrollment['user_id']]) ? $login_users[$enrollment['user_id']] : 0; // Number of times the user has log in to our system.
+							$view_count = isset($watched_users[$enrollment['user_id']]) ? $watched_users[$enrollment['user_id']] : 0; // Number of times the user has watch the module.
+							$fail_count = isset($failed_users[$enrollment['user_id']])? $failed_users[$enrollment['user_id']] : 0; // Number of times they failed
+                                                        $passed_count = isset($passed_users[$enrollment['user_id']])? $passed_users[$enrollment['user_id']] : 0;//Number of passes
+                                                        $attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0;//Number of quiz attempts
+                                                        $percentage = eotprogressbar('8em', (($passed_count/count($quizzes_in_course))*100), true);
+                                                        if($status == "Failed")
 							{
 								$status = 'In Progress';
 							}
 							else if($status == "Completed" || $status == "Passed")
 							{
-								$percentage_complete = 100;
+								$percentage = eotprogressbar('8em', 100, true);
 							}
-							$percentage = eotprogressbar('8em', $percentage_complete, true);
-	        				$quizTableObj->rows[] = array($name,'0/0',0,$login_count, $view_count, $status, $percentage);
+                                                        
+                                                        
+                                                        
+	        				$quizTableObj->rows[] = array($name,$passed_count.'/'.count($quizzes_in_course),$fail_count,$login_count, $view_count, $status, $percentage);
         				}
         				CreateDataTable($quizTableObj);
         			}

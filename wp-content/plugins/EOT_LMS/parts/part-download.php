@@ -1,13 +1,15 @@
 <?php
-
-$user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // WP User ID
+global $current_user;
+$user_id = $current_user->ID; // WP User ID
 $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // Module ID
 $resource_id = filter_var($_REQUEST['resource_id'],FILTER_SANITIZE_NUMBER_INT); // Video ID
+$org_id = get_org_from_user($user_id);
   
   global $wpdb;
   $data = array(
       'user_id' => $user_id,
       'module_id' => $module_id,
+      'org_id' => $org_id,
       'resource_id' => $resource_id,
       'date' => date('Y-m-d H:i:s'),
       'type' => 'download_resource'
@@ -28,6 +30,7 @@ $resource_id = filter_var($_REQUEST['resource_id'],FILTER_SANITIZE_NUMBER_INT); 
 
         // documents
         'pdf' => 'application/pdf',
+        'csv' => 'text/csv',
         'doc' => 'application/msword',
         'docx' => 'application/msword',
         'xls' => 'application/vnd.ms-excel',
@@ -59,9 +62,6 @@ $resource_id = filter_var($_REQUEST['resource_id'],FILTER_SANITIZE_NUMBER_INT); 
 //      // file size in bytes
       $head = array_change_key_case(get_headers($file_path, TRUE));
       $fsize = $head['content-length'];
-      //$fsize = filesize($file_path); 
-      error_log($fsize);
-      // file extension
       $fext = strtolower(substr(strrchr($file_path,"."),1));
       error_log($fext);
       // check if allowed extension
@@ -101,8 +101,6 @@ $resource_id = filter_var($_REQUEST['resource_id'],FILTER_SANITIZE_NUMBER_INT); 
         $asfname = str_replace(array('"',"'",'\\','/'), '', $_GET['fc']);
         if ($asfname === '') $asfname = 'untitled';
       }
-      error_log($asfname);
-      error_log($file_path);
       // set headers
       header("Pragma: public");
       header("Expires: 0");

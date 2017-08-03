@@ -167,7 +167,7 @@
 					      								$video_id = $resource['video_id'];
 ?>								
 					              						<ul class="inner nobullet">
-                                                                                                    <li><a onclick="downloadResource(<?= $resource['ID'] ?>,<?= $module_id ?>)"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
+                                                                                                    <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
 				                                      	</ul>
 <?php 
 				      								}
@@ -190,30 +190,36 @@
 		        }
                                 echo '<h3 class="library_topic">Custom Modules</h3>';
                                 $rcm = array();
-                                foreach($resources_in_custom_modules as $resource)
+                                if(count($resources_in_custom_modules) > 0)
                                 {
-                                  if(isset($rcm[$resource['mod_id']]))
-                                  {
-                                    array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
-                                  }
-                                  else
-                                  {
-                                    $rcm[$resource['mod_id']]=array();
-                                    array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
-                                  }
+                                    foreach($resources_in_custom_modules as $resource)
+                                    {
+                                      if(isset($rcm[$resource['mod_id']]))
+                                      {
+                                        array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
+                                      }
+                                      else
+                                      {
+                                        $rcm[$resource['mod_id']]=array();
+                                        array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
+                                      }
+                                    }
                                 }
                                 $exams = array();
-                                foreach($quizzes_in_custom_modules as $resource)
+                                if(count($quizzes_in_custom_modules) > 0)
                                 {
-                                  if(isset($exams[$resource['module_id']]))
-                                  {
-                                    array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
-                                  }
-                                  else
-                                  {
-                                    $exams[$resource['module_id']]=array();
-                                    array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
-                                  }
+                                    foreach($quizzes_in_custom_modules as $resource)
+                                    {
+                                      if(isset($exams[$resource['module_id']]))
+                                      {
+                                        array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
+                                      }
+                                      else
+                                      {
+                                        $exams[$resource['module_id']]=array();
+                                        array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
+                                      }
+                                    }
                                 }
                                 //d($exams);
                                 foreach($modules_in_portal as $module)
@@ -238,7 +244,7 @@
                                                             break;
                                                         case 'doc':
                                                             $icon = "fa-sticky-note-o";
-                                                            $url = $resource['url'];
+                                                            $url = "/dashboard?part=download&module_id=$module_id&resource_id=".$resource['ID'];
                                                             $action = 'Download File';
                                                             break;
                                                         case 'custom_video':
