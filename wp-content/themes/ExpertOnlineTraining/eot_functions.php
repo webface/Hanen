@@ -1969,7 +1969,7 @@ function getCertificates($user_id = 0, $certificate_id = 0, $course_id = 0)
   {
     $sql .= " AND course_id = " . $course_id;
   }
-  $result = ($certificate_id == 0) ? $wpdb->get_results ($sql, ARRAY_A) : $wpdb->get_row ($sql, ARRAY_A);
+  $result = ($certificate_id == 0 && $course_id == 0) ? $wpdb->get_results ($sql, ARRAY_A) : $wpdb->get_row ($sql, ARRAY_A);
   return $result;
 }
 
@@ -1989,6 +1989,7 @@ function setCertificate( $user_id = 0, $data = array() )
    * status - conferred / pending
    * user_id - The wordpress user id of the user.
    * date_enrolled - enrolled date.
+   * org_id - The organization ID
    */
   if($user_id <= 0)
   {
@@ -1996,8 +1997,8 @@ function setCertificate( $user_id = 0, $data = array() )
   }
   global $wpdb;
   $date =  date('Y-m-d h:i:s'); // Current day and time.
-  $sql =  "INSERT INTO " . TABLE_CERTIFICATES . " (user_id, course_id, course_name, filename, datecreated, date_enrolled, status) 
-          VALUES ($user_id, $course_id, '$course_name', '$filename', '$date', '$date_enrolled', '$status')";
+  $sql =  "INSERT INTO " . TABLE_CERTIFICATES . " (user_id, course_id, course_name, filename, datecreated, date_enrolled, status, org_id) 
+          VALUES ($user_id, $course_id, '$course_name', '$filename', '$date', '$date_enrolled', '$status', $org_id)";
   $result = $wpdb->query ($sql);
 }
 
@@ -2021,13 +2022,14 @@ function setCertificateSyllabus( $user_id = 0, $data = array() )
   }
   global $wpdb;
   $sql =  "INSERT INTO " . TABLE_CERTIFICATES_SYLLABUS . " (user_id, course_id, course_name, modules) 
-          VALUES ($user_id, $course_id, '$course_name' , '$module_titles')";
+          VALUES ($user_id, $course_id, '$course_name' , '$modules_title')";
   $result = $wpdb->query ($sql);
 }
 
 /******************************************
  * Get certificates Syllabus by user id
  * $user_id = the WP User ID
+ * $course_id = the course id
  ******************************************/ 
 function getCertificatesSyllabus($user_id = 0, $course_id = 0) 
 {
@@ -8206,3 +8208,101 @@ function updateEnrollmentStatus_callback()
 
     wp_die();
 }
+
+/**
+ *  Get all the enrollments status by course ID / user ID
+ *  @param int $course_ID - the course ID
+ *  @param int $user_id - the user ID
+ *  @param int $org_id - the organization ID
+ *
+ *  @return json encoded list of enrollments
+ */
+function getEnrollments($course_id = 0, $user_id = 0) {
+  global $wpdb;
+  if($course_id > 0)
+  {
+    $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+  }
+  else if($user_id > 0)
+  {
+      $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE (user_id = $user_id) and status = 'completed ' or status = 'passed'", ARRAY_A); // All the completed or passed enrollments of the user.
+  }
+  else 
+  {
+    return array('status' => 0, 'message' => "ERROR in getEnrollments: Invalid course_id or user id");
+  }
+  return $enrollments;
+}
+
+/******************************************
+ * Get certificates by user ids
+ * @param array $user_ids - Lists of WP user ID.
+ * @param string $type - Type of certificate. (Image or Syllabus.)
+ ******************************************/ 
+function getCertificatesByUserIds( $user_ids = array(), $type = 'image' )
+{
+  if( count($user_ids) == 0 )
+  {
+    return false;
+  }
+  $list_user_ids = implode(', ', $user_ids);
+  global $wpdb;
+  switch( $type )
+  {
+    case "image":
+      $type = TABLE_CERTIFICATES;
+      break;
+    case "syllabus":
+      $type = TABLE_CERTIFICATES_SYLLABUS;
+      break;
+  }
+  $sql = "SELECT * FROM " . $type . " WHERE user_id in ($list_user_ids)";
+  $result = $wpdb->get_results ($sql, ARRAY_A);
+  return $result;
+}
+
+/******************************************
+ * Verify the certificate by the user id and org id.
+ * 1 Scenario: If the student no longer registered to the camp and requested a copy from a director. We need to validate this request from the certificate table.
+ * @param int $user_id - Student WP ID
+ * @param int $org_id - Director org ID.
+ ******************************************/ 
+function verifyCertificate($student_user_id = 0, $director_org_id = 0)
+{
+  if( !$user_id || !$org_id )
+  {
+    return false;
+  }
+  global $wpdb;
+  $sql = "SELECT * FROM " . TABLE_CERTIFICATES . " WHERE user_id = $student_user_id and org_id = $director_org_id";
+  $results = $wpdb->get_row ($sql);
+  return $results;
+}
+
+/**
+ * Get enrollments by the org id
+ * @param int $org_id - the org ID
+ * @param string $status - the status of the enrollment.
+ * @return array of enrollements for this organization or NULL if none exist
+ */
+function getEnrollmentsByUserOrgId($org_id = 0, $status = "")
+{
+  $org_id = filter_var($org_id,FILTER_SANITIZE_NUMBER_INT);
+  $status = filter_var($status,FILTER_SANITIZE_STRING);
+  if( !$org_id )
+  {
+    return false;
+  }
+  global $wpdb;
+  $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE (org_id = $org_id)";
+  if( $status == "completed")
+  {
+    $sql .= " AND status = 'completed' or status = 'passed'";
+  }
+  $result =  $wpdb->get_results ($sql, ARRAY_A);
+  return $result;
+}
+
+
+
+
