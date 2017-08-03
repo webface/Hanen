@@ -4,7 +4,7 @@
 **/
 
 $subscription_id = isset( $_REQUEST['subscription_id'] ) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
-$library_id = isset($_REQUEST['library_id']) ? filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+$library_id = isset( $_REQUEST['library_id'] ) ? filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 $course_id = isset( $_REQUEST['course_id'] ) ? filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 $org_id = isset( $_REQUEST['org_id'] ) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 
@@ -30,7 +30,10 @@ define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=ad
 define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$subscription_id.'&library_id='.$library_id.'" onclick="load(\'load_loading\')">Subscription Details</a>');
 
 // define breadcrumb to the quiz page
-define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&amp;subscription_id='.$subscription_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
+define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&subscription_id='.$subscription_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
+
+// define breadcrumb to view subscription page. This requires the subscription ID.
+define ('CRUMB_VIEW_SUBSCRIPTIONS', '<a href="'. get_home_url() .'/dashboard/?part=admin_view_subscriptions&library_id='.$library_id.'" onclick="load(\'load_manage_staff_accounts\')">View Subscriptions</a>');
 
 // define breadcrumb to the library page
 define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library&subscription_id='.$subscription_id.'" onclick="load(\'load_view_library\')">View Library</a>');
@@ -65,6 +68,9 @@ define ('CRUMB_MANAGESALESREP', '<a href="'. get_home_url() .'/dashboard/?part=m
 // define breadcrumb to manage subdomains page
 define ('CRUMB_SUBDOMAINS', '<a href="'. get_home_url() .'/dashboard/?part=manage_subdomains"">Manage Subdomains</a>');
 
+// define breadcrumb to email your staff page
+define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">E-mail Your Staff</a>');
+
 // define the part name of manage logo dashboard
 define ('FILE_MANAGE_LOGO', 'manage_logo');
 
@@ -74,8 +80,6 @@ define ('FILE_UPLOADSPREADSHEET', 'uploadspreadsheet');
 // define the part name of upload_resources
 define ('FILE_UPLOADRESOURCES', 'upload_resources');
 
-// define breadcrumb to email your staff page
-define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">E-mail Your Staff</a>');
 // define the part name of improved email staff
 define ('FILE_IMPROVED_EMAIL_STAFF', 'improved_email_staff');
 
