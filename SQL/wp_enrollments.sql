@@ -33,6 +33,7 @@ CREATE TABLE `wp_enrollments` (
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `org_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `status` enum('not_started','in_progress','completed','passed','failed','pending_review') COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'not_started',
+  `date_enrolled` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
