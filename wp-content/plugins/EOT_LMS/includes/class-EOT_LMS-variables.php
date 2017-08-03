@@ -3,6 +3,11 @@
   * Define variables for the subscriptions
 **/
 
+$subscription_id = isset( $_REQUEST['subscription_id'] ) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+$library_id = isset($_REQUEST['library_id']) ? filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+$course_id = isset( $_REQUEST['course_id'] ) ? filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+$org_id = isset( $_REQUEST['org_id'] ) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+
 // define default name for Leadership Essentials - ie. the name of the course in LU in case we need to reference it.
 define ('LE_LIBRARY_TITLE', 'Leadership Essentials'); // @TODO remove this later on
 
@@ -15,95 +20,45 @@ define ('DEFAULT_QUIZ_LENGTH', 7);
 // define breadcrumb to dashboard page
 define ('CRUMB_DASHBOARD', '<a href="'. get_home_url() .'/dashboard/" onclick="load(\'load_dashboard\')">My Dashboard</a>');
 
-// define breadcrumb to dashboard page
-if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
-{
-	if (isset($_REQUEST['library_id']))
-	{
-		$library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_INT);
-	}
-	else
-	{
-		$library_id = '';
-	}
+// define breadcrumb to modules page
+define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$subscription_id.'">Manage Your Custom Modules</a>');
 
-	// define breadcrumb to modules page
-    define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$_REQUEST['subscription_id'].'">Manage Your Custom Modules</a>');
-	define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_administration\')">Administration</a>');
-	define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$_REQUEST["subscription_id"].'&library_id='. $library_id .'" onclick="load(\'load_loading\')">Subscription Details</a>');
-    define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&amp;subscription_id='. $_REQUEST['subscription_id'].' onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
-	// define breadcrumb to view subscription page. This requires the subscription ID.
-	if(isset($_REQUEST['library_id']) && $_REQUEST['library_id'] !== "")
-	{
-		define ('CRUMB_VIEW_SUBSCRIPTIONS', '<a href="'. get_home_url() .'/dashboard/?part=admin_view_subscriptions&library_id='.$_REQUEST["library_id"].'" onclick="load(\'load_manage_staff_accounts\')">View Subscriptions</a>');
-	}
-	else
-	{
-		define ('CRUMB_VIEW_SUBSCRIPTIONS', '<a href="'. get_home_url() .'/dashboard/?part=admin_view_subscriptions" onclick="load(\'load_manage_staff_accounts\')>View Subscriptions</a>');
-	}
-}
-else
-	define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration" onclick="load(\'load_administration\')">Administration</a>');
+// define breadcrumb to administrator page
+define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$subscription_id.'" onclick="load(\'load_administration\')">Administration</a>');
 
-// define breadcrumb to view library page
-if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
-        
-	define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_view_library\')">View Library</a>');
-else
-	define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library" onclick="load(\'load_view_library\')>View Library</a>');
+// define breadcrumb to subscription details page
+define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$subscription_id.'&library_id='.$library_id.'" onclick="load(\'load_loading\')">Subscription Details</a>');
+
+// define breadcrumb to the quiz page
+define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&amp;subscription_id='.$subscription_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
+
+// define breadcrumb to the library page
+define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library&subscription_id='.$subscription_id.'" onclick="load(\'load_view_library\')">View Library</a>');
 
 // define breadcrumb separator
 define ('CRUMB_SEPARATOR', '<span class="crumb">&gt;</span>');
 
-// define breadcrumb to statistics page
-if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
-	define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=statistics&subscription_id='.$_REQUEST["subscription_id"].'" onclick="load(\'load_statistics\')">View Statistics</a>');
-else
-	define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=statistics" onclick="load(\'load_statistics\')>View Statistics</a>');
-
+// define breadcrumb to the statistics page
+define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=statistics&subscription_id='.$subscription_id.'" onclick="load(\'load_statistics\')">View Statistics</a>');
 
 // define breadcrumb to user lists page
 define ('CRUMB_USERSLISTS', '<a href="'. get_home_url() .'/dashboard/?part=user_list" onclick="load(\'load_manage_staff_accounts\')">Users Lists</a>');
 
-// define breadcrumb to manage staff accounts
-if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "" && isset($_REQUEST['org_id']) && $_REQUEST['org_id'] !== "")
-{
-	define ('CRUMB_MANAGE_STAFF_ACCOUNTS', '<a href="'. get_home_url() .'/dashboard/?part=manage_staff_accounts&subscription_id='.$_REQUEST['subscription_id'].'&org_id='.$_REQUEST['org_id'].'">Manage Staff Accounts</a>');
-}
-else
-{
-	define ('CRUMB_MANAGE_STAFF_ACCOUNTS', '<a href="'. get_home_url() .'/dashboard/?part=manage_staff_accounts&subscription_id=&org_id=">Manage Staff Accounts</a>');
-}
+// define breadcrumb to the manage staff accounts
+define ('CRUMB_MANAGE_STAFF_ACCOUNTS', '<a href="'. get_home_url() .'/dashboard/?part=manage_staff_accounts&subscription_id='.$subscription_id.'&org_id='.$org_id.'">Manage Staff Accounts</a>');
 
 // define breadcrumb to custom fields page
 define ('CRUMB_CUSTOMFIELDS', '<a href="'. get_home_url() .'/dashboard/?part=custom_fields"">Custom Fields</a>');
 
-if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
-{
-	// define breadcrumb to directors development page
-	define ('CRUMB_DEVELOPMENT', '<a href="'. get_home_url() .'/dashboard/?part=directors_development&subscription_id='.$_REQUEST["subscription_id"].'"">Directors\' Professional Development</a>');
+// define breadcrumb to directors development page
+define ('CRUMB_DEVELOPMENT', '<a href="'. get_home_url() .'/dashboard/?part=directors_development&subscription_id='.$subscription_id.'">Directors\' Professional Development</a>');
 
-	// define breadcrumb to directors corner page
-	define ('CRUMB_CORNER', '<a href="'. get_home_url() .'/dashboard/?part=directors_corner&subscription_id='.$_REQUEST["subscription_id"].'"">Director\'s Corner</a>');
-}
-else {
-	// define breadcrumb to directors development page
-	define ('CRUMB_DEVELOPMENT', '<a href="'. get_home_url() .'/dashboard/?part=directors_development">Directors\' Professional Development</a>');
-
-	// define breadcrumb to directors corner page
-	define ('CRUMB_CORNER', '<a href="'. get_home_url() .'/dashboard/?part=directors_corner">Director\'s Corner</a>');
-}
+// define breadcrumb to directors corner page
+define ('CRUMB_CORNER', '<a href="'. get_home_url() .'/dashboard/?part=directors_corner&subscription_id='.$subscription_id.'">Director\'s Corner</a>');
 
 // define breadcrumb to my library page
-if(isset($_REQUEST['course_id']) )
-{
-	define ('CRUMB_MY_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=my_library&course_id='.$_REQUEST["course_id"].'" onclick="load(\'load_loading\')">My Library</a>');
-}
-else
-{
-	define ('CRUMB_MY_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=my_library&course_id=" onclick="load(\'load_loading\')">My Library</a>');
+define ('CRUMB_MY_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=my_library&course_id='.$course_id.'" onclick="load(\'load_loading\')">My Library</a>');
 
-}
 // define breadcrumb to manage sales rep page
 define ('CRUMB_MANAGESALESREP', '<a href="'. get_home_url() .'/dashboard/?part=manage_sales_rep"">Manage Sales Rep</a>');
 
@@ -120,11 +75,7 @@ define ('FILE_UPLOADSPREADSHEET', 'uploadspreadsheet');
 define ('FILE_UPLOADRESOURCES', 'upload_resources');
 
 // define breadcrumb to email your staff page
-if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "")
-	define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part=email_staff&subscription_id='.$_REQUEST["subscription_id"].'">E-mail Your Staff</a>');
-else
-	define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part=email_staff">E-mail Your Staff</a>');
-
+define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">E-mail Your Staff</a>');
 // define the part name of improved email staff
 define ('FILE_IMPROVED_EMAIL_STAFF', 'improved_email_staff');
 
