@@ -676,7 +676,7 @@ function filterUsersMassMail ($users = '', $type = 'learner', $sort = 0)
         $user_info['email'] = $user['email'];
         $user_info['id'] = $user['ID'];
         global $wpdb;
-        $sign_in_count = $wpdb->get_var("SELECT COUNT(*) FROM ".TABLE_TRACK. " WHERE type='login' AND user_id=".$user['ID']);
+        $sign_in_count = $wpdb->get_var("SELECT COUNT(*) FROM " . TABLE_TRACK . " WHERE type = 'login' AND user_id = ".$user['ID']);
         $user_info['sign_in_count'] = $sign_in_count;
 
         array_push($staff_accounts, $user_info);
@@ -2208,7 +2208,7 @@ function processEmails ($limit = PENDING_EMAILS_LIMIT, $org_id = 0)
   {
     foreach($recipients as $recipient)
     {
-      $sql = "DELETE FROM " . TABLE_PENDING_EMAILS . " WHERE ID = " . $recipient['id'];
+      $sql = "DELETE FROM " . TABLE_PENDING_EMAILS . " WHERE ID = " . $recipient['ID'];
       $wpdb->query ($sql);
 
       // create a list of successfully sent emails

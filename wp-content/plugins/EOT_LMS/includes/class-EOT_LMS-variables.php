@@ -91,27 +91,113 @@ $GLOBALS['pages_with_acf_form'] = array (
 	FILE_MANAGE_LOGO
 );
 
-// The ID of the ACF upload spreadsheet form
-define ('ACF_UPLOAD_SPREADSHEET', 11820);
+/**
+ * NEED UNIQUE POST IDS FOR EACH ENVIRONMENT
+ */
+global $DEV_ENV;
+if ($DEV_ENV == 'hagai')
+{
+	// The ID of the ACF upload spreadsheet form
+	define ('ACF_UPLOAD_SPREADSHEET', 11842);
 
-// The ID of the ACF upload resources form
-define ('ACF_UPLOAD_RESOURCE', 11813);
+	// The ID of the ACF upload resources form
+	define ('ACF_UPLOAD_RESOURCE', 11835);
 
-// The POST ID for ACF Staff Members form
-define ('ACF_COMPOSE_MESSAGE_STAFF_MEMBERS', 11801);
+	// The POST ID for ACF Staff Members form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_MEMBERS', 11823);
 
-// The POST ID for ACF Incomplete and Complete form
-define ('ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE', 11798);
+	// The POST ID for ACF Incomplete and Complete form
+	define ('ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE', 11820);
 
-// The POST ID for ACF Yet to login form
-define ('ACF_COMPOSE_MESSAGE_YET_TO_LOGIN', 11807);
+	// The POST ID for ACF Yet to login form
+	define ('ACF_COMPOSE_MESSAGE_YET_TO_LOGIN', 11829);
 
-// The POST ID for ACF Message Staff Password form
-define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 11804);
+	// The POST ID for ACF Message Staff Password form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 11826);
 
-// The POST ID for ACF Message Group Password form
-define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 11795);
+	// The POST ID for ACF Message Group Password form
+	define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 11817);
 
-// The POST ID for ACF Manage Logo form
-define ('ACF_MANAGE_LOGO', 11826);
+	// The POST ID for ACF Manage Logo form
+	define ('ACF_MANAGE_LOGO', 11813);
+}
+else if ($DEV_ENV == 'tommy')
+{
+	// The ID of the ACF upload spreadsheet form
+	define ('ACF_UPLOAD_SPREADSHEET', 11842);
+
+	// The ID of the ACF upload resources form
+	define ('ACF_UPLOAD_RESOURCE', 1439);
+
+	// The POST ID for ACF Staff Members form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_MEMBERS', 2739);
+
+	// The POST ID for ACF Incomplete and Complete form
+	define ('ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE', 2740);
+
+	// The POST ID for ACF Yet to login form
+	define ('ACF_COMPOSE_MESSAGE_YET_TO_LOGIN', 2741);
+
+	// The POST ID for ACF Message Staff Password form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 2737);
+
+	// The POST ID for ACF Message Group Password form
+	define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 2738);
+
+	// The POST ID for ACF Manage Logo form
+	define ('ACF_MANAGE_LOGO', 11813);
+}
+else if ($DEV_ENV == 'adrian')
+{
+	// The ID of the ACF upload spreadsheet form
+	define ('ACF_UPLOAD_SPREADSHEET', 11842);
+
+	// The ID of the ACF upload resources form
+	define ('ACF_UPLOAD_RESOURCE', 1439);
+
+	// The POST ID for ACF Staff Members form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_MEMBERS', 2739);
+
+	// The POST ID for ACF Incomplete and Complete form
+	define ('ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE', 2740);
+
+	// The POST ID for ACF Yet to login form
+	define ('ACF_COMPOSE_MESSAGE_YET_TO_LOGIN', 2741);
+
+	// The POST ID for ACF Message Staff Password form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 2737);
+
+	// The POST ID for ACF Message Group Password form
+	define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 2738);
+
+	// The POST ID for ACF Manage Logo form
+	define ('ACF_MANAGE_LOGO', 11813);
+}
+else
+{
+	// live server
+	// The ID of the ACF upload spreadsheet form
+	define ('ACF_UPLOAD_SPREADSHEET', 12697);
+
+	// The ID of the ACF upload resources form
+	define ('ACF_UPLOAD_RESOURCE', 12690);
+
+	// The POST ID for ACF Staff Members form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_MEMBERS', 12676);
+
+	// The POST ID for ACF Incomplete and Complete form
+	define ('ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE', 12673);
+
+	// The POST ID for ACF Yet to login form
+	define ('ACF_COMPOSE_MESSAGE_YET_TO_LOGIN', 12682);
+
+	// The POST ID for ACF Message Staff Password form
+	define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 12679);
+
+	// The POST ID for ACF Message Group Password form
+	define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 12670);
+
+	// The POST ID for ACF Manage Logo form
+	define ('ACF_MANAGE_LOGO', 12685);
+}
 
