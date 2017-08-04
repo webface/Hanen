@@ -77,7 +77,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 			$percentage_number_failed = (($total_number_failed / $total_number_of_staff) * 100); 
 
 			$calculated_percentage_completed = (($calculated_num_completed / $total_number_of_staff) * 100);
-		}
+		}  else {
+                        $calculated_percentage_completed = 0;
+                }
 ?>
 		<div class="smoothness">
 			<h1 class="article_page_title">Course Statistics for "<?= $course_name ?>"</h1>
@@ -105,7 +107,19 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 <?php 
                         $quizzes = getQuizzesInCourse($course_id);
                         $track_quizzes = getAllQuizAttempts($course_id);//All quiz attempts for this course
-                        d($track_quizzes);
+                        $track_passed = array();
+                        $track_quiz_attempts = array();
+                        foreach ($track_quizzes as $key => $record) {
+                            if($record['passed'] == 1)
+                            {
+                              array_push($track_passed, $record['quiz_id']); // Save the user ID of the users who failed the quiz.
+                              //unset($track_quizzes[$key]); // Delete them from the array.
+                            }
+                           array_push($track_quiz_attempts, $record['quiz_id']);
+                        }
+                        $passed_users = array_count_values($track_passed);
+                        $attempt_count = array_count_values($track_quiz_attempts);
+//d($track_quizzes, $passed_users, $attempt_count);
                         if ($quizzes) 
                         {  
                             // Tables that will be displayed in the front end.
@@ -122,11 +136,14 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             {
 
                                 $time_limit = date('i', strtotime($quiz['time_limit']));
+                                $passed_count = isset($passed_users[$quiz['ID']])? $passed_users[$quiz['ID']] : 0;//Number of passes
+                                $attempts = isset($attempt_count[$quiz['ID']]) ? $attempt_count[$quiz['ID']] : 0;//Number of quiz attempts
+                                $percentage = $attempts>0?(($passed_count/$attempts)*100):0;
 
                                 $quizTableObj->rows[] = array(
-                                    '<span>' . stripslashes($quiz['name']) . '</span>',
-                                    '0/0',
-                                    eotprogressbar('12em', 0, true)
+                                    ' <span>' . stripslashes($quiz['name']) . '</span>',
+                                    $passed_count.'/'.$attempts,
+                                    eotprogressbar('12em', $percentage, true)
                                     );
                             }
                             CreateDataTable($quizTableObj); // Print the table in the page
@@ -134,7 +151,80 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 ?>
                         <h2>Video Views</h2>
 <?php 
+                        $videos =  getResourcesInCourse($course_id, 'video');
+                        $custom_videos = getResourcesInCourse($course_id, 'custom_video');
+                        $all_videos = array_merge($videos, $custom_videos);
+                        $track_records = getAllTrack($org_id); // All track records.
+//d($videos,$custom_videos,$all_videos,$track_records);
+                        $track_watchVideo = array();
+                        foreach ($track_records as $key => $record) {
+                            if($record['type'] == "watch_video")
+                            {
+                                    array_push($track_watchVideo, $record['video_id']); // Save the ID of the video.
+                                    //unset($track_records[$key]); // Delete them from the array.
+                            }
+                            if($record['type'] == "watch_custom_video")
+                            {
+                                    array_push($track_watchVideo, $record['video_id']); // Save the ID of the video.
+                                    //unset($track_records[$key]); // Delete them from the array.
+                            }
+                        }
+                        $views = array_count_values($track_watchVideo);
                         
+                        $videosTableObj = new stdClass();
+                            $videosTableObj->rows = array();
+                            $videosTableObj->headers = array(
+                                'Video Title' => 'left',
+                                'Views' => 'center'
+                            );
+                        // Creating rows for the table
+                            foreach ($all_videos as $video) 
+                            {
+
+                                
+                                $view_count = isset($views[$video['ID']]) ? $views[$video['ID']] : 0;//Number of video views
+                                
+
+                                $videosTableObj->rows[] = array(
+                                    ' <span>' . stripslashes($video['name']) . '</span>',
+                                    $view_count
+                                    );
+                            }
+                         CreateDataTable($videosTableObj); // Print the table in the page
+?>
+                         <h2>Resource Views</h2>
+<?php
+                        $resources = array_merge(getResourcesInCourse($course_id, 'doc'));
+                        d($resources);
+                        $track_download = array();
+                        foreach ($track_records as $key => $record) {
+                            if($record['type'] == "download_resource")
+                            {
+                                    array_push($track_download, $record['resource_id']); // Save the ID of the video.
+                                    //unset($track_records[$key]); // Delete them from the array.
+                            }
+                        }
+                        $downloads = array_count_values($track_download);
+                        $resourceTableObj = new stdClass();
+                            $resourceTableObj->rows = array();
+                            $resourceTableObj->headers = array(
+                                'Name' => 'left',
+                                'Downloads' => 'center'
+                            );
+                        // Creating rows for the table
+                            foreach ($resources as $resource) 
+                            {
+
+                                
+                                $download_count = isset($downloads[$resource['ID']]) ? $downloads[$resource['ID']] : 0;//Number of video views
+                                
+
+                                $resourceTableObj->rows[] = array(
+                                    ' <span>' . stripslashes($resource['name']) . '</span>',
+                                    $download_count
+                                    );
+                            }
+                         CreateDataTable($resourceTableObj); // Print the table in the page
 ?>
                 </div>
 <?php                }

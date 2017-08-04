@@ -3170,6 +3170,12 @@ function getResourcesInCourse($course_id = 0, $type = '')
         case 'doc':
             $table = TABLE_RESOURCES;
             break;
+        case 'link':
+            $table = TABLE_RESOURCES;
+            break;
+        case 'custom_video':
+            $table = TABLE_RESOURCES;
+            break;
     }
     $sql = "SELECT r.*, cmr.module_id as mid "
                 . "FROM " . $table . " AS r "
@@ -3331,7 +3337,7 @@ function toggleVideoInAssignment($course_id = 0, $data = array())
   // Check if the module id is in the course
   if(in_array($module_id, $course_module_ids))
   {
-      $result = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'module_id' => $module_id, 'type' => 'video'));
+      $result = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'module_id' => $module_id));
             if ($result === false) 
             {
                 return false;
@@ -5423,7 +5429,6 @@ function add_resource_to_module_callback()
     $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
     $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
     $thetype = ''; // will contain the type of resource to add
-    
     if($type == "quiz")
     {
       $thetype = "exam";
@@ -5467,6 +5472,28 @@ function add_resource_to_module_callback()
         $update = $wpdb->insert(TABLE_MODULE_RESOURCES, $data);
         if($update)
         {
+            $courses_in = $wpdb->get_results("SELECT * FROM ".TABLE_COURSE_MODULE_RESOURCES. " WHERE module_id = $module_id", ARRAY_A);
+            if($courses_in)
+            {
+                $course_ids = array_unique(array_column($courses_in, 'course_id'));
+            }
+            foreach ($course_ids as $course_id) {
+                $existing = $wpdb->get_row("SELECT * FROM ".TABLE_COURSE_MODULE_RESOURCES. " WHERE course_id = $course_id AND module_id = $module_id AND resource_id = $resource_id and type = '$thetype'");
+                if(!$existing)
+                {
+                        $data = array(
+                            'course_id' => $course_id,
+                            'module_id' => $module_id,
+                            'resource_id' => $resource_id,
+                            'type' => $thetype,
+                            'order' => $order
+                        );
+                        $insert = $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES,$data);
+                }
+                
+            }
+            
+            error_log(json_encode($courses_in));
             echo json_encode(array('message'=>'success'));
         }
         else
@@ -5880,11 +5907,12 @@ function getCourseForm_callback ( )
             $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
-            $course_videos = getResourcesInCourse($course_id,'video'); // all the modules in the specified course
+            $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the modules in the specified course
             $course_quizzes = getResourcesInCourse($course_id,'exam');
-            $course_handouts = getResourcesInCourse($course_id,'doc');
+            $course_handouts = array_merge(getResourcesInCourse($course_id,'doc'),getResourcesInCourse($course_id,'link'));
+            d($course_handouts);
             $course_handouts_module_ids = array_column($course_handouts,'mid');
-d($course_videos,$course_quizzes,$course_handouts);
+//d($course_videos,$course_quizzes,$course_handouts);
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_handouts_ids = array_column($course_handouts, 'ID');
@@ -5892,7 +5920,7 @@ d($course_videos,$course_quizzes,$course_handouts);
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
             $categories = getCategoriesByLibrary(1);
             $master_modules = getModulesByLibrary(1);// Get all the modules from the master library (course).            
-d($course_modules,$master_modules, $categories);
+//d($master_modules, $categories);
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
             $master_module_ids = array_column($master_modules, 'ID');
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
