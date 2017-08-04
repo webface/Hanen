@@ -164,7 +164,7 @@
                             // Check if we have quiz or resources for the module. If so display them
                             if(isset($quizzes[$module->id]) && count($quizzes[$module->id]) == 1)
                             {
-                              echo ' | <a  href=\'/dashboard?part=view_quiz&quiz_id=' . $quizzes[$module->id][0]['id'] . '&subscription_id=' . $_REQUEST["subscription_id"] . '\'>View quiz</a';
+                              echo ' | <a  href=\'/dashboard?part=view_core_quiz&quiz_id=' . $quizzes[$module->id][0]['id'] . '&subscription_id=' . $_REQUEST["subscription_id"] . '\'>View quiz</a';
                             }
                             else if (isset($quizzes[$module->id]) && count($quizzes[$module->id]) > 1)
                             {

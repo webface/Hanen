@@ -61,14 +61,17 @@ class EotQuizData
         return $quiz;
     }
 
-    public function get_quiz_data($id = 0) 
+    public function get_quiz_data($id = 0, $limit = false) 
     {
         $quiz_data = array();
         $quiz = $this->get_quiz_by_id($id);
         $quiz['time_limit'] = date('i', strtotime($quiz['time_limit']));
         $quiz_data['quiz'] = $quiz;
         $questions = $this->get_quiz_questions($id);
+        if($limit)//means limit to number_of_questions_to_display
+        {
         $questions =  array_slice($questions, 0, $quiz['num_questions_to_display']);
+        }
         $myquestions = array();
         foreach ($questions as $question) 
         {

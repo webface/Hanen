@@ -14,7 +14,7 @@ switch ($_REQUEST['part'])
 {
     case 'get_quiz':
         $quiz_id = filter_var($_REQUEST['ID'], FILTER_SANITIZE_NUMBER_INT);
-        $quiz = $eot_quiz->get_quiz_data($quiz_id);
+        $quiz = $eot_quiz->get_quiz_data($quiz_id,true);
         echo json_encode($quiz);
         exit();
         break;
