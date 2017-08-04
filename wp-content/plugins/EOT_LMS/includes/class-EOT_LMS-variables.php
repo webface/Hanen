@@ -92,26 +92,26 @@ $GLOBALS['pages_with_acf_form'] = array (
 );
 
 // The ID of the ACF upload spreadsheet form
-define ('ACF_UPLOAD_SPREADSHEET', 11842);
+define ('ACF_UPLOAD_SPREADSHEET', 11820);
 
 // The ID of the ACF upload resources form
-define ('ACF_UPLOAD_RESOURCE', 1439);
+define ('ACF_UPLOAD_RESOURCE', 11813);
 
 // The POST ID for ACF Staff Members form
-define ('ACF_COMPOSE_MESSAGE_STAFF_MEMBERS', 2739);
+define ('ACF_COMPOSE_MESSAGE_STAFF_MEMBERS', 11801);
 
 // The POST ID for ACF Incomplete and Complete form
-define ('ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE', 2740);
+define ('ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE', 11798);
 
 // The POST ID for ACF Yet to login form
-define ('ACF_COMPOSE_MESSAGE_YET_TO_LOGIN', 2741);
+define ('ACF_COMPOSE_MESSAGE_YET_TO_LOGIN', 11807);
 
 // The POST ID for ACF Message Staff Password form
-define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 2737);
+define ('ACF_COMPOSE_MESSAGE_STAFF_PASSWORD', 11804);
 
 // The POST ID for ACF Message Group Password form
-define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 2738);
+define ('ACF_COMPOSE_MESSAGE_COURSE_PASSWORD', 11795);
 
 // The POST ID for ACF Manage Logo form
-define ('ACF_MANAGE_LOGO', 11813);
+define ('ACF_MANAGE_LOGO', 11826);
 

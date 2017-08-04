@@ -620,7 +620,7 @@ function addQuestion_callback()
 
 /********************************************************************************************************
  * Filter out and return an array of user types
- * @param ARRAY $users - an array of associative arrays of users (got from JOSN decode)
+ * @param ARRAY $users - an array of associative arrays of users (got from JSON decode)
  * @param STRING $type - the user type you want (learner, admin, instructor)
  * @param bool $sort - whether we want to sort the results by first name
  * @return array of associative arrays - lists of users of specified type
@@ -653,7 +653,7 @@ function filterUsers ($users = '', $type = 'learner', $sort = 0)
 
 /********************************************************************************************************
  * Filter out and return an array of user types
- * @param ARRAY $users - an array of associative arrays of users (got from JOSN decode)
+ * @param ARRAY $users - an array of associative arrays of users (got from JSON decode)
  * @param STRING $type - the user type you want (learner, admin, instructor)
  * @param bool $sort - whether we want to sort the results by first name
  * @return array of associative arrays - lists of users of specified type
@@ -674,8 +674,10 @@ function filterUsersMassMail ($users = '', $type = 'learner', $sort = 0)
         $user_info['first_name'] = ucfirst(strtolower($user['first_name'])); // Make the first letter of their first name capital.
         $user_info['last_name'] = ucfirst(strtolower($user['last_name'])); // Make the first letter of their last name capital.
         $user_info['email'] = $user['email'];
-        $user_info['id'] = $user['id'];
-        $user_info['sign_in_count'] = $user['sign_in_count'];
+        $user_info['id'] = $user['ID'];
+        global $wpdb;
+        $sign_in_count = $wpdb->get_var("SELECT COUNT(*) FROM ".TABLE_TRACK. " WHERE type='login' AND user_id=".$user['ID']);
+        $user_info['sign_in_count'] = $sign_in_count;
 
         array_push($staff_accounts, $user_info);
       }
@@ -2206,7 +2208,7 @@ function processEmails ($limit = PENDING_EMAILS_LIMIT, $org_id = 0)
   {
     foreach($recipients as $recipient)
     {
-      $sql = "DELETE FROM " . TABLE_PENDING_EMAILS . " WHERE ID = " . $recipient['ID'];
+      $sql = "DELETE FROM " . TABLE_PENDING_EMAILS . " WHERE ID = " . $recipient['id'];
       $wpdb->query ($sql);
 
       // create a list of successfully sent emails
@@ -2655,8 +2657,9 @@ function enrollUserInCourse($email = '', $data = array())
 }
 
 //get users in an organization
-function getEotUsers($org_id = 0, $role = 'student'){
-    
+function getEotUsers($org_id = 0, $role = 'student')
+{
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     if (!$org_id)
     {
       return array ('status' => 0, 'message' => 'No org id specified');
@@ -5437,6 +5440,47 @@ function add_resource_to_module_callback()
         }
     }
     wp_die();
+}
+
+/**
+ *  Get all the enrollments status by course ID / user ID / subscription ID
+ *  @param int $course_ID - the course ID
+ *  @param int $user_id - the user ID
+ *  @param int $subscription_id - the subscription ID
+ *  @param boolean $completed - to return completed courses or not.
+ *
+ *  @return json encoded list of enrollments
+ */
+function getEnrollments($course_id = 0, $user_id = 0, $subscription_id = 0, $completed = true) 
+{
+    global $wpdb;
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+
+  if($course_id == 0 && $user_id == 0 && $subscription_id == 0)
+  {
+    echo "Invalid library ID";
+    return;
+  }
+  if($course_id > 0)
+  {
+    $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id";
+  }
+  else if($user_id > 0)
+  {
+      $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE (user_id = $user_id)"; // All the completed or passed enrollments of the user.
+  }
+  else if($subscription_id > 0)
+  {
+      $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE (subscription_id = $subscription_id)"; // All the completed or passed enrollments of the user.
+  }
+  if($completed)
+  {
+    $sql .= " and (status = 'completed ' or status = 'passed')";
+  }
+  $enrollments = $wpdb->get_results($sql, ARRAY_A);
+  return $enrollments;
 }
 
 /********************************************************************************************************
