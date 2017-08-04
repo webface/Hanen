@@ -118,7 +118,6 @@ define ('TABLE_INVITATIONS', $wpdb->prefix."invitations");
 define ('TABLE_PENDING_SUBSCRIPTIONS', $wpdb->prefix."pending_subscriptions");
 define ('TABLE_USERS', $wpdb->prefix."users");
 define ('TABLE_COURSES', $wpdb->prefix.'courses');
-define ('TABLE_COURSES_MODULES', $wpdb->prefix.'course_module');
 define ('TABLE_COURSES_QUIZZES',$wpdb->prefix.'course_quizzes');
 define ('TABLE_COURSES_RESOURCES',$wpdb->prefix.'course_resources');
 define ('TABLE_MODULES', $wpdb->prefix.'modules');
