@@ -1949,57 +1949,65 @@ function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_dat
     return $results;
 }
 
-/******************************************
- * Get certificates by ID
- * $user_id = the WP User ID
- * $certificate_id = Ther certificate ID
- * $course_id = the course ID
- ******************************************/ 
+/**
+ * Get certificates for a specific user by user ID alone, or either a certificate ID or course id
+ * @param int $user_id = the WP User ID
+ * @param int $certificate_id = Ther certificate ID
+ * @param int $course_id = the course ID
+ */ 
 function getCertificates($user_id = 0, $certificate_id = 0, $course_id = 0) 
 {
+  global $wpdb;
+  $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+  $certificate_id = filter_var($certificate_id, FILTER_SANITIZE_NUMBER_INT);
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+
+  // make sure we get a user ID at least
   if( $user_id == 0 )
   {
-    return false;
+    return array();
   }
-  global $wpdb;
+
   $sql = "SELECT * FROM " . TABLE_CERTIFICATES . " WHERE user_id = " . $user_id;
   if ($certificate_id > 0)
   {
-    $sql .= " AND id = " . $certificate_id;
+    $sql .= " AND ID = " . $certificate_id;
   }
   else if($course_id > 0)
   {
     $sql .= " AND course_id = " . $course_id;
   }
-  $result = ($certificate_id == 0) ? $wpdb->get_results ($sql, ARRAY_A) : $wpdb->get_row ($sql, ARRAY_A);
+  $result = ($certificate_id == 0 && $course_id == 0) ? $wpdb->get_results ($sql, ARRAY_A) : $wpdb->get_row ($sql, ARRAY_A);
   return $result;
 }
 
 /******************************************
- * Save a certificate
+ * Insert the certificate data into the certificate table
  * $user_id = the WP User ID
- * $status = The status of this certificate. Etiher, Deferred or pending. 
+ * $data = an array with cerfiticate data
  ******************************************/ 
 function setCertificate( $user_id = 0, $data = array() )
 {
   extract($data);
   /*
    * Variables required in $data
+   * org_id - The organization ID
    * course_id - The Learnupon Course ID
    * course_name - The course name
    * filename - Certificate file name
    * status - conferred / pending
-   * user_id - The wordpress user id of the user.
-   * date_enrolled - enrolled date.
    */
+ 
   if($user_id <= 0)
   {
     return false;
   }
+
   global $wpdb;
-  $date =  date('Y-m-d h:i:s'); // Current day and time.
-  $sql =  "INSERT INTO " . TABLE_CERTIFICATES . " (user_id, course_id, course_name, filename, datecreated, date_enrolled, status) 
-          VALUES ($user_id, $course_id, '$course_name', '$filename', '$date', '$date_enrolled', '$status')";
+  $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+  $today = current_time('Y-m-d');
+  $sql = "INSERT INTO " . TABLE_CERTIFICATES . " (user_id, org_id, course_id, course_name, filename, date_created, status) 
+          VALUES ($user_id, $org_id, $course_id, '$course_name', '$filename', '$today', '$status')";
   $result = $wpdb->query ($sql);
 }
 
@@ -2030,14 +2038,20 @@ function setCertificateSyllabus( $user_id = 0, $data = array() )
 /******************************************
  * Get certificates Syllabus by user id
  * $user_id = the WP User ID
+ * $course_id = the course id
  ******************************************/ 
 function getCertificatesSyllabus($user_id = 0, $course_id = 0) 
 {
-  if( $user_id <= 0 )
-  {
-    return false;
-  }
   global $wpdb;
+  $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+
+  // check that we got a user id
+  if( $user_id == 0 )
+  {
+    return array();
+  }
+
   $sql = "SELECT * FROM " . TABLE_CERTIFICATES_SYLLABUS . " WHERE user_id = " . $user_id;
   if($course_id > 0)
   {
@@ -2799,7 +2813,6 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
 /*
  * Get modules in course
  * @param int $course_id - The course ID
- * @param string $type - Module type. (Page,scorm). Empty $type will return all the module types.
  */
 function getModulesInCourse($course_id = 0){
     global $wpdb;
@@ -8250,3 +8263,124 @@ function updateEnrollmentStatus_callback()
 
     wp_die();
 }
+
+/**
+ *  Get all the enrollments by course ID / user ID / org ID
+ *  @param int $course_ID - the course ID
+ *  @param int $user_id - the user ID
+ *  @param int $org_id - the organization ID
+ *  @param string $status - the status
+ *  @return array of enrollments
+ */
+function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '') 
+{
+  global $wpdb;
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+  $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+  $status = filter_var($status, FILTER_SANITIZE_STRING);
+
+  // make sure we have at least 1 paramater
+  if (!$course_id && !$user_id && !$org_id) 
+  {
+    return array('status' => 0, 'message' => "ERROR in getEnrollments: Invalid course id, user id or org id");
+  }
+
+  // build the SQL statement
+  $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE ";
+
+  if ($course_id > 0)
+  {
+    $sql .= "course_id = $course_id";
+  }
+  
+  if ($user_id > 0 && $course_id > 0)
+  {
+    $sql .= "AND user_id = $user_id";
+  }
+  else if ($user_id > 0 )
+  {
+    $sql .= "user_id = $user_id";
+  }
+
+  if (($user_id > 0 || $course_id > 0) && $org_id > 0)
+  {
+    $sql .= "AND org_id = $org_id";
+  }
+  else if ($org_id > 0)
+  {
+    $sql .= "org_id = $org_id";
+  }
+
+  if ($status != '')
+  {
+    $sql .= " AND status = '$status'";
+  }
+
+  $enrollments = $wpdb->get_results($sql, ARRAY_A);
+  return $enrollments;
+}
+
+/******************************************
+ * Get certificates by user ids
+ * @param array $user_ids - Lists of WP user ID.
+ * @param string $type - Type of certificate. (Image or Syllabus.)
+ * @param date $start_date - the date to start the search from
+ * @param date $end_date - the date to end the search till
+ * returns an array of certificates or empty array
+ ******************************************/ 
+function getCertificatesByUserIds( $user_ids = array(), $type = 'image', $start_date = '0000-00-00', $end_date = '0000-00-00' )
+{
+  global $wpdb;
+  $type = filter_var($type, FILTER_SANITIZE_STRING);
+
+  // make sure we have some users to look for
+  if( count($user_ids) == 0 )
+  {
+    return array();
+  }
+
+  $list_user_ids = implode(', ', $user_ids);
+
+  // depending on the type you're looking for select the cert or syllabus table
+  switch( $type )
+  {
+    case "image":
+      $table = TABLE_CERTIFICATES;
+      break;
+    case "syllabus":
+      $table = TABLE_CERTIFICATES_SYLLABUS;
+      break;
+  }
+  $sql = "SELECT * FROM " . $table . " WHERE user_id IN ($list_user_ids)";
+  if( $start_date != "0000-00-00" && $end_date != "0000-00-00")
+  {
+    $sql .= "  AND date_created >= '" . $start_date . "' AND date_created <= '" . $end_date . "'";
+  }
+  $result = $wpdb->get_results ($sql, ARRAY_A);
+  return $result;
+}
+
+/******************************************
+ * Verify the certificate by the user id and org id.
+ * 1 Scenario: If the student no longer registered to the camp and requested a copy from a director. We need to validate this request from the certificate table.
+ * @param int $student_user_id - Student WP ID
+ * @param int $director_org_id - Director org ID.
+ ******************************************/ 
+function verifyCertificate($student_user_id = 0, $director_org_id = 0)
+{
+  if( !$user_id || !$org_id )
+  {
+    return false;
+  }
+  global $wpdb;
+  $student_user_id = filter_var($student_user_id, FILTER_SANITIZE_NUMBER_INT);
+  $director_org_id = filter_var($director_org_id, FILTER_SANITIZE_NUMBER_INT);
+
+  $sql = "SELECT * FROM " . TABLE_CERTIFICATES . " WHERE user_id = $student_user_id AND org_id = $director_org_id";
+  $results = $wpdb->get_row ($sql);
+  return $results;
+}
+
+
+
