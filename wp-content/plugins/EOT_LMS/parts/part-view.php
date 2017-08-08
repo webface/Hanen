@@ -149,7 +149,7 @@
       			// Update the video status to finish.
       		   	$('video').on("ended", function() {
 	            	$("#noQuiz").hide();
-  		   			var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
+  		   			var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
 					$.ajax({
 					url:url,
 		            success:
@@ -161,7 +161,7 @@
       		   	});
       		   	// Update the video time.
       		   	$("video").on("pause", function (e) {
-      		   		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&time=" + e.target.currentTime + "&track_id="+$(this).attr("track-id")+"&video_id=<?=$video_id?>&status=pause&type=watch_video";
+      		   		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&time=" + e.target.currentTime + "&track_id="+$(this).attr("track-id")+"&video_id=<?=$video_id?>&status=pause&type=watch_video";
 					$.ajax({url:url,
 		            success:
 		            function(data)
@@ -175,7 +175,7 @@
 	  		   		// Handle new watch video.
 	  		   		if( $("video").attr('track-id') == 0 )
 	  		   		{
-						var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&status=started&video_id=<?=$video_id?>&type=watch_video";
+						var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&status=started&video_id=<?=$video_id?>&type=watch_video";
 						$.ajax({url:url,
 			            success:
 			            function(data)

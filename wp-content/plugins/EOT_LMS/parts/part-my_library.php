@@ -167,7 +167,7 @@
 					      								$video_id = $resource['video_id'];
 ?>								
 					              						<ul class="inner nobullet">
-                                                                                                    <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
+                                                                                                    <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
 				                                      	</ul>
 <?php 
 				      								}
@@ -244,7 +244,7 @@
                                                             break;
                                                         case 'doc':
                                                             $icon = "fa-sticky-note-o";
-                                                            $url = "/dashboard?part=download&module_id=$module_id&resource_id=".$resource['ID'];
+                                                            $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
                                                             $action = 'Download File';
                                                             break;
                                                         case 'custom_video':

@@ -7919,7 +7919,7 @@ function getCourseModules($course_id = 0)
 {
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $modules=$wpdb->get_results("SELECT * FROM " . TABLE_COURSES_MODULES. " WHERE course_id = $course_id" , ARRAY_A);
+    $modules = $wpdb->get_results("SELECT DISTINCT course_id, module_id FROM " . TABLE_COURSE_MODULE_RESOURCES . " WHERE course_id = $course_id" , ARRAY_A);
     return $modules;
 }
 
@@ -8144,8 +8144,7 @@ function verify_module_in_course($module_id = 0, $course_id = 0, $type = '')
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
 
   global $wpdb;
-  $query = "SELECT ID FROM " . TABLE_COURSE_MODULE_RESOURCES . " WHERE course_id = $course_id AND module_id = $module_id AND type = '$type'";
-  //error_log($query);
+  $query = "SELECT ID FROM " . TABLE_COURSE_MODULE_RESOURCES . " WHERE course_id = $course_id AND module_id = $module_id";  //error_log($query);
   $exists = $wpdb->get_var($query);
 
   if($exists)

@@ -27,82 +27,16 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 		$course_id = filter_var($course_id = $_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
 		$course_data = getCourse($course_id); // The course information
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
-                if (isset($course_data['status']) && $course_data['status'] == 0)
-		{
-			// error received from getCourse
-			wp_die($course_data['message'],'Error');
-		}
-		else 
-		{
-			if (isset($course_data['ID']))
-			{
-
-				$course_name = $course_data['course_name'];
-				$total_number_complete = $course_data['num_completed']; // The total number of staff who have completed the course.
-				$total_number_not_started = $course_data['num_not_started']; // The total number of staff who haven't started yet
-				$total_number_in_progress = $course_data['num_in_progress']; // The total number of staff who are in progress
-				$total_number_passed = $course_data['num_passed']; // The total number of staff who have passed the course
-			}
-		}
-		$calculated_num_completed = 0;
-		$total_number_failed = 0;
-        $enrollments =  getEnrollments($course_id, 0, 0, false); // Get all failed/passed enrollments in the course.
-        foreach ($enrollments as $enrollment) 
-        {
-        	$status = $enrollment['status'];
-        	if($status == "completed" || $status == "passed")
-        	{
-        		$calculated_num_completed++; // people who passed also completed the course.
-        	}
-        	else if($status == "failed")
-        	{
-        		$total_number_failed++;
-        	}
-        }
-        $total_number_of_staff =  count($enrollments); // The total number of staff enrolled in the course.
-		// Variable initialisation 
-		$percentage_completed = 0; // The percentage of staff who logged in once.
-		$percentage_not_started = 0;  // The percentage of staff who logged in once.
-		$percentage_number_in_progress = 0; // The percentage of staff who are in progress.
-		$percentage_number_passed = 0; // The percentage of staff who passed in this course.
-		$percentage_number_failed = 0; // The percentage of staff who failed in this course.
-
-		// This calculates the percentage for the progressbars.
-		if($total_number_of_staff > 0) // Can't be divided by 0.
-		{
-			$percentage_completed = (($total_number_complete / $total_number_of_staff) * 100); 
-			$percentage_not_started = (($total_number_not_started / $total_number_of_staff) * 100); 
-			$percentage_number_in_progress = (($total_number_in_progress / $total_number_of_staff) * 100); 
-			$percentage_number_passed = (($total_number_passed / $total_number_of_staff) * 100); 
-			$percentage_number_failed = (($total_number_failed / $total_number_of_staff) * 100); 
-
-			$calculated_percentage_completed = (($calculated_num_completed / $total_number_of_staff) * 100);
-		}  else {
-                        $calculated_percentage_completed = 0;
-                }
+                $quiz_id = filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT);// The quiz ID
+                $path = WP_PLUGIN_DIR . '/eot_quiz/';
+                require $path . 'public/class-eot_quiz_data.php';
+                $eot_quiz = new EotQuizData();
+                
 ?>
 		<div class="smoothness">
-			<h1 class="article_page_title">Course Statistics for "<?= $course_name ?>"</h1>
-			Here are statistics on the <b><?= $course_name ?></b> Modules.
-			<h2>Summary</h2>
-			<div class="cell-row middle-row">
-				<div class="cell-caption">
-					<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="The total number of staff (in Staff Groups) who have been assigned this Course." class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('The total number of staff (in Staff Groups) who have been assigned this Course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff given this <b>Course</b>
-				</div>
-				<div class="cell-field number">
-					<b><?= $total_number_of_staff ?></b>
-				</div>
-			</div>
-			<div class="cell-row">
-				<div class="cell-caption">
-					<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('The total number of staff who have passed all the required modules in this Course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff who have <b>Completed</b> this Course
-				</div>
-				<div class="cell-field number">
-					<b><?= $calculated_num_completed ?></b>
-				</div>
-				<?= eotprogressbar('12em', $calculated_percentage_completed, true); ?>
-			</div>
-                        <h2>Quiz Success Rate</h2>
+			<h1 class="article_page_title">Course Statistics for "<?= $quiz_name ?>"</h1>
+			Here are statistics on the <b><?= $quiz_name ?></b> Modules.
+                        <h2>Question Success Rate</h2>
                         <p>For quizzes with a low success rate, you may want to go over these topics in greater depth during your on-site training.</p>
 <?php 
                         $quizzes = getQuizzesInCourse($course_id);
