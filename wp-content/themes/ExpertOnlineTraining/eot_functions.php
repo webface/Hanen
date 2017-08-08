@@ -8280,9 +8280,11 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
  * Get certificates by user ids
  * @param array $user_ids - Lists of WP user ID.
  * @param string $type - Type of certificate. (Image or Syllabus.)
+ * @param date $start_date - the date to start the search from
+ * @param date $end_date - the date to end the search till
  * returns an array of certificates or empty array
  ******************************************/ 
-function getCertificatesByUserIds( $user_ids = array(), $type = 'image' )
+function getCertificatesByUserIds( $user_ids = array(), $type = 'image', $start_date = '0000-00-00', $end_date = '0000-00-00' )
 {
   global $wpdb;
   $type = filter_var($type, FILTER_SANITIZE_STRING);
@@ -8306,6 +8308,10 @@ function getCertificatesByUserIds( $user_ids = array(), $type = 'image' )
       break;
   }
   $sql = "SELECT * FROM " . $table . " WHERE user_id IN ($list_user_ids)";
+  if( $start_date != "0000-00-00" && $end_date != "0000-00-00")
+  {
+    $sql .= "  AND date_created >= '" . $start_date . "' AND date_created <= '" . $end_date . " 99:99:99'";
+  }
   $result = $wpdb->get_results ($sql, ARRAY_A);
   return $result;
 }
