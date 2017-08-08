@@ -23,7 +23,7 @@
     else if( current_user_can ('is_director') )
     {
       $complete_enrollments = getEnrollments(0, 0, $org_id, "completed"); // All completed enrollments base on the org ID.
-      $student_user_ids = array_unique( array_column( $complete_enrollments, "user_id") ) ; // Ids of the users in the same organization
+      $student_user_ids = array_unique( array_column( $complete_enrollments, "user_id") ) ; // Unique IDs of the users who have completed enrollments in this org
       // Sort by dates if requested.
       if( isset($_REQUEST['start_date']) && isset($_REQUEST['end_date']) )
       {
@@ -37,8 +37,9 @@
       }
       $user_certificates_syllabus = getCertificatesByUserIds($student_user_ids, "syllabus"); // Certificate Syllabus for all students.
     }
+
     // Make an key associative array. User ID is the key, and the value is the array of courses they have completed.
-    if($user_certificates_syllabus) 
+    if(!empty($user_certificates_syllabus)) 
     {
       $user_course_completed = array();
       foreach ($user_certificates_syllabus as $student_syllabus) 
@@ -69,6 +70,7 @@
         'Staff Name' => 'center',
         'Download' => 'center',
       );
+      
       // go through each completed enrollment and make sure we have DB entries for the certificate and create the cert. image if it doesnt exist.
       foreach ($complete_enrollments as $complete_enrollment)
       {
@@ -76,9 +78,11 @@
         $course_id = $complete_enrollment['course_id']; // The enrollment course ID
         $filename = "certificate_" . $user_id . "_" . $course_id . ".jpg"; // Certificate name.
         $course_name = $courses[$course_id]->course_name; // The course name
-        // check if the certificate file name is already in our DB, if not add it
-        if(!isset($_REQUEST['start_date']) || !isset($_REQUEST['end_date']))
+        
+        // make sure the director is not setting a start/end date
+        if(!isset($_REQUEST['start_date']) && !isset($_REQUEST['end_date']))
         {
+          // check if the certificate file name is already in our DB, if not add it
           if( !in_array($filename, $all_certificate_filenames) )
           {
             $status = 'conferred';
@@ -98,6 +102,7 @@
             array_push($user_certificates, $certificate); 
           }
         }
+        
         // check if syllabus exists for this user/course_id, if not Generate syllabus.
         if(!isset($user_course_completed[$user_id]) || !in_array($course_id, $user_course_completed[$user_id]))
         {
@@ -109,9 +114,16 @@
             $syllabus_data = compact('course_id', 'course_name', 'module_titles');         
             setCertificateSyllabus($user_id, $syllabus_data); // Save the certificate syllabus into our database.
           }
+          else
+          {
+            $module_titles = json_encode( array ('There are no modules in this course') );
+            $syllabus_data = compact('course_id', 'course_name', 'module_titles');         
+            setCertificateSyllabus($user_id, $syllabus_data); // Save the certificate syllabus into our database.
+          }
         }
       }
     }
+
     // the director gets a date sort/filter option
     if( current_user_can('is_director') )
     {
@@ -158,6 +170,7 @@
       </form>
 <?php
     }
+
     // check if there are any certificates, and display them
     if (count($user_certificates) >= 1)
     {

@@ -2003,8 +2003,9 @@ function setCertificate( $user_id = 0, $data = array() )
 
   global $wpdb;
   $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
-  $sql = "INSERT INTO " . TABLE_CERTIFICATES . " (user_id, org_id, course_id, course_name, filename, status) 
-          VALUES ($user_id, $org_id, $course_id, '$course_name', '$filename', '$status')";
+  $today = current_time('Y-m-d');
+  $sql = "INSERT INTO " . TABLE_CERTIFICATES . " (user_id, org_id, course_id, course_name, filename, date_created, status) 
+          VALUES ($user_id, $org_id, $course_id, '$course_name', '$filename', '$today', '$status')";
   $result = $wpdb->query ($sql);
 }
 
@@ -2046,7 +2047,7 @@ function getCertificatesSyllabus($user_id = 0, $course_id = 0)
   // check that we got a user id
   if( $user_id == 0 )
   {
-    return false;
+    return array();
   }
 
   $sql = "SELECT * FROM " . TABLE_CERTIFICATES_SYLLABUS . " WHERE user_id = " . $user_id;
@@ -8310,7 +8311,7 @@ function getCertificatesByUserIds( $user_ids = array(), $type = 'image', $start_
   $sql = "SELECT * FROM " . $table . " WHERE user_id IN ($list_user_ids)";
   if( $start_date != "0000-00-00" && $end_date != "0000-00-00")
   {
-    $sql .= "  AND date_created >= '" . $start_date . "' AND date_created <= '" . $end_date . " 99:99:99'";
+    $sql .= "  AND date_created >= '" . $start_date . "' AND date_created <= '" . $end_date . "'";
   }
   $result = $wpdb->get_results ($sql, ARRAY_A);
   return $result;

@@ -20,10 +20,10 @@
 		else if( current_user_can ('is_director') ) 
 		{	
 			$user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT); // The student user ID from a director's view.
-  			$org_id = get_org_from_user ($user_id); // Organization ID
+  			$org_id = get_org_from_user ($current_user->ID); // Director's Organization ID
 			$student_org_id = get_org_from_user ($user_id); // The students org id
 	 		
-	 		// Make sure both student and director are in the same organization.
+	 		// Make sure both student and director are in the same organization. Potentially student moved to a new camp but we want to be able to download the old certificate still...
 	 		if($org_id != $student_org_id)
 	 		{
 	 			$certificate = verifyCertificate($user_id, $org_id);
@@ -44,7 +44,7 @@
  		{				
 		   	$certificate_syllabus = getCertificatesSyllabus($user_id, $course_id); // Get all syllabus certificates 
 	   		// Generate the syllabus text file.
-   		   	if($certificate_syllabus)
+   		   	if(!empty($certificate_syllabus))
    		   	{
  			   	header("Content-type: text/plain");
 	   			header("Content-Disposition: attachment; filename=syllabus_" . $user_id . "_" . $course_id . ".txt");
@@ -52,11 +52,19 @@
 				if( isset( $certificate_syllabus['modules'] ) )
 				{
 					// All the modules of this course. 
-					$modules = json_decode($certificate_syllabus['modules']);
-					// Print all the modules name.
-					foreach ($modules as $module) 
+					$modules = json_decode(str_replace('\\', '\\\\', $certificate_syllabus['modules']));
+					if (!empty($modules))
 					{
-						echo "- " . $module . "\r\n";
+						// Print all the modules name.
+						foreach ($modules as $module) 
+						{
+							echo "- " . $module . "\r\n";
+						}
+					}
+					else
+					{
+						// there was an error decoding the josn (module titles)
+						error_log("Couldn't decode json course sylabus: " . json_last_error());
 					}
 				}
 				else

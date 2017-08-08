@@ -110,7 +110,7 @@ define ('TABLE_API_LOGS', $wpdb->prefix."api_logs");
 define ('TABLE_POSTMETA', $wpdb->prefix."postmeta");
 define ('TABLE_RESOURCES', $wpdb->prefix."resources");
 define ('TABLE_ENROLLMENTS',$wpdb->prefix.'enrollments');
-define ('TABLE_CERTIFICATES', $wpdb->prefix."certificate");
+define ('TABLE_CERTIFICATES', $wpdb->prefix."certificates");
 define ('TABLE_CERTIFICATES_SYLLABUS', $wpdb->prefix."certificate_syllabus");
 define ('TABLE_PENDING_USERS', $wpdb->prefix."pending_users");
 define ('TABLE_PENDING_EMAILS', $wpdb->prefix."pending_emails");
