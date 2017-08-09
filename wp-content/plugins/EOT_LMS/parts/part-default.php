@@ -1,3 +1,9 @@
+<style>
+/* Loading ICON when the I agree button is clicked.*/
+#term_loading {
+    display:none;
+}
+</style>
 <?php
 // Variable declaration
 global $current_user;
@@ -43,10 +49,15 @@ if (current_user_can("is_director"))
        $library = getLibrary($library_id); // the library information.
        echo $library->terms_manager;
        echo "<input type='button' class='terms' onclick='acceptTerms()' value='Yes, I accept the terms and conditions'>
+            <div id='term_loading'>
+                <i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>
+                <span class='sr-only'>Loading...</span>
+            </div>
        <script>
            $ = jQuery;
            function acceptTerms()
            {
+                $('#term_loading').show();
                //set up the ajax call parameters
                var data = { action: 'acceptTerms'};
                var url =  ajax_object.ajax_url;
@@ -63,7 +74,9 @@ if (current_user_can("is_director"))
                         // Request Failed
                        if(data.status == 0)
                        {
+                            // Alert the error message and hide the loading icon.
                             alert(data.message);
+                            $('#term_loading').hide();
                        }
                        // Request went succesfully. Redirect to tutorial.
                        else if(data.status == 1)
