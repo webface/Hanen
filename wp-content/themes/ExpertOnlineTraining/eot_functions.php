@@ -5455,47 +5455,6 @@ function add_resource_to_module_callback()
     wp_die();
 }
 
-/**
- *  Get all the enrollments status by course ID / user ID / subscription ID
- *  @param int $course_ID - the course ID
- *  @param int $user_id - the user ID
- *  @param int $subscription_id - the subscription ID
- *  @param boolean $completed - to return completed courses or not.
- *
- *  @return json encoded list of enrollments
- */
-function getEnrollments($course_id = 0, $user_id = 0, $subscription_id = 0, $completed = true) 
-{
-    global $wpdb;
-    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
-    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
-
-  if($course_id == 0 && $user_id == 0 && $subscription_id == 0)
-  {
-    echo "Invalid library ID";
-    return;
-  }
-  if($course_id > 0)
-  {
-    $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id";
-  }
-  else if($user_id > 0)
-  {
-      $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE (user_id = $user_id)"; // All the completed or passed enrollments of the user.
-  }
-  else if($subscription_id > 0)
-  {
-      $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE (subscription_id = $subscription_id)"; // All the completed or passed enrollments of the user.
-  }
-  if($completed)
-  {
-    $sql .= " and (status = 'completed ' or status = 'passed')";
-  }
-  $enrollments = $wpdb->get_results($sql, ARRAY_A);
-  return $enrollments;
-}
-
 /********************************************************************************************************
  * Create HTML form and return it back as message. this will return an HTML div set to the 
  * javascript and the javascript will inject it into the HTML page.
