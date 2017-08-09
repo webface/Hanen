@@ -8405,3 +8405,15 @@ function getAllQuizAttempts($course_id = 0)
     $attempts = $wpdb->get_results("SELECT DISTINCT(quiz_id),user_id,passed,completed FROM ". TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN(".$quiz_ids_string.") AND date_attempted BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'",ARRAY_A);
     return $attempts;
 }
+
+/**
+ * stats function get question results
+ * @param: $question_ids - comma seperated question IDs
+ */
+function getQuestionResults($question_ids = 0,$user_ids = 0, $quiz_id = 0)
+{
+    $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $results = $wpdb->get_results("SELECT qr.* FROM ". TABLE_QUIZ_QUESTION_RESULT." qr WHERE qr.quiz_id = $quiz_id AND qr.question_id IN (".$question_ids.") AND qr.user_id IN (".$user_ids.")", ARRAY_A);
+    return $results;
+}

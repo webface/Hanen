@@ -47,7 +47,7 @@
     /*
      * function definition for the factory
      */
-    function QuizManager($http, $timeout, $httpParamSerializer, $filter) 
+    function QuizManager($http, $timeout, $httpParamSerializer, $filter)
     {
 
         /*
@@ -96,7 +96,7 @@
          *
          * 
          */
-        function loadQuiz() 
+        function loadQuiz()
         {
             var data = {
                 ID: quiz_id,
@@ -116,16 +116,16 @@
                         quizObj.quizIsLoading = false;
 
                     },
-                            function (response) 
+                            function (response)
                             { // optional
                                 // failed
                                 //console.log(response);
                             });
         }
 
-        function selectAnswer(index, type, activeQuestion) 
+        function selectAnswer(index, type, activeQuestion)
         {
-            switch (type) 
+            switch (type)
             {
                 case 'radio':
 
@@ -140,16 +140,16 @@
                     //console.log(quizObj.quiz.questions[activeQuestion].possibilities[index].selected);
                     if (quizObj.quiz.questions[activeQuestion].possibilities[index].selected === true) {
                         quizObj.quiz.questions[activeQuestion].possibilities[index].selected = false;
-                    } 
-                    else 
+                    }
+                    else
                     {
                         quizObj.quiz.questions[activeQuestion].possibilities[index].selected = true
 
                     }
                     quizObj.quiz.questions[activeQuestion].selected = false;
-                    for (var i = 0; i < quizObj.quiz.questions[activeQuestion].possibilities.length; i++) 
+                    for (var i = 0; i < quizObj.quiz.questions[activeQuestion].possibilities.length; i++)
                     {
-                        if (quizObj.quiz.questions[activeQuestion].possibilities[i].selected === true) 
+                        if (quizObj.quiz.questions[activeQuestion].possibilities[i].selected === true)
                         {
                             quizObj.quiz.questions[activeQuestion].selected = true;
                         }
@@ -173,17 +173,17 @@
          * It accepts two arguments, one is which metric to change (quiz or
          * results) and the other is what to change the state too.
          */
-        function changeState(metric, state) 
+        function changeState(metric, state)
         {
-            if (metric === "quiz") 
+            if (metric === "quiz")
             {
                 quizObj.quizActive = state;
             }
-            else if (metric === "results") 
+            else if (metric === "results")
             {
                 quizObj.resultsActive = state;
-            } 
-            else 
+            }
+            else
             {
                 return false;
             }
@@ -196,54 +196,76 @@
          * calculated and saved in the numCorrect property of the quizObj 
          * object
          */
-        function markQuiz() 
+        function markQuiz()
         {
             //console.log(quizObj.quiz);
             quizObj.stop();
-            for (var i = 0; i < quizObj.quiz.questions.length; i++) 
+            for (var i = 0; i < quizObj.quiz.questions.length; i++)
             {
-                if (quizObj.quiz.questions[i].quiz_question_type == 'radio') 
+                if (quizObj.quiz.questions[i].quiz_question_type == 'radio')
                 {
-                    for (var j = 0; j < quizObj.quiz.questions[i].possibilities.length; j++) 
+                    var correct = false
+                    for (var j = 0; j < quizObj.quiz.questions[i].possibilities.length; j++)
                     {
-                        if ((quizObj.quiz.questions[i].possibilities[j].selected === true) && (quizObj.quiz.questions[i].possibilities[j].answer_correct === "1")) 
+                        if ((quizObj.quiz.questions[i].possibilities[j].selected === true) && (quizObj.quiz.questions[i].possibilities[j].answer_correct === "1"))
                         {
                             quizObj.score += 1;
+                            correct = true
                             //console.log('answer_correct_radio');
                         }
+
                     }
-                } 
-                else if (quizObj.quiz.questions[i].quiz_question_type == 'checkbox') 
+                    if (correct)
+                    {
+                        quizObj.quiz.questions[i].correct = 1;
+                        //console.log('answer_correct_checkbox');
+                    }
+                    else
+                    {
+                        quizObj.quiz.questions[i].correct = 0;
+                    }
+                }
+                else if (quizObj.quiz.questions[i].quiz_question_type == 'checkbox')
                 {
                     var correct = 0;
-                    for (var j = 0; j < quizObj.quiz.questions[i].possibilities.length; j++) 
+                    for (var j = 0; j < quizObj.quiz.questions[i].possibilities.length; j++)
                     {
-                        if ((quizObj.quiz.questions[i].possibilities[j].selected === true) && (quizObj.quiz.questions[i].possibilities[j].answer_correct === "1")) 
+                        if ((quizObj.quiz.questions[i].possibilities[j].selected === true) && (quizObj.quiz.questions[i].possibilities[j].answer_correct === "1"))
                         {
                             correct += 1;
                             //console.log('correct check');
                         }
-                        if (((quizObj.quiz.questions[i].possibilities[j].selected === null) || (quizObj.quiz.questions[i].possibilities[j].selected === undefined) || (quizObj.quiz.questions[i].possibilities[j].selected === false)) && (quizObj.quiz.questions[i].possibilities[j].answer_correct === "0")) 
+                        if (((quizObj.quiz.questions[i].possibilities[j].selected === null) || (quizObj.quiz.questions[i].possibilities[j].selected === undefined) || (quizObj.quiz.questions[i].possibilities[j].selected === false)) && (quizObj.quiz.questions[i].possibilities[j].answer_correct === "0"))
                         {
                             correct += 1;
                             //console.log('correct check not selected');
                         }
-                        if (correct >= quizObj.quiz.questions[i].answers) 
+                        if (correct >= quizObj.quiz.questions[i].answers)
                         {
                             quizObj.score += 1;
+                            quizObj.quiz.questions[i].correct = 1;
                             //console.log('answer_correct_checkbox');
+                        }
+                        else
+                        {
+                            quizObj.quiz.questions[i].correct = 0;
                         }
                     }
 
-                } 
-                else 
+                }
+                else
                 {
-                    if (quizObj.quiz.questions[i].answer !== undefined) 
+                    if (quizObj.quiz.questions[i].answer !== undefined)
                     {
-                        if (quizObj.quiz.questions[i].answer.toLowerCase() === quizObj.quiz.questions[i].possibilities[0].answer_text.toLowerCase()) 
+                        if (quizObj.quiz.questions[i].answer.toLowerCase() === quizObj.quiz.questions[i].possibilities[0].answer_text.toLowerCase())
                         {
                             quizObj.score += 1;
+                            quizObj.quiz.questions[i].correct = 1;
                             //console.log('answer_correct_text');
+                        }
+                        else
+                        {
+                            quizObj.quiz.questions[i].correct = 0;
                         }
                     }
                 }
@@ -251,7 +273,7 @@
             quizObj.calculatePerc();
 
         }
-        function saveQuiz() 
+        function saveQuiz()
         {
             quizObj.isSaving = true;
             var data = {
@@ -277,15 +299,15 @@
                         quizObj.isSaving = false;
 
                     },
-                            function (response) 
+                            function (response)
                             { // optional
                                 // failed
                                 //console.log(response);
                             });
         }
-        function countdown() 
+        function countdown()
         {
-            if (quizObj.counter >= (quizObj.quiz.quiz.time_limit * 60)) 
+            if (quizObj.counter >= (quizObj.quiz.quiz.time_limit * 60))
             {
                 quizObj.quizActive = false;
                 quizObj.resultsActive = true;
@@ -302,33 +324,33 @@
         }
 
 
-        function stop() 
+        function stop()
         {
             quizObj.timerRunning = false;
             $timeout.cancel(stopped);
         }
 
-        function calculatePerc() 
+        function calculatePerc()
         {
             quizObj.perc = Math.round(quizObj.score / quizObj.quiz.questions.length * 100);
-            if (quizObj.score >= quizObj.quiz.quiz.passing_score) 
+            if (quizObj.score >= quizObj.quiz.quiz.passing_score)
             {
                 quizObj.quiz_message = "You have passed the Quiz!"
                 quizObj.passed = true;
             }
-            else 
+            else
             {
                 quizObj.quiz_message = "You have failed the Quiz!"
                 quizObj.passed = false;
             }
-            if (quizObj.numQuestionsAnswered >= quizObj.quiz.questions.length) 
+            if (quizObj.numQuestionsAnswered >= quizObj.quiz.questions.length)
             {
                 quizObj.completed = true;
             }
             quizObj.saveQuiz();
         }
 
-        function teste() 
+        function teste()
         {
             //console.log(quizObj.counter);
         }

@@ -31,135 +31,87 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $path = WP_PLUGIN_DIR . '/eot_quiz/';
                 require $path . 'public/class-eot_quiz_data.php';
                 $eot_quiz = new EotQuizData();
+                $quiz = $eot_quiz->get_quiz_data($quiz_id, false);
+                $quiz_name = $quiz['quiz']['name'];
+                $users = getEotUsers($org_id);
+                $users = $users['users'];
+                $user_ids = array_column($users, 'ID');
+                $user_ids_string = implode(",", $user_ids);
+                d($users);
+                
                 
 ?>
 		<div class="smoothness">
-			<h1 class="article_page_title">Course Statistics for "<?= $quiz_name ?>"</h1>
-			Here are statistics on the <b><?= $quiz_name ?></b> Modules.
+			<h1 class="article_page_title">Statistics for "<?= $quiz_name ?>"</h1>
+			Here are statistics on the <b><?= $quiz_name ?></b> Quiz.
                         <h2>Question Success Rate</h2>
-                        <p>For quizzes with a low success rate, you may want to go over these topics in greater depth during your on-site training.</p>
+                        <p>For questions with a low success rate, you may want to go over these topics in greater depth during your on-site training.</p>
 <?php 
-                        $quizzes = getQuizzesInCourse($course_id);
-                        $track_quizzes = getAllQuizAttempts($course_id);//All quiz attempts for this course
-                        $track_passed = array();
-                        $track_quiz_attempts = array();
-                        foreach ($track_quizzes as $key => $record) {
-                            if($record['passed'] == 1)
+                            $quiz_questions = $quiz['questions'];
+                            $question_ids = array_column($quiz_questions, 'ID');
+                            $question_ids_string = implode(",", $question_ids);
+                            $question_stats = getQuestionResults($question_ids_string,$user_ids_string, $quiz_id);
+                            $quiz_attempts=  array_unique(array_column($question_stats,'attempt_id'));
+                            //$num_attempts = count($quiz_attempts);
+                            $stats = array();
+                            
+                            foreach ($question_stats as $stat) 
                             {
-                              array_push($track_passed, $record['quiz_id']); // Save the user ID of the users who failed the quiz.
-                              //unset($track_quizzes[$key]); // Delete them from the array.
+                                $stats[$stat['question_id']]= array();
+                                
+                                foreach($question_stats as $substat)
+                                {
+                                   if(($stat['question_id'] == $substat['question_id']))
+                                   {
+                                       array_push($stats[$stat['question_id']], $substat['answer_correct']);
+                                   }
+                                }
                             }
-                           array_push($track_quiz_attempts, $record['quiz_id']);
-                        }
-                        $passed_users = array_count_values($track_passed);
-                        $attempt_count = array_count_values($track_quiz_attempts);
-//d($track_quizzes, $passed_users, $attempt_count);
-                        if ($quizzes) 
-                        {  
+                            d($quiz, $question_stats, $stats);
                             // Tables that will be displayed in the front end.
-                            $quizTableObj = new stdClass();
-                            $quizTableObj->rows = array();
-                            $quizTableObj->headers = array(
-                                'Quiz Name' => 'left',
-                                'Success Rate' => 'center',
-                                'Percentage' => 'center'
+                            $questionTableObj = new stdClass();
+                            $questionTableObj->rows = array();
+                            $questionTableObj->headers = array(
+                                'Question - <a href="#" class="no-ul" onclick="event.stopPropagation();if(jQuery(this).text()==\'Show All Choices\'){jQuery(this).text(\'Hide All Choices\');jQuery(\'.choices\').stop(true,true).removeClass(\'hidden\');}else{jQuery(this).text(\'Show All Choices\');jQuery(\'.choices\').stop(true,true).addClass(\'hidden\');}return false;">Show All Choices</a>' => array("sType"=>"html"),
+          '<div '.hover_text_attr("<b>Success Rate:</b> The number of <b>Successful Attempts</b> divided by the <b>Total Number of Attempts</b> for this particular question.",true).'>Success Rate</div>' => 'center',
+          '<center><div '.hover_text_attr("<b>Success Rate</b> as a percentage.",true).'>Percentage</div></center>' => 'center'
                             );
 
                             // Creating rows for the table
-                            foreach ($quizzes as $quiz) 
+                            foreach ($quiz_questions as $question) 
                             {
 
-                                $time_limit = date('i', strtotime($quiz['time_limit']));
-                                $passed_count = isset($passed_users[$quiz['ID']])? $passed_users[$quiz['ID']] : 0;//Number of passes
-                                $attempts = isset($attempt_count[$quiz['ID']]) ? $attempt_count[$quiz['ID']] : 0;//Number of quiz attempts
-                                $percentage = $attempts>0?(($passed_count/$attempts)*100):0;
-
-                                $quizTableObj->rows[] = array(
-                                    ' <span>' . stripslashes($quiz['name']) . '</span>',
-                                    "<a href='?part=quizstats&course_id=$course_id&quiz_id=".$quiz['ID']."&subscription_id=$subscription_id'>".$passed_count.'/'.$attempts."</a>",
+                                
+                                $correct_count = isset($stats[$question['ID']])? array_sum($stats[$question['ID']]) : 0;//Number of passes
+                                $num_attempts = isset($stats[$question['ID']]) ? count($stats[$question['ID']]) : 0;//Number of question attempts
+                                //$percentage = $attempts>0?(($passed_count/$attempts)*100):0;
+                                //$questionHTML = "<a href=\"#\" class=\"no-ul\" onclick=\"jQuery('#choices_$question['ID']').toggleClass('hidden',1000);return false;\">$question->question</a><div class=\"hidden choices\" id=\"choices_$question->id\"><br>";
+                                $questionHTML = $question['ID'].": <a href='#' onclick='jQuery(\"#choices_".$question['ID']."\").toggleClass(\"hidden\",1000);return false;'>".$question['quiz_question']."</a><div class='hidden choices' id='choices_".$question['ID']."'><br>";
+                                foreach ($question['possibilities'] as $answer) 
+                                {
+                                    $correct = '';
+                                    if ($answer['answer_correct'] == 1) 
+                                    {
+                                        $correct = '<span class="fa fa-check"></span>';
+                                    }
+                                    $questionHTML.="<div>".$correct . $answer['answer_text']."</div>"; 
+                                } 
+                                $questionHTML .= "</div>";
+                                $percentage = 0;
+                                if($num_attempts > 0)
+                                {
+                                    $percentage = ($correct_count/$num_attempts)*100;
+                                }
+                                $questionTableObj->rows[] = array(
+                                    $questionHTML,
+                                    $correct_count.'/'.$num_attempts,
                                     eotprogressbar('12em', $percentage, true)
                                     );
                             }
-                            CreateDataTable($quizTableObj); // Print the table in the page
-                        }
+                            CreateDataTable($questionTableObj); // Print the table in the page
+                       
 ?>
-                        <h2>Video Views</h2>
-<?php 
-                        $videos =  getResourcesInCourse($course_id, 'video');
-                        $custom_videos = getResourcesInCourse($course_id, 'custom_video');
-                        $all_videos = array_merge($videos, $custom_videos);
-                        $track_records = getAllTrack($org_id); // All track records.
-//d($videos,$custom_videos,$all_videos,$track_records);
-                        $track_watchVideo = array();
-                        foreach ($track_records as $key => $record) {
-                            if($record['type'] == "watch_video")
-                            {
-                                    array_push($track_watchVideo, $record['video_id']); // Save the ID of the video.
-                                    //unset($track_records[$key]); // Delete them from the array.
-                            }
-                            if($record['type'] == "watch_custom_video")
-                            {
-                                    array_push($track_watchVideo, $record['video_id']); // Save the ID of the video.
-                                    //unset($track_records[$key]); // Delete them from the array.
-                            }
-                        }
-                        $views = array_count_values($track_watchVideo);
                         
-                        $videosTableObj = new stdClass();
-                            $videosTableObj->rows = array();
-                            $videosTableObj->headers = array(
-                                'Video Title' => 'left',
-                                'Views' => 'center'
-                            );
-                        // Creating rows for the table
-                            foreach ($all_videos as $video) 
-                            {
-
-                                
-                                $view_count = isset($views[$video['ID']]) ? $views[$video['ID']] : 0;//Number of video views
-                                
-
-                                $videosTableObj->rows[] = array(
-                                    ' <span>' . stripslashes($video['name']) . '</span>',
-                                    $view_count
-                                    );
-                            }
-                         CreateDataTable($videosTableObj); // Print the table in the page
-?>
-                         <h2>Resource Views</h2>
-<?php
-                        $resources = array_merge(getResourcesInCourse($course_id, 'doc'));
-                        //d($resources);
-                        $track_download = array();
-                        foreach ($track_records as $key => $record) {
-                            if($record['type'] == "download_resource")
-                            {
-                                    array_push($track_download, $record['resource_id']); // Save the ID of the video.
-                                    //unset($track_records[$key]); // Delete them from the array.
-                            }
-                        }
-                        $downloads = array_count_values($track_download);
-                        $resourceTableObj = new stdClass();
-                            $resourceTableObj->rows = array();
-                            $resourceTableObj->headers = array(
-                                'Name' => 'left',
-                                'Downloads' => 'center'
-                            );
-                        // Creating rows for the table
-                            foreach ($resources as $resource) 
-                            {
-
-                                
-                                $download_count = isset($downloads[$resource['ID']]) ? $downloads[$resource['ID']] : 0;//Number of video views
-                                
-
-                                $resourceTableObj->rows[] = array(
-                                    ' <span>' . stripslashes($resource['name']) . '</span>',
-                                    $download_count
-                                    );
-                            }
-                         CreateDataTable($resourceTableObj); // Print the table in the page
-?>
                 </div>
 <?php                }
             else 

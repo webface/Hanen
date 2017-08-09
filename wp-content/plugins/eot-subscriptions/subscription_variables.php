@@ -126,6 +126,7 @@ define ('TABLE_QUIZ', $wpdb->prefix.'quiz');
 define ('TABLE_QUIZ_QUESTION', $wpdb->prefix . 'quiz_question');
 define ('TABLE_QUIZ_ANSWER', $wpdb->prefix . 'quiz_answer');
 define ('TABLE_QUIZ_RESULT', $wpdb->prefix . 'quiz_results');
+define ('TABLE_QUIZ_QUESTION_RESULT', $wpdb->prefix . 'quiz_question_results');
 define ('TABLE_QUIZ_IN_COURSE', $wpdb->prefix . 'quiz_in_course');
 define ('TABLE_QUIZ_ATTEMPTS', $wpdb->prefix . 'quiz_attempts');
 define ('TABLE_CATEGORIES', $wpdb->prefix.'category');
