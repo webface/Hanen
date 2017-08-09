@@ -187,7 +187,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                                 $videosTableObj->rows[] = array(
                                     ' <span>' . stripslashes($video['name']) . '</span>',
-                                    $view_count
+                                    "<a href='?part=videostats&course_id=$course_id&video_id=".$video['ID']."&subscription_id=$subscription_id'>".$view_count."</a>"
                                     );
                             }
                          CreateDataTable($videosTableObj); // Print the table in the page

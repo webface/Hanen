@@ -8417,3 +8417,15 @@ function getQuestionResults($question_ids = 0,$user_ids = 0, $quiz_id = 0)
     $results = $wpdb->get_results("SELECT qr.* FROM ". TABLE_QUIZ_QUESTION_RESULT." qr WHERE qr.quiz_id = $quiz_id AND qr.question_id IN (".$question_ids.") AND qr.user_id IN (".$user_ids.")", ARRAY_A);
     return $results;
 }
+
+/*
+ * get video by id
+ * @param - video_id - the ID of the video
+ */
+function getVideoById($video_id = 0)
+{
+    $video_id = filter_var($video_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $video = $wpdb->get_row("SELECT * FROM ". TABLE_VIDEOS. " WHERE ID = $video_id", ARRAY_A);
+    return $video;
+}
