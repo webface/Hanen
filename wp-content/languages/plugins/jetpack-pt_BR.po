@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Jetpack by WordPress.com - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-06 12:26:00+0000\n"
+"PO-Revision-Date: 2017-06-20 10:25:35+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1197,7 +1197,7 @@ msgstr "Erro ao atualizar as configurações. %(error)s"
 
 #: _inc/jetpack-strings.php:39
 msgid "Updating Post by Email address…"
-msgstr "Atualizando endereço para publicar por email..."
+msgstr "Atualizando endereço para publicar por e-mail..."
 
 #: _inc/jetpack-strings.php:38
 msgid "Regenerated Post by Email address."

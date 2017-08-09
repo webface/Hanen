@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-07-31 17:37:58+0000\n"
+"PO-Revision-Date: 2017-08-03 14:43:14+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9866,10 +9866,6 @@ msgstr "Alege dacă dorești să se efectueze plata imediat sau să doar autoriz
 msgid "Capture"
 msgstr "Plată imediată"
 
-#: includes/gateways/paypal/includes/settings-paypal.php:104
-msgid "Authorize"
-msgstr "Autorizare sumă"
-
 #: includes/gateways/paypal/includes/settings-paypal.php:131
 #: includes/gateways/paypal/includes/settings-paypal.php:139
 #: includes/gateways/paypal/includes/settings-paypal.php:147
@@ -10662,6 +10658,10 @@ msgstr "Fă plata direct în contul nostru bancar. Te rog folosește ID-ul comen
 #: includes/emails/class-wc-email-customer-refunded-order.php:43
 msgid "Order refunded emails are sent to customers when their orders are refunded."
 msgstr "Emailurile de comandă rambursată sunt trimise clienților când comenzile lor sunt rambursate."
+
+#: includes/gateways/paypal/includes/settings-paypal.php:104
+msgid "Authorize"
+msgstr "Autorizează"
 
 #: includes/api/legacy/v2/class-wc-api-products.php:2252
 msgid "Invalid product SKU"
@@ -11755,10 +11755,6 @@ msgstr "Limbă"
 #: includes/admin/views/html-admin-page-status-report.php:198
 msgid "Default timezone is %s - it should be UTC"
 msgstr "Fusul orar implicit este %s - ar trebui să fie UTC"
-
-#: includes/admin/views/html-admin-page-status-report.php:447
-msgid "Force SSL"
-msgstr "Forteaza SSL"
 
 #: includes/admin/views/html-admin-page-status-report.php:563
 msgid "Version"
@@ -12888,6 +12884,10 @@ msgstr "Versiunea instalată a temei actuale active."
 #: includes/admin/views/html-admin-page-status-report.php:582
 msgid "If you are modifying WooCommerce on a parent theme that you did not build personally we recommend using a child theme. See: <a href=\"%s\" target=\"_blank\">How to create a child theme</a>"
 msgstr "Dacă modifici WooCommerce într-o temă părinte pe care nu ai construit-o personal recomandăm folosirea unei teme copil. Vezi: <a href=\"%s\" target=\"_blank\">Cum creezi o temă copil</a>"
+
+#: includes/admin/views/html-admin-page-status-report.php:447
+msgid "Force SSL"
+msgstr "Forțează SSL"
 
 #: includes/admin/settings/class-wc-settings-checkout.php:183
 #: templates/checkout/thankyou.php:33 templates/myaccount/my-orders.php:75

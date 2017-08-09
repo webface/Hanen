@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-07-12 12:03:51+0000\n"
+"PO-Revision-Date: 2017-08-01 23:26:13+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -604,6 +604,10 @@ msgstr "מינויים"
 msgid "WooCommerce Extensions"
 msgstr "הרחבות של WooCommerce"
 
+#: includes/admin/helper/views/html-helper-compat.php:4
+msgid "Looking for the WooCommerce Helper?"
+msgstr "צריכים עזרה בווקומרס?"
+
 #. translators: %1$s: helper url, %2$d: number of extensions
 #: includes/admin/helper/class-wc-helper.php:1149
 msgid "Note: You currently have <a href=\"%1$s\">%2$d extension</a> which should be updated first before updating WooCommerce."
@@ -674,6 +678,15 @@ msgstr "הפעלת חידוש אוטומטי"
 msgid "Subscription is <strong>expiring</strong> soon."
 msgstr "המינוי שלך <strong>יפוג</strong> בקרוב."
 
+#: includes/admin/helper/class-wc-helper.php:207
+#: includes/admin/helper/class-wc-helper.php:230
+msgid "Renew"
+msgstr "לחדש"
+
+#: includes/admin/helper/class-wc-helper.php:206
+msgid "This subscription has expired. Please <strong>renew</strong> to receive updates and support."
+msgstr "המינוי פג תוקף. יש <strong>לחדש</strong> את המינוי על מנת לקבל עדכונים ותמיכה."
+
 #: includes/admin/helper/class-wc-helper.php:198
 msgid "This subscription has expired. Contact the owner to <strong>renew</strong> the subscription to receive updates and support."
 msgstr "תוקף המנוי פג. צור קשר עם הבעלים כדי <strong>לחדש</strong> את המנוי לקבלת עדכונים ותמיכה."
@@ -691,6 +704,10 @@ msgstr "כדי לאפשר את העדכון, עליך <strong>להפעיל</stro
 #: includes/admin/helper/class-wc-helper.php:186
 msgid "Version %s is <strong>available</strong>."
 msgstr "גרסה %s <strong>זמינה</strong> כעת."
+
+#: includes/admin/helper/class-wc-helper-compat.php:157
+msgid "WooCommerce Helper"
+msgstr "עזרה בווקומרס"
 
 #: includes/admin/class-wc-admin-webhooks.php:449
 msgid "Create a new webhook"
@@ -852,9 +869,129 @@ msgstr "בחינם - ביצוע התקנה עכשיו"
 msgid "WooCommerce Services"
 msgstr "שירותי WooCommerce"
 
+#: i18n/states/RO.php:58
+msgid "Vrancea"
+msgstr "ורנצ'אה"
+
+#: i18n/states/RO.php:57
+msgid "Vaslui"
+msgstr "וסלוי"
+
+#: i18n/states/RO.php:56
+msgid "Valcea"
+msgstr "מחוז ולצ'ה"
+
+#: i18n/states/RO.php:55
+msgid "Tulcea"
+msgstr "טולצ'ה"
+
+#: i18n/states/RO.php:54
+msgid "Timis"
+msgstr "טימיש"
+
+#: i18n/states/RO.php:53
+msgid "Teleorman"
+msgstr "טלאורמן"
+
+#: i18n/states/RO.php:52
+msgid "Suceava"
+msgstr "סוצ'אבה"
+
 #: i18n/states/RO.php:51
 msgid "Sibiu"
 msgstr "סיביו"
+
+#: i18n/states/RO.php:50
+msgid "Satu Mare"
+msgstr "סאטו מארה"
+
+#: i18n/states/RO.php:49
+msgid "Salaj"
+msgstr "סלאז'"
+
+#: i18n/states/RO.php:48
+msgid "Prahova"
+msgstr "פרהובה"
+
+#: i18n/states/RO.php:47
+msgid "Olt"
+msgstr "אולט"
+
+#: i18n/states/RO.php:46
+msgid "Neamt"
+msgstr "ניאמץ"
+
+#: i18n/states/RO.php:45
+msgid "Mures"
+msgstr "מורש"
+
+#: i18n/states/RO.php:43
+msgid "Maramures"
+msgstr "מרמורש"
+
+#: i18n/states/RO.php:42
+msgid "Ilfov"
+msgstr "אילפוב"
+
+#: i18n/states/RO.php:41
+msgid "Iasi"
+msgstr "יאשי"
+
+#: i18n/states/RO.php:40
+msgid "Ialomita"
+msgstr "יאלומיצה"
+
+#: i18n/states/RO.php:39
+msgid "Hunedoara"
+msgstr "חונדוארה"
+
+#: i18n/states/RO.php:38
+msgid "Harghita"
+msgstr "הרגיטה"
+
+#: i18n/states/RO.php:37
+msgid "Gorj"
+msgstr "גורז'"
+
+#: i18n/states/RO.php:36
+msgid "Giurgiu"
+msgstr "ג'יורג'יו"
+
+#: i18n/states/RO.php:35
+msgid "Galati"
+msgstr "גאלאץ"
+
+#: i18n/states/RO.php:34
+msgid "Dolj"
+msgstr "דולז'"
+
+#: i18n/states/RO.php:33
+msgid "Dambovita"
+msgstr "דמבוביצה"
+
+#: i18n/states/RO.php:32
+msgid "Covasna"
+msgstr "קובאסנה"
+
+#: i18n/states/RO.php:31
+msgid "Constanta"
+msgstr "קונסטנצה"
+
+#: i18n/states/RO.php:30
+msgid "Cluj"
+msgstr "קלוז'-נאפוקה"
+
+#: i18n/states/RO.php:29
+msgid "Caras-Severin"
+msgstr "קארס-סוורין"
+
+#: i18n/states/RO.php:28
+msgid "Calarasi"
+msgstr "קלאראסי"
+
+#: i18n/states/RO.php:27
+msgid "Buzau"
+msgstr "בוזאו"
 
 #: i18n/states/RO.php:26
 msgid "Bucuresti"
@@ -863,6 +1000,38 @@ msgstr "בוקרשט"
 #: i18n/states/RO.php:25
 msgid "Brasov"
 msgstr "בראשוב"
+
+#: i18n/states/RO.php:24
+msgid "Braila"
+msgstr "בראילה"
+
+#: i18n/states/RO.php:23
+msgid "Botosani"
+msgstr "בוטושני"
+
+#: i18n/states/RO.php:22
+msgid "Bistrita-Nasaud"
+msgstr "ביסטריצה-נסאוד"
+
+#: i18n/states/RO.php:21
+msgid "Bihor"
+msgstr "ביחור"
+
+#: i18n/states/RO.php:20
+msgid "Bacau"
+msgstr "בקאו"
+
+#: i18n/states/RO.php:19
+msgid "Arges"
+msgstr "ארג'ש"
+
+#: i18n/states/RO.php:18
+msgid "Arad"
+msgstr "ארד"
+
+#: i18n/states/RO.php:17
+msgid "Alba"
+msgstr "אלבה"
 
 #: i18n/states/BO.php:25
 msgid "Tarija"
