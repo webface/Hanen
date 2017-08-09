@@ -23,6 +23,7 @@ wp-content/themes/ExpertOnlineTraining/images/certificates/*
 wp-content/themes/ExpertOnlineTraining/kint/*
 wp-content/plugins/stop-emails/*
 wp-content/debug.log
+wp-content/wflogs/*
 
 # wpengine specific
 .smushit-status
