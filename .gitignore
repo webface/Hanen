@@ -22,6 +22,7 @@ wp-snapshots/
 wp-content/themes/ExpertOnlineTraining/images/certificates/*
 wp-content/themes/ExpertOnlineTraining/kint/*
 wp-content/plugins/stop-emails/*
+wp-content/debug.log
 
 # wpengine specific
 .smushit-status
