@@ -6,8 +6,6 @@ $email = $current_user->user_email; // Wordpres e-mail address
 $org_id = get_org_from_user($user_id); // Organization ID
 $org_name = get_the_title($org_id);
 $portal_subdomain = ''; // Subdomain of the user REMOVE THIS LATER
-$accepted = get_user_meta($user_id, "accepted_terms", true); // Boolean if user has accepted terms
-$data = compact("org_id");
 $image = get_field('dashboard_logo', 'user_' . $org_id); // Advance custom fields. Field for the dashboard_logo
 $page_title = "Dashboard";
 
@@ -24,7 +22,7 @@ if (current_user_can("is_director"))
 //        $first_name = $current_user->user_firstname;
 //        $last_name = $current_user->user_lastname;
 //        $password = wp_generate_password('8', false);
-//        $portal_data = compact("org_id", "org_name", "org_subdomain", "user_id", "first_name", "last_name", "email", "pa!ssword");
+//        $portal_data = compact("org_id", "org_name", "org_subdomain", "user_id", "first_name", "last_name", "email", "password");
 //        // Create the Portal
 //        $result = communicate_with_learnupon('create_account', $portal_data);
 //
@@ -35,117 +33,74 @@ if (current_user_can("is_director"))
 //        }
 //    }
     
-    $subscription = getSubscriptionByTheLowestLibraryId($org_id);
-    //User has not accepted the terms and conditions. Display the terms and agreement
-    if(!$accepted && $subscription)
+    if (current_user_can("is_uber_manager")) 
     {
-       $library_id = $subscription->library_id; //find the lowest library id
-       $library = getLibrary($library_id); // the library information.
-       echo $library->terms_manager;
-       echo "<input type='button' class='terms' onclick='acceptTerms()' value='Yes, I accept the terms and conditions'>
-       <script>
-           $ = jQuery;
-           function acceptTerms()
-           {
-               //set up the ajax call parameters
-               var data = { action: 'acceptTerms'};
-               var url =  ajax_object.ajax_url;
-
-               //ajax call to update the parameter
-               $.ajax({
-                   type: 'POST',
-                   url: url,
-                   dataType: 'json',
-                   data: data,
-                   success:
-                   function(data)
-                   {
-                        // Request Failed
-                       if(data.status == 0)
-                       {
-                            alert(data.message);
-                       }
-                       // Request went succesfully. Redirect to tutorial.
-                       else if(data.status == 1)
-                       {
-                            window.location.href = data.location;
-                       }
-                   }
-               });
-           }
-       </script>";
+        $page_title = "Uber Manager Dashboard";
+    } 
+    else if (current_user_can("is_umbrella_manager")) 
+    {
+        $page_title = "Umbrella Manager Dashboard";
     }
-    else // Accepted terms.
+    ?>
+
+    <h1 class="article_page_title"><?= $page_title ?></h1>
+    <?php
+    // Display errors if variable exsist
+    if (isset($error_message)) 
     {
-        if (current_user_can("is_uber_manager")) 
-        {
-            $page_title = "Uber Manager Dashboard";
-        } 
-        else if (current_user_can("is_umbrella_manager")) 
-        {
-            $page_title = "Umbrella Manager Dashboard";
-        }
+        echo "<div class='round_msgbox'>$error_message</div>";
+    }
+
+    // Display successful updgrade message.
+    if (isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'upgradeSubscription') 
+    {
+        echo "<div class='round_msgbox'><h2>Subscription Upgraded Successfully!</h2>You have succesfully upgraded your account.</div>";
+    }
+
+    // Display the dashboard banner
+    if (!empty($image)) 
+    {
         ?>
-
-        <h1 class="article_page_title"><?= $page_title ?></h1>
+        <div class="dashboard_banner acf-image-image">
+            <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
+            <br/>
+        </div>
         <?php
-        // Display errors if variable exsist
-        if (isset($error_message)) 
-        {
-            echo "<div class='round_msgbox'>$error_message</div>";
-        }
+    }
 
-        // Display successful updgrade message.
-        if (isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'upgradeSubscription') 
-        {
-            echo "<div class='round_msgbox'><h2>Subscription Upgraded Successfully!</h2>You have succesfully upgraded your account.</div>";
-        }
+    // if its an uber manager, display the uber manager dashboard
+    if (current_user_can("is_uber_manager") && function_exists('display_uber_manager_dashboard')) 
+    {
+        display_uber_manager_dashboard();
+        ?>
+        <script>
+            $ = jQuery;
+            $(document).ready(function ()
+            {
+                $('.dataTable').addClass('td-ubermanager');
+            });
+        </script>
+        <?php
+    }
+    // if its an uber manager, display the uber manager dashboard
+    else if (current_user_can("is_umbrella_manager") && function_exists('display_umbrella_manager_dashboard')) 
+    {
+        display_umbrella_manager_dashboard();
+        ?>
+        <script>
+            $ = jQuery;
+            $(document).ready(function ()
+            {
+                $('.dataTable').addClass('td-ubermanager');
+            });
+        </script>
+        <?php
+    }
 
-        // Display the dashboard banner
-        if (!empty($image)) 
-        {
-            ?>
-            <div class="dashboard_banner acf-image-image">
-                <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
-                <br/>
-            </div>
-            <?php
-        }
-
-        // if its an uber manager, display the uber manager dashboard
-        if (current_user_can("is_uber_manager") && function_exists('display_uber_manager_dashboard')) 
-        {
-            display_uber_manager_dashboard();
-            ?>
-            <script>
-                $ = jQuery;
-                $(document).ready(function ()
-                {
-                    $('.dataTable').addClass('td-ubermanager');
-                });
-            </script>
-            <?php
-        }
-        // if its an uber manager, display the uber manager dashboard
-        else if (current_user_can("is_umbrella_manager") && function_exists('display_umbrella_manager_dashboard')) 
-        {
-            display_umbrella_manager_dashboard();
-            ?>
-            <script>
-                $ = jQuery;
-                $(document).ready(function ()
-                {
-                    $('.dataTable').addClass('td-ubermanager');
-                });
-            </script>
-            <?php
-        }
-
-        // Display info for the subscription page.
-        if (function_exists('display_subscriptions')) 
-        {
-            display_subscriptions();
-        }
+    // Display info for the subscription page.
+    if (function_exists('display_subscriptions')) 
+    {
+        display_subscriptions();
     }
 }
 // Sales representative and the Sales manager.
@@ -246,12 +201,30 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
 // Student
 else if (current_user_can("is_student")) 
 {
+    $enrollments = getEnrollmentsByUserId($user_id); // All the enrollments of the user.
+    if ( $enrollments && count($enrollments) > 0) 
+    {
+        $subscription_id = $enrollments[0]['subscription_id']; // the subscription ID for the first enrollment
+        $subscription = getSubscriptions($subscription_id); // get all the data from subscription table
+        if ($subscription)
+        {
+            // get the library object
+            $library = getLibrary ($subscription->library_id);
+            // make sure user accepted terms of use
+            $accepted = accepted_terms($library); // Boolean if user has accepted terms
+            if (!$accepted)
+            {
+               return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
+            }
+
+        }
+    }
+
     //user just accepted terms and need to be presented with tutorial video
     if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
     {
-    ?>
-        <h1 class="article_page_title">Detailed Stats Tutorial</h1>
-        <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js?ver=5.8.8"></script>
+?>
+        <h1 class="article_page_title">Intro To Expert Online Training</h1>
         <div id='tutorial_video'>
             <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
                 <source src="https://eot-output.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
@@ -263,169 +236,125 @@ else if (current_user_can("is_student"))
         </div>
         <br><br><br><br>
         <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton">View Dashboard</a>
-    <?php
+<?php
     }
     else
     {
-        $subscription = getSubscriptionByTheLowestLibraryId($org_id);
-        //User has not accepted the terms and conditions
-        if(!$accepted && $subscription)
-        {
-            $library_id = $subscription->library_id;   //find the lowest library id
-            $library = getLibrary($library_id);
-            echo $library->terms_staff;
-            echo "<input type='button' class='terms' onclick='acceptTerms()' value='Yes, I accept the terms and conditions'>
-                <script>
-                    $ = jQuery;
-                    function acceptTerms()
-                    {
-                        //set up the ajax call parameters
-                        var data = { action: 'acceptTerms'};
-                        var url =  ajax_object.ajax_url;
+        $courses = getCourses(0, $org_id);
 
-                        //ajax call to update the parameter
-                        $.ajax({
-                            type: 'POST',
-                            url: url,
-                            dataType: 'json',
-                            data: data,
-                            success:
-                            function(data)
-                            {
-                                // Request Failed
-                               if(data.status == 0)
-                               {
-                                    alert(data.message);
-                               }
-                               // Request went succesfully. Redirect to tutorial.
-                               else if(data.status == 1)
-                               {
-                                    window.location.href = data.location;
-                               }
-                            }
-                        });
-                    }
-                </script>";
+        if (!empty($image)) 
+        {
+?>
+            <div class="dashboard_banner acf-image-image">
+                <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
+                <br/>
+            </div>
+<?php
         }
-        else
-        {
-            $enrollments = getEnrollmentsByUserId($user_id); // All the enrollments of the user.
-            $courses = getCourses(0, $org_id);
-
-            if (!empty($image)) 
+        if ( $enrollments && count($enrollments) > 0) 
+        { // Check if the user is enrolled to any course.
+            // Display the enrollments information in the dashboard
+            foreach ($enrollments as $enrollment) 
             {
-        ?>
-                <div class="dashboard_banner acf-image-image">
-                    <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
-                    <br/>
-                </div>
-        <?php
-            }
-            if ( $enrollments && count($enrollments) > 0) 
-            { // Check if the user is enrolled to any course.
-                // Display the enrollments information in the dashboard
-                foreach ($enrollments as $enrollment) 
+                $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
+                $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
+                $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
+                // Get all the modules in this course
+                $modules = getModulesInCourse($course_id);
+                $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : "could not find the course name"; // Check if the that course id is in $courses.
+                $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
+                if ($modules) 
                 {
-                    $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
-                    $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
-                    $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
-                    // Get all the modules in this course
-                    $modules = getModulesInCourse($course_id);
-                    $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : "could not find the course name"; // Check if the that course id is in $courses.
-                    $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
-                    if ($modules) 
+                    $status = formatStatus($enrollment['status']);
+                    $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
+                    if ($status == "Failed") 
                     {
-                        $status = formatStatus($enrollment['status']);
-                        $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
-                        if ($status == "Failed") 
-                        {
-                            $status = 'In Progress';
-                        } 
-                        else if ($status == "Completed" || $status == "Passed") 
-                        {
-                            $percentage_complete = 100;
-                        }
-        ?>
-                        <div class="dashboard_border student">
-                            <h1><?= $course_name ?>
-                            </h1>
-                            <div class="content_right">
-                                <div class="clear"></div>
-                                <div class="menu">
-                                    <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
-                                        <div class="thumbnail">
-                                            <i class="fa fa-youtube-play" alt="Content"></i>
-                                        </div>
-                                        <div class="para">
-                                            <h1>Start Course</h1>
-                                            <br/>
-                                            Watch the videos, take quizzes, see resources
-                                        </div>
-                                    </a>
-                                </div> 
-                            </div>
-                            <div class="content_left student">
-                                <table class="tb_border">
-                                    <tbody>
-                                        <tr>
-                                            <td class="s1 darklabel">
-                                                Modules
-                                            </td>
-                                            <td class="s2">
-                                                <?= count($modules) ?>            
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="s1 darklabel">
-                                                Status
-                                            </td>
-                                            <td class="s2">
-                                                <?= $status ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <br>
-
-                            </div>
-                            <div class="dashboard_button">
-                                <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
-                                    <div class="title" style="padding-top: 5px;">
-                                        <b>Virtual Staff Lounge</b>
-                                        <br>Manage your Forum
+                        $status = 'In Progress';
+                    } 
+                    else if ($status == "Completed" || $status == "Passed") 
+                    {
+                        $percentage_complete = 100;
+                    }
+?>
+                    <div class="dashboard_border student">
+                        <h1><?= $course_name ?>
+                        </h1>
+                        <div class="content_right">
+                            <div class="clear"></div>
+                            <div class="menu">
+                                <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
+                                    <div class="thumbnail">
+                                        <i class="fa fa-youtube-play" alt="Content"></i>
+                                    </div>
+                                    <div class="para">
+                                        <h1>Start Course</h1>
+                                        <br/>
+                                        Watch the videos, take quizzes, see resources
                                     </div>
                                 </a>
-                            </div>
-                            <div>
-                                <b>Technical Support</b>
-                                <br>
-                                Toll-free 877-237-3931
-                            </div>
+                            </div> 
                         </div>
-                        <script>
-                            $ = jQuery;
-                        // Create HTML with the enrollments and append it to the sidebar
-                            $("#listOfCourses").append('\
-                                <div id="bannerArea">\
-                                        <img id="menu-banner" src="' + ajax_object.template_url + '/images/menu-banner.png">\
-                                        <h2><?= $course_name ?></h2>\
-                                </div>\
-                                <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
-                        </script>
-        <?php
-                    } 
-                    else 
-                    { 
-                        // User has no modules
-                        echo '<b>' . $course_name . '</b>: There are no modules in this course. Please contact your camp director.';
-                    } 
-                }
-            } 
-            else 
-            { 
-                // Display message if the user has no enrollments.
-                echo "<p>You do not have any enrollments.</p>";
+                        <div class="content_left student">
+                            <table class="tb_border">
+                                <tbody>
+                                    <tr>
+                                        <td class="s1 darklabel">
+                                            Modules
+                                        </td>
+                                        <td class="s2">
+                                            <?= count($modules) ?>            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="s1 darklabel">
+                                            Status
+                                        </td>
+                                        <td class="s2">
+                                            <?= $status ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+
+                        </div>
+                        <div class="dashboard_button">
+                            <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
+                                <div class="title" style="padding-top: 5px;">
+                                    <b>Virtual Staff Lounge</b>
+                                    <br>Manage your Forum
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <b>Technical Support</b>
+                            <br>
+                            Toll-free 877-237-3931
+                        </div>
+                    </div>
+                    <script>
+                        $ = jQuery;
+                    // Create HTML with the enrollments and append it to the sidebar
+                        $("#listOfCourses").append('\
+                            <div id="bannerArea">\
+                                    <img id="menu-banner" src="' + ajax_object.template_url + '/images/menu-banner.png">\
+                                    <h2><?= $course_name ?></h2>\
+                            </div>\
+                            <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
+                    </script>
+<?php
+                } 
+                else 
+                { 
+                    // User has no modules
+                    echo '<b>' . $course_name . '</b>: There are no modules in this course. Please contact your camp director.';
+                } 
             }
+        } 
+        else 
+        { 
+            // Display message if the user has no enrollments.
+            echo "<p>You do not have any enrollments.</p>";
         }
     }
 } 

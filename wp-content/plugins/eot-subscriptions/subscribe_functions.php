@@ -44,6 +44,13 @@ function display_subscriptions ()
             $library_id = $subscription->library_id;
             $library = getLibrary($library_id);
 
+            // make sure user accepted terms of use
+            $accepted = accepted_terms($library); // Boolean if user has accepted terms
+            if (!$accepted)
+            {
+               return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
+            }
+
             // check if LE or LEL is set up yet
             if (($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID) && $subscription->setup)//
             {
@@ -2787,4 +2794,66 @@ function upgradeSubscription_callback ()
     echo json_encode($result);
     wp_die();   
 }
+
+/**
+ * check whether the user accepted the terms and condition
+ * if not display the terms and conditions
+ * @param object $library - the library opject
+ * returns true if accepted false otherwise (and echo's the terms)
+ */
+function accepted_terms($library = NULL)
+{
+    global $current_user;
+    $user_id = $current_user->ID;
+    $accepted = get_user_meta($user_id, "accepted_terms", true); // Boolean if user has accepted terms
+    
+    if ($accepted)
+    {
+        return true;
+    }
+    else if ($library == NULL)
+    {
+        return false; // cant display terms because no library object was provided.
+    }
+    else
+    {
+        // output the terms
+       echo current_user_can('is_student') ? $library->terms_staff : $library->terms_manager;
+       echo "<input type='button' class='terms' onclick='acceptTerms()' value='Yes, I accept the terms and conditions'>
+       <script>
+           $ = jQuery;
+           function acceptTerms()
+           {
+               //set up the ajax call parameters
+               var data = { action: 'acceptTerms'};
+               var url =  ajax_object.ajax_url;
+
+               //ajax call to update the parameter
+               $.ajax({
+                   type: 'POST',
+                   url: url,
+                   dataType: 'json',
+                   data: data,
+                   success:
+                   function(data)
+                   {
+                        // Request Failed
+                       if(data.status == 0)
+                       {
+                            alert(data.message);
+                       }
+                       // Request went succesfully. Redirect to tutorial.
+                       else if(data.status == 1)
+                       {
+                            window.location.href = data.location;
+                       }
+                   }
+               });
+           }
+       </script>";  
+    }
+
+    return false;
+}
+
 ?>
