@@ -1637,15 +1637,9 @@
 		{
 			var form     = $(this).closest('.fl-builder-settings'),
 				valid    = form.validate().form(),
-				data     = form.serializeArray(),
-				settings = {},
-				i        = 0;
+				settings = FLBuilder._getSettings( form );
 
 			if(valid) {
-
-				for( ; i < data.length; i++) {
-					settings[data[i].name] = data[i].value;
-				}
 
 				FLBuilder.showAjaxLoader();
 				FLBuilder._layoutSettingsCSSCache = null;
@@ -7436,14 +7430,14 @@
 			if ( FLBuilderConfig.modSecFix && 'undefined' != typeof btoa ) {
 
 				if ( 'string' == typeof settings ) {
-					settings = btoa( settings );
+					settings = FLBuilder._btoa( settings );
 				}
 				else {
 
 					for ( prop in settings ) {
 
 						if ( 'string' == typeof settings[ prop ] ) {
-							settings[ prop ] = btoa( settings[ prop ] );
+							settings[ prop ] = FLBuilder._btoa( settings[ prop ] );
 						}
 						else if( 'object' == typeof settings[ prop ] ) {
 							settings[ prop ] = FLBuilder._ajaxModSecFix( settings[ prop ] );
@@ -7453,6 +7447,21 @@
 			}
 
 			return settings;
+		},
+
+		/**
+		 * Helper function for _ajaxModSecFix
+		 * btoa() does not handle utf8/16 characters
+		 * See: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
+		 *
+		 * @since 1.10.7
+		 * @access private
+		 * @method _btoa
+		 */
+		_btoa: function(str) {
+			return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+	        return String.fromCharCode('0x' + p1);
+	    }));
 		},
 
 		/* Lightboxes
