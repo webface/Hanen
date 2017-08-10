@@ -2820,36 +2820,43 @@ function accepted_terms($library = NULL)
         // output the terms
        echo current_user_can('is_student') ? $library->terms_staff : $library->terms_manager;
        echo "<input type='button' class='terms' onclick='acceptTerms()' value='Yes, I accept the terms and conditions'>
-       <script>
+            <div id='term_loading'>
+                <i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>
+                <span class='sr-only'>Loading...</span>
+            </div>
+            <script>
            $ = jQuery;
-           function acceptTerms()
-           {
-               //set up the ajax call parameters
-               var data = { action: 'acceptTerms'};
-               var url =  ajax_object.ajax_url;
+            function acceptTerms()
+            {
+                $('#term_loading').show(); // Show the loading icon.
+                //set up the ajax call parameters
+                var data = { action: 'acceptTerms'};
+                var url =  ajax_object.ajax_url;
 
-               //ajax call to update the parameter
-               $.ajax({
-                   type: 'POST',
-                   url: url,
-                   dataType: 'json',
-                   data: data,
-                   success:
-                   function(data)
-                   {
+                //ajax call to update the parameter
+                 $.ajax({
+                    type: 'POST',
+                    url: url,
+                    dataType: 'json',
+                    data: data,
+                    success:
+                    function(data)
+                    {
                         // Request Failed
                        if(data.status == 0)
                        {
+                            // Alert the error message and hide the loading icon.
                             alert(data.message);
+                            $('#term_loading').hide();
                        }
                        // Request went succesfully. Redirect to tutorial.
                        else if(data.status == 1)
                        {
                             window.location.href = data.location;
                        }
-                   }
+                    }
                });
-           }
+            }
        </script>";  
     }
 

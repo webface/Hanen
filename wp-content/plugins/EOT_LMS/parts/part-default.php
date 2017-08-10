@@ -1,3 +1,9 @@
+<style>
+/* Loading ICON when the I agree button is clicked.*/
+#term_loading {
+    display:none;
+}
+</style>
 <?php
 // Variable declaration
 global $current_user;
