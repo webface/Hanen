@@ -8391,7 +8391,7 @@ function getAllTrack($org_id = 0)
  * @param type $course_id - the course ID
  * 
  */
-function getAllQuizAttempts($course_id = 0)
+function getAllQuizAttempts($course_id = 0, $user_id = 0)
 {
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     if ($course_id == 0) 
@@ -8402,7 +8402,15 @@ function getAllQuizAttempts($course_id = 0)
     $quizzes = getQuizzesInCourse($course_id);
     $quiz_ids = array_column($quizzes, 'ID');
     $quiz_ids_string = implode(',', $quiz_ids);
-    $attempts = $wpdb->get_results("SELECT DISTINCT(quiz_id),user_id,passed,completed FROM ". TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN(".$quiz_ids_string.") AND date_attempted BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'",ARRAY_A);
+    $sql = "SELECT DISTINCT(quiz_id), ID, user_id, passed, completed, score, date_attempted ";
+    $sql.= "FROM ". TABLE_QUIZ_ATTEMPTS . " ";
+    $sql.= "WHERE quiz_id IN(".$quiz_ids_string.") ";
+    $sql.= "AND date_attempted BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'";
+    if($user_id>0)
+    {
+        $sql.=" AND user_id = $user_id";
+    }
+    $attempts = $wpdb->get_results($sql, ARRAY_A);
     return $attempts;
 }
 
@@ -8428,4 +8436,71 @@ function getVideoById($video_id = 0)
     global $wpdb;
     $video = $wpdb->get_row("SELECT * FROM ". TABLE_VIDEOS. " WHERE ID = $video_id", ARRAY_A);
     return $video;
+}
+
+/**
+ * stats function get video stats
+ * @param type $video_id - the ID of the video
+ * @param type $org_id - the ID of the org
+ */
+function getVideoStats($video_id = 0, $org_id = 0)
+{
+    $video_id = filter_var($video_id, FILTER_SANITIZE_NUMBER_INT);
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $stats = $wpdb->get_results("SELECT u.display_name, t.* FROM "
+            . TABLE_USERS ." as u LEFT JOIN "
+            .TABLE_TRACK." as t ON t.user_id = u.ID "
+            . "WHERE t.org_id = $org_id "
+            . "AND t.video_id = $video_id "
+            . "AND t.type IN('watch_video','watch_custom_video')"
+            . "AND t.result = 1",ARRAY_A);
+    return $stats;
+}
+
+/**
+ * get resource by id
+ * @param type $resource_id - the ID of the resource
+ * 
+ */
+function getResourceById($resource_id = 0)
+{
+    $resource_id = filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $resource = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES . " WHERE ID = $resource_id", ARRAY_A);
+    return $resource;
+}
+
+/**
+ * stats function get video stats
+ * @param type $video_id - the ID of the video
+ * @param type $org_id - the ID of the org
+ */
+function getResourceStats($resource_id = 0, $org_id = 0)
+{
+    $resource_id = filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $stats = $wpdb->get_results("SELECT u.display_name, t.* FROM "
+            . TABLE_USERS ." as u LEFT JOIN "
+            .TABLE_TRACK." as t ON t.user_id = u.ID "
+            . "WHERE t.org_id = $org_id "
+            . "AND t.resource_id = $resource_id "
+            . "AND t.type = 'download_resource'",ARRAY_A);
+    return $stats;
+}
+
+/**
+ * track function get date when resource was viewed
+ * @param type $user_id
+ * @param type $resource_id
+ * 
+ */
+function trackResource($user_id = 0, $resource_id =0)
+{
+    $resource_id = filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $result = $wpdb->get_row("SELECT * FROM ". TABLE_TRACK . " WHERE user_id = $user_id AND resource_id = $resource_id", ARRAY_A);
+    return $result;
 }

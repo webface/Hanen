@@ -118,7 +118,7 @@
 	   	    <b>Staff statistics for "<?= $course_name ?>"</b>
 		</div>
 		<div class="smoothness">
-			<h1 class="article_page_title">Course Statistics for "<?= $course_name ?>"</h1>
+			<h1 class="article_page_title">Staff Statistics for "<?= $course_name ?>"</h1>
 			Here are statistics on the staff taking the <b><?= $course_name ?></b> Course.
 			<h2>Summary</h2>
 			<div class="cell-row middle-row">
@@ -178,7 +178,15 @@
                                                         
                                                         
                                                         
-	        				$quizTableObj->rows[] = array($name,$passed_count.'/'.count($quizzes_in_course),$fail_count,$login_count, $view_count, $status, $percentage);
+	        				$quizTableObj->rows[] = array(
+                                                    $name,
+                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$passed_count.'/'.count($quizzes_in_course)."</a>",
+                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$fail_count."</a>",
+                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$login_count."</a>", 
+                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$view_count."</a>", 
+                                                    $status, 
+                                                    $percentage
+                                                  );
         				}
         				CreateDataTable($quizTableObj);
         			}

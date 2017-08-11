@@ -4634,3 +4634,7 @@ td.errors {
 #accountAreaBottom {
 	margin:auto;
 }
+
+.dataTable a{
+    text-decoration:underline;
+}

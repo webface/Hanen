@@ -28,20 +28,18 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 		$course_data = getCourse($course_id); // The course information
 		$course_name = $course_data['course_name'];
                 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
-                $video_id = filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT);// The video ID
-                $video = getVideoById($video_id);
-                $users = getEotUsers($org_id);
-                $users = $users['users'];
-                $user_ids = array_column($users, 'ID');
-                $user_ids_string = implode(",", $user_ids);
-                $video_stats = getVideoStats($video_id, $org_id);
-                //d($users,$video,$video_stats);
+                $resource_id = filter_var($_REQUEST['resource_id'], FILTER_SANITIZE_NUMBER_INT);// The video ID
+                $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);//overwrite The user ID
+                $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
+                $resource = getResourceById($resource_id);
+                $stats= trackResource($user_id, $resource_id);
+                //d($stats);
 ?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">Video Statistics for "<?= $course_name ?>"</h1>
-                                        <h2><?= $video['name'] ?></h2>
+                                        <h1 class="article_page_title">Video Viewing Record for "<?= $fullname ?>"</h1>
+                                        <h2><?= $resource['name'] ?></h2>
                                         <p>
-                                            Here is a table showing when these users have viewed <b><?=$video['name']?></b>.<br />
+                                            Here is a table showing when these users have viewed <b><?=$resource['name']?></b>.<br />
                                             Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
                                             It is currently <b><?=date('g:ia', time())?></b> on <b><?=date('F j, Y', time())?></b>.
                                         </p>
@@ -52,18 +50,16 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $usersTableObj = new stdClass();
                             $usersTableObj->rows = array();
                             $usersTableObj->headers = array(
-          '<div>Name</div>' => 'left',
-          '<center><div>Views</div></center>' => 'center'
+          '<div>No</div>' => 'left',
+          '<center><div>Views</div></center>' => 'left'
                             );
-                            
-                            foreach ($video_stats as $stat) 
-                            {
+
                                $usersTableObj->rows[] = array(
-                                    $stat['display_name'],
-                                    "<a href='?part=videostatsview&course_id=$course_id&video_id=".$video_id."&user_id=".$stat['user_id']."&subscription_id=$subscription_id'>1</a>"
+                                    1,
+                                    date('F j, Y g:i a', strtotime($stats['date']))
                                     ); 
                                 
-                            }
+
                             CreateDataTable($usersTableObj); // Print the table in the page
                 }
             else 

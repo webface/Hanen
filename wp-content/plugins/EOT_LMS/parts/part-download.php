@@ -15,7 +15,11 @@ $org_id = get_org_from_user($user_id);
       'type' => 'download_resource'
       
   );
+  $existing = $wpdb->get_row("SELECT * FROM ".TABLE_TRACK." WHERE user_id = $user_id AND module_id = $module_id AND org_id = $org_id AND resource_id = $resource_id AND type = 'download_resource'");
+  if(!$existing)
+  {
   $insert = $wpdb->insert(TABLE_TRACK,$data);
+  }
   $resource = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES . " WHERE ID = $resource_id",ARRAY_A);
   
   $file_path = $resource['url'];

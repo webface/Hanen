@@ -37,7 +37,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $users = $users['users'];
                 $user_ids = array_column($users, 'ID');
                 $user_ids_string = implode(",", $user_ids);
-                d($users);
+               // d($users);
                 
                 
 ?>
@@ -67,7 +67,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                    }
                                 }
                             }
-                            d($quiz, $question_stats, $stats);
+                            //d($quiz, $question_stats, $stats);
                             // Tables that will be displayed in the front end.
                             $questionTableObj = new stdClass();
                             $questionTableObj->rows = array();

@@ -221,7 +221,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                                 $resourceTableObj->rows[] = array(
                                     ' <span>' . stripslashes($resource['name']) . '</span>',
-                                    $download_count
+                                    "<a href='?part=resourcestats&course_id=$course_id&resource_id=".$resource['ID']."&subscription_id=$subscription_id'>".$download_count."</a>"
                                     );
                             }
                          CreateDataTable($resourceTableObj); // Print the table in the page
