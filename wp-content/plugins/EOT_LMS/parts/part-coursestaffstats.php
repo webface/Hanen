@@ -13,6 +13,7 @@
                 $quizzes_in_course = getQuizzesInCourse($course_id);
 		$track_records = getAllTrack($org_id); // All track records.
                 $track_quizzes = getAllQuizAttempts($course_id);//All quiz attempts for this course
+                d($track_quizzes);
 		$track_watchVideo = array();
                 $track_login = array();
 		// Goes to each track records. Separating all other types except the login from the track_records array.
@@ -97,7 +98,7 @@
 		$percentage_number_in_progress = 0; // The percentage of staff who are in progress.
 		$percentage_number_passed = 0; // The percentage of staff who passed in this course.
 		$percentage_number_failed = 0; // The percentage of staff who failed in this course.
-
+                $calculated_percentage_completed = 0;
 		// This calculates the percentage for the progressbars.
 		if($total_number_of_staff > 0) // Can't be divided by 0.
 		{
@@ -166,7 +167,11 @@
 							$fail_count = isset($failed_users[$enrollment['user_id']])? $failed_users[$enrollment['user_id']] : 0; // Number of times they failed
                                                         $passed_count = isset($passed_users[$enrollment['user_id']])? $passed_users[$enrollment['user_id']] : 0;//Number of passes
                                                         $attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0;//Number of quiz attempts
-                                                        $percentage = eotprogressbar('8em', (($passed_count/count($quizzes_in_course))*100), true);
+                                                        $percentage = 0;
+                                                        if($attempts > 0)
+                                                        {
+                                                            $percentage = eotprogressbar('8em', (($passed_count/$attempts)*100), true);
+                                                        }
                                                         if($status == "Failed")
 							{
 								$status = 'In Progress';
@@ -180,10 +185,10 @@
                                                         
 	        				$quizTableObj->rows[] = array(
                                                     $name,
-                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$passed_count.'/'.count($quizzes_in_course)."</a>",
+                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$passed_count.'/'.$attempts."</a>",
                                                     "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$fail_count."</a>",
-                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$login_count."</a>", 
-                                                    "<a href='/dashboard?part=staffquizstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$view_count."</a>", 
+                                                    "<a href='/dashboard?part=loginrecordstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$login_count."</a>", 
+                                                    "<a href='/dashboard?part=videowatchstats&user_id=".$enrollment['user_id']."&course_id=$course_id&subscription_id=$subscription_id'>".$view_count."</a>", 
                                                     $status, 
                                                     $percentage
                                                   );

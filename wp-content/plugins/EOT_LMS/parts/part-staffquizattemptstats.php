@@ -23,7 +23,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
             if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] > 0)
             {
                 $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
-                $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+                $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // The user ID
                 $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 $quiz_id = filter_var($_REQUEST['quiz_id'],FILTER_SANITIZE_NUMBER_INT);// the quiz ID
@@ -31,9 +31,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 require $path . 'public/class-eot_quiz_data.php';
                 $eot_quiz = new EotQuizData();
                 $quiz = $eot_quiz->get_quiz_by_id($quiz_id);
-                ?>
+?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">View <?= $fullname ?>'s Quizzes</h1>
+                                        <h1 class="article_page_title">View <?= $fullname ?>'s Quiz Attempts</h1>
                                         <h3><?= $quiz['name'] ?></h3>
                                         <p>
                                             Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
@@ -75,7 +75,7 @@ d($track_quizzes,  $track_quiz_attempts);
                         $quizTableObj->rows[] = array(
                             $count,
                             date('F j, Y g:i a', strtotime($quiz_att['date_attempted'])),
-                            "<a href='?part=staffquizattemptstats&course_id=$course_id&quiz_id=".$quiz['ID']."&subscription_id=$subscription_id'>".$quiz_att['score']."/".$quiz['num_questions_to_display']."</a>",
+                            "<a href='?part=view_quiz_stats&course_id=$course_id&quiz_id=".$quiz['ID']."&attempt_id=".$quiz_att['ID']."&subscription_id=$subscription_id&user_id=$user_id'>".$quiz_att['score']."/".$quiz['num_questions_to_display']."</a>",
                             $passed
                             );
                     }

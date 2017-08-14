@@ -31,9 +31,19 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $video_id = filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT);// The video ID
                 $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);// The user ID
                 $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
-                $video = getVideoById($video_id);
-                $stats= getTrack($user_id, $video_id);
-                //d($stats);
+                $custom = filter_var($_REQUEST['custom'], FILTER_SANITIZE_NUMBER_INT);
+                if($custom == 0)
+                {
+                $video = getVideoById($video_id,false);
+                $stats= getTrack($user_id, $video_id,'watch_video');
+                }
+                else 
+                {
+                $video = getVideoById($video_id, true);
+                $stats= getTrack($user_id, $video_id, 'watch_custom_video');
+                }
+                
+                d($stats,$video_id,$video);
 ?>
                 <div class="smoothness">
                                         <h1 class="article_page_title">Video Viewing Record for "<?= $fullname ?>"</h1>

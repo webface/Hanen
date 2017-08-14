@@ -9,7 +9,7 @@ $user_id = $current_user->ID; // Wordpress user ID
 //Required for angular because data array $_POST variables are screwy
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
     $_POST = json_decode(file_get_contents('php://input'), true);
-
+error_log(json_encode($_POST));
 switch ($_REQUEST['part']) 
 {
     case 'get_quiz':
@@ -96,6 +96,10 @@ switch ($_REQUEST['part'])
                         'answer' => $question['answer'],
                         'attempt_id' => $main_attempt_id
                     );
+                    foreach ($question['possibilities'] as $answer) 
+                    {
+                        $data['answer_id'] = $answer['ID'];
+                    }
                     $attempt_id = $eot_quiz->add_quiz_result($data);
                     unset($data['answer']);
                     unset($data['answer_id']);

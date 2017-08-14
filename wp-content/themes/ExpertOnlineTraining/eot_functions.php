@@ -7950,7 +7950,7 @@ function getTrack($user_id = 0, $video_id = 0, $type = "all")
     $sql .= " AND video_id = $video_id";
   }
 
-  $types = array('download_resource','video_started','watch_video','watch_slide','login','failed_login','failed_coupon','massmail','download_video','generate_report','delete_subscription','quiz_taken','certificate_conferred'); // Types of track.
+  $types = array('download_resource','video_started','watch_video','watch_custom_video','watch_slide','login','failed_login','failed_coupon','massmail','download_video','generate_report','delete_subscription','quiz_taken','certificate_conferred'); // Types of track.
   // Check if the type is a valid option.
   if( in_array($type, $types)  )
   {
@@ -8429,12 +8429,21 @@ function getQuestionResults($question_ids = 0,$user_ids = 0, $quiz_id = 0)
 /*
  * get video by id
  * @param - video_id - the ID of the video
+ * $param - custom - whether it is a custom video
  */
-function getVideoById($video_id = 0)
+function getVideoById($video_id = 0, $custom = false)
 {
     $video_id = filter_var($video_id, FILTER_SANITIZE_NUMBER_INT);
     global $wpdb;
-    $video = $wpdb->get_row("SELECT * FROM ". TABLE_VIDEOS. " WHERE ID = $video_id", ARRAY_A);
+    if($custom)
+    {
+        $video = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES. " WHERE ID = $video_id AND type = 'custom_video'", ARRAY_A);
+    }
+    else 
+    {
+        $video = $wpdb->get_row("SELECT * FROM ". TABLE_VIDEOS. " WHERE ID = $video_id", ARRAY_A);
+    }
+    
     return $video;
 }
 
@@ -8442,19 +8451,29 @@ function getVideoById($video_id = 0)
  * stats function get video stats
  * @param type $video_id - the ID of the video
  * @param type $org_id - the ID of the org
+ * @param type $custom - boolean indicating if its a custom video
  */
-function getVideoStats($video_id = 0, $org_id = 0)
+function getVideoStats($video_id = 0, $org_id = 0, $custom = false)
 {
     $video_id = filter_var($video_id, FILTER_SANITIZE_NUMBER_INT);
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     global $wpdb;
-    $stats = $wpdb->get_results("SELECT u.display_name, t.* FROM "
-            . TABLE_USERS ." as u LEFT JOIN "
-            .TABLE_TRACK." as t ON t.user_id = u.ID "
-            . "WHERE t.org_id = $org_id "
-            . "AND t.video_id = $video_id "
-            . "AND t.type IN('watch_video','watch_custom_video')"
-            . "AND t.result = 1",ARRAY_A);
+    $sql="SELECT u.display_name, t.* FROM ";
+    $sql.= TABLE_USERS ." as u LEFT JOIN ";
+    $sql.=TABLE_TRACK." as t ON t.user_id = u.ID ";
+    $sql.= "WHERE t.org_id = $org_id ";
+    $sql.= "AND t.video_id = $video_id ";
+    if($custom)
+    {
+        $sql.= "AND t.type = 'watch_custom_video' ";
+    }
+    else 
+    {
+        $sql.= "AND t.type = 'watch_video' ";
+    }
+    $sql.= "AND t.result = 1";
+    $stats = $wpdb->get_results($sql,ARRAY_A);
+
     return $stats;
 }
 
@@ -8503,4 +8522,20 @@ function trackResource($user_id = 0, $resource_id =0)
     global $wpdb;
     $result = $wpdb->get_row("SELECT * FROM ". TABLE_TRACK . " WHERE user_id = $user_id AND resource_id = $resource_id", ARRAY_A);
     return $result;
+}
+
+/*
+ * stats function get quiz results for an individual
+ * @param $attempt_id - the attempt ID of the quiz attempt
+ */
+function getQuizResults($attempt_id = 0)
+{
+    $attempt_id = filter_var($attempt_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    $results = $wpdb->get_results("SELECT qr.*,qa.answer_correct,qqr.answer_correct as question_correct "
+            . "FROM ". TABLE_QUIZ_RESULT ." qr "
+            . "LEFT JOIN ".TABLE_QUIZ_ANSWER." qa ON qr.answer_id = qa.ID "
+            . "LEFT JOIN ".TABLE_QUIZ_QUESTION_RESULT." qqr ON qr.attempt_id = qqr.attempt_id AND qr.question_id = qqr.question_id "
+            . "WHERE qr.attempt_id = $attempt_id",ARRAY_A);
+    return $results;
 }

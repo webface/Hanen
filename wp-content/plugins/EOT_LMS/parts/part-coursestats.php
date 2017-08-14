@@ -155,8 +155,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $custom_videos = getResourcesInCourse($course_id, 'custom_video');
                         $all_videos = array_merge($videos, $custom_videos);
                         $track_records = getAllTrack($org_id); // All track records.
-//d($videos,$custom_videos,$all_videos,$track_records);
+d($videos,$custom_videos,$all_videos,$track_records);
                         $track_watchVideo = array();
+                        $track_watch_customVideo = array();
                         foreach ($track_records as $key => $record) {
                             if($record['type'] == "watch_video")
                             {
@@ -165,11 +166,12 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             }
                             if($record['type'] == "watch_custom_video")
                             {
-                                    array_push($track_watchVideo, $record['video_id']); // Save the ID of the video.
+                                    array_push($track_watch_customVideo, $record['video_id']); // Save the ID of the video.
                                     //unset($track_records[$key]); // Delete them from the array.
                             }
                         }
                         $views = array_count_values($track_watchVideo);
+                        $custom_views = array_count_values($track_watch_customVideo);
                         
                         $videosTableObj = new stdClass();
                             $videosTableObj->rows = array();
@@ -181,13 +183,22 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             foreach ($all_videos as $video) 
                             {
 
+                                if(isset($video['type']) && $video['type']=='custom_video')
+                                {
+                                   $view_count = isset($custom_views[$video['ID']]) ? $custom_views[$video['ID']] : 0;//Number of video views 
+                                   $custom = 1;
+                                }
+                                else 
+                                {
+                                    $view_count = isset($views[$video['ID']]) ? $views[$video['ID']] : 0;//Number of video views
+                                    $custom = 0;
+                                }
                                 
-                                $view_count = isset($views[$video['ID']]) ? $views[$video['ID']] : 0;//Number of video views
                                 
 
                                 $videosTableObj->rows[] = array(
                                     ' <span>' . stripslashes($video['name']) . '</span>',
-                                    "<a href='?part=videostats&course_id=$course_id&video_id=".$video['ID']."&subscription_id=$subscription_id'>".$view_count."</a>"
+                                    "<a href='?part=videostats&course_id=$course_id&video_id=".$video['ID']."&custom=$custom&subscription_id=$subscription_id'>".$view_count."</a>"
                                     );
                             }
                          CreateDataTable($videosTableObj); // Print the table in the page

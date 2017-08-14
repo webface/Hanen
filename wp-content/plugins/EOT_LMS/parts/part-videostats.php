@@ -28,14 +28,24 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 		$course_data = getCourse($course_id); // The course information
 		$course_name = $course_data['course_name'];
                 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+                $custom = filter_var($_REQUEST['custom'], FILTER_SANITIZE_NUMBER_INT);
                 $video_id = filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT);// The video ID
-                $video = getVideoById($video_id);
+                if($custom == 0)
+                {
+                $video = getVideoById($video_id,false);
+                $video_stats = getVideoStats($video_id, $org_id,false);
+                }
+                else 
+                {
+                $video = getVideoById($video_id, true); 
+                $video_stats = getVideoStats($video_id, $org_id, true);
+                }
                 $users = getEotUsers($org_id);
                 $users = $users['users'];
                 $user_ids = array_column($users, 'ID');
                 $user_ids_string = implode(",", $user_ids);
-                $video_stats = getVideoStats($video_id, $org_id);
-                //d($users,$video,$video_stats);
+                //$video_stats = getVideoStats($video_id, $org_id);
+                d($users,$video,$video_stats);
 ?>
                 <div class="smoothness">
                                         <h1 class="article_page_title">Video Statistics for "<?= $course_name ?>"</h1>
@@ -57,10 +67,15 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             );
                             
                             foreach ($video_stats as $stat) 
-                            {
+                            {   
+                               $custom = 0;
+                               if($stat['type'] == 'watch_custom_video')
+                               {
+                                   $custom = 1;
+                               }
                                $usersTableObj->rows[] = array(
                                     $stat['display_name'],
-                                    "<a href='?part=videostatsview&course_id=$course_id&video_id=".$video_id."&user_id=".$stat['user_id']."&subscription_id=$subscription_id'>1</a>"
+                                    "<a href='?part=videostatsview&course_id=$course_id&custom=$custom&video_id=".$video_id."&user_id=".$stat['user_id']."&subscription_id=$subscription_id'>1</a>"
                                     ); 
                                 
                             }
