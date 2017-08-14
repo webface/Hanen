@@ -221,9 +221,9 @@
 			  	
 		  	</div>                        
 
-  	<div class="cell-row">
+<!--  	<div class="cell-row">
 		<a class="stats-button" href="">Export Assignment Summary to Excel</a>
-	</div>
+	</div>-->
 	
 			<h2>Courses</h2>
 			<table style="width:100%">            
@@ -244,7 +244,7 @@
 							<td width="20%"><?= $course_name ?></td>
 							<td><a href="?part=coursestats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Course Stats</a></td>
                                                         <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Staff Stats</a></td>
-                                                        <td><a href="#">Download Excel Report</a></td>
+<!--                                                        <td><a href="#">Download Excel Report</a></td>-->
                                                 </tr>
 <?php
 					}

@@ -1,6 +1,23 @@
-<?php 
-	if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] > 0)
-	{
+<?php
+// enqueue required javascripts
+wp_enqueue_script('datatables-buttons', get_template_directory_uri() . '/js/dataTables.buttons.min.js', array('datatables-js'), '1.2.4', true);
+wp_enqueue_script('buttons-flash', get_template_directory_uri() . '/js/buttons.flash.min.js', array(), '1.2.4', true);
+wp_enqueue_script('jszip', get_template_directory_uri() . '/js/jszip.min.js', array(), '2.5.0', true);
+wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js', array(), '0.1.24', true);
+wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
+wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
+$true_subscription = verifyUserAccess();
+// Check if the subscription ID is valid.
+if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0) 
+{
+
+    if (isset($true_subscription['status']) && $true_subscription['status']) 
+    {
+        if (current_user_can("is_director"))
+        {
+            if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] > 0)
+        
+            {
 	  	// Variable declaration
 		global $current_user;
 		$user_id = $current_user->ID; // Wordpress user ID
@@ -13,7 +30,7 @@
                 $quizzes_in_course = getQuizzesInCourse($course_id);
 		$track_records = getAllTrack($org_id); // All track records.
                 $track_quizzes = getAllQuizAttempts($course_id);//All quiz attempts for this course
-                d($track_quizzes);
+                //d($track_quizzes);
 		$track_watchVideo = array();
                 $track_login = array();
 		// Goes to each track records. Separating all other types except the login from the track_records array.
@@ -58,7 +75,7 @@
 		//$login_users = array_column($track_login, 'user_id'); // Assuming the track records have users with the type login.
 		$login_users = array_count_values($track_login); // Return the user ID and the key/times the user has logged in.
 		$watched_users = array_count_values($track_watchVideo); // Return the user ID and the key/times the user has watch the module.
-                d($login_users, $track_quizzes);
+                //d($login_users, $track_quizzes);
 		if (isset($course_data['status']) && $course_data['status'] == 0)
 		{
 			// error received from getCourse
@@ -193,7 +210,7 @@
                                                     $percentage
                                                   );
         				}
-        				CreateDataTable($quizTableObj);
+        				CreateDataTable($quizTableObj,"100%",10,true,"Stats");
         			}
         			else
         			{
@@ -222,4 +239,20 @@
   	</div>
 <?php
 	}
+        } 
+        else 
+        {
+            echo "Unauthorized!";
+        }
+    } 
+    else 
+    {
+        echo "subscription ID does not belong to you";
+    }
+}
+// Could not find the subscription ID
+else
+{
+    echo "Could not find the subscription ID";
+}
 ?>

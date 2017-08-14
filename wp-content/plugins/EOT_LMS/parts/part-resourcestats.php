@@ -6,6 +6,13 @@
     <span class="current">Video Stats</span>     
 </div>
 <?php
+// enqueue required javascripts
+wp_enqueue_script('datatables-buttons', get_template_directory_uri() . '/js/dataTables.buttons.min.js', array('datatables-js'), '1.2.4', true);
+wp_enqueue_script('buttons-flash', get_template_directory_uri() . '/js/buttons.flash.min.js', array(), '1.2.4', true);
+wp_enqueue_script('jszip', get_template_directory_uri() . '/js/jszip.min.js', array(), '2.5.0', true);
+wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js', array(), '0.1.24', true);
+wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
+wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 global $current_user;
 $user_id = $current_user->ID;
 $page_title = "Stats";
@@ -36,7 +43,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 //$user_ids_string = implode(",", $user_ids);
                 $resource_stats = getResourceStats($resource_id, $org_id);
                 $video_stats = array();
-                d($resource,$resource_stats);
+                //d($resource,$resource_stats);
 ?>
                 <div class="smoothness">
                                         <h1 class="article_page_title">Resource Viewing Record for "<?= $course_name ?>"</h1>
@@ -65,7 +72,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                     ); 
                                 
                             }
-                            CreateDataTable($usersTableObj); // Print the table in the page
+                            CreateDataTable($usersTableObj,"100%",10,true,"Stats"); // Print the table in the page
                 }
             else 
             {

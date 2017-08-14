@@ -6,6 +6,13 @@
     <span class="current">Course Stats</span>     
 </div>
 <?php
+// enqueue required javascripts
+wp_enqueue_script('datatables-buttons', get_template_directory_uri() . '/js/dataTables.buttons.min.js', array('datatables-js'), '1.2.4', true);
+wp_enqueue_script('buttons-flash', get_template_directory_uri() . '/js/buttons.flash.min.js', array(), '1.2.4', true);
+wp_enqueue_script('jszip', get_template_directory_uri() . '/js/jszip.min.js', array(), '2.5.0', true);
+wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js', array(), '0.1.24', true);
+wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
+wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 global $current_user;
 $user_id = $current_user->ID;
 $page_title = "Stats";
@@ -146,7 +153,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                     eotprogressbar('12em', $percentage, true)
                                     );
                             }
-                            CreateDataTable($quizTableObj); // Print the table in the page
+                            CreateDataTable($quizTableObj,"100%",10,true,"Stats"); // Print the table in the page
                         }
 ?>
                         <h2>Video Views</h2>
@@ -155,7 +162,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $custom_videos = getResourcesInCourse($course_id, 'custom_video');
                         $all_videos = array_merge($videos, $custom_videos);
                         $track_records = getAllTrack($org_id); // All track records.
-d($videos,$custom_videos,$all_videos,$track_records);
+//d($videos,$custom_videos,$all_videos,$track_records);
                         $track_watchVideo = array();
                         $track_watch_customVideo = array();
                         foreach ($track_records as $key => $record) {
@@ -201,7 +208,7 @@ d($videos,$custom_videos,$all_videos,$track_records);
                                     "<a href='?part=videostats&course_id=$course_id&video_id=".$video['ID']."&custom=$custom&subscription_id=$subscription_id'>".$view_count."</a>"
                                     );
                             }
-                         CreateDataTable($videosTableObj); // Print the table in the page
+                         CreateDataTable($videosTableObj,"100%",10,true,"Stats"); // Print the table in the page
 ?>
                          <h2>Resource Views</h2>
 <?php
@@ -235,7 +242,7 @@ d($videos,$custom_videos,$all_videos,$track_records);
                                     "<a href='?part=resourcestats&course_id=$course_id&resource_id=".$resource['ID']."&subscription_id=$subscription_id'>".$download_count."</a>"
                                     );
                             }
-                         CreateDataTable($resourceTableObj); // Print the table in the page
+                         CreateDataTable($resourceTableObj,"100%",10,true,"Stats"); // Print the table in the page
 ?>
                 </div>
 <?php                }

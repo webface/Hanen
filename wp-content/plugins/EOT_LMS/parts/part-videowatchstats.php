@@ -6,6 +6,13 @@
     <span class="current">Course Stats</span>     
 </div>
 <?php
+// enqueue required javascripts
+wp_enqueue_script('datatables-buttons', get_template_directory_uri() . '/js/dataTables.buttons.min.js', array('datatables-js'), '1.2.4', true);
+wp_enqueue_script('buttons-flash', get_template_directory_uri() . '/js/buttons.flash.min.js', array(), '1.2.4', true);
+wp_enqueue_script('jszip', get_template_directory_uri() . '/js/jszip.min.js', array(), '2.5.0', true);
+wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js', array(), '0.1.24', true);
+wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
+wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
 // Check if the subscription ID is valid.
@@ -41,7 +48,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $custom_videos = getResourcesInCourse($course_id, 'custom_video');
                         $all_videos = array_merge($videos, $custom_videos);
                         $track_videos = array_merge(getTrack($user_id, 0, 'watch_video'),getTrack($user_id, 0, 'watch_custom_video'));
-                        d($all_videos,$track_videos);
+                        //d($all_videos,$track_videos);
                         $watched_videos = array_column($track_videos,'video_id');
                         $views = array_count_values($watched_videos);
                         $videosTableObj = new stdClass();
@@ -70,7 +77,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                     "<a href='?part=videostatsview&course_id=$course_id&custom=$custom&user_id=$user_id&video_id=".$video['ID']."&subscription_id=$subscription_id'>".$view_count."</a>"
                                     );
                             }
-                         CreateDataTable($videosTableObj); // Print the table in the page
+                         CreateDataTable($videosTableObj,"100%",10,true,"Stats"); // Print the table in the page
             
 ?>
                          <h2>Document, Link, and Resource File Views</h2>
@@ -82,7 +89,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $track_download = getTrack($user_id, 0, 'download_resource');
                         $downloaded_resources = array_column($track_download, 'resource_id');
                         $downloads = array_count_values($downloaded_resources);
-                        d($track_download);
+                        //d($track_download);
                         $resourceTableObj = new stdClass();
                             $resourceTableObj->rows = array();
                             $resourceTableObj->headers = array(
@@ -102,7 +109,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                     "<a href='?part=resourcestatsview&user_id=$user_id&course_id=$course_id&resource_id=".$resource['ID']."&subscription_id=$subscription_id'>".$download_count."</a>"
                                     );
                             }
-                         CreateDataTable($resourceTableObj); // Print the table in the page
+                         CreateDataTable($resourceTableObj,"100%",10,true,"Stats"); // Print the table in the page
                         }
             else 
             {

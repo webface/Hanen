@@ -6,6 +6,13 @@
     <span class="current">Course Stats</span>     
 </div>
 <?php
+// enqueue required javascripts
+wp_enqueue_script('datatables-buttons', get_template_directory_uri() . '/js/dataTables.buttons.min.js', array('datatables-js'), '1.2.4', true);
+wp_enqueue_script('buttons-flash', get_template_directory_uri() . '/js/buttons.flash.min.js', array(), '1.2.4', true);
+wp_enqueue_script('jszip', get_template_directory_uri() . '/js/jszip.min.js', array(), '2.5.0', true);
+wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js', array(), '0.1.24', true);
+wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
+wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
 // Check if the subscription ID is valid.
@@ -22,7 +29,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
               $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
               $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
               $track_login = getTrack($user_id, 0, 'login');
-              d($track_login);
+              //d($track_login);
               
 ?>
                 <div class="smoothness">
@@ -52,7 +59,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                
                                 
 
-                            CreateDataTable($loginsTableObj); // Print the table in the page
+                            CreateDataTable($loginsTableObj,"100%",10,true,"Stats"); // Print the table in the page
             }
             else 
             {

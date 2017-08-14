@@ -6,6 +6,13 @@
     <span class="current">Course Stats</span>     
 </div>
 <?php
+// enqueue required javascripts
+wp_enqueue_script('datatables-buttons', get_template_directory_uri() . '/js/dataTables.buttons.min.js', array('datatables-js'), '1.2.4', true);
+wp_enqueue_script('buttons-flash', get_template_directory_uri() . '/js/buttons.flash.min.js', array(), '1.2.4', true);
+wp_enqueue_script('jszip', get_template_directory_uri() . '/js/jszip.min.js', array(), '2.5.0', true);
+wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js', array(), '0.1.24', true);
+wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
+wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 global $current_user;
 $user_id = $current_user->ID;
 $page_title = "Stats";
@@ -46,7 +53,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 }
                 $passed_users = array_count_values($track_passed);
                 $attempt_count = array_count_values($track_quiz_attempts);
-d($track_quizzes, $passed_users, $attempt_count);
+//d($track_quizzes, $passed_users, $attempt_count);
                 if ($quizzes) 
                 {  
                     // Tables that will be displayed in the front end.
@@ -77,7 +84,7 @@ d($track_quizzes, $passed_users, $attempt_count);
                             $passed
                             );
                     }
-                    CreateDataTable($quizTableObj); // Print the table in the page
+                    CreateDataTable($quizTableObj,"100%",10,true,"Stats"); // Print the table in the page
                         }
             }
             else 

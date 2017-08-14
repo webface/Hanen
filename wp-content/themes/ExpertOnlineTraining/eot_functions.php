@@ -5256,7 +5256,7 @@ function delete_resource_callback()
         $resource_id = filter_var($_REQUEST['resource_id'], FILTER_SANITIZE_NUMBER_INT);
         $module_id = filter_var($_REQUEST['module_id'], FILTER_SANITIZE_NUMBER_INT);
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
-
+        error_log("Module id is $module_id. Org id is $org_id and resource_id is $resource_id");
         // Check permissions
         if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'delete-resource_' . $resource_id ) ) 
         {
@@ -5275,6 +5275,14 @@ function delete_resource_callback()
           $del = $wpdb->delete(TABLE_MODULE_RESOURCES, array('resource_id' => $resource_id, 'module_id' => $module_id));
           if($del)
           {
+              $courses = $wpdb->get_results("SELECT * FROM ".TABLE_COURSE_MODULE_RESOURCES. " WHERE module_id = $module_id AND resource_id = $resource_id",ARRAY_A);
+              foreach ($courses as $course) {
+                  $del = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES,array(
+                      'course_id'=>$course['course_id'],
+                      'module_id' => $module_id,
+                      'resource_id'=> $resource_id
+                  ));
+              }
               echo json_encode(array('success' => 'true'));
           }
           else

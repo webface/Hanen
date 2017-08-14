@@ -52,7 +52,8 @@
                 $resources = getUserUploads($org_id, $user_id); // get all the user's uploaded resources
                 $quizzes = $eot_quiz->getQuizzes($org_id, $user_id);
                 $module_resources = getResourcesInModule($module_id); // gets all the current resources in the module
-?>
+                //d($module_resources);
+?>              
             <h1 class="article_page_title" id="moduleTitle"><?= $module['title'] ?></h1>
             <a class="btn btn-primary float-l" href="#" onclick="rename_module();">Rename Module</a>
             <h3>Your Modules Content</h3>
@@ -74,7 +75,7 @@
                                 echo"<td><input name='order_" . $module_resource['ID'] . "' class='form_control form-group-sm' type='text' value='" . $module_resource['order'] . "'/></td>";
                                 echo"<td>" . $module_resource['name'] . "</td>";
                                 echo"<td>" . $module_resource['type'] . "</td>";
-                                echo'<td><a href="' . $admin_ajax_url . '?action=get_module_form&form_name=delete_resource&resource_id=' . $module_resource['resource_id'] . '&module_id=' . $module_resource['ID'] . '&org_id=' . $org_id . '" class="delete" rel="facebox"><span class="fa fa-minus-circle"></span></a></td>';
+                                echo'<td><a href="' . $admin_ajax_url . '?action=get_module_form&form_name=delete_resource&resource_id=' . $module_resource['ID'] . '&module_id=' . $module_id . '&org_id=' . $org_id . '" class="delete" rel="facebox"><span class="fa fa-minus-circle"></span></a></td>';
                                 echo "</tr>";
                             }
                             ?>
