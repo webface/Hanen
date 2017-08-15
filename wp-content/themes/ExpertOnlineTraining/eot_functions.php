@@ -1211,10 +1211,6 @@ function display_uber_manager_dashboard()
   wp_get_current_user ();
   $user_id = $current_user->ID;
   $org_id = get_org_from_user ($user_id);
-  $org = get_post ($org_id);
-  $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-  $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
-  $data = compact ('org_id');
 
   echo '<h1>Uber Manager Administration</h1>';
 
@@ -1236,8 +1232,7 @@ function display_uber_manager_dashboard()
 <?php
   // Display a table of current Camps/managers/stats
   $umbrellaCamps = getUmbrellaCamps($org_id); // Lists of umbrella camps
-
-  if ($umbrellaCamps->have_posts())
+  if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts() )
   { 
 
     /*
@@ -1293,10 +1288,6 @@ function display_umbrella_manager_dashboard()
   wp_get_current_user ();
   $user_id = $current_user->ID;
   $org_id = get_org_from_user ($user_id);
-  $org = get_post ($org_id);
-  $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-  $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
-  $data = compact ('org_id');
 
   echo '<h1>Umbrella Manager Administration</h1>';
 
@@ -1319,7 +1310,7 @@ function display_umbrella_manager_dashboard()
   // Display a table of current Camps/managers/stats
   $umbrellaCamps = getUmbrellaCamps($org_id, 'regional_umbrella_group_id'); // Lists of regional umbrella camps
 
-  if ($umbrellaCamps->have_posts())
+  if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts())
   { 
 
     /*
@@ -1422,8 +1413,6 @@ function verifyUserAccess ()
   {
     $subscription_id = 0; // no subscription ID provided
   }
-
-
   // check if were dealing with an uber admin or a director
   if (current_user_can("is_uber_manager"))
   {
@@ -1524,6 +1513,7 @@ function verifyUserAccess ()
     // check that this umbrella manager has access to this portal
     if ($subscription_id)
     {
+      //ddd($subscription_id);
       // we have a subscription ID so just check that this umbrella admin is authorized to modify this subscription/org
       $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
@@ -5738,17 +5728,16 @@ function getCourseForm_callback ( )
         {
           $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The course ID
           $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); // The organization ID
-          $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
           $umbrellaCamps = (current_user_can('is_umbrella_manager')) ? getUmbrellaCamps($org_id, 'regional_umbrella_group_id') : getUmbrellaCamps($org_id); // Lists of umbrella camps
           $camps = array(); // Lists of camps
-          $data = compact("org_id");
           $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING); // the name of the course
-          
           if ($umbrellaCamps->have_posts())
           { 
             // Get all umbrella camps, and add them into camps array.
             while ( $umbrellaCamps->have_posts() ) 
             {
+              var_dump("hep hep horray!");
+              die();
               $umbrellaCamps->the_post(); 
               $camp['id'] = get_the_ID(); // The org ID
               $camp['name'] = get_the_title(); // The camp name
