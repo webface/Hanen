@@ -54,7 +54,7 @@
 						?>
 								<div id="helpcenter-menu" href="#helpbar">
 									<a href="#">
-										<span class="orange">Help</span>Center
+										<span class="orange">Help</span> 24/7
 									</a>
 								</div>
 						<?php

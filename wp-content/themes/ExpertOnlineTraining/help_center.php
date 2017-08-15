@@ -95,7 +95,7 @@
           <div id="help_center">
             <div id="grayArea">
               <h1 id="helpTitle">
-                <span class="orange">Help</span> Center
+                <span class="orange">Help</span> 24/7
               </h1>
               <ul>
                 <div class="separator"></div>
