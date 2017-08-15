@@ -9,7 +9,7 @@ $user_id = $current_user->ID; // Wordpress user ID
 //Required for angular because data array $_POST variables are screwy
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
     $_POST = json_decode(file_get_contents('php://input'), true);
-error_log(json_encode($_POST));
+//error_log(json_encode($_POST));
 switch ($_REQUEST['part']) 
 {
     case 'get_quiz':
@@ -19,9 +19,10 @@ switch ($_REQUEST['part'])
         exit();
         break;
     case 'save_quiz':
-
+        $course_id = filter_var($_POST['course_id'],FILTER_SANITIZE_NUMBER_INT);
+        $quiz_id = filter_var($_POST['ID'], FILTER_SANITIZE_NUMBER_INT);
         $data = array(
-            'quiz_id' => filter_var($_POST['ID'], FILTER_SANITIZE_NUMBER_INT),
+            'quiz_id' => $quiz_id,
             'user_id' => $user_id,
             'score' => $_POST['score'],
             'percentage' => $_POST['percentage'],
@@ -32,11 +33,33 @@ switch ($_REQUEST['part'])
         );
         $main_attempt_id = $eot_quiz->add_quiz_attempt($data);
         
-        if($_POST['passed'] === true)
+        $enrollments = getEnrollments(0, $user_id);
+        $enrolled_courses = array_column($enrollments,'course_id');
+        $quizzes_in_course = getQuizzesInCourse($course_id);
+
+        $passed = 0;
+        foreach ($quizzes_in_course as $required) 
         {
-           
+            $iPassed = $wpdb->get_row("SELECT passed FROM ".TABLE_QUIZ_ATTEMPTS. " WHERE quiz_id = ".$required['ID']." AND user_id = $user_id AND passed = 1", ARRAY_A);
+            error_log("The course id is: ".$required['name']);
+            if($iPassed)
+            {
+                $passed++;
+                error_log("I passed: ".$course_id);
+            }
         }
-        
+        if($passed >= count($quizzes_in_course))
+        {
+            $wpdb->update(TABLE_ENROLLMENTS, 
+                    array(
+                        'status' => 'completed'
+                        ),
+                    array(
+                        'course_id' => $course_id,
+                        'user_id' => $user_id
+                    )
+                    );
+        }
         $questions = $_POST['questions'];
         //var_dump($questions);
         foreach ($questions as $question) 

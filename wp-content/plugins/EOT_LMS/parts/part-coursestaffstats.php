@@ -184,7 +184,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 							$fail_count = isset($failed_users[$enrollment['user_id']])? $failed_users[$enrollment['user_id']] : 0; // Number of times they failed
                                                         $passed_count = isset($passed_users[$enrollment['user_id']])? $passed_users[$enrollment['user_id']] : 0;//Number of passes
                                                         $attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0;//Number of quiz attempts
-                                                        $percentage = 0;
+                                                        $percentage = eotprogressbar('8em', 0, true);
                                                         if($attempts > 0)
                                                         {
                                                             $percentage = eotprogressbar('8em', (($passed_count/$attempts)*100), true);

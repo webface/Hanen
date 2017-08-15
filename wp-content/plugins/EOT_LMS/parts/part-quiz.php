@@ -17,7 +17,7 @@
 
 	if (verify_student_access($course_id)) 
     {
-		echo '<script>var quiz_id = ' . $quiz_id . ';</script>'; // set the quiz ID in JS
+		echo '<script>var quiz_id = ' . $quiz_id . '; var course_id = ' . $course_id . ';</script>'; // set the quiz ID in JS
 
 		//load quiz
 		echo do_shortcode( '[eot_quiz_display action="view_quiz" id="' . $quiz_id . '"]' );

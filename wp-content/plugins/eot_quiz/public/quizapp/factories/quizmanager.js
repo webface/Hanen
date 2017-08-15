@@ -278,6 +278,7 @@
             quizObj.isSaving = true;
             var data = {
                 ID: quiz_id,
+                course_id:course_id,
                 action: 'quiz_data',
                 part: 'save_quiz',
                 score: quizObj.score,

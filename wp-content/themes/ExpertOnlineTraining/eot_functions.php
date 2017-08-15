@@ -196,7 +196,7 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
           "sPaginationType": "full_numbers",
           "bAutoWidth": false,
           <?php echo ($download) ? 'dom: \'Bfrtip\',' : ""; ?>
-          <?php echo ($download) ? '"buttons": [ {extend: \'csv\',title: \''.$filename.'\'}, {extend: \'excel\',title: \''.$filename.'\'}],' : ""; ?>
+          <?php echo ($download) ? '"buttons": [ {extend: \'csv\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}, {extend: \'excel\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}],' : ""; ?>
           "iDisplayLength": <?=$num_rows?>,
           "aoColumns": [
             <?php
@@ -8397,11 +8397,12 @@ function getAllTrack($org_id = 0)
 /**
  * stats function get quiz attempts
  * @param type $course_id - the course ID
- * 
+ * @param type $user_id - the ID of the user
  */
 function getAllQuizAttempts($course_id = 0, $user_id = 0)
 {
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
     if ($course_id == 0) 
     {
         return array();
@@ -8413,10 +8414,10 @@ function getAllQuizAttempts($course_id = 0, $user_id = 0)
     $sql = "SELECT DISTINCT(quiz_id), ID, user_id, passed, completed, score, date_attempted ";
     $sql.= "FROM ". TABLE_QUIZ_ATTEMPTS . " ";
     $sql.= "WHERE quiz_id IN(".$quiz_ids_string.") ";
-    $sql.= "AND date_attempted BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'";
+    $sql.= "AND date_attempted BETWEEN '". SUBSCRIPTION_START ."' AND '". SUBSCRIPTION_END ."'";
     if($user_id>0)
     {
-        $sql.=" AND user_id = $user_id";
+        $sql.= " AND user_id = $user_id";
     }
     $attempts = $wpdb->get_results($sql, ARRAY_A);
     return $attempts;
