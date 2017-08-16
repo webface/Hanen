@@ -120,7 +120,7 @@ class FLContactFormModule extends FLBuilderModule {
 			$fl_contact_from_name = (isset( $_POST['name'] ) ? $_POST['name'] : '');
 
 			$headers = array(
-				'From: ' . $admin_email . ' <' . $site_name . '>',
+				'From: ' . $site_name . ' <' . $admin_email . '>',
 				  'Reply-To: ' . $fl_contact_from_name . ' <' . $fl_contact_from_email . '>',
 			);
 

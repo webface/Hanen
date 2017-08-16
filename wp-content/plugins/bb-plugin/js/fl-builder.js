@@ -452,6 +452,7 @@
 			});
 
 			FLBuilder._lightbox.on('close', FLBuilder._lightboxClosed);
+			FLBuilder._lightbox.on('beforeClose', FLBuilder._destroyEditorFields);
 
 			/* Actions lightbox */
 			FLBuilder._actionsLightbox = new FLLightbox({
@@ -7031,6 +7032,28 @@
 
 			newEditor.elements = id;
 			tinyMCEPreInit.mceInit[ id ] = newEditor;
+		},
+
+		/**
+		 * Destroy all TinyMCE editors.
+		 *
+		 * @since 1.10.8
+		 * @method _destroyEditorFields
+		 */
+		_destroyEditorFields: function()
+		{
+			var i, id;
+
+			if ( 'undefined' === typeof tinymce ) {
+				return;
+			}
+
+			for ( i = tinymce.editors.length - 1; i > -1 ; i-- ) {
+				tinyMCE.execCommand( 'mceRemoveEditor', true, tinymce.editors[ i ].id );
+			}
+
+			$( '.wplink-autocomplete' ).remove();
+			$( '.ui-helper-hidden-accessible' ).remove();
 		},
 
 		/**
