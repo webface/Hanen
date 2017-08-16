@@ -26,6 +26,7 @@ wp-content/debug.log
 wp-content/wflogs/*
 wp-content/ai1wm-backups/*
 wp-content/plugins/all-in-one-wp-migration/storage/*
+commands.php
 
 # wpengine specific
 .smushit-status
