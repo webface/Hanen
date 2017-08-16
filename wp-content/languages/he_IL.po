@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-07 17:06:37+0000\n"
+"PO-Revision-Date: 2017-08-14 22:44:18+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1827,10 +1827,6 @@ msgstr "העמוד הנוכחי של האוסף."
 msgid "Scope under which the request is made; determines fields present in response."
 msgstr "ההיקף לפיו הבקשה נשלחה; קובע את השדות שיוצגו בתגובה."
 
-#: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:1428
-msgid "Limit result set to comments assigned to specific post IDs."
-msgstr "הגבלת תוצאות לתגובות המשוייכות למספר פוסט מסויים."
-
 #: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:1445
 msgid "Limit result set to comments assigned a specific type. Requires authorization."
 msgstr "הגבלת תוצאות לתגובות המשוייכות לסוג מסויים. נדרשת הרשאה."
@@ -1863,6 +1859,10 @@ msgstr "סדר מיון עולה או יורד."
 #: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:1419
 msgid "Ensure result set excludes specific parent IDs."
 msgstr "יש לוודא כי התוצאות לא כוללות מספרי אב מסויימים."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:1428
+msgid "Limit result set to comments assigned to specific post IDs."
+msgstr "הגבלת תוצאות לתגובות המשוייכות לפוסט מסויים."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:1370
 #: wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php:2101
@@ -8860,11 +8860,6 @@ msgstr "להציג את התאריך?"
 msgid "Last updated"
 msgstr "עודכן לאחרונה"
 
-#. translators: Comments feed title. 1: Post title
-#: wp-includes/feed-rss2-comments.php:38
-msgid "Comments on: %s"
-msgstr "תגובות לפוסט: &quot;%s&quot;"
-
 #. translators: Comments feed title. 1: Site name, 2: Search query
 #: wp-includes/feed-atom-comments.php:36 wp-includes/feed-rss2-comments.php:41
 msgid "Comments for %1$s searching on %2$s"
@@ -10256,6 +10251,11 @@ msgstr "הכתובת שהוזנה נראית כמו כתובת אימייל. ה�
 msgid "The URL you entered seems to be an external link. Do you want to add the required http:// prefix?"
 msgstr "הכתובת שהוזנה נראית כמו קישור חיצוני. האם להוסיף לה את  הקידומת \"http://\" ?"
 
+#. translators: Comments feed title. 1: Post title
+#: wp-includes/feed-rss2-comments.php:38
+msgid "Comments on: %s"
+msgstr "תגובות לפוסט: %s"
+
 #: wp-includes/class-wp-theme.php:800
 msgid "Blue"
 msgstr "כחול"
@@ -10391,11 +10391,6 @@ msgstr "&laquo; העמוד הקודם"
 #: wp-includes/link-template.php:2217 wp-includes/link-template.php:2353
 msgid "Next Page &raquo;"
 msgstr "העמוד הבא &raquo;"
-
-#. translators: Comments feed title. 1: Post title
-#: wp-includes/feed-atom-comments.php:33
-msgid "Comments on %s"
-msgstr "תגובות לפוסט: &quot;%s&quot;&rlm;"
 
 #: wp-includes/comment-template.php:922
 msgid "1 Comment"
@@ -10596,6 +10591,11 @@ msgstr "לא ניתן לערוך את הפוסט הזה."
 #: wp-includes/post-template.php:860
 msgid "Pages:"
 msgstr "עמודים:"
+
+#. translators: Comments feed title. 1: Post title
+#: wp-includes/feed-atom-comments.php:33
+msgid "Comments on %s"
+msgstr "תגובות לפוסט %s"
 
 #: wp-includes/category-template.php:524
 #: wp-includes/theme-compat/sidebar.php:97

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-01 23:26:13+0000\n"
+"PO-Revision-Date: 2017-08-15 21:43:23+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,9 +11,34 @@ msgstr ""
 "Language: he_IL\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
 
+#: includes/import/abstract-wc-product-importer.php:562
+msgid "Unable to use image \"%s\"."
+msgstr "לא ניתן להשתמש בתמונה \"%s\"."
+
+#: includes/api/class-wc-rest-shipping-zone-locations-controller.php:90
+#: includes/api/class-wc-rest-shipping-zones-controller.php:170
+msgid "The \"locations not covered by your other zones\" zone cannot be updated."
+msgstr "המיקומים אשר אינם מכוסים על ידי הגדרת \"איזור אחר\" לא ניתנים לעדכון."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:218
+msgid "Product categories that the coupon will not be applied to, or that cannot be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "קטגוריות מוצרים אשר הקופון לא יחול עליהן, או כאלה שניתן שלא ניתן להחיל עליהן את הקופון בעגלת הקניות, במסגרת \"הנחת עגלה כללית\"."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:201
+msgid "Product categories that the coupon will be applied to, or that need to be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "קטגוריות מוצרים אשר הקופון יחול עליהן, או כאלה שניתן להחיל עליהן את הקופון בעגלת הקניות, במסגרת \"הנחת עגלה כללית\"."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:182
+msgid "Products that the coupon will not be applied to, or that cannot be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "מוצרים אשר הקופון לא יחול עליהם, או כאלה שלא ניתן להחיל עליהם את הקופון בעגלת הקניות, במסגרת \"הנחת עגלה כללית\"."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:165
+msgid "Products that the coupon will be applied to, or that need to be in the cart in order for the \"Fixed cart discount\" to be applied."
+msgstr "מוצרים אשר הקופון יחול עליהם, או כאלה שניתן להחיל עליהם את הקופון בעגלת הקניות, במסגרת \"הנחת עגלה כללית\"."
+
 #: templates/checkout/terms.php:26
 msgid "I&rsquo;ve read and accept the <a href=\"%s\" class=\"woocommerce-terms-and-conditions-link\">terms &amp; conditions</a>"
-msgstr "קראתי והסכמתי ל<a href=\"%s\" class=\"woocommerce-terms-and-conditions-link\"> לתנאים ולחוקים</a>"
+msgstr "קראתי ואני מסכים ל<a href=\"%s\" class=\"woocommerce-terms-and-conditions-link\"> תנאי השימוש</a>"
 
 #. translators: 1: rating 2: rating count
 #: includes/wc-template-functions.php:2617
@@ -22,15 +47,15 @@ msgid_plural "Rated %1$s out of 5 based on %2$s customer ratings"
 msgstr[0] "מדורג %1$s מתוך 5 מבוסס על %2$s דירוגים של לקוחות"
 msgstr[1] "מדורגים %1$s מתוך 5 מבוסס על %2$s דירוגים של לקוחות"
 
-#: includes/wc-product-functions.php:751
+#: includes/wc-product-functions.php:753
 msgid "Search results only"
 msgstr "תוצאות חיפוש בלבד"
 
-#: includes/wc-product-functions.php:750
+#: includes/wc-product-functions.php:752
 msgid "Shop only"
 msgstr "חנות בלבד"
 
-#: includes/wc-product-functions.php:749
+#: includes/wc-product-functions.php:751
 msgid "Shop and search results"
 msgstr "חנות ותוצאות חיפוש"
 
@@ -42,29 +67,29 @@ msgstr "לא ניתן לשלם עבור ההזמנה הזו. אנא צרו אי�
 msgid "Please log in to your account below to continue to the payment form."
 msgstr "אנא התחברו אל החשבון שלכם המוצג מטה על מנת להמשיך אל טופס התשלום."
 
-#: includes/import/class-wc-product-csv-importer.php:772
+#: includes/import/class-wc-product-csv-importer.php:838
 msgid "No matching product exists to update."
 msgstr "לא נמצאו מוצרים תואמים לעדכון"
 
-#: includes/import/class-wc-product-csv-importer.php:767
+#: includes/import/class-wc-product-csv-importer.php:833
 msgid "A product with this SKU already exists."
-msgstr "מוצר עם הברקוד הזה כבר קיים."
+msgstr "מוצר עם מק\"ט זה כבר קיים."
 
-#: includes/import/class-wc-product-csv-importer.php:762
+#: includes/import/class-wc-product-csv-importer.php:828
 msgid "A product with this ID already exists."
 msgstr "מוצר עם המזהה הזה כבר קיים."
 
-#: includes/import/class-wc-product-csv-importer.php:721
+#: includes/import/class-wc-product-csv-importer.php:787
 msgid "SKU %s"
-msgstr "ברקוד %s "
+msgstr "מק\"ט %s "
 
-#: includes/import/class-wc-product-csv-importer.php:718
+#: includes/import/class-wc-product-csv-importer.php:784
 msgid "ID %d"
 msgstr "מזהה %d"
 
-#: includes/import/abstract-wc-product-importer.php:556
+#: includes/import/abstract-wc-product-importer.php:554
 msgid "Not able to attach \"%s\"."
-msgstr "לא מצליח לצרף \"%s\""
+msgstr "לא מצליח לצרף \"%s\"."
 
 #: includes/import/abstract-wc-product-importer.php:405
 msgid "Variation cannot be imported: Missing parent ID or parent does not exist yet."
@@ -72,7 +97,7 @@ msgstr "לא מצליח לייבא את הווריאציה: חסר מזהה הו
 
 #: includes/import/abstract-wc-product-importer.php:180
 msgid "Invalid product ID %d."
-msgstr "מזהה מוצר שגוי %d"
+msgstr "מזהה מוצר שגוי %d."
 
 #: includes/import/abstract-wc-product-importer.php:166
 msgid "Invalid product type."
@@ -81,6 +106,28 @@ msgstr "סוג מוצר שגוי."
 #: includes/emails/class-wc-email-customer-invoice.php:204
 msgid "Subject (paid)"
 msgstr "נושא (שולם)"
+
+#. translators: %s: list of placeholders
+#: includes/emails/class-wc-email-cancelled-order.php:147
+#: includes/emails/class-wc-email-cancelled-order.php:156
+#: includes/emails/class-wc-email-customer-completed-order.php:141
+#: includes/emails/class-wc-email-customer-completed-order.php:150
+#: includes/emails/class-wc-email-customer-invoice.php:190
+#: includes/emails/class-wc-email-customer-invoice.php:199
+#: includes/emails/class-wc-email-customer-invoice.php:208
+#: includes/emails/class-wc-email-customer-invoice.php:217
+#: includes/emails/class-wc-email-customer-refunded-order.php:227
+#: includes/emails/class-wc-email-customer-refunded-order.php:236
+#: includes/emails/class-wc-email-customer-refunded-order.php:245
+#: includes/emails/class-wc-email-customer-refunded-order.php:254
+#: includes/emails/class-wc-email-failed-order.php:146
+#: includes/emails/class-wc-email-failed-order.php:155
+#: includes/emails/class-wc-email-new-order.php:151
+#: includes/emails/class-wc-email-new-order.php:160
+#: includes/emails/class-wc-email.php:541
+#: includes/emails/class-wc-email.php:550
+msgid "Available placeholders: %s"
+msgstr "מצייני מיקום זמינים: %s"
 
 #: includes/data-stores/class-wc-order-data-store-cpt.php:402
 msgid "Invalid customer query."
@@ -173,7 +220,7 @@ msgstr "השובר שוחזר"
 
 #: includes/admin/settings/views/html-admin-page-shipping-zones.php:28
 msgid "Manage shipping methods"
-msgstr "ניהול אפשרויות משלוח"
+msgstr "ניהול שיטות משלוח"
 
 #: includes/admin/settings/views/html-admin-page-shipping-zones.php:26
 #: includes/data-stores/class-wc-shipping-zone-data-store.php:67
@@ -222,7 +269,7 @@ msgstr "<em>לחילופין,</em> יש להזין את הנתיב לקובץ CS
 
 #: includes/admin/importers/views/html-product-csv-import-form.php:52
 msgid "If a product being imported matches an existing product by ID or SKU, update the existing product rather than creating a new product or skipping the row."
-msgstr "במידה ומוצר מיובא תואם למוצר קיים על פי ID או SKU, עדכן את המוצר הקיים במקום ליצור מוצר חדש או דילוג על השורה."
+msgstr "במידה ומוצר מיובא תואם למוצר קיים על פי ID או מק\"ט, עדכן את המוצר הקיים במקום ליצור מוצר חדש או דילוג על השורה."
 
 #: includes/admin/importers/views/html-product-csv-import-form.php:48
 msgid "Update existing products"
@@ -319,7 +366,7 @@ msgstr[1] "בוצע ייבוא של המוצרים %s"
 
 #: includes/admin/importers/mappings/generic.php:19
 msgid "Parent SKU"
-msgstr "SKU אב"
+msgstr "מק\"ט אב"
 
 #: includes/admin/importers/mappings/generic.php:17
 msgid "Product Title"
@@ -531,6 +578,10 @@ msgstr "התחבר"
 msgid "Once connected, your WooCommerce.com purchases will be listed here."
 msgstr "כל הקניות מ-woocommerce.com יופיעו כאן לאחר ההתחברות."
 
+#: includes/admin/helper/views/html-oauth-start.php:16
+msgid "Manage your subscriptions, get important product notifications, and updates, all from the convenience of your WooCommerce dashboard"
+msgstr "נהל את המנויים שלך, קבל הודעות חשובות על מוצרים, עדכונים, והכל מתוך לוח הבקרה של ווקומרס"
+
 #: includes/admin/helper/views/html-oauth-start.php:13
 msgid "<strong>Sorry to see you go</strong>. Feel free to reconnect again using the button below."
 msgstr "<strong>מצטערים להיפרד</strong>. תמיד אפשר להתחבר מחדש באמצעות הכפתור שלמטה."
@@ -602,7 +653,11 @@ msgstr "מינויים"
 #: includes/admin/helper/views/html-oauth-start.php:5
 #: includes/admin/views/html-admin-page-addons.php:19
 msgid "WooCommerce Extensions"
-msgstr "הרחבות של WooCommerce"
+msgstr "הרחבות של ווקומרס"
+
+#: includes/admin/helper/views/html-helper-compat.php:5
+msgid "We've made things simpler and easier to manage moving forward. From now on you can manage all your WooCommerce purchases directly from the Extensions menu within the WooCommerce plugin itself. <a href=\"%s\">View and manage</a> your extensions now."
+msgstr "כעת אפשר לנהל את ההתקדמות באופן קל ופשוט יותר. מעתה, ניתן לנהל את כל הרכישות בווקומרס ישירות מתפריט ההרחבות שנמצא בתוך ווקומרס. <a href=\"%s\">הצגה וניהול</a> של ההרחבות שלך."
 
 #: includes/admin/helper/views/html-helper-compat.php:4
 msgid "Looking for the WooCommerce Helper?"
@@ -612,8 +667,8 @@ msgstr "צריכים עזרה בווקומרס?"
 #: includes/admin/helper/class-wc-helper.php:1149
 msgid "Note: You currently have <a href=\"%1$s\">%2$d extension</a> which should be updated first before updating WooCommerce."
 msgid_plural "Note: You currently have <a href=\"%1$s\">%2$d extensions</a> which should be updated first before updating WooCommerce."
-msgstr[0] "לתשומת לבך: יש לך כרגע <a href=\"%1$s\">%2$dהרחבה</a> פעילה שנדרש עבורה עדכון לפני שהשירות של WooCommerce יעודכן."
-msgstr[1] "לתשומת לבך: יש לך כרגע <a href=\"%1$s\">%2$dהרחבות</a> פעילות שנדרש עבורן עדכון לפני שהשירות של WooCommerce יעודכן."
+msgstr[0] "לתשומת לבך: יש לך כרגע <a href=\"%1$s\">%2$dהרחבה</a> פעילה שנדרש עבורה עדכון לפני שהשירות של ווקומרס יעודכן."
+msgstr[1] "לתשומת לבך: יש לך כרגע <a href=\"%1$s\">%2$dהרחבות</a> פעילות שנדרש עבורן עדכון לפני שהשירות של ווקומרס יעודכן."
 
 #: includes/admin/helper/class-wc-helper.php:433
 msgid "Authentication and subscription caches refreshed successfully."
@@ -669,6 +724,10 @@ msgstr "כדי לקבל עדכונים ותמיכה להרחבה זו, אתה צ
 #: includes/admin/helper/class-wc-helper.php:276
 msgid "Version %s is <strong>available</strong>. To enable this update you need to <strong>purchase</strong> a new subscription."
 msgstr "גרסה %s זמינה כעת. כדי לאפשר את העדכון, עליך <strong>לרכוש</strong> מינוי חדש."
+
+#: includes/admin/helper/class-wc-helper.php:229
+msgid "This subscription is expiring soon. Please <strong>renew</strong> to continue receiving updates and support."
+msgstr "תוקפו של המינוי שלך יפוג בקרוב. יש <strong>לחדש</strong> כדי להמשיך ולקבל עדכונים ותמיכה."
 
 #: includes/admin/helper/class-wc-helper.php:219
 msgid "Enable auto-renew"
@@ -735,7 +794,7 @@ msgstr "<strong>אין צורך בקודים, מחוונים או בוני עמ�
 
 #: includes/admin/class-wc-admin-setup-wizard.php:822
 msgid "<strong>Child themes and extensions available:</strong> Like WooCommerce, you can extend Storefront with an extension or child theme to make your store truly your own."
-msgstr "<strong>ערכות עיצוב בנות והרחבות זמינות:</strong> בדומה לשירות של WooCommerce, אפשר להרחיב את חלון הראווה עם הרחבות או ערכות עיצוב בנות כדי להתאים את החנות לדרישות שלך."
+msgstr "<strong>ערכות עיצוב בנות והרחבות זמינות:</strong> בדומה לשירות של ווקומרס, אפשר להרחיב את חלון הראווה עם הרחבות או ערכות עיצוב בנות כדי להתאים את החנות לדרישות שלך."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:821
 msgid "<strong>Built with accessibility in mind:</strong> Storefront adheres to the strict wordpress.org accessibility guidelines making your store accessible to the widest audience possible."
@@ -743,25 +802,29 @@ msgstr "<strong>המטרה היא להתחשב בנגישות:</strong> חלון
 
 #: includes/admin/class-wc-admin-setup-wizard.php:820
 msgid "<strong>Bulletproof WooCommerce integration:</strong> Rest assured the integration between WooCommerce, WooCommerce extensions and Storefront is water-tight."
-msgstr "<strong>שילוב נטול בעיות עם WooCommerce:</strong> שילוב הפעולות בין WooCommerce, ההרחבות של WooCommerce וחלון הראווה עובד בצורה חלקה וצמודה."
+msgstr "<strong>שילוב נטול בעיות עם ווקומרס:</strong> שילוב הפעולות בין ווקומרס, ההרחבות של ווקומרס וחלון הראווה עובד בצורה חלקה וצמודה."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:815
 msgid "<strong>Storefront</strong> is the free WordPress theme built and maintained by the makers of WooCommerce."
-msgstr "<strong>חלון הראווה</strong> הוא ערכת עיצוב של WordPress ללא תשלום, שנבנתה ומתוחזקת על ידי היוצרים של WooCommerce."
+msgstr "<strong>חלון הראווה</strong> הוא ערכת עיצוב של וורדפרס ללא תשלום, שנבנתה ומתוחזקת על ידי היוצרים של ווקומרס."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:651
 #: includes/admin/class-wc-admin-setup-wizard.php:658
 msgid "Learn more about PayPal"
-msgstr "מידע נוסף על PayPal"
+msgstr "מידע נוסף על פייפאל"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:651
 #: includes/admin/class-wc-admin-setup-wizard.php:658
 msgid "Safe and secure payments using credit cards or your customer's PayPal account."
-msgstr "ביצוע תשלומים בטוחים ומאובטחים באמצעות כרטיסי האשראי שלך או חשבון ה-PayPal שלך."
+msgstr "ביצוע תשלומים בטוחים ומאובטחים באמצעות כרטיסי אשראי או חשבון פייפאל."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:567
 msgid "Dimension unit"
 msgstr "יחידת מידה"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:499
+msgid "Print labels and get discounted USPS shipping rates, right from your WooCommerce dashboard. Powered by WooCommerce Services."
+msgstr "הדפסת תוויות וקבלת תעריפי USPS מיוחדים, ישירות מלוח הבקרה של ווקומרס. מופעל על ידי שירותי ווקומרס."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:498
 #: includes/admin/class-wc-admin-setup-wizard.php:505
@@ -812,7 +875,7 @@ msgstr "ייבוא <strong>מוצרים</strong> לחנות שלך מקובץ CS
 
 #: includes/admin/class-wc-admin-importers.php:105
 msgid "WooCommerce products (CSV)"
-msgstr "מוצרי WooCommerce (קובץ CSV)"
+msgstr "מוצרי ווקומרס (קובץ CSV)"
 
 #: includes/admin/class-wc-admin-importers.php:40
 msgid "Product Import"
@@ -828,7 +891,7 @@ msgstr "קישור מותאם אישית"
 
 #: includes/admin/class-wc-admin-customize.php:42
 msgid "WooCommerce endpoint"
-msgstr "נקודת קצה של WooCommerce"
+msgstr "נקודת קצה של ווקומרס"
 
 #: includes/admin/class-wc-admin-attributes.php:205
 msgid "Back to Attributes"
@@ -853,21 +916,34 @@ msgstr "יצירת מפתח API"
 
 #: includes/admin/class-wc-admin-api-keys.php:83
 msgid "The WooCommerce REST API allows external apps to view and manage store data. Access is granted only to those with valid API keys."
-msgstr "מפתח REST API של WooCommerce מאפשר לאפליקציות חיצוניות להציג ולנהל את נתוני החנות. הגישה אפשרית לבעלי מפתחות API תקפים בלבד."
+msgstr "מפתח REST API של ווקומרס מאפשר לאפליקציות חיצוניות להציג ולנהל את נתוני החנות. הגישה אפשרית לבעלי מפתחות API תקפים בלבד."
+
+#: includes/admin/class-wc-admin-addons.php:349
+#: includes/admin/class-wc-admin-setup-wizard.php:506
+msgid "Display live rates from Canada Post at checkout to make shipping a breeze. Powered by WooCommerce Services."
+msgstr "הצגה בזמן אמת של תעריפי דואר-קנדה בקופה כדי להקל על תהליך המשלוח. מופעל על ידי שירותי ווקומרס."
 
 #: includes/admin/class-wc-admin-addons.php:348
 msgid "Show Canada Post shipping rates"
-msgstr "הצג עמלות שילוח של Canada Post. "
+msgstr "הצג עמלות שילוח של דואר-קנדה."
 
 #: includes/admin/class-wc-admin-addons.php:339
 msgid "Free - Install now"
 msgstr "בחינם - ביצוע התקנה עכשיו"
 
+#: includes/admin/class-wc-admin-addons.php:338
+msgid "Integrate your store with USPS to buy discounted shipping labels, and print them directly from your WooCommerce dashboard. Powered by WooCommerce Services."
+msgstr "שלב את החנות שלך עם USPS כדי לקנות תוויות משלוח מוזלות, ולהדפיס אותן ישירות מלוח הבקרה של ווקומרס. מופעל על ידי שירותי ווקומרס."
+
+#: includes/admin/class-wc-admin-addons.php:337
+msgid "Buy discounted shipping labels — then print them from your dashboard."
+msgstr "קנה תוויות משלוח מוזלות - ולאחר מכן הדפס אותן מלוח הבקרה שלך."
+
 #: includes/admin/class-wc-admin-addons.php:336
 #: includes/admin/class-wc-admin-addons.php:491
 #: includes/admin/class-wc-admin-setup-wizard.php:630
 msgid "WooCommerce Services"
-msgstr "שירותי WooCommerce"
+msgstr "שירותי ווקומרס"
 
 #: i18n/states/RO.php:58
 msgid "Vrancea"
@@ -924,6 +1000,10 @@ msgstr "ניאמץ"
 #: i18n/states/RO.php:45
 msgid "Mures"
 msgstr "מורש"
+
+#: i18n/states/RO.php:44
+msgid "Mehedinti"
+msgstr "מהדינץ"
 
 #: i18n/states/RO.php:43
 msgid "Maramures"
@@ -1039,7 +1119,7 @@ msgstr "Tarija"
 
 #: i18n/states/BO.php:23
 msgid "Potosí"
-msgstr "Potosí"
+msgstr "פוטוסי"
 
 #: i18n/states/BO.php:22
 msgid "Pando"
@@ -1069,7 +1149,7 @@ msgstr "Chuquisaca"
 msgid "Are you sure you want to log out? <a href=\"%s\">Confirm and log out</a>"
 msgstr "האם אתה בטוח שברצונך להתנתק? <a href=\"%s\">לחץ לאישור והתנתקות</a>"
 
-#: includes/api/class-wc-rest-authentication.php:538
+#: includes/api/class-wc-rest-authentication.php:540
 msgid "Unknown request method."
 msgstr "מתודת בקשה לא ידועה."
 
@@ -1166,7 +1246,7 @@ msgstr "מסד הנתונים GeoIP של MaxMind"
 
 #: includes/admin/views/html-admin-page-status-report.php:312
 msgid "WC database version"
-msgstr "WC גרסת בסיס נתונים"
+msgstr "גרסת מסד נתונים של WC."
 
 #: includes/admin/views/html-admin-page-status-report.php:189
 msgid "Max upload size"
@@ -1324,11 +1404,11 @@ msgstr "%1$s המלאי פחת מ-%2$s ל-%3$s."
 
 #: includes/wc-order-functions.php:621
 msgid "The payment gateway for this order does not support automatic refunds."
-msgstr "אמצעי התשלום להזמנה זו איננו מאפשר זיכוי אוטומטי."
+msgstr "שיטת תשלום להזמנה זו איננו מאפשר זיכוי אוטומטי."
 
 #: includes/wc-order-functions.php:617
 msgid "The payment gateway for this order does not exist."
-msgstr "אמצעי התשלום להזמנה זו איננו קיים."
+msgstr "שיטת תשלום להזמנה זו איננו קיים."
 
 #: includes/wc-order-functions.php:493
 msgid "Invalid refund amount."
@@ -1412,14 +1492,14 @@ msgstr "בקרו באזור הניהול של %s"
 #: includes/log-handlers/class-wc-log-handler-email.php:172
 msgid "You have received the following WooCommerce log message:"
 msgid_plural "You have received the following WooCommerce log messages:"
-msgstr[0] "הודעת היומן הבאה של WooCommerce התקבלה:"
-msgstr[1] "הודעות היומן הבאות של WooCommerce התקבלו:"
+msgstr[0] "הודעת היומן הבאה של ווקומרס התקבלה:"
+msgstr[1] "הודעות היומן הבאות של ווקומרס התקבלו:"
 
 #: includes/log-handlers/class-wc-log-handler-email.php:151
 msgid "[%1$s] %2$s: %3$s WooCommerce log message"
 msgid_plural "[%1$s] %2$s: %3$s WooCommerce log messages"
-msgstr[0] "[%1$s] %2$s: הודעת יומן %3$s של WooCommerce"
-msgstr[1] "[%1$s] %2$s: %3$s הודעות יומן של WooCommerce"
+msgstr[0] "[%1$s] %2$s: הודעת יומן %3$s של ווקומרס"
+msgstr[1] "[%1$s] %2$s: %3$s הודעות יומן של ווקומרס"
 
 #: includes/legacy/abstract-wc-legacy-product.php:72
 msgid "Product properties should not be accessed directly."
@@ -1437,7 +1517,7 @@ msgstr "%1$s - הזמנה #%2$s"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:118
 msgid "Optionally enter the URL to a 150x50px image displayed as your logo in the upper left corner of the PayPal checkout pages."
-msgstr "לסירוגין הכנס את הקישור אל תוך תמונת הלוגו שלך בגודל 150X50 פיקסלים המוצגת בפינה השמאלית עליונה בעמודי הצ'קאוט של PAYPAL"
+msgstr "לסירוגין הכנס את הקישור אל תוך תמונת הלוגו שלך בגודל 150x50 פיקסלים המוצגת בפינה השמאלית עליונה בעמודי הצ'קאוט של פייפאל."
 
 #: includes/gateways/paypal/includes/settings-paypal.php:116
 msgid "Image url"
@@ -1445,19 +1525,19 @@ msgstr "כתובת תמונה"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:110
 msgid "Optionally enter the name of the page style you wish to use. These are defined within your PayPal account. This affects classic PayPal checkout screens."
-msgstr "במידת הצורך, אפשר להזין את שם סגנון העמוד הרצוי. פרטים אלה מוגדרים בחשבון PayPal. הגדרה זו משפיעה על מסכי התשלום הקלאסיים של PayPal."
+msgstr "במידת הצורך, אפשר להזין את שם סגנון העמוד הרצוי. פרטים אלה מוגדרים בחשבון פייפאל. הגדרה זו משפיעה על מסכי התשלום הקלאסיים של פייפאל."
 
 #: includes/gateways/paypal/includes/settings-paypal.php:51
 msgid "Log PayPal events, such as IPN requests, inside %s"
-msgstr "יש לרשום אירועים של PayPal, כגון בקשות IPN, בתוך %s"
+msgstr "יש לרשום אירועים של פייפאל, כגון בקשות IPN, בתוך %s"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:44
 msgid "PayPal sandbox can be used to test payments. Sign up for a <a href=\"%s\">developer account</a>."
-msgstr "אפשר להשתמש בארגז החול של PayPal כדי לבדוק את התשלומים. יש להירשם ל<a href=\"%s\">חשבון מפתח</a>."
+msgstr "אפשר להשתמש בארגז החול של פייפאל כדי לבדוק את התשלומים. יש להירשם ל<a href=\"%s\">חשבון מפתח</a>."
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:262
 msgid "Order #%1$s has been marked paid by PayPal IPN, but was previously cancelled. Admin handling required."
-msgstr "הזמנה #%1$s סומנה כהזמנה ששולמה על-ידי PayPal IPN, אך בוטלה לפני כן. נדרש טיפול של מנהל המערכת."
+msgstr "הזמנה #%1$s סומנה כהזמנה ששולמה על-ידי פייפאל IPN, אך בוטלה לפני כן. נדרש טיפול של מנהל המערכת."
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:261
 msgid "Payment for cancelled order %s received"
@@ -1578,7 +1658,7 @@ msgstr "מוצר %s"
 
 #: includes/class-wc-post-types.php:156
 msgid "Product shipping classes"
-msgstr "מחלקות משלוח למוצר"
+msgstr "סוגי משלוח למוצר"
 
 #: includes/class-wc-post-types.php:132
 msgid "No tags found"
@@ -1690,11 +1770,11 @@ msgstr "המטפל שסופק <code>%s</code> אינו מיישם את WC_Log_Ha
 msgid "Invalid variation ID"
 msgstr "מזהה וריאציה לא תקין"
 
-#: includes/class-wc-order-item-product.php:182
+#: includes/class-wc-order-item-product.php:184
 msgid "Invalid product"
 msgstr "מוצר לא תקין"
 
-#: includes/class-wc-install.php:920
+#: includes/class-wc-install.php:923
 msgid "Visit premium customer support"
 msgstr "ביקור בתמיכת לקוחות פרימיום"
 
@@ -1775,7 +1855,7 @@ msgstr "הצג עגלה"
 
 #: includes/class-wc-cache-helper.php:198
 msgid "In order for <strong>database caching</strong> to work with WooCommerce you must add %1$s to the \"Ignored Query Strings\" option in <a href=\"%2$s\">W3 Total Cache settings</a>."
-msgstr "כדי ש<strong>אחסון במטמון של מסד נתונים</strong> יפעל עם WooCommerce, יש להוסיף את %1$s לאפשרות 'יש להתעלם ממחרוזות שאילתה' ב<a href=\"%2$s\">הגדרות מטמון כולל של W3</a>."
+msgstr "כדי ש<strong>אחסון במטמון של מסד נתונים</strong> יפעל עם ווקומרס, יש להוסיף את %1$s לאפשרות 'יש להתעלם ממחרוזות שאילתה' ב<a href=\"%2$s\">הגדרות מטמון כולל של W3</a>."
 
 #. translators: 1: app name 2: scope 3: date 4: time
 #: includes/class-wc-auth.php:215
@@ -1900,7 +1980,7 @@ msgstr "אפשרות זו תמחק את כל שיעורי המס, יש להשת�
 
 #: includes/api/class-wc-rest-system-status-tools-controller.php:160
 msgid "This tool will install all the missing WooCommerce pages. Pages already defined and set up will not be replaced."
-msgstr "כלי זה יתקין את כל עמודי WooCommerce החסירם. העמודים כבר הוגדר וההתקנה לא תוחלף."
+msgstr "כלי זה יתקין את כל עמודי ווקומרס החסרים. העמודים כבר הוגדר וההתקנה לא תוחלף."
 
 #: includes/api/class-wc-rest-system-status-tools-controller.php:151
 msgid "This tool will delete all customer session data from the database, including any current live carts."
@@ -1920,7 +2000,7 @@ msgstr "וריאציות יתומות"
 
 #: includes/api/class-wc-rest-system-status-controller.php:522
 msgid "WooCommerce pages."
-msgstr "עמודי WooCommerce"
+msgstr "עמודי ווקומרס"
 
 #: includes/api/class-wc-rest-system-status-controller.php:514
 msgid "Hide errors from visitors?"
@@ -1960,7 +2040,7 @@ msgstr "האם ערכת העיצוב כוללת קובץ woocommerce.php?"
 
 #: includes/api/class-wc-rest-system-status-controller.php:374
 msgid "Does the theme declare WooCommerce support?"
-msgstr "האם ערכת העיצוב מצהירה על תמיכה ב-WooCommerce?"
+msgstr "האם ערכת העיצוב מצהירה על תמיכה בווקומרס?"
 
 #: includes/api/class-wc-rest-system-status-controller.php:368
 msgid "Is this theme a child theme?"
@@ -2068,7 +2148,7 @@ msgstr "גודל מרבי של פוסט PHP."
 
 #: includes/api/class-wc-rest-system-status-controller.php:171
 msgid "WordPress language."
-msgstr "שפת WordPress"
+msgstr "שפת וורדפרס."
 
 #: includes/api/class-wc-rest-system-status-controller.php:165
 msgid "Are WordPress cron jobs enabled?"
@@ -2100,11 +2180,11 @@ msgstr "ספריית יומן"
 
 #: includes/api/class-wc-rest-system-status-controller.php:123
 msgid "WooCommerce version."
-msgstr "גרסת WooCommerce"
+msgstr "גרסת ווקומרס"
 
 #: includes/api/class-wc-rest-system-status-controller.php:116
 msgid "Site URL."
-msgstr "כתובת URL לאתר."
+msgstr "כתובת האתר."
 
 #: includes/api/class-wc-rest-system-status-controller.php:109
 msgid "Home URL."
@@ -2373,35 +2453,35 @@ msgstr "מזהה ייחודי עבור ההגדרה."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:390
 msgid "Payment gateway settings."
-msgstr "הגדרות שירות התשלומים."
+msgstr "הגדרות שיטת תשלום."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:384
 msgid "Payment gateway method description."
-msgstr "תיאור שיטת שירות התשלומים."
+msgstr "תיאור שיטת תשלום."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:378
 msgid "Payment gateway method title."
-msgstr "כותרת שיטת שירות התשלומים."
+msgstr "כותרת שיטת תשלום."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:373
 msgid "Payment gateway enabled status."
-msgstr "המצב המופעל של שירות התשלומים."
+msgstr "המצב המופעל של שיטת תשלום."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:365
 msgid "Payment gateway sort order."
-msgstr "סדר המיון של שירות התשלומים."
+msgstr "סדר המיון של שיטת תשלום."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:360
 msgid "Payment gateway description on checkout."
-msgstr "תיאור שירות תשלומים בעמוד התשלום."
+msgstr "תיאור שיטת תשלום בעמוד התשלום."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:355
 msgid "Payment gateway title on checkout."
-msgstr "כותרת שירות תשלומים בעמוד התשלום."
+msgstr "כותרת שיטת תשלום בעמוד התשלום."
 
 #: includes/api/class-wc-rest-payment-gateways-controller.php:349
 msgid "Payment gateway ID."
-msgstr "מזהה שירות התשלומים."
+msgstr "מזהה שיטת תשלום."
 
 #: includes/api/class-wc-rest-orders-controller.php:1095
 msgid "The date the order was completed, as GMT."
@@ -2419,7 +2499,7 @@ msgstr "תאריך העדכון האחרון של ההזמנה, לפי שעון 
 #: includes/api/class-wc-rest-orders-controller.php:832
 #: includes/api/v1/class-wc-rest-orders-controller.php:951
 msgid "Version of WooCommerce which last updated the order."
-msgstr "גרסת WooCommerce שעדכנה את ההזמנה לאחרונה."
+msgstr "גרסת ווקומרס שעדכנה את ההזמנה לאחרונה."
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:530
 msgid "When true, the payment gateway API is used to generate the refund."
@@ -2553,7 +2633,7 @@ msgstr "מ-%1$s עד %2$s"
 
 #: includes/admin/views/html-notice-theme-support.php:14
 msgid "<strong>Your theme does not declare WooCommerce support</strong> &#8211; Please read our <a href=\"%1$s\" target=\"_blank\">integration</a> guide or check out our <a href=\"%2$s\" target=\"_blank\">Storefront</a> theme which is totally free to download and designed specifically for use with WooCommerce."
-msgstr "<strong>ערכת העיצוב לא מצהירה על התמיכה של WooCommerce</strong> – יש לקרוא את מדריך ה<a href=\"%1$s\" target=\"_blank\">שילוב</a> או לבדוק את ערכת העיצוב של <a href=\"%2$s\" target=\"_blank\">Storefront</a> שמוצעת להורדה בחינם ומתוכננת במיוחד לשימוש עם WooCommerce."
+msgstr "<strong>ערכת העיצוב לא מצהירה על התמיכה של ווקומרס</strong> – יש לקרוא את מדריך ה<a href=\"%1$s\" target=\"_blank\">שילוב</a> או לבדוק את ערכת העיצוב של <a href=\"%2$s\" target=\"_blank\">Storefront</a> שמוצעת להורדה בחינם ומתוכננת במיוחד לשימוש עם ווקומרס."
 
 #: includes/admin/views/html-bulk-edit-product.php:54
 msgid "Set to regular price decreased by (fixed amount or %):"
@@ -2653,11 +2733,11 @@ msgstr "קידומת מסד נתונים"
 
 #: includes/admin/views/html-admin-page-status-report.php:277
 msgid "wp_remote_get() failed. Contact your hosting provider."
-msgstr "wp_remote_get()‎ נכשל. יש לפנות לספקית האחסון."
+msgstr "wp_remote_get()‎ נכשל. יש לפנות לספק האחסון."
 
 #: includes/admin/views/html-admin-page-status-report.php:266
 msgid "wp_remote_post() failed. Contact your hosting provider."
-msgstr "wp_remote_post() נכשל. פנה לספק האחסון שלך."
+msgstr "wp_remote_post() נכשל. יש לפנות לספק האחסון."
 
 #: includes/admin/views/html-admin-page-status-report.php:249
 msgid "Multibyte string"
@@ -2727,7 +2807,7 @@ msgstr "אזור זה <b>עשוי</b> לשמש לאזורים שאינם נכל�
 
 #: includes/admin/settings/views/html-admin-page-shipping-zones.php:11
 msgid "WooCommerce will match a customer to a single zone using their shipping address and present the shipping methods within that zone to them."
-msgstr "WooCommerce יתאים לקוח לאזור יחיד באמצעות כתובת המשלוח שלו ויציג לו את שיטות המשלוח באזור זה."
+msgstr "ווקומרס יתאים לקוח לאזור יחיד באמצעות כתובת המשלוח שלו ויציג לו את שיטות המשלוח באזור זה."
 
 #: includes/admin/settings/views/html-admin-page-shipping-zones.php:11
 msgid "A shipping zone is a geographic region where a certain set of shipping methods are offered."
@@ -2820,17 +2900,17 @@ msgstr "צבע הרקע של גוף הטקסט הראשי. ברירת מחדל %
 #. translators: %s: default color
 #: includes/admin/settings/class-wc-settings-emails.php:135
 msgid "The background color for WooCommerce email templates. Default %s."
-msgstr "צבע הרקע עבור תבניות אימייל של WooCommerce. ברירת מחדל %s."
+msgstr "צבע הרקע עבור תבניות אימייל של ווקומרס. ברירת מחדל %s."
 
 #. translators: %s: default color
 #: includes/admin/settings/class-wc-settings-emails.php:123
 msgid "The base color for WooCommerce email templates. Default %s."
-msgstr "צבע הבסיס עבור תבניות אימייל של WooCommerce. ברירת מחדל %s."
+msgstr "צבע הבסיס עבור תבניות אימייל של ווקומרס. ברירת מחדל %s."
 
 #. translators: %s: site name
 #: includes/admin/settings/class-wc-settings-emails.php:115
 msgid "%s - Powered by WooCommerce"
-msgstr "%s - מופעל על-ידי WooCommerce"
+msgstr "%s - מופעל על-ידי ווקומרס"
 
 #: includes/admin/settings/class-wc-settings-accounts.php:71
 msgid "Enable customer registration on the \"My account\" page."
@@ -2858,8 +2938,8 @@ msgstr "יש לבחור מוצר כדי להציג נתונים סטטיסטיי
 #: includes/admin/reports/class-wc-report-sales-by-date.php:508
 msgid "%1$s refunded %2$d order (%3$d item)"
 msgid_plural "%1$s refunded %2$d orders (%3$d items)"
-msgstr[0] "%1$s החזר כספי%2$d להזמנה (%3$d פריט)"
-msgstr[1] "%1$s החזר כספי%2$d להזמנות (%3$d פריטים)"
+msgstr[0] "%1$s החזר כספי %2$d להזמנה (%3$d פריט)"
+msgstr[1] "%1$s החזר כספי %2$d להזמנות (%3$d פריטים)"
 
 #: includes/admin/reports/class-wc-report-sales-by-category.php:284
 msgid "Choose a category to view stats"
@@ -3005,7 +3085,7 @@ msgstr "היבוא הושלם - יובאו %s שיעורי מס."
 #. translators: %s: five stars
 #: includes/admin/class-wc-admin.php:234
 msgid "If you like <strong>WooCommerce</strong> please leave us a %s rating. A huge thanks in advance!"
-msgstr "אם אהבת את <strong>WooCommerce</strong>, נשמח לראות את %s הדירוג שלך. תודה ענקית מראש!"
+msgstr "אם אהבת את <strong>ווקומרס</strong>, נשמח לראות את %s הדירוג שלך. תודה ענקית מראש!"
 
 #. translators: 1: items count (i.e. 8 items) 2: current page 3: total pages
 #: includes/admin/class-wc-admin-webhooks.php:532
@@ -3022,7 +3102,7 @@ msgstr "צפייה בסרטון סיור מודרך"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:728
 msgid "WooCommerce can accept both online and offline payments. <a href=\"%1$s\" target=\"_blank\">Additional payment methods</a> can be installed later and managed from the <a href=\"%2$s\" target=\"_blank\">checkout settings</a> screen."
-msgstr "ל-WooCommerce ניתן לשלם באופן מקוון או לא מקוון. <a href=\"%1$s\" target=\"_blank\"> ניתן להתקין שיטות תשלום נוספות</a> מאוחר יותר ולנהל אותן <a href=\"%2$s\" target=\"_blank\">ממסך ההגדרות</a> בתשלום הקופה."
+msgstr "לווקומרס ניתן לשלם באופן מקוון או לא מקוון. <a href=\"%1$s\" target=\"_blank\"> ניתן להתקין שיטות תשלום נוספות</a> מאוחר יותר ולנהל אותן <a href=\"%2$s\" target=\"_blank\">ממסך ההגדרות</a> בתשלום הקופה."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:665
 msgid "A modern and robust way to accept credit card payments on your store. <a href=\"%s\" target=\"_blank\">Learn more about Stripe</a>."
@@ -3074,7 +3154,7 @@ msgstr "שורת כתובת 1"
 
 #: includes/admin/class-wc-admin-post-types.php:1997
 msgid "This is the WooCommerce shop page. The shop page is a special archive that lists your products. <a href=\"%s\">You can read more about this here</a>."
-msgstr "זהו עמוד החנות של WooCommerce. עמוד החנות הוא ארכיון מיוחד שמפרט את המוצרים שלך. <a href=\"%s\">מידע נוסף בנושא זה זמין כאן</a>."
+msgstr "זהו עמוד החנות של ווקומרס. עמוד החנות הוא ארכיון מיוחד שמפרט את המוצרים שלך. <a href=\"%s\">מידע נוסף בנושא זה זמין כאן</a>."
 
 #. translators: 1: user display name 2: user ID 3: user email
 #: includes/admin/class-wc-admin-post-types.php:1566
@@ -3168,7 +3248,7 @@ msgstr "חירום"
 
 #: includes/admin/class-wc-admin-help.php:204
 msgid "WooCommerce helpdesk"
-msgstr "מרכז התמיכה של WooCommerce"
+msgstr "מרכז התמיכה של ווקומרס"
 
 #: includes/admin/class-wc-admin-help.php:204
 #: includes/admin/class-wc-admin-help.php:213
@@ -3199,11 +3279,11 @@ msgstr "שיטת תשלום של Stripe"
 
 #: includes/admin/class-wc-admin-help.php:101
 msgid "PayPal by Braintree Payment Method"
-msgstr "שיטת תשלום של PayPal דרך Braintree"
+msgstr "שיטת תשלום של פייפאל דרך Braintree"
 
 #: includes/admin/class-wc-admin-help.php:97
 msgid "PayPal Standard Method"
-msgstr "שיטת תשלום סטנדרטית של PayPal"
+msgstr "שיטת תשלום סטנדרטית של פייפאל"
 
 #: includes/admin/class-wc-admin-help.php:93
 msgid "Cash on Delivery (COD) Payment Method"
@@ -3265,7 +3345,7 @@ msgstr "המשלוח מושבת."
 #: includes/api/class-wc-rest-products-controller.php:1269
 #: includes/api/v1/class-wc-rest-products-controller.php:1637
 msgid "To manipulate product variations you should use the /products/&lt;product_id&gt;/variations/&lt;id&gt; endpoint."
-msgstr "בכדי לתפעל את ווריאציות המוצר אתה צריך להשתמש בנקודת הקצה (endpoint) /products/&lt;product_id&gt;/variations/&lt;id&gt;"
+msgstr "בכדי לתפעל את ווריאציות המוצר אתה צריך להשתמש בנקודת הקצה /products/&lt;product_id&gt;/variations/&lt;id&gt;"
 
 #: includes/abstracts/abstract-wc-rest-crud-controller.php:43
 #: includes/abstracts/abstract-wc-rest-crud-controller.php:113
@@ -3288,7 +3368,7 @@ msgstr "מצב מס מוצר לא תקף."
 
 #: includes/abstracts/abstract-wc-product.php:794
 msgid "Invalid or duplicated SKU."
-msgstr "SKU לא תקף או כפול."
+msgstr "מק\"ט לא תקף או כפול."
 
 #: includes/abstracts/abstract-wc-product.php:757
 msgid "Invalid catalog visibility option."
@@ -3597,7 +3677,7 @@ msgstr "וובהוק - URL למשלוח"
 #: includes/api/v1/class-wc-rest-webhook-deliveries.php:46
 #: includes/api/v1/class-wc-rest-webhook-deliveries.php:62
 msgid "Unique identifier for the webhook."
-msgstr "מזהה ייחודי לוובהוק"
+msgstr "מזהה ייחודי של הוובהוק."
 
 #: includes/api/v1/class-wc-rest-tax-classes-controller.php:62
 msgid "Unique slug for the resource."
@@ -3633,7 +3713,7 @@ msgstr "מזהה ייחודי של משתנה מוצר."
 #: includes/api/v1/class-wc-rest-product-attribute-terms-controller.php:78
 #: includes/api/v1/class-wc-rest-product-attribute-terms-controller.php:114
 msgid "Unique identifier for the attribute of the terms."
-msgstr "מזהה ייחודי עבור התכונה של התנאים."
+msgstr "מזהה ייחודי של התכונה של התנאים."
 
 #: includes/api/class-wc-rest-order-notes-controller.php:151
 #: includes/api/v1/class-wc-rest-order-notes-controller.php:70
@@ -3692,7 +3772,7 @@ msgstr "הרחבות"
 
 #: includes/admin/class-wc-admin-menus.php:104
 msgid "WooCommerce extensions"
-msgstr "הרחבות של WooCommerce"
+msgstr "הרחבות של ווקומרס"
 
 #: includes/admin/class-wc-admin-addons.php:452
 msgid "Installed"
@@ -4457,11 +4537,11 @@ msgstr "עמוד נוכחי של הקולקציה."
 #: includes/vendor/abstract-wp-rest-controller.php:140
 #: includes/vendor/abstract-wp-rest-controller.php:152
 msgid "Method '%s' not implemented. Must be over-ridden in subclass."
-msgstr "שיטה (פונקציה) '%s' לא יושמה/הוגדרה. יש להגדיר אותו בתוך תת-קלאס."
+msgstr "מתודה '%s' לא יושמה/הוגדרה. יש להגדיר אותו בתוך תת-קלאס."
 
 #: includes/vendor/abstract-wp-rest-controller.php:30
 msgid "The register_routes() method must be overriden"
-msgstr "יש להחליף (override) פונקציה register_routes()"
+msgstr "יש לדרוס את הפונקציה register_routes()"
 
 #: includes/shipping/local-pickup/class-wc-shipping-local-pickup.php:94
 msgid "Optional cost for local pickup."
@@ -4619,11 +4699,11 @@ msgstr "הכנס לתוך המוצר"
 msgid "No &quot;%s&quot; found"
 msgstr "לא נמצא \"%s\""
 
-#: includes/class-wc-install.php:1088
+#: includes/class-wc-install.php:1091
 msgid "%1$s was installed but could not be activated. <a href=\"%2$s\">Please activate it manually by clicking here.</a>"
 msgstr "%1$s הותקן אך לא ניתן להפעילו. <a href=\"%2$s\">יש ללחוץ כאן כדי להפעיל אותו באופן ידני.</a>"
 
-#: includes/class-wc-install.php:1062 includes/class-wc-install.php:1144
+#: includes/class-wc-install.php:1065 includes/class-wc-install.php:1147
 msgid "%1$s could not be installed (%2$s). <a href=\"%3$s\">Please install it manually by clicking here.</a>"
 msgstr "אי אפשר להתקין את %1$s (%2$s). <a href=\"%3$s\">יש ללחוץ כאן כדי להתקין אותו באופן ידני.</a>"
 
@@ -4682,7 +4762,7 @@ msgstr "כתובת ה-URL שבה מסופק המטען של webhook."
 #: includes/api/class-wc-rest-webhooks-controller.php:137
 #: includes/api/v1/class-wc-rest-webhooks-controller.php:536
 msgid "WooCommerce action names associated with the webhook."
-msgstr "שמות פעולות של WooCommerce שמשויכים ל-webhook."
+msgstr "שמות פעולות של ווקומרס שמשויכים ל-webhook."
 
 #: includes/api/class-wc-rest-webhooks-controller.php:131
 #: includes/api/v1/class-wc-rest-webhooks-controller.php:530
@@ -5002,7 +5082,7 @@ msgstr "משקל וריאציה (%s)."
 #: includes/api/class-wc-rest-product-variations-controller.php:778
 #: includes/api/v1/class-wc-rest-products-controller.php:2431
 msgid "Shows if the variation is on backordered."
-msgstr "הצג אם הוריאציה בהזמנות מראש."
+msgstr "מציג האם הוריאציה בהזמנות מראש."
 
 #: includes/api/class-wc-rest-product-variations-controller.php:759
 #: includes/api/v1/class-wc-rest-products-controller.php:2412
@@ -5027,12 +5107,12 @@ msgstr "אם הווריאציה וירטואלית."
 #: includes/api/class-wc-rest-product-variations-controller.php:680
 #: includes/api/v1/class-wc-rest-products-controller.php:2328
 msgid "Shows if the variation can be bought."
-msgstr "מראה האם הוריאציה יכולה להירכש."
+msgstr "מציג האם הוריאציה יכולה להירכש."
 
 #: includes/api/class-wc-rest-product-variations-controller.php:668
 #: includes/api/v1/class-wc-rest-products-controller.php:2322
 msgid "Shows if the variation is on sale."
-msgstr "הצג אם הוריאציה במבצע."
+msgstr "מציג האם הוריאציה במבצע."
 
 #: includes/api/class-wc-rest-product-variations-controller.php:643
 #: includes/api/v1/class-wc-rest-products-controller.php:2307
@@ -5220,12 +5300,12 @@ msgstr "מזהה כתובת של משלוח."
 #: includes/api/class-wc-rest-products-controller.php:1665
 #: includes/api/v1/class-wc-rest-products-controller.php:2020
 msgid "Shows whether or not the product shipping is taxable."
-msgstr "מציין אם המשלוח חייב במס."
+msgstr "מציין האם המשלוח חייב במס."
 
 #: includes/api/class-wc-rest-products-controller.php:1659
 #: includes/api/v1/class-wc-rest-products-controller.php:2014
 msgid "Shows if the product need to be shipped."
-msgstr "מראה אם ​​המוצר דורש משלוח."
+msgstr "מציג האם ​​המוצר דורש משלוח."
 
 #. translators: %s: dimension unit
 #: includes/api/class-wc-rest-products-controller.php:1652
@@ -5264,14 +5344,14 @@ msgstr "אפשר רכישת פריט אחד בהזמנה בודדת."
 #: includes/api/class-wc-rest-products-controller.php:1616
 #: includes/api/v1/class-wc-rest-products-controller.php:1971
 msgid "Shows if the product is on backordered."
-msgstr "הצג אם המוצר בהזמנות מראש."
+msgstr "מציג האם המוצר בהזמנות מראש."
 
 #: includes/api/class-wc-rest-product-variations-controller.php:772
 #: includes/api/class-wc-rest-products-controller.php:1610
 #: includes/api/v1/class-wc-rest-products-controller.php:1965
 #: includes/api/v1/class-wc-rest-products-controller.php:2425
 msgid "Shows if backorders are allowed."
-msgstr "הצג אם אפשר להזמין מראש."
+msgstr "מציג האם אפשר להזמין מראש."
 
 #: includes/api/class-wc-rest-product-variations-controller.php:765
 #: includes/api/class-wc-rest-products-controller.php:1603
@@ -5345,12 +5425,12 @@ msgstr "כמות המכירות."
 #: includes/api/class-wc-rest-products-controller.php:1501
 #: includes/api/v1/class-wc-rest-products-controller.php:1849
 msgid "Shows if the product can be bought."
-msgstr "מציג אם ניתן לרכוש את המוצר."
+msgstr "מציג האם ניתן לרכוש את המוצר."
 
 #: includes/api/class-wc-rest-products-controller.php:1495
 #: includes/api/v1/class-wc-rest-products-controller.php:1843
 msgid "Shows if the product is on sale."
-msgstr "מראה אם המוצר הוא במבצע."
+msgstr "מציג האם המוצר במבצע."
 
 #: includes/api/class-wc-rest-products-controller.php:1489
 #: includes/api/v1/class-wc-rest-products-controller.php:1837
@@ -5457,7 +5537,7 @@ msgstr "שם סוג משלוח."
 #: includes/api/class-wc-rest-product-reviews-controller.php:191
 #: includes/api/v1/class-wc-rest-product-reviews-controller.php:549
 msgid "Shows if the reviewer bought the product or not."
-msgstr "מציג אם המבקר קנה את המוצר או לא."
+msgstr "מציג האם המבקר קנה את המוצר או לא."
 
 #: includes/api/class-wc-rest-product-reviews-controller.php:186
 #: includes/api/v1/class-wc-rest-product-reviews-controller.php:544
@@ -6451,7 +6531,7 @@ msgstr "תאריך יצירת הלקוח, לפי אזור הזמן של האתר
 #: includes/api/v1/class-wc-rest-webhooks-controller.php:92
 #: includes/api/v1/class-wc-rest-webhooks-controller.php:498
 msgid "Unique identifier for the resource."
-msgstr "מזהה יחודי עבור המשאב."
+msgstr "מזהה ייחודי של המשאב."
 
 #: includes/api/v1/class-wc-rest-customers-controller.php:478
 msgid "Invalid resource id for reassignment."
@@ -6637,7 +6717,7 @@ msgstr "קוד קופון."
 #: includes/api/class-wc-rest-coupons-controller.php:331
 #: includes/api/v1/class-wc-rest-coupons-controller.php:415
 msgid "Unique identifier for the object."
-msgstr "מזהה ייחודי לאובייקט."
+msgstr "מזהה ייחודי של האובייקט."
 
 #: includes/api/class-wc-rest-coupons-controller.php:267
 #: includes/api/legacy/class-wc-rest-legacy-coupons-controller.php:113
@@ -6737,7 +6817,7 @@ msgstr "יש להתקין את תוסף Simplify Commerce החדש"
 
 #: includes/admin/views/html-notice-simplify-commerce.php:21
 msgid "<strong>The Simplify Commerce payment gateway is deprecated</strong> &#8211; Please install our new free Simplify Commerce plugin from WordPress.org. Simplify Commerce will be removed from WooCommerce core in a future update."
-msgstr "<strong>שירות התשלומים Simplify Commerce הוצא משימוש</strong> – יש להתקין את תוסף Simplify Commerce החדש והחינמי שלנו מאתר WordPress.org. Simplify Commerce יוסר מהליבה של WooCommerce בעדכון עתידי."
+msgstr "<strong>שירות התשלומים Simplify Commerce הוצא משימוש</strong> – יש להתקין את תוסף Simplify Commerce החדש והחינמי שלנו מאתר WordPress.org. Simplify Commerce יוסר מהליבה של ווקומרס בעדכון עתידי."
 
 #: includes/admin/views/html-notice-no-shipping-methods.php:15
 msgid "Customers will not be able to purchase physical goods from your store until a shipping method is available."
@@ -6763,7 +6843,7 @@ msgstr "הגדר אזורי השילוח"
 
 #: includes/admin/views/html-notice-legacy-shipping.php:14
 msgid "Legacy shipping methods (flat rate, international flat rate, local pickup and delivery, and free shipping) are deprecated but will continue to work as normal for now. <b><em>They will be removed in future versions of WooCommerce</em></b>. We recommend disabling these and setting up new rates within shipping zones as soon as possible."
-msgstr "שיטות משלוח ישנות (תעריף קבוע, תעריף מוזל בינלאומי, איסוף ומסירה מקומיים ומשלוח בחינם) הוצאו משימוש אך בינתיים ימשיכו לפעול כרגיל. <b><em>הן יוסרו בגרסאות עתידיות של WooCommerce</em></b>. מומלץ להשבית אותן ולהגדיר תעריפים חדשים בתוך אזורי המשלוח בהקדם האפשרי."
+msgstr "שיטות משלוח ישנות (תעריף קבוע, תעריף מוזל בינלאומי, איסוף ומסירה מקומיים ומשלוח בחינם) הוצאו משימוש אך בינתיים ימשיכו לפעול כרגיל. <b><em>הן יוסרו בגרסאות עתידיות של ווקומרס</em></b>. מומלץ להשבית אותן ולהגדיר תעריפים חדשים בתוך אזורי המשלוח בהקדם האפשרי."
 
 #: includes/admin/views/html-notice-legacy-shipping.php:13
 msgid "a group of regions that can be assigned different shipping methods and rates."
@@ -6810,7 +6890,7 @@ msgstr "השרת אינו תומך בפונקציה %s - פונקציה זו נ�
 
 #: includes/admin/views/html-admin-page-status-report.php:180
 msgid "WordPress requirements"
-msgstr "הדרישות של WordPress"
+msgstr "דרישות וורדפרס"
 
 #: includes/admin/views/html-admin-page-status-report.php:159
 msgid "The version of cURL installed on your server."
@@ -6931,7 +7011,7 @@ msgstr "שם סיווג משלוח"
 
 #: includes/admin/settings/views/html-admin-page-shipping-classes.php:33
 msgid "No shipping classes have been created."
-msgstr "לא נוצרו סיווגי משלוחים."
+msgstr "לא נוצרו סוגי משלוחים."
 
 #: includes/admin/settings/views/html-admin-page-shipping-classes.php:24
 msgid "Add shipping class"
@@ -6939,11 +7019,11 @@ msgstr "הוספת סיווג משלוח"
 
 #: includes/admin/settings/views/html-admin-page-shipping-classes.php:23
 msgid "Save shipping classes"
-msgstr "שמירת סיווגי משלוחים"
+msgstr "שמירת סוגי משלוחים"
 
 #: includes/admin/settings/views/html-admin-page-shipping-classes.php:9
 msgid "Shipping classes can be used to group products of similar type and can be used by some Shipping Methods (such as \"Flat rate shipping\") to provide different rates to different classes of product."
-msgstr "אפשר להשתמש בסיווגי משלוחים כדי לקבץ מוצרים מסוג דומה וכמה שיטות משלוח (כגון \"משלוח בתעריף קבוע\") יכולות להשתמש בהם כדי לספק תעריפים שונים לסיווגים שונים של מוצרים."
+msgstr "אפשר להשתמש בסוגי משלוחים כדי לקבץ מוצרים מסוג דומה וכמה שיטות משלוח (כגון \"משלוח בתעריף קבוע\") יכולות להשתמש בהם כדי לספק תעריפים שונים לסוגים שונים של מוצרים."
 
 #: includes/admin/settings/class-wc-settings-shipping.php:348
 msgid "Product count"
@@ -7018,7 +7098,7 @@ msgstr "מיקום ברירת מחדל של לקוח"
 
 #: includes/admin/settings/class-wc-settings-general.php:113
 msgid "Ship to specific countries"
-msgstr "שליחה למדינות ספציפיות"
+msgstr "שליחה לארצות ספציפיות"
 
 #: includes/admin/settings/class-wc-settings-general.php:108
 msgid "Disable shipping &amp; shipping calculations"
@@ -7044,7 +7124,7 @@ msgstr "נקודת קצה להגדרת עמוד ברירת מחדל לאמצעי
 
 #: includes/admin/settings/class-wc-settings-checkout.php:219
 msgid "Set default payment method"
-msgstr "הגדרת אמצעי תשלום המשמשת כברירת מחדל"
+msgstr "אמצעי תשלום ברירת מחדל"
 
 #: includes/admin/settings/class-wc-settings-checkout.php:211
 msgid "Endpoint for the delete payment method page."
@@ -7635,7 +7715,7 @@ msgstr "מיילים על הזמנות מבוטלות נשלחים למשתמש�
 
 #: includes/admin/class-wc-admin-setup-wizard.php:876
 msgid "Want to help make WooCommerce even more awesome? Allow WooCommerce to collect non-sensitive diagnostic data and usage information. %1$sFind out more%2$s."
-msgstr "איך הופכים את WooCommerce לנפלא אף יותר? מאפשרים ל-WooCommerce לאסוף נתוני אבחון ופרטי שימוש לא רגישים. %1$sלמידע נוסף%2$s."
+msgstr "איך הופכים את ווקומרס לנפלא אף יותר? מאפשרים לווקומרס לאסוף נתוני אבחון ופרטי שימוש לא רגישים. %1$sלמידע נוסף%2$s."
 
 #: templates/single-product-reviews.php:71
 msgid "Be the first to review &ldquo;%s&rdquo;"
@@ -7728,7 +7808,7 @@ msgstr "מדינה / איזור"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:681
 msgid "You do not have permission to read the tax classes count"
-msgstr "אין לך הרשאות לקרוא את ספירת מחלקות המס"
+msgstr "אין לך הרשאות לצפות בכמות מחלקות המס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:647
 msgid "Could not delete the tax class"
@@ -7736,7 +7816,7 @@ msgstr "לא ניתן למחוק את מחלקת המס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:631
 msgid "You do not have permission to delete tax classes"
-msgstr "אין לך הרשאה למחוק מחלקת מס"
+msgstr "אין לך הרשאות למחוק מחלקת מס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:593
 msgid "Tax class already exists"
@@ -7744,7 +7824,7 @@ msgstr "מחלקת מס זו כבר קיימת"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:569
 msgid "You do not have permission to create tax classes"
-msgstr "אין לך הרשאה ליצור מחלקת מס"
+msgstr "אין לך הרשאות ליצור מחלקת מס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:534
 #: includes/api/v1/class-wc-rest-tax-classes-controller.php:138
@@ -7753,11 +7833,11 @@ msgstr "תעריף סטנדרטי"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:526
 msgid "You do not have permission to read tax classes"
-msgstr "אין לך הרשאה לקרוא מחלקות מס"
+msgstr "אין לך הרשאות לצפות במחלקות המס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:373
 msgid "You do not have permission to read the taxes count"
-msgstr "אין לך הרשאה לקרוא את ספירת המס"
+msgstr "אין לך הרשאות לצפות בכמות המס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:351
 msgid "Could not delete the tax rate"
@@ -7769,11 +7849,11 @@ msgstr "אין לך הרשאות למחוק את שיעור המס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:259
 msgid "You do not have permission to edit tax rates"
-msgstr "אין לך הרשאות לערוך את שיעורי המס"
+msgstr "אין לך הרשאות לערוך שיעורי מס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:189
 msgid "You do not have permission to create tax rates"
-msgstr "אין לך הרשאה ליצירת שיעור מס"
+msgstr "אין לך הרשאות ליצור שיעור מס"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:135
 msgid "A tax rate with the provided ID could not be found"
@@ -7781,7 +7861,7 @@ msgstr "לא נמצא שיעור מס עם ה-ID שסופק"
 
 #: includes/api/legacy/v3/class-wc-api-taxes.php:128
 msgid "You do not have permission to read tax rate"
-msgstr "אין לך הרשאה לקרוא שיעור מס"
+msgstr "אין לך הרשאות לצפות בשיעורי המס"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3374
 msgid "Could not delete the shipping class"
@@ -7789,7 +7869,7 @@ msgstr "לא ניתן למחוק את סוג המשלוח"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3368
 msgid "You do not have permission to delete product shipping classes"
-msgstr "אין לך הרשאה למחוק סוגי משלוח"
+msgstr "אין לך הרשאות למחוק סוגי משלוח"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3343
 msgid "Could not edit the shipping class"
@@ -7797,7 +7877,7 @@ msgstr "לא ניתן לערוך את סוג המשלוח"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3331
 msgid "You do not have permission to edit product shipping classes"
-msgstr "אין לך הרשאה לערוך סוגי משלוח"
+msgstr "אין לך הרשאות לערוך סוגי משלוח"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3288
 msgid "Product shipping class parent is invalid"
@@ -7805,7 +7885,7 @@ msgstr "סוג משלוח האב של המוצר לא תקין"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3270
 msgid "You do not have permission to create product shipping classes"
-msgstr "אין לך הרשאה ליצור סוגי משלוח"
+msgstr "אין לך הרשאות ליצור סוגי משלוח"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3232
 msgid "A product shipping class with the provided ID could not be found"
@@ -7818,11 +7898,11 @@ msgstr "ה-ID של סוג משלוח המוצר לא תקין"
 #: includes/api/legacy/v3/class-wc-api-products.php:3191
 #: includes/api/legacy/v3/class-wc-api-products.php:3226
 msgid "You do not have permission to read product shipping classes"
-msgstr "אין לך הרשאה לקרוא סוגי משלוח"
+msgstr "אין לך הרשאות לצפות בסוגי משלוח"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:3048
 msgid "You do not have permission to delete product attribute terms"
-msgstr "אין לך הרשאה למחוק מושגי תכונת מוצר"
+msgstr "אין לך הרשאות למחוק מושגי תכונת מוצר"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:2891
 msgid "A product attribute term with the provided ID could not be found"
@@ -7831,7 +7911,7 @@ msgstr "לא נמצא מושג תכונת מוצר עם המספר ה-ID שסו�
 #: includes/api/legacy/v3/class-wc-api-products.php:2810
 #: includes/api/legacy/v3/class-wc-api-products.php:2879
 msgid "You do not have permission to read product attribute terms"
-msgstr "אין לך רשות לקרוא מושגי תכונות של מוצר"
+msgstr "אין לך הרשאות לצפות במושגי תכונות של מוצר"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:1053
 msgid "Could not delete the tag"
@@ -7839,7 +7919,7 @@ msgstr "לא ניתן למחוק את התגית"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:1047
 msgid "You do not have permission to delete product tag"
-msgstr "אין לך הרשאה למחוק תגיות מוצר"
+msgstr "אין לך הרשאות למחוק תגיות מוצר"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:1024
 msgid "Could not edit the tag"
@@ -7847,11 +7927,11 @@ msgstr "לא ניתן לערוך את התגית"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:1012
 msgid "You do not have permission to edit product tags"
-msgstr "אין ברשותך הרשאות מתאימות לעריכה של תגיות מוצר"
+msgstr "אין לך הרשאות לערוך תגיות מוצר"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:964
 msgid "You do not have permission to create product tags"
-msgstr "אין לך הרשאה ליצור תגיות מוצר"
+msgstr "אין לך הרשאות ליצור תגיות מוצר"
 
 #: includes/api/legacy/v3/class-wc-api-products.php:929
 msgid "A product tag with the provided ID could not be found"
@@ -7900,7 +7980,7 @@ msgstr "מחרוזת בעלת בייתים רבים (mbstring) משמשת להמ
 
 #: includes/admin/views/html-admin-page-status-report.php:222
 msgid "Your server does not have the %s class enabled - some gateway plugins which use SOAP may not work as expected."
-msgstr "מחלקת %s אינה פעילה בשרת - תוספי סליקה המשתמשים ב-SOAP עשוים לא לעבוד כמצופה."
+msgstr "מחלקת %s אינה פעילה בשרת - שיטות תשלום המשתמשות ב-SOAP עשויות לא לעבוד כמצופה."
 
 #: includes/admin/views/html-admin-page-status-report.php:135
 msgid "How to update your PHP version"
@@ -8160,7 +8240,7 @@ msgctxt "shop_order post type singular name"
 msgid "Order"
 msgstr "הזמנה"
 
-#: includes/class-wc-install.php:287
+#: includes/class-wc-install.php:291
 msgid "Monthly"
 msgstr "חודשי"
 
@@ -8252,7 +8332,7 @@ msgstr "אין עדיין חוות דעת."
 
 #: templates/single-product/up-sells.php:27
 msgid "You may also like&hellip;"
-msgstr "ייתכן ותאהב גם&hellip;"
+msgstr "ייתכן ותאהב גם..."
 
 #: templates/single-product/review-meta.php:36
 msgid "verified owner"
@@ -8468,7 +8548,7 @@ msgstr "זכור אותי"
 #: templates/global/form-login.php:35
 #: templates/myaccount/form-lost-password.php:30
 msgid "Username or email"
-msgstr "שם משתמש או כתובת מייל"
+msgstr "שם משתמש או כתובת אימייל"
 
 #: templates/emails/plain/customer-refunded-order.php:25
 msgid "Hi there. Your order on %s has been refunded. Your order details are shown below for your reference:"
@@ -8753,7 +8833,7 @@ msgstr "מוצרים מובילים"
 
 #: includes/widgets/class-wc-widget-top-rated-products.php:27
 msgid "WooCommerce top rated products"
-msgstr "מוצרים מובילים של WooCommerce"
+msgstr "מוצרים מובילים של ווקומרס"
 
 #: includes/widgets/class-wc-widget-top-rated-products.php:25
 msgid "Display a list of your top rated products on your site."
@@ -8765,7 +8845,7 @@ msgstr "מוצרים שנצפו לאחרונה"
 
 #: includes/widgets/class-wc-widget-recently-viewed.php:25
 msgid "WooCommerce recently viewed"
-msgstr "נצפו לאחרונה ב-WooCommerce"
+msgstr "נצפו לאחרונה בווקומרס"
 
 #: includes/widgets/class-wc-widget-recently-viewed.php:23
 msgid "Display a list of recently viewed products."
@@ -8832,7 +8912,7 @@ msgstr "מספר מוצרים להצגה"
 
 #: includes/widgets/class-wc-widget-products.php:25
 msgid "WooCommerce products"
-msgstr "מוצרים של WooCommerce"
+msgstr "מוצרים של ווקומרס"
 
 #: includes/widgets/class-wc-widget-products.php:23
 msgid "Display a list of your products on your site."
@@ -8840,7 +8920,7 @@ msgstr "הצג רשימה של המוצרים באתר."
 
 #: includes/widgets/class-wc-widget-product-tag-cloud.php:25
 msgid "WooCommerce product tags"
-msgstr "תגיות מוצר של WooCommerce"
+msgstr "תגיות מוצר של ווקומרס"
 
 #: includes/widgets/class-wc-widget-product-tag-cloud.php:23
 msgid "Your most used product tags in cloud format."
@@ -8848,7 +8928,7 @@ msgstr "תגיות מוצר שהכי בשימוש בתצורת ענן."
 
 #: includes/widgets/class-wc-widget-product-search.php:25
 msgid "WooCommerce product search"
-msgstr "חיפוש מוצרים של WooCommerce"
+msgstr "חיפוש מוצרי ווקומרס"
 
 #: includes/widgets/class-wc-widget-product-search.php:23
 msgid "A Search box for products only."
@@ -8880,7 +8960,7 @@ msgstr "סדר הקטגוריות"
 
 #: includes/widgets/class-wc-widget-product-categories.php:39
 msgid "WooCommerce product categories"
-msgstr "קטגוריות מוצר של WooCommerce"
+msgstr "קטגוריות מוצר של ווקומרס"
 
 #: includes/widgets/class-wc-widget-product-categories.php:37
 msgid "A list or dropdown of product categories."
@@ -8909,11 +8989,11 @@ msgstr "סנן לפי מחיר"
 
 #: includes/widgets/class-wc-widget-price-filter.php:27
 msgid "WooCommerce price filter"
-msgstr "סינון מחירים של WooCommerce"
+msgstr "סינון מחירי ווקומרס"
 
 #: includes/widgets/class-wc-widget-price-filter.php:25
 msgid "Shows a price filter slider in a widget which lets you narrow down the list of shown products when viewing product categories."
-msgstr " מסנן מחיר המאפשר לך לצמצם את רשימת המוצרים המוצגים בעת הצגת קטגוריות מוצר."
+msgstr "מציג מסנן מחיר המאפשר לצמצם את רשימת המוצרים המוצגים בעת הצגת קטגוריות מוצר."
 
 #: includes/widgets/class-wc-widget-layered-nav.php:223
 msgid "Any %s"
@@ -8949,11 +9029,11 @@ msgstr "סנן לפי"
 
 #: includes/widgets/class-wc-widget-layered-nav.php:25
 msgid "WooCommerce layered nav"
-msgstr "ניווט בשכבות של WooCommerce"
+msgstr "ניווט בשכבות ווקומרס"
 
 #: includes/widgets/class-wc-widget-layered-nav.php:23
 msgid "Shows a custom attribute in a widget which lets you narrow down the list of products when viewing product categories."
-msgstr "מראה תכונה מותאמת אישית ביישומון המאפשר לך לצמצם את הרשימה של מוצרים בעת הצגת קטגוריות מוצר."
+msgstr "מציג תכונה מותאמת אישית בוידג'ט המאפשר לצמצם את הרשימה של מוצרים בעת הצגת קטגוריות מוצר."
 
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:147
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:154
@@ -8968,11 +9048,11 @@ msgstr "מסננים פעילים"
 
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:25
 msgid "WooCommerce layered nav filters"
-msgstr "מסנני ניווט בשכבות של WooCommerce"
+msgstr "מסנני ניווט בשכבות ווקומרס"
 
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:23
 msgid "Shows active layered nav filters so users can see and deactivate them."
-msgstr "הצג מסנני ניווט שכבתי פעילים כך שמשתמשים יכולים לראות ולבטל אותם."
+msgstr "מציג מסנני ניווט שכבתיים פעילים כך שמשתמשים יכולים לראות ולבטל אותם."
 
 #: includes/widgets/class-wc-widget-cart.php:37
 msgid "Hide if cart is empty"
@@ -8984,7 +9064,7 @@ msgstr "עגלת קניות"
 
 #: includes/widgets/class-wc-widget-cart.php:27
 msgid "WooCommerce cart"
-msgstr "עגלת קניות של WooCommerce"
+msgstr "עגלת קניות של ווקומרס"
 
 #: includes/widgets/class-wc-widget-cart.php:25
 msgid "Display the user's cart in the sidebar."
@@ -9661,7 +9741,7 @@ msgstr "מפתח ציבורי של ארגז חול"
 
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:232
 msgid "Place the payment gateway in sandbox mode using sandbox API keys (real payments will not be taken)."
-msgstr "יש להעביר את שירות התשלומים למצב ארגז חול (sandbox) באמצעות מפתחות API של ארגז חול(לא יבוצעו תשלומים אמיתיים)."
+msgstr "יש להעביר את שיטת תשלום למצב ארגז חול (sandbox) באמצעות מפתחות API של ארגז חול (לא יבוצעו תשלומים אמיתיים)."
 
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:230
 msgid "Enable sandbox mode"
@@ -9723,7 +9803,7 @@ msgstr "הרשמה למסחר פשוט"
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:96
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:102
 msgid "Simplify Commerce is your merchant account and payment gateway all rolled into one. Choose Simplify Commerce as your WooCommerce payment gateway to get access to your money quickly with a powerful, secure payment engine backed by MasterCard."
-msgstr "Simplify Commerce כולל במקום אחד את חשבון הסוחר ואת שירות התשלומים שלך. יש לבחור ב-Simplify Commerce כשירות התשלומים של WooCommerce כדי לקבל גישה לכסף במהירות עם מנוע תשלומים מאובטח ורב עוצמה שמגובה על-ידי MasterCard."
+msgstr "Simplify Commerce כולל במקום אחד את חשבון הסוחר ואת שירות התשלומים שלך. יש לבחור ב-Simplify Commerce כשירות התשלומים של ווקומרס כדי לקבל גישה לכסף במהירות עם מנוע תשלומים מאובטח ורב עוצמה שמגובה על-ידי MasterCard."
 
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:95
 msgid "Getting started"
@@ -9766,12 +9846,12 @@ msgstr "התשלום נדחה"
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:536
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:703
 msgid "Simplify payment approved (ID: %1$s, Auth Code: %2$s)"
-msgstr "תשלום של Simplify אושר (מזהה): %1$s, קוד אימות: %2$s)"
+msgstr "התשלום אושר (מזהה: %1$s, קוד אימות: %2$s)"
 
 #: includes/gateways/simplify-commerce/class-wc-addons-gateway-simplify-commerce.php:321
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:526
 msgid "Simplify payment error: %s."
-msgstr "שגיאת תשלום של Simplify: %s."
+msgstr "שגיאת תשלום: %s."
 
 #: includes/gateways/simplify-commerce/class-wc-addons-gateway-simplify-commerce.php:297
 #: includes/gateways/simplify-commerce/class-wc-addons-gateway-simplify-commerce.php:440
@@ -9822,7 +9902,7 @@ msgstr "שם משתמש של API"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:126
 msgid "Enter your PayPal API credentials to process refunds via PayPal. Learn how to access your <a href=\"%s\">PayPal API Credentials</a>."
-msgstr "יש להזין את אישורי API של PayPal כדי לעבד החזרים כספיים באמצעות PayPal. למידע נוסף על אופן הגישה אל <a href=\"%s\">אישורי API של PayPal</a>."
+msgstr "יש להזין את אישורי API של פייפאלכדי לעבד החזרים כספיים באמצעות פייפאל. למידע נוסף על אופן הגישה אל <a href=\"%s\">אישורי API של פייפאל</a>."
 
 #: includes/gateways/paypal/includes/settings-paypal.php:124
 msgid "API credentials"
@@ -9878,11 +9958,11 @@ msgstr "קידומת חשבונית"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:69
 msgid "Optionally enable \"Payment Data Transfer\" (Profile > Profile and Settings > My Selling Tools > Website Preferences) and then copy your identity token here. This will allow payments to be verified without the need for PayPal IPN."
-msgstr "בעת הצורך, אפשר להפעיל את האפשרות 'העברת נתוני תשלום' (פרופיל > פרופיל והגדרות > כלי המכירה שלי > העדפות אתר אינטרנט) ולאחר מכן להעתיק את אסימון הזהות לכאן. הדבר יאפשר לאמת תשלומים ללא צורך ב-IPN של PayPal."
+msgstr "בעת הצורך, אפשר להפעיל את האפשרות 'העברת נתוני תשלום' (פרופיל > פרופיל והגדרות > כלי המכירה שלי > העדפות אתר אינטרנט) ולאחר מכן להעתיק את אסימון הזהות לכאן. הדבר יאפשר לאמת תשלומים ללא צורך ב-IPN של פייפאל."
 
 #: includes/gateways/paypal/includes/settings-paypal.php:67
 msgid "PayPal identity token"
-msgstr "אסימון זהות של PayPal"
+msgstr "אסימון זהות של פייפאל"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:61
 msgid "If your main PayPal email differs from the PayPal email entered above, input your main receiver email for your PayPal account here. This is used to validate IPN requests."
@@ -9910,7 +9990,7 @@ msgstr "אפשר ארגז חול פייפאל"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:40
 msgid "PayPal sandbox"
-msgstr "ארגז חול של PayPal"
+msgstr "ארגז חול של פייפאל"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:34
 msgid "Please enter your PayPal email address; this is needed in order to take payment."
@@ -9918,7 +9998,7 @@ msgstr "אנא הכנס את כתובת המייל שלך בפייפאל, זה �
 
 #: includes/gateways/paypal/includes/settings-paypal.php:32
 msgid "PayPal email"
-msgstr "אימייל של PayPal"
+msgstr "אימייל של פייפאל"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:29
 msgid "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account."
@@ -9931,7 +10011,7 @@ msgstr "זה קובע את הכותרת שהמשתמש רואה במהלך הת�
 
 #: includes/gateways/paypal/includes/settings-paypal.php:14
 msgid "Enable PayPal Standard"
-msgstr "הפעלת PayPal Standard"
+msgstr "הפעלת פייפאל סטנדרט"
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-request.php:188
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-request.php:212
@@ -9944,7 +10024,7 @@ msgstr "תשלום PDT בוצע"
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-pdt-handler.php:100
 msgid "Validation error: PayPal amounts do not match (amt %s)."
-msgstr "שגיאת וידוא: חשבונות פייפאל אינם תואמים (amt %s)."
+msgstr "שגיאת אימות: כמויות פייפאל אינן תואמות (amt %s)."
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:307
 msgid "Order #%1$s has had a reversal cancelled. Please check the status of payment and update the order status accordingly here: %2$s"
@@ -9956,7 +10036,7 @@ msgstr "היפוך בוטל להסמנה #%s"
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:295
 msgid "Order #%1$s has been marked on-hold due to a reversal - PayPal reason code: %2$s"
-msgstr "הזמנה #%1$s סומנה כהזמנה בהשהיה עקב היפוך - קוד הסיבה של PayPal: %2$s"
+msgstr "הזמנה #%1$s סומנה כהזמנה בהשהיה עקב היפוך - קוד הסיבה של פייפאל: %2$s"
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:294
 msgid "Payment for order %s reversed"
@@ -9964,7 +10044,7 @@ msgstr "תשלום להזמנה %s התהפכה"
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:280
 msgid "Order #%1$s has been marked as refunded - PayPal reason code: %2$s"
-msgstr "הזמנה #%1$s סומנה כהזמנה שבוצע עבורה החזר כספי - קוד הסיבה של PayPal: %2$s"
+msgstr "הזמנה #%1$s סומנה כהזמנה שבוצע עבורה החזר כספי - קוד הסיבה של פייפאל: %2$s"
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:223
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:276
@@ -9991,7 +10071,7 @@ msgstr "שגיאת אימות: כמויות פייפאל אינן תואמת (ב
 
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:135
 msgid "Validation error: PayPal currencies do not match (code %s)."
-msgstr "שגיאת תיקוף: מטבעות פייפאל אינם תואמים (קוד %s)."
+msgstr "שגיאת אימות: מטבעות פייפאל אינם תואמים (קוד %s)."
 
 #: includes/gateways/paypal/class-wc-gateway-paypal.php:305
 msgid "Refunded %1$s - Refund ID: %2$s"
@@ -10003,7 +10083,7 @@ msgstr "פייפאל לא תומך במטבע החנות שלך."
 
 #: includes/gateways/paypal/class-wc-gateway-paypal.php:212
 msgid "Gateway disabled"
-msgstr "השירות הושבת"
+msgstr "שיטת תשלום הושבתה"
 
 #: includes/gateways/paypal/class-wc-gateway-paypal.php:103
 msgid "What is PayPal?"
@@ -10011,11 +10091,11 @@ msgstr "מה זה פייפאל?"
 
 #: includes/gateways/paypal/class-wc-gateway-paypal.php:100
 msgid "PayPal acceptance mark"
-msgstr "סימן קבלה של PayPal"
+msgstr "סימן קבלה של פייפאל"
 
 #: includes/gateways/paypal/class-wc-gateway-paypal.php:37
 msgid "PayPal Standard sends customers to PayPal to enter their payment information. PayPal IPN requires fsockopen/cURL support to update order statuses after payment. Check the <a href=\"%s\">system status</a> page for more details."
-msgstr "PayPal Standard שולח את הלקוחות אל PayPal כדי להזין את פרטי התשלום. PayPal IPN מחייב תמיכה ב-fsockopen/cURL כדי לעדכן את מצבי ההזמנות לאחר התשלום. בדוק את עמוד <a href=\"%s\">מצב המערכת</a> לקבלת פרטים נוספים."
+msgstr "פייפאל סטנדרט שולח את הלקוחות אל פייפאלכדי להזין את פרטי התשלום. פייפאל IPN מחייב תמיכה ב-fsockopen/cURL כדי לעדכן את מצבי ההזמנות לאחר התשלום. בדוק את עמוד <a href=\"%s\">מצב המערכת</a> לקבלת פרטים נוספים."
 
 #: includes/gateways/paypal/class-wc-gateway-paypal.php:36
 #: includes/gateways/paypal/includes/settings-paypal.php:21
@@ -10357,7 +10437,7 @@ msgstr "מיילים של הזמנות שזוכו ישלחו ללקוחות שה
 msgid "Refunded order"
 msgstr "הזמנות שהוחזרו"
 
-#: includes/emails/class-wc-email-customer-refunded-order.php:79
+#: includes/emails/class-wc-email-customer-refunded-order.php:77
 msgid "Your order has been partially refunded"
 msgstr "להזמנתך בוצע החזר תשלום חלקי"
 
@@ -10424,7 +10504,7 @@ msgid "Email heading (paid)"
 msgstr "כותרת אימייל (שולם)"
 
 #: includes/emails/class-wc-email-customer-invoice.php:77
-#: includes/emails/class-wc-email-customer-refunded-order.php:77
+#: includes/emails/class-wc-email-customer-refunded-order.php:79
 msgid "Order {order_number} details"
 msgstr "פרטי הזמנה מספר {order_number}"
 
@@ -10890,16 +10970,16 @@ msgstr "סיווג משלוח אב"
 
 #: includes/class-wc-post-types.php:160
 msgid "All shipping classes"
-msgstr "כל סיווגי המשלוח"
+msgstr "כל סוגי המשלוח"
 
 #: includes/class-wc-post-types.php:159
 msgid "Search shipping classes"
-msgstr "חיפוש סיווגי משלוחים"
+msgstr "חיפוש סוגי משלוחים"
 
 #: includes/class-wc-post-types.php:158
 msgctxt "Admin menu name"
 msgid "Shipping classes"
-msgstr "סיווגי משלוחים"
+msgstr "סוגי משלוחים"
 
 #: includes/class-wc-post-types.php:121
 msgctxt "Admin menu name"
@@ -10917,46 +10997,46 @@ msgctxt "Admin menu name"
 msgid "Categories"
 msgstr "קטגוריות"
 
-#: includes/class-wc-install.php:920
+#: includes/class-wc-install.php:923
 msgid "Premium support"
 msgstr "תמיכת פרימיום"
 
-#: includes/class-wc-install.php:919
+#: includes/class-wc-install.php:922
 msgid "API docs"
 msgstr "מסמכי API"
 
-#: includes/class-wc-install.php:919
+#: includes/class-wc-install.php:922
 msgid "View WooCommerce API docs"
-msgstr "הצגת מסמכי API של WooCommerce"
+msgstr "הצגת מסמכי API של ווקומרס"
 
-#: includes/class-wc-install.php:918
+#: includes/class-wc-install.php:921
 msgid "View WooCommerce documentation"
-msgstr "הצגת תיעוד של WooCommerce"
+msgstr "הצגת תיעוד של ווקומרס"
 
-#: includes/class-wc-install.php:902
+#: includes/class-wc-install.php:905
 msgid "View WooCommerce settings"
-msgstr "הצגת הגדרות של WooCommerce"
+msgstr "הצגת הגדרות של ווקומרס"
 
-#: includes/class-wc-install.php:665
+#: includes/class-wc-install.php:669
 msgid "Shop manager"
 msgstr "מנהל החנות"
 
-#: includes/class-wc-install.php:340
+#: includes/class-wc-install.php:344
 msgctxt "Page slug"
 msgid "my-account"
 msgstr "my-account"
 
-#: includes/class-wc-install.php:335
+#: includes/class-wc-install.php:339
 msgctxt "Page slug"
 msgid "checkout"
 msgstr "checkout"
 
-#: includes/class-wc-install.php:330
+#: includes/class-wc-install.php:334
 msgctxt "Page slug"
 msgid "cart"
 msgstr "cart"
 
-#: includes/class-wc-install.php:325
+#: includes/class-wc-install.php:329
 msgctxt "Page slug"
 msgid "shop"
 msgstr "shop"
@@ -11502,7 +11582,7 @@ msgstr "הגישה לא אושרה"
 
 #: includes/class-wc-auth.php:377
 msgid "You do not have permissions to access this page!"
-msgstr "אין לך הרשאות כדי לגשת לעמוד זה!"
+msgstr "אין לך הרשאות לגשת לעמוד זה!"
 
 #: includes/class-wc-auth.php:366
 msgid "Invalid nonce verification"
@@ -11670,12 +11750,12 @@ msgstr "כתובת האירוע (Webhook) חייבת להיות כתובת URL �
 #: includes/api/legacy/v2/class-wc-api-webhooks.php:183
 #: includes/api/legacy/v3/class-wc-api-webhooks.php:183
 msgid "You do not have permission to create webhooks."
-msgstr "אין לך הרשאה ליצור webhooks."
+msgstr "אין לך הרשאות ליצור webhooks."
 
 #: includes/api/legacy/v2/class-wc-api-webhooks.php:148
 #: includes/api/legacy/v3/class-wc-api-webhooks.php:148
 msgid "You do not have permission to read the webhooks count"
-msgstr "אין לך הרשאה לקרוא את ספירת ה-webhooks"
+msgstr "אין לך הרשאות לצפות בכמות ה-webhooks"
 
 #: includes/api/legacy/v1/class-wc-api-server.php:378
 #: includes/api/legacy/v2/class-wc-api-server.php:376
@@ -11734,19 +11814,19 @@ msgstr "לקוח נמחק לצמיתות"
 #: includes/api/legacy/v2/class-wc-api-resource.php:132
 #: includes/api/legacy/v3/class-wc-api-resource.php:134
 msgid "You do not have permission to delete this %s"
-msgstr "אין לך הרשאה למחוק %s זה"
+msgstr "אין לך הרשאות למחוק %s זה"
 
 #: includes/api/legacy/v1/class-wc-api-resource.php:102
 #: includes/api/legacy/v2/class-wc-api-resource.php:126
 #: includes/api/legacy/v3/class-wc-api-resource.php:128
 msgid "You do not have permission to edit this %s"
-msgstr "אין לך הרשאה לערוך %s זה"
+msgstr "אין לך הרשאות לערוך %s זה"
 
 #: includes/api/legacy/v1/class-wc-api-resource.php:96
 #: includes/api/legacy/v2/class-wc-api-resource.php:120
 #: includes/api/legacy/v3/class-wc-api-resource.php:122
 msgid "You do not have permission to read this %s"
-msgstr "אין לך הרשאה לקרוא %s זה"
+msgstr "אין לך הרשאות לצפות ב%s זה"
 
 #: includes/api/legacy/v1/class-wc-api-resource.php:88
 #: includes/api/legacy/v2/class-wc-api-resource.php:112
@@ -11769,7 +11849,7 @@ msgstr "ה-ID של %s לא תקין"
 #: includes/api/legacy/v2/class-wc-api-reports.php:322
 #: includes/api/legacy/v3/class-wc-api-reports.php:322
 msgid "You do not have permission to read this report"
-msgstr "אין לך הרשאות מתאימות לצפייה בדוח זה. "
+msgstr "אין לך הרשאות לצפות בדוח זה"
 
 #: includes/api/legacy/v1/class-wc-api-resource.php:334
 #: includes/api/legacy/v2/class-wc-api-products.php:463
@@ -11795,7 +11875,7 @@ msgstr "לא ניתן למחוק תכונה"
 #: includes/api/legacy/v2/class-wc-api-products.php:2189
 #: includes/api/legacy/v3/class-wc-api-products.php:2749
 msgid "You do not have permission to delete product attributes"
-msgstr "אין לך הרשאה למחוק תכונות מוצר"
+msgstr "אין לך הרשאות למחוק תכונות מוצר"
 
 #: includes/api/legacy/v2/class-wc-api-products.php:2160
 #: includes/api/legacy/v3/class-wc-api-products.php:2719
@@ -11806,13 +11886,13 @@ msgstr "לא ניתן לערוך תכונה"
 #: includes/api/legacy/v3/class-wc-api-products.php:2673
 #: includes/api/legacy/v3/class-wc-api-products.php:2995
 msgid "You do not have permission to edit product attributes"
-msgstr "אין לך הרשאה לערוך תכונות מוצר"
+msgstr "אין לך הרשאות לערוך תכונות מוצר"
 
 #: includes/api/legacy/v2/class-wc-api-products.php:2030
 #: includes/api/legacy/v3/class-wc-api-products.php:2588
 #: includes/api/legacy/v3/class-wc-api-products.php:2929
 msgid "You do not have permission to create product attributes"
-msgstr "אין לך הרשאה ליצור תכונות מוצר"
+msgstr "אין לך הרשאות ליצור תכונות מוצר"
 
 #: includes/api/legacy/v2/class-wc-api-products.php:2003
 #: includes/api/legacy/v3/class-wc-api-products.php:2561
@@ -11847,7 +11927,7 @@ msgstr "ה-ID של תכונת המוצר לא תקינה"
 #: includes/api/legacy/v3/class-wc-api-products.php:2455
 #: includes/api/legacy/v3/class-wc-api-products.php:2501
 msgid "You do not have permission to read product attributes"
-msgstr "אין לך הרשאה לקרוא תכונות מוצר"
+msgstr "אין לך הרשאות לצפות בתכונות המוצר"
 
 #: includes/api/class-wc-rest-products-controller.php:393
 #: includes/api/class-wc-rest-products-controller.php:394
@@ -11878,7 +11958,7 @@ msgstr "ה-ID של קטגוריית המוצר לא תקין"
 #: includes/api/legacy/v3/class-wc-api-products.php:614
 #: includes/api/legacy/v3/class-wc-api-products.php:652
 msgid "You do not have permission to read product categories"
-msgstr "אין לך הרשאה לקרוא קטגוריות מוצרים"
+msgstr "אין לך הרשאות לצפות בקטגוריות מוצרים"
 
 #: includes/api/legacy/v2/class-wc-api-products.php:243
 #: includes/api/legacy/v2/class-wc-api-products.php:369
@@ -11890,13 +11970,13 @@ msgstr "סוג מוצר לא תקני - סוג המוצר חייב להיות א
 #: includes/api/legacy/v2/class-wc-api-products.php:221
 #: includes/api/legacy/v3/class-wc-api-products.php:270
 msgid "You do not have permission to create products"
-msgstr "אין לך הרשאה ליצור מוצרים"
+msgstr "אין לך הרשאות ליצור מוצרים"
 
 #: includes/api/legacy/v1/class-wc-api-products.php:147
 #: includes/api/legacy/v2/class-wc-api-products.php:185
 #: includes/api/legacy/v3/class-wc-api-products.php:234
 msgid "You do not have permission to read the products count"
-msgstr "אין לך הרשאות לצפיה בכמות המוצר"
+msgstr "אין לך הרשאות לצפות בכמות המוצרים"
 
 #: includes/api/legacy/v2/class-wc-api-orders.php:1690
 #: includes/api/legacy/v2/class-wc-api-orders.php:1751
@@ -11918,7 +11998,7 @@ msgstr "סכום ההחזר הכספי נדרש."
 #: includes/api/legacy/v2/class-wc-api-orders.php:1590
 #: includes/api/legacy/v3/class-wc-api-orders.php:1637
 msgid "You do not have permission to create order refunds"
-msgstr "אין לך הרשאות ליצירת החזרים כספיים"
+msgstr "אין לך הרשאות ליצור החזרים כספיים"
 
 #: includes/api/legacy/v2/class-wc-api-orders.php:1523
 #: includes/api/legacy/v2/class-wc-api-orders.php:1685
@@ -11954,7 +12034,7 @@ msgstr "דרושה הערת הזמנה"
 #: includes/api/legacy/v2/class-wc-api-orders.php:1297
 #: includes/api/legacy/v3/class-wc-api-orders.php:1344
 msgid "You do not have permission to create order notes"
-msgstr "אין לך הרשאות ליצירת הערות הזמנה"
+msgstr "אין לך הרשאות ליצור הערות הזמנה"
 
 #: includes/api/legacy/v2/class-wc-api-orders.php:1263
 #: includes/api/legacy/v2/class-wc-api-orders.php:1374
@@ -12026,13 +12106,13 @@ msgstr "לא ניתן ליצור הזמנה: %s"
 #: includes/api/legacy/v2/class-wc-api-orders.php:374
 #: includes/api/legacy/v3/class-wc-api-orders.php:411
 msgid "You do not have permission to create orders"
-msgstr "אין לך הרשאות עבור יצירת הזמנות"
+msgstr "אין לך הרשאות ליצור הזמנות"
 
 #: includes/api/legacy/v1/class-wc-api-orders.php:255
 #: includes/api/legacy/v2/class-wc-api-orders.php:299
 #: includes/api/legacy/v3/class-wc-api-orders.php:336
 msgid "You do not have permission to read the orders count"
-msgstr "אין לך הרשאות מתאימות לצפיות במספר הזמנות "
+msgstr "אין לך הרשאות לצפות בכמות הזמנות"
 
 #: includes/api/legacy/v1/class-wc-api-json-handler.php:67
 #: includes/api/legacy/v2/class-wc-api-json-handler.php:66
@@ -12050,19 +12130,19 @@ msgstr "תמיכת JSONP אינה פועלת באתר זה"
 #: includes/api/legacy/v2/class-wc-api-customers.php:747
 #: includes/api/legacy/v3/class-wc-api-customers.php:737
 msgid "You do not have permission to delete this customer"
-msgstr "אין לך הרשאות למחוק את העמוד הזה"
+msgstr "אין לך הרשאות למחוק עמוד זה"
 
 #: includes/api/legacy/v1/class-wc-api-customers.php:456
 #: includes/api/legacy/v2/class-wc-api-customers.php:741
 #: includes/api/legacy/v3/class-wc-api-customers.php:731
 msgid "You do not have permission to edit this customer"
-msgstr "אין לך הרשאה לערוך את העמוד הזה"
+msgstr "אין לך הרשאות לערוך עמוד זה"
 
 #: includes/api/legacy/v1/class-wc-api-customers.php:450
 #: includes/api/legacy/v2/class-wc-api-customers.php:735
 #: includes/api/legacy/v3/class-wc-api-customers.php:725
 msgid "You do not have permission to read this customer"
-msgstr "אין לך הרשאות מתאימות לצפות בעמוד הזה."
+msgstr "אין לך הרשאות לצפות בלקוח הזה"
 
 #: includes/api/legacy/v1/class-wc-api-customers.php:442
 #: includes/api/legacy/v2/class-wc-api-customers.php:727
@@ -12080,13 +12160,13 @@ msgstr "ה-ID של הלקוח לא תקין"
 #: includes/api/legacy/v2/class-wc-api-customers.php:357
 #: includes/api/legacy/v3/class-wc-api-customers.php:358
 msgid "You do not have permission to create this customer"
-msgstr "אין לך הרשאה ליצור לקוח זה"
+msgstr "אין לך הרשאות ליצור לקוח זה"
 
 #: includes/api/legacy/v1/class-wc-api-customers.php:187
 #: includes/api/legacy/v2/class-wc-api-customers.php:232
 #: includes/api/legacy/v3/class-wc-api-customers.php:233
 msgid "You do not have permission to read the customers count"
-msgstr "אין לך הרשאה לקרוא את ספירת הלקוחות"
+msgstr "אין לך הרשאות לצפות בכמות הלקוחות"
 
 #: includes/api/legacy/v2/class-wc-api-customers.php:208
 #: includes/api/legacy/v2/class-wc-api-customers.php:211
@@ -12213,7 +12293,7 @@ msgstr "קוד קופון לא תקין"
 #: includes/api/legacy/v2/class-wc-api-coupons.php:163
 #: includes/api/legacy/v3/class-wc-api-coupons.php:161
 msgid "You do not have permission to read the coupons count"
-msgstr "אין לך הרשאות לצפיה בכמות הקופון"
+msgstr "אין לך הרשאות לצפות בכמות הקופונים"
 
 #: includes/api/legacy/v1/class-wc-api-coupons.php:111
 #: includes/api/legacy/v2/class-wc-api-coupons.php:117
@@ -12234,10 +12314,10 @@ msgstr "משתמש API לא תקין"
 msgid "%s parameter is missing"
 msgstr "הפרמטר %s חסר"
 
-#: includes/api/class-wc-rest-authentication.php:569
+#: includes/api/class-wc-rest-authentication.php:571
 #: includes/api/legacy/v3/class-wc-api-authentication.php:111
 msgid "WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field."
-msgstr "API של WooCommerce. יש להשתמש במפתח צרכן בשדה 'שם משתמש' ובסיסמה סודית של צרכן בשדה 'סיסמה'."
+msgstr "API של ווקומרס. יש להשתמש במפתח צרכן בשדה 'שם משתמש' ובסיסמה סודית של צרכן בשדה 'סיסמה'."
 
 #: includes/api/class-wc-rest-authentication.php:164
 #: includes/api/legacy/v1/class-wc-api-authentication.php:115
@@ -12276,11 +12356,11 @@ msgstr "מידע נוסף על תבניות"
 
 #: includes/admin/views/html-notice-template-check.php:15
 msgid "<strong>Your theme (%1$s) contains outdated copies of some WooCommerce template files.</strong> These files may need updating to ensure they are compatible with the current version of WooCommerce. You can see which files are affected from the <a href=\"%2$s\">system status page</a>. If in doubt, check with the author of the theme."
-msgstr "<strong>ערכת העיצוב (%1$s) מכילה עותקים מיושנים של כמה מקובצי התבניות של WooCommerce.</strong> ייתכן שיהיה צורך לעדכן קבצים אלה כדי להבטיח שהם יהיו תואמים לגרסה הנוכחית של WooCommerce. אפשר לראות אילו קבצים מושפעים מ<a href=\"%2$s\">עמוד מצב המערכת</a>. במקרה של ספק, יש לפנות למחבר ערכת העיצוב."
+msgstr "<strong>ערכת העיצוב (%1$s) מכילה עותקים מיושנים של כמה מקובצי התבניות של ווקומרס.</strong> ייתכן שיהיה צורך לעדכן קבצים אלה כדי להבטיח שהם יהיו תואמים לגרסה הנוכחית של ווקומרס. אפשר לראות אילו קבצים מושפעים מ<a href=\"%2$s\">עמוד מצב המערכת</a>. במקרה של ספק, יש לפנות למחבר ערכת העיצוב."
 
 #: includes/admin/views/html-notice-install.php:13
 msgid "Skip setup"
-msgstr "יש לדלג על ההגדרה"
+msgstr "דלג על אשף ההתקנה"
 
 #: includes/admin/views/html-notice-install.php:13
 msgid "Run the Setup Wizard"
@@ -12404,7 +12484,7 @@ msgstr "עקיפה"
 
 #: includes/admin/views/html-admin-page-status-report.php:626
 msgid "This section shows any files that are overriding the default WooCommerce template pages."
-msgstr "מקטע זה מציג את הקבצים שעוקפים את עמודי התבנית של WooCommerce המוגדרים כברירת מחדל."
+msgstr "מקטע זה מציג את הקבצים שעוקפים את עמודי התבנית של ווקומרס המוגדרים כברירת מחדל."
 
 #: includes/admin/views/html-admin-page-status-report.php:626
 msgid "Templates"
@@ -12416,11 +12496,11 @@ msgstr "ללא הצהרה"
 
 #: includes/admin/views/html-admin-page-status-report.php:612
 msgid "Displays whether or not the current active theme declares WooCommerce support."
-msgstr "מציג אם ערכת העיצוב הפעילה כעת מצהירה על התמיכה של WooCommerce."
+msgstr "מציג אם ערכת העיצוב הפעילה כעת מצהירה על התמיכה של ווקומרס."
 
 #: includes/admin/views/html-admin-page-status-report.php:611
 msgid "WooCommerce support"
-msgstr "תמיכה של WooCommerce"
+msgstr "תמיכת ווקומרס"
 
 #: includes/admin/views/html-admin-page-status-report.php:606
 msgid "The parent theme developers URL."
@@ -12448,7 +12528,7 @@ msgstr "שם ערכת עיצוב אב."
 
 #: includes/admin/views/html-admin-page-status-report.php:582
 msgid "If you are modifying WooCommerce on a parent theme that you did not build personally we recommend using a child theme. See: <a href=\"%s\" target=\"_blank\">How to create a child theme</a>"
-msgstr "אם משנים את WooCommerce בערכת נושא אב שלא נבנתה באופן אישי, מומלץ להשתמש בערכת עיצוב בת. אפשר לראות: <a href=\"%s\" target=\"_blank\">כיצד ליצור ערכת עיצוב בת</a>"
+msgstr "אם משנים את ווקומרס בערכת נושא אב שלא נבנתה באופן אישי, מומלץ להשתמש בערכת עיצוב בת. אפשר לראות: <a href=\"%s\" target=\"_blank\">כיצד ליצור ערכת עיצוב בת</a>"
 
 #: includes/admin/views/html-admin-page-status-report.php:580
 msgid "Displays whether or not the current theme is a child theme."
@@ -12522,7 +12602,7 @@ msgstr "עגלת קניות"
 #: includes/api/class-wc-rest-system-status-controller.php:875
 msgctxt "Page setting"
 msgid "Shop base"
-msgstr "בסיס החנות"
+msgstr "בסיס חנות"
 
 #: includes/admin/views/html-admin-page-status-report.php:503
 msgid "WC pages"
@@ -12586,7 +12666,7 @@ msgstr "טבלה לא קיימת"
 
 #: includes/admin/views/html-admin-page-status-report.php:313
 msgid "The version of WooCommerce that the database is formatted for. This should be the same as your WooCommerce version."
-msgstr "גרסת WooCommerce שמסד הנתונים שלך מעוצב עבורה. גרסה זו צריכה להיות זהה לגרסת WooCommerce שלך."
+msgstr "גרסת ווקומרס שמסד הנתונים שלך בנוי עבורה. גרסה זו צריכה להיות זהה לגרסת הווקומרס שלך."
 
 #: includes/api/class-wc-rest-system-status-controller.php:299
 msgid "WC database version."
@@ -12634,7 +12714,7 @@ msgstr "בשרת שלך fsockopen ו- cURL לא זמינים - פייפאל IPN 
 
 #: includes/admin/views/html-admin-page-status-report.php:206
 msgid "Payment gateways can use cURL to communicate with remote servers to authorize payments, other plugins may also use it when communicating with remote services."
-msgstr "שירותי תשלומים יכולים להשתמש ב-cURL כדי לנהל תקשורת עם שרתים מרוחקים לאישור התשלומים, תוספים אחרים יכולים גם הם להשתמש בו כאשר הם מנהלים תקשורת עם שירותים מרוחקים."
+msgstr "שיטות תשלום יכולים להשתמש ב-cURL כדי לנהל תקשורת עם שרתים מרוחקים לאישור התשלומים, תוספים אחרים יכולים גם הם להשתמש בו כאשר הם מנהלים תקשורת עם שירותים מרוחקים."
 
 #: includes/admin/views/html-admin-page-status-report.php:198
 msgid "Default timezone is %s - it should be UTC"
@@ -12778,7 +12858,7 @@ msgstr "כתובת ה-URL הראשית של האתר."
 
 #: includes/admin/views/html-admin-page-status-report.php:48
 msgid "Site URL"
-msgstr "כתובת URL של אתר"
+msgstr "כתובת האתר"
 
 #: includes/admin/views/html-admin-page-status-report.php:43
 msgid "Home URL"
@@ -12786,7 +12866,7 @@ msgstr "כתובת דף הבית"
 
 #: includes/admin/views/html-admin-page-status-report.php:38
 msgid "WordPress environment"
-msgstr "סביבת WordPress"
+msgstr "סביבת וורדפרס"
 
 #: includes/admin/views/html-admin-page-status-report.php:31
 msgid "Copy for support"
@@ -12818,11 +12898,11 @@ msgstr "קרא הכל אודות זה"
 
 #: includes/admin/views/html-admin-page-addons.php:85
 msgid "Storefront is an intuitive, flexible and <strong>free</strong> WordPress theme offering deep integration with WooCommerce and many of the most popular customer-facing extensions."
-msgstr "Storefront היא ערכת עיצוב אינטואיטיבית, גמישה ו<strong>חינמית</strong> של WordPress, שמציעה שילוב הדוק עם WooCommerce ועם רבות מההרחבות הפופולריות ביותר שמיועדות ללקוחות."
+msgstr "Storefront היא ערכת עיצוב אינטואיטיבית, גמישה ו<strong>חינמית</strong> של וורדפרס, שמציעה שילוב הדוק עם ווקומרס ועם רבות מההרחבות הפופולריות ביותר שמיועדות ללקוחות."
 
 #: includes/admin/views/html-admin-page-addons.php:84
 msgid "We recommend Storefront, the <em>official</em> WooCommerce theme."
-msgstr "אנו ממליצים על Storefront, ערכת העיצוב <em>הרשמית</em> של WooCommerce."
+msgstr "אנו ממליצים על Storefront, ערכת העיצוב <em>הרשמית</em> של ווקומרס."
 
 #: includes/admin/views/html-admin-page-addons.php:83
 msgid "Looking for a WooCommerce theme?"
@@ -13439,7 +13519,7 @@ msgstr "זהו הגודל שנמצא בשימוש על-ידי התמונה הר�
 
 #: includes/admin/settings/class-wc-settings-products.php:199
 msgid "Single product image"
-msgstr "תמונת מוצר אחת"
+msgstr "תמונת מוצר בודד"
 
 #: includes/admin/settings/class-wc-settings-products.php:186
 msgid "This size is usually used in product listings. (W x H)"
@@ -13525,7 +13605,7 @@ msgstr "תצוגת עמוד חנות"
 
 #: includes/admin/settings/class-wc-settings-products.php:101
 msgid "This sets the base page of your shop - this is where your product archive will be."
-msgstr "זה קובע את דף הבסיס של החנות - זהו המיקום שך ארכיון המוצרים."
+msgstr "זה קובע את דף הבסיס של החנות - זהו המיקום של ארכיון המוצרים."
 
 #: includes/admin/settings/class-wc-settings-products.php:95
 msgid "The base page can also be used in your <a href=\"%s\">product permalinks</a>."
@@ -13682,7 +13762,7 @@ msgstr "שיטת תשלום"
 
 #: includes/admin/settings/class-wc-settings-checkout.php:287
 msgid "Gateway display order"
-msgstr "סדר הצגת שירותים"
+msgstr "סדר תצוגת שיטות תשלום"
 
 #: includes/admin/settings/class-wc-settings-checkout.php:234
 msgid "Installed gateways are listed below. Drag and drop gateways to control their display order on the frontend."
@@ -13690,7 +13770,7 @@ msgstr "שיטות תשלום מותקנות רשומות למטה. גרור ו�
 
 #: includes/admin/settings/class-wc-settings-checkout.php:233
 msgid "Payment gateways"
-msgstr "שירותי תשלומים"
+msgstr "שיטות תשלום"
 
 #: includes/admin/settings/class-wc-settings-checkout.php:202
 msgid "Endpoint for the \"Checkout &rarr; Add payment method\" page."
@@ -13736,7 +13816,7 @@ msgstr "אם הגדרת את עמוד \"תנאי השימוש\" שהלקוח י�
 
 #: includes/admin/settings/class-wc-settings-checkout.php:163
 msgid "Terms and conditions"
-msgstr "תנאים והתניות"
+msgstr "תנאי שימוש"
 
 #: includes/admin/settings/class-wc-settings-checkout.php:152
 msgid "Checkout page"
@@ -13849,7 +13929,7 @@ msgstr "נקודת קצה לעמוד 'החשבון שלי &rarr; שחזור סי
 #: includes/admin/settings/class-wc-settings-accounts.php:167
 #: includes/class-wc-query.php:125
 msgid "Lost password"
-msgstr "שחזור סיסמה"
+msgstr "איפוס סיסמה"
 
 #: includes/admin/settings/class-wc-settings-accounts.php:150
 msgid "Endpoint for the \"My account &rarr; Addresses\" page."
@@ -14215,7 +14295,7 @@ msgid "No customers found."
 msgstr "לא נמצאו לקוחות."
 
 #: includes/admin/settings/class-wc-settings-emails.php:265
-#: includes/class-wc-install.php:660
+#: includes/class-wc-install.php:664
 msgid "Customer"
 msgstr "לקוח"
 
@@ -14355,7 +14435,7 @@ msgstr "כמו האב"
 #: includes/admin/settings/views/html-admin-page-shipping-classes.php:8
 #: includes/class-wc-post-types.php:154
 msgid "Shipping classes"
-msgstr "סיווגי משלוחים"
+msgstr "סוגי משלוחים"
 
 #. translators: %s: dimension unit
 #: includes/admin/meta-boxes/views/html-variation-admin.php:237
@@ -14464,7 +14544,7 @@ msgstr "בחר מונחים"
 
 #: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:63
 msgid "Shipping methods"
-msgstr "אפשרויות משלוח"
+msgstr "שיטות משלוח"
 
 #: includes/admin/meta-boxes/views/html-order-shipping.php:21
 msgid "Shipping name"
@@ -14532,7 +14612,7 @@ msgstr "שיטת התשלום ששימשה לביצוע הזמנה זו אינה
 
 #: includes/admin/meta-boxes/views/html-order-items.php:255
 msgid "Payment gateway"
-msgstr "שירות תשלומים"
+msgstr "שיטת תשלום"
 
 #: includes/admin/meta-boxes/views/html-order-items.php:243
 msgid "Reason for refund (optional):"
@@ -14924,7 +15004,7 @@ msgstr "פתח"
 
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:52
 msgid "Shipping classes are used by certain shipping methods to group similar products."
-msgstr "סוגי משלוח מאפשרים לקבץ יחד מוצרים לפי סוג המשלוח."
+msgstr "סוגי משלוח מאפשרים לקבץ ביחד קבוצת מוצרים דומים."
 
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:394
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:527
@@ -15013,11 +15093,11 @@ msgstr "מצב מלאי"
 msgid "If managing stock, this controls whether or not backorders are allowed. If enabled, stock quantity can go below 0."
 msgstr "אם מתבצע ניהול מלאי, זה שולט על האם הזמנות מראש מאופשרות. אם כן, כמות המלאי יכולה לרדת מתחת ל-0."
 
-#: includes/wc-product-functions.php:834
+#: includes/wc-product-functions.php:836
 msgid "Allow, but notify customer"
 msgstr "הפעל, אבל תודיע ללקוח"
 
-#: includes/wc-product-functions.php:833
+#: includes/wc-product-functions.php:835
 msgid "Do not allow"
 msgstr "אל תאפשר"
 
@@ -15056,7 +15136,7 @@ msgstr "בחר מדרגת מס עבור מוצר זה. מדרגות מס מיו�
 #: includes/admin/views/html-bulk-edit-product.php:95
 #: includes/admin/views/html-quick-edit-product.php:73
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:217
-#: includes/wc-product-functions.php:802
+#: includes/wc-product-functions.php:804
 msgid "Standard"
 msgstr "סטנדרטי"
 
@@ -15185,7 +15265,7 @@ msgstr "הזן את כתובת האתר החיצונית למוצר."
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:13
 msgid "Product URL"
-msgstr "כתובת המוצר "
+msgstr "כתובת מוצר "
 
 #: includes/admin/meta-boxes/views/html-product-data-inventory.php:16
 #: includes/admin/meta-boxes/views/html-variation-admin.php:66
@@ -15624,7 +15704,7 @@ msgstr "תודה :)"
 msgid "HTML email template"
 msgstr "תבנית HTML לאימייל"
 
-#: includes/class-wc-install.php:918
+#: includes/class-wc-install.php:921
 msgid "Docs"
 msgstr "תיעוד"
 
@@ -15689,15 +15769,15 @@ msgstr[1] "%d webhooks הועברו לפח."
 
 #: includes/admin/class-wc-admin-webhooks.php:318
 msgid "You do not have permissions to delete Webhooks!"
-msgstr "אין לכם רשות למחוק Webhooks!"
+msgstr "אין לך הרשאות למחוק Webhooks!"
 
 #: includes/admin/class-wc-admin-webhooks.php:289
 msgid "You do not have permissions to edit Webhooks!"
-msgstr "אין לכם רשות לערוך Webhooks!"
+msgstr "אין לך הרשאות לערוך Webhooks!"
 
 #: includes/admin/class-wc-admin-webhooks.php:204
 msgid "You do not have permissions to create Webhooks!"
-msgstr "אין לכם רשות ליצור Webhooks!"
+msgstr "אין לך הרשאות ליצור Webhooks!"
 
 #: includes/admin/class-wc-admin-webhooks.php:49
 #: includes/admin/class-wc-admin-webhooks.php:215
@@ -15842,7 +15922,7 @@ msgstr "התקן עמודים"
 
 #: includes/api/class-wc-rest-system-status-tools-controller.php:155
 msgid "Install WooCommerce pages"
-msgstr "התקנת עמודי WooCommerce"
+msgstr "התקנת עמודי ווקומרס"
 
 #: includes/api/class-wc-rest-system-status-tools-controller.php:147
 msgid "Clear all sessions"
@@ -15959,7 +16039,7 @@ msgstr "לא תודה"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:878
 #: includes/admin/views/html-notice-tracking.php:13
-#: includes/wc-product-functions.php:835
+#: includes/wc-product-functions.php:837
 msgid "Allow"
 msgstr "הפעל"
 
@@ -16127,7 +16207,7 @@ msgid "Registered customers will be able to manage their account details and vie
 msgstr "לקוחות רשומים יוכלו לנהל את החשבון שלהם ולראות הזמנות קודמות שלהם בעמוד זה."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:277
-#: includes/class-wc-install.php:341
+#: includes/class-wc-install.php:345
 msgctxt "Page title"
 msgid "My account"
 msgstr "החשבון שלי"
@@ -16137,7 +16217,7 @@ msgid "The checkout page will be where the customers go to pay for their items."
 msgstr "עמוד התשלום הוא המקום אליו הולכים הלקוחות כדי לשלם עבור הפריטים שלהם."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:271
-#: includes/class-wc-install.php:336
+#: includes/class-wc-install.php:340
 msgctxt "Page title"
 msgid "Checkout"
 msgstr "תשלום"
@@ -16147,7 +16227,7 @@ msgid "The cart page will be where the customers go to view their cart and begin
 msgstr "עגלת הקניות הוא המקום אליו הולכים הלקוחות כדי לראות את עגלת הקניות ולהתחיל את התשלום."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:267
-#: includes/class-wc-install.php:331
+#: includes/class-wc-install.php:335
 msgctxt "Page title"
 msgid "Cart"
 msgstr "עגלת קניות"
@@ -16157,7 +16237,7 @@ msgid "The shop page will display your products."
 msgstr "עמוד החנות יציג את המוצרים."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:263
-#: includes/class-wc-install.php:326
+#: includes/class-wc-install.php:330
 msgctxt "Page title"
 msgid "Shop"
 msgstr "חנות"
@@ -16400,7 +16480,7 @@ msgstr "נראות הקטלוג:"
 
 #: includes/admin/views/html-bulk-edit-product.php:190
 #: includes/admin/views/html-quick-edit-product.php:147
-#: includes/wc-product-functions.php:752
+#: includes/wc-product-functions.php:754
 msgid "Hidden"
 msgstr "להסתיר"
 
@@ -16437,22 +16517,22 @@ msgid "Show all types"
 msgstr "הצג את כל הסוגים"
 
 #: includes/admin/class-wc-admin-post-types.php:1496
-#: includes/wc-product-functions.php:533
+#: includes/wc-product-functions.php:535
 msgid "Simple product"
 msgstr "מוצר רגיל"
 
 #: includes/admin/class-wc-admin-post-types.php:1493
-#: includes/wc-product-functions.php:536
+#: includes/wc-product-functions.php:538
 msgid "Variable product"
 msgstr "מוצר עם וריאציות"
 
 #: includes/admin/class-wc-admin-post-types.php:1490
-#: includes/wc-product-functions.php:535
+#: includes/wc-product-functions.php:537
 msgid "External/Affiliate product"
 msgstr "תוכנית שותפים/חיצוני"
 
 #: includes/admin/class-wc-admin-post-types.php:1487
-#: includes/wc-product-functions.php:534
+#: includes/wc-product-functions.php:536
 msgid "Grouped product"
 msgstr "קבוצת מוצרים"
 
@@ -16954,7 +17034,7 @@ msgstr "מוצר נשמר."
 #. translators: %s: product url
 #: includes/admin/class-wc-admin-post-types.php:146
 msgid "Product published. <a href=\"%s\">View Product</a>"
-msgstr "המוצר פורסם. <a href=\"%s\">הצגת מוצר</a>"
+msgstr "המוצר פורסם. <a href=\"%s\">הצג מוצר</a>"
 
 #. translators: %s: revision title
 #: includes/admin/class-wc-admin-post-types.php:144
@@ -16979,7 +17059,7 @@ msgstr "שדה מותאם אישית עודכן."
 
 #: includes/admin/class-wc-admin-post-types.php:139
 msgid "Product updated. <a href=\"%s\">View Product</a>"
-msgstr "המוצר התעדכן. <a href=\"%s\">צפה במוצר </a>"
+msgstr "המוצר התעדכן. <a href=\"%s\">הצג מוצר</a>"
 
 #: includes/admin/class-wc-admin-pointers.php:205
 msgid "When you are finished editing your product, hit the \"Publish\" button to publish your product to your store."
@@ -17220,7 +17300,7 @@ msgstr "הוספה לתפריט"
 #: includes/admin/class-wc-admin-customize.php:41
 #: includes/admin/class-wc-admin-menus.php:234
 msgid "WooCommerce endpoints"
-msgstr "נקודות קצה של WooCommerce"
+msgstr "נקודות קצה של ווקומרס"
 
 #: includes/admin/class-wc-admin-menus.php:141
 #: includes/class-wc-post-types.php:336
@@ -17230,7 +17310,7 @@ msgstr "הזמנות"
 
 #: includes/admin/class-wc-admin-menus.php:80
 msgid "WooCommerce settings"
-msgstr "הגדרות WooCommerce"
+msgstr "הגדרות ווקומרס"
 
 #: includes/admin/class-wc-admin-menus.php:72
 msgid "Sales reports"
@@ -17238,7 +17318,7 @@ msgstr "דוחות מכירות"
 
 #: includes/admin/class-wc-admin-help.php:77
 msgid "Shipping Classes"
-msgstr "סוג משלוח"
+msgstr "סוגי משלוח"
 
 #: includes/admin/class-wc-admin-importers.php:106
 msgid "Import <strong>tax rates</strong> to your store via a csv file."
@@ -17246,7 +17326,7 @@ msgstr "ייבא <strong>שיעורי מס</strong> באמצעות קובץ CSV.
 
 #: includes/admin/class-wc-admin-importers.php:106
 msgid "WooCommerce tax rates (CSV)"
-msgstr "שיעורי מס של WooCommerce ‏(CSV)"
+msgstr "שיעורי מס של ווקומרס ‏(CSV)"
 
 #: includes/admin/class-wc-admin-help.php:242
 msgid "Official extensions"
@@ -17278,7 +17358,7 @@ msgstr "דיווח על תקלה"
 
 #: includes/admin/class-wc-admin-help.php:212
 msgid "If you find a bug within WooCommerce core you can create a ticket via <a href=\"%1$s\">Github issues</a>. Ensure you read the <a href=\"%2$s\">contribution guide</a> prior to submitting your report. To help us solve your issue, please be as descriptive as possible and include your <a href=\"%3$s\">system status report</a>."
-msgstr "אם נמצא באג בליבה של WooCommerce, אפשר ליצור כרטיס דרך <a href=\"%1$s\">בעיות ב-Github</a>. יש להקפיד לקרוא את <a href=\"%2$s\">מדריך התרומה</a> לפני שליחת הדוח. כדי לסייע לנו בפתרון הבעיה, יש לספק תיאור מפורט ככל האפשר ולכלול את <a href=\"%3$s\">דוח מצב המערכת</a>."
+msgstr "אם נמצא באג בליבה של ווקומרס, אפשר ליצור כרטיס דרך <a href=\"%1$s\">בעיות בגיטהאב</a>. יש להקפיד לקרוא את <a href=\"%2$s\">מדריך התרומה</a> לפני שליחת הדוח. כדי לסייע לנו בפתרון הבעיה, יש לספק תיאור מפורט ככל האפשר ולכלול את <a href=\"%3$s\">דוח מצב המערכת</a>."
 
 #: includes/admin/class-wc-admin-help.php:209
 #: includes/admin/class-wc-admin-help.php:211
@@ -17291,7 +17371,7 @@ msgstr "הצגת שותפי הדרכה"
 
 #: includes/admin/class-wc-admin-help.php:222
 msgid "If you would like to learn about using WooCommerce from an expert, consider following a WooCommerce course offered by one of our educational partners."
-msgstr "כדי ללמוד על השימוש ב-WooCommerce ממומחה, יש לשקול להשתתף בקורס של WooCommerce שמוצע על-ידי אחד משותפי ההדרכה שלנו."
+msgstr "כדי ללמוד על השימוש בווקומרס ממומחה, יש לשקול להשתתף בקורס של ווקומרס שמוצע על-ידי אחד משותפי ההדרכה שלנו."
 
 #: includes/admin/class-wc-admin-help.php:219
 #: includes/admin/class-wc-admin-help.php:221
@@ -17304,7 +17384,7 @@ msgstr "לפני לבקש עזרה מומלץ לבדוק את דף מצב המע
 
 #: includes/admin/class-wc-admin-help.php:195
 msgid "Should you need help understanding, using, or extending WooCommerce, <a href=\"%s\">please read our documentation</a>. You will find all kinds of resources including snippets, tutorials and much more."
-msgstr "להסבר נוסף על WooCommerce ולעזרה בשימוש בו או בהרחבתו, <a href=\"%s\">יש לעיין בתיעוד שלנו</a>. תיעוד זה כולל את כל סוגי המשאבים, כולל קטעי קוד, מדריכים ועוד."
+msgstr "להסבר נוסף על ווקומרס ולעזרה בשימוש בו או בהרחבתו, <a href=\"%s\">יש לעיין בתיעוד שלנו</a>. תיעוד זה כולל את כל סוגי המשאבים, כולל קטעי קוד, מדריכים ועוד."
 
 #: includes/admin/class-wc-admin-help.php:153
 #: includes/admin/class-wc-admin-help.php:157
@@ -17347,7 +17427,7 @@ msgstr "לפשט את המסחר"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:670
 msgid "PayPal Standard"
-msgstr "פייפאל סטנדרטי"
+msgstr "פייפאל סטנדרט"
 
 #: includes/admin/class-wc-admin-help.php:113
 msgid "Email Settings"
@@ -17435,12 +17515,12 @@ msgstr "%1$s המוכר המוביל בחודש זה (%2$d נמכרו)"
 #: includes/admin/class-wc-admin-dashboard.php:39
 #: includes/admin/class-wc-admin-menus.php:97
 msgid "WooCommerce status"
-msgstr "מצב WooCommerce"
+msgstr "מצב ווקומרס"
 
 #: includes/admin/class-wc-admin-dashboard.php:37
 #: includes/widgets/class-wc-widget-recent-reviews.php:25
 msgid "WooCommerce recent reviews"
-msgstr "ביקורות אחרונות של WooCommerce"
+msgstr "ביקורות אחרונות של ווקומרס"
 
 #: includes/admin/class-wc-admin-attributes.php:515
 msgid "Are you sure you want to delete this attribute?"
@@ -17606,7 +17686,7 @@ msgstr "תכונה עודכנה בהצלחה"
 #: includes/api/legacy/v2/class-wc-api-products.php:1993
 #: includes/api/legacy/v3/class-wc-api-products.php:2551
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:649
-#: includes/import/abstract-wc-product-importer.php:604
+#: includes/import/abstract-wc-product-importer.php:606
 msgid "Slug \"%s\" is already in use. Change it, please."
 msgstr "מזהה כתובת \"%s\" כבר נמצא בשימוש. אנא שנה אותו."
 
@@ -17620,7 +17700,7 @@ msgstr "אנא ספק שם ומזהה כתובת עבור התכונה."
 #: includes/api/legacy/v2/class-wc-api-products.php:1991
 #: includes/api/legacy/v3/class-wc-api-products.php:2549
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:647
-#: includes/import/abstract-wc-product-importer.php:602
+#: includes/import/abstract-wc-product-importer.php:604
 msgid "Slug \"%s\" is not allowed because it is a reserved term. Change it, please."
 msgstr "מזהה כתובת \"%s\" אינו מורשה מכיוון שזה מונח שמור. אנא שנה אותו."
 
@@ -17629,7 +17709,7 @@ msgstr "מזהה כתובת \"%s\" אינו מורשה מכיוון שזה מו�
 #: includes/api/legacy/v2/class-wc-api-products.php:1989
 #: includes/api/legacy/v3/class-wc-api-products.php:2547
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:645
-#: includes/import/abstract-wc-product-importer.php:600
+#: includes/import/abstract-wc-product-importer.php:602
 msgid "Slug \"%s\" is too long (28 characters max). Shorten it, please."
 msgstr "מזהה כתובת \"%s\" ארוך מדי (28 תווים מקסימום). אנא קצר אותו."
 
@@ -18056,7 +18136,7 @@ msgstr "החל מ:"
 #: includes/admin/class-wc-admin-post-types.php:444
 #: includes/admin/class-wc-admin-reports.php:100
 #: includes/admin/reports/class-wc-report-stock.php:114
-#: includes/wc-product-functions.php:821
+#: includes/wc-product-functions.php:823
 msgid "Out of stock"
 msgstr "המלאי אזל"
 
@@ -18079,7 +18159,7 @@ msgstr "נשארו במלאי רק %s"
 #: includes/admin/class-wc-admin-post-types.php:442
 #: includes/admin/reports/class-wc-report-stock.php:112
 #: includes/wc-formatting-functions.php:1016
-#: includes/wc-product-functions.php:820
+#: includes/wc-product-functions.php:822
 msgid "In stock"
 msgstr "במלאי"
 
@@ -18124,7 +18204,7 @@ msgstr "מלאי הפריט %1$s גדל מ-%2$s ל-%3$s."
 msgid "Order status changed from %1$s to %2$s."
 msgstr "מצב ההזמנה שונה ממצב %1$s למצב %2$s."
 
-#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.1.1)  #-#-#-#-#
+#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.1.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/admin/class-wc-admin-assets.php:90
 #: includes/admin/class-wc-admin-menus.php:60
@@ -18196,7 +18276,7 @@ msgctxt "full name"
 msgid "%1$s %2$s"
 msgstr "%1$s %2$s"
 
-#: includes/class-wc-order-item-product.php:201
+#: includes/class-wc-order-item-product.php:203
 #: includes/legacy/abstract-wc-legacy-order.php:164
 msgid "Backordered"
 msgstr "הזמנה מראש"
@@ -18204,7 +18284,7 @@ msgstr "הזמנה מראש"
 #: includes/admin/class-wc-admin-menus.php:80
 #: includes/admin/settings/class-wc-settings-api.php:45
 #: includes/admin/views/html-admin-page-status-report.php:437
-#: includes/class-wc-install.php:902
+#: includes/class-wc-install.php:905
 msgid "Settings"
 msgstr "הגדרות"
 
