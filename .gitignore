@@ -24,6 +24,8 @@ wp-content/themes/ExpertOnlineTraining/kint/*
 wp-content/plugins/stop-emails/*
 wp-content/debug.log
 wp-content/wflogs/*
+wp-content/ai1wm-backups/*
+wp-content/plugins/all-in-one-wp-migration/storage/*
 
 # wpengine specific
 .smushit-status
