@@ -4638,3 +4638,14 @@ td.errors {
 .dataTable a{
     text-decoration:underline;
 }
+
+a.watch_video{
+    cursor:pointer;
+}
+
+
+#watch_video video{
+    width:665px;
+    height:388px;
+    margin:auto;
+}

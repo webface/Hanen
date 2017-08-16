@@ -8548,3 +8548,60 @@ function getQuizResults($attempt_id = 0)
             . "WHERE qr.attempt_id = $attempt_id",ARRAY_A);
     return $results;
 }
+
+/**
+ *   Display Videos In Statistics
+ */  
+add_action('wp_ajax_get_video_form', 'get_video_form_callback');
+function get_video_form_callback()
+{
+    $video_id = filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT);
+    $custom = filter_var($_REQUEST['custom'], FILTER_SANITIZE_NUMBER_INT);
+    if($custom == 1){
+        $video = get_custom_video($video_id);
+        $video_file = $video['url'];
+    }
+    else 
+    {
+       $video = getVideoById($video_id);
+       $video_file = "https://eot-output.s3.amazonaws.com/".$video['shortname'].".mp4";
+    }
+    //d($video);
+    $title = $video['name'];
+        ob_start();
+?>
+  <div id="watch_video">
+            <div class="title" style="width:665px">
+            <div class="title_h2"><?= $title;?></div>
+        </div>
+      
+
+                <div id='player' style='width:665px;height:388px'>
+                    <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
+
+                        <source src="<?= $video_file?>" type='video/mp4'>
+                            <p class="vjs-no-js">
+        	                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+            	                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                            </p>        
+
+                    </video>
+                </div>
+
+        
+             
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="videojs('my-video').dispose();jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Close
+                </a>
+            </div>
+        </div>
+  </div>
+<?php
+        $html = ob_get_clean();
+        echo $html;
+    wp_die();
+}
+

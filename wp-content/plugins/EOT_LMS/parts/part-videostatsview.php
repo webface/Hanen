@@ -16,6 +16,7 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
 global $current_user;
 $user_id = $current_user->ID;
 $page_title = "Stats";
+$admin_ajax_url = admin_url('admin-ajax.php');
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
 // Check if the subscription ID is valid.
@@ -55,6 +56,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 <div class="smoothness">
                                         <h1 class="article_page_title">Video Viewing Record for "<?= $fullname ?>"</h1>
                                         <h2><?= $video['name'] ?></h2>
+                                        <a class="btn btn-primary watch_video" onclick="watchVideo();" style="float:right">Watch Video</a>
                                         <p>
                                             Here is a table showing when these users have viewed <b><?=$video['name']?></b>.<br />
                                             Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
@@ -62,6 +64,29 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                         </p>
                                         
                 </div>
+<script>
+function watchVideo() 
+    {
+
+        $.facebox(function () {
+
+            $.ajax({
+                data: {'video_id': <?= $video_id?>,'custom':<?= $custom?>},
+                error: function () 
+                {
+                    $.facebox('There was an error loading the title. Please try again shortly.');
+                },
+                success: function (data)
+                {
+                    $.facebox(data);
+                },
+                type: 'post',
+                url: '<?= $admin_ajax_url; ?>?action=get_video_form&form_name=watch_video'
+            });
+
+        });
+    }
+    </script>
 <?php
                 // Tables that will be displayed in the front end.
                             $usersTableObj = new stdClass();
