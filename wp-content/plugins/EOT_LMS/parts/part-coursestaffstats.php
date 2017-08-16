@@ -32,7 +32,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 //d($track_quizzes,$track_records);
                 $track_watchVideo = array();
                 $track_login = array();
-                // Goes to each track records. Separating all other types except the login from the track_records array.
+                // Create sub arrays from all the track records
                 foreach ($track_records as $key => $record) 
                 {
                     if ($record['type'] == "watch_video") 
@@ -42,19 +42,19 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     }
                     if ($record['type'] == "watch_custom_video") 
                     {
-                        array_push($track_watchVideo, $record['user_id']); // Save the user ID of the users who watch the video.
+                        array_push($track_watchVideo, $record['user_id']); // Save the user ID of the users who watch the custom video.
                         //unset($track_records[$key]); // Delete them from the array.
                     }
                     if ($record['type'] == "login") 
                     {
-                        array_push($track_login, $record['user_id']); // Save the user ID of the users who watch the video.
+                        array_push($track_login, $record['user_id']); // Save the user ID of the users who logged in.
                         //unset($track_records[$key]); // Delete them from the array.
                     }
                     // Separate another type into another array of its own.
                 }
                 $trackFailed = array();
                 $trackPassed = array();
-                $quizPassed = array();
+                $quizPassed = array();//needed to verify and remove quizzes passed more than once
                 $track_quiz_attempts = array();
                 foreach ($track_quizzes as $key => $record) 
                 {

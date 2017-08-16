@@ -2808,6 +2808,7 @@ function getModulesInCourse($course_id = 0){
                 . "WHERE cmr.course_id = $course_id";
 
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
+    //serror_log(json_encode($course_modules));
     return $course_modules;
 }
 
@@ -3337,7 +3338,7 @@ function toggleVideoInAssignment($course_id = 0, $data = array())
   // Check if the module id is in the course
   if(in_array($module_id, $course_module_ids))
   {
-      $result = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'module_id' => $module_id));
+      $result = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array('course_id' => $course_id, 'module_id' => $module_id, 'resource_id' => $video_id, 'type' => 'video'));
             if ($result === false) 
             {
                 return false;
@@ -5918,9 +5919,9 @@ function getCourseForm_callback ( )
             $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the modules in the specified course
             $course_quizzes = getResourcesInCourse($course_id,'exam');
             $course_handouts = array_merge(getResourcesInCourse($course_id,'doc'),getResourcesInCourse($course_id,'link'));
-            d($course_handouts);
+            //d($course_handouts);
             $course_handouts_module_ids = array_column($course_handouts,'mid');
-//d($course_videos,$course_quizzes,$course_handouts);
+d($course_videos,$course_quizzes,$course_handouts);
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_handouts_ids = array_column($course_handouts, 'ID');
