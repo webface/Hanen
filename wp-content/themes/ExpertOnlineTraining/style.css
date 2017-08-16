@@ -4634,3 +4634,8 @@ td.errors {
 #accountAreaBottom {
 	margin:auto;
 }
+
+/* Loading ICON when the I agree button is clicked.*/
+#term_loading {
+    display:none;
+}

@@ -8340,19 +8340,6 @@ function verifyCertificate($student_user_id = 0, $director_org_id = 0)
   return $results;
 }
 
-/**
- * Subscription with the lowest library id base on the organization ID
- * @param org_id - The organization ID.
- * @return array of subscription information
- */
-function getSubscriptionByTheLowestLibraryId($org_id)
-{
-  global $wpdb;
-  $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE org_id = $org_id ORDER BY library_id ASC";
-  $results = $wpdb->get_row ($sql);
-  return $results;
-}
-
 add_action('wp_ajax_acceptTerms', 'acceptTerms_callback');
 // Updates the user field "accepted_terms" and gives a redirect location to view tutorial
 function acceptTerms_callback()

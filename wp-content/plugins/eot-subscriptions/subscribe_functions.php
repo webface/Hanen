@@ -2807,15 +2807,11 @@ function accepted_terms($library = NULL)
     $user_id = $current_user->ID;
     $accepted = get_user_meta($user_id, "accepted_terms", true); // Boolean if user has accepted terms
     
-    if ($accepted)
-    {
-        return true;
-    }
-    else if ($library == NULL)
+    if ($library == NULL)
     {
         return false; // cant display terms because no library object was provided.
     }
-    else
+    else if (!$accepted)
     {
         // output the terms
        echo current_user_can('is_student') ? $library->terms_staff : $library->terms_manager;
@@ -2859,8 +2855,12 @@ function accepted_terms($library = NULL)
             }
        </script>";  
     }
+    else if ($accepted == 1)
+    {
+        return true;
+    }
 
-    return false;
+    return false; // something went wrong if you got here
 }
 
 ?>

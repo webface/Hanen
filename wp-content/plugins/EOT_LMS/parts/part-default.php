@@ -1,9 +1,3 @@
-<style>
-/* Loading ICON when the I agree button is clicked.*/
-#term_loading {
-    display:none;
-}
-</style>
 <?php
 // Variable declaration
 global $current_user;
@@ -47,10 +41,24 @@ if (current_user_can("is_director"))
     {
         $page_title = "Umbrella Manager Dashboard";
     }
-    ?>
+?>
 
     <h1 class="article_page_title"><?= $page_title ?></h1>
-    <?php
+<?php
+
+    // Check that this director accepted the terms of use
+    $subscriptions = get_current_subscriptions ($org_id);
+    if (!empty($subscriptions))
+    {
+        // user has at least 1 subscription so need to check if they accepted the terms
+        $library = getLibrary($subscriptions[0]->library_id);
+        $accepted_terms = accepted_terms($library); // boolean if user has accepted terms of use
+        if (!$accepted_terms)
+        {
+            return; // dont disply the rest of the dashboard because user hasn't accepted the terms yet
+        }
+    }
+
     // Display errors if variable exsist
     if (isset($error_message)) 
     {
