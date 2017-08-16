@@ -37,10 +37,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 $resource_id = filter_var($_REQUEST['resource_id'], FILTER_SANITIZE_NUMBER_INT);// The video ID
                 $resource = getResourceById($resource_id);
-                //$users = getEotUsers($org_id);
-                //$users = $users['users'];
-                //$user_ids = array_column($users, 'ID');
-                //$user_ids_string = implode(",", $user_ids);
                 $resource_stats = getResourceStats($resource_id, $org_id);
                 $video_stats = array();
                 //d($resource,$resource_stats);

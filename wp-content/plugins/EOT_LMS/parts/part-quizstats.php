@@ -59,7 +59,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $question_ids_string = implode(",", $question_ids);
                             $question_stats = getQuestionResults($question_ids_string,$user_ids_string, $quiz_id);
                             $quiz_attempts=  array_unique(array_column($question_stats,'attempt_id'));
-                            //$num_attempts = count($quiz_attempts);
                             $stats = array();
                             
                             foreach ($question_stats as $stat) 
@@ -91,8 +90,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                 
                                 $correct_count = isset($stats[$question['ID']])? array_sum($stats[$question['ID']]) : 0;//Number of passes
                                 $num_attempts = isset($stats[$question['ID']]) ? count($stats[$question['ID']]) : 0;//Number of question attempts
-                                //$percentage = $attempts>0?(($passed_count/$attempts)*100):0;
-                                //$questionHTML = "<a href=\"#\" class=\"no-ul\" onclick=\"jQuery('#choices_$question['ID']').toggleClass('hidden',1000);return false;\">$question->question</a><div class=\"hidden choices\" id=\"choices_$question->id\"><br>";
                                 $questionHTML = $question['ID'].": <a href='#' onclick='jQuery(\"#choices_".$question['ID']."\").toggleClass(\"hidden\",1000);return false;'>".$question['quiz_question']."</a><div class='hidden choices' id='choices_".$question['ID']."'><br>";
                                 foreach ($question['possibilities'] as $answer) 
                                 {

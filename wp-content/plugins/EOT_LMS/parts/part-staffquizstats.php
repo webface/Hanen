@@ -43,10 +43,11 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $track_quizzes = getAllQuizAttempts($course_id, $user_id);//All quiz attempts for this course
                 $track_passed = array();
                 $track_quiz_attempts = array();
-                foreach ($track_quizzes as $key => $record) {
+                foreach ($track_quizzes as $key => $record) 
+                {
                     if($record['passed'] == 1)
                     {
-                      array_push($track_passed, $record['quiz_id']); // Save the user ID of the users who failed the quiz.
+                      array_push($track_passed, $record['quiz_id']); // Save the user ID of the users who passed the quiz.
                       //unset($track_quizzes[$key]); // Delete them from the array.
                     }
                    array_push($track_quiz_attempts, $record['quiz_id']);
