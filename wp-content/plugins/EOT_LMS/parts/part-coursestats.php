@@ -88,7 +88,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 {
                     $calculated_percentage_completed = 0;
                 }
-                ?>
+?>
                 <div class="smoothness">
                     <h1 class="article_page_title">Course Statistics for "<?= $course_name ?>"</h1>
                     Here are statistics on the <b><?= $course_name ?></b> Modules.
@@ -112,7 +112,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     </div>
                     <h2>Quiz Success Rate</h2>
                     <p>For quizzes with a low success rate, you may want to go over these topics in greater depth during your on-site training.</p>
-                <?php
+<?php
                 $quizzes = getQuizzesInCourse($course_id);
                 $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
                 $track_passed = array();
@@ -157,9 +157,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     }
                     CreateDataTable($quizTableObj, "100%", 10, true, "Stats"); // Print the table in the page
                 }
-                ?>
+?>
                     <h2>Video Views</h2>
-                    <?php
+<?php
                     $videos = getResourcesInCourse($course_id, 'video');
                     $custom_videos = getResourcesInCourse($course_id, 'custom_video');
                     $all_videos = array_merge($videos, $custom_videos);
@@ -211,9 +211,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         );
                     }
                     CreateDataTable($videosTableObj, "100%", 10, true, "Stats"); // Print the table in the page
-                    ?>
+?>
                     <h2>Resource Views</h2>
-                    <?php
+<?php
                     $resources = getResourcesInCourse($course_id, 'doc');
                     //d($resources);
                     $track_download = array();
@@ -245,9 +245,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         );
                     }
                     CreateDataTable($resourceTableObj, "100%", 10, true, "Stats"); // Print the table in the page
-                    ?>
+?>
                 </div>
-                <?php
+<?php
                 } 
                 else 
                 {
@@ -269,4 +269,4 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
     {
         echo "Could not find the subscription ID";
 }
-    ?>
+?>
