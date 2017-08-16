@@ -1,3 +1,9 @@
+<style>
+/* Loading ICON when the I agree button is clicked.*/
+#term_loading {
+    display:none;
+}
+</style>
 <?php
 // Variable declaration
 global $current_user;
@@ -6,7 +12,6 @@ $email = $current_user->user_email; // Wordpres e-mail address
 $org_id = get_org_from_user($user_id); // Organization ID
 $org_name = get_the_title($org_id);
 $portal_subdomain = ''; // Subdomain of the user REMOVE THIS LATER
-$data = compact("org_id");
 $image = get_field('dashboard_logo', 'user_' . $org_id); // Advance custom fields. Field for the dashboard_logo
 $page_title = "Dashboard";
 
@@ -203,121 +208,160 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
 else if (current_user_can("is_student")) 
 {
     $enrollments = getEnrollmentsByUserId($user_id); // All the enrollments of the user.
-    $courses = getCourses(0, $org_id);
+    if ( $enrollments && count($enrollments) > 0) 
+    {
+        $subscription_id = $enrollments[0]['subscription_id']; // the subscription ID for the first enrollment
+        $subscription = getSubscriptions($subscription_id); // get all the data from subscription table
+        if ($subscription)
+        {
+            // get the library object
+            $library = getLibrary ($subscription->library_id);
+            // make sure user accepted terms of use
+            $accepted = accepted_terms($library); // Boolean if user has accepted terms
+            if (!$accepted)
+            {
+               return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
+            }
 
-    if (!empty($image)) 
+        }
+    }
+
+    //user just accepted terms and need to be presented with tutorial video
+    if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
     {
 ?>
-        <div class="dashboard_banner acf-image-image">
-            <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
-            <br/>
+        <h1 class="article_page_title">Intro To Expert Online Training</h1>
+        <div id='tutorial_video'>
+            <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
+                <source src="https://eot-output.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>        
+            </video>
         </div>
+        <br><br><br><br>
+        <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton">View Dashboard</a>
 <?php
     }
-    if ( $enrollments && count($enrollments) > 0) 
-    { // Check if the user is enrolled to any course.
-        // Display the enrollments information in the dashboard
-        foreach ($enrollments as $enrollment) 
+    else
+    {
+        $courses = getCourses(0, $org_id);
+
+        if (!empty($image)) 
         {
-            $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
-            $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
-            $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
-            // Get all the modules in this course
-            $modules = getModulesInCourse($course_id);
-            $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : "could not find the course name"; // Check if the that course id is in $courses.
-            $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
-            if ($modules) 
-            {
-                $status = formatStatus($enrollment['status']);
-                $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
-                if ($status == "Failed") 
-                {
-                    $status = 'In Progress';
-                } 
-                else if ($status == "Completed" || $status == "Passed") 
-                {
-                    $percentage_complete = 100;
-                }
 ?>
-                <div class="dashboard_border student">
-                    <h1><?= $course_name ?>
-                    </h1>
-                    <div class="content_right">
-                        <div class="clear"></div>
-                        <div class="menu">
-                            <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
-                                <div class="thumbnail">
-                                    <i class="fa fa-youtube-play" alt="Content"></i>
-                                </div>
-                                <div class="para">
-                                    <h1>Start Course</h1>
-                                    <br/>
-                                    Watch the videos, take quizzes, see resources
+            <div class="dashboard_banner acf-image-image">
+                <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
+                <br/>
+            </div>
+<?php
+        }
+        if ( $enrollments && count($enrollments) > 0) 
+        { // Check if the user is enrolled to any course.
+            // Display the enrollments information in the dashboard
+            foreach ($enrollments as $enrollment) 
+            {
+                $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
+                $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
+                $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
+                // Get all the modules in this course
+                $modules = getModulesInCourse($course_id);
+                $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : "could not find the course name"; // Check if the that course id is in $courses.
+                $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
+                if ($modules) 
+                {
+                    $status = formatStatus($enrollment['status']);
+                    $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
+                    if ($status == "Failed") 
+                    {
+                        $status = 'In Progress';
+                    } 
+                    else if ($status == "Completed" || $status == "Passed") 
+                    {
+                        $percentage_complete = 100;
+                    }
+?>
+                    <div class="dashboard_border student">
+                        <h1><?= $course_name ?>
+                        </h1>
+                        <div class="content_right">
+                            <div class="clear"></div>
+                            <div class="menu">
+                                <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
+                                    <div class="thumbnail">
+                                        <i class="fa fa-youtube-play" alt="Content"></i>
+                                    </div>
+                                    <div class="para">
+                                        <h1>Start Course</h1>
+                                        <br/>
+                                        Watch the videos, take quizzes, see resources
+                                    </div>
+                                </a>
+                            </div> 
+                        </div>
+                        <div class="content_left student">
+                            <table class="tb_border">
+                                <tbody>
+                                    <tr>
+                                        <td class="s1 darklabel">
+                                            Modules
+                                        </td>
+                                        <td class="s2">
+                                            <?= count($modules) ?>            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="s1 darklabel">
+                                            Status
+                                        </td>
+                                        <td class="s2">
+                                            <?= $status ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+
+                        </div>
+                        <div class="dashboard_button">
+                            <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
+                                <div class="title" style="padding-top: 5px;">
+                                    <b>Virtual Staff Lounge</b>
+                                    <br>Manage your Forum
                                 </div>
                             </a>
-                        </div> 
+                        </div>
+                        <div>
+                            <b>Technical Support</b>
+                            <br>
+                            Toll-free 877-237-3931
+                        </div>
                     </div>
-                    <div class="content_left student">
-                        <table class="tb_border">
-                            <tbody>
-                                <tr>
-                                    <td class="s1 darklabel">
-                                        Modules
-                                    </td>
-                                    <td class="s2">
-                                        <?= count($modules) ?>            
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="s1 darklabel">
-                                        Status
-                                    </td>
-                                    <td class="s2">
-                                        <?= $status ?>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br>
-
-                    </div>
-                    <div class="dashboard_button">
-                        <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
-                            <div class="title" style="padding-top: 5px;">
-                                <b>Virtual Staff Lounge</b>
-                                <br>Manage your Forum
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <b>Technical Support</b>
-                        <br>
-                        Toll-free 877-237-3931
-                    </div>
-                </div>
-                <script>
-                    $ = jQuery;
-                // Create HTML with the enrollments and append it to the sidebar
-                    $("#listOfCourses").append('\
-                        <div id="bannerArea">\
-                                <img id="menu-banner" src="' + ajax_object.template_url + '/images/menu-banner.png">\
-                                <h2><?= $course_name ?></h2>\
-                        </div>\
-                        <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
-                </script>
+                    <script>
+                        $ = jQuery;
+                    // Create HTML with the enrollments and append it to the sidebar
+                        $("#listOfCourses").append('\
+                            <div id="bannerArea">\
+                                    <img id="menu-banner" src="' + ajax_object.template_url + '/images/menu-banner.png">\
+                                    <h2><?= $course_name ?></h2>\
+                            </div>\
+                            <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
+                    </script>
 <?php
-            } 
-            else 
-            { 
-                // User has no modules
-                echo '<b>' . $course_name . '</b>: There are no modules in this course. Please contact your camp director.';
-            } 
+                } 
+                else 
+                { 
+                    // User has no modules
+                    echo '<b>' . $course_name . '</b>: There are no modules in this course. Please contact your camp director.';
+                } 
+            }
+        } 
+        else 
+        { 
+            // Display message if the user has no enrollments.
+            echo "<p>You do not have any enrollments.</p>";
         }
-    } 
-    else 
-    { 
-        // Display message if the user has no enrollments.
-        echo "<p>You do not have any enrollments.</p>";
     }
 } 
 else 

@@ -8219,7 +8219,6 @@ function updateEnrollmentStatus_callback()
         )
       );
     } 
-
     wp_die();
 }
 
@@ -8341,5 +8340,41 @@ function verifyCertificate($student_user_id = 0, $director_org_id = 0)
   return $results;
 }
 
+/**
+ * Subscription with the lowest library id base on the organization ID
+ * @param org_id - The organization ID.
+ * @return array of subscription information
+ */
+function getSubscriptionByTheLowestLibraryId($org_id)
+{
+  global $wpdb;
+  $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE org_id = $org_id ORDER BY library_id ASC";
+  $results = $wpdb->get_row ($sql);
+  return $results;
+}
 
-
+add_action('wp_ajax_acceptTerms', 'acceptTerms_callback');
+// Updates the user field "accepted_terms" and gives a redirect location to view tutorial
+function acceptTerms_callback()
+{ 
+  // check if user has student/director permissions
+  if( !current_user_can ('is_director') && !current_user_can ('is_student') )
+  {
+    $status = array('status' => 0,
+                    'data' => 'failed', 
+                    'message' => 'Error: Sorry, you do not have permisison to view this page.');
+  }
+  else
+  {
+    // Update the accepted terms of the user.
+    global $current_user;
+    $user_id = $current_user->ID;
+    $response = update_user_meta($user_id, "accepted_terms", 1);
+    $location = get_home_url() . "/dashboard/?tutorial=1";
+    $status = array('status' => 1,
+                    'response' => $response, 
+                    'location' => $location);
+  }
+  echo json_encode($status);
+  wp_die();
+}
