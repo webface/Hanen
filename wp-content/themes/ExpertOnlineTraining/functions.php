@@ -136,7 +136,7 @@ function eot_enqueue_scripts()
 	global $wp_styles, $eot_dashboard_url;
 
 	wp_enqueue_style('jquery-ui-css', get_template_directory_uri() . '/css/jquery-ui.css', '', '1.12.0');
-    wp_enqueue_style('jquery-ui-style', get_template_directory_uri() . '/css/jquery-ui-style.css', '', '1.0.0');
+        wp_enqueue_style('jquery-ui-style', get_template_directory_uri() . '/css/jquery-ui-style.css', '', '1.0.0');
 	wp_enqueue_style('bootstrap-style', get_template_directory_uri() . '/css/light_bootstrap.min.css', '', '3.0');
 	wp_enqueue_style('facebox-style', get_template_directory_uri() . '/css/facebox.css', '', '1.0.0');
 	wp_enqueue_style('eot-style', get_stylesheet_uri());
@@ -150,16 +150,19 @@ function eot_enqueue_scripts()
 	wp_enqueue_style('font-awesome', get_template_directory_uri() . '/css/font-awesome.css', '', '4.6.1');
 	wp_enqueue_style('videojs-style', 'https://vjs.zencdn.net/5.8.8/video-js.css', '', '5.8.8');
 	wp_enqueue_style('help-button-style', get_template_directory_uri() . '/css/help_button.css', '', '1.0.0');
+        wp_enqueue_style('datatable-buttons','https://cdn.datatables.net/buttons/1.4.0/css/buttons.dataTables.min.css', '', '1.4');
 
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('jquery-ui-js', get_template_directory_uri() . '/js/jquery-ui.min.js', '', '1.12.0');
-    wp_enqueue_script('bootstrapjs', get_template_directory_uri() . '/js/bootstrap.min.js', '', '3.3.7');
+        wp_enqueue_script('bootstrapjs', get_template_directory_uri() . '/js/bootstrap.min.js', '', '3.3.7');
 	wp_enqueue_script('facebox-js', get_template_directory_uri() . '/js/facebox.js', '', '1.0.0');
 	wp_enqueue_script('videojsie8', 'https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js', '', '1.1.2');
 	wp_enqueue_script('videojs', 'https://vjs.zencdn.net/5.8.8/video.js', '', '5.8.8');
 	wp_enqueue_script('eot-progress-bar-js', get_template_directory_uri() . '/js/jquery.eotprogressbar.js', '', '1.0.0');
 	wp_enqueue_script('jquery-pageslide-js', get_template_directory_uri() . '/js/jquery.pageslide.js', '', '1.0.0');
 	wp_enqueue_script('datatables-js', get_template_directory_uri() . '/js/jquery.dataTables.min.js', '', '1.10.13');
+        wp_enqueue_script('datatables-js-buttons', 'https://cdn.datatables.net/buttons/1.4.0/js/dataTables.buttons.min.js', '', '1.4');
+
 
 
 
@@ -372,3 +375,28 @@ function replace_retrieve_password_message( $message, $key, $user_login, $user_d
     return $msg;
 }
 add_filter( 'retrieve_password_message', 'replace_retrieve_password_message', 10, 4 );
+
+
+function track_logins($user_login, $user) 
+{
+  // declare database
+  global $wpdb;
+  $user_id = $user->ID;
+  $org_id = get_org_from_user ($user_id);
+
+  //I'm assuming you want to check the user role and
+  //check for user role
+  foreach($user->roles as $role){
+      //replace role with the role you assigned to your students
+      if($role === 'student'){
+          $wpdb->insert(TABLE_TRACK,array(
+              'user_id' => $user_id,
+              'org_id' => $org_id,
+              'date' => date('Y-m-d H:i:s'),
+              'type' => 'login'
+              )
+          );
+      }
+  }
+}
+add_action('wp_login', 'track_logins', 10, 2);
