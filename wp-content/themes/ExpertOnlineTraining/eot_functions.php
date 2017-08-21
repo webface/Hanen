@@ -3029,6 +3029,7 @@ function getEotUsersInCourse($course_id = 0){
  *
  *  @return json encoded list of enrollments
  */
+/*
 function getEnrollments($course_id = 0, $user_id = 0, $subscription_id = 0, $completed = true) 
 {
   global $wpdb;
@@ -3059,6 +3060,7 @@ function getEnrollments($course_id = 0, $user_id = 0, $subscription_id = 0, $com
   $enrollments = $wpdb->get_results($sql, ARRAY_A);
   return $enrollments;
 }
+ */
 /**
  * Get enrolled users in a specific course
  * @param int $course_id - the course ID
@@ -8325,25 +8327,25 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
 
   if ($course_id > 0)
   {
-    $sql .= "course_id = $course_id";
+    $sql .= "course_id = $course_id ";
   }
   
   if ($user_id > 0 && $course_id > 0)
   {
-    $sql .= "AND user_id = $user_id";
+    $sql .= "AND user_id = $user_id ";
   }
   else if ($user_id > 0 )
   {
-    $sql .= "user_id = $user_id";
+    $sql .= "user_id = $user_id ";
   }
 
   if (($user_id > 0 || $course_id > 0) && $org_id > 0)
   {
-    $sql .= "AND org_id = $org_id";
+    $sql .= "AND org_id = $org_id ";
   }
   else if ($org_id > 0)
   {
-    $sql .= "org_id = $org_id";
+    $sql .= "org_id = $org_id ";
   }
 
   if ($status != '')
@@ -8762,4 +8764,18 @@ function get_video_form_callback()
         $html = ob_get_clean();
         echo $html;
     wp_die();
+}
+
+/**
+ * 
+ * @param type $quiz_ids_string - the quiz IDs
+ * 
+ */
+function getPassedQuizzes($quiz_ids_string,$user_id = 0)
+{
+    global $wpdb;
+    $sql = "SELECT * FROM ".TABLE_QUIZ_ATTEMPTS. " WHERE quiz_id IN($quiz_ids_string) AND user_id = $user_id ";
+    $sql.= "AND date_attempted BETWEEN '". SUBSCRIPTION_START ."' AND '". SUBSCRIPTION_END ."' AND passed = 1";
+    $passed_quizzes = $wpdb->get_results($sql, ARRAY_A);
+    return $passed_quizzes;
 }

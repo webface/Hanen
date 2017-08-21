@@ -4640,7 +4640,7 @@ td.errors {
     display:none;
 }
 
-.dataTable a {
+.dataTable a,.table a{
     text-decoration:underline;
 }
 
@@ -4652,4 +4652,16 @@ a.watch_video{
     width:665px;
     height:388px;
     margin:auto;
+}
+
+.bss table{
+    width:100%;
+    border-collapse: collapse;
+}
+.bss table td,.bss table thead{
+  border-bottom:1pt solid grey;
+}
+
+.bss table thead{
+    text-align: left;
 }

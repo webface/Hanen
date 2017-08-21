@@ -41,11 +41,11 @@ switch ($_REQUEST['part'])
         foreach ($quizzes_in_course as $required) 
         {
             $iPassed = $wpdb->get_row("SELECT passed FROM ".TABLE_QUIZ_ATTEMPTS. " WHERE quiz_id = ".$required['ID']." AND user_id = $user_id AND passed = 1", ARRAY_A);
-            error_log("The course id is: ".$required['name']);
+            //error_log("The course name is: ".$required['name']);
             if($iPassed)
             {
                 $passed++;
-                error_log("I passed: ".$course_id);
+                //error_log("I passed: ".$course_id);
             }
         }
         if($passed >= count($quizzes_in_course))
