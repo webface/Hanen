@@ -195,7 +195,7 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
           "bJQueryUI": true,
           "sPaginationType": "full_numbers",
           "bAutoWidth": false,
-          <?php echo ($download) ? 'dom: \'lfrtipB\',' : ""; ?>
+          <?php echo ($download) ? 'dom: \'lfBrtip\',' : ""; ?>
           <?php echo ($download) ? '"buttons": [ {extend: \'csv\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}, {extend: \'excel\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}],' : ""; ?>
           "iDisplayLength": <?=$num_rows?>,
           "aoColumns": [
@@ -8489,6 +8489,14 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
     $quiz_ids_string = implode(',',$quizzes_ids);
     $users_in_org = getEotUsers($org_id);
     $users_in_org = $users_in_org['users'];
+    if(count($users_in_org) > 0)
+    {
+        
+    }
+    else
+    {
+        return 0;
+    }
     $user_ids = array_column($users_in_org, 'ID');
     $user_ids_string = implode(',',$user_ids);
     $attempts = $wpdb->get_row("SELECT COUNT(ID) as count FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id IN(".$quiz_ids_string.") AND  user_id IN(".$user_ids_string.")",ARRAY_A);
@@ -8590,6 +8598,10 @@ function getAllQuizAttempts($course_id = 0, $user_id = 0)
  */
 function getQuestionResults($question_ids = 0,$user_ids = 0, $quiz_id = 0)
 {
+    if($user_ids == 0 || $user_ids == "")
+    {
+        return array();
+    }
     $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
     global $wpdb;
     $results = $wpdb->get_results("SELECT qr.* FROM ". TABLE_QUIZ_QUESTION_RESULT." qr WHERE qr.quiz_id = $quiz_id AND qr.question_id IN (".$question_ids.") AND qr.user_id IN (".$user_ids.")", ARRAY_A);
@@ -8802,4 +8814,33 @@ function getQuizAttempts($quiz_id = 0, $user_id = 0)
     }
     $attempts = $wpdb->get_results("SELECT * FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id = $quiz_id AND user_id = $user_id", ARRAY_A);
     return $attempts;
+}
+
+/**
+ * 
+ * @param type $user_id - the user ID
+ * 
+ */
+function calculate_progress($user_id = 0, $course_id = 0)
+{
+    global $wpdb;
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    if($user_id == 0 || $course_id == 0)
+    {
+        return 0;
+    }
+    $quizzes_in_course = getQuizzesInCourse($course_id);
+
+    $passed = 0;
+    foreach ($quizzes_in_course as $required) 
+    {
+        $iPassed = $wpdb->get_row("SELECT passed FROM ".TABLE_QUIZ_ATTEMPTS. " WHERE quiz_id = ".$required['ID']." AND user_id = $user_id AND passed = 1", ARRAY_A);
+        if($iPassed)
+        {
+            $passed++;
+        }
+    }
+    $percentage = $passed/count($quizzes_in_course)*100;
+    return $percentage;
 }

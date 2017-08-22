@@ -320,7 +320,7 @@
                                     {
                                         if($record['passed'] == 1)
                                         {
-                                          array_push($track_passed, $record['quiz_id']); // Save the user ID of the users who passed the quiz.
+                                          array_push($track_passed, $record['quiz_id']); // Save the quiz ID of the passed quiz.
                                           //unset($track_quizzes[$key]); // Delete them from the array.
                                         }
                                        array_push($track_quiz_attempts, $record['quiz_id']);
@@ -369,7 +369,7 @@
                                             </tr>
                                             <?php
                                             }
-                                            $percentage = (count(array_unique($passed_users))/count($quizzes_in_course))*100;
+                                            $percentage = (count($passed_users)/count($quizzes_in_course))*100;
                                             ?>
                                             <tr>
                                                 <td><b>Completed Quizzes</b></td>
