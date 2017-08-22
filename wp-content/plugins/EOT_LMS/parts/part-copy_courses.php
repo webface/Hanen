@@ -13,7 +13,6 @@
     global $current_user;
     $user_id = $current_user->ID; // Wordpress user ID
     $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
-
     $subscriptions = get_current_subscriptions ($org_id);
     foreach($subscriptions as $subscription)
     {
@@ -27,7 +26,7 @@
     }
     // verify this user has access to this portal/subscription/page/view
     $true_subscription = verifyUserAccess(); 
-    // set the umbrella group ID.
+    // set the umbrella group ID. Uber manager's org id, or umbrella manager's umbrella_group_id
     $umbrella_group_id = $org_id;
     if (current_user_can('is_umbrella_manager'))
     {
@@ -70,30 +69,17 @@
           			 * Display the name of all courses.
           			 * If there's no course, it will display an error.
           			 */
-                $courses = getCourses(0, $org_id, 0); // get the courses base on their org id
-                $numCourses = 0;
-               	// If status is not set, assuming there is no error.
+                $courses = getCourses(0, $org_id, 0); // get the courses from their org.
+                $numCourses = count($courses);
+               	// Check if there are any courses.
                	if($courses)
                 {
-                  $user_umbrella_group_id = get_user_meta($user_id, 'umbrella_group_id', true);
+
+                  // Lists all the courses that can possibly be clone.
        				    foreach($courses as $key => $course) 
                   {
-          					$course_id = $course->ID;		// Course ID
-          					$course_name = $course->course_name;	// Course Name
-                    $request_uri = ""; // edit url is not displaying properly because it's looking for this undefine variable. Will use dummy data for now.
-                    // Do not display the cloned leadership essential
-//                    if($course_name == lrn_upon_LE_Course_TITLE)
-
-                    // check for only courses with the uber org id in the description
-                    // User umbreblla group id
-                    if($user_umbrella_group_id != $umbrella_group_id)
-                    {
-                      continue;
-                    }
-                    else if ($user_umbrella_group_id == $umbrella_group_id)
-                    {
-                      $numCourses++; // counter to see if we found any courses for this uber admin
-                    }
+          					$course_id = $course->ID; // Course ID
+          					$course_name = $course->course_name; // Course Name
                 ?>
                   		<div class="group_list_table_row" group_id="<?= $course_id ?>" course-id="<?= $course_id ?>" org-id="<?= $org_id ?>">
                   		  <div class="group_name"><?= $course_name ?></div>
@@ -104,25 +90,20 @@
               <?php
       				    }
                	}
-                else if($courses == null)
-                {
-                  echo '<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">Create a course...</div>';
-                }
-                else
+                else if( isset($courses['status']) && $courses['status'] == 0 )
                 {
                   /*
                    * Create an error message.
                    */
                   $error_message = (isset($courses['message'])) ? $courses['message'] : "Could not find the fault.";
                   $error_message .= " Please contact the administrator.";
-               		echo "There is an error in getting the courses: " . $error_message;
-               	}
-
-                if ($numCourses == 0)
+                  echo "There is an error in getting the courses: " . $error_message;
+                }
+                else if($courses == null)
                 {
                   echo '<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">You do not have any courses that can ba copied yet. <br>Please contact our Customer Success team toll-free at <br>(877) 237-3931 M-F 9-5 EST <br>and we will assist you with copying a course.</div>';
-                }
 
+                }
        		    ?>                  
             </div>
           </div>
@@ -594,6 +575,7 @@
                         var course_id = obj.attr("course_id"); // the course id
                         var camp_id = obj.attr("camp_id"); // the camp id
                         var org_id_e = obj.attr("org_id"); // org_idsubdomain
+                        var course_name = $('form#add_video_group').attr('course_name');// The course name.
                         obj.parent().find("img#img_loading").show('slow');
                         var publish_course_after_copy = $('input#chkbox_is_publish_course_after_copy').attr('checked'); // Checkbox for publishing a course after copy?
 
@@ -603,6 +585,7 @@
                             course_id: course_id,
                             camp_id: camp_id,
                             org_id: org_id_e,
+                            course_name: course_name,
                             publish_course_after_copy: publish_course_after_copy,
                         }
 
