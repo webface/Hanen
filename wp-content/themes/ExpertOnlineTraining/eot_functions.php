@@ -4471,11 +4471,13 @@ function updateUser_callback()
 add_action('wp_ajax_deleteStaffAccount', 'deleteStaffAccount_callback');
 function deleteStaffAccount_callback () 
 {
+    global $wpdb;
     if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['staff_id'] ) && isset ( $_REQUEST['email'] ) )
     {
         // This form is generated in getCourseForm function with $form_name = change_course_status_form from this file.
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); // The Org ID
         $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT); // The staff account ID
+        $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The staff account ID
         $email = sanitize_email( $_REQUEST['email'] ); // wordpress e-mail address
         $data = compact("org_id");
 
@@ -4494,7 +4496,25 @@ function deleteStaffAccount_callback ()
         }
         else
         {
-            // Delete the staff account from LU
+                $watched_video = $wpdb->get_results("SELECT * FROM ". TABLE_TRACK ." "
+                        . "WHERE user_id = $staff_id "
+                        . "AND org_id = $org_id "
+                        . "AND type IN('watch_video','watch_custom_video') "
+                        . "AND date BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'", ARRAY_A);
+                error_log("SELECT * FROM ". TABLE_TRACK ." "
+                        . "WHERE user_id = $staff_id "
+                        . "AND org_id = $org_id "
+                        . "AND type IN('watch_video','watch_custom_video') "
+                        . "AND date BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'");
+                if(count($watched_video)>0)
+                {
+                    $result['display_errors'] = 'failed';
+                    $result['success'] = false;
+                    $result['errors'] = 'deleteStaffAccount_callback Error: Sorry, this user has already started the course.';
+                    echo json_encode($result);
+                    wp_die();
+                }
+                // Delete the staff account from LU
                 $user = get_user_by( 'ID', $staff_id ); // The user in WP
                 if($user)
                 {
@@ -7031,6 +7051,7 @@ jane@email.com
         {        
             $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
             $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT);
+            $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
             $email =  sanitize_email( $_REQUEST['email'] );
             ob_start();
         ?>
@@ -7046,6 +7067,7 @@ jane@email.com
                       <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" /> 
                       <input type="hidden" name="email" id="email" value="<?= $email ?>" /> 
                       <input type="hidden" name="staff_id" id="staff_id" value=" <?= $staff_id ?>" />
+                      <input type="hidden" name="subscription_id" id="subscription_id" value=" <?= $subscription_id ?>" />
                         <?php wp_nonce_field( 'delete-staff_id-org_id_' . $org_id ); ?>
                     </td>
                   </tr> 
