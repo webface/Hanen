@@ -118,7 +118,12 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     <p>For quizzes with a low success rate, you may want to go over these topics in greater depth during your on-site training.</p>
 <?php
                 $quizzes = getQuizzesInCourse($course_id);
-                $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
+                $track_quizzes = array();
+                if($quizzes)
+                {
+                    $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
+                }
+                //ddd($quizzes, $track_quizzes);
                 $track_passed = array();
                 $track_quiz_attempts = array();
                 foreach ($track_quizzes as $key => $record) 
@@ -133,8 +138,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $passed_users = array_count_values($track_passed);
                 $attempt_count = array_count_values($track_quiz_attempts);
 //d($track_quizzes, $passed_users, $attempt_count);
-                if ($quizzes) 
-                {
+                //if ($quizzes) 
+                //{
                     // Tables that will be displayed in the front end.
                     $quizTableObj = new stdClass();
                     $quizTableObj->rows = array();
@@ -148,7 +153,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     foreach ($quizzes as $quiz) 
                     {
 
-                        $time_limit = date('i', strtotime($quiz['time_limit']));
+                        //$time_limit = date('i', strtotime($quiz['time_limit']));
                         $passed_count = isset($passed_users[$quiz['ID']]) ? $passed_users[$quiz['ID']] : 0; //Number of passes
                         $attempts = isset($attempt_count[$quiz['ID']]) ? $attempt_count[$quiz['ID']] : 0; //Number of quiz attempts
                         $percentage = $attempts > 0 ? (($passed_count / $attempts) * 100) : 0;
@@ -160,7 +165,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         );
                     }
                     CreateDataTable($quizTableObj, "100%", 10, true, "Stats"); // Print the table in the page
-                }
+                //}
 ?>
                     <h2>Video Views</h2>
 <?php

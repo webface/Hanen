@@ -61,7 +61,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         array_push($trackFailed, $record['user_id']); // Save the user ID of the users who failed the quiz.
                         //unset($track_quizzes[$key]); // Delete them from the array.
                     }
-                    if ($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || ($quizPassed[$record['quiz_id']] != $record['user_id']))) 
+                    if ($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || ($quizPassed[$record['quiz_id']] != $record['user_id'])))//make sure the quiz has not been already passed 
                     {
                         $quizPassed[$record['quiz_id']] = $record['user_id'];
                         array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.

@@ -60,6 +60,7 @@
 		              	//  Get the time where they last watched the video.
 		              	$video_last_time  = (isset($video_record['video_time']) && $video_record['video_time'] > 0) ? $video_record['video_time'] : 0;
 		              	echo '<h1 class="video_title">' . $video_name . '</h1>';
+                                //d($video);
 
 ?>
 				<b>Length: <?= " (" . $minutes . ":" . str_pad($seconds, 2, "0", STR_PAD_LEFT) . ") "; ?></b>
@@ -67,6 +68,10 @@
 				<br>
                 <div id='player_<?= $video_id; ?>' style='width:665px;height:388px'>
                     <video id="my-video" user-id="<?=$user_id?>" track-id="<?=$track_id?>" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
+                        <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_en.vtt" srclang="en" label="English" default>
+                        <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_es.vtt" srclang="es" label="Spanish">
+                        <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_ma.vtt" srclang="man" label="Mandarin">
+
 <?php 
                         // Check if we are showing by language or resolution.
                         if($subLanguage)
@@ -104,6 +109,7 @@
 <?php
                         }
 ?>
+                        
                     </video>
                 </div>
                 <h3>Description</h3>

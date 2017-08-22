@@ -65,6 +65,7 @@
 				$resources_doc = getResourcesInCourse($course_id, "doc");
 				$resources_video = getResourcesInCourse($course_id, "video");
 	            $resources_exam = getResourcesInCourse($course_id, "exam");
+	            $finished_module_quizzes = array();
 	            //d($modules_in_portal,$videos_in_custom_modules,$quizzes_in_custom_modules,$resources_in_custom_modules);
 	            
 	            $exams = array();
@@ -79,7 +80,7 @@
 	                	array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
 	                }
 	            }
-	            //d($resources_doc,$resources_video,$resources_exam,$exams);
+
 				$video_track = getTrack($user_id, 0, "watch_video");
 				$modules = array(); // Array of Module objects
 				$available_categories = array_unique(array_column($modules_in_course, 'category'));
@@ -146,6 +147,7 @@
                                                             $exam_data = $exams[$module_id];
                                                             $quiz_id = $exam_data[0]['ID'];
 															echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';
+															array_push($finished_module_quizzes,$quiz_id); //store that the module for this quiz was completed
 			
                                                         }
                                                     }
@@ -275,7 +277,7 @@
                                                     $exam_id = $exam['ID'];
                                                     $exam_title = $exam['name'];
                                                     $icon = "fa-question-circle-o";
-                                                    $url = "?part=quiz&module_id=$module_id &quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
+                                                    $url = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
 ?>
                                             <ul class="inner nobullet">
                                                 <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>">Take Quiz</a></span></li>
@@ -283,8 +285,10 @@
 <?php
                                                 }
                                             }
+                                            
 ?>
                                     </li>
+
                                     <script>
                                         function downloadResource(resource_id,module_id)
                                         {
@@ -308,6 +312,79 @@
                                     </script>
 <?php
                                     echo '</ul>';
+                                    $quizzes_in_course = getQuizzesInCourse($course_id);
+                                    $quiz_ids = array_column($quizzes_in_course, 'ID');
+                                    $quiz_ids_string = implode(',', $quiz_ids);
+                                    $passed_quizzes = getPassedQuizzes($quiz_ids_string,$user_id);
+                                    $passed_quiz_ids = array_column($passed_quizzes, 'ID');
+                                    $quiz_attempts = getAllQuizAttempts($course_id, $user_id);
+                                    //d($quizzes_in_course,$quiz_attempts,$passed_quizzes,$finished_module_quizzes);
+                                    $track_passed = array();
+                                    $track_quiz_attempts = array();
+                                    foreach ($quiz_attempts as $key => $record) 
+                                    {
+                                        if($record['passed'] == 1)
+                                        {
+                                          array_push($track_passed, $record['quiz_id']); // Save the quiz ID of the passed quiz.
+                                          //unset($track_quizzes[$key]); // Delete them from the array.
+                                        }
+                                       array_push($track_quiz_attempts, $record['quiz_id']);
+                                    }
+                                    $passed_users = array_count_values($track_passed);
+                                    $attempt_count = array_count_values($track_quiz_attempts);
+                                    ?>
+                                    <h1 class="article_page_title">Quiz Summary</h1>
+                                    <div class="bss">
+                                    <table class="table table-striped table-bordered" border="1">
+                                        <thead>
+                                        <th><b>Quiz Title</b></th>
+                                        <th><b>Attempts</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                                        <th><b>Status</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                                        <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            foreach ($quizzes_in_course as $quiz) 
+                                            { 
+                                                $passed = isset($passed_users[$quiz['ID']])? 'Passed' : 'Incomplete';//Number of passes
+                                                $attempts = isset($attempt_count[$quiz['ID']]) ? $attempt_count[$quiz['ID']] : 0;//Number of quiz attempts
+                                                if(!isset($passed_users[$quiz['ID']]) && $attempts > 0)//they must have failed that quiz
+                                                {
+                                                    $passed = "Failed";
+                                                }
+                                            ?>
+                                            <tr>
+                                                <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="/dashboard?part=wronganswers&quiz_id='.$quiz['ID'].'&user_id='.$user_id.'&course_id='.$course_id.'">See Wrong Answers</a>':'')?></td>
+                                                <td><?= $attempts ?></td>
+                                                <td><?= $passed ?></td>
+                                                <td>
+                                                    <?php
+                                                    $action = 'Take Quiz&nbsp;<img src="'.get_template_directory_uri() . '/images/info-sm.gif" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip(\'<b>You must watch the video first (all the way through) before attempting the quiz.</b>\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()">';
+                                                    if(in_array($quiz['ID'], $finished_module_quizzes) && $quiz['org_id']==0)
+                                                    {
+                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';
+                                                    }
+                                                    elseif($quiz['org_id']!=0)
+                                                    {
+                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';  
+                                                    }
+                                                    echo $action;
+                                                            ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                            }
+                                            $percentage = (count($passed_users)/count($quizzes_in_course))*100;
+                                            ?>
+                                            <tr>
+                                                <td><b>Completed Quizzes</b></td>
+                                            <td><?= count($passed_users)?></td>
+                                            <td colspan="2"><?= eotprogressbar('12em', $percentage, true)?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                    <?php
                                 }
 			}//end if course info
 			else

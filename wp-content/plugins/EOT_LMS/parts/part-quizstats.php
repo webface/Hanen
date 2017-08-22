@@ -90,7 +90,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                 
                                 $correct_count = isset($stats[$question['ID']])? array_sum($stats[$question['ID']]) : 0;//Number of passes
                                 $num_attempts = isset($stats[$question['ID']]) ? count($stats[$question['ID']]) : 0;//Number of question attempts
-                                $questionHTML = $question['ID'].": <a href='#' onclick='jQuery(\"#choices_".$question['ID']."\").toggleClass(\"hidden\",1000);return false;'>".$question['quiz_question']."</a><div class='hidden choices' id='choices_".$question['ID']."'><br>";
+                                $questionHTML = "<a href='#' onclick='jQuery(\"#choices_".$question['ID']."\").toggleClass(\"hidden\",1000);return false;'>".$question['quiz_question']."</a><div class='hidden choices' id='choices_".$question['ID']."'><br>";
                                 foreach ($question['possibilities'] as $answer) 
                                 {
                                     $correct = '';
