@@ -7,10 +7,10 @@ wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js'
 wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 $true_subscription = verifyUserAccess();
+
 // Check if the subscription ID is valid.
 if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0) 
 {
-
     if (isset($true_subscription['status']) && $true_subscription['status']) 
     {
         if (current_user_can("is_director")) 
@@ -21,17 +21,15 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 global $current_user;
                 $user_id = $current_user->ID; // Wordpress user ID
                 $org_id = get_org_from_user($user_id); // Organization ID
-                $data = array("org_id" => $org_id); // to pass to our functions above
-                $org_subdomain = get_post_meta($org_id, 'org_subdomain', true); // Subdomain of the user
-                $course_id = filter_var($course_id = $_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The course ID
+                $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The course ID
                 $course_data = getCourse($course_id); // The course information
                 $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 $quizzes_in_course = getQuizzesInCourse($course_id);
                 $track_records = getAllTrack($org_id); // All track records.
                 $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
-                //d($track_quizzes,$track_records);
                 $track_watchVideo = array();
                 $track_login = array();
+
                 // Create sub arrays from all the track records
                 foreach ($track_records as $key => $record) 
                 {
@@ -71,7 +69,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     }
                     array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 
                 }
-                //d($quizPassed,$trackPassed);
+
                 $failed_users = array_count_values($trackFailed);
                 $passed_users = array_count_values($trackPassed);
                 $attempt_count = array_count_values($track_quiz_attempts);
@@ -79,6 +77,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $login_users = array_count_values($track_login); // Return the user ID and the key/times the user has logged in.
                 $watched_users = array_count_values($track_watchVideo); // Return the user ID and the key/times the user has watch the module.
                 //d($login_users, $track_quizzes);
+
                 if (isset($course_data['status']) && $course_data['status'] == 0) 
                 {
                     // error received from getCourse
@@ -112,6 +111,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $total_number_failed++;
                     }
                 }
+
                 $total_number_of_staff = count($enrollments); // The total number of staff enrolled in the course.
                 // Variable initialisation 
                 $percentage_completed = 0; // The percentage of staff who logged in once.
@@ -120,6 +120,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $percentage_number_passed = 0; // The percentage of staff who passed in this course.
                 $percentage_number_failed = 0; // The percentage of staff who failed in this course.
                 $calculated_percentage_completed = 0;
+
                 // This calculates the percentage for the progressbars.
                 if ($total_number_of_staff > 0)
                 { // Can't be divided by 0.
@@ -189,6 +190,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $passed_count = isset($passed_users[$enrollment['user_id']]) ? $passed_users[$enrollment['user_id']] : 0; //Number of passes
                         $attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0; //Number of quiz attempts
                         $percentage = eotprogressbar('8em', 0, true);
+
                         if ($attempts > 0) 
                         {
                             $percentage = eotprogressbar('8em', (($passed_count / count($quizzes_in_course)) * 100), true);
@@ -202,8 +204,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $percentage = eotprogressbar('8em', 100, true);
                         }
 
-
-
                         $quizTableObj->rows[] = array(
                             $name,
                             "<a href='/dashboard?part=staffquizstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $passed_count . '/' . count($quizzes_in_course) . "</a>",
@@ -214,7 +214,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $percentage
                         );
                     }
-                    CreateDataTable($quizTableObj, "100%", 10, true, "Stats");
+                    CreateDataTable($quizTableObj, "100%", 25, true, "Stats");
                 } 
                 else 
                 {

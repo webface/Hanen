@@ -5,10 +5,11 @@
 
 		if(current_user_can("is_student"))
 	    {
-                global $current_user;
-                $user_id = $current_user->ID;
-                $admin_ajax_url = admin_url('admin-ajax.php');
-                $subscription_id = getSubscriptionIdByUser($user_id);
+            global $current_user;
+            $user_id = $current_user->ID;
+            $admin_ajax_url = admin_url('admin-ajax.php');
+            $subscription_id = getSubscriptionIdByUser($user_id);
+
 			// verify this user has access to this course
 	    	$has_access = verify_student_access($course_id);
 			if (!$has_access)
@@ -50,33 +51,35 @@
 <?php
 		       	// Get all the modules in this course by the course ID
 				$user_id = get_current_user_id(); // WP User ID
-                                $org_id = get_org_from_user($user_id);
+                $org_id = get_org_from_user($user_id);
 				$modules_in_course = getModulesInCourse($course_id);
-                                $modules_in_portal = getModules($org_id);// all the custom modules in this portal
-                                $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
-                                $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
-                                $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
-                                $quizzes_in_custom_modules=getQuizResourcesInModules($modules_in_portal_ids_string);
-                                $resources_in_custom_modules =  getHandoutResourcesInModules($modules_in_portal_ids_string);
+                $modules_in_portal = getModules($org_id);// all the custom modules in this portal
+                $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
+                $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
+                $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
+                $quizzes_in_custom_modules=getQuizResourcesInModules($modules_in_portal_ids_string);
+                $resources_in_custom_modules =  getHandoutResourcesInModules($modules_in_portal_ids_string);
 				$subscription = getSubscriptionByCourse($course_id); // get the subscription data
 				$library_id = isset($subscription['library_id']) ? $subscription['library_id'] : 0; // the library ID
 				$categories = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
 				$resources_doc = getResourcesInCourse($course_id, "doc");
 				$resources_video = getResourcesInCourse($course_id, "video");
-                                $resources_exam = getResourcesInCourse($course_id, "exam");
-                                //d($modules_in_portal,$videos_in_custom_modules,$quizzes_in_custom_modules,$resources_in_custom_modules);
-                                
-                                $exams = array();
-                                foreach($resources_exam as $exam){
-                                    if(isset($exams[$exam['mid']]))
-                                    {
-                                        array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
-                                    }else{
-                                    $exams[$exam['mid']]=array();
-                                    array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
-                                    }
-                                }
-                                //d($resources_doc,$resources_video,$resources_exam,$exams);
+	            $resources_exam = getResourcesInCourse($course_id, "exam");
+	            //d($modules_in_portal,$videos_in_custom_modules,$quizzes_in_custom_modules,$resources_in_custom_modules);
+	            
+	            $exams = array();
+	            foreach($resources_exam as $exam){
+	                if(isset($exams[$exam['mid']]))
+	                {
+	                    array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+	                }
+	                else
+	                {
+	                	$exams[$exam['mid']]=array();
+	                	array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+	                }
+	            }
+	            //d($resources_doc,$resources_video,$resources_exam,$exams);
 				$video_track = getTrack($user_id, 0, "watch_video");
 				$modules = array(); // Array of Module objects
 				$available_categories = array_unique(array_column($modules_in_course, 'category'));
@@ -138,45 +141,45 @@
 				          							// display link to the quiz if the video has been watched.
 				          							if($isFinished)
 				          							{
-                                                                                                    if(isset($exams[$module_id]))
-                                                                                                    {
-                                                                                                        $exam_data = $exams[$module_id];
-                                                                                                        $quiz_id = $exam_data[0]['ID'];
-				          								echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';
-				          							
-                                                                                                    }
-                                                                                                }
+                                                        if(isset($exams[$module_id]))
+                                                        {
+                                                            $exam_data = $exams[$module_id];
+                                                            $quiz_id = $exam_data[0]['ID'];
+															echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';
+			
+                                                        }
+                                                    }
 				          							else
 				          							{
-                                                                                                    if(isset($exams[$module_id]))
-                                                                                                    {
+                                                        if(isset($exams[$module_id]))
+                                                        {
 ?>                                                                                                  
-			          									/ Take Quiz
-														&nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
+				          									/ Take Quiz
+															&nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
 <?php
-                                                                                                    }
-                                                                                                }
+                                                        }
+                                                    }
 
 				      				echo	'</span>';
-				      						if( isset( $resources_doc ) && count($resources_doc) > 1 )
-				      						{
-				      							foreach ($resources_doc as $key => $resource) 
-				      							{
-				      								if($resource['module_id'] == $module->id)
-				      								{
-					      								$video_id = $resource['video_id'];
+		      						if( isset( $resources_doc ) && count($resources_doc) > 1 )
+		      						{
+		      							foreach ($resources_doc as $key => $resource) 
+		      							{
+		      								if($resource['module_id'] == $module->id)
+		      								{
+			      								$video_id = $resource['video_id'];
 ?>								
-					              						<ul class="inner nobullet">
-                                                                                                    <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
-				                                      	</ul>
+			              						<ul class="inner nobullet">
+	                                                <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
+		                                      	</ul>
 <?php 
-				      								}
-				      								unset($resource);
-				      							}
-										}
+		      								}
+		      								unset($resource);
+		      							}
+									}
 ?>
 				    					</li> 	                 
-									<?php
+<?php
 									echo '</ul>';
 		                		}//end if
 		                	}//end for each
@@ -188,39 +191,40 @@
 		        {
 		        	echo 'There are no modules in this course. Please contact your camp director.';
 		        }
-                                echo '<h3 class="library_topic">Custom Modules</h3>';
-                                $rcm = array();
-                                if(count($resources_in_custom_modules) > 0)
-                                {
-                                    foreach($resources_in_custom_modules as $resource)
-                                    {
-                                      if(isset($rcm[$resource['mod_id']]))
-                                      {
-                                        array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
-                                      }
-                                      else
-                                      {
-                                        $rcm[$resource['mod_id']]=array();
-                                        array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
-                                      }
-                                    }
-                                }
-                                $exams = array();
-                                if(count($quizzes_in_custom_modules) > 0)
-                                {
-                                    foreach($quizzes_in_custom_modules as $resource)
-                                    {
-                                      if(isset($exams[$resource['module_id']]))
-                                      {
-                                        array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
-                                      }
-                                      else
-                                      {
-                                        $exams[$resource['module_id']]=array();
-                                        array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
-                                      }
-                                    }
-                                }
+
+                echo '<h3 class="library_topic">Custom Modules</h3>';
+                $rcm = array();
+                if(count($resources_in_custom_modules) > 0)
+                {
+                    foreach($resources_in_custom_modules as $resource)
+                    {
+                      if(isset($rcm[$resource['mod_id']]))
+                      {
+                        array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
+                      }
+                      else
+                      {
+                        $rcm[$resource['mod_id']]=array();
+                        array_push($rcm[$resource['mod_id']], array('ID'=>$resource['ID'],'name'=>$resource['name'],'type'=>$resource['type'],'url'=>$resource['url']));
+                      }
+                    }
+                }
+                $exams = array();
+                if(count($quizzes_in_custom_modules) > 0)
+                {
+                    foreach($quizzes_in_custom_modules as $resource)
+                    {
+                      if(isset($exams[$resource['module_id']]))
+                      {
+                        array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
+                      }
+                      else
+                      {
+                        $exams[$resource['module_id']]=array();
+                        array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
+                      }
+                    }
+                }
                                 //d($exams);
                                 foreach($modules_in_portal as $module)
                                 {

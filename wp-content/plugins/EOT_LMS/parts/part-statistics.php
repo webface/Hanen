@@ -6,19 +6,17 @@
 
 	$user_id = $current_user->ID; // Wordpress user ID
 	$org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID	
-	$org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-	$data = compact ("org_id");
 	$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 	$courses = getCoursesById($org_id, $subscription_id);// All published courses in the portal.
-        $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
+    $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
 	$num_staff_completed_assignment = 0; // Number of staff who have completed all their assignment
 	$num_staff_signed_in = calculate_logged_in($org_id); // Number of staff who signed in at least once.
 	$learners = '';
 	$completed_user_ids = array();
 	$incomplete_user_ids = array();
-        $num_videos_watched = calculate_videos_watched($org_id);
-        $num_resources_downloaded = calculate_resources_downloaded($org_id);
-        $num_quizzes_taken=calculate_quizzes_taken($org_id, $subscription_id);
+    $num_videos_watched = calculate_videos_watched($org_id);
+    $num_resources_downloaded = calculate_resources_downloaded($org_id);
+    $num_quizzes_taken=calculate_quizzes_taken($org_id, $subscription_id);
 //d($courses,$num_videos_watched,$num_quizzes_taken,$num_resources_downloaded);
     // check if we have staff accounts and filter out everyone other than learners
     if( isset($staff_accounts['status']) && $staff_accounts['status'] )

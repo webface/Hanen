@@ -4653,3 +4653,7 @@ a.watch_video{
     height:388px;
     margin:auto;
 }
+
+span.gfield_required {
+    color: #D00 !important;
+}

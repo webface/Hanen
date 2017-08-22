@@ -10,7 +10,7 @@
 		if($has_access) 
 		{
 			// Check if the module belongs to the course.
-			if(verify_module_in_course($module_id, $course_id, $type = 'video'))
+			if(verify_module_in_course($module_id, $course_id, 'video'))
 			{
 				// get the module data
 				$module = getModule($module_id);
@@ -27,7 +27,7 @@
 				$user_id = get_current_user_id(); // WP User ID
 				$subLanguage = isset($_REQUEST['subLang']) ? filter_var($_REQUEST['subLang'],FILTER_SANITIZE_STRING) : null; // Video Language
 		   		$resolution = isset($_REQUEST['res']) ? filter_var($_REQUEST['res'],FILTER_SANITIZE_STRING) : null; // Video resolution
-				$module_video_resources = getResourcesInModuleInCourse($course_id, $module_id, $type = 'video'); // get the video resources in this module
+				$module_video_resources = getResourcesInModuleInCourse($course_id, $module_id, 'video'); // get the video resources in this module
                                 $resources_exam = getResourcesInCourse($course_id, "exam");
 
                                 

@@ -18,7 +18,8 @@ function getLibraries ($library_id = 0)
  * Get the library based on the library id
  * return the Library information
  */
-function getLibrary ($library_id = 0) {
+function getLibrary ($library_id = 0) 
+{
     // Check if the library id is valid
     if ($library_id <= 0)
     {
@@ -2824,7 +2825,7 @@ function getModulesInCourse($course_id = 0){
                 . "WHERE cmr.course_id = $course_id";
 
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
-    //serror_log(json_encode($course_modules));
+    //error_log(json_encode($course_modules));
     return $course_modules;
 }
 
@@ -3029,6 +3030,7 @@ function getEotUsersInCourse($course_id = 0){
  *
  *  @return json encoded list of enrollments
  */
+/* NOT USED SINCE I MADE A BETTER FUNCTION BELOW
 function getEnrollments($course_id = 0, $user_id = 0, $subscription_id = 0, $completed = true) 
 {
   global $wpdb;
@@ -3059,6 +3061,8 @@ function getEnrollments($course_id = 0, $user_id = 0, $subscription_id = 0, $com
   $enrollments = $wpdb->get_results($sql, ARRAY_A);
   return $enrollments;
 }
+*/
+
 /**
  * Get enrolled users in a specific course
  * @param int $course_id - the course ID
@@ -3193,6 +3197,8 @@ function getResourcesInCourse($course_id = 0, $type = '')
         case 'custom_video':
             $table = TABLE_RESOURCES;
             break;
+        default:
+            $table = TABLE_RESOURCES;
     }
     $sql = "SELECT r.*, cmr.module_id as mid "
                 . "FROM " . $table . " AS r "
@@ -5937,7 +5943,7 @@ function getCourseForm_callback ( )
             $course_handouts = array_merge(getResourcesInCourse($course_id,'doc'),getResourcesInCourse($course_id,'link'));
             //d($course_handouts);
             $course_handouts_module_ids = array_column($course_handouts,'mid');
-d($course_videos,$course_quizzes,$course_handouts);
+//d($course_videos,$course_quizzes,$course_handouts);
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_handouts_ids = array_column($course_handouts, 'ID');
@@ -8325,30 +8331,30 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
 
   if ($course_id > 0)
   {
-    $sql .= "course_id = $course_id";
+    $sql .= "course_id = $course_id ";
   }
   
   if ($user_id > 0 && $course_id > 0)
   {
-    $sql .= "AND user_id = $user_id";
+    $sql .= "AND user_id = $user_id ";
   }
   else if ($user_id > 0 )
   {
-    $sql .= "user_id = $user_id";
+    $sql .= "user_id = $user_id ";
   }
 
   if (($user_id > 0 || $course_id > 0) && $org_id > 0)
   {
-    $sql .= "AND org_id = $org_id";
+    $sql .= "AND org_id = $org_id ";
   }
   else if ($org_id > 0)
   {
-    $sql .= "org_id = $org_id";
+    $sql .= "org_id = $org_id ";
   }
 
   if ($status != '')
   {
-    $sql .= " AND status = '$status'";
+    $sql .= "AND status = '$status' ";
   }
 
   $enrollments = $wpdb->get_results($sql, ARRAY_A);

@@ -33,7 +33,7 @@ CREATE TABLE `wp_quiz_question_results` (
   `question_id` bigint(20) unsigned DEFAULT NULL,
   `answer_correct` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 
 

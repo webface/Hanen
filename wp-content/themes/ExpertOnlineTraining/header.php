@@ -19,10 +19,10 @@
 			wp_redirect(admin_url()); 
 			exit; 
 		}
-		//subscribers are created when visiting the praxis page
+		//subscribers are created when visiting the mastery page
 		else if(current_user_can( "is_subscriber"))
 		{
-			wp_redirect("https://www.expertonlinetraining.com/praxis");
+			wp_redirect("https://www.expertonlinetraining.com/mastery");
 			exit;
 		}
 	}

@@ -13,27 +13,27 @@ wp_enqueue_script('jszip', get_template_directory_uri() . '/js/jszip.min.js', ar
 wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js', array(), '0.1.24', true);
 wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
+
 global $current_user;
 $user_id = $current_user->ID;
 $page_title = "Stats";
+
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
+
 // Check if the subscription ID is valid.
 if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0) 
 {
-
     if (isset($true_subscription['status']) && $true_subscription['status']) 
     {
         if (current_user_can("is_director"))
         {
-          
             if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] > 0)
             {
                 $org_id = get_org_from_user ($user_id); // Organization ID
-	 	$data = array( "org_id" => $org_id ); // to pass to our functions above
-		$course_id = filter_var($course_id = $_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
-		$course_data = getCourse($course_id); // The course information
-		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+        		$course_id = filter_var($course_id = $_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+		        $course_data = getCourse($course_id); // The course information
+		        $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 $quiz_id = filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT);// The quiz ID
                 $path = WP_PLUGIN_DIR . '/eot_quiz/';
                 require $path . 'public/class-eot_quiz_data.php';
@@ -49,7 +49,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 
 ?>
 		<div class="smoothness">
-			<h1 class="article_page_title">Statistics for "<?= $quiz_name ?>"</h1>
+			<h1 class="article_page_title">Quiz Statistics for "<?= $quiz_name ?>"</h1>
 			Here are statistics on the <b><?= $quiz_name ?></b> Quiz.
                         <h2>Question Success Rate</h2>
                         <p>For questions with a low success rate, you may want to go over these topics in greater depth during your on-site training.</p>

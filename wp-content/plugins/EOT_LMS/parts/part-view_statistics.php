@@ -1,1 +1,0 @@
-<h1 class="article_page_title">View Statistics</h1>
