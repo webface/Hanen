@@ -272,7 +272,7 @@
                                                     $exam_id = $exam['ID'];
                                                     $exam_title = $exam['name'];
                                                     $icon = "fa-question-circle-o";
-                                                    $url = "?part=quiz&module_id=$module_id &quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
+                                                    $url = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
 ?>
                                             <ul class="inner nobullet">
                                                 <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>">Take Quiz</a></span></li>
@@ -330,7 +330,7 @@
                                     ?>
                                     <h1 class="article_page_title">Quiz Summary</h1>
                                     <div class="bss">
-                                    <table class="table table-striped table-bordered">
+                                    <table class="table table-striped table-bordered" border="1">
                                         <thead>
                                         <th><b>Quiz Title</b></th>
                                         <th><b>Attempts</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
@@ -349,7 +349,7 @@
                                                 }
                                             ?>
                                             <tr>
-                                                <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="">See Wrong Answers</a>':'')?></td>
+                                                <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="/dashboard?part=wronganswers&quiz_id='.$quiz['ID'].'&user_id='.$user_id.'&course_id='.$course_id.'">See Wrong Answers</a>':'')?></td>
                                                 <td><?= $attempts ?></td>
                                                 <td><?= $passed ?></td>
                                                 <td>

@@ -195,7 +195,7 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
           "bJQueryUI": true,
           "sPaginationType": "full_numbers",
           "bAutoWidth": false,
-          <?php echo ($download) ? 'dom: \'Bfrtip\',' : ""; ?>
+          <?php echo ($download) ? 'dom: \'lfrtipB\',' : ""; ?>
           <?php echo ($download) ? '"buttons": [ {extend: \'csv\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}, {extend: \'excel\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}],' : ""; ?>
           "iDisplayLength": <?=$num_rows?>,
           "aoColumns": [
@@ -8701,6 +8701,10 @@ function trackResource($user_id = 0, $resource_id =0)
 function getQuizResults($attempt_id = 0)
 {
     $attempt_id = filter_var($attempt_id, FILTER_SANITIZE_NUMBER_INT);
+    if($attempt_id == 0)
+    {
+        return NULL;
+    }
     global $wpdb;
     $results = $wpdb->get_results("SELECT qr.*,qa.answer_correct,qqr.answer_correct as question_correct "
             . "FROM ". TABLE_QUIZ_RESULT ." qr "
@@ -8778,4 +8782,24 @@ function getPassedQuizzes($quiz_ids_string,$user_id = 0)
     $sql.= "AND date_attempted BETWEEN '". SUBSCRIPTION_START ."' AND '". SUBSCRIPTION_END ."' AND passed = 1";
     $passed_quizzes = $wpdb->get_results($sql, ARRAY_A);
     return $passed_quizzes;
+}
+
+/**
+ * 
+ * @param type $quiz_id - the ID of the quiz
+ * @param type $user_id - the ID of the user
+ * 
+ */
+function getQuizAttempts($quiz_id = 0, $user_id = 0)
+{
+    
+    global $wpdb;
+    $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    if($quiz_id == 0 || $user_id == 0)
+    {
+        return NULL;
+    }
+    $attempts = $wpdb->get_results("SELECT * FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id = $quiz_id AND user_id = $user_id", ARRAY_A);
+    return $attempts;
 }
