@@ -227,91 +227,88 @@
                       }
                     }
                 }
-                                //d($exams);
-                                foreach($modules_in_portal as $module)
-                                {
-                                    echo '<ul class="tree">';
-                                    $module_id = $module['ID']; // The module ID
-				    $module_title = $module['title']; // The module name.
-?>
-                                    <li class="tree_video">
-                                        <i class="fa fa-square-o" aria-hidden="true"></i>
-                                            <b><?= $module_title ?></b>
-<?php
-                                            if(isset($rcm[$module_id]))
-                                            {
-                                                foreach($rcm[$module_id] as $resource)
-                                                {
-                                                    switch ($resource['type']) {
-                                                        case 'link':
-                                                            $icon = "fa-link";
-                                                            $url = $resource['url'];
-                                                            $action = 'Visit Url';
-                                                            break;
-                                                        case 'doc':
-                                                            $icon = "fa-sticky-note-o";
-                                                            $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
-                                                            $action = 'Download File';
-                                                            break;
-                                                        case 'custom_video':
-                                                            $icon = "fa-play";
-                                                            $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
-                                                            $action = 'Watch Video';
-                                                            break;
-                                                        default:
-                                                            $icon = "fa-sticky-note-o";
-                                                    }
-                                                    
-?>
-                                            <ul class="inner nobullet">
-                                                <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
-                                            </ul>
-<?php
-                                                }
-                                            
-                                            }
-                                            if(isset($exams[$module_id]))
-                                            {
-                                                foreach ($exams[$module_id] as $exam) 
-                                                {
-                                                    $exam_id = $exam['ID'];
-                                                    $exam_title = $exam['name'];
-                                                    $icon = "fa-question-circle-o";
-                                                    $url = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
-?>
-                                            <ul class="inner nobullet">
-                                                <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>">Take Quiz</a></span></li>
-                                            </ul>
-<?php
-                                                }
-                                            }
-                                            
-?>
-                                    </li>
 
-                                    <script>
-                                        function downloadResource(resource_id,module_id)
-                                        {
-                                           
-                                            var url =  ajax_object.ajax_url  + "?action=trackAndDownload&user_id=<?= $user_id ?>&module_id="+module_id+"&resource_id="+resource_id;
-                                            $.ajax({
-                                            url:url,
-                                            success:
-                                                function(data)
-                                                {
-                                                                                              
- 
-                                                }
-                                            });
-                                                                                        
-
-                                        }
-                                    $(document).ready(function(){
-                                        
-                                    });
-                                    </script>
+                //d($exams);
+                foreach($modules_in_portal as $module)
+                {
+                    echo '<ul class="tree">';
+                    $module_id = $module['ID']; // The module ID
+    				$module_title = $module['title']; // The module name.
+?>
+                    <li class="tree_video">
+                        <i class="fa fa-square-o" aria-hidden="true"></i>
+                            <b><?= $module_title ?></b>
 <?php
-                                    echo '</ul>';
+                    if(isset($rcm[$module_id]))
+                    {
+                        foreach($rcm[$module_id] as $resource)
+                        {
+                            switch ($resource['type']) 
+                            {
+                                case 'link':
+                                    $icon = "fa-link";
+                                    $url = $resource['url'];
+                                    $action = 'Visit Url';
+                                    break;
+                                case 'doc':
+                                    $icon = "fa-sticky-note-o";
+                                    $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
+                                    $action = 'Download File';
+                                    break;
+                                case 'custom_video':
+                                    $icon = "fa-play";
+                                    $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
+                                    $action = 'Watch Video';
+                                    break;
+                                default:
+                                    $icon = "fa-sticky-note-o";
+                            }
+                            
+?>
+		                    <ul class="inner nobullet">
+		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
+		                    </ul>
+<?php
+                        }
+                    
+                    }
+
+                    if(isset($exams[$module_id]))
+                    {
+                        foreach ($exams[$module_id] as $exam) 
+                        {
+                            $exam_id = $exam['ID'];
+                            $exam_title = $exam['name'];
+                            $icon = "fa-question-circle-o";
+                            $url = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
+?>
+		                    <ul class="inner nobullet">
+		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>">Take Quiz</a></span></li>
+		                    </ul>
+<?php
+                        }
+                    }
+                                            
+?>
+                        </li>
+
+                        <script>
+                            function downloadResource(resource_id,module_id)
+                            {
+                                var url =  ajax_object.ajax_url  + "?action=trackAndDownload&user_id=<?= $user_id ?>&module_id="+module_id+"&resource_id="+resource_id;
+                                $.ajax({
+                                url:url,
+                                success:
+                                    function(data)
+                                    {
+                                    }
+                                });
+                            }
+	                        $(document).ready(function(){});
+                        </script>
+<?php
+                	echo '</ul>';
+				}
                                     $quizzes_in_course = getQuizzesInCourse($course_id);
                                     $quiz_ids = array_column($quizzes_in_course, 'ID');
                                     $quiz_ids_string = implode(',', $quiz_ids);
@@ -332,15 +329,15 @@
                                     }
                                     $passed_users = array_count_values($track_passed);
                                     $attempt_count = array_count_values($track_quiz_attempts);
-                                    ?>
+?>
                                     <h1 class="article_page_title">Quiz Summary</h1>
                                     <div class="bss">
                                     <table class="table table-striped table-bordered" border="1">
                                         <thead>
                                         <th><b>Quiz Title</b></th>
-                                        <th><b>Attempts</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
-                                        <th><b>Status</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
-                                        <th></th>
+                                        <th align="center"><b>Attempts</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>This shows the number of times you attempted the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>This shows the number of times you attempted the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                                        <th><b>Status</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>Whether you passed or failed the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>Whether you passed or failed the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                                        <th><b>Quiz</b></th>
                                         </thead>
                                         <tbody>
                                             <?php
@@ -355,7 +352,7 @@
                                             ?>
                                             <tr>
                                                 <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="/dashboard?part=wronganswers&quiz_id='.$quiz['ID'].'&user_id='.$user_id.'&course_id='.$course_id.'">See Wrong Answers</a>':'')?></td>
-                                                <td><?= $attempts ?></td>
+                                                <td align="center"><?= $attempts ?></td>
                                                 <td><?= $passed ?></td>
                                                 <td>
                                                     <?php
@@ -378,14 +375,14 @@
                                             ?>
                                             <tr>
                                                 <td><b>Completed Quizzes</b></td>
-                                            <td><?= count($passed_users)?></td>
+                                            <td align="center"><?= count($passed_users)?></td>
                                             <td colspan="2"><?= eotprogressbar('12em', $percentage, true)?></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     </div>
                                     <?php
-                                }
+                                
 			}//end if course info
 			else
 			{

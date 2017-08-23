@@ -8492,14 +8492,10 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
     $quizzes_ids = array_column($quizzes_in_course, 'resource_id');
     $quiz_ids_string = implode(',',$quizzes_ids);
     $users_in_org = getEotUsers($org_id);
-    $users_in_org = $users_in_org['users'];
-    if(count($users_in_org) > 0)
+    $users_in_org = isset($users_in_org['users']) ? $users_in_org['users'] : array();
+    if(count($users_in_org) == 0)
     {
-        
-    }
-    else
-    {
-        return 0;
+      return 0;
     }
     $user_ids = array_column($users_in_org, 'ID');
     $user_ids_string = implode(',',$user_ids);
