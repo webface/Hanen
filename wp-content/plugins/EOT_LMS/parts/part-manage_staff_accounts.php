@@ -90,12 +90,10 @@
               $staffTableObj->rows[] = array (
                 $staff_name, // First and last name
                 $email, // The email address
-                '<a href="'. $admin_ajax_url .'?action=getCourseForm&form_name=edit_staff_account&amp;org_id='. $org_id .'&amp;staff_id='.$staff_id.'" rel="facebox">
-                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Edit the staff account details.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i>
-                  </a>&nbsp;&nbsp;&nbsp;
+                  '<a href="'. $admin_ajax_url .'?action=getCourseForm&form_name=edit_staff_account&amp;org_id='. $org_id .'&amp;staff_id='.$staff_id.'" rel="facebox">
+                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Edit the staff account details.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>&nbsp;&nbsp;&nbsp;
                   <a href="'.$admin_ajax_url.'?action=getCourseForm&form_name=delete_staff_account&amp;org_id='.$org_id.'&amp;staff_id='.$staff_id.'&amp;email='.$email.'&amp;subscription_id='.$subscription_id.'" rel="facebox">
-                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Delete the staff account.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i>
-                  </a>' // User options
+                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Delete the staff account.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>' // User options
               );
             }
           }
