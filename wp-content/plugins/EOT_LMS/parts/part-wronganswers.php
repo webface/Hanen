@@ -1,38 +1,44 @@
+<div class="breadcrumb">
+    <?= CRUMB_DASHBOARD ?>    
+    <?= CRUMB_SEPARATOR ?>
+    <?= CRUMB_MY_LIBRARY ?>    
+    <?= CRUMB_SEPARATOR ?>
+    <span class="current">Wrong Answers</span>     
+</div>
+<h1 class="article_page_title">Wrong Answers</h1>
+
 <?php
-function search($array, $key, $value)
-{
-    $results = array();
+    // searches an array for key value pair
+    function search($array, $key, $value)
+    {
+        $results = array();
 
-    if (is_array($array)) {
-        if (isset($array[$key]) && $array[$key] == $value) {
-            $results[] = $array;
+        if (is_array($array)) {
+            if (isset($array[$key]) && $array[$key] == $value) {
+                $results[] = $array;
+            }
+
+            foreach ($array as $subarray) {
+                $results = array_merge($results, search($subarray, $key, $value));
+            }
         }
 
-        foreach ($array as $subarray) {
-            $results = array_merge($results, search($subarray, $key, $value));
-        }
+        return $results;
     }
 
-    return $results;
-}
-if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
-{
-    if(current_user_can("is_student"))
+    if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
     {
+        if(current_user_can("is_student"))
+        {
             global $current_user;
             $user_id = $current_user->ID;
             $quiz_id = filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT);
-            //$user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $has_access = verify_student_access($course_id);
             if (!$has_access)
             {
-                    wp_die("You do not have access to this course");
+                wp_die("You do not have access to this course");
             }
-            ?>
-            <?= CRUMB_MY_LIBRARY ?>
-            <h1 class="article_page_title">Wrong Answers</h1>
-            <?php
             $path = WP_PLUGIN_DIR . '/eot_quiz/';
             require $path . 'public/class-eot_quiz_data.php';
             $eot_quiz = new EotQuizData();
@@ -41,31 +47,28 @@ if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
             $question_ids = array_column($quiz_questions, 'ID');
             $question_ids_string = implode(",", $question_ids);
             $quiz_attempts = getQuizAttempts($quiz_id, $user_id);
-            //d($quiz_attempts);
-            ?>
-            <h2 class="article_page_title"><?=$quiz['quiz']['name']?></h2>
-            <?php
+?>
+            <h2 class="article_page_title">Quiz: <?=$quiz['quiz']['name']?></h2>
+<?php
             $count = 1;
             foreach ($quiz_attempts as $attempt) 
             {
-            ?>
-                <h3>Attempt <?= $count; ?></h3>
-            <?php
+                echo "<h3>Attempt $count</h3>";
                 if($attempt['passed'] == 1)
                 {
-            ?>
-                <div class="bs">
-                    <div class="well well-lg">You have answered all the questions correctly, congratulations!</div>
-                </div>
-            <?php
-
+?>
+                    <div class="bs">
+                        <div class="well well-lg">You have passed this quiz, congratulations!</div>
+                    </div>
+<?php
                 }
                 else
                 {
                     $wrong_answers_in_attempt = array();
                     $results = getQuizResults($attempt['ID']);
                     //d($results);
-                    foreach ($results as $result) {
+                    foreach ($results as $result) 
+                    {
                         if($result['answer_correct'] == 0)
                         {
                             array_push($wrong_answers_in_attempt, $result);
@@ -85,26 +88,26 @@ if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
                             $correct = '';
                             if ($answer['answer_correct'] == 1) 
                             {
-                                $correct = '<span class="fa fa-check"></span>';
+                                $correct = ' <span class="fa fa-check"></span> '; // not displaying the correct answer any more.
                             }
                             $chosen_wrong = '';
-                            if($answer['ID']== $wa['answer_id'])
+                            if($answer['ID'] == $wa['answer_id'])
                             {
-                               $chosen_wrong = '<span class="fa fa-close"></span>'; 
+                               $chosen_wrong = ' <span class="fa fa-times fa-2x wrong"></span> '; 
                             }
-                            $html.="<li>".$chosen_wrong.$answer['answer_text']."</li>";
+                            $html .= "<li>" . $answer['answer_text'] . $chosen_wrong . "</li>";
 
                         }  
-                        $html.="</ul>";
+                        $html .= "</ul>";
                         echo $html;
                         //d($question);
                     }
                 }
                 $count++;
 
-                }
+            }
     
-                }
+        }
 		else
 		{
 			wp_die('You do not have privilege to view this page.');
@@ -114,5 +117,4 @@ if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
 	{
 		wp_die('Invalid course. Please report this to the technical support.');
 	}
-?>
 ?>

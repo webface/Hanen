@@ -351,7 +351,7 @@
                                                 }
                                             ?>
                                             <tr>
-                                                <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="/dashboard?part=wronganswers&quiz_id='.$quiz['ID'].'&user_id='.$user_id.'&course_id='.$course_id.'">See Wrong Answers</a>':'')?></td>
+                                                <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="/dashboard?part=wronganswers&quiz_id='.$quiz['ID'].'&course_id='.$course_id.'">See Wrong Answers</a>':'')?></td>
                                                 <td align="center"><?= $attempts ?></td>
                                                 <td><?= $passed ?></td>
                                                 <td>
@@ -359,11 +359,11 @@
                                                     $action = 'Take Quiz&nbsp;<img src="'.get_template_directory_uri() . '/images/info-sm.gif" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip(\'<b>You must watch the video first (all the way through) before attempting the quiz.</b>\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()">';
                                                     if(in_array($quiz['ID'], $finished_module_quizzes) && $quiz['org_id']==0)
                                                     {
-                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';
+                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';
                                                     }
                                                     elseif($quiz['org_id']!=0)
                                                     {
-                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';  
+                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';  
                                                     }
                                                     echo $action;
                                                             ?>

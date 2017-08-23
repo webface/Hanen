@@ -63,7 +63,7 @@ define ('CRUMB_DEVELOPMENT', '<a href="'. get_home_url() .'/dashboard/?part=dire
 define ('CRUMB_CORNER', '<a href="'. get_home_url() .'/dashboard/?part=directors_corner&subscription_id='.$subscription_id.'">Director\'s Corner</a>');
 
 // define breadcrumb to my library page
-define ('CRUMB_MY_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=my_library&course_id='.$course_id.'" onclick="load(\'load_loading\')">My Library</a>');
+define ('CRUMB_MY_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=my_library&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'" onclick="load(\'load_loading\')">My Library</a>');
 
 // define breadcrumb to manage sales rep page
 define ('CRUMB_MANAGESALESREP', '<a href="'. get_home_url() .'/dashboard/?part=manage_sales_rep"">Manage Sales Rep</a>');

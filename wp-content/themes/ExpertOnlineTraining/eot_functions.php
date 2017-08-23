@@ -4553,7 +4553,7 @@ function deleteStaffAccount_callback ()
                     if (wp_delete_user( $user->ID ))
                     {
                         // Build the response if successful
-                        $deleted_enrollment = $wpdb->delete(TABLE_ENROLLMENTS, array('user_id'=>$user->ID));
+                        $deleted_enrollment = $wpdb->delete(TABLE_ENROLLMENTS, array('user_id'=>$user->ID)); // must delete their enrollment as well.
                         $result['data'] = 'success';
                         $result['user_id'] = $staff_id;
                         $result['success'] = true;

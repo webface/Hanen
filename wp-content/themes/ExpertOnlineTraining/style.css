@@ -4669,3 +4669,7 @@ span.gfield_required {
 .bss table thead{
     text-align: left;
 }
+
+.wrong {
+	color:red;
+}
