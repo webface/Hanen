@@ -81,7 +81,7 @@ foreach ($quiz_attempts as $attempt)
                 {
                    $chosen_wrong = '<span class="fa fa-close"></span>'; 
                 }
-                $html.="<li>".$chosen_wrong.$correct.$answer['answer_text']."</li>";
+                $html.="<li>".$chosen_wrong.$answer['answer_text']."</li>";
   
             }  
             $html.="</ul>";

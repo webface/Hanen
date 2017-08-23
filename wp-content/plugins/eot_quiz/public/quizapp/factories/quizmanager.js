@@ -66,9 +66,12 @@
             quiz_preloader: quizapp.preloader,
             quizIsLoading: true,
             quizActive: false,
+            course_id:course_id,
+            enrollment_id:enrollment_id,
             resultsActive: false,
             passed: false,
             numQuestionsAnswered: 0,
+            numQuestions:0,
             completed: false,
             changeState: changeState, // changeState is a named function below
             calculatePerc: calculatePerc,
@@ -114,7 +117,8 @@
                         console.log(response.data);
                         quizObj.quiz = response.data;
                         quizObj.quizIsLoading = false;
-
+                        quizObj.numQuestions = quizObj.quiz.questions.length;
+console.log('success:'+quizObj.numQuestions);
                     },
                             function (response)
                             { // optional
