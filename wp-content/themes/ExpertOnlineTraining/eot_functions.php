@@ -4552,11 +4552,6 @@ function deleteStaffAccount_callback ()
                         . "AND org_id = $org_id "
                         . "AND type IN('watch_video','watch_custom_video') "
                         . "AND date BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'", ARRAY_A);
-                error_log("SELECT * FROM ". TABLE_TRACK ." "
-                        . "WHERE user_id = $staff_id "
-                        . "AND org_id = $org_id "
-                        . "AND type IN('watch_video','watch_custom_video') "
-                        . "AND date BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'");
                 if(count($watched_video)>0)
                 {
                     $result['display_errors'] = 'failed';
