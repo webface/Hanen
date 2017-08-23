@@ -4553,6 +4553,7 @@ function deleteStaffAccount_callback ()
                     if (wp_delete_user( $user->ID ))
                     {
                         // Build the response if successful
+                        $deleted_enrollment = $wpdb->delete(TABLE_ENROLLMENTS, array('user_id'=>$user->ID));
                         $result['data'] = 'success';
                         $result['user_id'] = $staff_id;
                         $result['success'] = true;
@@ -8123,7 +8124,7 @@ function calc_course_completion($user_id = 0, $course_id = 0)
 
   // check how many quizzes the user passed
   global $wpdb;
-  $query = "SELECT count(*) FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
+  $query = "SELECT * FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
   $num_passed = $wpdb->get_var($query);
 
   // calculate %

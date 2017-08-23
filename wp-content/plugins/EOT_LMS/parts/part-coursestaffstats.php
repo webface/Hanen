@@ -73,7 +73,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $failed_users = array_count_values($trackFailed);
                 $passed_users = array_count_values($trackPassed);
                 $attempt_count = array_count_values($track_quiz_attempts);
-                //$login_users = array_column($track_login, 'user_id'); // Assuming the track records have users with the type login.
                 $login_users = array_count_values($track_login); // Return the user ID and the key/times the user has logged in.
                 $watched_users = array_count_values($track_watchVideo); // Return the user ID and the key/times the user has watch the module.
                 //d($login_users, $track_quizzes);

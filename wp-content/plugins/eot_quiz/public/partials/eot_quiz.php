@@ -28,7 +28,6 @@
             <div class="col-xs-12">Check all that apply.</div>
         </div>
         <div class="bs row" ng-if="quiz.quizmanager.quiz.questions[quiz.activeQuestion].quiz_question_type === 'radio' || quiz.quizmanager.quiz.questions[quiz.activeQuestion].quiz_question_type === 'checkbox'">
-            <!--            <label ng-if="quiz.quizmanager.quiz.questions[quiz.activeQuestion].quiz_question_type === 'checkbox'">Check all that apply</label><br>-->
             <ul class="answers">
                 <li class="answer" ng-repeat="answer in quiz.quizmanager.quiz.questions[quiz.activeQuestion].possibilities"
                     ng-class="{'selected':quiz.quizmanager.quiz.questions[quiz.activeQuestion].possibilities[$index].selected}"
@@ -64,13 +63,12 @@
         <div class="bs row welcome-message" ng-cloak>
 
             <div class="bs col-xs-4"><strong>Your Scores: </strong>{{results.quizmanager.score}}</div>
-            <div class="bs col-xs-4" ng-cloak><strong>Passing Grade: </strong>{{results.quizmanager.quiz.quiz.passing_score}}/{{results.quizmanager.quiz.quiz.questions}}({{results.quizmanager.perc}}%)</div>
+            <div class="bs col-xs-4" ng-cloak><strong>Passing Grade: </strong>{{results.quizmanager.quiz.quiz.passing_score}}/{{results.quizmanager.numQuestions}}({{results.quizmanager.perc}}%)</div>
             <div class="bs col-xs-4"><strong>Time Spent: </strong>{{results.quizmanager.counter| formatTimer}}</div>
 
         </div>
         <h1 ng-cloak >{{results.quizmanager.quiz_message}}</h1>
-        <a ng-cloak href="/dashboard" class="exit">Back to Dashboard</a>
-<!--        <img ng-cloak class="logo startBtn" src="{{results.quizmanager.quiz_start_button}}" ng-hide="welcome.quizmanager.quizIsLoading" ng-click="welcome.activateQuiz()"/>-->
+        <a ng-cloak href="/dashboard?part=my_library&course_id={{results.quizmanager.course_id}}&enrollment_id={{results.quizmanager.enrollment_id}}" class="exit">Back to Courses</a>
         <img class="logo" src="{{results.quizmanager.quiz_results_logo}}"/>
     </div>
 </div>

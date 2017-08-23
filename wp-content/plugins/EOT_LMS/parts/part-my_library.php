@@ -146,7 +146,7 @@
                                                         {
                                                             $exam_data = $exams[$module_id];
                                                             $quiz_id = $exam_data[0]['ID'];
-															echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'">Take Quiz</a>';
+															echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';
 															array_push($finished_module_quizzes,$quiz_id); //store that the module for this quiz was completed
 			
                                                         }
@@ -280,7 +280,7 @@
                             $exam_id = $exam['ID'];
                             $exam_title = $exam['name'];
                             $icon = "fa-question-circle-o";
-                            $url = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id";
+                            $url = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id&enrollment_id=$enrollment_id";
 ?>
 		                    <ul class="inner nobullet">
 		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>">Take Quiz</a></span></li>
@@ -375,7 +375,7 @@
                                             ?>
                                             <tr>
                                                 <td><b>Completed Quizzes</b></td>
-                                            <td align="center"><?= count($passed_users)?></td>
+                                            	<td align="center"><b><?= count($passed_users)?></b></td>
                                             <td colspan="2"><?= eotprogressbar('12em', $percentage, true)?></td>
                                             </tr>
                                         </tbody>
