@@ -29,7 +29,16 @@
 		   		$resolution = isset($_REQUEST['res']) ? filter_var($_REQUEST['res'],FILTER_SANITIZE_STRING) : null; // Video resolution
 				$module_video_resources = getResourcesInModuleInCourse($course_id, $module_id, 'video'); // get the video resources in this module
                                 $resources_exam = getResourcesInCourse($course_id, "exam");
-
+                                $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
+                                $my_resources = array();
+                                
+                                foreach ($resources_docs as $resource) {// get the resources for this module
+                                    if($resource['mid'] == $module_id)
+                                    {
+                                        array_push($my_resources, $resource);
+                                    }
+                                }
+//d($resources_docs,$my_resources);
                                 
                                 $exams = array();
                                 foreach($resources_exam as $exam){
@@ -41,6 +50,7 @@
                                     array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
                                     }
                                 }
+                                
 				if( isset( $module_video_resources ) )
 				{
 					foreach ($module_video_resources as $key => $video)
@@ -120,31 +130,67 @@
 <?php
                     if(isset($exams[$module_id]))
                     {
+                        echo '<h3>You will be able to take the quiz once you complete watching the video.</h3>';
                         $exam_data = $exams[$module_id];
                         $quiz_id = $exam_data[0]['ID'];
 
 ?>
       			<center>
       				<div id="quiz" style="display:none">
-						<a class="btn" style="" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">
-	    					Take Quiz
-  						</a>
-						</div>
-						<div id="noQuiz" style="display:none">
-							<p>Note* You have to <b>finish</b> <b>watching</b> the <b>video</b> to be able to take the quiz.</p>
-						</div>
-					</center>     			
-      			<center>
+                                    <span class="loadingQuiz" style="display:none"><i class="fa fa-spinner fa-pulse fa-2x"></i>loading quiz</span>
+                                    <a class="btn takeQuiz" style="display:none" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">
+                                    Take Quiz
+                                    </a>
+                                </div>
+                                <div id="noQuiz" style="display:none">
+                                        <p>Note* You have to <b>finish</b> <b>watching</b> the <b>video</b> to be able to take the quiz.</p>
+                                </div>
+                        </center>     			
 <?php
                     }
+                    echo '<h3>Resources</h3>';
+                    echo '<ul class="inner nobullet">';
+                    foreach($my_resources as $resource)
+                        {
+                            switch ($resource['type']) 
+                            {
+                                case 'link':
+                                    $icon = "fa-link";
+                                    $url = $resource['url'];
+                                    $action = 'Visit Url';
+                                    break;
+                                case 'doc':
+                                    $icon = "fa-sticky-note-o";
+                                    $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
+                                    $action = 'Download File';
+                                    break;
+                                case 'custom_video':
+                                    $icon = "fa-play";
+                                    $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
+                                    $action = 'Watch Video';
+                                    break;
+                                default:
+                                    $icon = "fa-sticky-note-o";
+                            }
+                            
+?>
+		                    
+		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
+		                    
+<?php
+                        }
+                        echo '</ul>';
 ?>
       			<script type='text/javascript'>
+                        var video_ended = false;
       			$(document).ready(function() 
       			{
 <?php 						// Check if the user has not watched the video yet.
 					if( $videoWatchStatus )
 					{
 						echo '$("#quiz").show();'; // Show Take quiz button.
+                                                echo '$(".loadingQuiz").hide();'; // Show Take quiz button.
+                                                echo '$(".takeQuiz").show();';
 					}
 					else
 					{
@@ -152,19 +198,49 @@
 					}
 ?>			
       			});
+                        // Update the video status to finish.
+                        $( 'video' ).on('timeupdate',function(event){
+
+                                // Save object in case you want to manipulate it more without calling the DOM
+                                $this = $(this);
+                                
+                                if( this.currentTime > ( this.duration - 30 ) ) {
+                                    console.log(this.currentTime);
+                                        if(!video_ended)
+                                        {
+                                                video_ended=true;                            
+                                                $("#noQuiz").hide();
+                                                $("#quiz").show();
+                                                $(".loadingQuiz").show();
+                                                $(".takeQuiz").hide();
+                                                var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
+                                                $.ajax({
+                                                url:url,
+                                            success:
+                                            function(data)
+                                            {
+                                                $(".loadingQuiz").hide(); // Show Take quiz button.
+                                                $(".takeQuiz").show();
+                                            }
+                                            });
+                                            
+                                    }
+                                }
+
+                            });
       			// Update the video status to finish.
-      		   	$('video').on("ended", function() {
-	            	$("#noQuiz").hide();
-  		   			var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
-					$.ajax({
-					url:url,
-		            success:
-		            function(data)
-		            {
-		            	$("#quiz").show(); // Show Take quiz button.
-		            }
-		            });
-      		   	});
+//      		   	$('video').on("ended", function() {
+//	            	$("#noQuiz").hide();
+//  		   			var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
+//					$.ajax({
+//					url:url,
+//		            success:
+//		            function(data)
+//		            {
+//		            	$("#quiz").show(); // Show Take quiz button.
+//		            }
+//		            });
+//      		   	});
       		   	// Update the video time.
       		   	$("video").on("pause", function (e) {
       		   		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&time=" + e.target.currentTime + "&track_id="+$(this).attr("track-id")+"&video_id=<?=$video_id?>&status=pause&type=watch_video";

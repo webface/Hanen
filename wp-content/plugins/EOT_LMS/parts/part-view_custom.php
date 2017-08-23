@@ -19,6 +19,15 @@
 //			{
 				// get the module data
 				$module = getModule($module_id);
+                                $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
+                                $my_resources = array();
+                                
+                                foreach ($resources_docs as $resource) {// get the resources for this module
+                                    if($resource['mid'] == $module_id)
+                                    {
+                                        array_push($my_resources, $resource);
+                                    }
+                                }
 ?>
 <div class="breadcrumb">
 	<?= CRUMB_DASHBOARD ?>    
@@ -45,6 +54,7 @@
 
                     </video>
                 </div>
+
                <script type='text/javascript'>
 
       			// Update the video status to finish.
