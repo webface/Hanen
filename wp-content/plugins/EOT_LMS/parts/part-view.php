@@ -130,7 +130,7 @@
 <?php
                     if(isset($exams[$module_id]))
                     {
-                        echo '<h3>You will be able to take the quiz once you complete watching the video.</h3>';
+                        echo '<h3>Quiz</h3>';
                         $exam_data = $exams[$module_id];
                         $quiz_id = $exam_data[0]['ID'];
 
