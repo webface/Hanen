@@ -5406,10 +5406,12 @@ function getResourcesInModule($module_id = 0)
               'name' => $thevideo['name'],
               'ID' => $thevideo['ID'],
               'desc' => $thevideo['desc'],
+              'video_name' => $thevideo['video_name'],
               'secs' => $thevideo['secs'],
               'shortname' => $thevideo['shortname'],
               'shortname_medium' => $thevideo['shortname_medium'],
               'shortname_low' => $thevideo['shortname_low'],
+              'spanish' => $thevideo['spanish'],
               'resource_id' => $resource['ID'],
               'type' => 'video',
               'order' => $resource['order']
@@ -5426,9 +5428,10 @@ function getResourcesInModule($module_id = 0)
             array(
               'name' => $theresource['name'],
               'ID' => $theresource['ID'],
+              'url' => $theresource['url'],     
               'resource_id' => $resource['ID'],
-              'type' => $theresource['type'],
-              'order' => $resource['order']));          
+              'type' => $resource['type'],
+              'order' => $resource['order']));      
         } 
       }
     }
