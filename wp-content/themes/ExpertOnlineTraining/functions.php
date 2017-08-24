@@ -150,7 +150,7 @@ function eot_enqueue_scripts()
 	wp_enqueue_style('font-awesome', get_template_directory_uri() . '/css/font-awesome.css', '', '4.6.1');
 	wp_enqueue_style('videojs-style', 'https://vjs.zencdn.net/5.8.8/video-js.css', '', '5.8.8');
 	wp_enqueue_style('help-button-style', get_template_directory_uri() . '/css/help_button.css', '', '1.0.0');
-    wp_enqueue_style('datatable-buttons','/css/buttons.dataTables.min.css', '', '1.4.0');
+    wp_enqueue_style('datatable-buttons',get_template_directory_uri() . '/css/buttons.dataTables.min.css', '', '1.4.0');
 
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('jquery-ui-js', get_template_directory_uri() . '/js/jquery-ui.min.js', '', '1.12.0');
@@ -161,7 +161,7 @@ function eot_enqueue_scripts()
 	wp_enqueue_script('eot-progress-bar-js', get_template_directory_uri() . '/js/jquery.eotprogressbar.js', '', '1.0.0');
 	wp_enqueue_script('jquery-pageslide-js', get_template_directory_uri() . '/js/jquery.pageslide.js', '', '1.0.0');
 	wp_enqueue_script('datatables-js', get_template_directory_uri() . '/js/jquery.dataTables.min.js', '', '1.10.13');
-    wp_enqueue_script('datatables-js-buttons', '/js/dataTables.buttons.1.4.0.min.js', '', '1.4.0');
+    wp_enqueue_script('datatables-js-buttons', get_template_directory_uri() . '/js/dataTables.buttons.1.4.0.min.js', '', '1.4.0');
 
 	/* register main js file and register local variables to be used in javascript */
 	wp_register_script('target-js', get_template_directory_uri() . '/js/target.js', '', '1.0.0');
