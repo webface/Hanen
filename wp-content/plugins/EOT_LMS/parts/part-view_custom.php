@@ -7,7 +7,7 @@
         $video = get_custom_video($video_id);
         $user_id = get_current_user_id(); // WP User ID
         $video_record = getTrack($user_id, $video_id);
-	$track_id = ( count($video_record) > 0) ? $video_record['ID'] : 0;
+		$track_id = ( count($video_record) > 0) ? $video_record['ID'] : 0;
         $subscription = getSubscriptionByCourse($course_id);
         $subscription_id = $subscription['ID'];
     	// make sure the user has access to this course
@@ -19,15 +19,17 @@
 //			{
 				// get the module data
 				$module = getModule($module_id);
-                                $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
-                                $my_resources = array();
-                                
-                                foreach ($resources_docs as $resource) {// get the resources for this module
-                                    if($resource['mid'] == $module_id)
-                                    {
-                                        array_push($my_resources, $resource);
-                                    }
-                                }
+                $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
+                $my_resources = array();
+                
+                foreach ($resources_docs as $resource) 
+                { 
+                	// get the resources for this module
+                    if($resource['mid'] == $module_id)
+                    {
+                        array_push($my_resources, $resource);
+                    }
+                }
 ?>
 <div class="breadcrumb">
 	<?= CRUMB_DASHBOARD ?>    
@@ -39,7 +41,7 @@
 <?php
 
 				
-                                echo '<h1 class="video_title">' . $video['name'] . '</h1>';
+                echo '<h1 class="video_title">' . $video['name'] . '</h1>';
 
 ?>
 

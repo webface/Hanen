@@ -8047,10 +8047,10 @@ add_action('wp_ajax_updateVideoProgress', 'updateVideoProgress_callback');
  */
 function updateVideoProgress_callback()
 {
-  $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // WP User ID
-  $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // Module ID
-  $video_id = isset($_REQUEST['video_id'])?filter_var($_REQUEST['video_id'],FILTER_SANITIZE_NUMBER_INT):0; // Video ID
-  $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);//the track type
+  $user_id = isset($_REQUEST['user_id']) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // WP User ID
+  $module_id = isset($_REQUEST['module_id']) ? filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Module ID
+  $video_id = isset($_REQUEST['video_id']) ? filter_var($_REQUEST['video_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Video ID
+  $type = isset($_REQUEST['type']) ? filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING) : 0;//the track type
   $sql = '';
   $query_result = 0; // defaults for variables in case the if statement below doesn't resolve.
 

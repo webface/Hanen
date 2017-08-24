@@ -28,28 +28,30 @@
 				$subLanguage = isset($_REQUEST['subLang']) ? filter_var($_REQUEST['subLang'],FILTER_SANITIZE_STRING) : null; // Video Language
 		   		$resolution = isset($_REQUEST['res']) ? filter_var($_REQUEST['res'],FILTER_SANITIZE_STRING) : null; // Video resolution
 				$module_video_resources = getResourcesInModuleInCourse($course_id, $module_id, 'video'); // get the video resources in this module
-                                $resources_exam = getResourcesInCourse($course_id, "exam");
-                                $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
-                                $my_resources = array();
-                                
-                                foreach ($resources_docs as $resource) {// get the resources for this module
-                                    if($resource['mid'] == $module_id)
-                                    {
-                                        array_push($my_resources, $resource);
-                                    }
-                                }
+                $resources_exam = getResourcesInCourse($course_id, "exam");
+                $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
+                $my_resources = array();
+                
+                foreach ($resources_docs as $resource) {// get the resources for this module
+                    if($resource['mid'] == $module_id)
+                    {
+                        array_push($my_resources, $resource);
+                    }
+                }
 //d($resources_docs,$my_resources);
-                                
-                                $exams = array();
-                                foreach($resources_exam as $exam){
-                                    if(isset($exams[$exam['mid']]))
-                                    {
-                                        array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
-                                    }else{
-                                    $exams[$exam['mid']]=array();
-                                    array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
-                                    }
-                                }
+                
+                $exams = array();
+                foreach($resources_exam as $exam){
+                    if(isset($exams[$exam['mid']]))
+                    {
+                        array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                    }
+                    else
+                    {
+                    	$exams[$exam['mid']] = array();
+                    	array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                    }
+                }
                                 
 				if( isset( $module_video_resources ) )
 				{
@@ -181,8 +183,8 @@
                         }
                         echo '</ul>';
 ?>
-      			<script type='text/javascript'>
-                        var video_ended = false;
+  			<script type='text/javascript'>
+                var video_ended = false;
       			$(document).ready(function() 
       			{
 <?php 						// Check if the user has not watched the video yet.
@@ -269,7 +271,7 @@
 					  	$( this ).off( e ); // Triggers once only.
 	  		   		}
 				});
-      			</script>
+  			</script>
 <?php
 					}
 				}
