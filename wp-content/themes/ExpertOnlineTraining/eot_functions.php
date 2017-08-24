@@ -196,7 +196,7 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
           "bJQueryUI": true,
           "sPaginationType": "full_numbers",
           "bAutoWidth": false,
-          <?php echo ($download) ? 'dom: \'lfBrtip\',' : ""; ?>
+          <?php echo ($download) ? 'dom: \'Blfrtip\',' : ""; ?>
           <?php echo ($download) ? '"buttons": [ {extend: \'csv\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}, {extend: \'excel\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}],' : ""; ?>
           "iDisplayLength": <?=$num_rows?>,
           "aoColumns": [
@@ -8886,5 +8886,35 @@ function verifyQuizInCourse($quiz_id = 0 , $course_id = 0)
     else 
     {
        return false; 
+    }
+}
+
+
+/**
+ * 
+ * @global type $wpdb
+ * @global type $current_user
+ * @param type $subscription_id
+ * @return boolean
+ * 
+ */
+function verify_student_subscription($subscription_id = 0)
+{
+    global $wpdb, $current_user;
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    if($subscription_id == 0)
+    {
+        return false;
+    }
+    $user_id = $current_user->ID;
+    //$org_id = get_org_from_user($user_id);
+    $subscription = getSubscriptionIdByUser($user_id);
+    if($subscription == $subscription_id)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
