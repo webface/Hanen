@@ -5,6 +5,15 @@
 </div>
 <h1 class="article_page_title">Upgrade your Subscription</h1>
 <?php
+
+// verify this user has access to this portal/subscription/page/view
+$true_subscription = verifyUserAccess(); 
+if(!isset($true_subscription['status']) || !$true_subscription['status'])
+{
+    echo 'ERROR: You do not have permissions to modify this subscription. Please contact the administrator.';
+    return;
+}
+
 if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 {
 	global $current_user;
@@ -377,7 +386,7 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 			</tbody>
 		</table>
 		<div style="text-align: right; width: 200px; margin-left: 7px;">
-			<input type="submit" id="btn_calculate" value="Next"><br>
+			<input type="submit" id="btn_calculate" value="Next"><span id="loading" style="display:none;">&nbsp;&nbsp;<i class="fa fa-spinner fa-pulse fa-2x"></i></span><br>
 			<span class="sm">(goes to Payment Details Page)</span>
 		</div>
 		<input type="hidden" name="library_id" value="<?= $subscription->library_id ?>">
@@ -431,37 +440,44 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 	                <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
 	            </div>
 	            <h2>Credit Card</h2>
-	            <?php 
+<?php 
 	                $cus_id = get_post_meta($org_id, 'stripe_id', true);
-	                $cards = get_customer_cards ($cus_id);
-                    // No credits cards found. Will create a new one in subscribe_functions.php
-                    if( !$cards )
+                    if (empty($cus_id))
                     {
-                        $cus_id = '';
+                        // no stripe customer ID for this org. Will need to create one.
+                        $cards = '';
                     }
-	            ?>
-
-	            <?php if (!empty($cards)) { ?>
-	                <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
-	                    <tr>
-	                        <td>&nbsp;</td>
-	                        <td>Type</td>
-	                        <td>Number</td>
-	                        <td>Expiration</td>
-	                        <td>CVC</td>
-	                    </tr>
-	                    <?php foreach ($cards as $card) { ?>
-	                        <tr>
-	                            <td><input type="radio" name="cc_card" value="<?php echo $card->id; ?>" /></td>
-	                            <td><?php echo $card->brand; ?></td>
-	                            <td>**** **** **** <?php echo $card->last4; ?></td>
-	                            <td><?php echo $card->exp_month; ?> / <?php echo $card->exp_year; ?></td>
-	                            <td>***</td>
-	                        </tr>
-	                    <?php } ?>
-	                </table>
-	                <a href="#" id="new_card">Add new Card</a>
-	            <?php } ?>
+                    else
+                    {
+                        $cards = get_customer_cards ($cus_id); // get the credit cards for this customer
+                    }
+	                
+                    // if we have CC cards for this customer, display them.
+                    if (!empty($cards)) 
+                    { 
+?>
+    	                <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
+    	                    <tr>
+    	                        <td>&nbsp;</td>
+    	                        <td>Type</td>
+    	                        <td>Number</td>
+    	                        <td>Expiration</td>
+    	                        <td>CVC</td>
+    	                    </tr>
+    	                    <?php foreach ($cards as $card) { ?>
+    	                        <tr>
+    	                            <td><input type="radio" name="cc_card" value="<?php echo $card->id; ?>" /></td>
+    	                            <td><?php echo $card->brand; ?></td>
+    	                            <td>**** **** **** <?php echo $card->last4; ?></td>
+    	                            <td><?php echo $card->exp_month; ?> / <?php echo $card->exp_year; ?></td>
+    	                            <td>***</td>
+    	                        </tr>
+    	                    <?php } ?>
+    	                </table>
+    	                <a href="#" id="new_card">Add new Card</a>
+<?php 
+                    } 
+?>
 	                <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
 	                    <div class="form-row">
 	                        <label>Card Number</label>
@@ -591,7 +607,8 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 			}
 			else
 			{
-				// Calculate Total Cost.
+				$("#loading").show();
+                // Calculate Total Cost.
 				var url = ajax_object.ajax_url + "?action=calculateCost";
 		      	$.ajax( {
 		        type: "POST",
@@ -634,6 +651,7 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 		});
 		// Back button. Hides the payment form and slides down the order form for camp director.
 		$( "#back" ).click(function( event ) {
+            $("#loading").hide();
 		 	$( "form#directorUpgradeSubscription" ).slideUp( "slow", function() {
 	  		});
 		 	$( "form#calculateCostForm" ).slideDown( "slow", function() {
