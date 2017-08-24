@@ -8165,8 +8165,10 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   // check how many quizzes the user passed
   global $wpdb;
   $query = "SELECT * FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
-  $num_passed = $wpdb->get_var($query);
-
+  $amount_passed = $wpdb->get_results($query, ARRAY_A);
+  $quizzes_passed = array_column($amount_passed,'quiz_id');
+  $uniques= array_count_values($quizzes_passed);
+  $num_passed = count($uniques);
   // calculate %
   if ($num_passed == 0)
     return 0; 
