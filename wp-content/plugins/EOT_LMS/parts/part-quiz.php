@@ -20,21 +20,21 @@
 	//$true_subscription = verifyUserAccess();
 
 	if (verify_student_access($course_id)) 
+    {
+        if(verifyQuizInCourse($quiz_id, $course_id))
         {
-            if(verifyQuizInCourse($quiz_id, $course_id))
-            {
-		echo '<script>var quiz_id = ' . $quiz_id . '; var course_id = ' . $course_id . '; var enrollment_id = ' . $enrollment_id . ';</script>'; // set the quiz ID in JS
+    		echo '<script>var quiz_id = ' . $quiz_id . '; var course_id = ' . $course_id . '; var enrollment_id = ' . $enrollment_id . ';</script>'; // set the quiz ID in JS
 
-		//load quiz
-		echo do_shortcode( '[eot_quiz_display action="view_quiz" id="' . $quiz_id . '"]' );
-            }
-            else
-            {
-                echo "This quiz is not part of your course";
-            }
-        } 
-        else 
-        {
-        echo "subscription ID does not belong to you";
+		    //load quiz
+	       	echo do_shortcode( '[eot_quiz_display action="view_quiz" id="' . $quiz_id . '"]' );
         }
+        else
+        {
+            echo "This quiz is not part of your course";
+        }
+    } 
+    else 
+    {
+    echo "subscription ID does not belong to you";
+    }
 ?>

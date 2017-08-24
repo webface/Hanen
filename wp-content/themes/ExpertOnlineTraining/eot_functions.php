@@ -8878,7 +8878,8 @@ function verifyQuizInCourse($quiz_id = 0 , $course_id = 0)
     {
         return false;
     }
-    $in_course = $wpdb->get_row("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE resource_id = $quiz_id AND course_id = $course_id", ARRAY_A);
+    $in_course = $wpdb->get_row("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE resource_id = $quiz_id AND course_id = $course_id AND type = 'exam'", ARRAY_A);
+
     if($in_course)
     {
         return true;
