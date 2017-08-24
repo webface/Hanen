@@ -30,6 +30,19 @@
                         array_push($my_resources, $resource);
                     }
                 }
+                $resources_exam = getResourcesInCourse($course_id, "exam");
+                $exams = array();
+                foreach($resources_exam as $exam){
+                    if(isset($exams[$exam['mid']]))
+                    {
+                        array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                    }
+                    else
+                    {
+                    	$exams[$exam['mid']] = array();
+                    	array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
+                    }
+                }
 ?>
 <div class="breadcrumb">
 	<?= CRUMB_DASHBOARD ?>    
@@ -103,7 +116,51 @@
 				});
       			</script>
 <?php
-
+                    echo '<h3>Resources</h3>';
+                    echo '<ul class="inner nobullet">';
+                    foreach($my_resources as $resource)
+                        {
+                            switch ($resource['type']) 
+                            {
+                                case 'link':
+                                    $icon = "fa-link";
+                                    $url = $resource['url'];
+                                    $action = 'Visit Url';
+                                    break;
+                                case 'doc':
+                                    $icon = "fa-sticky-note-o";
+                                    $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
+                                    $action = 'Download File';
+                                    break;
+                                case 'custom_video':
+                                    $icon = "fa-play";
+                                    $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
+                                    $action = 'Watch Video';
+                                    break;
+                                default:
+                                    $icon = "fa-sticky-note-o";
+                            }
+                            
+?>
+		                    
+		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
+		                    
+<?php
+                        }
+                        echo '</ul>';
+                            if(isset($exams[$module_id]))
+                            {
+                                echo '<h3>Quiz</h3>';
+                                echo '<ul class="inner nobullet">';
+                                foreach($exams[$module_id] as $exam)
+                                {
+                                    ?>
+                                        <li><i class="fa fa-question-circle-o"></i><?= $exam['name']?> <a href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $exam['ID']?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">Take Quiz</a></li>
+                                        <?php
+                                    
+                                }
+                                echo '</ul>';
+                            }
 			}
 			else
 			{ // Error, module does not belong to the course.
