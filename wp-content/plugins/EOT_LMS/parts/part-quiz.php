@@ -13,28 +13,34 @@
     $subscription_id = isset($_REQUEST['subscription_id']) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
     $enrollment_id = isset($_REQUEST['enrollment_id'])? filter_var($_REQUEST['enrollment_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 
-	// make sure we got a question ID, quiz ID, and subscription ID
-	if (!$quiz_id || !$subscription_id)
-		die();
+    // make sure we got a question ID, quiz ID, and subscription ID
+    if (!$quiz_id || !$subscription_id)
+            die();
 
-	//$true_subscription = verifyUserAccess();
-
-	if (verify_student_access($course_id)) 
+    $true_subscription = verifyUserAccess();
+    if(isset($true_subscription['status']) && $true_subscription['status'])
     {
-        if(verifyQuizInCourse($quiz_id, $course_id))
+        if (verify_student_access($course_id)) 
         {
-    		echo '<script>var quiz_id = ' . $quiz_id . '; var course_id = ' . $course_id . '; var enrollment_id = ' . $enrollment_id . ';</script>'; // set the quiz ID in JS
+            if(verifyQuizInCourse($quiz_id, $course_id))
+            {
+                echo '<script>var quiz_id = ' . $quiz_id . '; var course_id = ' . $course_id . '; var enrollment_id = ' . $enrollment_id . ';</script>'; // set the quiz ID in JS
 
-		    //load quiz
-	       	echo do_shortcode( '[eot_quiz_display action="view_quiz" id="' . $quiz_id . '"]' );
-        }
-        else
+                //load quiz
+                echo do_shortcode( '[eot_quiz_display action="view_quiz" id="' . $quiz_id . '"]' );
+            }
+            else
+            {
+                echo "This quiz is not part of your course";
+            }
+        } 
+        else 
         {
-            echo "This quiz is not part of your course";
+            echo "the course ID does not belong to you";
         }
-    } 
-    else 
+    }
+    else
     {
-    echo "subscription ID does not belong to you";
+        echo "subscription ID does not belong to you";
     }
 ?>

@@ -196,7 +196,7 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
           "bJQueryUI": true,
           "sPaginationType": "full_numbers",
           "bAutoWidth": false,
-          <?php echo ($download) ? 'dom: \'lfBrtip\',' : ""; ?>
+          <?php echo ($download) ? 'dom: \'Blfrtip\',' : ""; ?>
           <?php echo ($download) ? '"buttons": [ {extend: \'csv\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}, {extend: \'excel\',title: \''.$filename.'\',messageTop:\'Expert Online Training\'}],' : ""; ?>
           "iDisplayLength": <?=$num_rows?>,
           "aoColumns": [
@@ -1619,7 +1619,8 @@ function verifyUserAccess ()
     {
       $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
-      if ($results){
+      if ($results)
+      {
         // verify that the current user is the director for this subscription
         $manager_id = $results->manager_id;
         $user_id = $current_user->ID; // Wordpress user ID
@@ -1640,6 +1641,28 @@ function verifyUserAccess ()
     else
     {
       return array( 'status' => 0, 'message' => 'a camp director without a subscription ID' );
+    }
+  }
+  else if (current_user_can("is_student"))
+  {
+    $user_id = $current_user->ID;
+    // make sure a subscription ID was passed in and this user has access to it.
+    if ($subscription_id)
+    {
+      $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE user_id = $user_id AND subscription_id = $subscription_id";
+      $results = $wpdb->get_row ($sql);
+      if ($results)
+      {
+        return array ( 'status' => 1 );
+      }
+      else
+      {
+        return array( 'status' => 0, 'message' => 'User not in this subscription.' );
+      }
+    }
+    else
+    {
+      return array( 'status' => 0, 'message' => 'ERROR: student without a subscription ID' );
     }
   }
 
