@@ -8862,3 +8862,29 @@ function calculate_progress($user_id = 0, $course_id = 0)
     $percentage = $passed/count($quizzes_in_course)*100;
     return $percentage;
 }
+
+/**
+ * 
+ * @param type $quiz_id - the quiz ID
+ * @param type $course_id - the course ID
+ * 
+ */
+function verifyQuizInCourse($quiz_id = 0 , $course_id = 0)
+{
+    $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    if($course_id == 0 || $quiz_id == 0)
+    {
+        return false;
+    }
+    $in_course = $wpdb->get_row("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE resource_id = $quiz_id AND course_id = $course_id", ARRAY_A);
+    if($in_course)
+    {
+        return true;
+    }
+    else 
+    {
+       return false; 
+    }
+}
