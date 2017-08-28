@@ -52,21 +52,21 @@ function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $o
   if($subscription_id) 
   {	
   	// looking for a specific subscription
-    $sql .=  " where `id` = " . $subscription_id;
+    $sql .=  " WHERE `ID` = " . $subscription_id;
   }
   else if($library_id)
   {
   	// looking for all subscriptions for a specific library
-      $sql .= " where library_id = " . $library_id;
+      $sql .= " WHERE library_id = " . $library_id;
   }
   else if($org_id)
   {
     // looking for all subscriptions for organization ID
-    $sql .= " where org_id = " . $org_id; 
+    $sql .= " WHERE org_id = " . $org_id; 
   }
   else if($start_date != "0000-00-00" && $end_date != "0000-00-00")
   {
-    $sql .= "  where trans_date >= '" . $start_date . "' AND trans_date <= '" . $end_date . "'";
+    $sql .= "  WHERE trans_date >= '" . $start_date . "' AND trans_date <= '" . $end_date . "'";
   }
 
   $date = current_time('Y-m-d');
@@ -5444,10 +5444,12 @@ function getResourcesInModule($module_id = 0)
               'name' => $thevideo['name'],
               'ID' => $thevideo['ID'],
               'desc' => $thevideo['desc'],
+              'video_name' => $thevideo['video_name'],
               'secs' => $thevideo['secs'],
               'shortname' => $thevideo['shortname'],
               'shortname_medium' => $thevideo['shortname_medium'],
               'shortname_low' => $thevideo['shortname_low'],
+              'spanish' => $thevideo['spanish'],
               'resource_id' => $resource['ID'],
               'type' => 'video',
               'order' => $resource['order']
@@ -5464,9 +5466,10 @@ function getResourcesInModule($module_id = 0)
             array(
               'name' => $theresource['name'],
               'ID' => $theresource['ID'],
+              'url' => $theresource['url'],     
               'resource_id' => $resource['ID'],
-              'type' => $theresource['type'],
-              'order' => $resource['order']));          
+              'type' => $resource['type'],
+              'order' => $resource['order']));      
         } 
       }
     }
