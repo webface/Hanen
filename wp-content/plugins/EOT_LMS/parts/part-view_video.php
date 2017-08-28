@@ -16,11 +16,13 @@
         if(isset($true_subscription['status']) && $true_subscription['status'])
         {
             $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // The chosen Module ID
-            $data = compact ("org_id");
             $subLanguage = isset($_REQUEST['subLang']) ? filter_var($_REQUEST['subLang'],FILTER_SANITIZE_STRING) : null; // Video Language
             $resolution = isset($_REQUEST['res']) ? filter_var($_REQUEST['res'],FILTER_SANITIZE_STRING) : null; // Video resolution
-            $module = getModule($module_id);
-            if( isset($module) )
+            $module_data = getModule($module_id);
+            $subscription = getSubscriptions($subscription_id);
+
+            // make sure we got a module AND that user has access to this module.
+            if( isset($module_data) && $module_data['library_id'] == $subscription->library_id)
             {
                 $module_resources = getResourcesInModule($module_id); // All resources in the module.
                 $resources = array();// Video resources. Populated in the next foreach.
@@ -28,7 +30,7 @@
                 {
                     if($module['type'] == "video")
                     {
-    ?>
+?>
                         <h1 class="article_page_title" class="video_title"><?= $module['name'] ?></h1>
                         <h3>Description</h3>
                         <p>
@@ -36,25 +38,28 @@
                         </p>
                         <b>Language:</b>  <?= $subLanguage ? '<a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'">English</a>' : 'English' ?> 
 
-                        <?php echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>'?> <br />
-                            <br />
+<?php 
+                        echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>';
+?> 
+                        <br />
+                        <br />
                         <div id='player_<?= $module['ID']; ?>' style='width:665px;height:388px'>
                             <video id="my-video" user-id="<?=$user_id?>" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
                                 <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $module['video_name'] ?>_en.vtt" srclang="en" label="English" default>
                                 <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $module['video_name'] ?>_es.vtt" srclang="es" label="Spanish">
                                 <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $module['video_name'] ?>_ma.vtt" srclang="man" label="Mandarin">
 
-        <?php 
+<?php 
                                 // Check if we are showing by language or resolution.
                                 if($subLanguage)
                                 {
-        ?>
+?>
                                     <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $module['spanish'] : $module['shortname_medium'] ?>.mp4" type='video/mp4'>4
                                     <p class="vjs-no-js">
                                     To view this video please enable JavaScript, and consider upgrading to a web browser that
                                     <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                                     </p>
-        <?php
+<?php
                                 }
                                 else
                                 {
@@ -71,30 +76,28 @@
                                     {
                                         $video_name = $module['shortname_low'];
                                     } 
-        ?>
+?>
 
                                     <source src="https://eot-output.s3.amazonaws.com/<?= $video_name ?>.mp4" type='video/mp4'>
                                     <p class="vjs-no-js">
                                         To view this video please enable JavaScript, and consider upgrading to a web browser that
                                         <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                                     </p>        
-        <?php
+<?php
                                 }
-        ?>
+?>
                                 
                             </video>
                         </div>
-    <?php
+<?php
                     }
                     // Add docs into the resources table.
                     else if($module['type'] == "doc")
                     {
                         array_push($resources, $module);
                     }
-                }
-
-
-                ?>
+                } // end foreach
+?>
                 <br />
                 <div id="msg">       
                     <h3>Loading Slowly? Click here.</h3>
@@ -108,38 +111,38 @@
                                         <div class='msgbox'>
                                             <h3>Change Visual Quality <img src="<?php echo bloginfo('template_directory'); ?>/images/target/info-sm.gif" title="If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother." class="tooltip" style="margin-bottom: -2px"<?=hover_text_attr("If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother.", true) ?>></h3>
                                             <ul class="notop">
-                                            <?php 
+<?php 
                                                 if( $resolution != "high" && $resolution != null)
                                                 {
-                                            ?>
+?>
                                                     <li>
                                                         View <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=high">
                                                         <!--High-Resolution Version-->
                                                         Full HD Version</a> for high-speed connections and large screen viewing
                                                     </li>
-                                            <?php
+<?php
                                                 }
                                                 if($resolution != "medium")
                                                 {
-                                            ?>
+?>
                                                     <li>
                                                         View <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=medium">
                                                       <!--Medium-Resolution Version-->
                                                         Medium-Resolution Version</a>
                                                     </li>
-                                            <?php
+<?php
                                                 }
                                                 if($resolution != "low")
                                                 {
-                                            ?>
+?>
                                                     <li>
                                                         View <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=low">
                                                       <!--Low-Resolution Version-->
                                                         Low-Resolution Version</a> for slow Internet connections
                                                     </li>
-                                            <?php
+<?php
                                                 }
-                                            ?>
+?>
                                         </div>             
                                     </div>
                                 </div>
@@ -150,27 +153,27 @@
                 </ul>
                 <!-- Resources of the video (handouts, etc.) -->
                 <div id="resources">
-                <?php
+<?php
                 //Video Resources
                 if(!empty($resources))
                 {
-    ?>
+?>
                     <h3>Resources</h3>
                     <ul>
-    <?php
+<?php
                         foreach ($resources as $resource) 
                         {
                             echo "<li><a href='" . $resource['url'] . "' target='_blank'>" . $resource['name'] . "</a></li>";
                         }
-    ?>
+?>
                     </ul>
-    <?php
+<?php
                 }
                 else
                 {
                     echo "No resources exist for this module yet.";
                 }
-    ?>
+?>
                 </div>
                 <script type="text/javascript">
                     jQuery(function($) 
@@ -186,7 +189,7 @@
                         });
                     })
                 </script>
-                <?php
+<?php
             }
             else
             {
