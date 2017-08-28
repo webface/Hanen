@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-03 16:24:24+0000\n"
+"PO-Revision-Date: 2017-08-18 15:34:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,10 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: zh_CN\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
+
+#: includes/import/abstract-wc-product-importer.php:562
+msgid "Unable to use image \"%s\"."
+msgstr "未能使用图片 \"%s\"."
 
 #: includes/api/class-wc-rest-shipping-zone-locations-controller.php:90
 #: includes/api/class-wc-rest-shipping-zones-controller.php:170
@@ -36,7 +40,7 @@ msgstr "适用该优惠券的产品，或能在购物车种适用 “固定购�
 msgid "I&rsquo;ve read and accept the <a href=\"%s\" class=\"woocommerce-terms-and-conditions-link\">terms &amp; conditions</a>"
 msgstr "我已阅读并同意<a href=\"%s\" class=\"woocommerce-terms-and-conditions-link\">服务协议</a>。"
 
-#: includes/wc-product-functions.php:751
+#: includes/wc-product-functions.php:753
 msgid "Search results only"
 msgstr "仅搜索结果页"
 
@@ -50,7 +54,7 @@ msgstr[0] "评分 %1$s / 5 , 已有 %2$s 位顾客进行评价"
 msgid "Subject (paid)"
 msgstr "主题(已支付)"
 
-#: includes/import/class-wc-product-csv-importer.php:721
+#: includes/import/class-wc-product-csv-importer.php:787
 msgid "SKU %s"
 msgstr "SKU %s"
 
@@ -70,15 +74,15 @@ msgstr "无效的产品ID %d。"
 msgid "Invalid product type."
 msgstr "无效的产品类型。"
 
-#: includes/import/class-wc-product-csv-importer.php:718
+#: includes/import/class-wc-product-csv-importer.php:784
 msgid "ID %d"
 msgstr "ID %d"
 
-#: includes/import/class-wc-product-csv-importer.php:767
+#: includes/import/class-wc-product-csv-importer.php:833
 msgid "A product with this SKU already exists."
 msgstr "该 SKU 已被其它产品使用。"
 
-#: includes/import/class-wc-product-csv-importer.php:762
+#: includes/import/class-wc-product-csv-importer.php:828
 msgid "A product with this ID already exists."
 msgstr "该 ID 已被其它产品使用。"
 
@@ -95,7 +99,7 @@ msgstr "变量产品无法导入：父级产品ID缺失或者父级产品已不�
 msgid "House number and street name"
 msgstr "街道名称和房屋编号"
 
-#: includes/import/abstract-wc-product-importer.php:556
+#: includes/import/abstract-wc-product-importer.php:554
 msgid "Not able to attach \"%s\"."
 msgstr "不能附加\"%s\"。"
 
@@ -103,15 +107,15 @@ msgstr "不能附加\"%s\"。"
 msgid "Please log in to your account below to continue to the payment form."
 msgstr "请在下面登录您的账户以完成结算。"
 
-#: includes/import/class-wc-product-csv-importer.php:772
+#: includes/import/class-wc-product-csv-importer.php:838
 msgid "No matching product exists to update."
 msgstr "没找到要更新的产品。"
 
-#: includes/wc-product-functions.php:750
+#: includes/wc-product-functions.php:752
 msgid "Shop only"
 msgstr "仅店铺页"
 
-#: includes/wc-product-functions.php:749
+#: includes/wc-product-functions.php:751
 msgid "Shop and search results"
 msgstr "店铺页和搜索结果页"
 
@@ -1139,7 +1143,7 @@ msgstr "丘基萨卡"
 msgid "Are you sure you want to log out? <a href=\"%s\">Confirm and log out</a>"
 msgstr "确定要退出账户吗?<a href=\"%s\">确定退出</a>"
 
-#: includes/api/class-wc-rest-authentication.php:538
+#: includes/api/class-wc-rest-authentication.php:540
 msgid "Unknown request method."
 msgstr "未知请求方法。"
 
@@ -1754,11 +1758,11 @@ msgstr "无效的变量ID"
 msgid "Order status set to %s."
 msgstr "订单状态设置为%s."
 
-#: includes/class-wc-order-item-product.php:182
+#: includes/class-wc-order-item-product.php:184
 msgid "Invalid product"
 msgstr "无效的产品"
 
-#: includes/class-wc-install.php:920
+#: includes/class-wc-install.php:923
 msgid "Visit premium customer support"
 msgstr "查看优先顾客支持"
 
@@ -4882,7 +4886,7 @@ msgstr "以网站所在时区显示的webhook被最后修改的时间。"
 msgid "Limit result set to webhooks assigned a specific status."
 msgstr "限制结果为与一个特定状态相关的webhooks。"
 
-#: includes/class-wc-install.php:1088
+#: includes/class-wc-install.php:1091
 msgid "%1$s was installed but could not be activated. <a href=\"%2$s\">Please activate it manually by clicking here.</a>"
 msgstr "%1$s已安装但无法启用。 <a href=\"%2$s\">点这里手动启用</a>"
 
@@ -4890,7 +4894,7 @@ msgstr "%1$s已安装但无法启用。 <a href=\"%2$s\">点这里手动启用</
 msgid "Return to emails"
 msgstr "返回至邮件设置。"
 
-#: includes/class-wc-install.php:1062 includes/class-wc-install.php:1144
+#: includes/class-wc-install.php:1065 includes/class-wc-install.php:1147
 msgid "%1$s could not be installed (%2$s). <a href=\"%3$s\">Please install it manually by clicking here.</a>"
 msgstr "%1$s 无法安装 (%2$s)， <a href=\"%3$s\">点这里手动安装。</a>"
 
@@ -8215,7 +8219,7 @@ msgstr "巴格马提"
 msgid "Buy now"
 msgstr "立即购买"
 
-#: includes/class-wc-install.php:287
+#: includes/class-wc-install.php:291
 msgid "Monthly"
 msgstr "月度"
 
@@ -10103,7 +10107,7 @@ msgstr " 您在的 {site_title} 自 {order_date} 订单已被部分退款了。"
 msgid "Your {site_title} order from {order_date} has been refunded"
 msgstr "您在的 {site_title} 自 {order_date} 订单已被退款了。"
 
-#: includes/emails/class-wc-email-customer-refunded-order.php:79
+#: includes/emails/class-wc-email-customer-refunded-order.php:77
 msgid "Your order has been partially refunded"
 msgstr "您的订单已被部分退款。"
 
@@ -10125,7 +10129,7 @@ msgid "Invoice for order {order_number}"
 msgstr "订单票据 {order_number} "
 
 #: includes/emails/class-wc-email-customer-invoice.php:77
-#: includes/emails/class-wc-email-customer-refunded-order.php:77
+#: includes/emails/class-wc-email-customer-refunded-order.php:79
 msgid "Order {order_number} details"
 msgstr "订单 {order_number} 详情"
 
@@ -11091,7 +11095,7 @@ msgstr "无效的作用域 %s"
 msgid "An error occurred in the request and at the time were unable to send the consumer data"
 msgstr "在请求时发生错误，此时无法发送的用户数据"
 
-#: includes/class-wc-install.php:325
+#: includes/class-wc-install.php:329
 msgctxt "Page slug"
 msgid "shop"
 msgstr "shop"
@@ -11113,7 +11117,7 @@ msgstr "设置产品图片"
 msgid "Remove product image"
 msgstr "删除产品图片"
 
-#: includes/class-wc-install.php:340
+#: includes/class-wc-install.php:344
 msgctxt "Page slug"
 msgid "my-account"
 msgstr "my-account"
@@ -11289,12 +11293,12 @@ msgstr " %s不是一个有效的URL"
 msgid "The callback_url need to be over SSL"
 msgstr "callback_url 应该是一个SSL链接"
 
-#: includes/class-wc-install.php:330
+#: includes/class-wc-install.php:334
 msgctxt "Page slug"
 msgid "cart"
 msgstr "cart"
 
-#: includes/class-wc-install.php:335
+#: includes/class-wc-install.php:339
 msgctxt "Page slug"
 msgid "checkout"
 msgstr "checkout"
@@ -11567,27 +11571,27 @@ msgctxt "Admin menu name"
 msgid "Shipping classes"
 msgstr "配送类型"
 
-#: includes/class-wc-install.php:920
+#: includes/class-wc-install.php:923
 msgid "Premium support"
 msgstr "优先支持"
 
-#: includes/class-wc-install.php:919
+#: includes/class-wc-install.php:922
 msgid "API docs"
 msgstr "API文档"
 
-#: includes/class-wc-install.php:919
+#: includes/class-wc-install.php:922
 msgid "View WooCommerce API docs"
 msgstr "查看WooCommerce API文档"
 
-#: includes/class-wc-install.php:918
+#: includes/class-wc-install.php:921
 msgid "View WooCommerce documentation"
 msgstr "查看WooCommerce文档"
 
-#: includes/class-wc-install.php:902
+#: includes/class-wc-install.php:905
 msgid "View WooCommerce settings"
 msgstr "查看WooCommerce设置"
 
-#: includes/class-wc-install.php:665
+#: includes/class-wc-install.php:669
 msgid "Shop manager"
 msgstr "店铺管理员"
 
@@ -12585,7 +12589,7 @@ msgstr "所提供的订单币种无效"
 msgid "Invalid customer email"
 msgstr "顾客邮箱无效"
 
-#: includes/api/class-wc-rest-authentication.php:569
+#: includes/api/class-wc-rest-authentication.php:571
 #: includes/api/legacy/v3/class-wc-api-authentication.php:111
 msgid "WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field."
 msgstr "WooCommerce API，使用一个onsumer key在用户名输入栏并使用一个consumer secret在密码栏"
@@ -14346,7 +14350,7 @@ msgid "Discount amount"
 msgstr "折扣金额"
 
 #: includes/admin/settings/class-wc-settings-emails.php:265
-#: includes/class-wc-install.php:660
+#: includes/class-wc-install.php:664
 msgid "Customer"
 msgstr "顾客"
 
@@ -15061,7 +15065,7 @@ msgstr "允许使用货到付款"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:878
 #: includes/admin/views/html-notice-tracking.php:13
-#: includes/wc-product-functions.php:835
+#: includes/wc-product-functions.php:837
 msgid "Allow"
 msgstr "允许"
 
@@ -15265,7 +15269,7 @@ msgstr "&lsaquo; 前一个"
 msgid "Next &rsaquo;"
 msgstr "后一个 &rsaquo;"
 
-#: includes/class-wc-install.php:918
+#: includes/class-wc-install.php:921
 msgid "Docs"
 msgstr "文档"
 
@@ -15629,7 +15633,7 @@ msgstr "仅含运费"
 #: includes/admin/views/html-bulk-edit-product.php:95
 #: includes/admin/views/html-quick-edit-product.php:73
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:217
-#: includes/wc-product-functions.php:802
+#: includes/wc-product-functions.php:804
 msgid "Standard"
 msgstr "标准"
 
@@ -15644,7 +15648,7 @@ msgstr "管理库存？"
 msgid "Stock quantity. If this is a variable product this value will be used to control stock for all variations, unless you define stock at variation level."
 msgstr "库存数量。如果这是一个可变的产品，这个值将被用于控制所有变更的库存，除非你定义库存变化量。"
 
-#: includes/wc-product-functions.php:833
+#: includes/wc-product-functions.php:835
 msgid "Do not allow"
 msgstr "不允许"
 
@@ -15982,7 +15986,7 @@ msgstr "你没有权限删除webhooks！"
 msgid "You do not have permissions to create Webhooks!"
 msgstr "你没有权限创建webhooks！"
 
-#: includes/wc-product-functions.php:834
+#: includes/wc-product-functions.php:836
 msgid "Allow, but notify customer"
 msgstr "允许，但通知顾客"
 
@@ -16468,12 +16472,12 @@ msgid "Mark complete"
 msgstr "标记为已完成"
 
 #: includes/admin/class-wc-admin-post-types.php:1490
-#: includes/wc-product-functions.php:535
+#: includes/wc-product-functions.php:537
 msgid "External/Affiliate product"
 msgstr "外接/关联产品"
 
 #: includes/admin/class-wc-admin-post-types.php:1496
-#: includes/wc-product-functions.php:533
+#: includes/wc-product-functions.php:535
 msgid "Simple product"
 msgstr "单个产品"
 
@@ -16507,7 +16511,7 @@ msgstr "搜索"
 
 #: includes/admin/views/html-bulk-edit-product.php:190
 #: includes/admin/views/html-quick-edit-product.php:147
-#: includes/wc-product-functions.php:752
+#: includes/wc-product-functions.php:754
 msgid "Hidden"
 msgstr "隐藏"
 
@@ -16817,19 +16821,19 @@ msgid "PayPal email address"
 msgstr "PayPal 电邮地址:"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:263
-#: includes/class-wc-install.php:326
+#: includes/class-wc-install.php:330
 msgctxt "Page title"
 msgid "Shop"
 msgstr "商店"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:267
-#: includes/class-wc-install.php:331
+#: includes/class-wc-install.php:335
 msgctxt "Page title"
 msgid "Cart"
 msgstr "购物车"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:271
-#: includes/class-wc-install.php:336
+#: includes/class-wc-install.php:340
 msgctxt "Page title"
 msgid "Checkout"
 msgstr "结算"
@@ -16859,12 +16863,12 @@ msgid "Add a quick summary for your product here. This will appear on the produc
 msgstr "在此添加一个产品简述，它将会出现在产品页面的产品名称下面。"
 
 #: includes/admin/class-wc-admin-post-types.php:1487
-#: includes/wc-product-functions.php:534
+#: includes/wc-product-functions.php:536
 msgid "Grouped product"
 msgstr "成组产品"
 
 #: includes/admin/class-wc-admin-post-types.php:1493
-#: includes/wc-product-functions.php:536
+#: includes/wc-product-functions.php:538
 msgid "Variable product"
 msgstr "可变产品"
 
@@ -16956,7 +16960,7 @@ msgid_plural "%s order statuses changed."
 msgstr[0] "%s 订单状态已更改。"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:277
-#: includes/class-wc-install.php:341
+#: includes/class-wc-install.php:345
 msgctxt "Page title"
 msgid "My account"
 msgstr "我的帐户"
@@ -17173,7 +17177,7 @@ msgstr "Keys/Apps"
 msgid "Action failed. Please refresh the page and retry."
 msgstr "动作失败。请刷新页面重试。"
 
-#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.1.1)  #-#-#-#-#
+#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.1.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/admin/class-wc-admin-assets.php:90
 #: includes/admin/class-wc-admin-menus.php:60
@@ -17374,7 +17378,7 @@ msgstr "你不能重复输入相同的税率!"
 #: includes/api/legacy/v2/class-wc-api-products.php:1989
 #: includes/api/legacy/v3/class-wc-api-products.php:2547
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:645
-#: includes/import/abstract-wc-product-importer.php:600
+#: includes/import/abstract-wc-product-importer.php:602
 msgid "Slug \"%s\" is too long (28 characters max). Shorten it, please."
 msgstr "别名：\"%s\"太长了(系统最多只允许28个字符)请删减掉一些字符。"
 
@@ -17383,7 +17387,7 @@ msgstr "别名：\"%s\"太长了(系统最多只允许28个字符)请删减掉�
 #: includes/api/legacy/v2/class-wc-api-products.php:1991
 #: includes/api/legacy/v3/class-wc-api-products.php:2549
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:647
-#: includes/import/abstract-wc-product-importer.php:602
+#: includes/import/abstract-wc-product-importer.php:604
 msgid "Slug \"%s\" is not allowed because it is a reserved term. Change it, please."
 msgstr "别名：\"%s\" 不可注册，因为包含了系统禁止注册的单词或词组，请更换其他的别名。"
 
@@ -17398,7 +17402,7 @@ msgstr "请提供一个属性名以及别名。"
 #: includes/api/legacy/v2/class-wc-api-products.php:1993
 #: includes/api/legacy/v3/class-wc-api-products.php:2551
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:649
-#: includes/import/abstract-wc-product-importer.php:604
+#: includes/import/abstract-wc-product-importer.php:606
 msgid "Slug \"%s\" is already in use. Change it, please."
 msgstr "别名：\"%s\"已被使用，请更换其他的别名。"
 
@@ -17611,7 +17615,7 @@ msgstr "通过CSV文件导入<strong>税率</strong>到网店"
 #: includes/admin/class-wc-admin-menus.php:80
 #: includes/admin/settings/class-wc-settings-api.php:45
 #: includes/admin/views/html-admin-page-status-report.php:437
-#: includes/class-wc-install.php:902
+#: includes/class-wc-install.php:905
 msgid "Settings"
 msgstr "设置"
 
@@ -17668,7 +17672,7 @@ msgstr "输入自定义基础去使用. <strong>必须</strong> 设置或 WordPr
 #: includes/admin/class-wc-admin-post-types.php:442
 #: includes/admin/reports/class-wc-report-stock.php:112
 #: includes/wc-formatting-functions.php:1016
-#: includes/wc-product-functions.php:820
+#: includes/wc-product-functions.php:822
 msgid "In stock"
 msgstr "有货"
 
@@ -17676,7 +17680,7 @@ msgstr "有货"
 #: includes/admin/class-wc-admin-post-types.php:444
 #: includes/admin/class-wc-admin-reports.php:100
 #: includes/admin/reports/class-wc-report-stock.php:114
-#: includes/wc-product-functions.php:821
+#: includes/wc-product-functions.php:823
 msgid "Out of stock"
 msgstr "无货"
 
@@ -17850,7 +17854,7 @@ msgstr "西弗吉尼亚州"
 msgid "Western Cape"
 msgstr "佛得角"
 
-#: includes/class-wc-order-item-product.php:201
+#: includes/class-wc-order-item-product.php:203
 #: includes/legacy/abstract-wc-legacy-order.php:164
 msgid "Backordered"
 msgstr "延时交货"

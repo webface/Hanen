@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-16 10:00:34+0000\n"
+"PO-Revision-Date: 2017-08-26 18:00:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -931,13 +931,13 @@ msgstr "Importar"
 msgid "Create an API key"
 msgstr "Crear una clave de API"
 
-#: includes/admin/class-wc-admin-api-keys.php:83
-msgid "The WooCommerce REST API allows external apps to view and manage store data. Access is granted only to those with valid API keys."
-msgstr "La REST API de WooCommerce permite a aplicaciones externas ver y gestionar los datos de la tienda. El acceso sólo se permite a aquellos que tengan claves de la API válidas."
-
 #: includes/admin/class-wc-admin-addons.php:339
 msgid "Free - Install now"
 msgstr "Gratis - Instálalo ahora"
+
+#: includes/admin/class-wc-admin-api-keys.php:83
+msgid "The WooCommerce REST API allows external apps to view and manage store data. Access is granted only to those with valid API keys."
+msgstr "La REST API de WooCommerce permite a aplicaciones externas ver y gestionar los datos de la tienda. El acceso solo se permite a aquellos que tengan claves de la API válidas."
 
 #: i18n/states/RO.php:58
 msgid "Vrancea"
@@ -5507,16 +5507,6 @@ msgstr "Lista de archivos descargables."
 msgid "File MD5 hash."
 msgstr "Hash MD5 del archivo."
 
-#: includes/api/class-wc-rest-products-controller.php:1563
-#: includes/api/v1/class-wc-rest-products-controller.php:1918
-msgid "Product external URL. Only for external products."
-msgstr "URL externa del producto. Sólo para productos externos."
-
-#: includes/api/class-wc-rest-products-controller.php:1569
-#: includes/api/v1/class-wc-rest-products-controller.php:1924
-msgid "Product external button text. Only for external products."
-msgstr "Texto del botón externo del producto. Sólo para productos externos."
-
 #: includes/api/class-wc-rest-product-variations-controller.php:736
 #: includes/api/class-wc-rest-products-controller.php:1574
 #: includes/api/v1/class-wc-rest-products-controller.php:1929
@@ -6185,6 +6175,16 @@ msgstr "Permitir reseñas."
 msgid "Default sort order."
 msgstr "Orden por defecto."
 
+#: includes/api/class-wc-rest-products-controller.php:1569
+#: includes/api/v1/class-wc-rest-products-controller.php:1924
+msgid "Product external button text. Only for external products."
+msgstr "Texto del botón externo del producto. Solo para productos externos."
+
+#: includes/api/class-wc-rest-products-controller.php:1563
+#: includes/api/v1/class-wc-rest-products-controller.php:1918
+msgid "Product external URL. Only for external products."
+msgstr "URL externa del producto. Solo para productos externos."
+
 #: includes/admin/views/html-notice-updating.php:12
 msgid "Your database is being updated in the background."
 msgstr "Tu base de datos está siendo actualizada en segundo plano."
@@ -6613,10 +6613,6 @@ msgstr "La fecha en la que la nota de pedido fue creada, en la zona horaria del 
 msgid "Order note."
 msgstr "Nota de pedido."
 
-#: includes/api/v1/class-wc-rest-order-notes-controller.php:418
-msgid "Shows/define if the note is only for reference or for the customer (the user will be notified)."
-msgstr "Muestra/define si la nota es sólo para referencia o para el cliente (se notificará al usuario)."
-
 #: includes/api/class-wc-rest-order-notes-controller.php:43
 #: includes/api/class-wc-rest-order-refunds-controller.php:188
 #: includes/api/class-wc-rest-order-refunds-controller.php:270
@@ -6845,6 +6841,10 @@ msgstr "Necesitamos actualizar la base de datos de tu tienda a la última versi�
 msgid "Shipping is currently enabled, but you have not added any shipping methods to your shipping zones."
 msgstr "El envío está actualmente activado, pero no has añadido ningún método de envío a tus zonas de envío."
 
+#: includes/api/v1/class-wc-rest-order-notes-controller.php:418
+msgid "Shows/define if the note is only for reference or for the customer (the user will be notified)."
+msgstr "Muestra/define si la nota es solo para referencia o para el cliente (se avisará al usuario)."
+
 #: includes/admin/views/html-notice-legacy-shipping.php:13
 msgid "New:"
 msgstr "Nuevo:"
@@ -6905,10 +6905,6 @@ msgstr "Descartar"
 msgid "Add shipping zone"
 msgstr "Añadir zona de envío"
 
-#: includes/admin/settings/views/html-admin-page-shipping-zones.php:65
-msgid "Add as many zones as you need &ndash; customers will only see the methods available for their address."
-msgstr "Añade tantas zonas como necesites &ndash; los clientes sólo verán los métodos disponibles para su dirección."
-
 #: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:56
 msgid "Postcodes containing wildcards (e.g. CB23*) and fully numeric ranges (e.g. <code>90210...99000</code>) are also supported."
 msgstr "También se pueden utilizar códigos postales que contengan comodines (p.ej. CP23*) y rangos numéricos completos (p.ej. <code>90210…99000</code>)."
@@ -6957,6 +6953,10 @@ msgstr "Zona local = California CP 90210 = recogida local"
 msgid "Your server does not support the %s function - this is required to use the GeoIP database from MaxMind."
 msgstr "Tu servidor no es compatible con la función %s - es imprescindible para usar la base de datos GeoIP de MaxMind."
 
+#: includes/admin/settings/views/html-admin-page-shipping-zones.php:65
+msgid "Add as many zones as you need &ndash; customers will only see the methods available for their address."
+msgstr "Añade tantas zonas como necesites &ndash; los clientes solo verán los métodos disponibles para su dirección."
+
 #: includes/admin/settings/class-wc-settings-accounts.php:149
 #: includes/class-wc-query.php:116 includes/wc-account-functions.php:99
 msgid "Addresses"
@@ -6981,10 +6981,6 @@ msgstr "Los siguientes métodos de envío se aplican a clientes con direcciones 
 #: includes/admin/settings/views/html-admin-page-shipping-zones.php:121
 msgid "Add shipping method"
 msgstr "Añadir método de envío"
-
-#: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:96
-msgid "You can add multiple shipping methods within this zone. Only customers within the zone will see them."
-msgstr "Puedes añadir múltiples métodos de envío dentro de esta zona. Sólo los clientes dentro de la zona los verán."
 
 #: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:131
 #: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:158
@@ -7154,6 +7150,10 @@ msgstr "Las clases de envío pueden usarse para agrupar productos de tipo simila
 #: includes/admin/settings/class-wc-settings-general.php:124
 msgid "This option determines a customers default location. The MaxMind GeoLite Database will be periodically downloaded to your wp-content directory if using geolocation."
 msgstr "Esta opción determina la ubicación del cliente por defecto. La base de datos GeoLite de MaxMind se descargará periódicamente a tu directorio wp-content si usas la geolocalización."
+
+#: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:96
+msgid "You can add multiple shipping methods within this zone. Only customers within the zone will see them."
+msgstr "Puedes añadir múltiples métodos de envío dentro de esta zona. Solo los clientes dentro de la zona los verán."
 
 #: includes/admin/meta-boxes/views/html-order-items.php:243
 msgid "Note: the refund reason will be visible by the customer."
@@ -8674,17 +8674,9 @@ msgstr "Mostrar como desplegable"
 msgid "Show hierarchy"
 msgstr "Mostrar jerarquía"
 
-#: includes/widgets/class-wc-widget-product-categories.php:73
-msgid "Only show children of the current category"
-msgstr "Mostrar sólo subcategorías de la categoría actual"
-
 #: includes/widgets/class-wc-widget-product-categories.php:234
 msgid "No product categories exist."
 msgstr "No existen categorías de producto."
-
-#: includes/widgets/class-wc-widget-product-search.php:23
-msgid "A Search box for products only."
-msgstr "Una caja de búsqueda sólo para productos."
 
 #: includes/widgets/class-wc-widget-products.php:57
 msgid "Random"
@@ -9492,6 +9484,14 @@ msgstr "Muestra los filtros de navegación en capas activos para que los usuario
 msgid "An account is already registered with your email address. Please log in."
 msgstr "Ya hay una cuenta registrada con tu correo electrónico. Por favor, <a href=\"%s\">accede</a>."
 
+#: includes/widgets/class-wc-widget-product-search.php:23
+msgid "A Search box for products only."
+msgstr "Una caja de búsqueda solo para productos."
+
+#: includes/widgets/class-wc-widget-product-categories.php:73
+msgid "Only show children of the current category"
+msgstr "Mostrar solo subcategorías de la categoría actual"
+
 #: includes/class-wc-post-types.php:522
 msgid "Failed <span class=\"count\">(%s)</span>"
 msgid_plural "Failed <span class=\"count\">(%s)</span>"
@@ -10063,10 +10063,6 @@ msgstr "Regístrate en Simplify Commerce"
 msgid "Simplify Commerce Error: Simplify commerce requires PHP 5.3 and above. You are using version %s."
 msgstr "Error en Simplify Commerce: Simplify Commerce requiere PHP 5.3 o superior. Estás usando la versión %s."
 
-#: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:158
-msgid "Simplify Commerce is enabled, but the <a href=\"%s\">force SSL option</a> is disabled; your checkout may not be secure! Please enable SSL and ensure your server has a valid SSL certificate - Simplify Commerce will only work in sandbox mode."
-msgstr "Simplify Commerce está habilitado, pero la <a href=\"%s\">opción de forzar SSL</a> está deshabilitada, ¡puede que tus pagos no sean seguros! Por favor habilita SSL y asegúrate que tu servidor tiene un certificado SSL válido - Simplify Commerce sólo funcionará en modo de pruebas."
-
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:229
 msgid "Sandbox"
 msgstr "Modo de pruebas"
@@ -10156,10 +10152,6 @@ msgstr "Esto controla el título que el usuario ve al terminar la compra."
 #: includes/gateways/cod/class-wc-gateway-cod.php:97
 msgid "Enable for shipping methods"
 msgstr "Activar para métodos de envío"
-
-#: includes/gateways/cod/class-wc-gateway-cod.php:102
-msgid "If COD is only available for certain methods, set it up here. Leave blank to enable for all methods."
-msgstr "Si deseas que el contra reembolso sólo esté disponible para ciertos métodos de envío, establécelo aquí. Déjalo en blanco para activarlo para todos los métodos."
 
 #: includes/gateways/paypal/includes/settings-paypal.php:42
 msgid "Enable PayPal sandbox"
@@ -10522,11 +10514,6 @@ msgstr "Permitir pagos en cheque"
 msgid "Branch code"
 msgstr "Código de la sucursal"
 
-#: includes/gateways/bacs/class-wc-gateway-bacs.php:405
-#: includes/gateways/class-wc-payment-gateway-echeck.php:40
-msgid "Routing number"
-msgstr "Número de ruta"
-
 #: includes/gateways/bacs/class-wc-gateway-bacs.php:395
 #: includes/gateways/bacs/class-wc-gateway-bacs.php:400
 msgid "Bank code"
@@ -10656,6 +10643,19 @@ msgstr "Realiza tu pago directamente en nuestra cuenta bancaria. Por favor usa l
 #: includes/emails/class-wc-email-customer-refunded-order.php:43
 msgid "Order refunded emails are sent to customers when their orders are refunded."
 msgstr "Los correos electrónicos de los reembolsos ​se envían a los clientes cuando sus pedidos se reembolsan."
+
+#: includes/gateways/bacs/class-wc-gateway-bacs.php:405
+#: includes/gateways/class-wc-payment-gateway-echeck.php:40
+msgid "Routing number"
+msgstr "Número de ruta (ABA)"
+
+#: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:158
+msgid "Simplify Commerce is enabled, but the <a href=\"%s\">force SSL option</a> is disabled; your checkout may not be secure! Please enable SSL and ensure your server has a valid SSL certificate - Simplify Commerce will only work in sandbox mode."
+msgstr "Simplify Commerce está activo, pero la <a href=\"%s\">opción de forzar SSL</a> está inactiva, ¡puede que tus pagos no sean seguros! Por favor activa SSL y asegúrate que tu servidor tiene un certificado SSL válido - Simplify Commerce solo funcionará en modo de pruebas."
+
+#: includes/gateways/cod/class-wc-gateway-cod.php:102
+msgid "If COD is only available for certain methods, set it up here. Leave blank to enable for all methods."
+msgstr "Si deseas que el contra reembolso solo esté disponible para ciertos métodos de envío, configúralo aquí. Déjalo en blanco para activarlo para todos los métodos."
 
 #: includes/class-wc-ajax.php:209
 msgid "Coupon has been removed."
@@ -11267,10 +11267,6 @@ msgstr "Este correo electrónico ya ha sido registrado."
 msgid "New passwords do not match."
 msgstr "Las nuevas contraseñas no coinciden"
 
-#: includes/class-wc-form-handler.php:518
-msgid "You can only have 1 %s in your cart."
-msgstr "Sólo puedes tener 1 %s en tu carrito."
-
 #: includes/class-wc-form-handler.php:769
 msgid "Please choose the quantity of items you wish to add to your cart&hellip;"
 msgstr "Por favor escoge la cantidad de artículos que deseas agregar a tu carrito&hellip;"
@@ -11734,6 +11730,10 @@ msgstr "ID de entrega de webhook no válido."
 #: includes/widgets/class-wc-widget-product-tag-cloud.php:29
 msgid "Product tags"
 msgstr "Etiquetas del producto"
+
+#: includes/class-wc-form-handler.php:518
+msgid "You can only have 1 %s in your cart."
+msgstr "Solo puedes tener 1 %s en tu carrito."
 
 #: includes/admin/views/html-admin-page-status-report.php:48
 msgid "Site URL"
@@ -13254,10 +13254,6 @@ msgstr "Ciudades para esta regla. Usa punto y coma (;) para separar varios valor
 msgid "Enter a tax rate (percentage) to 4 decimal places."
 msgstr "Introduce una tasa de impuestos (porcentaje) con 4 decimales."
 
-#: includes/admin/settings/views/html-settings-tax.php:30
-msgid "Choose a priority for this tax rate. Only 1 matching rate per priority will be used. To define multiple tax rates for a single area you need to specify a different priority per rate."
-msgstr "Elija una prioridad para esta tasa de impuesto. Se utilizará sólo 1 tasa por prioridad. Para definir múltiples tasas de impuestos para una sola área tienes para especificar una prioridad distinta según la tasa."
-
 #: includes/admin/settings/views/html-settings-tax.php:31
 msgid "Choose whether or not this is a compound rate. Compound tax rates are applied on top of other tax rates."
 msgstr "Elige si esto es o no una tasa compuesta. Las tasas de impuestos compuestas se aplican antes que otras tasas de impuestos."
@@ -13865,6 +13861,10 @@ msgstr "Mostrar la etiqueta \"propietario verificado\" en las valoraciones de lo
 #: includes/admin/settings/class-wc-settings-tax.php:67
 msgid "%s rates"
 msgstr "Tarifas %s"
+
+#: includes/admin/settings/views/html-settings-tax.php:30
+msgid "Choose a priority for this tax rate. Only 1 matching rate per priority will be used. To define multiple tax rates for a single area you need to specify a different priority per rate."
+msgstr "Elija una prioridad para esta tasa de impuesto. Se utilizará solo 1 tasa por prioridad. Para definir múltiples tasas de impuestos para una sola área tienes para especificar una prioridad distinta según la tasa."
 
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:13
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:73
@@ -15662,10 +15662,6 @@ msgstr "Añadir archivo"
 msgid "Shipping only"
 msgstr "Envío solamente"
 
-#: includes/admin/meta-boxes/views/html-product-data-general.php:142
-msgid "Define whether or not the entire product is taxable, or just the cost of shipping it."
-msgstr "Define si todo el producto está sujeto a impuestos o no, o sólo el coste de envío del mismo."
-
 #: includes/admin/meta-boxes/views/html-product-data-general.php:151
 #: includes/admin/meta-boxes/views/html-variation-admin.php:284
 msgid "Choose a tax class for this product. Tax classes are used to apply different tax rates specific to certain types of product."
@@ -16033,10 +16029,6 @@ msgstr "Introduce el número de días antes de que expire un enlace de descarga,
 msgid "Leave blank for unlimited re-downloads."
 msgstr "Déjalo en blanco para re-descargas ilimitadas."
 
-#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:146
-msgid "Check this box if the coupon should not apply to items on sale. Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are items in the cart that are not on sale."
-msgstr "Marca esta casilla si el cupón no debe aplicarse a artículos rebajados. Los cupones para artículos concretos sólo funcionarán si el artículo no está rebajado. Los cupones para carrito completo sólo funcionarán si no hay artículos rebajados en el carrito."
-
 #: includes/admin/meta-boxes/class-wc-meta-box-product-data.php:60
 msgid "Virtual products are intangible and are not shipped."
 msgstr "Los productos virtuales son intangibles y no se envían."
@@ -16060,6 +16052,14 @@ msgstr "¡No tienes permisos para editar webhooks!"
 #: includes/admin/class-wc-admin-webhooks.php:204
 msgid "You do not have permissions to create Webhooks!"
 msgstr "¡No tienes permisos para crear webhooks!"
+
+#: includes/admin/meta-boxes/views/html-product-data-general.php:142
+msgid "Define whether or not the entire product is taxable, or just the cost of shipping it."
+msgstr "Define si todo el producto está sujeto a impuestos o no, o solo el coste de envío del mismo."
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:146
+msgid "Check this box if the coupon should not apply to items on sale. Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are items in the cart that are not on sale."
+msgstr "Marca esta casilla si el cupón no debe aplicarse a artículos rebajados. Los cupones para artículos concretos sólo funcionarán si el artículo no está rebajado. Los cupones para carrito completo solo funcionarán si no hay artículos rebajados en el carrito."
 
 #: includes/admin/class-wc-admin-pointers.php:74
 msgid "This is your products main body of content. Here you should describe your product in detail."
@@ -17904,13 +17904,6 @@ msgctxt "enhanced select"
 msgid "Please delete 1 character"
 msgstr "Por favor, borra 1 carácter."
 
-#: includes/admin/class-wc-admin-assets.php:123
-#: includes/admin/class-wc-admin-setup-wizard.php:114
-#: includes/class-wc-frontend-scripts.php:560
-msgctxt "enhanced select"
-msgid "You can only select 1 item"
-msgstr "Sólo puedes seleccionar 1 artículo"
-
 #: includes/admin/class-wc-admin-assets.php:124
 #: includes/admin/class-wc-admin-setup-wizard.php:115
 #: includes/class-wc-frontend-scripts.php:561
@@ -18076,10 +18069,6 @@ msgstr "Hay existencias"
 #: includes/admin/class-wc-admin-assets.php:255
 msgid "Are you sure you want to remove the selected items? If you have previously reduced this item's stock, or this order was submitted by a customer, you will need to manually restore the item's stock."
 msgstr "¿Estás seguro de que quieres eliminar los artículos seleccionados? Si has reducido anteriormente el inventario de este artículo o este pedido fue realizado por un cliente, tendrás que restaurar manualmente el inventario del artículo."
-
-#: includes/wc-formatting-functions.php:1022
-msgid "Only %s left in stock"
-msgstr "Sólo quedan %s disponibles"
 
 #: includes/wc-formatting-functions.php:1026
 msgid "%s in stock"
@@ -18347,6 +18336,17 @@ msgstr "Acciones del %s"
 #: includes/admin/class-wc-admin-attributes.php:449
 msgid "Attributes let you define extra product data, such as size or color. You can use these attributes in the shop sidebar using the \"layered nav\" widgets. Please note: you cannot rename an attribute later on."
 msgstr "Los atributos te permiten definir información adicional de los productos, como el tamaño o el color. Puedes utilizar estos atributos en la columna lateral de la tienda con el widget de \"navegación por capas\". Por favor, ten en cuenta que los atributos no los podrás renombrar más adelante."
+
+#: includes/admin/class-wc-admin-assets.php:123
+#: includes/admin/class-wc-admin-setup-wizard.php:114
+#: includes/class-wc-frontend-scripts.php:560
+msgctxt "enhanced select"
+msgid "You can only select 1 item"
+msgstr "Solo puedes seleccionar 1 artículo"
+
+#: includes/wc-formatting-functions.php:1022
+msgid "Only %s left in stock"
+msgstr "Solo quedan %s disponibles"
 
 #: i18n/states/PH.php:20
 msgid "Albay"

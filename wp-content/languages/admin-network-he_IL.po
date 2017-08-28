@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x - Administration - Network Admin package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-07 17:04:58+0000\n"
+"PO-Revision-Date: 2017-08-18 00:52:02+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1024,7 +1024,7 @@ msgstr "כמו <code>%1$s/site1</code> וכן <code>%1$s/site2</code>"
 
 #: wp-admin/network/users.php:70
 msgid "Warning! User cannot be modified. The user %s is a network administrator."
-msgstr "זהירות: אי אפשר למחוק את החשבון %s. הוא שייך להנהלה."
+msgstr "אזהרה: לא ניתן לשנות את החשבון %s, הוא שייך למנהל רשת."
 
 #: wp-admin/network/sites.php:30
 msgid "Hovering over each site reveals seven options (three for the primary site):"
@@ -1193,7 +1193,7 @@ msgstr "אין לך הרשאות לשנות אתר זה."
 
 #: wp-admin/network/site-new.php:116
 msgid "There was an error creating the user."
-msgstr "לא הצלחתי ליצור את המשתמש."
+msgstr "ארעה שגיעה ביצירת המשתמש."
 
 #: wp-admin/network/settings.php:297
 msgid "Upload file types"

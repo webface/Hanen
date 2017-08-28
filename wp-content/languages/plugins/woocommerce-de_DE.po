@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-15 10:04:20+0000\n"
+"PO-Revision-Date: 2017-08-16 12:53:31+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,10 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: de\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
+
+#: includes/import/abstract-wc-product-importer.php:562
+msgid "Unable to use image \"%s\"."
+msgstr "Bild \"%s\" kann nicht verwendet werden."
 
 #: includes/api/class-wc-rest-shipping-zone-locations-controller.php:90
 #: includes/api/class-wc-rest-shipping-zones-controller.php:170

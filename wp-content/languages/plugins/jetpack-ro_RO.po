@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Jetpack by WordPress.com - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-07-26 17:24:08+0000\n"
+"PO-Revision-Date: 2017-08-17 19:28:05+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7354,7 +7354,7 @@ msgstr "Protecția nu garantează un sit sigur."
 
 #: class.jetpack-debugger.php:203 modules/protect.php:171
 msgid "Dismiss this notice."
-msgstr "Ignoră acest avertisment."
+msgstr "Respinge această notificare."
 
 #: modules/protect/shared-functions.php:101
 msgid "Only super admins can edit the global whitelist"

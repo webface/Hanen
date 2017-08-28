@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-03 14:43:14+0000\n"
+"PO-Revision-Date: 2017-08-27 16:30:49+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,10 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: ro\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
+
+#: includes/import/abstract-wc-product-importer.php:562
+msgid "Unable to use image \"%s\"."
+msgstr "Nu pot folosi imaginea „%s”."
 
 #: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:218
 msgid "Product categories that the coupon will not be applied to, or that cannot be in the cart in order for the \"Fixed cart discount\" to be applied."
@@ -32,7 +36,7 @@ msgstr "Produsele la care va fi aplicat cuponul sau care trebuie să fie în co�
 msgid "The \"locations not covered by your other zones\" zone cannot be updated."
 msgstr "Zona „Locații neacoperite de alte zone” nu poate fi actualizată."
 
-#: includes/wc-product-functions.php:751
+#: includes/wc-product-functions.php:753
 msgid "Search results only"
 msgstr "Numai rezultate căutare"
 
@@ -48,11 +52,11 @@ msgstr[0] "Evaluat la %1$s din 5 pe baza unei evaluări a clientului"
 msgstr[1] "Evaluat la %1$s din 5 pe baza a %2$s evaluări ale clienților"
 msgstr[2] "Evaluat la %1$s din 5 pe baza a %2$s de evaluări ale clienților"
 
-#: includes/wc-product-functions.php:750
+#: includes/wc-product-functions.php:752
 msgid "Shop only"
 msgstr "Numai magazin"
 
-#: includes/wc-product-functions.php:749
+#: includes/wc-product-functions.php:751
 msgid "Shop and search results"
 msgstr "Magazin și rezultate căutare"
 
@@ -98,23 +102,23 @@ msgstr "Această comandă nu poate fi plătită. Te rog contactează-ne dacă ai
 msgid "Please log in to your account below to continue to the payment form."
 msgstr "Te rog autentifică-te în cont mai jos pentru a continua cu formularul de plată."
 
-#: includes/import/class-wc-product-csv-importer.php:767
+#: includes/import/class-wc-product-csv-importer.php:833
 msgid "A product with this SKU already exists."
 msgstr "Un produs cu acest SKU există deja."
 
-#: includes/import/class-wc-product-csv-importer.php:762
+#: includes/import/class-wc-product-csv-importer.php:828
 msgid "A product with this ID already exists."
 msgstr "Un produs cu acest ID există deja."
 
-#: includes/import/class-wc-product-csv-importer.php:721
+#: includes/import/class-wc-product-csv-importer.php:787
 msgid "SKU %s"
 msgstr "SKU %s"
 
-#: includes/import/class-wc-product-csv-importer.php:718
+#: includes/import/class-wc-product-csv-importer.php:784
 msgid "ID %d"
 msgstr "ID %d"
 
-#: includes/import/abstract-wc-product-importer.php:556
+#: includes/import/abstract-wc-product-importer.php:554
 msgid "Not able to attach \"%s\"."
 msgstr "Nu pot atașa „%s”."
 
@@ -147,7 +151,7 @@ msgstr "Număr casă și nume stradă"
 msgid "API Key generated successfully. Make sure to copy your new keys now as the secret key will be hidden once you leave this page."
 msgstr "Cheie API generată cu succes. Asigură-te să copiezi noile chei acum, deoarece cheia secretă va fi ascunsă după ce părăsești această pagină."
 
-#: includes/import/class-wc-product-csv-importer.php:772
+#: includes/import/class-wc-product-csv-importer.php:838
 msgid "No matching product exists to update."
 msgstr "Nu există niciun produs care se potrivește pentru a-l actualiza."
 
@@ -1151,7 +1155,7 @@ msgstr "Chuquisaca"
 msgid "Are you sure you want to log out? <a href=\"%s\">Confirm and log out</a>"
 msgstr "Sigur vrei să te dezautentifici? <a href=\"%s\">Confirmă și dezautentifică-te</a>"
 
-#: includes/api/class-wc-rest-authentication.php:538
+#: includes/api/class-wc-rest-authentication.php:540
 msgid "Unknown request method."
 msgstr "Metodă de solicitare necunoscută."
 
@@ -1740,7 +1744,7 @@ msgstr "Caută categorii"
 msgid "Category"
 msgstr "Categorie"
 
-#: includes/class-wc-order-item-product.php:182
+#: includes/class-wc-order-item-product.php:184
 msgid "Invalid product"
 msgstr "Produs invalid"
 
@@ -1782,7 +1786,7 @@ msgstr "Actualizează categoria"
 msgid "Edit category"
 msgstr "Editează categoria"
 
-#: includes/class-wc-install.php:920
+#: includes/class-wc-install.php:923
 msgid "Visit premium customer support"
 msgstr "Vizitează suportul premium pentru client"
 
@@ -4909,7 +4913,7 @@ msgstr "Taxele nu suportă aruncarea la gunoi."
 msgid "Limit result set to webhooks assigned a specific status."
 msgstr "Limitează setul de rezultate la agățători web atribuite unei anumite stări."
 
-#: includes/class-wc-install.php:1088
+#: includes/class-wc-install.php:1091
 msgid "%1$s was installed but could not be activated. <a href=\"%2$s\">Please activate it manually by clicking here.</a>"
 msgstr "%1$s a fost instalat, dar nu a putut fi activat. <a href=\"%2$s\">Te rog activează-l manual dând clic aici.</a>"
 
@@ -4917,7 +4921,7 @@ msgstr "%1$s a fost instalat, dar nu a putut fi activat. <a href=\"%2$s\">Te rog
 msgid "Return to emails"
 msgstr "Înapoi la emailuri"
 
-#: includes/class-wc-install.php:1062 includes/class-wc-install.php:1144
+#: includes/class-wc-install.php:1065 includes/class-wc-install.php:1147
 msgid "%1$s could not be installed (%2$s). <a href=\"%3$s\">Please install it manually by clicking here.</a>"
 msgstr "%1$s nu a putut fi instalat (%2$s). <a href=\"%3$s\">Te rog instalează manual dând clic aici.</a>"
 
@@ -4929,6 +4933,11 @@ msgstr "ID agățătoare web invalid."
 #: includes/api/v1/class-wc-rest-taxes-controller.php:592
 msgid "Postcode / ZIP."
 msgstr "Cod poștal / ZIP."
+
+#: includes/api/class-wc-rest-webhooks-controller.php:153
+#: includes/api/v1/class-wc-rest-webhooks-controller.php:552
+msgid "Secret key used to generate a hash of the delivered webhook and provided in the request headers. This will default is a MD5 hash from the current user's ID|username if not provided."
+msgstr "Cheia secretă utilizată pentru a genera un hash pentru agăţătoarea web livrat și furnizat în anteturile cererii. Acestă cheie va fi un hash MD5 generat din ID-ul utilizatorului curent | numele de utilizator în cazul în care nu este furnizat."
 
 #: includes/api/class-wc-rest-product-variations-controller.php:890
 #: includes/api/class-wc-rest-products-controller.php:1856
@@ -6956,6 +6965,10 @@ msgstr "Bază de date MaxMind GeoIP."
 msgid "Displays whether or not WP Cron Jobs are enabled."
 msgstr "Afișează dacă sarcinile planificate WP sunt sau nu sunt activate."
 
+#: includes/admin/settings/views/html-webhooks-edit.php:110
+msgid "The secret key is used to generate a hash of the delivered webhook and provided in the request headers."
+msgstr "Cheia secretă este folosită pentru a genera un hash pentru agățătorul web livrat și furnizat în anteturile cererii."
+
 #: includes/admin/settings/class-wc-settings-accounts.php:149
 #: includes/class-wc-query.php:116 includes/wc-account-functions.php:99
 msgid "Addresses"
@@ -8234,7 +8247,7 @@ msgstr "Penang (Pulau Pinang)"
 msgid "Buy now"
 msgstr "Cumpără acum"
 
-#: includes/class-wc-install.php:287
+#: includes/class-wc-install.php:291
 msgid "Monthly"
 msgstr "Lunar"
 
@@ -9057,10 +9070,6 @@ msgstr "Dacă a fost o greșeală, ignoră acest email și nu se va întâmpla n
 msgid "Remove this item"
 msgstr "Înlătură acest element"
 
-#: templates/cart/mini-cart.php:79
-msgid "No products in the cart."
-msgstr "Niciun produs în coș"
-
 #: templates/cart/cart-totals.php:33 templates/cart/cart-totals.php:34
 #: templates/cart/mini-cart.php:71 templates/checkout/review-order.php:59
 msgid "Subtotal"
@@ -9497,6 +9506,10 @@ msgstr "Forint"
 msgid "You must be logged in to checkout."
 msgstr "Trebuie să fii autentificat pentru a plăti."
 
+#: templates/cart/mini-cart.php:79
+msgid "No products in the cart."
+msgstr "Niciun produs în coș."
+
 #: includes/class-wc-product-variable.php:60
 msgid "Select options"
 msgstr "Selectează opțiuni"
@@ -9562,7 +9575,7 @@ msgid "Your {site_title} order from {order_date}"
 msgstr "Comanda ta de la {site_title} din data {order_date}"
 
 #: includes/emails/class-wc-email-customer-invoice.php:77
-#: includes/emails/class-wc-email-customer-refunded-order.php:77
+#: includes/emails/class-wc-email-customer-refunded-order.php:79
 msgid "Order {order_number} details"
 msgstr "Detalii Comandă {order_number}"
 
@@ -10129,7 +10142,7 @@ msgstr "Tip de email"
 msgid "Choose which format of email to send."
 msgstr "Alege formatul de email pentru trimitere."
 
-#: includes/emails/class-wc-email-customer-refunded-order.php:79
+#: includes/emails/class-wc-email-customer-refunded-order.php:77
 msgid "Your order has been partially refunded"
 msgstr "Comanda ta a fost rambursată parțial"
 
@@ -11124,17 +11137,17 @@ msgstr[0] "În procesare <span class=\"count\">(%s)</span>"
 msgstr[1] "În procesare <span class=\"count\">(%s)</span>"
 msgstr[2] "În procesare <span class=\"count\">(%s)</span>"
 
-#: includes/class-wc-install.php:325
+#: includes/class-wc-install.php:329
 msgctxt "Page slug"
 msgid "shop"
 msgstr "magazin"
 
-#: includes/class-wc-install.php:330
+#: includes/class-wc-install.php:334
 msgctxt "Page slug"
 msgid "cart"
 msgstr "cos"
 
-#: includes/class-wc-install.php:340
+#: includes/class-wc-install.php:344
 msgctxt "Page slug"
 msgid "my-account"
 msgstr "contul-meu"
@@ -11365,7 +11378,7 @@ msgstr "Produs cu stoc epuizat"
 msgid "You cannot add &quot;%s&quot; to the cart because the product is out of stock."
 msgstr "Nu poți adăuga &quot;%s&quot; în coș deoarece produsul nu mai este în stoc."
 
-#: includes/class-wc-install.php:335
+#: includes/class-wc-install.php:339
 msgctxt "Page slug"
 msgid "checkout"
 msgstr "plată"
@@ -11591,27 +11604,27 @@ msgctxt "Admin menu name"
 msgid "Shipping classes"
 msgstr "Clase de livrare"
 
-#: includes/class-wc-install.php:920
+#: includes/class-wc-install.php:923
 msgid "Premium support"
 msgstr "Suport premium"
 
-#: includes/class-wc-install.php:919
+#: includes/class-wc-install.php:922
 msgid "API docs"
 msgstr "Documente API"
 
-#: includes/class-wc-install.php:919
+#: includes/class-wc-install.php:922
 msgid "View WooCommerce API docs"
 msgstr "Vezi documente API WooCommerce"
 
-#: includes/class-wc-install.php:918
+#: includes/class-wc-install.php:921
 msgid "View WooCommerce documentation"
 msgstr "Vezi documentație WooCommerce"
 
-#: includes/class-wc-install.php:902
+#: includes/class-wc-install.php:905
 msgid "View WooCommerce settings"
 msgstr "Vezi setări WooCommerce"
 
-#: includes/class-wc-install.php:665
+#: includes/class-wc-install.php:669
 msgid "Shop manager"
 msgstr "Manager magazin"
 
@@ -12688,7 +12701,7 @@ msgstr "Moneda furnizată pentru comandă este invalidă."
 msgid "Invalid customer email"
 msgstr "Email cumpărător invalid."
 
-#: includes/api/class-wc-rest-authentication.php:569
+#: includes/api/class-wc-rest-authentication.php:571
 #: includes/api/legacy/v3/class-wc-api-authentication.php:111
 msgid "WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field."
 msgstr "API WooCommerce. Folosește o cheie client în câmpul nume utilizator și un secret client în câmpul parolă."
@@ -13871,6 +13884,10 @@ msgstr "Pagină de plată"
 msgid "Show \"verified owner\" label on customer reviews"
 msgstr "Arată eticheta „proprietar verificat” în recenziile clienților"
 
+#: includes/admin/settings/views/html-webhooks-edit.php:46
+msgid "Select when the webhook will fire."
+msgstr "Selectează când va fi aplicată această agățătoare web."
+
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:13
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:73
 #: includes/admin/views/html-bulk-edit-product.php:118
@@ -14006,7 +14023,7 @@ msgid "Export CSV"
 msgstr "Salvează în CSV"
 
 #: includes/admin/settings/class-wc-settings-emails.php:265
-#: includes/class-wc-install.php:660
+#: includes/class-wc-install.php:664
 msgid "Customer"
 msgstr "Client"
 
@@ -15104,7 +15121,7 @@ msgstr "Upsells sunt produse pe care le recomanzi în locul produsului vizualiza
 
 #: includes/admin/class-wc-admin-setup-wizard.php:878
 #: includes/admin/views/html-notice-tracking.php:13
-#: includes/wc-product-functions.php:835
+#: includes/wc-product-functions.php:837
 msgid "Allow"
 msgstr "Permite"
 
@@ -15471,15 +15488,15 @@ msgstr "Cod Produs se referă la o Codul de identificare a produsului în stoc, 
 #: includes/admin/views/html-bulk-edit-product.php:95
 #: includes/admin/views/html-quick-edit-product.php:73
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:217
-#: includes/wc-product-functions.php:802
+#: includes/wc-product-functions.php:804
 msgid "Standard"
 msgstr "Standard"
 
-#: includes/wc-product-functions.php:833
+#: includes/wc-product-functions.php:835
 msgid "Do not allow"
 msgstr "Nu permite"
 
-#: includes/wc-product-functions.php:834
+#: includes/wc-product-functions.php:836
 msgid "Allow, but notify customer"
 msgstr "Permite, dar notifică clientul"
 
@@ -15679,7 +15696,7 @@ msgstr "Regret, a apărut o eroare."
 msgid "The file does not exist, please try again."
 msgstr "Fișierul nu există, te rog încearcă din nou."
 
-#: includes/class-wc-install.php:918
+#: includes/class-wc-install.php:921
 msgid "Docs"
 msgstr "Documente"
 
@@ -16391,22 +16408,22 @@ msgstr[1] "%s statusul comenzilor a fost schimbat."
 msgstr[2] "%s statusul comenzilor a fost schimbat."
 
 #: includes/admin/class-wc-admin-post-types.php:1487
-#: includes/wc-product-functions.php:534
+#: includes/wc-product-functions.php:536
 msgid "Grouped product"
 msgstr "Produs Grupat"
 
 #: includes/admin/class-wc-admin-post-types.php:1490
-#: includes/wc-product-functions.php:535
+#: includes/wc-product-functions.php:537
 msgid "External/Affiliate product"
 msgstr "Produs Extern / Afiliat"
 
 #: includes/admin/class-wc-admin-post-types.php:1493
-#: includes/wc-product-functions.php:536
+#: includes/wc-product-functions.php:538
 msgid "Variable product"
 msgstr "Produs Variabil"
 
 #: includes/admin/class-wc-admin-post-types.php:1496
-#: includes/wc-product-functions.php:533
+#: includes/wc-product-functions.php:535
 msgid "Simple product"
 msgstr "Produs Simplu"
 
@@ -16439,7 +16456,7 @@ msgstr "Cautare"
 
 #: includes/admin/views/html-bulk-edit-product.php:190
 #: includes/admin/views/html-quick-edit-product.php:147
-#: includes/wc-product-functions.php:752
+#: includes/wc-product-functions.php:754
 msgid "Hidden"
 msgstr "Ascuns"
 
@@ -16631,13 +16648,13 @@ msgid "yd"
 msgstr "yd"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:263
-#: includes/class-wc-install.php:326
+#: includes/class-wc-install.php:330
 msgctxt "Page title"
 msgid "Shop"
 msgstr "Magazin"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:267
-#: includes/class-wc-install.php:331
+#: includes/class-wc-install.php:335
 msgctxt "Page title"
 msgid "Cart"
 msgstr "Coș"
@@ -17038,7 +17055,7 @@ msgid "Product published. <a href=\"%s\">View Product</a>"
 msgstr "Produs publicat. <a href=\"%s\">Vezi produsul</a>"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:271
-#: includes/class-wc-install.php:336
+#: includes/class-wc-install.php:340
 msgctxt "Page title"
 msgid "Checkout"
 msgstr "Plată"
@@ -17056,7 +17073,7 @@ msgid "Product Tags"
 msgstr "Etichete produs"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:277
-#: includes/class-wc-install.php:341
+#: includes/class-wc-install.php:345
 msgctxt "Page title"
 msgid "My account"
 msgstr "Contul meu"
@@ -17216,7 +17233,7 @@ msgstr "Scriere"
 msgid "Read/Write"
 msgstr "Citire/Scriere"
 
-#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.1.1)  #-#-#-#-#
+#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.1.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/admin/class-wc-admin-assets.php:90
 #: includes/admin/class-wc-admin-menus.php:60
@@ -17396,7 +17413,7 @@ msgstr "Ești sigur că dorești să revoci accesul la această descărcare?"
 #: includes/api/legacy/v2/class-wc-api-products.php:1989
 #: includes/api/legacy/v3/class-wc-api-products.php:2547
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:645
-#: includes/import/abstract-wc-product-importer.php:600
+#: includes/import/abstract-wc-product-importer.php:602
 msgid "Slug \"%s\" is too long (28 characters max). Shorten it, please."
 msgstr "Numele scurt \"%s\" este prea lung (maxim 28 de caractere). Vă rugăm scurtati-l."
 
@@ -17405,7 +17422,7 @@ msgstr "Numele scurt \"%s\" este prea lung (maxim 28 de caractere). Vă rugăm s
 #: includes/api/legacy/v2/class-wc-api-products.php:1991
 #: includes/api/legacy/v3/class-wc-api-products.php:2549
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:647
-#: includes/import/abstract-wc-product-importer.php:602
+#: includes/import/abstract-wc-product-importer.php:604
 msgid "Slug \"%s\" is not allowed because it is a reserved term. Change it, please."
 msgstr "Numele scurt \"%s\"  nu este permis pentru că este un termen rezervat. Vă rugăm schimbati-l."
 
@@ -17420,7 +17437,7 @@ msgstr "Vă rugăm, furnizați un nume de atribut și nume scurt."
 #: includes/api/legacy/v2/class-wc-api-products.php:1993
 #: includes/api/legacy/v3/class-wc-api-products.php:2551
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:649
-#: includes/import/abstract-wc-product-importer.php:604
+#: includes/import/abstract-wc-product-importer.php:606
 msgid "Slug \"%s\" is already in use. Change it, please."
 msgstr "Numele scurt \"%s\" este deja folosit. Vă rugăm schimbati-l."
 
@@ -17617,7 +17634,7 @@ msgstr "Despre WooCommerce"
 #: includes/admin/class-wc-admin-menus.php:80
 #: includes/admin/settings/class-wc-settings-api.php:45
 #: includes/admin/views/html-admin-page-status-report.php:437
-#: includes/class-wc-install.php:902
+#: includes/class-wc-install.php:905
 msgid "Settings"
 msgstr "Setări"
 
@@ -17666,7 +17683,7 @@ msgstr "Introduceți o bază personalizat. O bază <strong> trebuie să </strong
 #: includes/admin/class-wc-admin-post-types.php:442
 #: includes/admin/reports/class-wc-report-stock.php:112
 #: includes/wc-formatting-functions.php:1016
-#: includes/wc-product-functions.php:820
+#: includes/wc-product-functions.php:822
 msgid "In stock"
 msgstr "În stoc"
 
@@ -17674,7 +17691,7 @@ msgstr "În stoc"
 #: includes/admin/class-wc-admin-post-types.php:444
 #: includes/admin/class-wc-admin-reports.php:100
 #: includes/admin/reports/class-wc-report-stock.php:114
-#: includes/wc-product-functions.php:821
+#: includes/wc-product-functions.php:823
 msgid "Out of stock"
 msgstr "Stoc epuizat"
 
@@ -18090,7 +18107,7 @@ msgstr "Starea comenzii s-a modificat de la %1$s la %2$s."
 msgid "Available on backorder"
 msgstr "Disponibil pentru precomandă"
 
-#: includes/class-wc-order-item-product.php:201
+#: includes/class-wc-order-item-product.php:203
 #: includes/legacy/abstract-wc-legacy-order.php:164
 msgid "Backordered"
 msgstr "Precomandat"
