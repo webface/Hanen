@@ -24,6 +24,7 @@ switch ($_REQUEST['part'])
         $data = array(
             'quiz_id' => $quiz_id,
             'user_id' => $user_id,
+            'course_id' => $course_id,
             'score' => $_POST['score'],
             'percentage' => $_POST['percentage'],
             'completed' => $_POST['completed'] === true ? 1 : 0,

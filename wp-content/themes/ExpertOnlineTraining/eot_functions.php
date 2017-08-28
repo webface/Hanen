@@ -8629,6 +8629,7 @@ function getAllQuizAttempts($course_id = 0, $user_id = 0)
     $sql = "SELECT DISTINCT(quiz_id), ID, user_id, passed, completed, score, date_attempted ";
     $sql.= "FROM ". TABLE_QUIZ_ATTEMPTS . " ";
     $sql.= "WHERE quiz_id IN(".$quiz_ids_string.") ";
+    $sql.= "AND course_id = $course_id ";
     $sql.= "AND date_attempted BETWEEN '". SUBSCRIPTION_START ."' AND '". SUBSCRIPTION_END ."'";
     if($user_id>0)
     {

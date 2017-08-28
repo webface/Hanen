@@ -123,7 +123,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 {
                     $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
                 }
-                //ddd($quizzes, $track_quizzes);
+                //d($quizzes, $track_quizzes);
                 $track_passed = array();
                 $track_quiz_attempts = array();
                 foreach ($track_quizzes as $key => $record) 
