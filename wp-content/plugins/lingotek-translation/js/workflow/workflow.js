@@ -68,7 +68,7 @@ Workflow.modals.get_relative_url = function() {
 }
 
 Workflow.workflows = {
-    'ab6c522a-7645-4317-9284-3fbddf516151' : 'https://www.lingotek.com/'
+    'ltk-professional-translation' : 'https://www.lingotek.com/'
 }
 
 Workflow.modals.show_payment_portal_loading_modal = function() {
@@ -77,6 +77,24 @@ Workflow.modals.show_payment_portal_loading_modal = function() {
     jQuery('#TB_title').css('background-color','#3c3c3c');
     jQuery('.tb-close-icon').css('color','white');
 }
+
+/**
+ * This is a list of functions that can be executed via the Workflow.reload() function. The updater removes and adds elements 
+ * to the DOM and if you have any handlers on any elements they could be lost during the update.
+ */
+Workflow.reload_list = [];
+
+/**
+ * Refer to Workflow.reload_list[]. Any script can add a method to the reload_list array that will be executed as soon as the updater finishes.
+ */
+Workflow.reload = function() {
+   jQuery.each(Workflow.reload_list, function(index, func) {
+       if (typeof func === 'function') {
+           func();
+       }
+   });
+}
+
 
 function get_relative_url() {
     var url = window.location.href;

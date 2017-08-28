@@ -271,10 +271,10 @@ class Lingotek_Filters_Post extends PLL_Admin_Filters_Post {
 					wp_delete_post($tr_id, true); // forces deletion for the translations which are not already in the list
 				}
 			}
-			if ($group !== 0 && $group->source == $post_id) {
+			if (is_object($group) && $group->source == $post_id) {
 				$group->disassociate();
 			}
-			else if ($group->source !== null) {
+			else if (is_object($group) && $group->source !== null) {
 				$post_lang = pll_get_post_language($post_id, 'locale');
 				if ($this->lingotek_prefs['delete_document_from_tms']) {
 					unset($group->desc_array['lingotek']['translations'][$post_lang]);

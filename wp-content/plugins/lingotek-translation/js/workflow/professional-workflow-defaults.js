@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
     if (Workflow.modals.get_url_parameter('success', window.location) && 
             Workflow.modals.get_url_parameter('page', window.location) === 'lingotek-translation_settings' &&
             Workflow.modals.get_url_parameter('sm', window.location) === 'defaults') {
-        jQuery('#workflow_id').attr('value','ab6c522a-7645-4317-9284-3fbddf516151');
+        jQuery('#workflow_id').attr('value','ltk-professional-translation');
         jQuery('#submit').trigger('click');
     }
 

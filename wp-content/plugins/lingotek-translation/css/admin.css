@@ -94,3 +94,7 @@ a.dashicons {
 #utility_delete_documents {
 	margin-left: 20px;
 }
+
+.form-table {
+	clear: none !important;
+}

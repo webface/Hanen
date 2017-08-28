@@ -136,5 +136,6 @@ if ( $default_filters_exist ) { ?>
 	<p>
 	<?php submit_button( __( 'Save Changes', 'lingotek-translation' ), 'primary', 'submit', false ); ?>
 	<?php submit_button( __( 'Refresh Resources', 'lingotek-translation' ), 'secondary', 'refresh', false ); ?>
+	<script>jQuery(document).ready(function($) { $('#wpfooter').remove(); } );</script>
 	</p>
 </form>

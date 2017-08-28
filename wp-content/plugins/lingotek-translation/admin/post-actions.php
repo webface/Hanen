@@ -46,6 +46,9 @@ class Lingotek_Post_actions extends Lingotek_Actions {
 		add_action( 'load-edit.php', array( &$this, 'manage_actions' ) );
 		add_action( 'load-upload.php', array( &$this, 'manage_actions' ) );
 
+		// handle promotional banner
+		add_action( 'load-edit.php', array( &$this, 'manage_promotions' ) );
+
 		// add meta box on post and page edit pages, and hook on save.
 		add_action( 'add_meta_boxes', array( &$this, 'lingotek_add_meta_boxes' ) );
 		add_action( 'save_post', array( &$this, 'lingotek_save_meta_boxes' ) );
@@ -106,6 +109,27 @@ class Lingotek_Post_actions extends Lingotek_Actions {
 	public function add_bulk_actions( $bulk_actions ) {
 		if ( isset( $GLOBALS['post_type'] ) && $this->pllm->is_translated_post_type( $GLOBALS['post_type'] ) ) {
 			return $this->_add_bulk_actions( $bulk_actions );
+		}
+	}
+
+	public function manage_promotions() {
+		if (null !== filter_input(INPUT_GET, 'ltk-promotion') && 'dismiss' === filter_input(INPUT_GET, 'ltk-promotion')) {
+			update_option('lingotek_professional_promotion_shown', true);
+		} else if (null !== filter_input(INPUT_GET, 'ltk-promotion') && 'view' === filter_input(INPUT_GET, 'ltk-promotion')) {
+			update_option('lingotek_professional_promotion_shown', true);
+			wp_safe_redirect( 'admin.php?page=lingotek-translation_tutorial&sm=content&tutorial=ltk-prof#ltk-prof-trans-header' );
+			die();
+		}
+		function lingotek_professional_translation_notice() {
+			echo sprintf( '<div style="height: 45px;" class="notice notice-success"><p>%s <a style="float:right;" class="button" href="%s" >Dismiss</a><a style="float:right; margin-right: 6px;" class="button button-primary" href="%s" >Learn More</a></p></div>', 
+				__( '<b>NEW FEATURE!</b> Lingotek Professional Translation is now available.', 'lingotek-translation' ),
+				admin_url( 'edit.php?ltk-promotion=dismiss' ),
+				admin_url( 'edit.php?ltk-promotion=view' )
+			);
+		}
+		// update_option('lingotek_professional_promotion_shown', false);
+		if (!get_option('lingotek_professional_promotion_shown')) {
+			add_action( 'admin_notices', 'lingotek_professional_translation_notice' );
 		}
 	}
 

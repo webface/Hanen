@@ -5,26 +5,22 @@ jQuery(document).ready(function() {
      * auto updater.js
      */
     setInterval(function() { 
-        if (jQuery('#TB_ajaxWindowTitle').length === 0 ) 
-        { 
-            tear_down(); 
-        } 
-        else 
-        { 
-             if (jQuery('#TB_window').find('.request-table').length > 0)
-             {
-                 jQuery('#TB_window').removeAttr('style');
-                 jQuery('#TB_window').addClass('ltk-thickbox');
-             }
-             else if (jQuery('#TB_window').find('.professional-upload-warning-header-container').length > 0)
-             {
-                 jQuery('#TB_window').removeAttr('style');
-                 jQuery('#TB_window').addClass('ltk-thickbox-warning');
-             }
-        } 
+        if (jQuery('#TB_window').find('.request-table').length > 0)
+        {
+            jQuery('#TB_window').removeAttr('style');
+            jQuery('#TB_window').addClass('ltk-thickbox');
+        }
+        else if (jQuery('#TB_window').find('.professional-upload-warning-header-container').length > 0)
+        {
+            jQuery('#TB_window').removeAttr('style');
+            jQuery('#TB_window').addClass('ltk-thickbox-warning');
+        }
     },1000);
 
-    var up = false;
+    Workflow.reload_list.push(function() {
+        if (jQuery('#TB_ajaxWindowTitle').length === 0 )
+            tear_down();
+    });
 
     const MINIMUM = 59.99;
     const DEFAULT_MINIMUM_DELIVERY_DAYS = 3;
@@ -288,9 +284,8 @@ jQuery(document).ready(function() {
                 row = get_post_or_taxonomy_row(post_id);
             }
 
-
             row.find('.dashicons-plus-lingotek').each(function(index, element) {
-                var href = Workflow.modals.replace_href(element); /**jQuery(element).attr('href');*/
+                var href = jQuery(element).attr('href') !== '#' ? jQuery(element).attr('href') : jQuery(element).attr('url');
                 var locale = Workflow.modals.get_url_parameter('locale', href);
                 if (is_valid_locale(locale, valid_locales))
                 {

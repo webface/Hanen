@@ -26,8 +26,7 @@ class Lingotek_Workflow_Factory {
 	 *   @var array
 	 */
 	private static $map = array(
-		'ab6c522a-7645-4317-9284-3fbddf516151' => 'Lingotek_Professional_Translation_Workflow', // prod.
-		'2e3694ae-9912-4a57-be47-cd1f8a08c469' => 'Lingotek_Professional_Translation_Workflow', // cms.
+		'ltk-professional-translation' => 'Lingotek_Professional_Translation_Workflow', // prod.
 	);
 
 	/**

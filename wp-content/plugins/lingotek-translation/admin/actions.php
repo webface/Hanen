@@ -254,6 +254,9 @@ abstract class Lingotek_Actions {
 	 */
 	public function upload_icon( $object_id, $confirm = false ) {
 		$args = array( $this->type => $object_id, 'action' => 'lingotek-upload', 'noheader' => true );
+		if (isset($args['string'])) {
+			$args['string'] = urlencode($args['string']);
+		}
 		$link = wp_nonce_url( defined( 'DOING_AJAX' ) && DOING_AJAX ? add_query_arg( $args, wp_get_referer() ) : add_query_arg( $args ), 'lingotek-upload' );
 		self::link_to_settings_if_not_connected($link);
 		return self::display_icon( 'upload', $link, $confirm ? self::$confirm_message : '' );
@@ -330,6 +333,9 @@ abstract class Lingotek_Actions {
 		$action = $args['action'];
 		$args['action'] = 'lingotek-' . $action;
 		$args['noheader'] = true;
+		if (isset($args['string'])) {
+			$args['string'] = urlencode($args['string']);
+		}
 		$link = wp_nonce_url( defined( 'DOING_AJAX' ) && DOING_AJAX ? add_query_arg( $args, wp_get_referer() ) : add_query_arg( $args ), 'lingotek-' . $action );
 		self::link_to_settings_if_not_connected($link);
 

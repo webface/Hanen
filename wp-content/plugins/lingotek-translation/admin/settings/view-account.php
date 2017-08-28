@@ -156,7 +156,7 @@ if ( ! $community_id ) {
 				<div class='payment-method-setup last-four-digits-div'><span id='last-four-digits' class='payment-method-setup'><?php echo $cc; ?></span></div>
 				<div class='payment-method-setup credit-card-image-div'><img id='credit-card-image' class='payment-method-setup' src="<?php echo Lingotek_Credit_Card_To_Path::get_cc_type_asset_url($cc_type) ?>"/></div>
 			</div>
-			<div style="height:37px; display:inline-block;padding-left: 10px;"><a id="professional-payment-info-link" href="<?php echo esc_url_raw( BRIDGE_URL ); ?>/#/billing/payment?redirect_url=<?php echo urlencode(  home_url( add_query_arg( NULL, NULL ) ) ); ?>" style="display: table-cell;padding-top: 7%;"><?php echo ($payment_method_set) ? 'Edit Payment Method' : 'Setup Payment Method'; ?></a></div>
+			<div style="height:37px; display:inline-block;padding-left: 10px;"><a id="professional-payment-info-link" href="<?php echo esc_url_raw( BRIDGE_URL ); ?>/#/billing/payment?redirect_url=<?php echo urlencode(  home_url( add_query_arg( NULL, NULL ) ) ); ?>" style="display: table-cell;padding-top: 7%;"><?php echo ($payment_method_set) ? 'Edit Payment Method' : 'Set Up Payment Method'; ?></a></div>
 		</td>
 	</tr>
 	</table>

@@ -44,6 +44,7 @@ jQuery(document).ready(function($) {
   },10000);
 
   function update_indicators(data){
+    ignoreClicks();
     var doc_id_present = false;
     for(var key in data){
       if(data[key].doc_id !== null && data[key].doc_id !== undefined){
@@ -130,6 +131,21 @@ jQuery(document).ready(function($) {
         }
       }
     }
+    Workflow.reload();
+    listenForClicks();
+  }
+
+  function ignoreClicks()
+  {
+    $(document).on('click', '.lingotek-color', ignoreClickHandler)
+  }
+  function listenForClicks()
+  {
+    $(document).off('click', '.lingotek-color', ignoreClickHandler);
+  }
+  function ignoreClickHandler(e)
+  {
+    e.preventDefault();
   }
 
   function updateWorkbenchIcon(td, data, key, locale, title, icon){

@@ -485,7 +485,7 @@ class Lingotek_Admin {
 				);
 			}
 			if (Lingotek_Professional_Translation_Workflow::is_allowed_user()) {
-				$workflows['ab6c522a-7645-4317-9284-3fbddf516151'] = 'Lingotek Professional Translation';
+				$workflows['ltk-professional-translation'] = 'Lingotek Professional Translation';
 			}
 			natcasesort( $workflows ); // order by title (case-insensitive).
 			$refresh_success['workflows'] = true;

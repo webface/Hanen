@@ -2,7 +2,7 @@
 /**
 	Plugin name: Lingotek Translation
 	Plugin URI: http://lingotek.com/wordpress#utm_source=wpadmin&utm_medium=plugin&utm_campaign=wplingotektranslationplugin
-	Version: 1.3.1
+	Version: 1.3.2
 	Author: Lingotek and Frédéric Demarle
 	Author uri: http://lingotek.com
 	Description: Lingotek offers convenient cloud-based localization and translation.
@@ -16,7 +16,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit();
 }
 
-define( 'LINGOTEK_VERSION', '1.3.1' ); // plugin version (should match above meta).
+define( 'LINGOTEK_VERSION', '1.3.2' ); // plugin version (should match above meta).
 define( 'LINGOTEK_MIN_PLL_VERSION', '1.8' );
 define( 'LINGOTEK_BASENAME', plugin_basename( __FILE__ ) ); // plugin name as known by WP.
 define( 'LINGOTEK_PLUGIN_SLUG', 'lingotek-translation' );// plugin slug (should match above meta: Text Domain).
@@ -188,7 +188,7 @@ class Lingotek {
 		'si_LK' => 'si-LK',
 		'sk_SK' => 'sk-SK',
 		'sl_SI' => 'sl-SI',
-		// 'so_SO' => 'so-SO',
+		'so_SO' => 'so-SO',
 		'sq' => 'sq-SQ',
 		'sr_RS' => 'sr-CS',
 		'su_ID' => 'su-ID',
@@ -298,6 +298,7 @@ class Lingotek {
 		if ( ! get_option( 'lingotek_token' ) ) {
 			add_action( 'init', array( &$this, 'lingotek_activation_pointer' ) );
 		}
+		add_action( 'init', array( &$this, 'lingotek_professional_translation_pointer' ) );
 
 		// adds extra plugin compatibility - borrowed from Polylang.
 		if ( ! defined( 'LINGOTEK_PLUGINS_COMPAT' ) || LINGOTEK_PLUGINS_COMPAT ) {
@@ -319,7 +320,10 @@ class Lingotek {
 		$cr = get_option('lingotek_community_resources');
 		if (is_array($cr) && isset($cr['workflows'])) {
 			// put Lingotek Professional Translation at the top of the select box.
-			$cr['workflows'] = array_merge(array('ab6c522a-7645-4317-9284-3fbddf516151' => 'Lingotek Professional Translation'), $cr['workflows']);
+			$cr['workflows'] = array_flip($cr['workflows']);
+			unset($cr['workflows']['Lingotek Professional Translation']);
+			$cr['workflows'] = array_flip($cr['workflows']);
+			$cr['workflows'] = array_merge(array('ltk-professional-translation' => 'Lingotek Professional Translation'), $cr['workflows']);
 			update_option('lingotek_community_resources', $cr);
 		}
  	}
@@ -798,6 +802,36 @@ class Lingotek {
 			),
 			'width' => 380,
 			'title' => __( 'Congratulations!', 'lingotek-translation' ),
+			'content' => $content,
+			'buttons' => $buttons,
+		);
+
+		new Lingotek_Pointer( $args );
+	}
+
+	public function lingotek_professional_translation_pointer()
+	{
+		$content = __( 'Lingotek Professional Translation is now available!', 'lingotek-translation' );
+
+		$buttons = array(
+			array(
+				'label' => __( 'Close' ),
+			),
+			array(
+				'label' => __( 'Learn More', 'lingotek-translation' ),
+				'link' => admin_url( 'admin.php?page=lingotek-translation_tutorial&sm=content&tutorial=ltk-prof#ltk-prof-trans-header' ),
+			),
+		);
+
+		$args = array(
+			'pointer' => 'lingotek-professional-translation',
+			'id' => 'toplevel_page_lingotek-translation',
+			'position' => array(
+				'edge' => 'bottom',
+				'align' => 'left',
+			),
+			'width' => 380,
+			'title' => __( 'New Feature', 'lingotek-translation' ),
 			'content' => $content,
 			'buttons' => $buttons,
 		);
