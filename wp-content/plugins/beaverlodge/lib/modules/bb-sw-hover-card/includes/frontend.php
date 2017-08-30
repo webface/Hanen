@@ -75,7 +75,7 @@ if ( $posttype == 'sw_team' ) {
     $category = get_term_by( 'id', $settings->teamcategory, 'team_department', 'ARRAY_A' );
     
     $args = array( 
-        'team_department' => $category[name],
+        'team_department' => $category['name'],
         'post_type' => 'sw_team', 
         'orderby' => 'title', 
         'order'   => 'ASC',
@@ -175,7 +175,7 @@ if ( $posttype == 'product' ) {
     $category = get_term_by( 'id', $settings->woocategory, 'product_cat', 'ARRAY_A' );
     
     $args = array( 
-        'product_cat' => $category[name],
+        'product_cat' => $category['name'],
         'post_type' => $posttype, 
         'posts_per_page' => $postqty, 
         'orderby' => 'title', 
@@ -260,7 +260,7 @@ if ( $posttype == 'post' ) {
     $category = get_term_by( 'id', $settings->category, 'category', 'ARRAY_A' );
     
     $args = array( 
-        'category_name' => $category[name],
+        'category_name' => $category['name'],
         'post_type' => $posttype, 
         'posts_per_page' => $postqty, 
         'orderby' => $settings->orderby, 
