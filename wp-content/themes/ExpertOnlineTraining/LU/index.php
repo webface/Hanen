@@ -1,13 +1,8 @@
 <?php
 
 	require('../../../../wp-load.php');
-
-	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'ajax_find_wrong_num_modules')
-	{
-		ajax_find_wrong_num_modules();
-		die();
-	}
-
+	require('ajax_functions.php');
+	
 	require_once(get_template_directory() . '/LU/kint/Kint.class.php');
 
 	// define LearnUpon API keys
@@ -36,10 +31,16 @@
 	define ('lrn_upon_LE_SP_OC_Course_ID',143887);
 	define ('lrn_upon_LE_SP_PRP_Course_ID',143888);
 
+	define ('lrn_upon_LE_Course_TITLE', 'Leadership Essentials');
+
+	global $wpdb;
+
+	require_once(get_template_directory() . '/LU/data.php');
 	require_once(get_template_directory() . '/LU/LU_functions.php');
 
 	$process = 0; // boolean whether to delete and clone or just debug
 	$num_portals_to_process = 5; // the number of portals to process.
+	$num_users_to_process = 25; // the number of users to process.
 	$admin_ajax_url = admin_url('admin-ajax.php');
 
 	// make sure were alowed to use this script
@@ -49,6 +50,18 @@
 		exit;
 	}
 
+	$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'nothing';
+	// ajax functions
+	if ($action == 'ajax_find_wrong_num_modules')
+	{
+		ajax_find_wrong_num_modules();
+		die();
+	}
+	else if ($action == 'ajax_processUser')
+	{
+		ajax_processUser();
+		die();
+	}
 
 ?>
 <!DOCTYPE html>
@@ -64,24 +77,335 @@
 </style>
 </head>
 <body>
-<div class="processing"></div>
-<p>&nbsp;</p>
-<div class="ajax_response"></div>
-
-Going to get stats for Mid-Atlantic Burn Camp (59824)
 
 <?php
 
-	$portal_subdomain = 'midatlanticburncamp';
-//	$portal = getPortals($portal_subdomain);
-//	d($portal);
+	if ($action == 'import_users')
+	{
+		echo "going to import all users ...";
 
-	$data = array();
-	$courses = LU_getCourses($portal_subdomain, 1, $data);
+		// get sales managers
+        $query = "
+        	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'sales_manager' as role 
+        	FROM wp_eot_users u 
+        	LEFT JOIN wp_eot_usermeta um ON u.ID = um.user_id 
+        	WHERE um. meta_key = 'wp_eot_capabilities' 
+        	AND um.meta_value LIKE '%sales_manager%'
+        ";
+
+        $sales_managers1 = $wpdb->get_results( $query, ARRAY_A );
+		$sales_managers1_json = json_encode($sales_managers1, JSON_FORCE_OBJECT);    
+d($sales_managers1, $sales_managers1_json);    
+
+        $query = "
+        	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'salesrep' as role 
+        	FROM wp_eot_users u 
+        	LEFT JOIN wp_eot_usermeta um ON u.ID = um.user_id 
+        	WHERE um. meta_key = 'wp_eot_capabilities' 
+        	AND um.meta_value LIKE '%salesrep%'
+        ";
+
+        $sales_reps = $wpdb->get_results( $query, ARRAY_A );
+		$sales_reps_json = json_encode($sales_reps, JSON_FORCE_OBJECT);
+d($sales_reps, $sales_reps_json);
+
+
+        $args = array(
+            'role__in' => array ('manager'),
+            'role__not_in' => array('administrator', 'student', 'salesrep', 'sales_manager'),
+            'number' => -1,
+            'fields' => array ('ID', 'display_name', 'user_email', 'user_registered')
+        );
+        
+        $query = "
+        	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'manager' as role 
+        	FROM wp_eot_users u 
+        	LEFT JOIN wp_eot_usermeta um ON u.ID = um.user_id 
+        	WHERE um. meta_key = 'wp_eot_capabilities' 
+        	AND um.meta_value LIKE '%\"manager\"%'
+        ";
+
+        $managers = $wpdb->get_results( $query, ARRAY_A );
+        $managers_json = json_encode($managers, JSON_FORCE_OBJECT);
+d($managers, $managers_json);
+
+        $query = "
+        	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'student' as role 
+        	FROM wp_eot_users u 
+        	LEFT JOIN wp_eot_usermeta um ON u.ID = um.user_id 
+        	WHERE um. meta_key = 'wp_eot_capabilities' 
+        	AND um.meta_value LIKE '%\"student\"%'
+        ";
+
+        $students = $wpdb->get_results( $query, ARRAY_A );
+        $students_json = json_encode($students, JSON_FORCE_OBJECT);
+d($students, $students_json);
+
+
+
+		// the javascript that will process creating these users
+?>
+	<div class="processing"></div>
+	<p>&nbsp;</p>
+	<div class="ajax_response"></div>
+
+		<script type="text/javascript">
+			var sales_managers = JSON.parse('<?= $sales_managers1_json ?>');
+//dump(sales_managers);
+		    var sales_reps = JSON.parse('<?= $sales_reps_json ?>');
+		    var managers = JSON.parse('<?= $managers_json ?>');
+		    var students = JSON.parse('<?= $students_json ?>');
+
+
+			var max = <?= $num_users_to_process ?>;
+			var count = 0;
+			var len = ObjectLength(sales_managers);
+			console.log("Count: " + count + " Length = " + len);
+			var counter = count + 1;
+
+			var myUser = new Object();
+			myUser = sales_managers[count];
+//dump3(myUser);
+
+			console.log("PROCESSING: " + myUser.user_login);
+
+			$('.processing').html("Processing " + counter + " out of " + len + " " + myUser.role);
+		    processUsers(myUser);
+
+
+
+		    function processUsers(myUser) 
+		    {
+			    var data = "action=ajax_processUser&old_id=" + myUser.old_id + "&user_login=" + myUser.user_login + "&user_pass=" + myUser.user_pass + "&user_email=" + myUser.user_email + "&role=" + myUser.role + "&cid=zxasqw12~";
+
+			    $('.ajax_response').append("Processing <b>" + myUser.user_login + "</b> old_id: " + myUser.old_id + " role: " + myUser.role + "<br>");
+
+		        $.ajax(
+		        {
+		            type: "POST",
+		            url: "http://eotv5.dev/wp-content/themes/ExpertOnlineTraining/LU/index.php",
+		            data: data,
+		            dataType: "json",
+		            success: function(response) 
+		            {
+		            	if (response.status == 1)
+		            	{
+							$('.ajax_response').append(response.message + "<br>");
+		            	}
+		            	else
+		            	{
+							$('.ajax_response').append("something went wrong: " + response.message + "<br>");
+		            	}
+		            	count++;	
+
+		            	if (count < len && count < max)
+		            	{
+					 		var myNewUser = new Object();
+					 		if (myUser.role == 'sales_manager')
+					 		{
+					 			myNewUser = sales_managers[count];
+					 		}
+					 		else if (myUser.role == 'salesrep')
+					 		{
+					 			myNewUser = sales_reps[count];
+					 		}
+					 		else if (myUser.role == 'manager')
+					 		{
+					 			myNewUser = managers[count];
+					 		}
+					 		else if (myUser.role == 'student')
+					 		{
+					 			myNewUser = students[count];
+					 		}
+							
+							console.log("PROCESSING: " + myNewUser.user_login);
+							counter = count + 1;
+				        	$('.processing').html("Processing " + counter + " out of " + len + " " + myNewUser.role);
+					        processUsers(myNewUser);
+		            	}
+		            	else if (count >= len || count >= max)
+		            	{
+		            		// process the next batch
+		            		if (myUser.role == 'sales_manager')
+		            		{
+		            			// do sales reps next
+								count = 0;
+								len = ObjectLength(sales_reps);
+								console.log("Count: " + count + " Length = " + len);
+								counter = count + 1;
+
+								myUser = new Object();
+								myUser = sales_reps[count];
+								console.log("PROCESSING: " + myUser.user_login);
+
+								$('.processing').html("Processing " + counter + " out of " + len + " " + myUser.role);
+							    processUsers(myUser);
+		            		}
+		            		else if (myUser.role == 'salesrep')
+		            		{
+		            			// do directors (manager) next
+								count = 0;
+								len = ObjectLength(managers);
+								console.log("Count: " + count + " Length = " + len);
+								counter = count + 1;
+
+								myUser = new Object();
+								myUser = managers[count];
+								console.log("PROCESSING: " + myUser.user_login);
+
+								$('.processing').html("Processing " + counter + " out of " + len + " " + myUser.role);
+							    processUsers(myUser);
+		            		}
+		            		else if (myUser.role == 'manager')
+		            		{
+		            			// do students reps next
+								count = 0;
+								len = ObjectLength(students);
+								console.log("Count: " + count + " Length = " + len);
+								counter = count + 1;
+
+								myUser = new Object();
+								myUser = students[count];
+								console.log("PROCESSING: " + myUser.user_login);
+
+								$('.processing').html("Processing " + counter + " out of " + len + " " + myUser.role);
+							    processUsers(myUser);
+		            		}
+		            	}
+		            },
+					error: function(XMLHttpRequest, textStatus, errorThrown) 
+					{
+						console.log( "ERROR: " + textStatus + " " + errorThrown);
+		            	count++;
+		            	if (count < len && count < max)
+		            	{
+					 		var myNewUser = new Object();
+					 		if (myUser.role == 'sales_manager')
+					 		{
+					 			myNewUser = sales_managers[count];
+					 		}
+					 		else if (myUser.role == 'salesrep')
+					 		{
+					 			myNewUser = sales_reps[count];
+					 		}
+					 		else if (myUser.role == 'manager')
+					 		{
+					 			myNewUser = managers[count];
+					 		}
+					 		else if (myUser.role == 'student')
+					 		{
+					 			myNewUser = students[count];
+					 		}
+							
+							console.log("PROCESSING: " + myNewUser.user_login);
+							counter = count + 1;
+				        	$('.processing').html("Processing " + counter + " out of " + len + " " + myNewUser.role);
+					        processUsers(myNewUser);
+		            	}
+
+					}		            
+		        });
+			}
+
+
+			/* HELPER FUNCTIONS */
+			function dump(obj) {
+			    var out = '';
+			    for (var i in obj) {
+			        out += i + ":: " + dump2(obj[i]) + "\n";
+			    }
+
+			    alert(out);
+
+			    // or, if you wanted to avoid alerts...
+
+			    var pre = document.createElement('pre');
+			    pre.innerHTML = out;
+			    document.body.appendChild(pre)
+			}
+
+			function dump2(obj) {
+			    var out = '';
+			    for (var i in obj) {
+			        out += i + ": " + obj[i] + "\n";
+			    }
+
+			    return out;
+			    
+			}
+
+			function dump3(obj) {
+			    var out = '';
+			    for (var i in obj) {
+			        out += i + " -> " + obj[i] + "\n";
+			    }
+
+			    alert(out);
+
+			    // or, if you wanted to avoid alerts...
+
+			    var pre = document.createElement('pre');
+			    pre.innerHTML = out;
+			    document.body.appendChild(pre)
+			}
+
+			function ObjectLength( object ) {
+			    var length = 0;
+			    for( var key in object ) {
+			        if( object.hasOwnProperty(key) ) {
+			            ++length;
+			        }
+			    }
+			    return length;
+			};
+
+		</script>
+
+<?php
+
+	}
+	else if ($action == 'import_stats')
+	{
+	echo "Going to get stats for Mid-Atlantic Burn Camp (59824)";
+		$portal_subdomain = 'eotmidatlanticburncamp';
+	//	$portal = getPortals($portal_subdomain);
+	//	d($portal);
+
+		$org_id = $LU_data[$portal_subdomain]['org_id'];
+		$data = compact("org_id");
+		$courses = LU_getCourses($portal_subdomain, 1, $data);
 	d($courses);
 
+		// go through each course and get the enrolled users / modules
+		foreach ($courses as $course)
+		{
+			echo "Course: " . $course['name'];
+			// get modules
+			$modules = LU_getModules($course['id'], $portal_subdomain, $data, 'page');
+	d($modules);
 
+			// if no modules, make sure its an array so that it doesnt mess up the foreach loop below.
+			if (empty($modules))
+			{
+				$modules = array();
+			}
 
+			echo "Published: " . $course['published_status_id'] . " Num Enrolled: " . $course['num_enrolled'];
+			// check if published, to know if we need to get enrolled users
+			if ($course['published_status_id'] == 'published' && $course['num_enrolled'] > 0)
+			{
+				// get enrolled users
+				$enrolled_users = LU_getEnrollment($course['id'], $portal_subdomain, $data);
+	d($enrolled_users);
+			}
+		}
+	}
+	else
+	{
+		echo 'Doing Nothing!';
+	}
+
+	
 
 
 

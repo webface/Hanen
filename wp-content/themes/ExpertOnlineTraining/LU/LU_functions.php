@@ -808,8 +808,9 @@ function LU_delete_course($course_id, $portal_subdomain = DEFAULT_SUBDOMAIN, $da
    */
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $url = select_lrn_upon_url($portal_subdomain, "courses/" . $course_id);
   }
   else {
@@ -862,8 +863,11 @@ function LU_getCourses($portal_subdomain = DEFAULT_SUBDOMAIN, $draft = 0, $data 
   
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+//    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
+//    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $response = execute_communication($url, '', 'GET', $portal_username, $portal_password); 
   }
   else
@@ -912,8 +916,9 @@ function LU_getModules($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $d
 
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $response = execute_communication($url, '', 'GET', $portal_username, $portal_password); 
   }
   else
@@ -973,8 +978,9 @@ function LU_deleteModule($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, 
 
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $send_data = '{"course_id":' . $course_id . ', "module_id": ' . $module_id . '}';
     $response = execute_communication($url, $send_data, "POST", $portal_username, $portal_password);
   }
@@ -1026,8 +1032,9 @@ function LU_addModule($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, $da
 
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $send_data = '{"course_id":' . $course_id . ', "module_id": ' . $module_id . '}';
     $response = execute_communication($url, $send_data, "POST", $portal_username, $portal_password);
   }
@@ -1197,8 +1204,9 @@ function LU_updateCourse($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, 
 
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
   }
   else
   {
@@ -1302,8 +1310,9 @@ function LU_deleteCourse($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN, 
 
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
   }
   else
   {
@@ -1856,8 +1865,9 @@ function LU_getEnrollment($course_id = 0, $portal_subdomain = DEFAULT_SUBDOMAIN,
 
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $response = execute_communication($url, '', 'GET', $portal_username, $portal_password); 
   }
   else
@@ -5767,8 +5777,9 @@ function getGroups($portal_subdomain = DEFAULT_SUBDOMAIN, $title = '', $data = a
   
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $response = execute_communication($url, '', 'GET', $portal_username, $portal_password); 
   }
   else
@@ -5835,8 +5846,9 @@ function getGroupManagers($portal_subdomain = DEFAULT_SUBDOMAIN, $data = array()
   
   if ($portal_subdomain != DEFAULT_SUBDOMAIN) 
   {
-    $portal_username = get_post_meta ($org_id, 'lrn_upon_api_usr', true);
-    $portal_password = get_post_meta ($org_id, 'lrn_upon_api_pass', true);
+    global $LU_data;
+    $portal_username = $LU_data[$portal_subdomain]['api_usr'];
+    $portal_password = $LU_data[$portal_subdomain]['api_pass'];
     $response = execute_communication($url, '', 'GET', $portal_username, $portal_password); 
   }
   else
