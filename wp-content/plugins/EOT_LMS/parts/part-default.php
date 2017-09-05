@@ -124,7 +124,20 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
 ?> 
     <h1 class="article_page_title"> Sales Rep Administration Panel</h1>
     <ul>
-        <li><a href="?part=user_list" onclick="load('load_manage_staff_accounts')"><b>Manage Users</b></a> | <a href="?part=user_list&ignore=students"><b>Manage Directors Only</b></a></li>
+        <li><a href="?part=user_list" onclick="load('load_manage_staff_accounts')"><b>Manage Users</b></a> | <a href="?part=user_list&ignore=students"><b>Manage Directors Only</b></a><span class="bs">
+                <form class="form-inline pull-right" action="?part=user_list" method="POST">
+            <div class="form-group">
+              <label class="sr-only" for="search">Search by name, email</label>
+              <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                  <input type="text" class="form-control" name="search" id="search" placeholder="Search Users" pattern=".{3,}"   required title="3 characters minimum">
+                
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
+            </span>
+        </li>
         <li><a href="?part=admin_create_account"><b>Create New User</b></a></li>
         <li><a href="?part=custom_fields"><b>Update Custom User Fields</b></a></li>
         <li><a href="?part=upload_resources"><b>Upload Resources</b></a></li>
