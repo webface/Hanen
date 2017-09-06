@@ -3,7 +3,7 @@ Contributors: yani.iliev, bangelov, pimjitsawang
 Tags: move, transfer, copy, migrate, backup, clone, restore, db migration, wordpress migration, website migration, database export, database import, apoyo, sauvegarde, di riserva, バックアップ
 Requires at least: 3.3
 Tested up to: 4.8
-Stable tag: 6.55
+Stable tag: 6.56
 License: GPLv2 or later
 
 Move, transfer, copy, migrate, and backup a site with 1-click. Quick, easy, and reliable.
@@ -90,6 +90,26 @@ Alternatively you can download the plugin using the download button on this page
 3. Plugin Menu
 
 == Changelog ==
+= 6.56 =
+**Added**
+
+* Symlink directories on export
+* Support sub directories on Backups page
+* A cancel button on import confirm step
+
+**Fixed**
+
+* Support IE11
+* Wrong blogs.dir URL replacement
+* Wrong path network drive replacement (Windows)
+* Text placeholders of first find/replace inputs on export
+
+**Changed**
+
+* Added loading indicator to feedback and report a problem forms
+* Do not clear cache on export
+* Skip files that contain new line on export
+
 = 6.55 =
 **Added**
 
