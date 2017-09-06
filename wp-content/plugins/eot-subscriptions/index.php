@@ -397,19 +397,16 @@ function handle_steps_callback () {
 						{
 							$customer = create_new_customer ($cc_card, $_REQUEST['email'], $_REQUEST['org_name']); //$customer->{'id'};	
 							$customer_id = $customer['customer_id'];
-							$card_id = $customer['cc_card'];
+							$card_id = $customer['card_id'];
 						}
 
 						update_post_meta ($org_id, 'stripe_id', $customer_id);
 						
-						if (isset($_REQUEST['cc_card'])) 
+						if (isset($_REQUEST['cc_card']) && $_REQUEST['cc_card'] != '') 
 						{
 							$card_id = $_REQUEST['cc_card'];
 						} 
-						else 
-						{
-							$card_id = $cc_card;
-						}
+						
 						
 						$trans_id = charge_customer ($price, $customer_id, $card_id, $statement_description); //$charge->{'id'};
 					}

@@ -4,6 +4,8 @@
 **/
 
 function create_new_customer ($cc_card, $email, $description) {
+        //error_log("Create new customer");
+        //error_log(json_encode($cc_card));
 	try {
 		$customer = Stripe_Customer::create(array(
 			"email" => $email,
@@ -13,13 +15,16 @@ function create_new_customer ($cc_card, $email, $description) {
 	} catch (Exception $e) {
 		throw new Exception ("Customer: " . $e->getMessage());
 	}
-
-	return array ('customer_id' => $customer->{'id'}, 'card_id' => $customer->{'default_card'});
+        //error_log(json_encode(array ('customer_id' => $customer->{'id'}, 'card_id' => $customer->{'default_source'})));
+	return array ('customer_id' => $customer->{'id'}, 'card_id' => $customer->{'default_source'});
 }
 
 function charge_customer ($price, $customer_id, $card, $description) {
+        //error_log("Charge customer");
+        //error_log(json_encode($card));
 	try {
 		if (is_array($card)) {
+                    //error_log("charge customer with new card");
 			$cu = Stripe_Customer::retrieve($customer_id);
 //			$new_card = $cu->cards->create(array("card" => $card));
 			$new_card = $cu->sources->create(array("source" => $card));
