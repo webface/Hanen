@@ -5,6 +5,10 @@ Change Log:
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 
+3.1.4.1
+----------------------------------------------------------------------
+- Fix: Backups now works properly when requested remotely from Automate (Hub)
+
 3.1.4
 ----------------------------------------------------------------------
 - Fix: Re-added change destination directory feature
@@ -440,4 +444,4 @@ http://premium.wpmudev.org/forums/topic/need-to-turn-off-zlib-compression-for-it
 - Initial stable release
 
 
-354799-1502290006-ai
+354799-1504712759-au

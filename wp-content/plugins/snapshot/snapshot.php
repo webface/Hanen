@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Snapshot Pro
-Version: 3.1.4
+Version: 3.1.4.1
 Description: This plugin allows you to take quick on-demand backup snapshots of your working WordPress database. You can select from the default WordPress tables as well as custom plugin tables within the database structure. All snapshots are logged, and you can restore the snapshot as needed.
 Author: WPMU DEV
 Author URI: https://premium.wpmudev.org/
@@ -97,7 +97,7 @@ if ( ! class_exists( 'WPMUDEVSnapshot' ) ) {
 			$this->plugin_url = plugin_dir_url( __FILE__ );
 
 			$this->DEBUG = false;
-			$this->_settings['SNAPSHOT_VERSION'] = '3.1.4';
+			$this->_settings['SNAPSHOT_VERSION'] = '3.1.4.1';
 
 			if ( is_multisite() ) {
 				$this->_settings['SNAPSHOT_MENU_URL'] = network_admin_url() . 'admin.php?page=';
