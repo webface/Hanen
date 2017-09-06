@@ -406,7 +406,10 @@ function handle_steps_callback () {
 						{
 							$card_id = $_REQUEST['cc_card'];
 						} 
-						
+						else 
+						{
+							$card_id = $cc_card;
+						}
 						
 						$trans_id = charge_customer ($price, $customer_id, $card_id, $statement_description); //$charge->{'id'};
 					}
