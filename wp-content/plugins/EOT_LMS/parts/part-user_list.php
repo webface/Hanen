@@ -4,27 +4,33 @@
     <span class="current">Users Lists</span>     
 </div>
 <h1 class="article_page_title">Users List</h1>
-<span class="bs">
-<form class="form-inline pull-right" action="?part=user_list" method="POST">
-            <div class="form-group">
-              <label class="sr-only" for="search">Search by name, email</label>
-              <div class="input-group">
-                  <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                  <input type="text" class="form-control" name="search" id="search" placeholder="Search Users" pattern=".{3,}"   required title="3 characters minimum">
-                
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Search</button>
-          </form>
-</span>
 <?php
-    //ini_set('memory_limit', '-1');
     if(current_user_can("is_sales_rep") || current_user_can("is_sales_manager"))
     {
-        $search = isset($_REQUEST['search']) ? $_REQUEST['search'] : '';
-        if(trim($search) != '')
+        $search = isset($_REQUEST['search']) ? trim($_REQUEST['search']) : '';
+?>
+    <ul>
+        <li>
+            <a href="?part=user_list" onclick="load('load_manage_staff_accounts')"><b>Manage Users</b></a> | <a href="?part=user_list&ignore=students"><b>Manage Directors Only</b></a><span class="bs">
+                <form class="form-inline pull-right" action="?part=user_list" method="POST">
+                    <div class="form-group">
+                      <label class="sr-only" for="search">Search by name, email</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                          <input type="text" class="form-control" value="<?= $search ?>" name="search" id="search" placeholder="Search Users" pattern=".{3,}"   required title="3 characters minimum">
+                        
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </span>
+        </li>
+    </ul>
+<?php
+        if($search != '')
         {
-            $search_string = esc_attr( trim( $search ) );
+            // disply the search term in the search box.
+            $search_string = esc_attr( $search );
             $users = new WP_User_Query( array(
                 'search'         => "*{$search_string}*",
                 'search_columns' => array(
@@ -96,7 +102,7 @@
             }
 
             echo "<h2>Search Results</h2>";
-            CreateDataTable($userTableObj, "100%", 10);
+            CreateDataTable($userTableObj, "100%", 25);
         }
         else 
         {
