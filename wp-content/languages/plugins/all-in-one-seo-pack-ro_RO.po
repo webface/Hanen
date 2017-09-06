@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - All in One SEO Pack - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-24 13:58:52+0000\n"
+"PO-Revision-Date: 2017-08-29 06:44:58+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,38 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: ro\n"
 "Project-Id-Version: Plugins - All in One SEO Pack - Stable (latest release)\n"
+
+#: modules/aioseop_opengraph.php:110
+msgid "Select the Twitter Card type to use for this Page or Post, overriding the default setting."
+msgstr "Selectează tipul de Twitter Card folosit în aceasta Pagina sau Articol, trecând peste setarea implicită."
+
+#: modules/aioseop_feature_manager.php:34
+msgid "Add Social Meta data to your site to deliver closer integration between your website/blog and social media."
+msgstr "Adaugă date Social Meta website-ului tău pentru a oferi o integrare mai buna intre site-ul dumneavoastră web și conturile social media."
+
+#: inc/commonstrings.php:53
+msgid "Your license has expired. Please %1$s click here %2$s to purchase a new one."
+msgstr "Licența a expirat. Te rog %1$s apasă aici %2$s ca sa o reînnoiești."
+
+#: inc/commonstrings.php:52
+msgid "There is a new version of %s available. Go to <a href='%s'>the plugins page</a> for details."
+msgstr "Exista o noua versiune %s disponibila. Click pentru <a href='%s'>pagina cu plugin-uri</a> pentru a afla mai multe detalii."
+
+#: inc/commonstrings.php:49
+msgid "You must <a href=\"%s\">enter a valid License Key</a> for it to work."
+msgstr "Pentru a funcționa trebuie <a href=\"%s\">introdusa o Licență valida</a>."
+
+#: inc/commonstrings.php:48
+msgid "%s is almost ready."
+msgstr "%s este aproape gata."
+
+#: aioseop_class.php:985
+msgid "NOFOLLOW this page/post"
+msgstr "Adauga NOFOLLOW la pagina/articol"
+
+#: aioseop_class.php:981
+msgid "NOINDEX this page/post"
+msgstr "Adauga NOINDEX la pagina/articol"
 
 #: aioseop_class.php:175
 msgid "%post_month% - The month the page/post was published (localized)"
