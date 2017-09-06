@@ -48,6 +48,18 @@ class Ai1wm_Recursive_Directory_Iterator extends RecursiveDirectoryIterator {
 		$this->skipdots();
 	}
 
+	/**
+	 * Returns whether current entry is a directory and not '.' or '..'
+	 *
+	 * Explicitly set allow links flag, because RecursiveDirectoryIterator::FOLLOW_SYMLINKS
+	 * is not supported by <= PHP 5.3.0
+	 *
+	 * @return bool
+	 */
+	public function hasChildren( $allow_links = true ) {
+		return parent::hasChildren( $allow_links );
+	}
+
 	protected function skipdots() {
 		while ( $this->isDot() ) {
 			parent::next();

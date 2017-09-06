@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-16 12:53:31+0000\n"
+"PO-Revision-Date: 2017-09-04 13:19:26+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3753,13 +3753,13 @@ msgstr "Name des Rezensenten."
 msgid "Email of the reviewer."
 msgstr "E-Mail des Bewerters."
 
-#: includes/api/v1/class-wc-rest-webhooks-controller.php:82
-msgid "Webhook secret."
-msgstr "Geheime WebHook-Antwort."
-
 #: includes/api/v1/class-wc-rest-customers-controller.php:876
 msgid "Limit result set to specific IDs."
 msgstr "Beschränkt Ergebnismenge auf bestimmte IDs."
+
+#: includes/api/v1/class-wc-rest-webhooks-controller.php:82
+msgid "Webhook secret."
+msgstr "Geheime Webhook-Antwort."
 
 #: includes/api/class-wc-rest-products-controller.php:1057
 #: includes/api/v1/class-wc-rest-products-controller.php:867
@@ -4089,14 +4089,14 @@ msgstr "WooCommerce Filter nach Bewertungsdurchschnitt"
 msgid "Filter products by rating when viewing product archives and categories."
 msgstr "Lässt dich Produkte nach Bewertung auf Produkt-Archiven und -Kategorien filtern."
 
-#: templates/emails/customer-on-hold-order.php:28
-#: templates/emails/plain/customer-on-hold-order.php:25
-msgid "Your order is on-hold until we confirm payment has been received. Your order details are shown below for your reference:"
-msgstr "Deine Bestellung wird solange zurückgestellt bis wir deinen Zahlungseingang bestätigen. Nachfolgend findest du die Details zu deiner Bestellung:"
-
 #: includes/wc-template-functions.php:32
 msgid "Checkout is not available whilst your cart is empty."
 msgstr "Wenn der Warenkorb leer ist, steht die Kasse nicht zu Verfügung."
+
+#: templates/emails/customer-on-hold-order.php:28
+#: templates/emails/plain/customer-on-hold-order.php:25
+msgid "Your order is on-hold until we confirm payment has been received. Your order details are shown below for your reference:"
+msgstr "Deine Bestellung wird solange zurückgestellt, bis wir deinen Zahlungseingang bestätigen. Nachfolgend findest du die Details zu deiner Bestellung:"
 
 #: includes/wc-core-functions.php:393
 msgid "Nepalese rupee"

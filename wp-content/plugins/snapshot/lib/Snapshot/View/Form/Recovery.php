@@ -709,7 +709,7 @@ if ( ! class_exists( 'Snapshot_View_Form_Recovery' ) ) {
 								//echo "table_name_new=[". $table_name_new ."]<br />";
 								//echo "table_name=[". $table_name ."]<br />";
 
-								//echo "site_url=[". $_SESSION['restore_form']['wordpress']['site-url'] ."] [". $_SESSION['restore_form']['snapshot']['manifest-data']['SITEURL']."]<br />";	 	 		 	 	 				    
+								//echo "site_url=[". $_SESSION['restore_form']['wordpress']['site-url'] ."] [". $_SESSION['restore_form']['snapshot']['manifest-data']['SITEURL']."]<br />";
 								//echo "home_url=[". $_SESSION['restore_form']['wordpress']['home-url'] ."] [". $_SESSION['restore_form']['snapshot']['manifest-data']['HOME']."]<br />";
 
 								if ( ( $_SESSION['restore_form']['wordpress']['site-url'] != $_SESSION['restore_form']['snapshot']['manifest-data']['WP_SITEURL'] )

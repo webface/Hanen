@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-26 18:00:00+0000\n"
+"PO-Revision-Date: 2017-09-01 14:48:51+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15119,14 +15119,6 @@ msgstr "Hubo un error al llamar a %s"
 msgid "Your changes have been saved."
 msgstr "Se han guardado tus cambios."
 
-#: includes/api/class-wc-rest-system-status-tools-controller.php:123
-msgid "This tool will clear the product/shop transients cache."
-msgstr "Esta herramienta borrará la caché de transitorios de producto/tienda"
-
-#: includes/api/class-wc-rest-system-status-tools-controller.php:128
-msgid "This tool will clear ALL expired transients from WordPress."
-msgstr "Esta herramienta borrará TODOS los transitorios caducados de WordPress."
-
 #: includes/api/class-wc-rest-system-status-tools-controller.php:136
 msgid "Term counts"
 msgstr "Recuentos de términos"
@@ -15690,10 +15682,6 @@ msgstr "Perfiles restablecidos con éxito"
 msgid "Tax rates successfully deleted"
 msgstr "Tasas de impuestos eliminadas correctamente."
 
-#: includes/api/class-wc-rest-system-status-tools-controller.php:122
-msgid "Clear transients"
-msgstr "Borrar transitorios"
-
 #: includes/api/class-wc-rest-system-status-tools-controller.php:127
 msgid "Clear expired transients"
 msgstr "Borrar transitorios caducados"
@@ -15977,21 +15965,9 @@ msgstr "Instalar las páginas de WooCommerce"
 msgid "Customer sessions"
 msgstr "Sesiones de clientes"
 
-#: includes/api/class-wc-rest-system-status-tools-controller.php:126
-msgid "Expired transients"
-msgstr "Transitorios caducados"
-
 #: includes/api/class-wc-rest-system-status-tools-controller.php:121
 msgid "WC transients"
 msgstr "Transitorios de WC"
-
-#: includes/api/class-wc-rest-system-status-tools-controller.php:398
-msgid "%d transients rows cleared"
-msgstr "%d filas de transitorios borradas"
-
-#: includes/api/class-wc-rest-system-status-tools-controller.php:374
-msgid "Product transients cleared"
-msgstr "Transitorios de producto borrados"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:886
 msgid "Next steps"
@@ -16060,6 +16036,30 @@ msgstr "Define si todo el producto está sujeto a impuestos o no, o solo el cost
 #: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:146
 msgid "Check this box if the coupon should not apply to items on sale. Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are items in the cart that are not on sale."
 msgstr "Marca esta casilla si el cupón no debe aplicarse a artículos rebajados. Los cupones para artículos concretos sólo funcionarán si el artículo no está rebajado. Los cupones para carrito completo solo funcionarán si no hay artículos rebajados en el carrito."
+
+#: includes/api/class-wc-rest-system-status-tools-controller.php:128
+msgid "This tool will clear ALL expired transients from WordPress."
+msgstr "Esta herramienta borrará TODOS los datos temporales caducados de WordPress."
+
+#: includes/api/class-wc-rest-system-status-tools-controller.php:126
+msgid "Expired transients"
+msgstr "Datos temporales caducados"
+
+#: includes/api/class-wc-rest-system-status-tools-controller.php:123
+msgid "This tool will clear the product/shop transients cache."
+msgstr "Esta herramienta borrará la caché de datos temporales de producto/tienda"
+
+#: includes/api/class-wc-rest-system-status-tools-controller.php:122
+msgid "Clear transients"
+msgstr "Borrar datos temporales"
+
+#: includes/api/class-wc-rest-system-status-tools-controller.php:398
+msgid "%d transients rows cleared"
+msgstr "%d filas de datos temporales borradas"
+
+#: includes/api/class-wc-rest-system-status-tools-controller.php:374
+msgid "Product transients cleared"
+msgstr "Datos temporales de producto borrados"
 
 #: includes/admin/class-wc-admin-pointers.php:74
 msgid "This is your products main body of content. Here you should describe your product in detail."
