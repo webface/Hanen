@@ -8253,7 +8253,7 @@ function getSubscriptionByCourse($course_id = 0)
 
   global $wpdb;
 
-  $query = "SELECT s.* FROM " . TABLE_SUBSCRIPTIONS . " s LEFT JOIN " . TABLE_COURSES . " c ON S.ID = c.subscription_id WHERE c.ID = $course_id";
+  $query = "SELECT s.* FROM " . TABLE_SUBSCRIPTIONS . " s LEFT JOIN " . TABLE_COURSES . " c ON s.ID = c.subscription_id WHERE c.ID = $course_id";
   $subscription = $wpdb->get_row($query, ARRAY_A);
   return $subscription;
 }
