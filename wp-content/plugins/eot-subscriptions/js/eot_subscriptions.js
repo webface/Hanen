@@ -2,6 +2,7 @@ var my_response = "";
 var eot_status = 1;
 
 jQuery(document).on('change', '.cc_cards_list input[type="radio"]', function () {
+    //alert('changed');
     if (jQuery(this).attr('checked') == "checked") { //reset credit card form when a previous credit card is chosen
         jQuery('#new_cc_form input').val ('');
         jQuery('#new_cc_form select').val ('');

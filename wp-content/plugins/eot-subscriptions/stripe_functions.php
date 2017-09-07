@@ -2,7 +2,30 @@
 /**
   * Functions related to Stripe
 **/
-
+function refund_customer($charge_id, $part_amount = 0)
+{
+        try{
+            if($part_amount == 0)
+            {
+            $refund = Stripe_Refund::create(array("charge"=> $charge_id));
+            }
+            else 
+            {
+             $refund = Stripe_Refund::create(array("charge"=> $charge_id , 'amount' => $part_amount));   
+            }
+            $success = 1;
+        } catch (Exception $ex) {
+                throw new Exception ("Refund: " . $ex->getMessage());
+        }
+        if($success == 1)
+        {
+            return $refund->{'id'};
+        }
+        else 
+        {
+            return false;
+        }
+}
 function create_new_customer ($cc_card, $email, $description) {
 	try {
 		$customer = Stripe_Customer::create(array(

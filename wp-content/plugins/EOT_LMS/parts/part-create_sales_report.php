@@ -72,7 +72,7 @@
 		{
 			foreach ($libraries as $key => $lib_obj)
 			{
-				$library_names[$lib_obj->id] = $lib_obj->name;
+				$library_names[$lib_obj->ID] = $lib_obj->name;
 			}
 		}
 
@@ -115,7 +115,7 @@
 	   	// Required to download table for excell download file. This table will not be displayed
 	  	foreach($subscriptions as $subscription)
 	  	{
-	  		$stripe_charge = ($subscription->method == "stripe") ? '\$' . number_format($subscription->price * 0.029 + 0.3, 2, ".", "") : "";
+	  		$stripe_charge = ($subscription->method == "stripe") ? '$' . number_format($subscription->price * 0.029 + 0.3, 2, ".", "") : "";
 	  		$customer_info = get_userdata($subscription->manager_id); // Camp owner Info from WP
 	  		$customer_name = ($customer_info) ? $customer_info->first_name . " " . $customer_info->last_name: 'Could not find the manager.'; // REP first and last name
 	  		$customer_email = ( $customer_info ) ? str_replace("@", "\@", $customer_info->user_email) : 'Could not find the e-mail';
@@ -134,9 +134,9 @@
 		 	$subscriptionsTableObj->rows[] = array(
 				$subscription->trans_date, // Transaction Date
 				$subscription->camp_name, // The name of the camp,
-				'\$' . $subscription->price, // Transaction price.
+				'$' . $subscription->price, // Transaction price.
 				$rep_name, // REP first and last name
-				($rep_info && $subscription->method != "free") ? '\$' . ($subscription->price * COMMISION_PERCENT_NEW) : "",
+				($rep_info && $subscription->method != "free") ? '$' . ($subscription->price * COMMISION_PERCENT_NEW) : "",
 				'Subscription'
 			);
 
@@ -144,54 +144,58 @@
 		 	$subscriptionsTableDownloadObj->rows[] = array(
 		    	$subscription->trans_date,
 			    $subscription->camp_name,
-			    '\$' . number_format($subscription->price, 2, ".", ""),
+			    '$' . number_format($subscription->price, 2, ".", ""),
 			    $stripe_charge,
-			    '\$' . $subscription->dash_price,
-			    '\$' . $subscription->dash_discount,
-			    '\$' . $subscription->staff_price,
-			    '\$' . $subscription->staff_discount,
-			    '\$' . $subscription->data_disk_price,
+			    '$' . $subscription->dash_price,
+			    '$' . $subscription->dash_discount,
+			    '$' . $subscription->staff_price,
+			    '$' . $subscription->staff_discount,
+			    '$' . $subscription->data_disk_price,
 			    $customer_name,
 			    $customer_email,
 			    $subscription->org_phone,
 			    $subscription->staff_credits,
 			    $library_names[$subscription->library_id],
 			    $rep_name,
-		     	($rep_info && $subscription->method != "free") ? '\$' . ($subscription->price * COMMISION_PERCENT_NEW) : "",
+		     	($rep_info && $subscription->method != "free") ? '$' . ($subscription->price * COMMISION_PERCENT_NEW) : "",
 			    'Subscription Sale',
 			    $subscription->method,
 			);	
 	}
     $upgrades = getUpgrades(0, $start_date, $end_date); // All the upgrades for this date range.
+    //d($upgrades);
     if($upgrades)
     {
     	// Add the subscription upgrades details as well
         foreach($upgrades as $upgrade)
         {
         	// Make associative array
-        	$upgrades_array[$upgrade->id] = $upgrade; // Associative array of upgrades.
+        	$upgrades_array[$upgrade->ID] = $upgrade; // Associative array of upgrades.
         	$upgrade_rep_info = get_userdata($upgrade->rep_id); // Upgrade Rep Info from WP
+                $upgrade_customer_info = get_userdata($upgrade->user_id);
         	$upgrade_rep_name = ($upgrade_rep_info) ? $upgrade_rep_info->first_name . " " . $upgrade_rep_info->last_name : ''; // REP first and last name
-			$upgrade->org_phone = get_post_meta( $upgrade->org_id, 'phone', true );
-			$stripe_charge = ($upgrade->method == "stripe") ? '\$' . number_format($upgrade->price * 0.029 + 0.3, 2, '.', '') : "";
+		$upgrade_customer_name = ($upgrade_customer_info) ? $upgrade_customer_info->first_name . " " . $upgrade_customer_info->last_name : "";
+                $upgrade_customer_email = $upgrade_customer_info->user_email;
+                $upgrade->org_phone = get_post_meta( $upgrade->org_id, 'phone', true );
+			$stripe_charge = ($upgrade->method == "stripe") ? '$' . number_format($upgrade->price * 0.029 + 0.3, 2, '.', '') : "";
 			// Populate subscription download table for upgrades
 		 	$subscriptionsTableDownloadObj->rows[] = array(
 		    	$upgrade->date,
 			    $camps_name[$upgrade->subscription_id],
-			    '\$' . number_format($upgrade->price, 2, '.', ''),
+			    '$' . number_format($upgrade->price, 2, '.', ''),
 			    $stripe_charge,
 			    "",
 			    "",
 			    "",
 			    "",
 			    "",
-			    $customer_name,
-			    $customer_email,
+			    $upgrade_customer_name,
+			    $upgrade_customer_email,
 			    $upgrade->org_phone,
 			    $upgrade->accounts,
 			    $library_names[$subscription->library_id],
 			    $upgrade_rep_name,
-			    ($upgrade_rep_info && $upgrade->method != "free") ? '\$' . ($upgrade->price * COMMISION_PERCENT_NEW)  : "",
+			    ($upgrade_rep_info && $upgrade->method != "free") ? '$' . ($upgrade->price * COMMISION_PERCENT_NEW)  : "",
 			    'Upgrade Sale',
 			    $upgrade->method,
 			);	
@@ -200,9 +204,9 @@
 			$subscriptionsTableObj->rows[] = array(
 				$upgrade->date, // Transaction Date
 				$subscription->camp_name, // The name of the camp,
-				'\$' . number_format($upgrade->price, 2, '.', ''), // Transaction price.
+				'$' . number_format($upgrade->price, 2, '.', ''), // Transaction price.
 				$upgrade_rep_name, // REP first and last name
-				($upgrade_rep_info) ? '\$' . number_format(($upgrade->price * COMMISION_PERCENT_NEW), 2, '.', '') : '', // Commision for the upgrade.
+				($upgrade_rep_info) ? '$' . number_format(($upgrade->price * COMMISION_PERCENT_NEW), 2, '.', '') : '', // Commision for the upgrade.
 				'Upgrade'
 			);
         }
@@ -280,7 +284,7 @@ $( document ).on('change', '#quickSelection', function()
 	$( "#generateSalesReport" ).click(function(e) {
 	});
 	$(document).ready(function () {
-		$('#DataTable_2, #DataTable_2_filter, #DataTable_2_paginate, #DataTable_2_info').hide();
+		$('#DataTable_2, #DataTable_2_filter, #DataTable_2_paginate, #DataTable_2_info, #DataTable_2_length').hide();
 	})
 </script>
 <?php
