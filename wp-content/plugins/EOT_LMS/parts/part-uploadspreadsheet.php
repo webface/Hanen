@@ -233,28 +233,28 @@
 							{
 								if(!in_array($course_1, $course_names))
 								{
-									$error_message .= '- <b>' . $course_1 . ' is either not a valid course or is not published yet. </b><br/>';
+									$error_message .= '- <b>' . $course_1 . ' is not a valid course. </b><br/>';
 								}
 							}
 							if( !empty($course_2) )
 							{
 								if(!in_array($course_2, $course_names))
 								{
-									$error_message .= '- <b>' . $course_2 . ' is either not a valid course or is not published yet. </b><br/>';
+									$error_message .= '- <b>' . $course_2 . ' is not a valid course. </b><br/>';
 								}
 							}
 							if( !empty($course_3) )
 							{
 								if(!in_array($course_3, $course_names))
 								{
-									$error_message .= '- <b>' . $course_3 . ' is either not a valid course or is not published yet. </b><br/>';
+									$error_message .= '- <b>' . $course_3 . ' is not a valid course. </b><br/>';
 								}
 							}
 							if( !empty($course_4) )
 							{
 								if(!in_array($course_4, $course_names))
 								{
-									$error_message .= '- <b>' . $course_4 . ' is either not a valid course or is not published yet. </b><br/>';
+									$error_message .= '- <b>' . $course_4 . ' is not a valid course. </b><br/>';
 								}
 							}
 						}
@@ -346,18 +346,17 @@
 		$max = filter_var($_REQUEST['max'],FILTER_SANITIZE_NUMBER_INT);					//total users being processed from this instance of spreadsheet upload
 		$org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);			//org id
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);	//subscription id
-		$processing_top = ($processing + PENDING_USERS_LIMIT - 1 > $max) ? $max : $processing + PENDING_USERS_LIMIT - 1;
 		$admin_ajax_url = admin_url('admin-ajax.php');	
 ?>
 		<h1 class="article_page_title">Upload Staff Spreadsheet</h1>
 
-                <div class="spreadsheet_processing round_msgbox">
+        <div class="spreadsheet_processing round_msgbox">
 			<strong>Please wait while we create your staff accounts: <br>
-                            <span  class="processing">Processing <?= $processing ?> - <?= $processing_top; ?> out of <?= $max ?> ...</span> </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF ACCOUNTS HAVE BEEN CREATED.<br><br>You will be redirected to a success page once the import is complete.
+            <span  class="processing">Processing <?= $processing ?> out of <?= $max ?> ...</span> </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF ACCOUNTS HAVE BEEN CREATED.<br><br>You will be redirected to a success page once the import is complete.
 		</div>
             <div id="insert_form" style="display:none;"></div>
                 <script>
-                var count = 0;
+                var count = 1;
                 var max = <?=$max?>;
                 var sent_emails = '';
                 var overall_status = 1;
@@ -368,7 +367,6 @@
 
                 function sendMail() 
                 {
-                    
                     $.ajax({
                         url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
                         success: function (result) 

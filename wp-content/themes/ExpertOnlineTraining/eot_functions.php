@@ -4143,13 +4143,12 @@ function enrollUserInCourses($courses = array(), $org_id = 0, $email = '', $subs
     {
       foreach($allcourses as $course)
       {
-          if($course['course_name'] == $course_name)// get the matching course_id
-          {
-             $course_id = $course['ID'];  
-          }
+        if($course['course_name'] == $course_name)// get the matching course_id
+        {
+          $course_id = $course['ID'];  
+        }
       }
       
-       
       $data = compact('org_id', 'course_name', 'course_id', 'subscription_id');
 
       if(user_is_enrolled($email, $course_id))
