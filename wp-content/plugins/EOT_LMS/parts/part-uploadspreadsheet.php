@@ -26,7 +26,7 @@
 		// Variable declaration
 		$org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
 
-		if(isset($true_subscription['status']) && $true_subscription['status'])
+                if(isset($true_subscription['status']) && $true_subscription['status'])
 		{
 			if(!current_user_can( "is_director" ))
 			{
@@ -183,8 +183,8 @@
 						}
 						$first_name = isset($staff[0]) ? trim($staff[0]) : ''; // User First Name
 						$last_name = isset($staff[1]) ? trim($staff[1]) : ''; // User Last Name
-                        $first_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"`\’\”]/", "", $first_name);
-                        $last_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"\’`\”]/", "", $last_name);
+                                                $first_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"`\’\”]/", "", $first_name);
+                                                $last_name = preg_replace("/[.,*;!{ }@#$%^&()+|?\'\"\’`\”]/", "", $last_name);
 						$email = isset($staff[2]) ? trim($staff[2]) : ''; // User e-mail address
 						$password = isset($staff[3]) ? trim($staff[3]) : ''; // User password
 						$course_1 = isset($staff[4]) ? trim($staff[4]) : ''; // User Course 1
@@ -353,11 +353,11 @@
 
                 <div class="spreadsheet_processing round_msgbox">
 			<strong>Please wait while we create your staff accounts: <br>
-			Processing <?= $processing ?> - <?= $processing_top; ?> out of <?= $max ?> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF ACCOUNTS HAVE BEEN CREATED.<br><br>You will be redirected to a success page once the import is complete.
+                            <span  class="processing">Processing <?= $processing ?> - <?= $processing_top; ?> out of <?= $max ?> ...</span> </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF ACCOUNTS HAVE BEEN CREATED.<br><br>You will be redirected to a success page once the import is complete.
 		</div>
             <div id="insert_form" style="display:none;"></div>
-			<script>
-                var count = 1;
+                <script>
+                var count = 0;
                 var max = <?=$max?>;
                 var sent_emails = '';
                 var overall_status = 1;
@@ -368,39 +368,44 @@
 
                 function sendMail() 
                 {
+                    
                     $.ajax({
                         url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
                         success: function (result) 
                         {
-                            console.log(result);
+                            //console.log(result);
                             result = JSON.parse(result);
-                            console.log(result);
+                            //console.log(result);
 
                                 sent_emails += result.import_status;
                                 count += <?= PENDING_USERS_LIMIT ?>;
 
                                 // check if there was a problem
                                 if (result.status == false)
-                                {
-                                    overall_status = 0;
-                                }
+                                    {
+                                        overall_status = 0;
+                                    }
 
-                                $('.processing').html("Processing "+count+" out of <?= $max ?>");
+                                    $('.processing').html("Processing "+count+" out of <?= $max ?>");
 
-                                // check if we finished sending
-                                if (count > <?= $max ?>)
-                                {
-                                    <?php
-                                    $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id . '&sent=1';
-                                    ?>
-                                    $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
+                                    // check if we finished sending
+                                    if (count > <?= $max ?> && overall_status == 1)
+                                    {
+                                            <?php
+                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id . '&sent=1';
+                                        ?>
+                                        $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
 
-			                document.forms['redirect'].submit();
-                                }
-                                else
-                                {
-                                    sendMail();
-                                }
+                                            document.forms['redirect'].submit(); 
+                                    }
+                                    else if (count > <?= $max ?> && overall_status == 0)
+                                    {
+                                        $('.round_msgbox').html("ERROR: Some accounts below did not get created.<br><br>Please contact us for assistance 1-877-239-3931 M-F 9-5 EST.<br><br>Error message is: " + result.message + "<br><br>" + sent_emails.replace(/,/g, "")); 
+                                    }
+                                    else
+                                    {
+                                        sendMail();
+                                    }
 
                         }});
                 }
