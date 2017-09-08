@@ -3071,6 +3071,11 @@ function get_refund_form_callback ()
                     </tr>
                     <tr>
                         <td class="value">
+                            Remove <input type="number" name="accounts" value="0" />&nbsp;<span>Staff Accounts</span> 
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td class="value">
                             <input type="hidden" name="trans_id" value="<?= $trans_id ?>" />
                             <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" />
                             <input type="hidden" name="amount" value="<?= $amount ?>" /> 
