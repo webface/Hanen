@@ -7,11 +7,11 @@ function refund_customer($charge_id, $part_amount = 0)
         try{
             if($part_amount == 0)
             {
-            $refund = Stripe_Refund::create(array("charge"=> $charge_id));
+            $refund = \Stripe\Refund::create(array("charge"=> $charge_id));
             }
             else 
             {
-             $refund = Stripe_Refund::create(array("charge"=> $charge_id , 'amount' => $part_amount));   
+             $refund = \Stripe\Refund::create(array("charge"=> $charge_id , 'amount' => $part_amount));   
             }
             $success = 1;
         } catch (Exception $ex) {
@@ -19,7 +19,8 @@ function refund_customer($charge_id, $part_amount = 0)
         }
         if($success == 1)
         {
-            return $refund->{'id'};
+            //error_log(print_r($refund));
+            return true;
         }
         else 
         {
@@ -28,7 +29,7 @@ function refund_customer($charge_id, $part_amount = 0)
 }
 function create_new_customer ($cc_card, $email, $description) {
 	try {
-		$customer = Stripe_Customer::create(array(
+		$customer = \Stripe\Customer::create(array(
 			"email" => $email,
 			"description" => $description,
 			"card" => $cc_card
@@ -43,7 +44,7 @@ function create_new_customer ($cc_card, $email, $description) {
 function charge_customer ($price, $customer_id, $card, $description) {
 	try {
 		if (is_array($card)) {
-			$cu = Stripe_Customer::retrieve($customer_id);
+			$cu = \Stripe\Customer::retrieve($customer_id);
 //			$new_card = $cu->cards->create(array("card" => $card));
 			$new_card = $cu->sources->create(array("source" => $card));
 			$card = $new_card->{'id'};
@@ -51,7 +52,7 @@ function charge_customer ($price, $customer_id, $card, $description) {
 			$cu->save();
 		}
 
-		$charge = Stripe_Charge::create(
+		$charge = \Stripe\Charge::create(
 			array(
 				"amount" => $price * 100,
 				"currency" => "usd",
@@ -68,11 +69,9 @@ function charge_customer ($price, $customer_id, $card, $description) {
 }
 
 function get_customer_cards ($cus_id) {
-	include_once ('stripe/Stripe.php');
-	Stripe::setApiKey(STRIPE_SECRET);
 
 	try {
-		$cu = Stripe_Customer::retrieve($cus_id);
+		$cu = \Stripe\Customer::retrieve($cus_id);
 //		$cards = $cu->cards->all( array( 'limit' => 3 ) );
 		$cards = $cu->sources->all( array( 'limit' => 3, 'object' => 'card' ) );
 	} catch (Exception $e) {

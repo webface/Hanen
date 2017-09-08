@@ -72,7 +72,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
         $.facebox(function () {
 
             $.ajax({
-                data: {'trans_id': trans_id,'type':type},
+                data: {'trans_id': trans_id,'type':type ,'subscription_id':<?= $subscription_id;?>},
                 error: function () 
                 {
                     $.facebox('There was an error loading the title. Please try again shortly.');
@@ -91,7 +91,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                 {
                     if(data.success===true)
                     {
-                        alert('Refunded');
+                        jQuery(document).trigger('close.facebox');
                     }
                 }
        )

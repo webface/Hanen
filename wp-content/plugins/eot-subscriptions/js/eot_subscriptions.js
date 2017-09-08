@@ -63,6 +63,7 @@ jQuery(document).on('change', '.cc_cards_list input[type="radio"]', function () 
                     async: false, 
                     dataType: "json",
                     success: function(response) {
+                        
                         eot_status = response.status;
                         my_response = response;
                         if (!eot_status) {
@@ -96,6 +97,7 @@ jQuery(document).on('change', '.cc_cards_list input[type="radio"]', function () 
                             var label = this.label;
                             var price = "$ " + this.price;
                             var name = this.name;
+                            console.log(name);
                             table_info += "<tr><td class='left label'>"+label+"</td><td class='field right'>"+price+"<input type='hidden' name='"+name+"' value='"+this.price+"' /></td></tr>";
                         });
                         table_info += "<tr><td class='label'><b>Total</b></td><td id='total_price'>$ <b>" + my_response.total_price +"</b></td></tr>";

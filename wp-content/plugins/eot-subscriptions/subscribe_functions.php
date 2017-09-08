@@ -3042,6 +3042,7 @@ function get_refund_form_callback ()
     if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager")) 
     {
         $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
+        $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
         $type = filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
         global $wpdb;
         if($type == 'subscription')
@@ -3070,7 +3071,8 @@ function get_refund_form_callback ()
                     </tr>
                     <tr>
                         <td class="value">
-                            <input type="hidden" name="trans_id" value="<?= $trans_id ?>" /> 
+                            <input type="hidden" name="trans_id" value="<?= $trans_id ?>" />
+                            <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" />
                             <input type="hidden" name="amount" value="<?= $amount ?>" /> 
 
                             <?php wp_nonce_field('refund-camp_' . $trans_id); ?>
@@ -3081,11 +3083,12 @@ function get_refund_form_callback ()
         </div>      
         <div class="popup_footer">
             <div class="buttons">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="refunding_camp" style="display:none"></i>
                 <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                     <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
                     Cancel
                 </a>
-                <a active = '0' acton = "refund_camp" rel = "submit_button" class="positive">
+                <a active = '0' acton = "refund_camp" rel = "submit_button" class="positive" onclick="jQuery('#refunding_camp').show();">
                     <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
                     Refund
                 </a>
@@ -3126,34 +3129,59 @@ function get_refund_form_callback ()
 add_action('wp_ajax_refund_camp', 'refund_camp_callback');
 function refund_camp_callback () 
 {
-        $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
-        $part_amount = filter_var($_REQUEST['part_amount'], FILTER_SANITIZE_NUMBER_INT);
-        if ( ! wp_verify_nonce('refund-camp_'.$trans_id ) ) 
-        {
+    global $wpdb, $current_user;
+    $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
+    $part_amount = filter_var($_REQUEST['part_amount'], FILTER_SANITIZE_NUMBER_INT);
+    $amount = filter_var($_REQUEST['amount'], FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+    
+    if ( ! wp_verify_nonce('refund-camp_'.$trans_id ) ) 
+    {
 
-            $result['display_errors'] = true;
-            $result['success'] = false;
-            $result['errors'] = "Your nonce did not verify."; 
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = "Your nonce did not verify."; 
 
-        }
+    }
+    if($part_amount == 0)
+    {
+        $refund = refund_customer($trans_id);
+    }
+    else 
+    {
+        $refund = refund_customer($trans_id, ($part_amount*100));
+    }
+    if($refund)
+    {
         if($part_amount == 0)
         {
-            $refund = refund_customer($trans_id);
+            //subtract from amount
+            $transaction =$wpdb->get_row("SELECT * FROM ". TABLE_SUBSCRIPTIONS . " WHERE trans_id = '$trans_id'",OBJECT);
+            $new_price = floatval($transaction->price - $amount);
+            $wpdb->update(TABLE_SUBSCRIPTIONS, array('trans_id' => $trans_id),array('price'=>$new_price));
         }
         else 
         {
-            $refund = refund_customer($trans_id, $part_amount);
+            //subtract from amount
+            $transaction =$wpdb->get_row("SELECT * FROM ". TABLE_UPGRADE_SUBSCRIPTION . " WHERE trans_id = '$trans_id'",OBJECT);
+            $new_price = floatval($transaction->price - $part_amount);
+            $wpdb->update(TABLE_UPGRADE_SUBSCRIPTION, array('trans_id' => $trans_id),array('price'=>$new_price));
         }
-        if($refund)
-        {
+        $data = array(
+            'trans_id' => $trans_id,
+            'subscription_id' => $subscription_id,
+            'rep_id' => $current_user->ID,
+            'price' => ($part_amount == 0)? floatval($amount):floatval($part_amount)
+        );
+        $refunded = $wpdb->insert(TABLE_REFUNDS, $data);
         $result['success'] = true;
-        }
-        else 
-        {
+    }
+    else 
+    {
         $result['success'] = false;   
-        }
-        
-        echo json_encode($result);
-        exit();
+    }
+
+    echo json_encode($result);
+    exit();
 }
 ?>
