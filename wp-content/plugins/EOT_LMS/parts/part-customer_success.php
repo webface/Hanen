@@ -1,7 +1,7 @@
 <div class="breadcrumb">
   <?= CRUMB_DASHBOARD ?>    
   <?= CRUMB_SEPARATOR ?>  
-    <span class="current">Customer Success</span>     
+    <span class="current"><?= __("Customer Success", "EOT_LMS"); ?></span>     
 </div>
 <?php
   // verify this user has access to this portal/subscription/page/view
@@ -9,7 +9,7 @@
 
   // Variable declaration
   global $current_user;
-  $page_title = 'Customer Success Videos';
+  $page_title = __("Customer Success Videos", "EOT_LMS");
 
   // Check if the subscription ID is valid.
   if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
@@ -17,7 +17,7 @@
 
     echo '<h1 class="article_page_title">'.$page_title.'</h1>';       
 ?>
-        <p>Play these quick videos to hear insider tips on harnessing the power of online learning. Ten transformative ideas for staff success!</p>
+        <p><?= __("Play these quick videos to hear insider tips on harnessing the power of online learning. Ten transformative ideas for staff success!", "EOT_LMS"); ?></p>
         <p>&nbsp;</p>
 <style type="text/css">
 /* Fullscreen
@@ -550,70 +550,70 @@ div#col1 {
           'https://eot-output.s3.amazonaws.com/CS_When_to_Give.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'When should I give EOT courses to my staff?'
+        title : '<?= __("When should I give EOT courses to my staff?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_Accreditation_Help.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'How does EOT help with accreditation?'
+        title : '<?= __("How does EOT help with accreditation?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_How_Many_Modules.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'How many modules should I assign?'
+        title : '<?= __("How many modules should I assign?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_International_Staff.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'Should I give EOT to my international staff?'
+        title : '<?= __("Should I give EOT to my international staff?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_Module_Selection.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'How do I choose which modules to assign?'
+        title : '<?= __("How do I choose which modules to assign?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_OnSite_Use_of_EOT.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'What are the best ways to use EOT for on-site training?'
+        title : '<?= __("What are the best ways to use EOT for on-site training?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_Press_Play.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'What are the Press Play workshops?'
+        title : '<?= __("What are the Press Play workshops?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_Staff_Complete_Course.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'How do I get my staff to complete their EOT assignment?'
+        title : '<?= __("How do I get my staff to complete their EOT assignment?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_Statistics_Benefits.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'How do the statistics functions help?'
+        title : '<?= __("How do the statistics functions help?", "EOT_LMS"); ?>'
       },
       {
         src : [
           'https://eot-output.s3.amazonaws.com/CS_What_Custom_Content.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
-        title : 'What custom content should I upload?'
+        title : '<?= __("What custom content should I upload?", "EOT_LMS"); ?>'
       }
     ];
 
@@ -704,6 +704,6 @@ div#col1 {
   }
   else
   {
-    echo "Invalid subscription ID.";
+    echo __("Invalid subscription ID.", "EOT_LMS");
   }
 ?>

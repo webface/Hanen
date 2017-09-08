@@ -3,9 +3,9 @@
     <?= CRUMB_SEPARATOR ?>   
     <?= CRUMB_ADMINISTRATOR ?>   
     <?= CRUMB_SEPARATOR ?>   
-     <span class="current">E-mail Your Staff</span> 
+     <span class="current"><?= __("E-mail Your Staff", "EOT_LMS"); ?></span> 
 </div>
-<h1 class="article_page_title" class="video_title">E-mail Your Staff</h1>
+<h1 class="article_page_title" class="video_title"><?= __("E-mail Your Staff", "EOT_LMS"); ?></h1>
 
 <?php
     // verify this user has access to this portal/subscription/page/view
@@ -25,7 +25,7 @@
 
 ?>
                 <p>
-                    Want to get in touch with all your staff? Just those in a particular course? Just the ones who are lagging? Simply click a link below to initiate an email to any subset of your staff.
+                    <?= __("Want to get in touch with all your staff? Just those in a particular course? Just the ones who are lagging? Simply click a link below to initiate an email to any subset of your staff.", "EOT_LMS"); ?>
                 </p>
                 <ul>
                     <li>
@@ -52,7 +52,7 @@
                         <a href="./?part=improved_email_staff&subscription_id=<?= $subscription_id ?>&target=course-passwords" onclick="load('load_email')">Send Passwords to Staff in Specific Courses</a> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Select Courses:</b> Will let you select a specific courses to send those staff members their passwords, then you will be able to customize the message they recieve.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                     </li>
                     <li>
-                        <a href="./?part=improved_email_staff&subscription_id=<?= $subscription_id ?>&target=staff-passwords" onclick="load('load_email')">Send Passwords to Specific Staff Members</a> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Select Staff:</b> Will let you select a specific staff members you want to recieve their passwords, then you will be able to customize the message they recieve', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                        <a href="./?part=improved_email_staff&subscription_id=<?= $subscription_id ?>&target=staff-passwords" onclick="load('load_email')">Send Passwords to Specific Staff Members</a> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("Select Staff", "EOT_LMS"); ?>:</b> <?= __("Will let you select a specific staff members you want to recieve their passwords, then you will be able to customize the message they recieve", "EOT_LMS"); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                     </li>      
                     <br>
               </ul>
@@ -60,16 +60,16 @@
             }
             else
             {
-                echo "Unauthorized!";
+                echo __("Unauthorized!", "EOT_LMS");
             }
         }
         else
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", "EOT_LMS");
         }
     }
     else
     {
-        echo "Sorry but you have an invalid subscription. Please contact the site administrator.";
+        echo __("Sorry but you have an invalid subscription. Please contact the site administrator.", "EOT_LMS");
     }
 ?>

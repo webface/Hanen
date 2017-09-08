@@ -137,15 +137,15 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 <?= CRUMB_SEPARATOR ?>  
                 <?= CRUMB_STATISTICS ?>  
                 <?= CRUMB_SEPARATOR ?>  
-                    <b>Staff statistics for "<?= $course_name ?>"</b>
+                    <b><?= __("Staff statistics for", "EOT_LMS"); ?> "<?= $course_name ?>"</b>
                 </div>
                 <div class="smoothness">
-                    <h1 class="article_page_title">Staff Statistics for "<?= $course_name ?>"</h1>
-                    Here are statistics on the staff taking the <b><?= $course_name ?></b> Course.
-                    <h2>Summary</h2>
+                    <h1 class="article_page_title"><?= __("Staff statistics for", "EOT_LMS"); ?> "<?= $course_name ?>"</h1>
+                    <?= __("Here are statistics on the staff taking the", "EOT_LMS"); ?> <b><?= $course_name ?></b> <?= __("Course", "EOT_LMS"); ?>.
+                    <h2><?= __("Summary", "EOT_LMS"); ?></h2>
                     <div class="cell-row middle-row">
                         <div class="cell-caption">
-                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="The total number of staff (in Staff Groups) who have been assigned this Course." class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('The total number of staff (in Staff Groups) who have been assigned this Course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff given this <b>Course</b>
+                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="<?= __("The total number of staff (in Staff Groups) who have been assigned this Course.", "EOT_LMS"); ?>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __("The total number of staff (in Staff Groups) who have been assigned this Course.", "EOT_LMS"); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> <?= __("Staff given this", "EOT_LMS"); ?> <b><?= __("Course", "EOT_LMS"); ?></b>
                         </div>
                         <div class="cell-field number">
                             <b><?= $total_number_of_staff ?></b>
@@ -153,14 +153,14 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     </div>
                     <div class="cell-row">
                         <div class="cell-caption">
-                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('The total number of staff who have passed all the required modules in this Course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff who have <b>Completed</b> this Course
+                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __("The total number of staff who have passed all the required modules in this Course.", "EOT_LMS"); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> <?= __("Staff who have", "EOT_LMS"); ?> <b><?= __("Completed", "EOT_LMS"); ?></b> <?= __("this Course", "EOT_LMS"); ?>
                         </div>
                         <div class="cell-field number">
                             <b><?= $calculated_num_completed ?></b>
                         </div>
                 <?= eotprogressbar('12em', $calculated_percentage_completed, true); ?>
                     </div>
-                    <h2>Staff Statistics</h2>
+                    <h2><?= __("Staff Statistics", "EOT_LMS"); ?></h2>
 <?php
                 if ($enrollments) 
                 {
@@ -196,7 +196,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         }
                         if ($status == "Failed") 
                         {
-                            $status = 'In Progress';
+                            $status = __("In Progress", "EOT_LMS");
                         } 
                         else if ($status == "Completed" || $status == "Passed") 
                         {
@@ -218,7 +218,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 else 
                 {
 ?>
-                        There are no staff registered in this course.
+                        <?= __("There are no staff registered in this course.", "EOT_LMS"); ?>
 <?php
                     }
 ?>
@@ -234,7 +234,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         <div class="error-tr"> 
                             <div class="error-bl">
                                 <div class="error-br">
-                                    <div class="errorbox">You do not have access to these Statistics.</div>             
+                                    <div class="errorbox"><?= __("You do not have access to these Statistics.", "EOT_LMS"); ?></div>             
                                 </div>
                             </div>
                         </div>
@@ -245,17 +245,17 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
             } 
             else 
             {
-                echo "Unauthorized!";
+                echo __("Unauthorized!", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", "EOT_LMS");
         }
     }
 // Could not find the subscription ID
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID", "EOT_LMS");
     }
 ?>

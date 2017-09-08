@@ -3,7 +3,7 @@
   <?= CRUMB_SEPARATOR ?>     
   <?= CRUMB_ADMINISTRATOR ?>    
   <?= CRUMB_SEPARATOR ?>    
-    <span class="current">Manage Courses</span>     
+    <span class="current"><?= __("Manage Courses", "EOT_LMS"); ?></span>     
 </div>
 <?php
   // verify this user has access to this subscription/page/view
@@ -32,13 +32,13 @@
         {
           if($org_id != $subscription->org_id)
           {
-            echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+            echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.", "EOT_LMS");
             return;
           }
         }
         else
         {
-            echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+            echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.", "EOT_LMS");
             return;
           }
 
@@ -49,7 +49,7 @@
           <div class="tablehead-tr">
             <div class="tablehead-tl">
               <div style="padding:7px;margin-left:5px;height:20px">
-                <h3 style="float:left;" class="tablehead-title"> Manage Courses</h3><div style="clear:both;"></div>
+                <h3 style="float:left;" class="tablehead-title"> <?= __("Manage Courses", "EOT_LMS"); ?></h3><div style="clear:both;"></div>
               </div>
             </div>
           </div>
@@ -84,12 +84,12 @@
                           </p>
                           <div class="group_list_edit_row" style="left: 215px;">
                           <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=edit_course_group&amp;course_name=<?= $course_name ?>&amp;org_id=<?= $org_id ?>&amp;course_id=<?= $course_id ?>" class="dasdfdasfelete_group" rel="facebox">
-                              <i class="fa fa-pencil tooltip" onmouseover="Tip('Edit course name.', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" aria-hidden="true"></i>
+                              <i class="fa fa-pencil tooltip" onmouseover="Tip('<?= __("Edit course name.", "EOT_LMS"); ?>', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" aria-hidden="true"></i>
                            </a>
                           </div>
                           <div class="group_list_delete_row" style="left: 230px;">
                             <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_course&course_id=<?= $course_id ?>&course_name=<?= $course_name ?>&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>" class="dasdfdasfelete_group" rel="facebox">
-                              <i class="fa fa-trash-o tooltip" aria-hidden="true"  title="Delete this course." style="margin-bottom:2px; color:black" onmouseover="Tip('Delete this course.', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                              <i class="fa fa-trash-o tooltip" aria-hidden="true"  title="<?= __("Delete this course.", "EOT_LMS"); ?>" style="margin-bottom:2px; color:black" onmouseover="Tip('<?= __("Delete this course.", "EOT_LMS"); ?>', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                             </a>   
                           </div>
                         </div>
@@ -98,16 +98,16 @@
                 } 
                 else if($courses == null)
                 {
-                  echo '<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">Create a course...</div>';
+                  echo '<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">' . __("Create a course...", "EOT_LMS") . '</div>';
                 }
                 else
                 {
                   /*
                    * Create an error message.
                    */
-                  $error_message = (isset($courses['message'])) ? $courses['message'] : "Could not find the fault.";
-                  $error_message .= " Please contact the administrator.";
-                  echo "There is an error in getting the courses: " . $error_message;
+                  $error_message = (isset($courses['message'])) ? $courses['message'] : __("Could not find the fault.", "EOT_LMS");
+                  $error_message .= __(" Please contact the administrator.", "EOT_LMS");
+                  echo __("There is an error in getting the courses: ", "EOT_LMS") . $error_message;
                 }
               ?>                  
             </div>
@@ -121,7 +121,7 @@
         <span>&nbsp;</span> 
         <div class="bottom_buttons">
           <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_course_group&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id?>" rel="facebox">
-            Create Course
+            <?= __("Create Course", "EOT_LMS"); ?>
           </a>
         </div>
       </div>  
@@ -132,9 +132,9 @@
           <div class = "tablehead-tr">
             <div class = "tablehead-tl">
               <div style = "padding:7px;margin-left:5px;height:20px">
-                <H3 style="float:left;"  class = "tablehead-title"> &lt;NO COURSE SELECTED&gt;</H3>
-                <img src='<?= get_template_directory_uri() . '/images/list_icon_clicked.png'?>' title='Show videos that have been assigned to this group.' name = "video_list" id = "display_videos_icon" class="table_header_images" style='margin-bottom:2px;' onmouseover="Tip('Show videos that have been assigned to this group.', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" />
-                <img src='<?= get_template_directory_uri() . '/images/user_icon.png'?>' title='Show staff that are in this group.' name = "staff_list" id = "display_staff_icon" class="table_header_images" style='margin-bottom:2px;' onmouseover="Tip('Show staff that are in this group.', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" />
+                <H3 style="float:left;"  class = "tablehead-title"> &lt;<?= __("NO COURSE SELECTED", "EOT_LMS"); ?>&gt;</H3>
+                <img src='<?= get_template_directory_uri() . '/images/list_icon_clicked.png'?>' title='<?= __("Show videos that have been assigned to this group.", "EOT_LMS"); ?>' name = "video_list" id = "display_videos_icon" class="table_header_images" style='margin-bottom:2px;' onmouseover="Tip('<?= __("Show videos that have been assigned to this group.", "EOT_LMS"); ?>', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" />
+                <img src='<?= get_template_directory_uri() . '/images/user_icon.png'?>' title='<?= __("Show staff that are in this group.", "EOT_LMS"); ?>' name = "staff_list" id = "display_staff_icon" class="table_header_images" style='margin-bottom:2px;' onmouseover="Tip('<?= __("Show staff that are in this group.", "EOT_LMS"); ?>', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" />
                 <div style="clear:both;" ></div>
               </div>
             </div>
@@ -144,7 +144,7 @@
           <div  id="staff_and_assignment_list_pane" class="scroll-pane" style="height:250px; width: 350px">
             <div style="width:100%;">
               <div style="width:100%;text-align:center;padding-top:100px;font-size:140%;">
-                  Select a course...
+                  <?= __("Select a course...", "EOT_LMS"); ?>
               </div>
             </div>
           </div>
@@ -154,14 +154,14 @@
             <div class="listing-footer-br">&nbsp;</div>
           </div>
         </div>
-        <a id="display_options" class="display_options">Show staff in group...</a>
+        <a id="display_options" class="display_options"><?= __("Show staff in group...", "EOT_LMS"); ?></a>
         <div style="clear:both;"></div> 
         <div class="bottom_buttons bottom_buttons_right">
           <a id="show_edit_videos_in_group" class="btn">
-            Manage Modules
+            <?= __("Manage Modules", "EOT_LMS"); ?>
           </a>
           <a id="show_add_to_group" class="btn">
-            Add/Remove Staff
+            <?= __("Add/Remove Staff", "EOT_LMS"); ?>
           </a>
         </div>
       </div>
@@ -171,20 +171,20 @@
      <div style="clear: both;"></div>
      <div class="dashboard_border" style="padding: 0; padding-left: 23px; width: 91%;">
         <h1 class="article_page_title">
-          <legend>Legend</legend>
+          <legend><?= __("Legend", "EOT_LMS"); ?></legend>
         </h1>
        <fieldset style="margin-top: -20px">
           <p>
-            <i class="fa fa-pencil tooltip"></i> <b>Edit</b> the course name.
+            <i class="fa fa-pencil tooltip"></i> <b><?= __("Edit", "EOT_LMS"); ?></b> <?= __("the course name.", "EOT_LMS"); ?>
           </p>
           <p>
-            <i class="fa fa-trash tooltip"></i> <b>Delete</b> a course permanently. This action cannot be undone.
+            <i class="fa fa-trash tooltip"></i> <b><?= __("Delete", "EOT_LMS"); ?></b> <?= __("a course permanently. This action cannot be undone.", "EOT_LMS"); ?>
           </p>
           <p>
-            <img src="<?= get_template_directory_uri() . '/images/user_icon.png'?>" /> Click to see the list of <b>staff</b> who are in a particular course.
+            <img src="<?= get_template_directory_uri() . '/images/user_icon.png'?>" /> <?= __("Click to see the list of", "EOT_LMS"); ?> <b><?= __("staff", "EOT_LMS"); ?></b> <?= __("who are in a particular course.", "EOT_LMS"); ?>
           </p>
           <p>
-            <img src="<?= get_template_directory_uri() . '/images/list_icon.png'?>" /> Click to see the list of <b>modules</b> in a particular course.
+            <img src="<?= get_template_directory_uri() . '/images/list_icon.png'?>" /> <?= __("Click to see the list of", "EOT_LMS"); ?> <b><?= __("modules", "EOT_LMS"); ?></b> <?= __("in a particular course.", "EOT_LMS"); ?>
           </p>
        </fieldset>
      </div>
@@ -412,9 +412,9 @@
         var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
         var seconds = sec_numb - (hours * 3600) - (minutes * 60);
         if (seconds > 29) minutes++;
-        if (hours == 0) return minutes+' min';
-        else if (hours == 1) return '1 hour,<br>'+minutes+' min';
-        else return hours+' hours,<br>'+minutes+' min';
+        if (hours == 0) return minutes+' <?= __("min", "EOT_LMS"); ?>';
+        else if (hours == 1) return '<?= __("1 hour,", "EOT_LMS"); ?><br>'+minutes+' <?= __("min", "EOT_LMS"); ?>';
+        else return hours+' <?= __("hours,", "EOT_LMS"); ?><br>'+minutes+' <?= __("min", "EOT_LMS"); ?>';
       }
 
       function updateCertificateProgress()
@@ -434,21 +434,21 @@
         if(required_core > quiz_cores)
         {
           num_more_vids = required_core - quiz_cores;
-          core_text = "<div style='margin:5px 0px;'><div id ='required_video_swatch'></div> Please Select "+num_more_vids+" more core video"+((num_more_vids>1)?"s":"")+" and quiz"+((num_more_vids>1)?"zes":"")+"</div>";
+          core_text = "<div style='margin:5px 0px;'><div id ='required_video_swatch'></div> <?= __("Please Select", "EOT_LMS"); ?> "+num_more_vids+" <?= __("more core video", "EOT_LMS"); ?>"+((num_more_vids>1)?"s":"")+" <?= __("and quiz", "EOT_LMS"); ?>"+((num_more_vids>1)?"zes":"")+"</div>";
         }
         if(required - required_core > quiz_count - quiz_cores)
         {
           num_more_elec_vids = (required - required_core) - (quiz_count - quiz_cores);
-          elec_text = "<div style='margin:5px 0px;'><div id ='required_video_swatch'></div> Please Select "+num_more_elec_vids+" more elective video"+((num_more_vids>1)?"s":"")+" and quiz"+((num_more_vids>1)?"zes":"")+"</div>";
+          elec_text = "<div style='margin:5px 0px;'><div id ='required_video_swatch'></div> <?= __("Please Select", "EOT_LMS"); ?> "+num_more_elec_vids+" <?= __("more elective video", "EOT_LMS"); ?>"+((num_more_vids>1)?"s":"")+" <?= __("and quiz", "EOT_LMS"); ?>"+((num_more_vids>1)?"zes":"")+"</div>";
         }    
         
         if(core_text||elec_text)
         {
-          $('#certprogress').html("In order for the staff that are assigned to this group to achieve a <strong>"+cert_title+" Certificate</strong>, please do the following:"+core_text+elec_text);  
+          $('#certprogress').html("<?= __("In order for the staff that are assigned to this group to achieve a", "EOT_LMS"); ?> <strong>"+cert_title+" <?= __("Certificate", "EOT_LMS"); ?></strong>, <?= __("please do the following:", "EOT_LMS"); ?>"+core_text+elec_text);  
         }
         else
         {
-          $('#certprogress').html("All Staff assigned to this group will be eligible to achieve a "+cert_title+" Certificate");
+          $('#certprogress').html("<?= __("All Staff assigned to this group will be eligible to achieve a", "EOT_LMS"); ?> "+cert_title+" <?= __("Certificate", "EOT_LMS"); ?>");
         }
         //$('.eotprogressbar').attr('percent', Math.floor(Math.random()*101));
         required_elecs = required - required_core;
@@ -610,7 +610,7 @@
                  * $.facebox = function(data, klass,title,popup_footer, message)
                  * The title and message will pop up on ajax load via facebox.js. 
                  *******************************************************************/
-              }, null, "Loading your staff accounts", null, "Please wait while we process your staff accounts...");
+              }, null, "<?= __("Loading your staff accounts", "EOT_LMS"); ?>", null, "<?= __("Please wait while we process your staff accounts...", "EOT_LMS"); ?>");
             }
             });
             // Manage the add and remove button action.
@@ -645,7 +645,7 @@
                 {
                   if(task == "enrollUserInCourse")
                   {
-                    temp.text( "Remove from course" );
+                    temp.text( "<?= __("Remove from course", "EOT_LMS"); ?>" );
                     temp.attr( "status" , "remove" );
                     temp.attr( "selected" , 1 );
                     temp.attr( "enrollment_id", json.enrollment_id);
@@ -654,7 +654,7 @@
                   }
                   else
                   {
-                    temp.text( "Add to course" );
+                    temp.text( "<?= __("Add to course", "EOT_LMS"); ?>" );
                     temp.attr( "status" , "add" );
                     temp.attr( "selected" , 0 );
                     loading_img.replaceWith(temp); // CHHANGE STATUS MAYBE
@@ -714,9 +714,9 @@
                             url = ajax_object.ajax_url;
                             $.post(url, 'action=updateDueDate&course_id='+group_id+'&date='+date_stored+'&org_id='+org_id+'&task=add', function(data){
                               if (data.success == true) {
-                                $('.curr_duedate').html("<strong>Due Date:</strong> " + date_shown);
+                                $('.curr_duedate').html("<strong><?= __("Due Date:", "EOT_LMS"); ?></strong> " + date_shown);
                               } else {
-                                alert('Error: ' + data.errors);
+                                alert('<?= __("Error:", "EOT_LMS"); ?> ' + data.errors);
                                   }
                                 }, 'json');
                               }
@@ -729,12 +729,12 @@
                     url = ajax_object.ajax_url;
                     $.post(url, 'action=updateDueDate&course_id='+group_id+'&org_id='+org_id+'&course_id='+group_id+'&task=remove', function(data){
                       if (data.success == true) {
-                        $('.curr_duedate').html("<strong>Due Date:</strong> No due date set.");
+                        $('.curr_duedate').html("<strong><?= __("Due Date:", "EOT_LMS"); ?></strong> <?= __("No due date set.", "EOT_LMS"); ?>");
                         $('#remove_date').slideUp();
                         $('#certficate_box').animate({top:'-=40px'});
                         due_date_set = false;
                       } else {
-                        alert('Error: ' + data.errors);
+                        alert('<?= __("Error:", "EOT_LMS"); ?> ' + data.errors);
                       }
                     }, 'json');
                   });
@@ -842,7 +842,7 @@
                           // If it fails on the other hand.
                           error: function(XMLHttpRequest, textStatus, errorThrown) 
                           {
-                            alert( "POST Sent failed: " + textStatus );
+                            alert( "<?= __("POST Sent failed:", "EOT_LMS") ?> " + textStatus );
                           }
                         });
                         /*********************************************
@@ -999,7 +999,7 @@
                  * $.facebox = function(data, klass,title,popup_footer, message)
                  * The title and message will pop up on ajax load via facebox.js. 
                  *******************************************************************/
-                }, null, "Loading your modules", null, "Please wait while we process your modules...");
+                }, null, "<?= __("Loading your modules", "EOT_LMS"); ?>", null, "<?= __("Please wait while we process your modules...", "EOT_LMS"); ?>");
               // End of jQuery.facebox(
               }
           });//end of statement
@@ -1012,16 +1012,16 @@
             $('#display_videos_icon').click(); // If the user switch into another course, switch back to the modules view.
             if(group_name_global==$(this).find(".group_name").html())
             {
-            group_name_global = "&lt;NO COURSE SELECTED&gt;";
+            group_name_global = "&lt;<?= __("NO COURSE SELECTED", "EOT_LMS"); ?>&gt;";
             $("#staff_and_assignment_list").find(".tablehead-title").fadeTo('fast',0.01,function ()
               {
-                $(this).html("&lt;NO COURSE SELECTED&gt;").fadeTo('fast',1)
+                $(this).html("&lt;<?= __("NO COURSE SELECTED", "EOT_LMS"); ?>&gt;").fadeTo('fast',1)
               });
             $("#staff_and_assignment_list").find(".scroll-pane-wrapper").html('\
               <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 350px">\
                 <div style = "width:100%;">\
                   <div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">\
-                    Select a group...\
+                    <?= __("Select a group...", "EOT_LMS"); ?>\
                   </div>\
                 </div>\
               </div>\
@@ -1048,7 +1048,7 @@
               <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 350px">\
                 <div style = "width:100%;">\
                   <div style = "width:100%;text-align:center;padding-top:70px;font-size:140%;">\
-                      Loading your modules <br /> <br />\
+                      <?= __("Loading your modules", "EOT_LMS"); ?> <br /> <br />\
                       <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="loading_course_subscription_info"></i>\
                   </div>\
                 </div>\
@@ -1125,7 +1125,7 @@
                 // If it fails on the other hand.
                 error: function(XMLHttpRequest, textStatus, errorThrown) 
                 {
-                   alert( "POST Sent failed: " + textStatus );
+                   alert( "<?= __("POST Sent failed:", "EOT_LMS"); ?> " + textStatus );
                 }
               });
             }
@@ -1162,8 +1162,8 @@
                     <div class=\"group_name\">'+data.group_name+'</div> \
                     <p class = \"group_description\" style=\"display:none;\"><i>'+data.group_desc+'</i></p> \
                     <p class = \"group_description\" style=\"display:none;\"> \
-                      <span class="staff_count"> 0 </span> Staff Members<br> \
-                      <span class="video_count"> 0 </span> Videos Assigned \
+                      <span class="staff_count"> 0 </span> <?= __("Staff Members", "EOT_LMS") ?><br> \
+                      <span class="video_count"> 0 </span> <?= __("Videos Assigned", "EOT_LMS") ?> \
                     </p> \
                     <div class=\"group_list_edit_row\" style=\"left: 215px;\"> \
                       <a href=\"<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_course_group&amp;course_name='+data.group_name+'&amp;org_id='+data.org_id+'&amp;course_id='+data.group_id+'\" class=\"dasdfdasfelete_group\" rel=\"facebox\"> \
@@ -1282,12 +1282,12 @@
             jQuery(document).trigger('close.facebox');
             if(group_name_global==div.find(".group_name").html())
             {             
-              $("#staff_and_assignment_list").find(".tablehead-title").fadeTo('fast',0.01,function (){$(this).html("&lt;NO GROUP SELECTED&gt;").fadeTo('fast',1)});
+              $("#staff_and_assignment_list").find(".tablehead-title").fadeTo('fast',0.01,function (){$(this).html("&lt;<?= __("NO GROUP SELECTED", "EOT_LMS"); ?>&gt;").fadeTo('fast',1)});
               $("#staff_and_assignment_list").find(".scroll-pane-wrapper").html('\
                 <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 250px">\
                  <div style = "width:100%;">\
                 <div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">\
-                  Select a group...\
+                  <?= __("Select a group...", "EOT_LMS"); ?>\
                 </div>\
                 </div>\
                </div>\
@@ -1304,7 +1304,7 @@
             
             if(element_list_count == 1)
             {
-              div.parent().html('<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">Create a course...</div>');
+              div.parent().html('<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;"><?= __("Create a course...", "EOT_LMS"); ?></div>');
             }
           });
           
@@ -1319,13 +1319,13 @@
               {
               $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon.png");
               $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon_clicked.png");
-              $(".display_options").html("Show videos in group..."); 
+              $(".display_options").html("<?= __("Show videos in group...", "EOT_LMS"); ?>"); 
               }
               else
               {
               $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon_clicked.png");
               $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon.png");
-              $(".display_options").html("Show staff in group..."); 
+              $(".display_options").html("<?= __("Show staff in group...", "EOT_LMS"); ?>"); 
               }
               $("#staff_and_assignment_list").attr("display",$(this).attr("name"));
               load_list();
@@ -1344,14 +1344,14 @@
               {
                 $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon.png");
                 $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon_clicked.png");
-                $(".display_options").html("Show videos in group...");
+                $(".display_options").html("<?= __("Show videos in group...", "EOT_LMS"); ?>");
                 $("#staff_and_assignment_list").attr("display","staff_list"); 
               }
               else
               {
                 $("#display_videos_icon").attr("src", ajax_object.template_url + "/images/list_icon_clicked.png");
                 $("#display_staff_icon").attr("src", ajax_object.template_url + "/images/user_icon.png");
-                $(".display_options").html("Show staff in group..."); 
+                $(".display_options").html("<?= __("Show staff in group...", "EOT_LMS"); ?>"); 
                 $("#staff_and_assignment_list").attr("display","video_list");
               }
               load_list();
@@ -1388,7 +1388,7 @@
               <div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "height:250px; width: 250px">\
                  <div style = "width:100%;">\
                 <div style = "width:100%;text-align:center;padding-top:70px;font-size:140%;">\
-                    ' + ( task == "getModules" ? "Loading your modules" : "Loading your staff accounts" ) + ' <br /> <br />\
+                    ' + ( task == "getModules" ? "<?= __("Loading your modules", "EOT_LMS"); ?>" : "<?= __("Loading your staff accounts", "EOT_LMS"); ?>" ) + ' <br /> <br />\
                       <i class="fa fa-spinner fa-pulse fa-3x fa-fw" \
                       id="loading_course_subscription_info"></i>\
               </div>\
@@ -1446,7 +1446,7 @@
                   {
                     var num_videos = (typeof obj.video_count != 'undefined') ? obj.video_count : 0;
                     menu_active_course.find('#loading_course_subscription_info').hide(); // Hide the loading icon.
-                    menu_active_course.find('span.video_count').text(num_videos + " Videos Assigned"); //Update the video count.
+                    menu_active_course.find('span.video_count').text(num_videos + " <?= __("Videos Assigned", "EOT_LMS"); ?>"); //Update the video count.
                   }
                   else
                   {
@@ -1460,7 +1460,7 @@
               // If it fails on the other hand.
               error: function(XMLHttpRequest, textStatus, errorThrown) 
               {
-                alert( "POST Sent failed: " + textStatus );
+                alert( "<?= __("POST Sent failed: ", "EOT_LMS"); ?>" + textStatus );
               }
             });
           });
@@ -1511,11 +1511,11 @@
           if($("#staff_and_assignment_list").attr("display")=="staff_list")
           {
             action = "getUsersInCourse";
-            loading_message = "Loading your staff accounts";
+            loading_message = "<?= __("Loading your staff accounts", "EOT_LMS"); ?>";
           }else
           {
             action = "getModules"
-            loading_message = "Loading your modules";
+            loading_message = "<?= __("Loading your modules", "EOT_LMS"); ?>";
           }
 
           $("#staff_and_assignment_list").find(".scroll-pane-wrapper").html('\
@@ -1604,7 +1604,7 @@
             // If it fails on the other hand.
             error: function(XMLHttpRequest, textStatus, errorThrown) 
             {
-               alert( "POST Sent failed: " + textStatus );
+               alert( "<?= __("POST Sent failed: ", "EOT_LMS"); ?>" + textStatus );
             }
           });
         }
@@ -1719,17 +1719,17 @@
       }
       else
       {
-        echo "Unauthorized!";
+        echo __("Unauthorized!", "EOT_LMS");
       }
     }
     else
     {
-      echo "subscription ID does not belong to you";
+      echo __("subscription ID does not belong to you", "EOT_LMS");
     }
   }
   // Could not find the subscription ID
   else
   {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID", "EOT_LMS");
   }
 ?>

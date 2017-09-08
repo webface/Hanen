@@ -3,9 +3,9 @@
     <?= CRUMB_SEPARATOR ?>
     <?= CRUMB_MY_LIBRARY ?>    
     <?= CRUMB_SEPARATOR ?>
-    <span class="current">Quizzes</span>     
+    <span class="current"><?= __("Quizzes", "EOT_LMS"); ?></span>     
 </div>
-<h1 class="article_page_title">Take the quiz</h1>
+<h1 class="article_page_title"><?= __("Take the quiz", "EOT_LMS"); ?></h1>
 <?php
 
     $quiz_id = isset($_REQUEST['quiz_id']) ? filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
@@ -31,16 +31,16 @@
             }
             else
             {
-                echo "This quiz is not part of your course";
+                echo __("This quiz is not part of your course", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "the course ID does not belong to you";
+            echo __("the course ID does not belong to you", "EOT_LMS");
         }
     }
     else
     {
-        echo "subscription ID does not belong to you";
+        echo __("subscription ID does not belong to you", "EOT_LMS");
     }
 ?>

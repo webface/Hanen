@@ -1,9 +1,9 @@
 <div class="breadcrumb">
   <?= CRUMB_DASHBOARD ?>    
   <?= CRUMB_SEPARATOR ?>    
-    <span class="current">My Certificates</span>     
+    <span class="current"><?= __("My Certificates", "EOT_LMS"); ?></span>     
 </div>
-<h1 class="article_page_title">My Certificates</h1>
+<h1 class="article_page_title"><?= __("My Certificates", "EOT_LMS"); ?></h1>
 <?php
   if( current_user_can ('is_student') || current_user_can ('is_director')  )
   {
@@ -135,7 +135,7 @@
           <input type="hidden" name="part" value="mycertificates">
           <tr>
             <th>
-              Start Date:(yy-mm-dd)
+              <?= __("Start Date:(yy-mm-dd)", "EOT_LMS"); ?>
             </th>
             <th>
               &nbsp;<input type="text" name="start_date" id="start_date" class="date-picker" size="10" value="<?= $start_date?>">
@@ -143,26 +143,26 @@
           </tr>
           <tr colspan="3">
             <td>
-              End Date:(yy-mm-dd)
+              <?= __("End Date:(yy-mm-dd)", "EOT_LMS"); ?>
             </td>
             <td>
               &nbsp;<input type="text" name="end_date" id="end_date" class="date-picker" size="10" value="<?= $end_date ?>">
             </td>
             <td>
-              &nbsp;&nbsp;<input type="submit" value="Generate Certificates" id="generateCertificates" style="">
+              &nbsp;&nbsp;<input type="submit" value="<?= __("Generate Certificates", "EOT_LMS"); ?>" id="generateCertificates" style="">
             </td>
           </tr>
           <tr>
             <td>
               <select id="quickSelection">
-                <option value="" selected>Quick Selections</option>
-                <option value="this_month">This Month</option>
-                <option value="last_month">Last Month</option>
-                <option value="this_week">This Week</option>
-                <option value="last_week">Last Week</option>
-                <option value="last_7_days">Last 7 Days</option>
-                <option value="last_30_days">Last 30 Days</option>
-                <option value="this_season">This season</option>
+                <option value="" selected><?= __("Quick Selections", "EOT_LMS"); ?></option>
+                <option value="this_month"><?= __("This Month", "EOT_LMS"); ?></option>
+                <option value="last_month"><?= __("Last Month", "EOT_LMS"); ?></option>
+                <option value="this_week"><?= __("This Week", "EOT_LMS"); ?></option>
+                <option value="last_week"><?= __("Last Week", "EOT_LMS"); ?></option>
+                <option value="last_7_days"><?= __("Last 7 Days", "EOT_LMS"); ?></option>
+                <option value="last_30_days"><?= __("Last 30 Days", "EOT_LMS"); ?></option>
+                <option value="this_season"><?= __("This season", "EOT_LMS"); ?></option>
               </select>
             </td>
           </tr>
@@ -191,14 +191,14 @@
             $certificate['course_name'], // The course name.
             $first_name . ' ' . $last_name,
             '<a href="'.get_site_url().'/download-certificate/?user_id='. $user_id .'&course_id=' . $course_id . '&org_id='.$org_id.'&type=certificate">Certificate</a> | <a href="' .  get_site_url() . 
-            '/download-certificate/?user_id=' .  $user_id . '&course_id=' . $course_id . '&type=syllabus">Syllabus</a>' // Download link
+            '/download-certificate/?user_id=' .  $user_id . '&course_id=' . $course_id . '&type=syllabus">' . __("Syllabus", "EOT_LMS") . '</a>' // Download link
           );
         }
         CreateDataTable($certificateTableObj); // Print the table in the page
       }
       else
       {
-        echo 'Could not find certificates.';
+        echo __("Could not find certificates.", "EOT_LMS");
       }
 ?>
       <script>
@@ -265,12 +265,12 @@
     else
     {
       // No certificate
-      echo "You don't have any certificates.";
+      echo __("You don't have any certificates.", "EOT_LMS");
     }
   }
   else
   {
     // Not a student
-    echo 'ERROR: You do not have permisison to view this page.';
+    echo __("ERROR: You do not have permisison to view this page.", "EOT_LMS");
   }
 ?>

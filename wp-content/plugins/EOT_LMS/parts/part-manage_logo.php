@@ -16,7 +16,7 @@
 		<?= CRUMB_SEPARATOR ?>     
 		<?= CRUMB_ADMINISTRATOR ?>    
 		<?= CRUMB_SEPARATOR ?>    
-	    <span class="current">Manage Logo</span>     
+	    <span class="current"><?= __("Manage Logo", "EOT_LMS"); ?></span>     
 	</div>
 <?php
 
@@ -35,24 +35,24 @@
 						'field_groups' => array(ACF_MANAGE_LOGO), // The POST ID for dashboard logo
 						'post_id' => 'user_'.$org_id,
 						'return' => '?part=manage_logo&updated=true&org_id='.$org_id.'&subscription_id=' . $subscription_id,
-						'updated_message' => __("Dashboard logo updated.", 'acf'),
+						'updated_message' => __(__("Dashboard logo updated.", "EOT_LMS"), 'acf'),
 					)
 				);
       		}
 			else
 			{
-				echo "Unauthorized!";
+				echo __("Unauthorized!", "EOT_LMS");
 			}
 		}
 		else
 		{
-			echo "subscription ID does not belong to you";
+			echo __("subscription ID does not belong to you", "EOT_LMS");
 		}
 	}
 	// Could not find the subscription ID
 	else
 	{
-		echo "Could not find the subscription ID";
+		echo __("Could not find the subscription ID", "EOT_LMS");
 	}
 ?>
 

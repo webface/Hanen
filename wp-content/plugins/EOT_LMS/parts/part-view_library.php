@@ -21,17 +21,17 @@
         </div>
         <h1 class="article_page_title"><?= $library_name ?></h1>
         <span>
-          <strong>Welcome to <?= $library_name ?>!</strong> This is our most popular content library for camp counselors, parks & rec staff, and other youth leaders, including supervisors. 
-          To watch videos, read video synopses, or download some handouts for your staff training manual, just click on one of the six category bars below.
+          <strong><?= __("Welcome to", "EOT_LMS") ?> <?= $library_name ?>!</strong> <?= __("This is our most popular content library for camp counselors, parks & rec staff, and other youth leaders, including supervisors. 
+          To watch videos, read video synopses, or download some handouts for your staff training manual, just click on one of the six category bars below.", "EOT_LMS") ?>
           <br><br>
-          <strong>Pre-Made Courses.</strong> Your annual subscription comes with four pre-made courses, called "New Staff," "Returning Staff," "Program Staff," and "Supervisory Staff." 
-          <a href="/choosing-a-topic/">Click here</a> to see a listing of which topics are included in these pre-made courses.
+          <strong><?= __("Pre-Made Courses.", "EOT_LMS") ?></strong> <?= __('Your annual subscription comes with four pre-made courses, called "New Staff," "Returning Staff," "Program Staff," and "Supervisory Staff."', "EOT_LMS") ?> 
+          <a href="/choosing-a-topic/"><?= __("Click here", "EOT_LMS") ?></a> <?= __("to see a listing of which topics are included in these pre-made courses.", "EOT_LMS") ?>
           <br><br>
-          <strong>Choosing Topics.</strong> To help you choose topics for a custom course or on-site workshop, we have categorized our videos by theme. Simply click on a theme below to view 
-          the videos, quizzes, and handouts created by our amazing faculty. To view a table of recommended videos for different groups of staff, <a href="/choosing-a-topic/">click here</a>.
+          <strong><?= __("Choosing Topics.", "EOT_LMS") ?></strong> <?= __("To help you choose topics for a custom course or on-site workshop, we have categorized our videos by theme. Simply click on a theme below to view 
+          the videos, quizzes, and handouts created by our amazing faculty. To view a table of recommended videos for different groups of staff,", "EOT_LMS") ?> <a href="/choosing-a-topic/"><?= __("click here", "EOT_LMS") ?></a>.
           <br><br>
-          <strong>Custom Content.</strong> Looking for the custom content (videos, quizzes, or handouts) that you have uploaded? You can view it by clicking Manage Your Custom Content 
-          in the <a href="/dashboard/?part=administration&subscription_id=<?= $subscription_id?>/" onclick="load('load_dashboard')">Administration page</a> of your Director Dashboard.<br><br>
+          <strong><?= __("Custom Content.", "EOT_LMS") ?></strong> <?= __("Looking for the custom content (videos, quizzes, or handouts) that you have uploaded? You can view it by clicking Manage Your Custom Content in the", "EOT_LMS") ?>
+           <a href="/dashboard/?part=administration&subscription_id=<?= $subscription_id?>/" onclick="load('load_dashboard')"><?= __("Administration page", "EOT_LMS") ?></a> <?= __("of your Director Dashboard.", "EOT_LMS") ?><br><br>
         </span>
       <?php
         $modules = array(); // Array of Module objects
@@ -125,7 +125,7 @@
                     <p><?= $title ?></p>
                     <ul>
                       <li>
-                        <a href="./?part=view_video&module_id=<?= $module->id ?>&subscription_id=<?= $subscription_id ?>" onclick="load('load_video')">Watch Video</a> 
+                        <a href="./?part=view_video&module_id=<?= $module->id ?>&subscription_id=<?= $subscription_id ?>" onclick="load('load_video')"><?= __("Watch Video", "EOT_LMS") ?></a> 
                         <?php
                           // make sure the video exists in the video table
                           if (isset($video_times[$title]))
@@ -149,26 +149,26 @@
 
                             if (!empty($description))
                             {
-                              echo ' | <span ' . hover_text_attr(str_replace("'", "&lsquo;", $description),true) .'>Description</span>' ;
+                              echo ' | <span ' . hover_text_attr(str_replace("'", "&lsquo;", $description),true) .'>' . __("Description", "EOT_LMS") . '</span>' ;
                             }
 
                             // check if we have resources to download. If so display them.
                             if(isset($handouts[$module->id]) && count($handouts[$module->id]) == 1)
                             {
-                              echo " | <a href='" . $handouts[$module->id][0]['url'] . "' target='_blank'>Download Resource</a>";
+                              echo " | <a href='" . $handouts[$module->id][0]['url'] . "' target='_blank'>" . __("Download Resource", "EOT_LMS") . "</a>";
                             }
                             else if (isset($handouts[$module->id]) && count($handouts[$module->id]) > 1)
                             {
-                              echo " | <a href='./?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>View Resources</a>";
+                              echo " | <a href='./?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>" . __("View Resources", "EOT_LMS") . "</a>";
                             }
                             // Check if we have quiz or resources for the module. If so display them
                             if(isset($quizzes[$module->id]) && count($quizzes[$module->id]) == 1)
                             {
-                              echo ' | <a  href=\'/dashboard?part=view_core_quiz&quiz_id=' . $quizzes[$module->id][0]['id'] . '&subscription_id=' . $_REQUEST["subscription_id"] . '\'>View quiz</a';
+                              echo ' | <a  href=\'/dashboard?part=view_core_quiz&quiz_id=' . $quizzes[$module->id][0]['id'] . '&subscription_id=' . $_REQUEST["subscription_id"] . '\'>' . __("View quiz", "EOT_LMS") . '</a';
                             }
                             else if (isset($quizzes[$module->id]) && count($quizzes[$module->id]) > 1)
                             {
-                              echo " | <a href='./?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>View Resources</a>";
+                              echo " | <a href='./?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>" . __("View Resources", "EOT_LMS") . "</a>";
                             }
                           }
                         ?>
@@ -206,17 +206,17 @@
       }
       else  
       {
-        echo "Sorry but we coulnd't find your library. Please contact the site administrator.";
+        echo __("Sorry but we coulnd't find your library. Please contact the site administrator.", "EOT_LMS");
       }
     }
     else
     {
-      echo "Sorry but you have an invalid subscription. Please contact the site administrator.";
+      echo __("Sorry but you have an invalid subscription. Please contact the site administrator.", "EOT_LMS");
     }
   }
   else
   {
-    echo "Sorry but you are missing the subscription ID.";
+    echo __("Sorry but you are missing the subscription ID.", "EOT_LMS");
   }
 
 ?>
