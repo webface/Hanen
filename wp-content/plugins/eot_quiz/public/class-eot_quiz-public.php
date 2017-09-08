@@ -115,7 +115,7 @@ class Eot_quiz_Public
         wp_enqueue_script('angular-route', plugin_dir_url(__FILE__) . 'js/angular-route.min.js', array('jquery'), $this->version, true);
         wp_enqueue_script('quizapp', plugin_dir_url(__FILE__) . 'quizapp/app.js', array('jquery'), $this->version, true);
         wp_enqueue_script('quizmanager', plugin_dir_url(__FILE__) . 'quizapp/factories/quizmanager.js', array('jquery'), $this->version, true);
-        //wp_enqueue_script('quiztimeformat', plugin_dir_url(__FILE__) . 'quizapp/filters/formattime.js', array('jquery'), $this->version, true);
+        wp_enqueue_script('quiztimeformat', plugin_dir_url(__FILE__) . 'quizapp/filters/formattime.js', array('jquery'), $this->version, true);
         wp_enqueue_script('quizctrl', plugin_dir_url(__FILE__) . 'quizapp/controllers/quiz.js', array('jquery'), $this->version, true);
         wp_enqueue_script('quizresultsctrl', plugin_dir_url(__FILE__) . 'quizapp/controllers/results.js', array('jquery'), $this->version, true);
         wp_enqueue_script('quizwelcomectrl', plugin_dir_url(__FILE__) . 'quizapp/controllers/welcome.js', array('jquery'), $this->version, true);
