@@ -3043,7 +3043,9 @@ function get_refund_form_callback ()
     {
         $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
         $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
-        $type = filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
+        $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
         global $wpdb;
         if($type == 'subscription')
         {
@@ -3054,7 +3056,13 @@ function get_refund_form_callback ()
             $sql = "SELECT * FROM ". TABLE_UPGRADE_SUBSCRIPTION ." WHERE trans_id = '$trans_id'";
         }
         $subscription = $wpdb->get_row($sql, OBJECT);
+        $original_amount = $subscription->price;
         $amount = $subscription->price;
+        $reductions = $wpdb->get_results("SELECT * FROM ". TABLE_UPGRADE_SUBSCRIPTION ." WHERE trans_id = 'ref:$trans_id'",OBJECT);
+        foreach($reductions as $reduction)
+        {
+            $amount+= $reduction->price;
+        }
         ob_start();
 ?>
         <div class="title">
@@ -3063,7 +3071,8 @@ function get_refund_form_callback ()
         <div class="middle">
             <form id= "refund_camp" frm_name="refund_camp" frm_action="refund_camp" rel="submit_form" hasError=0> 
                 <table padding=0 class="form">
-                    <h1>$<?= $amount ?></h1>
+                    <h3>Original Charge $ <?= $original_amount?></h3>
+                    <h1>Balance Charge $<?= $amount ?></h1>
                     <tr>
                         <td class="value">
                             $<input type="number" name="part_amount" value="0" />&nbsp;<span>Refund part</span> 
@@ -3077,6 +3086,8 @@ function get_refund_form_callback ()
                     <tr>
                         <td class="value">
                             <input type="hidden" name="trans_id" value="<?= $trans_id ?>" />
+                            <input type="hidden" name="user_id" value="<?= $user_id ?>" />
+                            <input type="hidden" name="org_id" value="<?= $org_id ?>" />
                             <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" />
                             <input type="hidden" name="amount" value="<?= $amount ?>" /> 
 
@@ -3138,14 +3149,19 @@ function refund_camp_callback ()
     $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
     $part_amount = filter_var($_REQUEST['part_amount'], FILTER_SANITIZE_NUMBER_INT);
     $amount = filter_var($_REQUEST['amount'], FILTER_SANITIZE_NUMBER_INT);
+    $accounts = filter_var($_REQUEST['accounts'], FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
-    
-    if ( ! wp_verify_nonce('refund-camp_'.$trans_id ) ) 
+     
+    if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'refund-camp_'.$trans_id ) )
     {
 
         $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = "Your nonce did not verify."; 
+        $result['errors'] = "Your nonce did not verify.";
+        echo json_encode($result);
+        exit();
 
     }
     if($part_amount == 0)
@@ -3158,20 +3174,19 @@ function refund_camp_callback ()
     }
     if($refund)
     {
-        if($part_amount == 0)
-        {
-            //subtract from amount
-            $transaction =$wpdb->get_row("SELECT * FROM ". TABLE_SUBSCRIPTIONS . " WHERE trans_id = '$trans_id'",OBJECT);
-            $new_price = floatval($transaction->price - $amount);
-            $wpdb->update(TABLE_SUBSCRIPTIONS, array('trans_id' => $trans_id),array('price'=>$new_price));
-        }
-        else 
-        {
-            //subtract from amount
-            $transaction =$wpdb->get_row("SELECT * FROM ". TABLE_UPGRADE_SUBSCRIPTION . " WHERE trans_id = '$trans_id'",OBJECT);
-            $new_price = floatval($transaction->price - $part_amount);
-            $wpdb->update(TABLE_UPGRADE_SUBSCRIPTION, array('trans_id' => $trans_id),array('price'=>$new_price));
-        }
+        $reduction = array(
+            'date' => current_time('Y-m-d'),
+            'org_id' => $org_id,
+            'subscription_id' => $subscription_id,
+            'price' => ($part_amount == 0)? floatval(-$amount):floatval(-$part_amount),
+            'accounts' => -$accounts,
+            'user_id' => $user_id,
+            'method' => 'stripe',
+            'other_note' => 'refund',
+            'rep_id' => $current_user->ID,
+            'trans_id' => "ref:".$trans_id
+        );
+        $reduced = $wpdb->insert(TABLE_UPGRADE_SUBSCRIPTION, $reduction);
         $data = array(
             'trans_id' => $trans_id,
             'subscription_id' => $subscription_id,

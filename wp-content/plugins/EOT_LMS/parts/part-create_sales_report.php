@@ -129,7 +129,7 @@
 	  		$subscription->org_phone = get_post_meta( $subscription->org_id, 'phone', true );
 	  		$subscription->camp_name = get_the_title($subscription->org_id);
 	  		$camps_name[$subscription->ID] = $subscription->camp_name; // Associative array of subscription id and camp name. Subscription id is the key.
-
+                        
 	  		// Populate subscription table
 		 	$subscriptionsTableObj->rows[] = array(
 				$subscription->trans_date, // Transaction Date
@@ -177,7 +177,7 @@
 		$upgrade_customer_name = ($upgrade_customer_info) ? $upgrade_customer_info->first_name . " " . $upgrade_customer_info->last_name : "";
                 $upgrade_customer_email = $upgrade_customer_info->user_email;
                 $upgrade->org_phone = get_post_meta( $upgrade->org_id, 'phone', true );
-			$stripe_charge = ($upgrade->method == "stripe") ? '$' . number_format($upgrade->price * 0.029 + 0.3, 2, '.', '') : "";
+			$stripe_charge = ($upgrade->method == "stripe" && $upgrade->other_note != "refund") ? '$' . number_format($upgrade->price * 0.029 + 0.3, 2, '.', '') : "";
 			// Populate subscription download table for upgrades
 		 	$subscriptionsTableDownloadObj->rows[] = array(
 		    	$upgrade->date,
@@ -195,7 +195,7 @@
 			    $upgrade->accounts,
 			    $library_names[$subscription->library_id],
 			    $upgrade_rep_name,
-			    ($upgrade_rep_info && $upgrade->method != "free") ? '$' . ($upgrade->price * COMMISION_PERCENT_NEW)  : "",
+			    ($upgrade_rep_info && $upgrade->method != "free" && $upgrade->other_note != "refund") ? '$' . ($upgrade->price * COMMISION_PERCENT_NEW)  : "",
 			    'Upgrade Sale',
 			    $upgrade->method,
 			);	
@@ -206,7 +206,7 @@
 				$subscription->camp_name, // The name of the camp,
 				'$' . number_format($upgrade->price, 2, '.', ''), // Transaction price.
 				$upgrade_rep_name, // REP first and last name
-				($upgrade_rep_info) ? '$' . number_format(($upgrade->price * COMMISION_PERCENT_NEW), 2, '.', '') : '', // Commision for the upgrade.
+				($upgrade_rep_info && $upgrade->other_note != "refund") ? '$' . number_format(($upgrade->price * COMMISION_PERCENT_NEW), 2, '.', '') : '', // Commision for the upgrade.
 				'Upgrade'
 			);
         }

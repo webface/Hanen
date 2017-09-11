@@ -37,7 +37,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                 $camp_name,
                 $name,
                 $amount,
-                "<a onclick='issueRefund(\"".$subscription->trans_id."\",\"subscription\")'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>"
+                "<a onclick='issueRefund(\"".$subscription->trans_id."\",\"".$subscription->manager_id."\",\"".$subscription->org_id."\",\"subscription\")'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>"
             );
             echo "<h1>Subscriptions</h1>";
             CreateDataTable($subscriptionsTableObj);
@@ -58,21 +58,21 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                     $camp_name,
                     $upgrade->other_note,
                     $upgrade->price,
-                    "<a onclick='issueRefund(\"".$upgrade->trans_id."\",\"upgrade\")'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>"
+                    ($upgrade->other_note != 'refund') ? "<a onclick='issueRefund(\"".$upgrade->trans_id."\",\"".$upgrade->user_id."\",\"".$upgrade->org_id."\",\"upgrade\")'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>":""
                 );
             }
             CreateDataTable($upgradesTableObj);
             ?>
 <script>
 
-    function issueRefund(trans_id,type) 
+    function issueRefund(trans_id, user_id, org_id, type) 
     {
         //alert('issue refund: '+trans_id);
         //alert('issue refund: '+type);
         $.facebox(function () {
 
             $.ajax({
-                data: {'trans_id': trans_id,'type':type ,'subscription_id':<?= $subscription_id;?>},
+                data: {'trans_id': trans_id,'type':type ,'user_id':user_id ,'org_id':org_id ,'subscription_id':<?= $subscription_id;?>},
                 error: function () 
                 {
                     $.facebox('There was an error loading the title. Please try again shortly.');
@@ -92,6 +92,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                     if(data.success===true)
                     {
                         jQuery(document).trigger('close.facebox');
+                        location.reload();
                     }
                 }
        )
