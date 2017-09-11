@@ -26,7 +26,7 @@ switch ($_POST['part'])
     case 'add_answer':
         $data = array(
             'question_id' => filter_var($_POST['question_id'],FILTER_SANITIZE_NUMBER_INT),
-            'answer_text' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_POST['title']))
+            'answer_text' => preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['title']))
         );
         $adda = $eot_quiz->addAnswer($data);
         if ($adda > 0) 
@@ -46,7 +46,7 @@ switch ($_POST['part'])
     case 'save_question_answers':
         $updq = $eot_quiz->updateQuestion(
                 array(
-                    'quiz_question' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_POST['question_text']))
+                    'quiz_question' => preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['question_text']))
                     ), 
                 filter_var($_POST['question_id'],FILTER_SANITIZE_NUMBER_INT));
         $answers = $_POST['answers'];
@@ -57,7 +57,7 @@ switch ($_POST['part'])
                //var_dump($answer['answer_text']); 
                //exit();
             $data = array(
-                'answer_text' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($answer['answer_text'])),
+                'answer_text' => preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($answer['answer_text'])),
                 'answer_correct' => $answer['answer_correct']
             );
          

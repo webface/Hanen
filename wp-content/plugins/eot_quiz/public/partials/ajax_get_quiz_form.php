@@ -5,7 +5,7 @@
 switch ($_REQUEST['form_name']) 
 {
     case 'update_title':
-        $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
+        $title = preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         ob_start();
 ?>
         <div class="title" style="width:320px">
