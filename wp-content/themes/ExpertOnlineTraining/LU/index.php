@@ -40,7 +40,7 @@
 
 	$process = 0; // boolean whether to delete and clone or just debug
 	$num_portals_to_process = 5; // the number of portals to process.
-	$num_users_to_process = 25; // the number of users to process.
+	$num_users_to_process = 5; // the number of users to process.
 	$admin_ajax_url = admin_url('admin-ajax.php');
 
 	// make sure were alowed to use this script
@@ -82,6 +82,15 @@
 
 	if ($action == 'import_users')
 	{
+
+$old_id = 61;
+$old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
+$org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
+$org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id", ARRAY_A );
+$org['ID'] = 0;
+ddd($old_id, $old_org_id, $org, $org_meta);
+
+
 		echo "going to import all users ...";
 
 		// get sales managers
@@ -97,6 +106,7 @@
 		$sales_managers1_json = json_encode($sales_managers1, JSON_FORCE_OBJECT);    
 d($sales_managers1, $sales_managers1_json);    
 
+		// get sales reps
         $query = "
         	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'salesrep' as role 
         	FROM wp_eot_users u 
@@ -109,7 +119,7 @@ d($sales_managers1, $sales_managers1_json);
 		$sales_reps_json = json_encode($sales_reps, JSON_FORCE_OBJECT);
 d($sales_reps, $sales_reps_json);
 
-
+		// get directors
         $args = array(
             'role__in' => array ('manager'),
             'role__not_in' => array('administrator', 'student', 'salesrep', 'sales_manager'),
@@ -117,6 +127,7 @@ d($sales_reps, $sales_reps_json);
             'fields' => array ('ID', 'display_name', 'user_email', 'user_registered')
         );
         
+        // get umbrella managers
         $query = "
         	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'manager' as role 
         	FROM wp_eot_users u 
@@ -129,6 +140,7 @@ d($sales_reps, $sales_reps_json);
         $managers_json = json_encode($managers, JSON_FORCE_OBJECT);
 d($managers, $managers_json);
 
+		// get students
         $query = "
         	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'student' as role 
         	FROM wp_eot_users u 
@@ -169,6 +181,7 @@ d($students, $students_json);
 
 			console.log("PROCESSING: " + myUser.user_login);
 
+ 			$('.ajax_response').append("<p>Processing sales_managers</p>");
 			$('.processing').html("Processing " + counter + " out of " + len + " " + myUser.role);
 		    processUsers(myUser);
 
@@ -233,6 +246,7 @@ d($students, $students_json);
 								len = ObjectLength(sales_reps);
 								console.log("Count: " + count + " Length = " + len);
 								counter = count + 1;
+					 			$('.ajax_response').append("<p>Processing salesrep</p>");
 
 								myUser = new Object();
 								myUser = sales_reps[count];
@@ -248,6 +262,7 @@ d($students, $students_json);
 								len = ObjectLength(managers);
 								console.log("Count: " + count + " Length = " + len);
 								counter = count + 1;
+					 			$('.ajax_response').append("<p>Processing directors</p>");
 
 								myUser = new Object();
 								myUser = managers[count];
@@ -263,6 +278,7 @@ d($students, $students_json);
 								len = ObjectLength(students);
 								console.log("Count: " + count + " Length = " + len);
 								counter = count + 1;
+					 			$('.ajax_response').append("<p>Processing students</p>");
 
 								myUser = new Object();
 								myUser = students[count];
