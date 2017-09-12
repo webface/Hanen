@@ -50,10 +50,10 @@
          */
         foreach($users as $user)
         {
-        	$user_id = $user->ID; // Wordpress user ID
-        	$name = $user->display_name; // User's First and Last name in wordpress
-        	$email = str_replace("@", "\@", $user->user_email); // User's Wordpress Email
-        	$date_registered = substr($user->user_registered, 0, 10); // User's date registration in wordpress
+            $user_id = $user->ID; // Wordpress user ID
+            $name = $user->display_name; // User's First and Last name in wordpress
+            $email = $user->user_email; // User's Wordpress Email
+            $date_registered = substr($user->user_registered, 0, 10); // User's date registration in wordpress
             $org_id = get_org_from_user ($user_id); // Organization ID
             $camp_name = get_the_title($org_id);
 

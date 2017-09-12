@@ -17,6 +17,7 @@
     $num_videos_watched = calculate_videos_watched($org_id);
     $num_resources_downloaded = calculate_resources_downloaded($org_id);
     $num_quizzes_taken=calculate_quizzes_taken($org_id, $subscription_id);
+    //d($staff_accounts,$courses);
 //d($courses,$num_videos_watched,$num_quizzes_taken,$num_resources_downloaded);
     // check if we have staff accounts and filter out everyone other than learners
     if( isset($staff_accounts['status']) && $staff_accounts['status'] )
@@ -42,7 +43,8 @@
 //			}
 			$course_id = $course['ID']; // The course ID
                         
-			$enrollment = getEnrollments($course_id, 0, $subscription_id, false); // All enrollments in the course
+			$enrollment = getEnrollments($course_id, 0, $org_id, ''); // All enrollments in the course
+                        //d($enrollment);
 			if($enrollment)
 			{
 				foreach($enrollment as $enroll)
@@ -64,7 +66,6 @@
 		// get only uniques for each array
 		$unique_completed_user_ids = array_unique($completed_user_ids);
 		$unique_incomplete_user_ids = array_unique($incomplete_user_ids);
-
 		// only count the user who are not in the incomplete array
 		$num_staff_completed_assignment = count(array_diff($unique_completed_user_ids, $unique_incomplete_user_ids));
 	}
@@ -224,7 +225,8 @@
 	</div>-->
 	
 			<h2>Courses</h2>
-			<table style="width:100%">            
+                        <div class="bs">
+                            <table style="" class="table table-striped table-bordered">            
 				<tbody>
 <?php
 				if (!empty($courses))
@@ -239,7 +241,7 @@
 //				        }
 ?>
 						<tr>
-							<td width="20%"><?= $course_name ?></td>
+							<td width=""><?= $course_name ?></td>
 							<td><a href="?part=coursestats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Course Stats</a></td>
                                                         <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Staff Stats</a></td>
 <!--                                                        <td><a href="#">Download Excel Report</a></td>-->
@@ -255,6 +257,7 @@
 ?>
 				</tbody>
 			</table>
+                        </div>
 <!--			<br>
 			<a href="?part=statistics&subscription_id=<?= $subscription_id ?>&forward=1" class="statsbutton">Detailed Stats</a>-->
 <?php
