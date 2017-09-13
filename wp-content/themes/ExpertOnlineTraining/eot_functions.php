@@ -3844,13 +3844,23 @@ function getUsersInCourse_callback()
             // Get the enrollments who are enrolled in the course.
             $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
             $users = array(); // Lists of users who are enrolled in the course.
+
+            $user_data = getEotUsers($org_id); // Eot users
+            $users_id_in_camp = array(); // Lists of all user ids in the camp.
+            if( isset($user_data['users']) )
+            {
+              $users_id_in_camp = array_column($user_data['users'], 'ID');
+            }
             if($enrollments && count($enrollments) > 0)
             {
               foreach ($enrollments as $enrollment) 
               {
-                $user['first_name'] = get_user_meta ( $enrollment['user_id'], "first_name", true);
-                $user['last_name'] = get_user_meta ( $enrollment['user_id'], "last_name", true);
-                array_push($users, $user);
+                if(in_array($enrollment['user_id'], $users_id_in_camp))
+                {
+                  $user['first_name'] = get_user_meta ( $enrollment['user_id'], "first_name", true);
+                  $user['last_name'] = get_user_meta ( $enrollment['user_id'], "last_name", true);
+                  array_push($users, $user);
+                }
               }
             }
 
