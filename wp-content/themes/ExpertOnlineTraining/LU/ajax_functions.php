@@ -90,9 +90,126 @@ function ajax_processUser()
     if ($user_exists)
     {
         // add new user id into table
-        $wpdb->insert ( 'wp_eot_old_data', array('type' => 'USER', 'old_id' => $old_id, 'new_id' => $user_exists));
+        if (!$wpdb->get_row( "SELECT * FROM wp_eot_old_data WHERE type = 'USER' AND old_id = $old_id", ARRAY_A ))
+        {
+            $wpdb->insert ( 'wp_eot_old_data', array('type' => 'USER', 'old_id' => $old_id, 'new_id' => $user_exists));
+        }
 
-        //@todo make sure we have a subscription and org for this user is its a director
+        //make sure we have a subscription and org for this user if its a director
+        if ($role = 'manager')
+        {
+            $has_org = get_user_meta( $user_exists, 'org_id', true );
+            if (!$has_org)
+            {
+                // doesnt have an org yet. Check if he had one before.
+                $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
+                if ($old_org_id)
+                {
+                    // it had an old org so insert the old data
+                    $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
+                    $org['ID'] = 0; // reset the post ID cause it will be different upon insertion.
+
+                    $new_org_id = wp_insert_post ( $org );
+                    if ($new_org_id)
+                    {
+                        $wpdb->insert ( 'wp_eot_old_data', array('type' => 'ORG', 'old_id' => $old_org_id, 'new_id' => $new_org_id));
+
+                        $old_org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id" );
+                        foreach ($old_org_meta as $old_meta)
+                        {
+                            update_post_meta( $new_org_id, $old_meta['meta_key'], $old_meta['meta_value'] );
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // has an org, make sure he has a subscription
+                $has_subscription = $wpdb->get_row( "SELECT * FROM wp_subscriptions WHERE org_id = $has_org", ARRAY_A );
+                if ($has_subscription)
+                {
+                    // has a subscription, check if there are any upgrades
+                    $has_upgrades = $wpdb->get_results( "SELECT * FROM wp_upgrade WHERE org_id = $has_org", ARRAY_A );
+                    if(!$has_upgrades)
+                    {
+                        // no upgrades, check if there were in the old db
+                        $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $old_sub_id", ARRAY_A);
+                        if (!empty($upgrades))
+                        {
+                            foreach ($upgrades as $upgrade)
+                            {
+                                $upgrade['ID'] = 0;
+                                $upgrade['subscription_id'] = $new_sub_id;
+                                $upgrade['user_id'] = get_new_id( 'USER', $upgrade['user_id']);
+                                $upgrade['rep_id'] = get_new_id( 'USER', $upgrade['rep_id']);
+                                $wpdb->insert ( 'wp_upgrade', $upgrade);
+                            }
+                        }                        
+                    }
+                }
+                else
+                {
+                    // no subscription. Check if he had one.
+                    $old_sub = $wpdb->get_row( "SELECT * FROM wp_eot_subscriptions WHERE org_id = $old_org_id", ARRAY_A );
+                    if ($old_sub)
+                    {
+                        $old_sub_id = $old_sub['id'];
+                        $old_sub['id'] = 0; // clear out the sub id
+                        $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
+                        $new_sub_id = $wpdb->insert ( 'wp_subscriptions', $old_sub );
+
+                        if ($new_sub_id)
+                        {
+                            $wpdb->insert ( 'wp_eot_old_data', array('type' => 'SUB', 'old_id' => $old_sub_id, 'new_id' => $new_sub_id));
+                        
+                            // check for any upgrades and add them too
+                            $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $old_sub_id", ARRAY_A);
+                            if (!empty($upgrades))
+                            {
+                                foreach ($upgrades as $upgrade)
+                                {
+                                    $upgrade['ID'] = 0;
+                                    $upgrade['subscription_id'] = $new_sub_id;
+                                    $upgrade['user_id'] = get_new_id( 'USER', $upgrade['user_id']);
+                                    $upgrade['rep_id'] = get_new_id( 'USER', $upgrade['rep_id']);
+                                    $wpdb->insert ( 'wp_upgrade', $upgrade);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } // end if manager role
+        else if ($role = 'student')
+        {
+            // student exists, make sure he's assigned to an org
+            $has_org = get_user_meta( $user_exists, 'org_id', true );
+            if(!$has_org)
+            {
+                // isn't assigned to an org yet so find out what his old org is.
+                $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
+
+                // get the new org id
+                $new_org_id = get_new_id( 'ORG', $old_org_id );
+
+                // insert new org
+                update_user_meta( $user_exists, 'org_id', $new_org_id );
+            }
+
+            // add the lrn_upon_id
+            if (!get_user_meta( $user_exists, 'lrn_upon_id', true ))
+            {
+                $lrn_upon_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'lrn_upon_id'" );
+                update_user_meta( $user_exists, 'lrn_upon_id', $lrn_upon_id );
+            }
+
+            // add the portal
+            if (!get_user_meta( $user_exists, 'portal', true ))
+            {
+                $portal = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'portal'" );
+                update_user_meta( $user_exists, 'portal', $portal );
+            }
+        }
 
     	$result['status'] = 0;
     	$result['message'] = "User: $user_login already exists with ID: $user_exists";
@@ -189,10 +306,34 @@ function ajax_processUser()
             else if ($role = 'student')
             {
                 // add student into new org
+                $has_org = get_user_meta( $user_exists, 'org_id', true );
+                if(!$has_org)
+                {
+                    // isn't assigned to an org yet so find out what his old org is.
+                    $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
+
+                    // get the new org id
+                    $new_org_id = get_new_id( 'ORG', $old_org_id );
+
+                    // insert new org
+                    update_user_meta( $user_exists, 'org_id', $new_org_id );
+                }
+
+                // add the lrn_upon_id
+                if (!get_user_meta( $user_exists, 'lrn_upon_id', true ))
+                {
+                    $lrn_upon_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'lrn_upon_id'" );
+                    update_user_meta( $user_exists, 'lrn_upon_id', $lrn_upon_id );
+                }
+
+                // add the portal
+                if (!get_user_meta( $user_exists, 'portal', true ))
+                {
+                    $portal = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'portal'" );
+                    update_user_meta( $user_exists, 'portal', $portal );
+                }
+
             }
-
-
-
         }
         else
         {
