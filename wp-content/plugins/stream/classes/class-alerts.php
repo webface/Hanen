@@ -366,18 +366,17 @@ class Alerts {
 		}
 
 		$post = get_post( $post_id );
-		$meta = get_post_custom( $post_id );
+
+		$alert_type     = get_post_meta( $post_id, 'alert_type', true );
+		$alert_meta     = get_post_meta( $post_id, 'alert_meta', true );
 
 		$obj = (object) array(
 			'ID'             => $post->ID,
 			'status'         => $post->post_status,
 			'date'           => $post->post_date,
 			'author'         => $post->post_author,
-			'filter_action'  => isset( $meta['filter_action'] ) ? $meta['filter_action'][0] : null,
-			'filter_author'  => isset( $meta['filter_author'] ) ? $meta['filter_author'][0] : null,
-			'filter_context' => isset( $meta['filter_context'] ) ? $meta['filter_context'][0] : null,
-			'alert_type'     => isset( $meta['alert_type'] ) ? $meta['alert_type'][0] : null,
-			'alert_meta'     => isset( $meta['alert_meta'] ) ? (array) maybe_unserialize( $meta['alert_meta'][0] ) : array(),
+			'alert_type'     => $alert_type,
+			'alert_meta'     => $alert_meta,
 		);
 
 		return new Alert( $obj, $this->plugin );
@@ -570,12 +569,12 @@ class Alerts {
 			<div id="minor-publishing">
 				<div id="misc-publishing-actions">
 					<div class="misc-pub-section misc-pub-post-status">
-						<label for="wp_stream_alert_status"><?php esc_html_e( 'Status', 'stream' ) ?></label>
+						<label for="wp_stream_alert_status"><?php esc_html_e( 'Status', 'stream' ); ?></label>
 						<select name='wp_stream_alert_status' id='wp_stream_alert_status'>
 							<option<?php selected( $post_status, 'wp_stream_enabled' ); ?>
-								value='wp_stream_enabled'><?php esc_html_e( 'Enabled', 'stream' ) ?></option>
+								value='wp_stream_enabled'><?php esc_html_e( 'Enabled', 'stream' ); ?></option>
 							<option<?php selected( $post_status, 'wp_stream_disabled' ); ?>
-								value='wp_stream_disabled'><?php esc_html_e( 'Disabled', 'stream' ) ?></option>
+								value='wp_stream_disabled'><?php esc_html_e( 'Disabled', 'stream' ); ?></option>
 						</select>
 					</div>
 				</div>
@@ -617,11 +616,11 @@ class Alerts {
 			<div id="misc-publishing-actions">
 				<div class="misc-pub-section misc-pub-post-status">
 					<label for="wp_stream_alert_status">
-						<span class="title"><?php esc_html_e( 'Status:', 'stream' ) ?></span>
+						<span class="title"><?php esc_html_e( 'Status:', 'stream' ); ?></span>
 						<span class="input-text-wrap">
 							<select name='wp_stream_alert_status' id='wp_stream_alert_status'>
-								<option selected value='wp_stream_enabled'><?php esc_html_e( 'Enabled', 'stream' ) ?></option>
-								<option value='wp_stream_disabled'><?php esc_html_e( 'Disabled', 'stream' ) ?></option>
+								<option selected value='wp_stream_enabled'><?php esc_html_e( 'Enabled', 'stream' ); ?></option>
+								<option value='wp_stream_disabled'><?php esc_html_e( 'Disabled', 'stream' ); ?></option>
 							</select>
 						</span>
 					</label>
