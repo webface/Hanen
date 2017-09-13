@@ -265,7 +265,7 @@ class Eot_quiz_Public
     //ACTIONS ARE ADDED IN INCLUDES/CLASS.EOT_QUIZ.PHP
     public function add_title_callback() 
     {
-        $title = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
+        $title = preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_REQUEST['title']));
         $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
         if ( ! wp_verify_nonce('add-title_'.$type ) ) 
         {
