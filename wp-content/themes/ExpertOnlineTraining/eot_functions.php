@@ -8972,3 +8972,30 @@ function getLibraryFromSubscription($subscription_id)
     $subscription = $wpdb->get_row("SELECT * FROM ". TABLE_SUBSCRIPTIONS. " WHERE ID = $subscription_id", OBJECT);
     return $subscription->library_id;
 }
+
+
+/**
+ * get all the resources in a module
+ * @param type $course_id
+ * @param type $resource_id
+ * @param type $type
+ * 
+ */
+function getOtherResourcesInModule($course_id = 0, $resource_id = 0, $type = "")
+{
+    $course_id =  filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $resource_id =  filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+    $type = filter_var($type, FILTER_SANITIZE_STRING);
+    global $wpdb;
+    if($course_id == 0 || $resource_id == 0 || $type = "")
+    {
+        return null;
+    }
+    $cmr = $wpdb->get_row("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." "
+            . "WHERE course_id = $course_id "
+            . "AND resource_id = $resource_id "
+            . "AND type = '$type'",OBJECT);
+    
+    $other_resources = $wpdb->get_results("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE course_id = $course_id AND module_id =".$cmr->module_id, ARRAY_A);
+    return $other_resources;
+}

@@ -61,6 +61,21 @@ switch ($_REQUEST['part'])
                     )
                     );
         }
+        if($_POST['passed'] != true)// if failed, force user to rewatch video
+        {
+            $other_resources = getOtherResourcesInModule($course_id, $quiz_id, 'exam');
+            foreach ($other_resources as $resource) {
+                if($resource['type']== "video")
+                {
+                    $video_id = $resource->resource_id;
+                    $module_id = $resource->module_id;
+                }
+            }
+            if($video_id)
+            {
+                $wpdb->update(TABLE_TRACK, array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id),array('result' => NULL));
+            }
+        }
         $questions = $_POST['questions'];
         //var_dump($questions);
         foreach ($questions as $question) 
