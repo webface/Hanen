@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-09-01 14:48:51+0000\n"
+"PO-Revision-Date: 2017-09-07 08:46:05+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9480,10 +9480,6 @@ msgstr "Mostrar contador de productos"
 msgid "Shows active layered nav filters so users can see and deactivate them."
 msgstr "Muestra los filtros de navegación en capas activos para que los usuarios puedan verlos y desactivarlos."
 
-#: includes/wc-user-functions.php:53
-msgid "An account is already registered with your email address. Please log in."
-msgstr "Ya hay una cuenta registrada con tu correo electrónico. Por favor, <a href=\"%s\">accede</a>."
-
 #: includes/widgets/class-wc-widget-product-search.php:23
 msgid "A Search box for products only."
 msgstr "Una caja de búsqueda solo para productos."
@@ -9491,6 +9487,10 @@ msgstr "Una caja de búsqueda solo para productos."
 #: includes/widgets/class-wc-widget-product-categories.php:73
 msgid "Only show children of the current category"
 msgstr "Mostrar solo subcategorías de la categoría actual"
+
+#: includes/wc-user-functions.php:53
+msgid "An account is already registered with your email address. Please log in."
+msgstr "Ya hay una cuenta registrada con tu correo electrónico. Por favor, accede."
 
 #: includes/class-wc-post-types.php:522
 msgid "Failed <span class=\"count\">(%s)</span>"

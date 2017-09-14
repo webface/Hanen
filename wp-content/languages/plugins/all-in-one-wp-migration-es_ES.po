@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - All-in-One WP Migration - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-02 20:36:09+0000\n"
+"PO-Revision-Date: 2017-09-07 16:52:02+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,7 +11,19 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Plugins - All-in-One WP Migration - Stable (latest release)\n"
 
-#: lib/view/backups/index.php:60
+#: functions.php:59 functions.php:78
+msgid "Invalid archive path"
+msgstr "Ruta de archivo no válida"
+
+#: functions.php:54 functions.php:73
+msgid "Unable to locate archive path"
+msgstr "No se puede localizar la ruta del archivo"
+
+#: functions.php:34
+msgid "Unable to locate storage path"
+msgstr "No se puede encontrar la ruta de almacenamiento"
+
+#: lib/view/backups/index.php:65
 msgid "2GB+"
 msgstr "2GB+"
 
@@ -202,7 +214,7 @@ msgstr "Resolver la dirección URL realizado."
 msgid "Resolving URL address..."
 msgstr "Resolviendo la dirección URL..."
 
-#: lib/model/export/class-ai1wm-export-config.php:113
+#: lib/model/export/class-ai1wm-export-config.php:110
 msgid "Done adding configuration to archive."
 msgstr "Añadir configuración al archivo realizado."
 
@@ -282,10 +294,10 @@ msgstr "ServMask"
 msgid "Migration tool for all your blog data. Import or Export your blog content with a single click."
 msgstr "Herramienta de migración para todos los datos de tu blog. Importa o Exporta el contenido de tu blog con un solo clic."
 
-#. #-#-#-#-#  all-in-one-wp-migration-code.pot (All-in-One WP Migration 6.55) 
+#. #-#-#-#-#  all-in-one-wp-migration-code.pot (All-in-One WP Migration 6.56) 
 #. #-#-#-#-#
 #. Plugin URI of the plugin/theme
-#. #-#-#-#-#  all-in-one-wp-migration-code.pot (All-in-One WP Migration 6.55) 
+#. #-#-#-#-#  all-in-one-wp-migration-code.pot (All-in-One WP Migration 6.56) 
 #. #-#-#-#-#
 #. Author URI of the plugin/theme
 msgid "https://servmask.com/"
@@ -447,11 +459,11 @@ msgstr "Por favor, describe tu problema aquí..."
 msgid "Report issue"
 msgstr "Informa de un problema"
 
-#: lib/view/common/leave-feedback.php:45 lib/view/common/report-problem.php:24
+#: lib/view/common/leave-feedback.php:41 lib/view/common/report-problem.php:20
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: lib/view/common/leave-feedback.php:43 lib/view/common/report-problem.php:22
+#: lib/view/common/leave-feedback.php:45 lib/view/common/report-problem.php:24
 msgid "Send"
 msgstr "Enviar"
 
@@ -479,32 +491,32 @@ msgstr "Tengo ideas para mejorar este plugin"
 msgid "I would like to review this plugin"
 msgstr "Me gustaría valorar este plugin"
 
-#: lib/view/backups/index.php:126 lib/view/export/index.php:60
+#: lib/view/backups/index.php:130 lib/view/export/index.php:60
 #: lib/view/import/index.php:57
 msgid "Leave Feedback"
 msgstr "Deja un comentario"
 
-#: lib/view/backups/index.php:89
+#: lib/view/backups/index.php:96
 msgid "Create backup"
 msgstr "Crear backup"
 
-#: lib/view/backups/index.php:85
+#: lib/view/backups/index.php:91
 msgid "There are no backups available at this time, why not create a new one?"
 msgstr "No hay copias de seguridad disponibles en este momento, ¿por qué no crear ahora una nueva?"
 
-#: lib/view/backups/index.php:76
+#: lib/view/backups/index.php:81
 msgid "Delete"
 msgstr "Borrar"
 
-#: lib/view/backups/index.php:72
+#: lib/view/backups/index.php:77
 msgid "Restore"
 msgstr "Restaurar"
 
-#: lib/view/backups/index.php:68
+#: lib/view/backups/index.php:73
 msgid "Download"
 msgstr "Bajar"
 
-#: lib/view/backups/index.php:56
+#: lib/view/backups/index.php:61
 msgid "ago"
 msgstr "hace"
 
@@ -550,7 +562,7 @@ msgstr "Exportar la base de datos realizado."
 msgid "Archiving %d files...<br />%d%% complete"
 msgstr "Archivando %d ficheros... <br />%d%% completado"
 
-#: lib/model/export/class-ai1wm-export-enumerate.php:137
+#: lib/model/export/class-ai1wm-export-enumerate.php:140
 #: lib/model/import/class-ai1wm-import-enumerate.php:46
 msgid "Done retrieving a list of all WordPress files."
 msgstr "Recuperando una lista de todos los archivos de WordPress realizado."

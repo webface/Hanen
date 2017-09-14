@@ -70,8 +70,8 @@ $excerptrgb = sw_hover_opacity($excerptcolor);
 $excerptrgba = sw_hover_opacity($excerptcolor, $excerptopacity);
 ?>
 .hover-link-<?php echo $id; ?> .hover-panel:hover .hover-excerpt {
-    font-family: <?php echo $settings->excerpt_font[family]; ?>; 
-    font-weight: <?php echo $settings->excerpt_font[weight]; ?>;
+    font-family: <?php echo $settings->excerpt_font['family']; ?>; 
+    font-weight: <?php echo $settings->excerpt_font['weight']; ?>;
     font-size: <?php echo $settings->excerpt_font_size; ?>px;
     bottom: 40%;
     color: #<?php echo $settings->excerpt_font_color; ?>;
@@ -79,8 +79,8 @@ $excerptrgba = sw_hover_opacity($excerptcolor, $excerptopacity);
 }
 
 .hover-link-<?php echo $id; ?> .hover-panel .hover-excerpt {
-    font-family: <?php echo $settings->excerpt_font[family]; ?>; 
-    font-weight: <?php echo $settings->excerpt_font[weight]; ?>;
+    font-family: <?php echo $settings->excerpt_font['family']; ?>; 
+    font-weight: <?php echo $settings->excerpt_font['weight']; ?>;
     font-size: <?php echo $settings->excerpt_font_size; ?>px;
 }
 
@@ -97,8 +97,8 @@ $titlergba = sw_hover_opacity($titlecolor, $titleopacity);
 
 <?php if($settings->title_hover !='false') {?>
     .hover-link-<?php echo $id; ?> .hover-panel figcaption .hover-title {
-        font-family: <?php echo $settings->title_font[family]; ?>;
-        font-weight: <?php echo $settings->title_font[weight]; ?>;
+        font-family: <?php echo $settings->title_font['family']; ?>;
+        font-weight: <?php echo $settings->title_font['weight']; ?>;
         color: #<?php echo $settings->title_font_color; ?>;
         font-size: <?php echo $settings->title_font_size; ?>px;
         line-height: 200%;

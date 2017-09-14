@@ -4132,17 +4132,25 @@ function enrollUserInCourses($courses = array(), $org_id = 0, $email = '', $subs
   $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
   $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
   $allcourses =  getCoursesById($org_id, $subscription_id);
+  $allcourses_names = array_column($allcourses, 'course_name');
   $result['message'] = ''; // will contain the success or failure messages and email statuses.
   $result['status'] = 1; // assume success unless we fail below
-
   // go through each course and enroll the user if course exists in all courses
+  
   foreach ($courses as $course_name)
   {
-    if($key = array_search($course_name, $allcourses))
+    if(in_array($course_name, $allcourses_names))// see if course exists in courses for this org
     {
-      $course_id = $courses[$key]->ID;  
-      $data = compact('org_id', 'course_name', 'course_id', 'subscription_id');
+      foreach($allcourses as $course)
+      {
+        if($course['course_name'] == $course_name)// get the matching course_id
+        {
+          $course_id = $course['ID'];  
+        }
+      }
       
+      $data = compact('org_id', 'course_name', 'course_id', 'subscription_id');
+
       if(user_is_enrolled($email, $course_id))
       {
         $result['status'] = 0;
@@ -8245,7 +8253,7 @@ function getSubscriptionByCourse($course_id = 0)
 
   global $wpdb;
 
-  $query = "SELECT s.* FROM " . TABLE_SUBSCRIPTIONS . " s LEFT JOIN " . TABLE_COURSES . " c ON S.ID = c.subscription_id WHERE c.ID = $course_id";
+  $query = "SELECT s.* FROM " . TABLE_SUBSCRIPTIONS . " s LEFT JOIN " . TABLE_COURSES . " c ON s.ID = c.subscription_id WHERE c.ID = $course_id";
   $subscription = $wpdb->get_row($query, ARRAY_A);
   return $subscription;
 }
