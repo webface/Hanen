@@ -8125,7 +8125,8 @@ function updateVideoProgress_callback()
         $query_result = $wpdb->update(
           TABLE_TRACK,
           array (
-            'result' => '1'
+            'result' => '1',
+            'repeat' => 0
           ),
           array (
             'ID' => $track_id,
@@ -8987,7 +8988,7 @@ function getOtherResourcesInModule($course_id = 0, $resource_id = 0, $type = "")
     $resource_id =  filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
     $type = filter_var($type, FILTER_SANITIZE_STRING);
     global $wpdb;
-    if($course_id == 0 || $resource_id == 0 || $type = "")
+    if($course_id == 0 || $resource_id == 0 || $type == "")
     {
         return null;
     }

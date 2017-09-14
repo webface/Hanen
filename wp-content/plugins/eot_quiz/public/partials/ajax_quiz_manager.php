@@ -21,6 +21,7 @@ switch ($_REQUEST['part'])
     case 'save_quiz':
         $course_id = filter_var($_POST['course_id'],FILTER_SANITIZE_NUMBER_INT);
         $quiz_id = filter_var($_POST['ID'], FILTER_SANITIZE_NUMBER_INT);
+        $quiz_passed = $_POST['passed'] === true ? 1 : 0;
         $data = array(
             'quiz_id' => $quiz_id,
             'user_id' => $user_id,
@@ -38,6 +39,7 @@ switch ($_REQUEST['part'])
         $enrolled_courses = array_column($enrollments,'course_id');
         $quizzes_in_course = getQuizzesInCourse($course_id);
 
+        //calculate course completion
         $passed = 0;
         foreach ($quizzes_in_course as $required) 
         {
@@ -61,19 +63,29 @@ switch ($_REQUEST['part'])
                     )
                     );
         }
-        if($_POST['passed'] != true)// if failed, force user to rewatch video
-        {
-            $other_resources = getOtherResourcesInModule($course_id, $quiz_id, 'exam');
+        $other_resources = getOtherResourcesInModule($course_id, $quiz_id, 'exam');
             foreach ($other_resources as $resource) {
                 if($resource['type']== "video")
                 {
-                    $video_id = $resource->resource_id;
-                    $module_id = $resource->module_id;
+                    $video_id = $resource['resource_id'];
+                    $module_id = $resource['module_id'];
                 }
             }
-            if($video_id)
+        if(isset($video_id))
+        {
+            if($quiz_passed == 0)// if failed, force user to rewatch video
             {
-                $wpdb->update(TABLE_TRACK, array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id),array('result' => NULL));
+            
+
+                error_log("Dude failed the quiz: ".$video_id);
+                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 1), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
+            
+                ///error_log($res);
+            }
+            else 
+            {
+                error_log("Dude passed the quiz: ".$video_id);
+                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 0), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
             }
         }
         $questions = $_POST['questions'];
