@@ -142,7 +142,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 <div class="smoothness">
                     <h1 class="article_page_title">Staff Statistics for "<?= $course_name ?>"</h1>
                     Here are statistics on the staff taking the <b><?= $course_name ?></b> Course.
-                    <h2>Summary</h2>
+                    <h2>Summary&nbsp;&nbsp;<span class="bs"><a href="?part=improved_email_staff&subscription_id=<?= $subscription_id?>&target=all-course&recipient=<?= $course_id?>" class="btn btn-primary" target='_blank'><i class="fa fa-envelope"></i>&nbsp;Email Staff</a></span></h2>
                     <div class="cell-row middle-row">
                         <div class="cell-caption">
                             <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="The total number of staff (in Staff Groups) who have been assigned this Course." class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('The total number of staff (in Staff Groups) who have been assigned this Course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff given this <b>Course</b>
@@ -173,7 +173,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         'Logins' => 'center',
                         'Views' => 'center',
                         '<div ' . hover_text_attr('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed, passed, failed or pending review', true) . '>Status</div>' => 'center',
-                        '<div ' . hover_text_attr('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', true) . '>Progress</div>' => 'staff-progress'
+                        '<div ' . hover_text_attr('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', true) . '>Progress</div>' => 'staff-progress',
+                        'Actions' => 'center'
                     );
                     /*
                      * This goes through all the enrollments and display a table 
@@ -210,7 +211,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             "<a href='/dashboard?part=loginrecordstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $login_count . "</a>",
                             "<a href='/dashboard?part=videowatchstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $view_count . "</a>",
                             $status,
-                            $percentage
+                            $percentage,
+                            "<a href='/dashboard?part=improved_email_staff&subscription_id=".$subscription_id."&target=select-staff&recipient=".$enrollment['user_id']."' target='_blank'><i class='fa fa-envelope'></i></a>"
                         );
                     }
                     CreateDataTable($quizTableObj, "100%", 25, true, "Stats");
