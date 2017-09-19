@@ -96,7 +96,7 @@ function ajax_processUser()
         }
 
         //make sure we have a subscription and org for this user if its a director
-        if ($role = 'manager')
+        if ($role == 'manager')
         {
             $has_org = get_user_meta( $user_exists, 'org_id', true );
             if (!$has_org)
@@ -107,14 +107,15 @@ function ajax_processUser()
                 {
                     // it had an old org so insert the old data
                     $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
-                    $org['ID'] = 0; // reset the post ID cause it will be different upon insertion.
-
+                    //$org['ID'] = 0; // reset the post ID cause it will be different upon insertion.
+                    unset($org['ID']);
                     $new_org_id = wp_insert_post ( $org );
                     if ($new_org_id)
                     {
+                        update_user_meta($user_exists, 'org_id', $new_org_id);
                         $wpdb->insert ( 'wp_eot_old_data', array('type' => 'ORG', 'old_id' => $old_org_id, 'new_id' => $new_org_id));
 
-                        $old_org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id" );
+                        $old_org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id",ARRAY_A );
                         foreach ($old_org_meta as $old_meta)
                         {
                             update_post_meta( $new_org_id, $old_meta['meta_key'], $old_meta['meta_value'] );
@@ -138,7 +139,8 @@ function ajax_processUser()
                         {
                             foreach ($upgrades as $upgrade)
                             {
-                                $upgrade['ID'] = 0;
+                                unset($upgrade['id']);
+                                //$upgrade['ID'] = 0;
                                 $upgrade['subscription_id'] = $new_sub_id;
                                 $upgrade['user_id'] = get_new_id( 'USER', $upgrade['user_id']);
                                 $upgrade['rep_id'] = get_new_id( 'USER', $upgrade['rep_id']);
@@ -156,6 +158,8 @@ function ajax_processUser()
                         $old_sub_id = $old_sub['id'];
                         $old_sub['id'] = 0; // clear out the sub id
                         $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
+                        $old_sub['manager_id'] = get_new_id( 'USER', $old_sub['manager_id']);
+                        $old_sub['org_id'] = get_new_id( 'ORG', $old_sub['org_id']);
                         $new_sub_id = $wpdb->insert ( 'wp_subscriptions', $old_sub );
 
                         if ($new_sub_id)
@@ -168,6 +172,7 @@ function ajax_processUser()
                             {
                                 foreach ($upgrades as $upgrade)
                                 {
+                                    unset($upgrade['id']);
                                     $upgrade['ID'] = 0;
                                     $upgrade['subscription_id'] = $new_sub_id;
                                     $upgrade['user_id'] = get_new_id( 'USER', $upgrade['user_id']);
@@ -180,7 +185,7 @@ function ajax_processUser()
                 }
             }
         } // end if manager role
-        else if ($role = 'student')
+        else if ($role == 'student')
         {
             // student exists, make sure he's assigned to an org
             $has_org = get_user_meta( $user_exists, 'org_id', true );
@@ -242,68 +247,74 @@ function ajax_processUser()
 
     	// insert new user
         $new_id = wp_insert_user( $user_data );
-        if ($new_id)
+        if (! is_wp_error( $new_id ))
         {
             // inserted new user, now copy their subscription, upgrades, org, org_meta
             $wpdb->insert ( 'wp_eot_old_data', array('type' => 'USER', 'old_id' => $old_id, 'new_id' => $new_id));
-
-            if ($role = 'manager') // its a director. need to set up their org/sub
+            if ($role == 'manager') // its a director. need to set up their org/sub
             {
                 // get old org data, create new org, add it to usermeta
                 $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
-                $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
-                $org['ID'] = 0; // reset the post ID cause it will be different upon insertion.
-
-                $new_org_id = wp_insert_post ( $org );
-                if ($new_org_id)
+                if($old_org_id)
                 {
-                    $wpdb->insert ( 'wp_eot_old_data', array('type' => 'ORG', 'old_id' => $old_org_id, 'new_id' => $new_org_id));
+                    $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
+                    unset($org['ID']); // reset the post ID cause it will be different upon insertion.
 
-                    $old_org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id" );
-                    foreach ($old_org_meta as $old_meta)
+                    $new_org_id = wp_insert_post ( $org );
+                    if ($new_org_id)
                     {
-                        update_post_meta( $new_org_id, $old_meta['meta_key'], $old_meta['meta_value'] );
-                    }
+                        update_user_meta($new_id, 'org_id', $new_org_id);
+                        $wpdb->insert ( 'wp_eot_old_data', array('type' => 'ORG', 'old_id' => $old_org_id, 'new_id' => $new_org_id));
 
-                    // now insert their subscription
-                    $old_sub = $wpdb->get_row( "SELECT * FROM wp_eot_subscriptions WHERE org_id = $old_org_id", ARRAY_A );
-                    if ($old_sub)
-                    {
-                        $old_sub_id = $old_sub['id'];
-                        $old_sub['id'] = 0; // clear out the sub id
-                        $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
-                        $new_sub_id = $wpdb->insert ( 'wp_subscriptions', $old_sub );
-
-                        if ($new_sub_id)
+                        $old_org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id", ARRAY_A);
+                        foreach ($old_org_meta as $old_meta)
                         {
-                            $wpdb->insert ( 'wp_eot_old_data', array('type' => 'SUB', 'old_id' => $old_sub_id, 'new_id' => $new_sub_id));
-                        
-                            // check for any upgrades and add them too
-                            $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $old_sub_id", ARRAY_A);
-                            if (!empty($upgrades))
+                            update_post_meta( $new_org_id, $old_meta['meta_key'], $old_meta['meta_value'] );
+                        }
+
+                        // now insert their subscription
+                        $old_sub = $wpdb->get_row( "SELECT * FROM wp_eot_subscriptions WHERE org_id = $old_org_id", ARRAY_A );
+                        if ($old_sub)
+                        {
+                            $old_sub_id = $old_sub['id'];
+                            unset($old_sub['id']); // clear out the sub id
+                            $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
+                            $old_sub['manager_id'] = get_new_id( 'USER', $old_sub['manager_id']);
+                            $old_sub['org_id'] = get_new_id( 'ORG', $old_sub['org_id']);
+                            $new_sub = $wpdb->insert ( 'wp_subscriptions', $old_sub );
+                            $new_sub_id = $wpdb->insert_id;
+                            if ($new_sub_id)
                             {
-                                foreach ($upgrades as $upgrade)
+                                $wpdb->insert ( 'wp_eot_old_data', array('type' => 'SUB', 'old_id' => $old_sub_id, 'new_id' => $new_sub_id));
+
+                                // check for any upgrades and add them too
+                                $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $old_sub_id", ARRAY_A);
+                                if (!empty($upgrades))
                                 {
-                                    $upgrade['ID'] = 0;
-                                    $upgrade['subscription_id'] = $new_sub_id;
-                                    $upgrade['user_id'] = get_new_id( 'USER', $upgrade['user_id']);
-                                    $upgrade['rep_id'] = get_new_id( 'USER', $upgrade['rep_id']);
-                                    $wpdb->insert ( 'wp_upgrade', $upgrade);
+                                    foreach ($upgrades as $upgrade)
+                                    {
+                                        unset($upgrade['id']);
+                                        //$upgrade['ID'] = 0;
+                                        $upgrade['subscription_id'] = $new_sub_id;
+                                        $upgrade['user_id'] = get_new_id( 'USER', $upgrade['user_id']);
+                                        $upgrade['rep_id'] = get_new_id( 'USER', $upgrade['rep_id']);
+                                        $wpdb->insert ( 'wp_upgrade', $upgrade);
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        $result['status'] = 0;
-                        $result['message'] = "ERROR: $user_login old_id: $old_id doesnt have a subscription.";
-                    }
+                        else
+                        {
+                            $result['status'] = 0;
+                            $result['message'] = "ERROR: $user_login old_id: $old_id doesnt have a subscription.";
+                        }
 
+                    }
+                    // get old subscription data, modify it, insert new subscription
                 }
-                // get old subscription data, modify it, insert new subscription
 
             }
-            else if ($role = 'student')
+            else if ($role == 'student')
             {
                 // add student into new org
                 $has_org = get_user_meta( $user_exists, 'org_id', true );
@@ -365,4 +376,118 @@ function get_new_id( $type = 'USER', $old_id = 0)
         return $new_id;
 
     return 0;
+}
+
+//return camp subdomain from camp id from LU data
+function getCampFromUserId($user_id)
+{
+    global $wpdb;
+    include(get_template_directory() . '/LU/data.php');
+    foreach ($LU_data as $key => $value) {
+        if($value['user_id']==$user_id)
+        {
+            return $key;
+        }
+        
+    }
+}
+
+function ajax_processStats()
+{
+    global $wpdb;
+    include(get_template_directory() . '/LU/data.php');
+    //include(get_template_directory() . '/LU/LU_functions.php');
+    $old_id = (isset($_REQUEST['old_id'])) ? filter_var($_REQUEST['old_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+    $result = array("status" => 1, "message" => "Finished processing.");   
+	//echo "Going to get stats for Mid-Atlantic Burn Camp (59824)";
+		$portal_subdomain = getCampFromUserId($old_id);
+	//	$portal = getPortals($portal_subdomain);
+            //d($portal_subdomain);
+                if($portal_subdomain)
+                {
+                    $org_id = $LU_data[$portal_subdomain]['org_id'];
+                    $data = compact("org_id");
+                    $courses = LU_getCourses($portal_subdomain, 1, $data);
+           // d($courses);
+
+                    if($courses && count($courses) > 0)
+                    {
+                        // go through each course and get the enrolled users / modules
+                        foreach ($courses as $course)
+                        {
+                                $result['message'].= "Course: " . $course['name'];
+                                // get modules
+                                $subscription_id = $wpdb->get_var("SELECT ID from wp_eot_subscriptions where org_id = ".$org_id);
+                                $new_course = $wpdb->insert(TABLE_COURSES, array(
+                                    'course_name'=> $course['name'],
+                                    'course_description'=> $course['description_html'],
+                                    'subscription_id'=> get_new_id( 'SUB', $subscription_id ),
+                                    'org_id' => get_new_id( 'ORG', $org_id ),
+                                    'owner_id' => get_new_id( 'USER', $LU_data[$portal_subdomain]['user_id'] )
+                                ));
+                                $course_id = $wpdb->insert_id;
+                                $modules = LU_getModules($course['id'], $portal_subdomain, $data, 'page');
+
+                                // if no modules, make sure its an array so that it doesnt mess up the foreach loop below.
+                                if (empty($modules))
+                                {
+                                        $modules = array();
+                                }
+                                else 
+                                {
+                                    foreach ($modules as $module) {
+                                        $module_id = $wpdb->get_var("SELECT ID FROM ".TABLE_MODULES." WHERE title = '".$module['title']."' AND org_id = 0");
+                                        if($module_id)
+                                        {
+                                            $mr = getResourcesInModule($module_id);
+                                            foreach($mr as $resource)
+                                            {
+                                                $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array(
+                                                    'course_id' => $course_id,
+                                                    'module_id' => $module_id,
+                                                    'resource_id' => $resource['ID'],
+                                                    'type' => $resource['type']
+                                                ));
+                                            }
+                                        }
+                                    }
+                                }
+
+                                $result['message'].= "Published: " . $course['published_status_id'] . " Num Enrolled: " . $course['num_enrolled'];
+                                // check if published, to know if we need to get enrolled users
+                                if ($course['published_status_id'] == 'published' && $course['num_enrolled'] > 0)
+                                {
+                                        // get enrolled users
+                                        $enrolled_users = LU_getEnrollment($course['id'], $portal_subdomain, $data);
+                                        foreach ($enrolled_users as $user) {
+                                            $user_id = email_exists($user['email']);
+                                            if($user_id)
+                                            {
+                                                $subscription = getSubscriptionByCourse($course_id);
+                                                $enroll = $wpdb->insert(TABLE_ENROLLMENTS,array(
+                                                    'course_id' => $course_id,
+                                                    'user_id'=> $user_id,
+                                                    'org_id' => get_new_id( 'ORG', $org_id ),
+                                                    'subscription_id' => $subscription['ID'],
+                                                    'email' => $user['email'],
+                                                    'date_enrolled' =>$user['date_enrolled'],
+                                                    'status' =>$user['status']
+
+                                                ));
+                                            }
+                                        }
+                //d($enrolled_users);
+                                }
+
+                        }    
+                    }
+                }
+                else
+                {
+                   // something went wrong when trying to create new user
+                  $result['status'] = 0;
+                  $result['message'] = "ERROR: portal does not exist"; 
+                }
+    echo json_encode($result);
+    die();
 }

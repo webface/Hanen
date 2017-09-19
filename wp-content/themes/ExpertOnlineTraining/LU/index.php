@@ -40,7 +40,7 @@
 
 	$process = 0; // boolean whether to delete and clone or just debug
 	$num_portals_to_process = 5; // the number of portals to process.
-	$num_users_to_process = 5; // the number of users to process.
+	$num_users_to_process = 50; // the number of users to process.
 	$admin_ajax_url = admin_url('admin-ajax.php');
 
 	// make sure were alowed to use this script
@@ -60,6 +60,11 @@
 	else if ($action == 'ajax_processUser')
 	{
 		ajax_processUser();
+		die();
+	}
+        else if ($action == 'ajax_processStats')
+	{
+		ajax_processStats();
 		die();
 	}
 
@@ -88,7 +93,7 @@ $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user
 $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
 $org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id", ARRAY_A );
 $org['ID'] = 0;
-ddd($old_id, $old_org_id, $org, $org_meta);
+//ddd($old_id, $old_org_id, $org, $org_meta);
 
 
 		echo "going to import all users ...";
@@ -382,44 +387,136 @@ d($students, $students_json);
 	}
 	else if ($action == 'import_stats')
 	{
-	echo "Going to get stats for Mid-Atlantic Burn Camp (59824)";
-		$portal_subdomain = 'eotmidatlanticburncamp';
-	//	$portal = getPortals($portal_subdomain);
-	//	d($portal);
+        		// get directors
+        $args = array(
+            'role__in' => array ('manager'),
+            'role__not_in' => array('administrator', 'student', 'salesrep', 'sales_manager'),
+            'number' => -1,
+            'fields' => array ('ID', 'display_name', 'user_email', 'user_registered')
+        );
+        
+        // get umbrella managers
+        $query = "
+        	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'manager' as role 
+        	FROM wp_eot_users u 
+        	LEFT JOIN wp_eot_usermeta um ON u.ID = um.user_id 
+        	WHERE um. meta_key = 'wp_eot_capabilities' 
+        	AND um.meta_value LIKE '%\"manager\"%'
+        ";
 
-		$org_id = $LU_data[$portal_subdomain]['org_id'];
-		$data = compact("org_id");
-		$courses = LU_getCourses($portal_subdomain, 1, $data);
-	d($courses);
+        $managers = $wpdb->get_results( $query, ARRAY_A );
+        $managers_json = json_encode($managers, JSON_FORCE_OBJECT);
+        d($managers, $managers_json);    
+        
+                ?>
+        <div class="processing"></div>
+	<p>&nbsp;</p>
+	<div class="ajax_response"></div>
+        <script type="text/javascript">
+        
+            var managers = JSON.parse('<?= $managers_json ?>');
+            var max = <?= $num_users_to_process ?>;
+            var count = 0;
+            var len = ObjectLength(managers);
+            console.log("Count: " + count + " Length = " + len);
+			var counter = count + 1;
 
-		// go through each course and get the enrolled users / modules
-		foreach ($courses as $course)
-		{
-			echo "Course: " . $course['name'];
-			// get modules
-			$modules = LU_getModules($course['id'], $portal_subdomain, $data, 'page');
-	d($modules);
+			var myUser = new Object();
+			myUser = managers[count];
+//dump3(myUser);
 
-			// if no modules, make sure its an array so that it doesnt mess up the foreach loop below.
-			if (empty($modules))
-			{
-				$modules = array();
+			console.log("PROCESSING: " + myUser.user_login);
+
+ 			$('.ajax_response').append("<p>Processing sales_managers</p>");
+			$('.processing').html("Processing " + counter + " out of " + len + " " + myUser.role);
+		    processUsers(myUser);
+
+
+
+		    function processUsers(myUser) 
+		    {
+                        console.log("Process Users")
+			    var data = "action=ajax_processStats&old_id=" + myUser.old_id + "&user_login=" + myUser.user_login + "&user_pass=" + myUser.user_pass + "&user_email=" + myUser.user_email + "&role=" + myUser.role + "&cid=zxasqw12~";
+
+			    $('.ajax_response').append("Processing <b>" + myUser.user_login + "</b> old_id: " + myUser.old_id + " role: " + myUser.role + "<br>");
+
+		        $.ajax(
+		        {
+		            type: "POST",
+		            url: "http://eotv5.dev/wp-content/themes/ExpertOnlineTraining/LU/index.php",
+		            data: data,
+		            dataType: "json",
+		            success: function(response) 
+		            {
+		            	if (response.status == 1)
+		            	{
+							$('.ajax_response').append(response.message + "<br>");
+		            	}
+		            	else
+		            	{
+							$('.ajax_response').append("something went wrong: " + response.message + "<br>");
+		            	}
+		            	count++;	
+
+		            	if (count < len && count < max)
+		            	{
+					 		var myNewUser = new Object();
+					 		
+					 			myNewUser = managers[count];
+					 		
+							
+							console.log("PROCESSING: " + myNewUser.user_login);
+							counter = count + 1;
+				        	$('.processing').html("Processing " + counter + " out of " + len + " " + myNewUser.role);
+					        processUsers(myNewUser);
+		            	}
+		            	else if (count >= len || count >= max)
+		            	{
+		            		// process the next batch
+
+		            			alert('done');
+		            		
+		            	}
+		            },
+					error: function(XMLHttpRequest, textStatus, errorThrown) 
+					{
+						console.log( "ERROR: " + textStatus + " " + errorThrown);
+                                                count++;
+                                                if (count < len && count < max)
+                                                {
+                                                                        var myNewUser = new Object();
+
+                                                                                myNewUser = managers[count];
+
+
+                                                                        console.log("PROCESSING: " + myNewUser.user_login);
+                                                                        counter = count + 1;
+                                                                $('.processing').html("Processing " + counter + " out of " + len + " " + myNewUser.role);
+                                                                processUsers(myNewUser);
+                                                }
+
+					}		            
+		        });
 			}
-
-			echo "Published: " . $course['published_status_id'] . " Num Enrolled: " . $course['num_enrolled'];
-			// check if published, to know if we need to get enrolled users
-			if ($course['published_status_id'] == 'published' && $course['num_enrolled'] > 0)
-			{
-				// get enrolled users
-				$enrolled_users = LU_getEnrollment($course['id'], $portal_subdomain, $data);
-	d($enrolled_users);
-			}
-		}
+                        
+                        function ObjectLength( object ) {
+			    var length = 0;
+			    for( var key in object ) {
+			        if( object.hasOwnProperty(key) ) {
+			            ++length;
+			        }
+			    }
+			    return length;
+			};
+            
+        </script>
+                <?php
 	}
 	else
 	{
 		echo 'Doing Nothing!';
 	}
+?>
 
 	
 
