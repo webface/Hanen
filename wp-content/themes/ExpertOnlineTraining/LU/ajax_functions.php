@@ -408,7 +408,7 @@ function ajax_processStats()
                     $org_id = $LU_data[$portal_subdomain]['org_id'];
                     $data = compact("org_id");
                     $courses = LU_getCourses($portal_subdomain, 1, $data);
-           // d($courses);
+          // error_log(json_encode($courses));
 
                     if($courses && count($courses) > 0)
                     {
