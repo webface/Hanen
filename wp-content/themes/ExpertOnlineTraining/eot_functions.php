@@ -8632,6 +8632,10 @@ function getAllQuizAttempts($course_id = 0, $user_id = 0)
     }
     global $wpdb;
     $quizzes = getQuizzesInCourse($course_id);
+    if(empty($quizzes))
+    {
+        return array();
+    }
     $quiz_ids = array_column($quizzes, 'ID');
     $quiz_ids_string = implode(',', $quiz_ids);
     $sql = "SELECT DISTINCT(quiz_id), ID, user_id, passed, completed, score, date_attempted ";
