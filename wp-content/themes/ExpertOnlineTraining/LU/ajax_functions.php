@@ -463,7 +463,7 @@ function ajax_processStats()
                                             $user_id = email_exists($user['email']);
                                             if($user_id)
                                             {
-                                                $subscription = getSubscriptionByCourse($course_id);
+                                                $subscription = getSubscriptionByCourse($course_id);//gets the new subscription id
                                                 $enroll = $wpdb->insert(TABLE_ENROLLMENTS,array(
                                                     'course_id' => $course_id,
                                                     'user_id'=> $user_id,
