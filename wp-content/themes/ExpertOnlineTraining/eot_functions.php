@@ -5996,27 +5996,28 @@ function getCourseForm_callback ( )
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $subscription_id = getSubscriptionFromCourse($course_id);
             $library_id = getLibraryFromSubscription($subscription_id);
-           // d($library_id);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
-            $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the modules in the specified course
+            
+            $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the module videos in the specified course
             $course_quizzes = getResourcesInCourse($course_id,'exam');
             $course_handouts = array_merge(getResourcesInCourse($course_id,'doc'),getResourcesInCourse($course_id,'link'));
-            //d($course_handouts);
             $course_handouts_module_ids = array_column($course_handouts,'mid');
-//d($course_videos,$course_quizzes,$course_handouts);
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_handouts_ids = array_column($course_handouts, 'ID');
+            
             $modules_in_portal = getModules($org_id);// all the custom modules in this portal
-            $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
+            $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library.
+            
             $categories = getCategoriesByLibrary($library_id);
-            $master_modules = getModulesByLibrary($library_id);// Get all the modules from the current library (course).            
-//d($master_modules, $categories);
-            $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the current library (course).
+            
+            $master_modules = getModulesByLibrary($library_id);// Get all the modules from the current library.            
+            $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the current library.
             $master_module_ids = array_column($master_modules, 'ID');
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
             $all_module_ids = array_merge($master_module_ids, $modules_in_portal_ids);
             $all_module_ids_string = implode(',',$all_module_ids);
+            
             $videos_in_course = array();
             $vids = getVideoResourcesInModules($all_module_ids_string);
             foreach($vids as $video)
