@@ -8502,7 +8502,7 @@ function acceptTerms_callback()
   wp_die();
 }
 
-/*
+/*for students only
  * get subscription id from enrollments
  * @param: $user_id - the user ID
  */
