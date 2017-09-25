@@ -281,6 +281,7 @@ function ajax_processUser()
                             $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
                             $old_sub['manager_id'] = get_new_id( 'USER', $old_sub['manager_id']);
                             $old_sub['org_id'] = get_new_id( 'ORG', $old_sub['org_id']);
+                            $old_sub['setup'] = 1;
                             $new_sub = $wpdb->insert ( 'wp_subscriptions', $old_sub );
                             $new_sub_id = $wpdb->insert_id;
                             if ($new_sub_id)
@@ -317,7 +318,7 @@ function ajax_processUser()
             else if ($role == 'student')
             {
                 // add student into new org
-                $has_org = get_user_meta( $user_exists, 'org_id', true );
+                $has_org = get_user_meta( $new_id, 'org_id', true );
                 if(!$has_org)
                 {
                     // isn't assigned to an org yet so find out what his old org is.
@@ -327,21 +328,21 @@ function ajax_processUser()
                     $new_org_id = get_new_id( 'ORG', $old_org_id );
 
                     // insert new org
-                    update_user_meta( $user_exists, 'org_id', $new_org_id );
+                    update_user_meta( $new_id, 'org_id', $new_org_id );
                 }
 
                 // add the lrn_upon_id
-                if (!get_user_meta( $user_exists, 'lrn_upon_id', true ))
+                if (!get_user_meta( $new_id, 'lrn_upon_id', true ))
                 {
                     $lrn_upon_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'lrn_upon_id'" );
-                    update_user_meta( $user_exists, 'lrn_upon_id', $lrn_upon_id );
+                    update_user_meta( $new_id, 'lrn_upon_id', $lrn_upon_id );
                 }
 
                 // add the portal
-                if (!get_user_meta( $user_exists, 'portal', true ))
+                if (!get_user_meta( $new_id, 'portal', true ))
                 {
                     $portal = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'portal'" );
-                    update_user_meta( $user_exists, 'portal', $portal );
+                    update_user_meta( $new_id, 'portal', $portal );
                 }
 
             }
@@ -350,7 +351,7 @@ function ajax_processUser()
         {
             // something went wrong when trying to create new user
             $result['status'] = 0;
-            $result['message'] = "ERROR: when trying to insert new user: $user_login old_id: $old_id";
+            $result['message'] .= "<span style='color:red'>ERROR:</span> when trying to insert new user: $user_login old_id: $old_id";
         }
 	
     }
@@ -419,14 +420,14 @@ function ajax_processStats()
                                 // get modules
                                 $subscription_id = $wpdb->get_var("SELECT ID from wp_eot_subscriptions where org_id = ".$org_id);
                                 $new_course = $wpdb->insert(TABLE_COURSES, array(
-                                    'course_name'=> $course['name'],
-                                    'course_description'=> $course['description_html'],
+                                    'course_name'=> esc_sql($course['name']),
+                                    'course_description'=> esc_sql($course['description_html']),
                                     'subscription_id'=> get_new_id( 'SUB', $subscription_id ),
                                     'org_id' => get_new_id( 'ORG', $org_id ),
                                     'owner_id' => get_new_id( 'USER', $LU_data[$portal_subdomain]['user_id'] )
                                 ));
-                                $course_id = $wpdb->insert_id;
-                                $modules = LU_getModules($course['id'], $portal_subdomain, $data, 'page');
+                                $course_id = $wpdb->insert_id;// the new course id
+                                $modules = LU_getModules($course['id'], $portal_subdomain, $data, 'page');//get modules using the old course id
 
                                 // if no modules, make sure its an array so that it doesnt mess up the foreach loop below.
                                 if (empty($modules))
@@ -440,14 +441,17 @@ function ajax_processStats()
                                         if($module_id)
                                         {
                                             $mr = getResourcesInModule($module_id);
-                                            foreach($mr as $resource)
+                                            if($mr && count($mr) > 0)
                                             {
-                                                $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array(
-                                                    'course_id' => $course_id,
-                                                    'module_id' => $module_id,
-                                                    'resource_id' => $resource['ID'],
-                                                    'type' => $resource['type']
-                                                ));
+                                                foreach($mr as $resource)
+                                                {
+                                                    $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array(
+                                                        'course_id' => $course_id,
+                                                        'module_id' => $module_id,
+                                                        'resource_id' => $resource['ID'],
+                                                        'type' => $resource['type']
+                                                    ));
+                                                }
                                             }
                                         }
                                     }
@@ -459,21 +463,24 @@ function ajax_processStats()
                                 {
                                         // get enrolled users
                                         $enrolled_users = LU_getEnrollment($course['id'], $portal_subdomain, $data);
-                                        foreach ($enrolled_users as $user) {
-                                            $user_id = email_exists($user['email']);
-                                            if($user_id)
-                                            {
-                                                $subscription = getSubscriptionByCourse($course_id);//gets the new subscription id
-                                                $enroll = $wpdb->insert(TABLE_ENROLLMENTS,array(
-                                                    'course_id' => $course_id,
-                                                    'user_id'=> $user_id,
-                                                    'org_id' => get_new_id( 'ORG', $org_id ),
-                                                    'subscription_id' => $subscription['ID'],
-                                                    'email' => $user['email'],
-                                                    'date_enrolled' =>$user['date_enrolled'],
-                                                    'status' =>$user['status']
+                                        if($enrolled_users && count($enrolled_users) > 0)
+                                        {
+                                            foreach ($enrolled_users as $user) {
+                                                $user_id = email_exists($user['email']);
+                                                if($user_id)
+                                                {
+                                                    $subscription = getSubscriptionByCourse($course_id);//gets the new subscription id
+                                                    $enroll = $wpdb->insert(TABLE_ENROLLMENTS,array(
+                                                        'course_id' => $course_id,
+                                                        'user_id'=> $user_id,
+                                                        'org_id' => get_new_id( 'ORG', $org_id ),
+                                                        'subscription_id' => $subscription['ID'],
+                                                        'email' => $user['email'],
+                                                        'date_enrolled' =>$user['date_enrolled'],
+                                                        'status' =>$user['status']
 
-                                                ));
+                                                    ));
+                                                }
                                             }
                                         }
                 //d($enrolled_users);
@@ -484,7 +491,7 @@ function ajax_processStats()
                 }
                 else
                 {
-                   // something went wrong when trying to create new user
+                   // something went wrong when trying to create enrollments
                   $result['status'] = 0;
                   $result['message'] = "ERROR: portal does not exist"; 
                 }
