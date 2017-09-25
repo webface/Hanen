@@ -295,7 +295,7 @@ d($students, $students_json);
                                         else if(myUser.role == 'student')
                                         {
                                             //redirect to start loading stats
-                                            //$(location).attr("href","http://eotv5.dev/wp-content/themes/ExpertOnlineTraining/LU/index.php?action=import_stats");
+                                            $(location).attr("href","http://eotv5.dev/wp-content/themes/ExpertOnlineTraining/LU/index.php?action=import_stats");
                                         }
 		            	}
 		            },
