@@ -302,12 +302,15 @@ function ajax_processUser()
                                         $wpdb->insert ( 'wp_upgrade', $upgrade);
                                     }
                                 }
+                            }else
+                            {
+                               $result['message'] .= "<span style='color:red'>ERROR: </span> could'nt add the subscription."; 
                             }
                         }
                         else
                         {
                             $result['status'] = 0;
-                            $result['message'] = "ERROR: $user_login old_id: $old_id doesnt have a subscription.";
+                            $result['message'] .= "<span style='color:red'>ERROR: </span> $user_login old_id: $old_id doesnt have a subscription.";
                         }
 
                     }
