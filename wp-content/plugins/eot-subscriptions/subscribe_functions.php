@@ -2795,6 +2795,177 @@ function upgradeSubscription_callback ()
     wp_die();   
 }
 
+/********************************************************************************************************
+ * Upgrade Subscription via sales rep or sales administrator
+ *******************************************************************************************************/
+add_action('wp_ajax_chargeUser', 'chargeUser_callback');
+function chargeUser_callback () 
+{
+
+    require_once ('stripe_functions.php');
+
+    // Check permissions only sales rep/manager or director can upgrade account.
+    if( !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') && !current_user_can('is_director') )
+    {
+        $result['status'] = false;
+        $result['message'] = 'upgradeSubscription_callback Error: Sorry, you do not have permisison to view this page.';
+        echo json_encode($result);
+        wp_die();   
+    }
+
+
+    if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
+    {
+        $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+        $ordered_accounts = intval(filter_var($_REQUEST['accounts'],FILTER_SANITIZE_NUMBER_INT));
+        if($ordered_accounts == "")
+        {
+            $ordered_accounts = 0;
+        }
+        $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+        $rep_id = filter_var($_REQUEST['rep_id'],FILTER_SANITIZE_NUMBER_INT);
+        $method = filter_var($_REQUEST['method'],FILTER_SANITIZE_STRING);
+        $description = filter_var($_REQUEST['description'],FILTER_SANITIZE_STRING);
+        $other_note = $description;
+        $trans_id = ''; 
+
+        // Calculates all the staff credits for the camp
+        $subscription = getSubscriptions($subscription_id);
+        if($subscription) // get the subscription info for this subscription
+        {
+            $staff_credits = intval($subscription->staff_credits); // The staff credits
+            $org_id = $subscription->org_id; // The subscription org ID
+            /* 
+             * Calculate the accounts available for the camp from wp_upgrade subscription table.
+             */
+            $upgrades = getUpgrades($subscription_id);
+            foreach ($upgrades as $upgrade)
+            {
+                $staff_credits += intval($upgrade->accounts); 
+            }
+            $accounts = $staff_credits + $ordered_accounts; // New Staff Credits
+
+            if($_REQUEST['price'] == "")
+            {
+                    $result['status'] = false;
+                    $result['message'] = 'You must enter an amount to charge.'; 
+                    echo json_encode($result);
+                    wp_die();
+            }            
+            
+            if($_REQUEST['description'] == "")
+            {
+                    $result['status'] = false;
+                    $result['message'] = 'You must enter a description for the charge.'; 
+                    echo json_encode($result);
+                    wp_die();
+            }
+            
+            if($_REQUEST['price']) // Sales rep has the option of setting a price.
+            {
+                $price = filter_var($_REQUEST['price'],FILTER_SANITIZE_NUMBER_FLOAT); // Amount sold for the subscription
+            } 
+            
+
+            // Credit card info
+            $statement_description = "Expert Online Training: " . $description ;
+
+            // check if paying by credit card
+            if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'Stripe')
+            {
+
+                if (!isset($_REQUEST['cc_card']) && ($_REQUEST['cc_num'] == '' || $_REQUEST['cc_cvc'] == '')) 
+                {
+                    $result['status'] = false;
+                    $result['message'] = 'You must choose a credit card or add a new credit card.'; 
+                    echo json_encode($result);
+                    wp_die();   
+                }
+            
+                $cc_card = array (
+                    "object" => "card",
+                    "number" => $_REQUEST['cc_num'],
+                    "exp_month" => $_REQUEST['cc_mon'],
+                    "exp_year" => $_REQUEST['cc_yr'],
+                    "cvc" => $_REQUEST['cc_cvc'],
+                    "name" => $_REQUEST['full_name'],
+                    "address_line1" => $_REQUEST['address'],
+                    "address_city" => $_REQUEST['city'],
+                    "address_state" => $_REQUEST['state'],
+                    "address_zip" => $_REQUEST['zip'],
+                    "address_country" => $_REQUEST['country']
+                );
+
+                if (isset($_REQUEST['customer_id'])) 
+                {
+                    $customer_id = $_REQUEST['customer_id'];
+                } 
+                else 
+                {
+                    $customer = create_new_customer ($cc_card, $_REQUEST['email'], $_REQUEST['org_name']); //$customer->{'id'}; 
+                    $customer_id = $customer['customer_id'];
+                    $card_id = $customer['cc_card'];
+                    update_post_meta ($org_id, 'stripe_id', $customer_id);
+                }
+
+                if (isset($_REQUEST['cc_card'])) 
+                {
+                    $card_id = $_REQUEST['cc_card'];
+                } 
+                else 
+                {
+                    $card_id = $cc_card;
+                }
+                
+                $trans_id = charge_customer ($price, $customer_id, $card_id, $statement_description); //$charge->{'id'};
+            }
+            else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
+            {
+                $trans_id = 'FREE';
+            }
+            else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'cheque')
+            {
+                $trans_id = 'CHEQUE';
+            }
+
+            $data = compact('org_id', 'price', 'ordered_accounts', 'other_note', 'user_id', 'method', 'rep_id', 'trans_id');
+
+            if($trans_id)
+            { 
+                // Add a row in the upgrade table
+                $results = addSubscriptionUpgrade ($subscription_id, $data);
+                if(isset($results['success']) && $results['success'])
+                {
+                    $result['data'] = 'success';
+                    $result['status'] = true;
+                    $result['library_id'] = $subscription->library_id; // Needed for redirect 
+                }
+                else
+                {
+                    $result['status'] = false;
+                    $result['message'] = 'upgradeSubscription_callback Error: There was an error adding the upgrade row in WP. ' . $response['errors'];
+                }
+            }
+            else
+            {   // This does not need to return json. Stripe echos the return.
+                wp_die();
+            }
+        }
+        else
+        {
+            $result['status'] = false;
+            $result['message'] = 'upgradeSubscription_callback ERROR: Unable to find this subscription ID. Please contact the administrator.'; 
+        }
+    }
+    else
+    {
+        $result['status'] = false;
+        $result['message'] = 'upgradeSubscription_callback ERROR: Missing some parameters.'; 
+    }
+    echo json_encode($result);
+    wp_die();   
+}
+
 /**
  * check whether the user accepted the terms and condition
  * if not display the terms and conditions
@@ -2862,5 +3033,175 @@ function accepted_terms($library = NULL)
 
     return false; // something went wrong if you got here
 }
+/********************************************************************************************************
+ * Gets the refund form
+ *******************************************************************************************************/
+add_action('wp_ajax_get_refund_form', 'get_refund_form_callback');
+function get_refund_form_callback () 
+{
+    if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager")) 
+    {
+        $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
+        $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+        $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
+        global $wpdb;
+        if($type == 'subscription')
+        {
+            $sql = "SELECT * FROM ". TABLE_SUBSCRIPTIONS ." WHERE trans_id = '$trans_id'";
+        }
+        else 
+        {
+            $sql = "SELECT * FROM ". TABLE_UPGRADE_SUBSCRIPTION ." WHERE trans_id = '$trans_id'";
+        }
+        $subscription = $wpdb->get_row($sql, OBJECT);
+        $original_amount = $subscription->price;
+        $amount = $subscription->price;
+        $reductions = $wpdb->get_results("SELECT * FROM ". TABLE_UPGRADE_SUBSCRIPTION ." WHERE trans_id = 'ref:$trans_id'",OBJECT);
+        foreach($reductions as $reduction)
+        {
+            $amount+= $reduction->price;
+        }
+        ob_start();
+?>
+        <div class="title">
+            <div class="title_h2">Refund part or all of this amount</div>
+        </div>
+        <div class="middle">
+            <form id= "refund_camp" frm_name="refund_camp" frm_action="refund_camp" rel="submit_form" hasError=0> 
+                <table padding=0 class="form">
+                    <h3>Original Charge $ <?= $original_amount?></h3>
+                    <h1>Balance Charge $<?= $amount ?></h1>
+                    <tr>
+                        <td class="value">
+                            $<input type="number" name="part_amount" value="0" />&nbsp;<span>Refund part</span> 
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td class="value">
+                            Remove <input type="number" name="accounts" value="0" />&nbsp;<span>Staff Accounts</span> 
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td class="value">
+                            <input type="hidden" name="trans_id" value="<?= $trans_id ?>" />
+                            <input type="hidden" name="user_id" value="<?= $user_id ?>" />
+                            <input type="hidden" name="org_id" value="<?= $org_id ?>" />
+                            <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" />
+                            <input type="hidden" name="amount" value="<?= $amount ?>" /> 
 
+                            <?php wp_nonce_field('refund-camp_' . $trans_id); ?>
+                        </td> 
+                    </tr> 
+                </table> 
+            </form>
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="refunding_camp" style="display:none"></i>
+                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Cancel
+                </a>
+                <a active = '0' acton = "refund_camp" rel = "submit_button" class="positive" onclick="jQuery('#refunding_camp').show();">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
+                    Refund
+                </a>
+            </div>
+        </div>
+<?php
+        $html = ob_get_clean();
+        echo $html;
+        exit(); 
+    }
+ else {
+        ob_start();
+?>
+        <div class="title">
+            <div class="title_h2">Permission Denied</div>
+        </div>
+        <div class="middle">
+            <p>You do not have permission to issue refunds</p>
+        </div>      
+        <div class="popup_footer">
+            <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
+                    Cancel
+                </a>
+            </div>
+        </div>
+<?php
+        $html = ob_get_clean();
+        echo $html;
+        exit();    
+    }
+}
+
+/********************************************************************************************************
+ * Performs the refund call
+ *******************************************************************************************************/
+add_action('wp_ajax_refund_camp', 'refund_camp_callback');
+function refund_camp_callback () 
+{
+    global $wpdb, $current_user;
+    $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
+    $part_amount = filter_var($_REQUEST['part_amount'], FILTER_SANITIZE_NUMBER_INT);
+    $amount = filter_var($_REQUEST['amount'], FILTER_SANITIZE_NUMBER_INT);
+    $accounts = filter_var($_REQUEST['accounts'], FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+     
+    if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'refund-camp_'.$trans_id ) )
+    {
+
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = "Your nonce did not verify.";
+        echo json_encode($result);
+        exit();
+
+    }
+    if($part_amount == 0)
+    {
+        $refund = refund_customer($trans_id);
+    }
+    else 
+    {
+        $refund = refund_customer($trans_id, ($part_amount*100));
+    }
+    if($refund)
+    {
+        $reduction = array(
+            'date' => current_time('Y-m-d'),
+            'org_id' => $org_id,
+            'subscription_id' => $subscription_id,
+            'price' => ($part_amount == 0) ? (-$amount):(-$part_amount),
+            'accounts' => -$accounts,
+            'user_id' => $user_id,
+            'method' => 'stripe',
+            'other_note' => 'refund',
+            'rep_id' => $current_user->ID,
+            'trans_id' => "ref:".$trans_id
+        );
+        $reduced = $wpdb->insert(TABLE_UPGRADE_SUBSCRIPTION, $reduction);
+        $data = array(
+            'trans_id' => $trans_id,
+            'subscription_id' => $subscription_id,
+            'rep_id' => $current_user->ID,
+            'price' => ($part_amount == 0)? floatval($amount):floatval($part_amount)
+        );
+        $refunded = $wpdb->insert(TABLE_REFUNDS, $data);
+        $result['success'] = true;
+    }
+    else 
+    {
+        $result['success'] = false;   
+    }
+
+    echo json_encode($result);
+    exit();
+}
 ?>

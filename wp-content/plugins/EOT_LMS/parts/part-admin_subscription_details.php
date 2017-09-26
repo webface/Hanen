@@ -30,7 +30,7 @@
 		$data = compact ("org_id");
 		$price = $subscription->price; // Subscription price q
 		$library = getLibraries($subscription->library_id); // The library of this subscription
-		$library_id = $library->id; // the library id.
+		$library_id = $library->ID; // the library id.
 		$first_name = get_user_meta ( $user_id, 'first_name', true ); // Director's First Name
 		$last_name = get_user_meta ( $user_id, 'last_name', true ); // Director's Last Name
 		$rep_id = $subscription->rep_id; // Representative's ID
@@ -228,6 +228,7 @@
 					'Sales Rep' => 'center',
 					'Discount Note' => 'center',
 					'Other Note' => 'center',
+                                        'Actions' => 'center',
 				);
 
 
@@ -243,6 +244,7 @@
 						$upgrade_rep_name, // REP first and last name
 						$upgrade->discount_note,
 						$upgrade->other_note,
+                                                "<a href='./?part=issue_refund&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>"
 						
 					);
 				}

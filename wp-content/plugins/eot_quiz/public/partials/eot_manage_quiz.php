@@ -18,7 +18,7 @@ if (isset($_POST['submit']))
         exit;
     }
 
-    $quiz_name = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_POST['quizName']));
+    $quiz_name = preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['quizName']));
     $data = array(
         'name' => $quiz_name,
         'description' => filter_var($_POST['quizDescription'],FILTER_SANITIZE_STRING),

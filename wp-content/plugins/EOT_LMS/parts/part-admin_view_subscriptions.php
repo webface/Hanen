@@ -5,7 +5,7 @@
 </div>
 <h1 class="article_page_title">View Subscriptions</h1>
 <?php 
-  if( isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'upgradeSubscription' )
+  if( isset($_REQUEST['status']) && $_REQUEST['status'] == 'upgradeSubscription' )
   {
 ?>
   <div class="msgboxcontainer ">  
@@ -22,7 +22,23 @@
   </div>
 <?php
   }
-	// check user's role for permission to access this display
+  if( isset($_REQUEST['status']) && $_REQUEST['status'] == 'chargeUser' )
+  {
+?>
+  <div class="msgboxcontainer ">  
+    <div class="msg-tl">
+      <div class="msg-tr"> 
+        <div class="msg-bl">
+          <div class="msg-br">
+            <div class="msgbox"><h2>Payment Successful!</h2>You have succesfully charged the user.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php
+  }	// check user's role for permission to access this display
 	if (!current_user_can('is_sales_rep') && !current_user_can('is_sales_manager'))
 	{
 		wp_die('You do not have access to this display.');
@@ -58,6 +74,7 @@
 		);
 
 		// This go through all subscriptions, and add the data into the table row.
+                //d($subscriptions);
 		foreach($subscriptions as $subscription)
 		{
 			$user_id = $subscription->manager_id; // Director's User ID
@@ -69,6 +86,7 @@
 			$price = $subscription->price; // The price sold for the subscription
 			$upgrades = getUpgrades ($subscription_id);
 			// Add upgrade costs, and upgrade number of staff
+                        //d($upgrades);
 			if($upgrades)
 			{
 				foreach($upgrades as $upgrade)
@@ -85,7 +103,7 @@
 													$user_info ? "<a href=mailto:" . $user_info->user_email . ">" . $name . "</a>" : "Can't find the user", 
 													$num_staff, 
 													" $" . number_format($price, 2, ".", ""),
-													"<a href='./?part=admin_subscription_details&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-info' aria-hidden='true' ". hover_text_attr('More information<br> for this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=add_upgrade&subscription_id=".$subscription_id."&library_id=".$library_id."'><i class='fa fa-usd' aria-hidden='true' ". hover_text_attr('Upgrade.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-times-circle' aria-hidden='true' ". hover_text_attr('Disable.',true) . "></i>");
+													"<a href='./?part=admin_subscription_details&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-info' aria-hidden='true' ". hover_text_attr('More information<br> for this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=charge_user&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-cart-plus' aria-hidden='true' ". hover_text_attr('Charge this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=add_upgrade&subscription_id=".$subscription_id."&library_id=".$library_id."'><i class='fa fa-usd' aria-hidden='true' ". hover_text_attr('Upgrade.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-times-circle' aria-hidden='true' ". hover_text_attr('Disable.',true) . "></i>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=issue_refund&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>");
 			$subscriptionsTableDownloadObj->rows[] = array($camp_name, 
 										$user_info ? "<a href=mailto:" . $user_info->user_email . ">" . $name . "</a>" : "Can't find the user", 
 										$num_staff, 
@@ -133,7 +151,7 @@
 <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/buttons.print.min.js"></script>
 <script>
 	$(document).ready(function () {
-		$('#DataTable_2, #DataTable_2_filter, #DataTable_2_paginate, #DataTable_2_info').hide();
+		$('#DataTable_2, #DataTable_2_filter, #DataTable_2_paginate, #DataTable_2_info, #DataTable_2_length').hide();
 	})
 </script>
 <style>
