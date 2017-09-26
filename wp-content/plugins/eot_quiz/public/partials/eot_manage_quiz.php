@@ -30,8 +30,12 @@ if (isset($_POST['submit']))
     );
 
 
-    $quiz_added = $eot_quiz->addQuiz($data);
-    //echo $quiz_id;
+    $quiz_id = $eot_quiz->addQuiz($data);
+    $url ='/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id; 
+    ob_start();
+    header('Location: '.$url);
+    ob_end_flush();
+    die();
 }
 ?>
 
@@ -126,17 +130,16 @@ else
             <div class="bs col-xs-6">
                 <div class="bs form-group">
                     <label for="quizTime">Time limit for the quiz*<em>(in minutes)</em></label>
-                    <input
-                        id="quizTime"
-                        type="range"
-                        min="1"                    
-                        max="60"                  
-                        step="1"                   
-                        value="20"                 
-                        data-orientation="horizontal" 
-                        onclick='quizTimeText.value = this.value'
-                        >
-                    <input type="text" name="quizTimeText" value="20" readonly>
+                    <select class="bs form-control"  id="quizTime" name="quizTimeText">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value=30>30</option>
+                        <option value=45>45</option>
+                        <option value="60">60</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -153,10 +156,6 @@ else
         {
             var errors = false;
             if ($.trim($('#quizName').val()) == '') 
-            {
-                errors = true;
-            }
-            if ($.trim($('#quizDescription').val()) == '') 
             {
                 errors = true;
             }

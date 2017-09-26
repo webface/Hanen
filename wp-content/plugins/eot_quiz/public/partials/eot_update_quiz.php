@@ -73,17 +73,16 @@ $quiz=$eot_quiz->get_quiz_by_id($quiz_id);
             <div class="bs col-xs-6">
                 <div class="bs form-group">
                     <label for="quizTime">Time limit for the quiz*<em>(in minutes)</em></label>
-                    <input
-                        id="quizTime"
-                        type="range"
-                        min="1"                    
-                        max="60"                  
-                        step="1"                   
-                        value="<?= date('i', strtotime($quiz['time_limit']))?>"                 
-                        data-orientation="horizontal" 
-                        onclick='quizTimeText.value=this.value'
-                        >
-                    <input type="text" name="quizTimeText" value='<?= date('i', strtotime($quiz['time_limit']));?>' readonly>
+                    <select class="bs form-control"  id="quizTime" name="quizTimeText">
+                        <option value="5" <?= (date('i', strtotime($quiz['time_limit']))==5) ?  'selected': ''; ?>>5</option>
+                        <option value="10" <?= (date('i', strtotime($quiz['time_limit']))==10) ?  'selected': ''; ?>>10</option>
+                        <option value="15" <?= (date('i', strtotime($quiz['time_limit']))==15) ?  'selected': ''; ?>>15</option>
+                        <option value="20" <?= (date('i', strtotime($quiz['time_limit']))==20) ?  'selected': ''; ?>>20</option>
+                        <option value="25" <?= (date('i', strtotime($quiz['time_limit']))==25) ?  'selected': ''; ?>>25</option>
+                        <option value=30 <?= (date('i', strtotime($quiz['time_limit']))==30) ?  'selected': ''; ?>>30</option>
+                        <option value=45 <?= (date('i', strtotime($quiz['time_limit']))==45) ?  'selected': ''; ?>>45</option>
+                        <option value="60" <?= (date('i', strtotime($quiz['time_limit']))==60) ?  'selected': ''; ?>>60</option>
+                    </select>
                 </div>
             </div>
         </div>

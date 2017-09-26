@@ -20,7 +20,7 @@ class EotQuizData
         $user_id = $current_user->ID; // Wordpress user ID
         $result = $wpdb->insert(TABLE_QUIZ, $data);
         $lastid = $wpdb->insert_id;
-        return $result;
+        return $lastid;
     }
 
     public function updateQuiz($data = array(), $id = 0) 

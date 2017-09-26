@@ -246,7 +246,7 @@ if (isset($_POST['submit']))
                 '</a>' +
                 '</h4>' +
                 '</div>' +
-                '<div id="collapse' + num + '" class="bs panel-collapse collapse" role="tabpanel" aria-labelledby="heading' + num + '">' +
+                '<div id="collapse' + num + '" class="bs panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + num + '">' +
                 '<div class="bs panel-body">' +
                 '<span style="color:red" class="editTitle" onclick="editTitle(' + num + ')"><i>Edit Question</i></span><br>' +
                 '<strong>Answers</strong><i>&nbsp;Indicate which is correct.</i>' +
