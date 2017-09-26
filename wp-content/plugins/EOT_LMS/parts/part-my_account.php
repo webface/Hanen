@@ -66,7 +66,7 @@
 ?>
 
 Change your account details here.
-<span class="asterisk">*</span>Required fields<br /><br />
+<span class="asterisk">*</span> Required fields<br /><br />
 <form id="updateProfile" method="post" action="">
   <table class="Tstandard">
     <tr>
@@ -134,60 +134,62 @@ Change your account details here.
 <h1 class="article_page_title" ><a name="subscription_settings">Profile Picture</a></h1>
 <?php echo do_shortcode( '[avatar_upload]' ); ?>
 
+<!--
 <h1 class="article_page_title" ><a name="subscription_settings">Subscription Settings</a></h1>
+-->
 <script>
-$ = jQuery;
+  $ = jQuery;
 
-$(document).ready(function() {
-    // On page load. This populates the fields for email, name and last name.
-    $('#email').val("<?= $email; ?>");
-    $('#first_name').val("<?= $first_name; ?>");
-    $('#last_name').val("<?= $last_name; ?>");
-    $('#accountAreaTop h1').html("Hi  <?= $first_name; ?> <?= $last_name; ?>");
-   
-});
+  $(document).ready(function() {
+      // On page load. This populates the fields for email, name and last name.
+      $('#email').val("<?= $email; ?>");
+      $('#first_name').val("<?= $first_name; ?>");
+      $('#last_name').val("<?= $last_name; ?>");
+      $('#accountAreaTop h1').html("Hi  <?= $first_name; ?> <?= $last_name; ?>");
+     
+  });
 
-/* Stops submitting the form if there's an error.
- */
-$('#updateProfile').submit(function() 
-{
-  var password = $("#pw1").val();
-  var confirmPassword = $("#pw2").val();
-  if (password != "" && confirmPassword == "")
+  /* Stops submitting the form if there's an error. */
+  $('#updateProfile').submit(function() 
   {
-    $("#passwordConfirmation").html("You can't leave this empty");
-    return false;
-  }
-  if (password != confirmPassword)
-  {
-    alert("Passwords need to match.");
-    return false;
-  }
-
-  var strengthNumber = passwordStrength(password, [], password);      //this is a wordpress function that will check the strength of the password and will output a number from 0-4
-  if(strengthNumber < 2)                                             //3 means Good which is required for this field
-  {
-    alert("Password needs to be at least Good.");
-    return false;                                                    //method reutrns true when password is Good
-  }
-
-});
-
- /* 
-  * This checks if the both password are the same. On KEYUP.
-  */
-function checkPasswordMatch() {
     var password = $("#pw1").val();
     var confirmPassword = $("#pw2").val();
-
+    if (password != "" && confirmPassword == "")
+    {
+      $("#passwordConfirmation").html("You can't leave this empty");
+      return false;
+    }
     if (password != confirmPassword)
-        $("#passwordConfirmation").html("Passwords do not match!");
-    else
-        $("#passwordConfirmation").html("Passwords match.");
-}
+    {
+      alert("Passwords need to match.");
+      return false;
+    }
 
-//Password strength check
-function strengthCheck() {
+    var strengthNumber = passwordStrength(password, [], password);      //this is a wordpress function that will check the strength of the password and will output a number from 0-4
+    if(strengthNumber < 2)                                             //3 means Good which is required for this field
+    {
+      alert("Password needs to be at least Good.");
+      return false;                                                    //method reutrns true when password is Good
+    }
+
+  });
+
+   /* 
+    * This checks if the both password are the same. On KEYUP.
+    */
+  function checkPasswordMatch() {
+      var password = $("#pw1").val();
+      var confirmPassword = $("#pw2").val();
+
+      if (password != confirmPassword)
+          $("#passwordConfirmation").html("Passwords do not match!");
+      else
+          $("#passwordConfirmation").html("Passwords match.");
+  }
+
+  //Password strength check
+  function strengthCheck() 
+  {
     var password = $("#pw1").val();                                    //the password
     var strengthNumber = passwordStrength(password, [], password);      //this is a wordpress function that will check the strength of the password and will output a number from 0-4
     if(strengthNumber >= 2)                                             //2 means Good which is required for this field
@@ -214,6 +216,6 @@ function strengthCheck() {
 
     //update the password strength bar
     $('#password-strength-meter').val(strengthNumber);
-}
+  }
 
 </script>
