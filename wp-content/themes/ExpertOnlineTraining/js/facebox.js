@@ -154,7 +154,7 @@
       // Session died assuming the user is logged out and no privilege to see ajax calls.
       if(data == 0)
       { 
-        alert("You have been logged out. You didn't have any activity for a certain period of time. Please log in again.");
+        alert("Your session has expired. You have been logged out.");
         window.location.href = ajax_object.login_url; // Redirect to login page.
         return false;
       }
@@ -369,10 +369,9 @@
         // If we are successful
         success: function(data)
         {
-          console.log('testing message');
           if (!$.trim(data))
           {   
-              alert("The function is not available, or you your session has ended.");
+              alert("The function is not available, or you your session has ended. Please refresh the page and try again.");
           }
           if (data.success) 
           {
