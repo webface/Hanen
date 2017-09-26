@@ -2422,20 +2422,17 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
       $name = $first_name . ' ' . $last_name;
       $campname = get_the_title($org_id); // the camp name
       $vars = array(
-          'name' => $name,
-          'email' => $email,
-          'your_name' => $directorname,
-          'logininfo' => $loginInfo,
-          'directorname'  =>  $directorname,
-          'campname'  =>  $campname,
-          'numvideos' =>  NUM_VIDEOS,
+          '%%name%%' => $name,
+          '%%email%%' => $email,
+          '%%your_name%%' => $directorname,
+          '%%logininfo%%' => $loginInfo,
+          '%%directorname%%'  =>  $directorname,
+          '%%campname%%'  =>  $campname,
+          '%%numvideos%%' =>  NUM_VIDEOS,
       );
 
       /* Replace %%VARIABLE%% using vars*/
-      foreach($vars as $key => $value)
-      {
-        $message = preg_replace('/%%' . $key . '%%/', $value, $message);
-      }
+      $message = str_replace(array_keys($vars) , $vars , $message);
 
       $recepient = array (
           'name' => $name,
