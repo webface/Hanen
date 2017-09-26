@@ -151,6 +151,13 @@
     },
 
     reveal: function(data, klass, title,popup_footer) {
+      // Session died assuming the user is logged out and no privilege to see ajax calls.
+      if(data == 0)
+      { 
+        alert("You have been logged out. You didn't have any activity for a certain period of time. Please log in again.");
+        window.location.href = ajax_object.login_url; // Redirect to login page.
+        return false;
+      }
       $(document).trigger('beforeReveal.facebox')
       if (klass) $('#facebox .content').addClass(klass)
       $('#facebox .content').empty()//prevent multiple content from appearing due to datatable paging.
@@ -362,6 +369,11 @@
         // If we are successful
         success: function(data)
         {
+          console.log('testing message');
+          if (!$.trim(data))
+          {   
+              alert("The function is not available, or you your session has ended.");
+          }
           if (data.success) 
           {
             jQuery(document).trigger('success.'+form_name,data);

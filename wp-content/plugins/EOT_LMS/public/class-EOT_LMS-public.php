@@ -101,7 +101,8 @@ class EOT_LMS_Public {
 		// in our JavaScript, object properties are accessed as ajax_object.ajax_url
 		$data = array( 
 						'ajax_url' => admin_url( 'admin-ajax.php' ), // Link to the ajax calls
-						'template_url' => get_template_directory_uri() // Link to the template directory. Accessible via PHP and Jquery
+						'template_url' => get_template_directory_uri(), // Link to the template directory. Accessible via PHP and Jquery
+						'login_url' => wp_login_url()  // Login URL
 
 		);
 
