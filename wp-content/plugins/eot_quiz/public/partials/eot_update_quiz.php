@@ -34,27 +34,29 @@ if (isset($_POST['submit']))
 <?php
 if(current_user_can( "is_director" ))
 {
-    
-?>
-<?php
-$quiz=$eot_quiz->get_quiz_by_id($quiz_id);
+    $quiz = $eot_quiz->get_quiz_by_id($quiz_id);
+
+    if (isset($quiz['num_questions_to_display']) && empty($quiz['num_questions_to_display']))
+    {
+        $quiz['num_questions_to_display'] = isset($quiz['questions']) ? $quiz['questions'] : 0;
+    }
 ?>
 <h3><?php echo ($quiz['name']);?></h3>
 
 <div class="bs well" style="padding:10px">
     <form action="/dashboard?part=update_quiz" method="POST">
         <div class="bs form-group">
-            <label for="quizName">Quiz Name*</label>
+            <label for="quizName">Quiz Name *</label>
             <input type="text" class="bs form-control" id="quizName" name="quizName" placeholder="Quiz Name" value="<?php echo ($quiz['name']);?>">
         </div>
         <div class="bs form-group">
-            <label for="quizDescription">Quiz Description*</label>
+            <label for="quizDescription">Quiz Description</label>
             <textarea class="bs form-control" rows="3" id="quizDescription" name="quizDescription"><?= ($quiz['description']);?></textarea>
         </div>
         <div class="bs row">
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizAttempts">Number of attempts allowed*<em>Leave 0 for unlimited</em></label>
+                    <label for="quizAttempts">Number of attempts allowed *<br><em>Leave 0 for unlimited</em></label>
                     <select class="bs form-control"  id="quizAttempts" name="quizAttempts">
                         <option value="0" <?= ($quiz['num_attempts']==0) ?  'selected': ''; ?>>0</option>
                         <option value="1" <?= ($quiz['num_attempts']==1) ?  'selected': ''; ?>>1</option>
@@ -72,7 +74,7 @@ $quiz=$eot_quiz->get_quiz_by_id($quiz_id);
             </div>
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizTime">Time limit for the quiz*<em>(in minutes)</em></label>
+                    <label for="quizTime">Time limit for the quiz *<br><em>(in minutes)</em></label>
                     <select class="bs form-control"  id="quizTime" name="quizTimeText">
                         <option value="5" <?= (date('i', strtotime($quiz['time_limit']))==5) ?  'selected': ''; ?>>5</option>
                         <option value="10" <?= (date('i', strtotime($quiz['time_limit']))==10) ?  'selected': ''; ?>>10</option>
@@ -87,12 +89,12 @@ $quiz=$eot_quiz->get_quiz_by_id($quiz_id);
             </div>
         </div>
         <div class="bs row">
-            <div class="bs col-xs-6"><label for="passing_score">Passing Score</label>
-                <input type="text" name="passing_score" class="bs form-control" value="<?= ($quiz['passing_score']) ? $quiz['passing_score']: 0; ?>"/>
+            <div class="bs col-xs-6"><label for="num_questions_to_display">Number of Questions to display <span class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="You have a total of <?= $quiz['questions']?> question(s) in this quiz but you do not have to display all of them. You can select to display only a subset of the questions. We will randomly display that number of questions to your staff."></span></label>
+                <input type="text" id="num_questions_to_display" name="num_questions_to_display" class="bs form-control" value="<?= ($quiz['num_questions_to_display']) ? $quiz['num_questions_to_display']: 0; ?>"/>
             </div>
-            <div class="bs col-xs-6"><label for="num_questions_to_display">Number of Questions to display. <?= $quiz['questions']?> total</label>
-                <input type="text" name="num_questions_to_display" class="bs form-control" value="<?= ($quiz['num_questions_to_display']) ? $quiz['num_questions_to_display']: 0; ?>"/>
-          </div>
+            <div class="bs col-xs-6"><label for="passing_score">Passing Score <span class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Please enter the number of questions a staff member has to answer correctly in order to pass this quiz. Please note that you should set the number of questions based on the number of displayed questions. Eg. If your quiz has 15 questions but you're only displaying 10, a passing requirement of 80% would be 8."></span></label>
+                <input type="text" id="passing_score" name="passing_score" class="bs form-control" value="<?= ($quiz['passing_score']) ? $quiz['passing_score']: 0; ?>"/>
+            </div>
         </div>
         <div class="bs row">
             <div class="bs col-xs-6">
@@ -110,25 +112,23 @@ $quiz=$eot_quiz->get_quiz_by_id($quiz_id);
     $(document).ready(function () {
 
         $('form').submit(function () {
-            var errors = false;
             if ($.trim($('#quizName').val()) == '') 
             {
-                errors = true;
-            }
-            if ($.trim($('#quizDescription').val()) == '') 
-            {
-                errors = true;
-            }
-            if (!errors) 
-            {
-                return true;
-            } 
-            else 
-            {
-                alert("Name and Description fields are mandatory");
+                alert("Quiz Name is mandatory!");
                 return false;
             }
-        })
+            
+            if ($('#passing_score').val() > $('#num_questions_to_display').val())
+            {
+                alert("Can't have a passing score that's more than the number of questions you are displaying!");
+                return false;
+            }
+
+            return true;
+        });
+
+        $('[data-toggle="tooltip"]').tooltip(); 
+
     })
 </script>
 

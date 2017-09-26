@@ -40,7 +40,7 @@ if (isset($_POST['submit']))
 ?>
 
 <h3>My Quizzes</h3>
-<span><span class="fa fa-exclamation"></span><em>Edit Quiz Details after creating questions to set the passing score and time limit</em></span><br>
+<span><span class="fa fa-info-circle" aria-hidden="true"></span> <em>Edit Quiz Details after creating questions to set the passing score and time limit</em></span><br>
 <?php
 $quizzes = $eot_quiz->getQuizzes($org_id, $user_id);
 ?>
@@ -101,17 +101,17 @@ else
     <form action="/dashboard?part=manage_quiz" method="POST">
         <?php wp_nonce_field('submit_quiz', 'submit_quiz'); ?>
         <div class="bs form-group">
-            <label for="quizName">Quiz Name*</label>
+            <label for="quizName">Quiz Name *</label>
             <input type="text" class="bs form-control" id="quizName" name="quizName" placeholder="Quiz Name">
         </div>
         <div class="bs form-group">
-            <label for="quizDescription">Quiz Description*</label>
+            <label for="quizDescription">Quiz Description</label>
             <textarea class="bs form-control" rows="3" id="quizDescription" name="quizDescription"></textarea>
         </div>
         <div class="bs row">
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizAttempts">Number of attempts allowed*<em>Leave 0 for unlimited</em></label>
+                    <label for="quizAttempts">Number of attempts allowed *<br><em>Leave 0 for unlimited</em></label>
                     <select class="bs form-control"  id="quizAttempts" name="quizAttempts">
                         <option value="0">0</option>
                         <option value="1">1</option>
@@ -129,12 +129,12 @@ else
             </div>
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizTime">Time limit for the quiz*<em>(in minutes)</em></label>
+                    <label for="quizTime">Time limit for the quiz *<br><em>(in minutes)</em></label>
                     <select class="bs form-control"  id="quizTime" name="quizTimeText">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
-                        <option value="20">20</option>
+                        <option selected value="20">20</option>
                         <option value="25">25</option>
                         <option value=30>30</option>
                         <option value=45>45</option>
@@ -165,7 +165,7 @@ else
             } 
             else 
             {
-                alert("Name and Description fields are mandatory");
+                alert("Quiz Name is mandatory!");
                 return false;
             }
         })

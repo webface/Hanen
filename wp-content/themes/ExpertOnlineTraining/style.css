@@ -2837,6 +2837,11 @@ i.fa.fa-question-circle
 	color:#1181C1;
 }
 
+.fa-info-circle
+{
+	color: blue;
+}
+
 /* Tips, Error, Message, Hightlight*/
 p.error
 {
