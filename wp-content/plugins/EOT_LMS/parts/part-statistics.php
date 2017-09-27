@@ -224,7 +224,7 @@
 	</div>-->
 	
 			<h2>Courses</h2>
-			<table style="width:100%">            
+			<table>            
 				<tbody>
 <?php
 				if (!empty($courses))
@@ -239,11 +239,11 @@
 //				        }
 ?>
 						<tr>
-							<td width="20%"><?= $course_name ?></td>
+							<td><?= $course_name ?></td>
 							<td><a href="?part=coursestats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Course Stats</a></td>
-                                                        <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Staff Stats</a></td>
-<!--                                                        <td><a href="#">Download Excel Report</a></td>-->
-                                                </tr>
+                            <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>">View Staff Stats</a></td>
+							<!--<td><a href="#">Download Excel Report</a></td>-->
+                        </tr>
 <?php
 					}
 				}
@@ -255,8 +255,6 @@
 ?>
 				</tbody>
 			</table>
-<!--			<br>
-			<a href="?part=statistics&subscription_id=<?= $subscription_id ?>&forward=1" class="statsbutton">Detailed Stats</a>-->
 <?php
 			}
 	    }

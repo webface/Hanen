@@ -47,7 +47,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 				$complete_statuses = array ('completed', 'passed'); // the statuses that an incomplete user has
                                 $complete_users_email = array(); // Lists of email address that has been processed.
 		  		$courses_with_num_enrollments = array(); // Courses information in associative array. which includes the ID, Name, and the number of enrollments.
-                                $c = isset($_REQUEST['recipient']) ? filter_var($_REQUEST['recipient'], FILTER_SANITIZE_NUMBER_INT) : 0;
+                $c = isset($_REQUEST['recipient']) ? filter_var($_REQUEST['recipient'], FILTER_SANITIZE_NUMBER_INT) : 0;
 				// make sure we have some users in this portal
 			    if($response['status'] == 1)
 			    {
