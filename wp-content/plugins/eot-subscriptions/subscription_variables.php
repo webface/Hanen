@@ -102,6 +102,7 @@ define ('AVG_EXAM_LENGTH', 10);  // the number of minutes it takes to complete a
 // define table names
 define ('TABLE_SUBSCRIPTIONS', $wpdb->prefix."subscriptions");
 define ('TABLE_LIBRARY', $wpdb->prefix."library");
+define ('TABLE_LIBRARY_MODULES', $wpdb->prefix."library_modules");
 define ('TABLE_VIDEOS', $wpdb->prefix."video");
 define ('TABLE_QUESTIONS', $wpdb->prefix."questionnaire_questions");
 define ('TABLE_UPGRADE_SUBSCRIPTION', $wpdb->prefix."upgrade");

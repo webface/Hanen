@@ -135,7 +135,7 @@
 				          								if($video['module_id'] == $module_id)
 				          								{
 				          									$video_id = $video['ID'];
-				          									$isFinished = (isset($video_track[$video_id]) && $video_track[$video_id]->result == 1) ? true : false;
+				          									$isFinished = (isset($video_track[$video_id]) && $video_track[$video_id]->result == 1 && $video_track[$video_id]->repeat == 0) ? true : false;
 				          									unset($resources_video[$key]); // Unset the key.
 				          								}
 				          							}

@@ -102,7 +102,7 @@
             })
                     .then(function (response) {
 //console.log('success');
-//console.log(response.data);
+console.log(response.data);
                         quizObj.quiz = response.data;
                         quizObj.quizIsLoading = false;
                         quizObj.numQuestions = quizObj.quiz.questions.length;

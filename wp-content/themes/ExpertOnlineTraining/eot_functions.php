@@ -2972,7 +2972,14 @@ function getModulesByLibrary($library_id = 0)
 {
   global $wpdb;
   $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
-  $modules=$wpdb->get_results("SELECT m.*, c.name AS category FROM " . TABLE_MODULES . " m LEFT JOIN " . TABLE_CATEGORIES . " c ON m.category_id = c.id WHERE m.library_id = $library_id ORDER BY m.title" , ARRAY_A);
+  $modules = $wpdb->get_results("SELECT m.*, c.name AS category "
+          . "FROM " . TABLE_MODULES . " m "
+          . "LEFT JOIN " . TABLE_CATEGORIES . " c "
+          . "ON m.category_id = c.id "
+          . "JOIN ". TABLE_LIBRARY_MODULES. " lm "
+          . "ON lm.library_id = $library_id AND lm.module_id = m.id "
+          //. "WHERE m.library_id = $library_id "
+          . "ORDER BY m.title" , ARRAY_A);
   return $modules;  
 }
 
@@ -5996,26 +6003,30 @@ function getCourseForm_callback ( )
             global $wpdb;
             $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+            $subscription_id = getSubscriptionFromCourse($course_id);
+            $library_id = getLibraryFromSubscription($subscription_id);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
-            $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the modules in the specified course
+            
+            $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the module videos in the specified course
             $course_quizzes = getResourcesInCourse($course_id,'exam');
             $course_handouts = array_merge(getResourcesInCourse($course_id,'doc'),getResourcesInCourse($course_id,'link'));
-            //d($course_handouts);
             $course_handouts_module_ids = array_column($course_handouts,'mid');
-//d($course_videos,$course_quizzes,$course_handouts);
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_handouts_ids = array_column($course_handouts, 'ID');
+            
             $modules_in_portal = getModules($org_id);// all the custom modules in this portal
-            $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library (course).
-            $categories = getCategoriesByLibrary(1);
-            $master_modules = getModulesByLibrary(1);// Get all the modules from the master library (course).            
-//d($master_modules, $categories);
-            $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the master library (course).
+            $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library.
+            
+            $categories = getCategoriesByLibrary($library_id);
+            
+            $master_modules = getModulesByLibrary($library_id);// Get all the modules from the current library.            
+            $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the current library.
             $master_module_ids = array_column($master_modules, 'ID');
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
             $all_module_ids = array_merge($master_module_ids, $modules_in_portal_ids);
             $all_module_ids_string = implode(',',$all_module_ids);
+            
             $videos_in_course = array();
             $vids = getVideoResourcesInModules($all_module_ids_string);
             foreach($vids as $video)
@@ -8124,7 +8135,8 @@ function updateVideoProgress_callback()
         $query_result = $wpdb->update(
           TABLE_TRACK,
           array (
-            'result' => '1'
+            'result' => '1',
+            'repeat' => 0
           ),
           array (
             'ID' => $track_id,
@@ -8938,4 +8950,67 @@ function verifyQuizInCourse($quiz_id = 0 , $course_id = 0)
     {
        return false; 
     }
+}
+
+
+/**
+ * get subscription id based on course id
+ * @param type $course_id - the course ID
+ * 
+ */
+function getSubscriptionFromCourse($course_id = 0)
+{
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    if($course_id == 0)
+    {
+        return 0;
+    }
+    $course = $wpdb->get_row("SELECT * FROM ". TABLE_COURSES . " WHERE ID = $course_id", OBJECT);
+    return $course->subscription_id;
+}
+
+
+/**
+ * get library id from subscription
+ * @param type $subscription_id
+ * 
+ */
+function getLibraryFromSubscription($subscription_id)
+{
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    global $wpdb;
+    if($subscription_id == 0)
+    {
+        return 0;
+    }
+    $subscription = $wpdb->get_row("SELECT * FROM ". TABLE_SUBSCRIPTIONS. " WHERE ID = $subscription_id", OBJECT);
+    return $subscription->library_id;
+}
+
+
+/**
+ * get all the resources in a module
+ * @param type $course_id
+ * @param type $resource_id
+ * @param type $type
+ * 
+ */
+function getOtherResourcesInModule($course_id = 0, $resource_id = 0, $type = "")
+{
+    $course_id =  filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $resource_id =  filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+    $type = filter_var($type, FILTER_SANITIZE_STRING);
+    global $wpdb;
+    if($course_id == 0 || $resource_id == 0 || $type == "")
+    {
+        return null;
+    }
+    $cmr = $wpdb->get_row("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." "
+            . "WHERE course_id = $course_id "
+            . "AND resource_id = $resource_id "
+            . "AND type = '$type'",OBJECT);
+    
+    $other_resources = $wpdb->get_results("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE course_id = $course_id AND module_id =".$cmr->module_id, ARRAY_A);
+    return $other_resources;
 }
