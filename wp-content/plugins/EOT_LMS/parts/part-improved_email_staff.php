@@ -47,7 +47,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 				$complete_statuses = array ('completed', 'passed'); // the statuses that an incomplete user has
                                 $complete_users_email = array(); // Lists of email address that has been processed.
 		  		$courses_with_num_enrollments = array(); // Courses information in associative array. which includes the ID, Name, and the number of enrollments.
-
+                                $c = isset($_REQUEST['recipient']) ? filter_var($_REQUEST['recipient'], FILTER_SANITIZE_NUMBER_INT) : 0;
 				// make sure we have some users in this portal
 			    if($response['status'] == 1)
 			    {
@@ -499,7 +499,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 			      					name="id" 
 			      					value="<?= $user_id ?>"
 			      					user='<?= json_encode($user); ?>'
-			      					<?= ($target == "all" || $target == "incomplete" || $target == "completed" || $target == "nologin") ? 'checked' : '' ?> /> <?= $name ?> (<?= $email ?>)
+			      					<?= ($target == "all" || $target == "incomplete" || $target == "completed" || $target == "nologin" || $c == $user_id) ? 'checked' : '' ?> /> <?= $name ?> (<?= $email ?>)
 				      		</li>
 		<?php
 		                }
@@ -535,7 +535,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 		      						id="g_<?= $course['id']?>" 
 		      						value="<?= $course['id']?>" 
 		      						users='<?= json_encode($users_escaped); ?>'
-		      						<?= ($target == "all") ? 'checked' : '' ?>>
+		      						<?= ($target == "all" || $c == $course['id']) ? 'checked' : '' ?>>
 		      						<label for="g_<?= $course['id']?>"><?= $course['name']?><span class="small"><b>(<?= $course['num_enrollments'] ?> Staff)</b></span></label>
 		  					</li>
 <?php
