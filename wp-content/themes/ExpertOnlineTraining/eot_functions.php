@@ -3839,20 +3839,22 @@ function getUsersInCourse_callback()
         {
             global $wpdb;
             // Get the enrollments who are enrolled in the course.
-            $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+//            $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+            $enrollments = getEnrollments($course_id);
+
             $users = array(); // Lists of users who are enrolled in the course.
 
-            $user_data = getEotUsers($org_id); // Eot users
-            $users_id_in_camp = array(); // Lists of all user ids in the camp.
+            $user_data = getEotUsers($org_id); // get the students in this org
+            $user_ids_in_camp = array(); // Lists of all user ids in the camp.
             if( isset($user_data['users']) )
             {
-              $users_id_in_camp = array_column($user_data['users'], 'ID');
+              $user_ids_in_camp = array_column($user_data['users'], 'ID');
             }
             if($enrollments && count($enrollments) > 0)
             {
               foreach ($enrollments as $enrollment) 
               {
-                if(in_array($enrollment['user_id'], $users_id_in_camp))
+                if(in_array($enrollment['user_id'], $user_ids_in_camp)) // check that only students are being displayed. @todo make this more efficient in the future. Use SQL instead of in_array.
                 {
                   $user['first_name'] = get_user_meta ( $enrollment['user_id'], "first_name", true);
                   $user['last_name'] = get_user_meta ( $enrollment['user_id'], "last_name", true);
