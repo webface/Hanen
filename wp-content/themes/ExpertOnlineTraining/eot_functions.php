@@ -8967,7 +8967,7 @@ function getSubscriptionFromCourse($course_id = 0)
         return 0;
     }
     $course = $wpdb->get_row("SELECT * FROM ". TABLE_COURSES . " WHERE ID = $course_id", OBJECT);
-    return $course->subscription_id;
+    return isset($course->subscription_id) ? $course->subscription_id : 0;
 }
 
 
@@ -8984,8 +8984,8 @@ function getLibraryFromSubscription($subscription_id)
     {
         return 0;
     }
-    $subscription = $wpdb->get_row("SELECT * FROM ". TABLE_SUBSCRIPTIONS. " WHERE ID = $subscription_id", OBJECT);
-    return $subscription->library_id;
+    $subscription = $wpdb->get_row("SELECT * FROM ". TABLE_SUBSCRIPTIONS . " WHERE ID = $subscription_id", OBJECT);
+    return isset($subscription->library_id) ? $subscription->library_id : 0;
 }
 
 
@@ -8998,19 +8998,28 @@ function getLibraryFromSubscription($subscription_id)
  */
 function getOtherResourcesInModule($course_id = 0, $resource_id = 0, $type = "")
 {
-    $course_id =  filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $resource_id =  filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+    $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+    $resource_id = filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
     $type = filter_var($type, FILTER_SANITIZE_STRING);
     global $wpdb;
     if($course_id == 0 || $resource_id == 0 || $type == "")
     {
-        return null;
+        return array();
     }
-    $cmr = $wpdb->get_row("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." "
+    
+    // course module resources
+    $cmr = $wpdb->get_row("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES . " "
             . "WHERE course_id = $course_id "
             . "AND resource_id = $resource_id "
-            . "AND type = '$type'",OBJECT);
+            . "AND type = '$type'", OBJECT);
     
-    $other_resources = $wpdb->get_results("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE course_id = $course_id AND module_id =".$cmr->module_id, ARRAY_A);
-    return $other_resources;
+    if (isset($cmr->module_id))
+    {
+      $other_resources = $wpdb->get_results("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE course_id = $course_id AND module_id =".$cmr->module_id, ARRAY_A);
+        
+      return (!empty($other_resources)) ? $other_resources : array();
+
+    }
+        
+    return array();
 }

@@ -21,15 +21,15 @@ switch ($_REQUEST['part'])
     case 'save_quiz':
         $course_id = filter_var($_POST['course_id'],FILTER_SANITIZE_NUMBER_INT);
         $quiz_id = filter_var($_POST['ID'], FILTER_SANITIZE_NUMBER_INT);
-        $quiz_passed = $_POST['passed'] === true ? 1 : 0;
+        $quiz_passed = $_POST['passed'] == true ? 1 : 0;
         $data = array(
             'quiz_id' => $quiz_id,
             'user_id' => $user_id,
             'course_id' => $course_id,
             'score' => $_POST['score'],
             'percentage' => $_POST['percentage'],
-            'completed' => $_POST['completed'] === true ? 1 : 0,
-            'passed' => $_POST['passed'] === true ? 1 : 0,
+            'completed' => $_POST['completed'] == true ? 1 : 0,
+            'passed' => $_POST['passed'] == true ? 1 : 0,
             'total_time' => $_POST['time_spent'],
             'date_attempted' => current_time('Y-m-d H:i:s'),
         );
@@ -104,9 +104,9 @@ switch ($_REQUEST['part'])
                     );
                     foreach ($question['possibilities'] as $answer) 
                     {
-                        if ($answer['selected'] === true) {
+                        if ($answer['selected'] == true) {
                             $data['answer_id'] = $answer['ID'];
-                            $data['answer'] = $answer['selected'] === true ? 1 : 0;
+                            $data['answer'] = $answer['selected'] == true ? 1 : 0;
                             $attempt_id = $eot_quiz->add_quiz_result($data);
                        }
                     }
@@ -125,8 +125,8 @@ switch ($_REQUEST['part'])
                             'answer_id' => $answer['ID'],
                             'attempt_id' => $main_attempt_id
                         );
-                        if ($answer['selected'] === true) {
-                            $data['answer'] = $answer['selected'] === true ? 1 : 0;
+                        if ($answer['selected'] == true) {
+                            $data['answer'] = $answer['selected'] == true ? 1 : 0;
                             $attempt_id = $eot_quiz->add_quiz_result($data);
                         }
                     }

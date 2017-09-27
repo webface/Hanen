@@ -110,8 +110,7 @@ function display_subscriptions ()
         // check if user submitted answers, if so create the 4 default courses and modify them based on the answers.
         if(isset($_POST['btn']))
         {
-//ddd($_POST);            
-// create 4 default courses for this org
+            // create 4 default courses for this org
             // then modify them according to the answers
             global $base_courses;
             if ($org_id) // make sure we have an org to add these courses to
@@ -122,8 +121,8 @@ function display_subscriptions ()
                     //$response = cloneCourse($LU_course_ID, $org_lrn_upon_id, 'false');
                     $subscription_id = $subscription->ID;
                     $course_description = "";
-                    $data = compact("user_id", "subscription_id","course_description");//course description is ommitted in this case
-                    $response = createCourse($course_name, $org_id, $data, 0, $course_id); // create the course and copy the modules from $course_id
+                    $data = compact("user_id", "subscription_id", "course_description"); //course description is ommitted in this case
+                    $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
                     if (isset($response['status']) && !$response['status']) 
                     {
                         echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
@@ -141,7 +140,7 @@ function display_subscriptions ()
             // now add/remove specific modules from the above courses based on answers
             global $questionnaire_base_course_id;
             $data = compact ("org_id");
-            $lib_id = filter_var($_POST['lib_id'],FILTER_SANITIZE_NUMBER_INT);
+            $lib_id = isset($_REQUEST['lib_id']) ? filter_var($_REQUEST['lib_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
             $courses = getCourses(0,$org_id); // get all the courses in this org.
 
             // create an associative array of course name to course id.
@@ -151,7 +150,6 @@ function display_subscriptions ()
             }
             
             $modules = getModulesByLibrary($lib_id); // get all the modules in the selected library
-//d($modules);
 
             // create an associative array of LU Module IDs.
             foreach ($modules as $module)
@@ -163,10 +161,8 @@ function display_subscriptions ()
             
             $query = 'SELECT * FROM ' . TABLE_QUESTIONS . ' WHERE library_id = ' . $lib_id." ORDER BY `order`,`ID`";
             $questions = $wpdb->get_results ($query);
-///ddd($questions);
             foreach($questions as $question) 
             {
-//echo "<br><br>Question $q:<br>";
                 // get the answer for this question
                 if(isset($_POST['gc_question_' . $question->ID . '_answer']))
                 {
@@ -180,10 +176,7 @@ function display_subscriptions ()
                                 ' AND answer = ' . $answer .
                                 ' AND course_name_id = ' . $course_name_id;
                         $actions = $wpdb->get_results($query, 'ARRAY_A');
-                        ///ddd($actions);
-    //echo "$course_name $course_name_id<br>";
                         foreach ($actions as $action) {
-    //echo "Action: " . $action['action'] . " video id " . $action['video_id'];
                             $video_name = $wpdb->get_var('SELECT name FROM ' . TABLE_VIDEOS . ' WHERE id = ' . $action['video_id']);
                             $module_id = isset($module_IDs[$video_name]) ? $module_IDs[$video_name] : 0;
                             $data = compact("org_id","module_id");
@@ -1677,7 +1670,6 @@ function sales_rep_new_subscription ($user_id = 0) {
                 
                 // Updates the staff subtotal whenever there is a change in number of staff or discount
                 function update_staff_subtotal(element) {
-                    console.log("update staff total");
                     var parent_element = element.parents('.calc_topics');
                     var topic = check_topic(parent_element);
                     var num_staff = $('input[name=num_staff_' + topic + ']').val();
@@ -1778,7 +1770,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                     data.libraries[topic].data.staff.total_disc_value = price_structure_2(num_staff) - data.libraries[topic].data.staff.subtotal;
                 }
                 
-                // Calculate staff subtotal for Safety Essentials
+                // Calculate staff subtotal for Safety Essentials - Child welfare and protection
                 function calc_staff_subtotal_3(num_staff, topic) {
                     var subtotal_staff;
                     var disc_type = $('input[name=disc_staff_radio_' + topic + ']:checked').val();

@@ -73,7 +73,7 @@ define ('CE_LVL_2_PRICE', 10);
 define ('CE_LVL_2_MIN', 13);
 define ('CE_MIN_ACC', 12);
 
-// define variables for Safety Essentials
+// define variables for Safety Essentials -> Child Welfare and Protection
 define ('SE_PRICE', 99);
 define ('SE_LVL_1_PRICE', 0);
 define ('SE_LVL_1_MIN', 1);
@@ -151,7 +151,7 @@ define ('DEFAULT_SUBDOMAIN', 'eot');
 //define Library IDs
 define ('LE_ID', 1); // Leadership Essentials - Full Pack
 define ('LEL_ID', 5); // Leadership Essentials - Limited
-define ('SE_ID', 3); // Safety Essentials
+define ('SE_ID', 3); // Safety Essentials -> Child Welfare and Protection
 define ('CE_ID', 2); // Clinical Essentials
 define ('BCB_ID', 4); // Burn Camp Bundle
 define ('LE_SP_DC_ID', 6); // Leadership Essentials - Starter Pack - Day Camps
