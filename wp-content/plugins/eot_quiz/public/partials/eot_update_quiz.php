@@ -2,10 +2,25 @@
 $path = WP_PLUGIN_DIR . '/eot_quiz/';
 require $path . 'public/class-eot_quiz_data.php';
 global $current_user;
-$user_id = $current_user->ID; // Wordpress user ID
-$org_id = get_org_from_user($user_id);
+
+
 $quiz_id=filter_var($_REQUEST['quiz_id'],FILTER_SANITIZE_NUMBER_INT);
 $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+if($subscription_id == 0)// in case its an eot quiz
+{
+    $org_id = 0;
+    $user_id = 0; // Wordpress user ID
+}
+else
+{
+    $user_id = $current_user->ID; // Wordpress user ID
+    $org_id = get_org_from_user($user_id);
+
+}
+if(!verifyQuiz())
+{
+    die("This quiz does not belong to you");
+}
 $eot_quiz = new EotQuizData();
 
 if (isset($_POST['submit'])) 
@@ -26,13 +41,20 @@ if (isset($_POST['submit']))
     $quiz_updated = $eot_quiz->updateQuiz($data,$quiz_id);
     if($quiz_updated)
     {
+        if($subscription_id == 0)// in case its an eot quiz
+        {
+            wp_redirect(home_url('dashboard?part=manage_quiz_eot&subscription_id='.$subscription_id));
+        }
+        else
+        {
         wp_redirect(home_url('dashboard?part=manage_quiz&subscription_id='.$subscription_id));
+        }
         exit();
     }
 }
 ?>
 <?php
-if(current_user_can( "is_director" ))
+if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
 {
     $quiz = $eot_quiz->get_quiz_by_id($quiz_id);
 

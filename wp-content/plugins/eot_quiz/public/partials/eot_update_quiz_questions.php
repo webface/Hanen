@@ -10,7 +10,7 @@
     $subscription_id = filter_var($_REQUEST['subscription_id'] , FILTER_SANITIZE_NUMBER_INT);
     $question = $eot_quiz->get_question_by_id($question_id);
 
-    if(current_user_can( "is_director" ))
+    if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
     {
     
 ?>

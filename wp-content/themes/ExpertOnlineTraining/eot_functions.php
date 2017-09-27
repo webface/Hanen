@@ -8927,3 +8927,36 @@ function verifyQuizInCourse($quiz_id = 0 , $course_id = 0)
        return false; 
     }
 }
+
+/**
+ * Verify quiz
+ * @global type $current_user
+ * @param type $quiz_id
+ * @return boolean
+ * 
+ */
+function verifyQuiz($quiz_id = 0)
+{
+    if($quiz_id == 0)
+    {
+        return false;
+    }
+    global $current_user;
+    if(current_user_can("is_sales_manager"))
+    {
+        return true;
+    }
+    $quiz_user = $wpdb->get_var("SELECT user_id FROM ". TABLE_QUIZ. " WHERE ID = $quiz_id");
+    if($quiz_user == $current_user->ID)
+    {
+        return true;
+    }
+ else {
+        return false;
+    }
+}
+
+function verifyQuizQuestion()
+{
+    
+}
