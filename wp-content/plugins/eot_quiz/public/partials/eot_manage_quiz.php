@@ -75,11 +75,11 @@ if ($quizzes)
             (($quiz['passing_score']) ? $quiz['passing_score'] : 0) . " of " . $quiz['num_questions_to_display'],
             $time_limit . " minutes",
             '<a href="/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit Questions</a>',
-            '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+            '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-pencil tooltip" aria-hidden="true" title="Edit quiz settings such as title, description, number of questions to display, etc..." style="margin-bottom: -2px" onmouseover="Tip(\'Edit quiz settings such as title, description, number of questions to display, etc...\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>
             &nbsp;&nbsp&nbsp;
-            <a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-eye" aria-hidden="true"></i></a>
+            <a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-eye tooltip" aria-hidden="true" title="View the quiz questions and answers." style="margin-bottom: -2px" onmouseover="Tip(\'View the quiz questions and answers.\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>
             &nbsp;&nbsp&nbsp;
-            <a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" data-type="Quiz" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
+            <a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" data-type="Quiz" class="delete" rel="facebox"><i class="fa fa-trash tooltip" aria-hidden="true" title="Delete this quiz." style="margin-bottom: -2px" onmouseover="Tip(\'Delete this quiz.\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>'
         );
     }
     CreateDataTable($quizTableObj); // Print the table in the page
