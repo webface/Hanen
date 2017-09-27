@@ -3204,4 +3204,181 @@ function refund_camp_callback ()
     echo json_encode($result);
     exit();
 }
+
+/********************************************************************************************************
+ * Director Renew Subscription
+ *******************************************************************************************************/
+add_action('wp_ajax_renewCamp', 'renewCamp_callback');
+function renewCamp_callback () 
+{
+
+    require_once ('stripe_functions.php');
+
+
+    if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
+    {
+        $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+        $ordered_accounts = intval(filter_var($_REQUEST['accounts'],FILTER_SANITIZE_NUMBER_INT));
+        if($ordered_accounts == "")
+        {
+            $ordered_accounts = 0;
+        }
+        $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+        $method = filter_var($_REQUEST['method'],FILTER_SANITIZE_STRING);
+        $trans_id = ''; 
+
+        // Calculates all the staff credits for the camp
+        $subscription = getSubscriptions($subscription_id);
+        if($subscription) // get the subscription info for this subscription
+        {
+            $staff_credits = intval($subscription->staff_credits); // The staff credits
+            $org_id = $subscription->org_id; // The subscription org ID
+            /* 
+             * Calculate the accounts available for the camp from wp_upgrade subscription table.
+             */
+            $upgrades = getUpgrades($subscription_id);
+            foreach ($upgrades as $upgrade)
+            {
+                $staff_credits += intval($upgrade->accounts); 
+            }
+            $accounts = $staff_credits + $ordered_accounts; // New Staff Credits
+
+            $rep_id = 0;
+            $price = filter_var($_REQUEST['total'], FILTER_SANITIZE_NUMBER_FLOAT);
+            $staff_price = filter_var($_REQUEST['staff_price'], FILTER_SANITIZE_NUMBER_FLOAT);
+            $library_id = filter_var($_REQUEST['library_id'], FILTER_SANITIZE_NUMBER_INT);
+            $library = getLibrary($library_id);
+            $dash_price = $library->price;
+            $start_date = SUBSCRIPTION_START;
+            $end_date = SUBSCRIPTION_END;
+            $manager_id = $user_id;
+
+            // Credit card info
+            $statement_description = "Expert Online Training Subscription for".SUBSCRIPTION_YEAR ;
+
+            // check if paying by credit card
+            if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'Stripe')
+            {
+
+                if (!isset($_REQUEST['cc_card']) && ($_REQUEST['cc_num'] == '' || $_REQUEST['cc_cvc'] == '')) 
+                {
+                    $result['status'] = false;
+                    $result['message'] = 'You must choose a credit card or add a new credit card.'; 
+                    echo json_encode($result);
+                    wp_die();   
+                }
+            
+                $cc_card = array (
+                    "object" => "card",
+                    "number" => $_REQUEST['cc_num'],
+                    "exp_month" => $_REQUEST['cc_mon'],
+                    "exp_year" => $_REQUEST['cc_yr'],
+                    "cvc" => $_REQUEST['cc_cvc'],
+                    "name" => $_REQUEST['full_name'],
+                    "address_line1" => $_REQUEST['address'],
+                    "address_city" => $_REQUEST['city'],
+                    "address_state" => $_REQUEST['state'],
+                    "address_zip" => $_REQUEST['zip'],
+                    "address_country" => $_REQUEST['country']
+                );
+
+                if (isset($_REQUEST['customer_id'])) 
+                {
+                    $customer_id = $_REQUEST['customer_id'];
+                } 
+                else 
+                {
+                    $customer = create_new_customer ($cc_card, $_REQUEST['email'], $_REQUEST['org_name']); //$customer->{'id'}; 
+                    $customer_id = $customer['customer_id'];
+                    $card_id = $customer['card_id'];
+                    update_post_meta ($org_id, 'stripe_id', $customer_id);
+                }
+
+                if (isset($_REQUEST['cc_card'])) 
+                {
+                    $card_id = $_REQUEST['cc_card'];
+                } 
+                else 
+                {
+                    $card_id = $cc_card;
+                }
+                
+                $trans_id = charge_customer ($price, $customer_id, $card_id, $statement_description); //$charge->{'id'};
+            }
+            else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
+            {
+                $trans_id = 'FREE';
+            }
+            else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'cheque')
+            {
+                $trans_id = 'CHEQUE';
+            }
+
+            //$data = compact('org_id', 'price', 'ordered_accounts', 'user_id', 'method', 'rep_id', 'trans_id');
+
+            if($trans_id)
+            { 
+                
+/****
+ * 
+ */
+                $subscription_data = array (
+							'org_id' => $org_id, 												// org id
+							'manager_id' => $user_id,	 										// manager id
+							'lib_id' => LE_SP_PRP_ID, 												// library id (1=Leadership,2=Clinical,3=Safety)
+							'start' => SUBSCRIPTION_START,										// subscription start date
+							'end' => SUBSCRIPTION_END,											// subscription end date
+							'method' => $method,	// transaction method
+							'trans_id' => $trans_id,											// transaction id
+							'date' => date ('Y-m-d'),											// current date
+							'total' => number_format ($price, 2, '.', ''),	// total price paid
+							'data_disk_price' => 0.00,	// Data Disk price for library
+							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
+							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
+							'dash_dis' => (isset($_REQUEST['le_sp_prp_dash_disc'])) ? $_REQUEST['le_sp_prp_dash_disc'] : 0.00,	// discount for dashboard
+							'staff_dis' => (isset($_REQUEST['le_sp_prp_staff_disc'])) ? $_REQUEST['le_sp_prp_staff_disc'] : 0.00,	// discount for staff accounts
+							'count' => $accounts,	// number of staff accounts for subscription
+							'status' => 'active',												// subscription status
+							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
+							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
+						);
+
+						if (!add_new_subscription($subscription_data)) {
+                                                    $result['status'] = false;
+                                                    $result['message'] = 'renewSubscription_callback Error: There was an error adding the Subscription. Please contact the administrator';
+                                                }
+                                                else 
+                                                {
+                                                    $result['data'] = 'success';
+                                                    $result['status'] = true;
+                                                    $result['library_id'] = $subscription->library_id; // Needed for redirect
+                                                }
+                                                /**
+                                                 * 
+                                                 * 
+                                                 */
+                                               
+
+// Add a row in the subscription table
+
+            }
+            else
+            {   // This does not need to return json. Stripe echos the return.
+                wp_die();
+            }
+        }
+        else
+        {
+            $result['status'] = false;
+            $result['message'] = 'upgradeSubscription_callback ERROR: Unable to find this subscription ID. Please contact the administrator.'; 
+        }
+    }
+    else
+    {
+        $result['status'] = false;
+        $result['message'] = 'upgradeSubscription_callback ERROR: Missing some parameters.'; 
+    }
+    echo json_encode($result);
+    wp_die();   
+}
 ?>
