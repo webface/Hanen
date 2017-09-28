@@ -22,7 +22,7 @@
 		//subscribers are created when visiting the mastery page
 		else if(current_user_can( "is_subscriber"))
 		{
-			wp_redirect("https://www.expertonlinetraining.com/mastery");
+			wp_redirect("https://www.expertonlinetraining.com/xpress");
 			exit;
 		}
 	}
