@@ -73,19 +73,13 @@ switch ($_REQUEST['part'])
             }
         if(isset($video_id))
         {
-            if($quiz_passed == 0)// if failed, force user to rewatch video
+            if($quiz_passed == 0) // if failed, force user to rewatch video
             {
-            
-
-                error_log("Dude failed the quiz: ".$video_id);
-                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 1), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
-            
-                ///error_log($res);
+                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 1, 'video_time' => 0), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
             }
             else 
             {
-                error_log("Dude passed the quiz: ".$video_id);
-                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 0), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
+                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 0, 'video_time' => 0), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
             }
         }
         $questions = $_POST['questions'];
