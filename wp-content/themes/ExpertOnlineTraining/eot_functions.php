@@ -5017,14 +5017,14 @@ function aws_delete_file_callback()
     {
       $s3Client = new Aws\S3\S3Client(array(
         'version' => 'latest',
-        'region' => 'us-west-2',
+        'region' => AWS_REGION,
         'credentials' => array(
             'key' => AWS_ACCESS_KEY_ID,
             'secret' => AWS_SECRET_ACCESS_KEY,
         )
       ));
 
-      $bucket = 'eot-resources';
+      $bucket = AWS_S3_USER_RESOURCES;
       $keyname = filter_var($_REQUEST['key'], FILTER_SANITIZE_STRING);
 
       $res = $s3Client->deleteObject(

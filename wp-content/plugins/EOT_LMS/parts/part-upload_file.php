@@ -38,11 +38,11 @@
                     accessKeyId: result.accessKeyId,
                     secretAccessKey: result.secretAccessKey
                 });
-                AWS.config.region = 'us-west-2';
+                AWS.config.region = '<?= AWS_REGION ?>';
                 //add upload button after page has loaded
                 $("#fileUploadForm").append('<input type="submit" value="Upload File" name="submit" class="pull-right">');
                 $("#fileUploadForm").submit(function () {
-                    var bucket = new AWS.S3({params: {Bucket: 'eot-resources'}});
+                    var bucket = new AWS.S3({params: {Bucket: '<?= AWS_S3_USER_RESOURCES ?>'}});
                     var fileChooser = document.getElementById('file');
                     var file = fileChooser.files[0];
                     for (var i = 0; i < Files.length; i++) 
@@ -327,7 +327,7 @@
 // Instantiate the S3 client with your AWS credentials
     $s3Client = new Aws\S3\S3Client(array(
         'version' => 'latest',
-        'region' => 'us-west-2',
+        'region' => AWS_REGION,
         'credentials' => array(
             'key' => AWS_ACCESS_KEY_ID,
             'secret' => AWS_SECRET_ACCESS_KEY,
@@ -336,8 +336,8 @@
 
     try {
         $objects = $s3Client->getIterator('ListObjects', array(
-            'Bucket' => 'eot-resources',
-            'region' => 'us-west-2',
+            'Bucket' => AWS_S3_USER_RESOURCES,
+            'region' => AWS_REGION,
             'Prefix' => $org_id . "_"
         ));
         foreach ($objects as $object) {
