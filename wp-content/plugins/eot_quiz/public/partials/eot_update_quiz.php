@@ -17,7 +17,7 @@ else
     $org_id = get_org_from_user($user_id);
 
 }
-if(!verifyQuiz())
+if(!verifyQuiz($quiz_id))
 {
     die("This quiz does not belong to you");
 }

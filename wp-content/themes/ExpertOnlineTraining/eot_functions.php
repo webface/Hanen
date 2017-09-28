@@ -8937,6 +8937,9 @@ function verifyQuizInCourse($quiz_id = 0 , $course_id = 0)
  */
 function verifyQuiz($quiz_id = 0)
 {
+    global $wpdb;
+    $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    
     if($quiz_id == 0)
     {
         return false;
@@ -8951,12 +8954,34 @@ function verifyQuiz($quiz_id = 0)
     {
         return true;
     }
- else {
+    else 
+    {
         return false;
     }
 }
 
-function verifyQuizQuestion()
+/**
+ * Verify if a question is part of a quiz
+ * @param type $quiz_id
+ * @param type $question_id
+ * 
+ */
+function verifyQuizQuestion($quiz_id = 0, $question_id = 0)
 {
-    
+    global $wpdb;
+    $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    $question_id = filter_var($question_id, FILTER_SANITIZE_NUMBER_INT);
+    if($quiz_id == 0 || $question_id == 0)
+    {
+        return false;
+    }
+    $question_quiz_id = $wpdb->get_var("SELECT quiz_id FROM ". TABLE_QUIZ_QUESTION . " WHERE ID = $question_id");
+    if($question_quiz_id == $quiz_id)
+    {
+        return true;
+    }
+    else 
+     {
+        return false;
+    }
 }

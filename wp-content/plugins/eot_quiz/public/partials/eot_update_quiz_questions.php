@@ -9,7 +9,14 @@
     $quiz_id = filter_var($_REQUEST['quiz_id'] , FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($_REQUEST['subscription_id'] , FILTER_SANITIZE_NUMBER_INT);
     $question = $eot_quiz->get_question_by_id($question_id);
-
+if(!verifyQuiz($quiz_id))
+{
+    die("This quiz does not belong to you");
+}
+if(!verifyQuizQuestion($quiz_id, $question_id))
+{
+    die("This quiz question does not belong to you");
+}
     if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
     {
     
