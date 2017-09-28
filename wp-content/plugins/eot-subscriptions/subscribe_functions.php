@@ -51,8 +51,34 @@ function display_subscriptions ()
                return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
             }
 
+            // check if user subscribed to CHild welfare and hasn't set up their course yet.
+            if($library_id == SE_ID && !$subscription->setup)
+            {
+                $subscription_id = $subscription->ID;
+                $course_name = "Child Welfare & Protection";
+                $course_id = CHILD_WELFARE_COURSE_ID;
+                $data = compact("user_id", "subscription_id"); //course description is ommitted in this case
+                $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+                if (isset($response['status']) && !$response['status']) 
+                {
+                    echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
+                    error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message']);
+                }
+                else
+                {
+                    $upd = $wpdb->update(TABLE_SUBSCRIPTIONS, 
+                                array( 
+                                    'setup' => '1' 
+                                ), 
+                                array( 
+                                    'id' => $subscription->ID 
+                                ) 
+                            );
+                    display_subscription_dashboard ($subscription);
+                }
+            }
             // check if LE or LEL is set up yet
-            if (($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID) && $subscription->setup)//
+            else if (($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID) && $subscription->setup)//
             {
                 // display dashboard
                 display_subscription_dashboard ($subscription);
@@ -62,7 +88,7 @@ function display_subscriptions ()
                 // display the dashboard of library != LE or LEL
                 display_subscription_dashboard($subscription);
             }
-          
+            
             if(($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID) && !$subscription->setup) 
             {
                 // Its an LE library but hasn't been set up (customized) yet, so display group customization
@@ -120,7 +146,8 @@ function display_subscriptions ()
                     // Now create the default courses into the new org.
                     //$response = cloneCourse($LU_course_ID, $org_lrn_upon_id, 'false');
                     $subscription_id = $subscription->ID;
-                    $data = compact("user_id", "subscription_id");//course description is ommitted in this case
+                    $course_description = "";
+                    $data = compact("user_id", "subscription_id", "course_description"); //course description is ommitted in this case
                     $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
                     if (isset($response['status']) && !$response['status']) 
                     {
@@ -139,7 +166,7 @@ function display_subscriptions ()
             // now add/remove specific modules from the above courses based on answers
             global $questionnaire_base_course_id;
             $data = compact ("org_id");
-            
+            $lib_id = isset($_REQUEST['lib_id']) ? filter_var($_REQUEST['lib_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
             $courses = getCourses(0,$org_id); // get all the courses in this org.
 
             // create an associative array of course name to course id.
@@ -148,9 +175,7 @@ function display_subscriptions ()
                 $course_IDs[$course->course_name] = $course->ID;
             }
             
-            $modules = getModulesByLibrary(LE_ID); // get all the modules in the LE library
-
-            //$modules = getModules($course_IDs[LE_LIBRARY_TITLE], $org_subdomain, $data); // get all the available modules in this portal
+            $modules = getModulesByLibrary($lib_id); // get all the modules in the selected library
 
             // create an associative array of LU Module IDs.
             foreach ($modules as $module)
@@ -159,13 +184,11 @@ function display_subscriptions ()
             }
 
             // get number of questions for our library id
-            $lib_id = filter_var($_POST['lib_id'],FILTER_SANITIZE_NUMBER_INT);
+            
             $query = 'SELECT * FROM ' . TABLE_QUESTIONS . ' WHERE library_id = ' . $lib_id." ORDER BY `order`,`ID`";
             $questions = $wpdb->get_results ($query);
-
             foreach($questions as $question) 
             {
-//echo "<br><br>Question $q:<br>";
                 // get the answer for this question
                 if(isset($_POST['gc_question_' . $question->ID . '_answer']))
                 {
@@ -179,10 +202,7 @@ function display_subscriptions ()
                                 ' AND answer = ' . $answer .
                                 ' AND course_name_id = ' . $course_name_id;
                         $actions = $wpdb->get_results($query, 'ARRAY_A');
-
-    //echo "$course_name $course_name_id<br>";
                         foreach ($actions as $action) {
-    //echo "Action: " . $action['action'] . " video id " . $action['video_id'];
                             $video_name = $wpdb->get_var('SELECT name FROM ' . TABLE_VIDEOS . ' WHERE id = ' . $action['video_id']);
                             $module_id = isset($module_IDs[$video_name]) ? $module_IDs[$video_name] : 0;
                             $data = compact("org_id","module_id");
@@ -1373,7 +1393,22 @@ function sales_rep_new_subscription ($user_id = 0) {
                                                                                         "total_disc_value"  :   0,
                                                                                         "subtotal"          :   0   }               
                                                                     }
-                                                }
+                                                },
+                                "se"       :   {  "id"         :   <?= SE_ID ?>, 
+
+                                                   "name"       :   "Child Welfare & Protection", 
+                                                   "status"     :   false, 
+                                                   "data"       :   { "dashboard"   : { "disc_type"         :   "",
+                                                                                        "disc_amount"       :   0,
+                                                                                        "total_disc_value"  :   0,
+                                                                                        "subtotal"          :   0   },
+                                                                      "staff"       : { "number"            :   0,
+                                                                                        "disc_type"         :   "",
+                                                                                        "disc_amount"       :   0,
+                                                                                        "total_disc_value"  :   0,
+                                                                                        "subtotal"          :   0   }               
+                                                                    }
+                                                }                                                        
                             },
         "org_id"    :   "<?php echo $org_id; ?>", 
         "total"     :   0,
@@ -1672,6 +1707,8 @@ function sales_rep_new_subscription ($user_id = 0) {
                         calc_staff_subtotal_5(num_staff, topic);
                     } else if (topic == "ce") {
                         calc_staff_subtotal_4(num_staff, topic);    
+                    } else if (topic == "se") {
+                        calc_staff_subtotal_3(num_staff, topic);    
                     } else {
                         calc_staff_subtotal_3(num_staff, topic);
                     }
@@ -1759,7 +1796,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                     data.libraries[topic].data.staff.total_disc_value = price_structure_2(num_staff) - data.libraries[topic].data.staff.subtotal;
                 }
                 
-                // Calculate staff subtotal for Safety Essentials
+                // Calculate staff subtotal for Safety Essentials - Child welfare and protection
                 function calc_staff_subtotal_3(num_staff, topic) {
                     var subtotal_staff;
                     var disc_type = $('input[name=disc_staff_radio_' + topic + ']:checked').val();
@@ -1890,7 +1927,9 @@ function sales_rep_new_subscription ($user_id = 0) {
                     if (data.libraries.le.status) {
                         data.total = (parseFloat(data.total) + parseFloat(data.libraries.le.data.dashboard.subtotal) + parseFloat(data.libraries.le.data.staff.subtotal)).toFixed(2);
                     }
-                    
+                    if (data.libraries.se.status) {
+                        data.total = (parseFloat(data.total) + parseFloat(data.libraries.se.data.dashboard.subtotal) + parseFloat(data.libraries.se.data.staff.subtotal)).toFixed(2);
+                    }
                     if (data.libraries.le_sp_dc.status) {
                         data.total = (parseFloat(data.total) + parseFloat(data.libraries.le_sp_dc.data.dashboard.subtotal) + parseFloat(data.libraries.le_sp_dc.data.staff.subtotal)).toFixed(2);
                     }
@@ -1975,6 +2014,66 @@ function sales_rep_new_subscription ($user_id = 0) {
                             '<input type="hidden" name="le_staff_disc" value="' + data.libraries.le.data.staff.total_disc_value.toFixed(2) + '">'
                             );
                         }
+                        if (data.libraries.se.status) {
+                            var se_disc_dash, se_disc_staff;
+                            count++;
+                            
+                            if (data.libraries.se.data.dashboard.disc_type == 1 && data.libraries.se.data.dashboard.disc_amount > 0) {
+                                se_disc_dash = "$" + data.libraries.se.data.dashboard.disc_amount;
+                            } else if (data.libraries.se.data.dashboard.disc_type == 0  && data.libraries.se.data.dashboard.disc_amount > 0) {
+                                se_disc_dash = data.libraries.se.data.dashboard.disc_amount + "%";
+                            } else {
+                                se_disc_dash = '';
+                            }
+                            
+                            if (data.libraries.se.data.staff.disc_type == 1 && data.libraries.se.data.staff.disc_amount > 0) {
+                                se_disc_staff = "$" + data.libraries.se.data.staff.disc_amount + " per account";
+                            } else if (data.libraries.se.data.staff.disc_type == 0  && data.libraries.se.data.staff.disc_amount > 0) {
+                                se_disc_staff = data.libraries.se.data.staff.disc_amount + "% of total price";
+                            } else {
+                                se_disc_staff = '';
+                            }
+                            
+                            $('.billing_items').append(
+                            '<div class="billing_item">' + 
+                                '<li class="bill_item library"><strong>Child Welfare & Protection</strong></li>' + 
+                                '<li class="bill_item amount border_left">' + 
+                                    '<div class="expanded_top">' + 
+                                        '<span class="amount_left">Director Dashboard</span>' + 
+                                        '<span class="amount_x">X</span>' + 
+                                        '<span class="amount_right">1</span>' + 
+                                    '</div>' + 
+                                        '<div class="expanded_bot">' + 
+                                            '<span class="amount_left">Number of Staff</span>' + 
+                                            '<span class="amount_x">X</span>' + 
+                                            '<span class="amount_right">' + data.libraries.se.data.staff.number + '</span>' + 
+                                        '</div>' + 
+                                '</li>' + 
+                                '<li class="bill_item discount border_left">' + 
+                                    '<div class="expanded_top">' + 
+                                        se_disc_dash + 
+                                    '</div>' + 
+                                    '<div class="expanded_bot">' + 
+                                        se_disc_staff + 
+                                    '</div>' + 
+                                '</li>' + 
+                                '<li class="bill_item subtotal border_left">' +
+                                    '<div class="expanded_top">' + 
+                                        '$' + data.libraries.se.data.dashboard.subtotal + 
+                                    '</div>' + 
+                                    '<div class="expanded_bot">' + 
+                                        '$' + data.libraries.se.data.staff.subtotal + 
+                                    '</div>' +
+                                '</li>' + 
+                            '</div>'+
+                            '<input type="hidden" name="se" value="<?= SE_ID ?>">'+
+                            '<input type="hidden" name="se_staff" value="' + data.libraries.se.data.staff.number + '">'+
+                            '<input type="hidden" name="se_dash_price" value="' + data.libraries.se.data.dashboard.subtotal + '">'+
+                            '<input type="hidden" name="se_staff_price" value="' + data.libraries.se.data.staff.subtotal + '">'+
+                            '<input type="hidden" name="se_dash_disc" value="' + data.libraries.se.data.dashboard.total_disc_value.toFixed(2) + '">'+
+                            '<input type="hidden" name="se_staff_disc" value="' + data.libraries.se.data.staff.total_disc_value.toFixed(2) + '">'
+                            );
+                        }                        
                         if (data.libraries.le_sp_dc.status) {
                             var le_sp_dc_disc_dash, le_sp_dc_disc_staff;
                             count++;
@@ -2357,7 +2456,41 @@ function sales_rep_new_subscription ($user_id = 0) {
                         </div>
                     </li>
                 </div>
-
+                <div class="calc_topics se">
+                    <li class="calc_se library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" />Child Welfare & Protection</li>
+                    <li class="calc_se amount">
+                        <div class="expanded_top">
+                            <span class="amount_left">Director Dashboard</span>
+                            <span class="amount_x">X</span>
+                            <span class="amount_right">1</span>
+                        </div>
+                        <div class="expanded_bot">
+                            <span class="amount_left">Number of Staff</span>
+                            <span class="amount_x">X</span>
+                            <span class="amount_right"><input type="text" name="num_staff_se" class="num_staff small_box" value="0" maxlength="4" /></span>
+                        </div>
+                    </li>
+                    <li class="calc_se discount">
+                        <div class="expanded_top">
+                            <input type="text" name="disc_dash_num_se" class="dash_discount medium_box" value="0.00" />
+                            <input type="radio" value="1" name="disc_dash_radio_se" class="dash_disc" checked="checked" />$
+                            <input type="radio" value="0" name="disc_dash_radio_se" class="dash_disc" />%
+                        </div>
+                        <div class="expanded_bot">
+                            <input type="text" name="disc_staff_num_se" class="staff_discount medium_box" value="0.00" />
+                            <input type="radio" value="1" name="disc_staff_radio_se" class="staff_disc" checked="checked" />$
+                            <input type="radio" value="0" name="disc_staff_radio_se" class="staff_disc" />%
+                        </div>
+                    </li>
+                    <li class="calc_se subtotal">
+                        <div class="expanded_top">
+                            $ <input type="text" name="subtotal_dash_num_se" class="dash_subtotal large_box" value="99.00" data-full_price="99.00" />
+                        </div>
+                        <div class="expanded_bot">
+                            $ <input type="text" name="subtotal_staff_num_se" class="staff_subtotal large_box" value="0.00" />
+                        </div>
+                    </li>
+                </div>
                 <div class="calc_topics dd" >
                     <li class="calc_dd datadisk"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" />Data Disk</li>
                     <li class="calc_dd subtotal">

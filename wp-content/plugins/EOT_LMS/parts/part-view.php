@@ -38,8 +38,7 @@
                         array_push($my_resources, $resource);
                     }
                 }
-//d($resources_docs,$my_resources);
-                
+               
                 $exams = array();
                 foreach($resources_exam as $exam){
                     if(isset($exams[$exam['mid']]))
@@ -52,7 +51,7 @@
                     	array_push($exams[$exam['mid']], array('ID'=>$exam['ID'],'name'=>$exam['name']));
                     }
                 }
-                                
+
 				if( isset( $module_video_resources ) )
 				{
 					foreach ($module_video_resources as $key => $video)
@@ -61,7 +60,6 @@
 						$video_id = $video['ID']; // The video ID
 						$video_record = getTrack($user_id, $video_id);
 						$track_id = ( count($video_record) > 0) ? $video_record['ID'] : 0;
-
 						//turn seconds into minutes.seconds
 		              	$duration_in_seconds = $video['secs'];
 		              	$minutes = floor($duration_in_seconds / 60);
@@ -89,7 +87,7 @@
                         if($subLanguage)
                         {
 ?>
-                            <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $video_record['spanish'] : $video['shortname_medium'] ?>.mp4" type='video/mp4'>4
+                            <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $video_record['spanish'] : $video['shortname_medium'] ?>.mp4" type='video/mp4'>
                             <p class="vjs-no-js">
                             To view this video please enable JavaScript, and consider upgrading to a web browser that
                             <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
@@ -188,16 +186,16 @@
       			$(document).ready(function() 
       			{
 <?php 						// Check if the user has not watched the video yet.
-					if( $videoWatchStatus )
-					{
-						echo '$("#quiz").show();'; // Show Take quiz button.
-                                                echo '$(".loadingQuiz").hide();'; // Show Take quiz button.
-                                                echo '$(".takeQuiz").show();';
-					}
-					else
-					{
+//					if( $videoWatchStatus )
+//					{
+//						echo '$("#quiz").show();'; // Show Take quiz button.
+//                                                echo '$(".loadingQuiz").hide();'; // Show Take quiz button.
+//                                                echo '$(".takeQuiz").show();';
+//					}
+//					else
+//					{
 						echo '$("#noQuiz").show();'; // Show div message to finish watching the video.
-					}
+//					}
 ?>			
       			});
                         // Update the video status to finish.

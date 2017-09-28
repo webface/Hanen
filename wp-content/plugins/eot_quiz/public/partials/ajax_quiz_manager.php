@@ -21,14 +21,15 @@ switch ($_REQUEST['part'])
     case 'save_quiz':
         $course_id = filter_var($_POST['course_id'],FILTER_SANITIZE_NUMBER_INT);
         $quiz_id = filter_var($_POST['ID'], FILTER_SANITIZE_NUMBER_INT);
+        $quiz_passed = $_POST['passed'] == true ? 1 : 0;
         $data = array(
             'quiz_id' => $quiz_id,
             'user_id' => $user_id,
             'course_id' => $course_id,
             'score' => $_POST['score'],
             'percentage' => $_POST['percentage'],
-            'completed' => $_POST['completed'] === true ? 1 : 0,
-            'passed' => $_POST['passed'] === true ? 1 : 0,
+            'completed' => $_POST['completed'] == true ? 1 : 0,
+            'passed' => $_POST['passed'] == true ? 1 : 0,
             'total_time' => $_POST['time_spent'],
             'date_attempted' => current_time('Y-m-d H:i:s'),
         );
@@ -38,6 +39,7 @@ switch ($_REQUEST['part'])
         $enrolled_courses = array_column($enrollments,'course_id');
         $quizzes_in_course = getQuizzesInCourse($course_id);
 
+        //calculate course completion
         $passed = 0;
         foreach ($quizzes_in_course as $required) 
         {
@@ -61,6 +63,25 @@ switch ($_REQUEST['part'])
                     )
                     );
         }
+        $other_resources = getOtherResourcesInModule($course_id, $quiz_id, 'exam');
+            foreach ($other_resources as $resource) {
+                if($resource['type']== "video")
+                {
+                    $video_id = $resource['resource_id'];
+                    $module_id = $resource['module_id'];
+                }
+            }
+        if(isset($video_id))
+        {
+            if($quiz_passed == 0) // if failed, force user to rewatch video
+            {
+                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 1, 'video_time' => 0), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
+            }
+            else 
+            {
+                $res = $wpdb->update(TABLE_TRACK, array('repeat' => 0, 'video_time' => 0), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
+            }
+        }
         $questions = $_POST['questions'];
         //var_dump($questions);
         foreach ($questions as $question) 
@@ -77,9 +98,9 @@ switch ($_REQUEST['part'])
                     );
                     foreach ($question['possibilities'] as $answer) 
                     {
-                        if ($answer['selected'] === true) {
+                        if ($answer['selected'] == true) {
                             $data['answer_id'] = $answer['ID'];
-                            $data['answer'] = $answer['selected'] === true ? 1 : 0;
+                            $data['answer'] = $answer['selected'] == true ? 1 : 0;
                             $attempt_id = $eot_quiz->add_quiz_result($data);
                        }
                     }
@@ -98,8 +119,8 @@ switch ($_REQUEST['part'])
                             'answer_id' => $answer['ID'],
                             'attempt_id' => $main_attempt_id
                         );
-                        if ($answer['selected'] === true) {
-                            $data['answer'] = $answer['selected'] === true ? 1 : 0;
+                        if ($answer['selected'] == true) {
+                            $data['answer'] = $answer['selected'] == true ? 1 : 0;
                             $attempt_id = $eot_quiz->add_quiz_result($data);
                         }
                     }

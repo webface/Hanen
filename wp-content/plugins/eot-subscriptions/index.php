@@ -515,7 +515,7 @@ function handle_steps_callback () {
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
 							'dash_dis' => (isset($_REQUEST['le_sp_oc_dash_disc'])) ? $_REQUEST['le_sp_oc_dash_disc'] : 0.00,	// discount for dashboard
 							'staff_dis' => (isset($_REQUEST['le_sp_oc_staff_disc'])) ? $_REQUEST['le_sp_oc_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => (isset($_REQUEST['le_sp_oc_staff']) && (!empty($_REQUEST['le_sp_oc_staff'])) ? c : LE_SP_OC_MIN_ACC),	// number of staff accounts for subscription
+							'count' => (isset($_REQUEST['le_sp_oc_staff']) && (!empty($_REQUEST['le_sp_oc_staff'])) ? $_REQUEST['le_sp_oc_staff'] : LE_SP_OC_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes

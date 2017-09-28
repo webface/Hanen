@@ -57,7 +57,6 @@
             }
           }
         }
-
         /*  
          * Display the category and display its modules
          */

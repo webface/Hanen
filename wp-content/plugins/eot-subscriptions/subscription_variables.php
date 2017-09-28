@@ -73,7 +73,7 @@ define ('CE_LVL_2_PRICE', 10);
 define ('CE_LVL_2_MIN', 13);
 define ('CE_MIN_ACC', 12);
 
-// define variables for Safety Essentials
+// define variables for Safety Essentials -> Child Welfare and Protection
 define ('SE_PRICE', 99);
 define ('SE_LVL_1_PRICE', 0);
 define ('SE_LVL_1_MIN', 1);
@@ -102,6 +102,7 @@ define ('AVG_EXAM_LENGTH', 10);  // the number of minutes it takes to complete a
 // define table names
 define ('TABLE_SUBSCRIPTIONS', $wpdb->prefix."subscriptions");
 define ('TABLE_LIBRARY', $wpdb->prefix."library");
+define ('TABLE_LIBRARY_MODULES', $wpdb->prefix."library_modules");
 define ('TABLE_VIDEOS', $wpdb->prefix."video");
 define ('TABLE_QUESTIONS', $wpdb->prefix."questionnaire_questions");
 define ('TABLE_UPGRADE_SUBSCRIPTION', $wpdb->prefix."upgrade");
@@ -150,13 +151,14 @@ define ('DEFAULT_SUBDOMAIN', 'eot');
 //define Library IDs
 define ('LE_ID', 1); // Leadership Essentials - Full Pack
 define ('LEL_ID', 5); // Leadership Essentials - Limited
-define ('SE_ID', 3); // Safety Essentials
+define ('SE_ID', 3); // Safety Essentials -> Child Welfare and Protection
 define ('CE_ID', 2); // Clinical Essentials
 define ('BCB_ID', 4); // Burn Camp Bundle
 define ('LE_SP_DC_ID', 6); // Leadership Essentials - Starter Pack - Day Camps
 define ('LE_SP_OC_ID', 7); // Leadership Essentials - Starter Pack - Overnight Camps
 define ('LE_SP_PRP_ID', 8); // Leadership Essentials - Starter Pack - Park & Rec Programs
 
+define ('CHILD_WELFARE_COURSE_ID', 32);
 // questionnaire base course IDs
 $questionnaire_base_course_id = array (
 	"New Staff" => '1',
