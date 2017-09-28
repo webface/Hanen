@@ -6005,6 +6005,7 @@ function getCourseForm_callback ( )
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $subscription_id = getSubscriptionFromCourse($course_id);
             $library_id = getLibraryFromSubscription($subscription_id);
+            //d($library_id);
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             
             $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the module videos in the specified course
@@ -6021,6 +6022,7 @@ function getCourseForm_callback ( )
             $categories = getCategoriesByLibrary($library_id);
             
             $master_modules = getModulesByLibrary($library_id);// Get all the modules from the current library.            
+            //d($master_modules,$categories);
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the current library.
             $master_module_ids = array_column($master_modules, 'ID');
             $modules_in_portal_ids = array_column($modules_in_portal, 'ID');

@@ -158,6 +158,7 @@ define ('LE_SP_DC_ID', 6); // Leadership Essentials - Starter Pack - Day Camps
 define ('LE_SP_OC_ID', 7); // Leadership Essentials - Starter Pack - Overnight Camps
 define ('LE_SP_PRP_ID', 8); // Leadership Essentials - Starter Pack - Park & Rec Programs
 
+define ('CHILD_WELFARE_COURSE_ID', 32);
 // questionnaire base course IDs
 $questionnaire_base_course_id = array (
 	"New Staff" => '1',

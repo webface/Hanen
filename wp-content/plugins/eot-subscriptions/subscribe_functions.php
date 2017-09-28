@@ -62,6 +62,33 @@ function display_subscriptions ()
                 // display the dashboard of library != LE or LEL
                 display_subscription_dashboard($subscription);
             }
+            if($library_id == SE_ID && !$subscription->setup)
+            {
+                    $subscription_id = $subscription->ID;
+                    $course_name = "Child Welfare and Protection";
+                    $course_id = CHILD_WELFARE_COURSE_ID;
+                    $course_description = "";
+                    $data = compact("user_id", "subscription_id", "course_description"); //course description is ommitted in this case
+                    $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+                    if (isset($response['status']) && !$response['status']) 
+                    {
+                        echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
+                        error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message']);
+                    }
+                    else
+                    {
+                        $upd = $wpdb->update(TABLE_SUBSCRIPTIONS, 
+                                    array( 
+                                        'setup' => '1' 
+                                    ), 
+                                    array( 
+                                        'id' => $subscription->ID 
+                                    ) 
+                                );
+                                wp_redirect(site_url('/dashboard'));
+                                exit();
+                    }
+            }
           
             if(($library_id == LE_ID || $library_id == LEL_ID || $library_id == LE_SP_DC_ID || $library_id == LE_SP_OC_ID || $library_id == LE_SP_PRP_ID) && !$subscription->setup) 
             {
