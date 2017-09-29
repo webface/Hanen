@@ -459,11 +459,12 @@ function ajax_processStats()
                 // go through each course and get the enrolled users / modules
                 foreach ($courses as $course)
                 {
-                    $c_subscription_id = get_new_id( 'SUB', $old_subscription_id );
-                    $c_org_id = get_new_id( 'ORG', $org_id );
-                    $c_owner_id = get_new_id( 'USER', $LU_data[$portal_subdomain]['user_id'] );
-                    $course_inserted = $wpdb->get_row("SELECT * FROM ". TABLE_COURSES . " WHERE course_name = '".$course['name']."' AND subscription_id = $c_subscription_id AND org_id = $c_org_id AND owner_id = $c_owner_id");
-                    if($course['name']!= "Leadership Essentials" && !$course_inserted)
+                    $new_subscription_id = get_new_id( 'SUB', $old_subscription_id );
+                    $new_org_id = get_new_id( 'ORG', $org_id );
+                    $new_owner_id = get_new_id( 'USER', $LU_data[$portal_subdomain]['user_id'] );
+                    $course_inserted = $wpdb->get_row("SELECT * FROM ". TABLE_COURSES . " WHERE course_name = '".$course['name']."' AND subscription_id = $new_subscription_id AND org_id = $new_org_id AND owner_id = $new_owner_id");
+                    
+                    if($course['name'] != "Leadership Essentials" && !$course_inserted) // make sure the course is not Leadership Essentials and that it isn't in the courses table already.
                     {
                         $result['message'] .= "Course: " . $course['name'] . " ";
                     // get modules
@@ -471,9 +472,9 @@ function ajax_processStats()
                         $new_course = $wpdb->insert(TABLE_COURSES, array(
                             'course_name'=> esc_sql($course['name']),
                             'course_description'=> esc_sql($course['description_html']),
-                            'subscription_id'=> $c_subscription_id,
-                            'org_id' => $c_org_id,
-                            'owner_id' => $c_owner_id
+                            'subscription_id'=> $new_subscription_id,
+                            'org_id' => $new_org_id,
+                            'owner_id' => $new_owner_id
                         ));
                         $course_id = $wpdb->insert_id; // the new course id
 
