@@ -83,16 +83,19 @@ function ajax_processUser()
     $last_name = (isset($_REQUEST['last_name'])) ? filter_var($_REQUEST['last_name'], FILTER_SANITIZE_STRING) : '';
 
 
-    $result = array("status" => 1, "message" => "All Done.");
+    $result = array("status" => 1, "message" => "");
 
     // check if user already exists in DB
     $user_exists = username_exists($user_login);
     if ($user_exists)
     {
+        $result['message'] .= "User: $user_login already exists with ID: $user_exists. ";
+
         // add new user id into table
         if (!$wpdb->get_row( "SELECT * FROM wp_eot_old_data WHERE type = 'USER' AND old_id = $old_id", ARRAY_A ))
         {
             $wpdb->insert ( 'wp_eot_old_data', array('type' => 'USER', 'old_id' => $old_id, 'new_id' => $user_exists));
+            $result['message'] .= "Added old id to table. ";
         }
 
         //make sure we have a subscription and org for this user if its a director
@@ -101,10 +104,12 @@ function ajax_processUser()
             $has_org = get_user_meta( $user_exists, 'org_id', true );
             if (!$has_org)
             {
+                $result['message'] .= "Director doesnt have org yet. ";
                 // doesnt have an org yet. Check if he had one before.
                 $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
                 if ($old_org_id)
                 {
+                    $result['message'] .= "but found old org: $old_org_id. ";
                     // it had an old org so insert the old data
                     $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
                     //$org['ID'] = 0; // reset the post ID cause it will be different upon insertion.
@@ -112,6 +117,7 @@ function ajax_processUser()
                     $new_org_id = wp_insert_post ( $org );
                     if ($new_org_id)
                     {
+                        $result['message'] .= "Created new org: $new_org_id. ";
                         update_user_meta($user_exists, 'org_id', $new_org_id);
                         $wpdb->insert ( 'wp_eot_old_data', array('type' => 'ORG', 'old_id' => $old_org_id, 'new_id' => $new_org_id));
 
@@ -125,18 +131,22 @@ function ajax_processUser()
             }
             else
             {
+                $result['message'] .= "Director does have org: $has_org. ";
                 // has an org, make sure he has a subscription
                 $has_subscription = $wpdb->get_row( "SELECT * FROM wp_subscriptions WHERE org_id = $has_org", ARRAY_A );
                 if ($has_subscription)
                 {
+                    $result['message'] .= "Does have subscription: ". $has_subscription['ID'] . ". ";
                     // has a subscription, check if there are any upgrades
                     $has_upgrades = $wpdb->get_results( "SELECT * FROM wp_upgrade WHERE org_id = $has_org", ARRAY_A );
                     if(!$has_upgrades)
                     {
+                        $result['message'] .= "Doesn't have upgrades. ";
                         // no upgrades, check if there were in the old db
-                        $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $old_sub_id", ARRAY_A);
+                        $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $has_org", ARRAY_A);
                         if (!empty($upgrades))
                         {
+                            $result['message'] .= "Did have upgrades, so adding them.";
                             foreach ($upgrades as $upgrade)
                             {
                                 unset($upgrade['id']);
@@ -151,11 +161,13 @@ function ajax_processUser()
                 }
                 else
                 {
+                    $result['message'] .= "Doesn't have a subscription, checking if had one. ";
                     // no subscription. Check if he had one.
-                    $old_sub = $wpdb->get_row( "SELECT * FROM wp_eot_subscriptions WHERE org_id = $old_org_id", ARRAY_A );
+                    $old_sub = $wpdb->get_row( "SELECT * FROM wp_eot_subscriptions WHERE org_id = $has_org", ARRAY_A );
                     if ($old_sub)
                     {
                         $old_sub_id = $old_sub['id'];
+                        $result['message'] .= "Had old subscription: $old_sub_id. ";
                         $old_sub['id'] = 0; // clear out the sub id
                         $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
                         $old_sub['manager_id'] = get_new_id( 'USER', $old_sub['manager_id']);
@@ -164,12 +176,14 @@ function ajax_processUser()
 
                         if ($new_sub_id)
                         {
+                            $result['message'] .= "New subscription id: $new_sub_id. ";
                             $wpdb->insert ( 'wp_eot_old_data', array('type' => 'SUB', 'old_id' => $old_sub_id, 'new_id' => $new_sub_id));
                         
                             // check for any upgrades and add them too
                             $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $old_sub_id", ARRAY_A);
                             if (!empty($upgrades))
                             {
+                                $result['message'] .= "Had old upgrades, adding... ";
                                 foreach ($upgrades as $upgrade)
                                 {
                                     unset($upgrade['id']);
@@ -187,10 +201,12 @@ function ajax_processUser()
         } // end if manager role
         else if ($role == 'student')
         {
+            $result['message'] .= "Student. ";
             // student exists, make sure he's assigned to an org
             $has_org = get_user_meta( $user_exists, 'org_id', true );
             if(!$has_org)
             {
+                $result['message'] .= "No org yet. ";
                 // isn't assigned to an org yet so find out what his old org is.
                 $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
 
@@ -199,6 +215,7 @@ function ajax_processUser()
 
                 // insert new org
                 update_user_meta( $user_exists, 'org_id', $new_org_id );
+                $result['message'] .= "Old org: $old_org_id New org: new_org_id. ";
             }
 
             // add the lrn_upon_id
@@ -206,6 +223,7 @@ function ajax_processUser()
             {
                 $lrn_upon_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'lrn_upon_id'" );
                 update_user_meta( $user_exists, 'lrn_upon_id', $lrn_upon_id );
+                $result['message'] .= "Added lrn_upon_id: $lrn_upon_id. ";
             }
 
             // add the portal
@@ -213,11 +231,10 @@ function ajax_processUser()
             {
                 $portal = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'portal'" );
                 update_user_meta( $user_exists, 'portal', $portal );
+                $result['message'] .= "Added portal: $portal";
             }
         }
-
-    	$result['status'] = 0;
-    	$result['message'] = "User: $user_login already exists with ID: $user_exists";
+        $result['message'] .= "All Done.<br>";
     }
     else
     {
@@ -243,26 +260,30 @@ function ajax_processUser()
     		'role' => $role
     	);
 
-        $result['message'] = 'trying to create user: ' . json_encode($user_data);
+        $result['message'] .= "Creating new user: " . json_encode($user_data) . "<br>";
 
     	// insert new user
         $new_id = wp_insert_user( $user_data );
         if (! is_wp_error( $new_id ))
         {
+            $result['message'] .= "New ID: $new_id. ";
             // inserted new user, now copy their subscription, upgrades, org, org_meta
             $wpdb->insert ( 'wp_eot_old_data', array('type' => 'USER', 'old_id' => $old_id, 'new_id' => $new_id));
             if ($role == 'manager') // its a director. need to set up their org/sub
             {
+                $result['message'] .= "Director. ";
                 // get old org data, create new org, add it to usermeta
                 $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
                 if($old_org_id)
                 {
+                    $result['message'] .= "Had old org: $old_org_id. ";
                     $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
                     unset($org['ID']); // reset the post ID cause it will be different upon insertion.
 
                     $new_org_id = wp_insert_post ( $org );
                     if ($new_org_id)
                     {
+                        $result['message'] .= "New org: $new_org_id. ";
                         update_user_meta($new_id, 'org_id', $new_org_id);
                         $wpdb->insert ( 'wp_eot_old_data', array('type' => 'ORG', 'old_id' => $old_org_id, 'new_id' => $new_org_id));
 
@@ -276,6 +297,7 @@ function ajax_processUser()
                         $old_sub = $wpdb->get_row( "SELECT * FROM wp_eot_subscriptions WHERE org_id = $old_org_id", ARRAY_A );
                         if ($old_sub)
                         {
+                            $result['message'] .= "Old subscription: $old_sub. ";
                             $old_sub_id = $old_sub['id'];
                             unset($old_sub['id']); // clear out the sub id
                             $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
@@ -286,12 +308,14 @@ function ajax_processUser()
                             $new_sub_id = $wpdb->insert_id;
                             if ($new_sub_id)
                             {
+                                $result['message'] .= "New subscription: $new_sub_id. ";
                                 $wpdb->insert ( 'wp_eot_old_data', array('type' => 'SUB', 'old_id' => $old_sub_id, 'new_id' => $new_sub_id));
 
                                 // check for any upgrades and add them too
                                 $upgrades = $wpdb->get_results ( "SELECT * FROM wp_eot_upgrade WHERE subscription_id = $old_sub_id", ARRAY_A);
                                 if (!empty($upgrades))
                                 {
+                                    $result['message'] .= "Inserting upgrades. ";
                                     foreach ($upgrades as $upgrade)
                                     {
                                         unset($upgrade['id']);
@@ -302,9 +326,11 @@ function ajax_processUser()
                                         $wpdb->insert ( 'wp_upgrade', $upgrade);
                                     }
                                 }
-                            }else
+                            }
+                            else
                             {
-                               $result['message'] .= "<span style='color:red'>ERROR: </span> could'nt add the subscription."; 
+                               $result['status'] = 0;
+                               $result['message'] .= "<span style='color:red'>ERROR: </span> could'nt add the subscription. "; 
                             }
                         }
                         else
@@ -314,12 +340,12 @@ function ajax_processUser()
                         }
 
                     }
-                    // get old subscription data, modify it, insert new subscription
                 }
 
             }
             else if ($role == 'student')
             {
+                $result['message'] .= "Student. ";
                 // add student into new org
                 $has_org = get_user_meta( $new_id, 'org_id', true );
                 if(!$has_org)
@@ -332,6 +358,7 @@ function ajax_processUser()
 
                     // insert new org
                     update_user_meta( $new_id, 'org_id', $new_org_id );
+                    $result['message'] .= "Old org: $old_org_id New org: $new_org_id. ";
                 }
 
                 // add the lrn_upon_id
@@ -339,6 +366,7 @@ function ajax_processUser()
                 {
                     $lrn_upon_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'lrn_upon_id'" );
                     update_user_meta( $new_id, 'lrn_upon_id', $lrn_upon_id );
+                    $result['message'] .= "lrn_upon_id: $lrn_upon_id. ";
                 }
 
                 // add the portal
@@ -346,6 +374,7 @@ function ajax_processUser()
                 {
                     $portal = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'portal'" );
                     update_user_meta( $new_id, 'portal', $portal );
+                    $result['message'] .= "portal: $portal. ";
                 }
 
             }
@@ -354,14 +383,14 @@ function ajax_processUser()
         {
             // something went wrong when trying to create new user
             $result['status'] = 0;
-            $result['message'] .= "<span style='color:red'>ERROR:</span> when trying to insert new user: $user_login old_id: $old_id";
+            $result['message'] .= "<span style='color:red'>ERROR:</span> when trying to insert new user: $user_login old_id: $old_id ";
         }
-	
+	   
+       $result['message'] .= "All Done. ";
     }
 
     echo json_encode($result);
     die();
-
 }
 
 // get the new id of a given type

@@ -39,8 +39,8 @@
 	require_once(get_template_directory() . '/LU/LU_functions.php');
 
 	$process = 0; // boolean whether to delete and clone or just debug
-	$num_portals_to_process = 5; // the number of portals to process.
-	$num_users_to_process = 100000; // the number of users to process.
+	$num_portals_to_process = 10; // the number of portals to process.
+	$num_users_to_process = 10; // the number of users to process.
 	$admin_ajax_url = admin_url('admin-ajax.php');
 
 	// make sure were alowed to use this script
@@ -87,14 +87,14 @@
 
 	if ($action == 'import_users')
 	{
-
+/*
 $old_id = 61;
 $old_org_id = $wpdb->get_var( "SELECT meta_value FROM wp_eot_usermeta WHERE user_id = $old_id AND meta_key = 'org_id'" );
 $org = $wpdb->get_row( "SELECT * FROM wp_eot_posts WHERE ID = $old_org_id", ARRAY_A );
 $org_meta = $wpdb->get_results ( "SELECT * FROM wp_eot_postmeta WHERE post_id = $old_org_id", ARRAY_A );
 $org['ID'] = 0;
 //ddd($old_id, $old_org_id, $org, $org_meta);
-
+*/
 
 		echo "going to import all users ...";
 
@@ -132,7 +132,7 @@ d($sales_reps, $sales_reps_json);
             'fields' => array ('ID', 'display_name', 'user_email', 'user_registered')
         );
         
-        // get umbrella managers
+        // get managers
         $query = "
         	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'manager' as role 
         	FROM wp_eot_users u 
@@ -157,8 +157,6 @@ d($managers, $managers_json);
         $students = $wpdb->get_results( $query, ARRAY_A );
         $students_json = json_encode($students, JSON_FORCE_OBJECT);
 d($students, $students_json);
-
-
 
 		// the javascript that will process creating these users
 ?>
@@ -212,7 +210,7 @@ d($students, $students_json);
 		            	}
 		            	else
 		            	{
-							$('.ajax_response').append("something went wrong: " + response.message + "<br>");
+							$('.ajax_response').append("ERROR: " + response.message + "<br>");
 		            	}
 		            	count++;	
 
@@ -392,15 +390,8 @@ d($students, $students_json);
 	}
 	else if ($action == 'import_stats')
 	{
-        		// get directors
-        $args = array(
-            'role__in' => array ('manager'),
-            'role__not_in' => array('administrator', 'student', 'salesrep', 'sales_manager'),
-            'number' => -1,
-            'fields' => array ('ID', 'display_name', 'user_email', 'user_registered')
-        );
         
-        // get umbrella managers
+        // get managers
         $query = "
         	SELECT u.ID as old_id, u.user_login, u.user_pass, u.user_email, 'manager' as role 
         	FROM wp_eot_users u 
@@ -413,7 +404,7 @@ d($students, $students_json);
         $managers_json = json_encode($managers, JSON_FORCE_OBJECT);
         d($managers, $managers_json);    
         
-                ?>
+?>
         <div class="processing"></div>
 	<p>&nbsp;</p>
 	<div class="ajax_response"></div>
@@ -436,8 +427,6 @@ d($students, $students_json);
 			$('.processing').html("Processing " + counter + " out of " + len + " " + myUser.role);
 		    processUsers(myUser);
 
-
-
 		    function processUsers(myUser) 
 		    {
                         console.log("Process Users")
@@ -459,7 +448,7 @@ d($students, $students_json);
 		            	}
 		            	else
 		            	{
-							$('.ajax_response').append("something went wrong: " + response.message + "<br>");
+							$('.ajax_response').append("ERROR: " + response.message + "<br>");
 		            	}
 		            	count++;	
 
