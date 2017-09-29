@@ -459,90 +459,93 @@ function ajax_processStats()
                 // go through each course and get the enrolled users / modules
                 foreach ($courses as $course)
                 {
-                    $result['message'] .= "Course: " . $course['name'] . " ";
+                    if($course['name']!= "Leadership Essentials")
+                    {
+                        $result['message'] .= "Course: " . $course['name'] . " ";
                     // get modules
 
-                    $new_course = $wpdb->insert(TABLE_COURSES, array(
-                        'course_name'=> esc_sql($course['name']),
-                        'course_description'=> esc_sql($course['description_html']),
-                        'subscription_id'=> get_new_id( 'SUB', $old_subscription_id ),
-                        'org_id' => get_new_id( 'ORG', $org_id ),
-                        'owner_id' => get_new_id( 'USER', $LU_data[$portal_subdomain]['user_id'] )
-                    ));
-                    $course_id = $wpdb->insert_id; // the new course id
-                        
-                    // make sure we inserted the new course properly    
-                    if ($course_id)
-                    {
-                        $result['message'] .= "Course ID: $course_id. ";
-                        $modules = LU_getModules($course['id'], $portal_subdomain, $data, 'page');//get modules using the old course id
+                        $new_course = $wpdb->insert(TABLE_COURSES, array(
+                            'course_name'=> esc_sql($course['name']),
+                            'course_description'=> esc_sql($course['description_html']),
+                            'subscription_id'=> get_new_id( 'SUB', $old_subscription_id ),
+                            'org_id' => get_new_id( 'ORG', $org_id ),
+                            'owner_id' => get_new_id( 'USER', $LU_data[$portal_subdomain]['user_id'] )
+                        ));
+                        $course_id = $wpdb->insert_id; // the new course id
 
-                        // if no modules, make sure its an array so that it doesnt mess up the foreach loop below.
-                        if (empty($modules))
+                        // make sure we inserted the new course properly    
+                        if ($course_id)
                         {
-                            $result['message'] .= "No modules found in course. ";
-                            $modules = array();
-                        }
-                        else 
-                        {
-                            $result['message'] .= "processing " . count($modules) . " modules: ";
-                            foreach ($modules as $module) {
-                                $result['message'] .= $module['title'] . ", ";
-                                $module_id = $wpdb->get_var("SELECT ID FROM ".TABLE_MODULES." WHERE title = '".$module['title']."' AND org_id = 0");
-                                if($module_id)
-                                {
-                                    $mr = getResourcesInModule($module_id);
-                                    if($mr && count($mr) > 0)
+                            $result['message'] .= "Course ID: $course_id. ";
+                            $modules = LU_getModules($course['id'], $portal_subdomain, $data, 'page');//get modules using the old course id
+
+                            // if no modules, make sure its an array so that it doesnt mess up the foreach loop below.
+                            if (empty($modules))
+                            {
+                                $result['message'] .= "No modules found in course. ";
+                                $modules = array();
+                            }
+                            else 
+                            {
+                                $result['message'] .= "processing " . count($modules) . " modules: ";
+                                foreach ($modules as $module) {
+                                    $result['message'] .= $module['title'] . ", ";
+                                    $module_id = $wpdb->get_var("SELECT ID FROM ".TABLE_MODULES." WHERE title = '".$module['title']."' AND org_id = 0");
+                                    if($module_id)
                                     {
-                                        foreach($mr as $resource)
+                                        $mr = getResourcesInModule($module_id);
+                                        if($mr && count($mr) > 0)
                                         {
-                                            $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array(
-                                                'course_id' => $course_id,
-                                                'module_id' => $module_id,
-                                                'resource_id' => $resource['ID'],
-                                                'type' => $resource['type']
-                                            ));
+                                            foreach($mr as $resource)
+                                            {
+                                                $wpdb->insert(TABLE_COURSE_MODULE_RESOURCES, array(
+                                                    'course_id' => $course_id,
+                                                    'module_id' => $module_id,
+                                                    'resource_id' => $resource['ID'],
+                                                    'type' => $resource['type']
+                                                ));
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        $result['message'] .= "Published: " . $course['published_status_id'] . " Num Enrolled: " . $course['num_enrolled'];
-                        // check if published, to know if we need to get enrolled users
-                        if ($course['published_status_id'] == 'published' && $course['num_enrolled'] > 0)
-                        {
-                            $result['message'] .= "Enrolling users: ";
-                            // get enrolled users
-                            $enrolled_users = LU_getEnrollment($course['id'], $portal_subdomain, $data);
-                            if($enrolled_users && count($enrolled_users) > 0)
+                            $result['message'] .= "Published: " . $course['published_status_id'] . " Num Enrolled: " . $course['num_enrolled'];
+                            // check if published, to know if we need to get enrolled users
+                            if ($course['published_status_id'] == 'published' && $course['num_enrolled'] > 0)
                             {
-                                foreach ($enrolled_users as $user) {
-                                    $user_id = email_exists($user['email']);
-                                    if($user_id)
-                                    {
-                                        $subscription = getSubscriptionByCourse($course_id);//gets the new subscription id
-                                        $enroll = $wpdb->insert(TABLE_ENROLLMENTS,array(
-                                            'course_id' => $course_id,
-                                            'user_id'=> $user_id,
-                                            'org_id' => get_new_id( 'ORG', $org_id ),
-                                            'subscription_id' => $subscription['ID'],
-                                            'email' => $user['email'],
-                                            'date_enrolled' =>$user['date_enrolled'],
-                                            'status' =>$user['status']
+                                $result['message'] .= "Enrolling users: ";
+                                // get enrolled users
+                                $enrolled_users = LU_getEnrollment($course['id'], $portal_subdomain, $data);
+                                if($enrolled_users && count($enrolled_users) > 0)
+                                {
+                                    foreach ($enrolled_users as $user) {
+                                        $user_id = email_exists($user['email']);
+                                        if($user_id)
+                                        {
+                                            $subscription = getSubscriptionByCourse($course_id);//gets the new subscription id
+                                            $enroll = $wpdb->insert(TABLE_ENROLLMENTS,array(
+                                                'course_id' => $course_id,
+                                                'user_id'=> $user_id,
+                                                'org_id' => get_new_id( 'ORG', $org_id ),
+                                                'subscription_id' => $subscription['ID'],
+                                                'email' => $user['email'],
+                                                'date_enrolled' =>$user['date_enrolled'],
+                                                'status' =>$user['status']
 
-                                        ));
-                                        $result['message'] .= $user['email'] . ", ";
-                                    }
-                                    else
-                                    {
-                                        $result['message'] .= "ERROR: " . $user['email'] . "doesn't exist. ";
+                                            ));
+                                            $result['message'] .= $user['email'] . ", ";
+                                        }
+                                        else
+                                        {
+                                            $result['message'] .= "ERROR: " . $user['email'] . "doesn't exist. ";
+                                        }
                                     }
                                 }
+            //d($enrolled_users);
                             }
-        //d($enrolled_users);
-                        }
 
+                        }
                     }
                 }    
             }
