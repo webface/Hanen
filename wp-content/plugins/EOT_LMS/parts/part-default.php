@@ -7,7 +7,7 @@ $org_id = get_org_from_user($user_id); // Organization ID
 $org_name = get_the_title($org_id);
 $portal_subdomain = ''; // Subdomain of the user REMOVE THIS LATER
 $image = get_field('dashboard_logo', 'user_' . $org_id); // Advance custom fields. Field for the dashboard_logo
-$page_title = "Dashboard";
+$page_title = __("Dashboard","EOT_LMS");
 
 // Camp Director
 if (current_user_can("is_director")) 
