@@ -134,13 +134,14 @@
                             $minutes = floor($duration_in_seconds / 60);
                             $seconds = $duration_in_seconds - (60 * $minutes);
                             echo " (" . $minutes . ":" . str_pad($seconds, 2, "0", STR_PAD_LEFT) . ") ";
+/*
                             //get presentor's name based on wordpress id 
                             $presenter = get_user_by('id', $video_times[$title]->presenter_id);
                             if ($presenter)
                             {
                               echo "by " . $presenter->data->display_name;
                             }
-
+*/
                             //Get the resources for the video
                             //$resources = getResources($video_times[$title]->id);
                             $description = ''; // Initialize variable for subscription.
