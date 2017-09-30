@@ -199,7 +199,7 @@ d($students, $students_json);
 		        $.ajax(
 		        {
 		            type: "POST",
-		            url: "http://eotv5.dev/wp-content/themes/ExpertOnlineTraining/LU/index.php",
+		            url: "http://expertonlinetraining.info/wp-content/themes/ExpertOnlineTraining/LU/index.php",
 		            data: data,
 		            dataType: "json",
 		            success: function(response) 
@@ -293,7 +293,7 @@ d($students, $students_json);
                                         else if(myUser.role == 'student')
                                         {
                                             //redirect to start loading stats
-                                            //$(location).attr("href","http://eotv5.dev/wp-content/themes/ExpertOnlineTraining/LU/index.php?action=import_stats");
+                                            //$(location).attr("href","http://expertonlinetraining.info/wp-content/themes/ExpertOnlineTraining/LU/index.php?action=import_stats");
                                         }
 		            	}
 		            },
@@ -437,7 +437,7 @@ d($students, $students_json);
 		        $.ajax(
 		        {
 		            type: "POST",
-		            url: "http://eotv5.dev/wp-content/themes/ExpertOnlineTraining/LU/index.php",
+		            url: "http://expertonlinetraining.info/wp-content/themes/ExpertOnlineTraining/LU/index.php",
 		            data: data,
 		            dataType: "json",
 		            success: function(response) 
