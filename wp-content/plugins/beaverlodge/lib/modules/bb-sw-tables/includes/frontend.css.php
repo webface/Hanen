@@ -9,8 +9,8 @@ $rowFamily = $settings->row_font;
 <?php if($settings->header_font_size != 'default') { ?>
     font-size: <?php echo $settings->header_custom_font_size; ?>px;
 <?php } ?>
-    font-family: <?php echo $headerFamily[family]; ?> !important;
-    font-weight: <?php echo $headerFamily[weight]; ?> !important;
+    font-family: <?php echo $headerFamily['family']; ?> !important;
+    font-weight: <?php echo $headerFamily['weight']; ?> !important;
     color: #<?php echo $settings->headerFont; ?>;
 }
 
@@ -26,8 +26,8 @@ $rowFamily = $settings->row_font;
 <?php if($settings->header_font_size != 'default') { ?>
     font-size: <?php echo $settings->row_custom_font_size; ?>px;
 <?php } ?>
-    font-family: <?php echo $rowFamily[family]; ?> !important;
-    font-weight: <?php echo $rowFamily[weight]; ?> !important;
+    font-family: <?php echo $rowFamily['family']; ?> !important;
+    font-weight: <?php echo $rowFamily['weight']; ?> !important;
     color: #<?php echo $settings->rowsFont; ?>;
 }
 
