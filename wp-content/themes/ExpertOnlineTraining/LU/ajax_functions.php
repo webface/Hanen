@@ -236,7 +236,7 @@ function ajax_processUser()
         }
         $result['message'] .= "All Done.<br>";
     }
-    else
+    else // new user
     {
         // user doesnt exist so create the user
         // get users first/last name
@@ -268,7 +268,7 @@ function ajax_processUser()
         {
             $result['message'] .= "New ID: $new_id. ";
             // inserted new user, now copy their subscription, upgrades, org, org_meta
-            $wpdb->insert ( 'wp_eot_old_data', array('type' => 'USER', 'old_id' => $old_id, 'new_id' => $new_id));
+            $wpdb->insert ( 'wp_eot_old_data', array('type' => 'USER', 'old_id' => $old_id, 'new_id' => $new_id), array('%s','%d','%d') );
             if ($role == 'manager') // its a director. need to set up their org/sub
             {
                 $result['message'] .= "Director. ";
@@ -297,7 +297,7 @@ function ajax_processUser()
                         $old_sub = $wpdb->get_row( "SELECT * FROM wp_eot_subscriptions WHERE org_id = $old_org_id", ARRAY_A );
                         if ($old_sub)
                         {
-                            $result['message'] .= "Old subscription: $old_sub. ";
+                            $result['message'] .= "Old subscription: " . $old_sub['id'] . " ";
                             $old_sub_id = $old_sub['id'];
                             unset($old_sub['id']); // clear out the sub id
                             $old_sub['rep_id'] = get_new_id( 'USER', $old_sub['rep_id']);
@@ -495,7 +495,7 @@ function ajax_processStats()
                                 $result['message'] .= "processing " . count($modules) . " modules: ";
                                 foreach ($modules as $module) {
                                     $result['message'] .= $module['title'] . ", ";
-                                    $module_id = $wpdb->get_var("SELECT ID FROM ".TABLE_MODULES." WHERE title = '".$module['title']."' AND org_id = 0");
+                                    $module_id = $wpdb->get_var("SELECT ID FROM ".TABLE_MODULES." WHERE title = '".addslashes($module['title'])."' AND org_id = 0");
                                     if($module_id)
                                     {
                                         $mr = getResourcesInModule($module_id);

@@ -40,7 +40,7 @@
 
 	$process = 0; // boolean whether to delete and clone or just debug
 	$num_portals_to_process = 10; // the number of portals to process.
-	$num_users_to_process = 10; // the number of users to process.
+	$num_users_to_process = 99999; // the number of users to process.
 	$admin_ajax_url = admin_url('admin-ajax.php');
 
 	// make sure were alowed to use this script
