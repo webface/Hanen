@@ -6209,8 +6209,16 @@ function getCourseForm_callback ( )
                             /* 
                              * This populates the modules array.
                              */
-                                    $new_module = new module( $module['ID'], $module['title'], $module['category']); // Make a new module.
-                                    array_push($modules, $new_module); // Add the new module to the modules array.
+                            if( $module['category'] )
+                            {
+                              $new_module = new module( $module['ID'], $module['title'], $module['category']); // Make a new module.
+                            }
+                            else
+                            {
+                              $new_module = new module( $module['ID'], $module['title'], 'Custom'); // Custom module.
+                            }
+
+                            array_push($modules, $new_module); // Add the new module to the modules array.
 
                         }
                         //usort($categories, "category_sort"); // Sort the categories based on the function below.
