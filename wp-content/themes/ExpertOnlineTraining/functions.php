@@ -395,3 +395,20 @@ function track_logins($user_login, $user)
   }
 }
 add_action('wp_login', 'track_logins', 10, 2);
+
+add_filter( 'login_url', 'mysite_login_url', 10, 2);
+function mysite_login_url( $force_reauth, $redirect ){
+if(ICL_LANGUAGE_CODE=='fr'){
+$login_url = site_url("/fr/wp-login.php");
+}
+else
+{
+$login_url = site_url("/wp-login.php");
+}
+ 
+if ( !empty($redirect) )
+$login_url = add_query_arg( 'redirect_to', urlencode( $redirect ), $login_url );
+ 
+return $login_url ;
+}
+
