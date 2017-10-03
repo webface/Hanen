@@ -76,18 +76,21 @@
 				<b>Length: <?= " (" . $minutes . ":" . str_pad($seconds, 2, "0", STR_PAD_LEFT) . ") "; ?></b>
 				<br>
 				<br>
+                <b>Language:</b>  <?= $subLanguage ? '<a href="?part=view&course_id=' . $course_id . '&module_id=' .$module_id.'">English</a>' : 'English' ?> 
+<?php
+                echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view&course_id=' . $course_id . '&module_id=' .$module_id.'&subLang=es"> Español</a>';
+?>
                 <div id='player_<?= $video_id; ?>' style='width:665px;height:388px'>
                     <video id="my-video" user-id="<?=$user_id?>" track-id="<?=$track_id?>" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
                         <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_en.vtt" srclang="en" label="English" default>
                         <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_es.vtt" srclang="es" label="Spanish">
                         <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_ma.vtt" srclang="man" label="Mandarin">
-
 <?php 
                         // Check if we are showing by language or resolution.
                         if($subLanguage)
                         {
 ?>
-                            <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $video_record['spanish'] : $video['shortname_medium'] ?>.mp4" type='video/mp4'>
+                            <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $video['spanish'] : $video['shortname_medium'] ?>.mp4" type='video/mp4'>
                             <p class="vjs-no-js">
                             To view this video please enable JavaScript, and consider upgrading to a web browser that
                             <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
@@ -150,6 +153,8 @@
                     }
                     echo '<h3>Resources</h3>';
                     echo '<ul class="inner nobullet">';
+                    $url = '';
+                    $action = '';
                     foreach($my_resources as $resource)
                         {
                             switch ($resource['type']) 
@@ -172,12 +177,14 @@
                                 default:
                                     $icon = "fa-sticky-note-o";
                             }
-                            
-?>
-		                    
-		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
-		                    
-<?php
+                            // Check if there are any resource available.
+                            if( $url && $action )
+                            {   
+    ?>
+    		                    
+    		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
+    <?php
+                            }
                         }
                         echo '</ul>';
 ?>
