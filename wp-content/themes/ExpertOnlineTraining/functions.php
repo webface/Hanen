@@ -5,8 +5,15 @@
  * @package bootstrap-basic
  */
 //require_once(dirname( __FILE__ ) . '/bootstrap-functions.php');
-
+if(ICL_LANGUAGE_CODE=='fr'){
+$eot_dashboard_url = get_bloginfo ('url') . "/fr/dashboard";
+}
+else
+{
 $eot_dashboard_url = get_bloginfo ('url') . "/dashboard";
+}
+//d($eot_dashboard_url);
+
 $eot_login_url = wp_login_url ($eot_dashboard_url);
 $eot_logout_url = wp_logout_url( home_url() );
 $restricted_pages = array (
@@ -303,25 +310,34 @@ add_filter( 'manage_users_custom_column', 'add_user_fields_row', 10, 3 );
 add_filter( 'wp_nav_menu_items', 'wti_loginout_menu_link', 10, 2 );
 
 function wti_loginout_menu_link( $items, $args ) {
+   // error_log(json_encode($args));
    if ($args->theme_location == 'primary_login')
    {
-   		$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout") .'</a></li>';
+   		$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout","EOT_LMS") .'</a></li>';
    }
    else if ($args->theme_location == 'primary')
    {
-   		$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login") .'</a></li>';
+   		$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login","EOT_LMS") .'</a></li>';
    }
    else if ($args->theme_location == 'footer')
    {
    		if (is_user_logged_in())
    		{
-   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout") .'</a></li>';
+   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout","EOT_LMS") .'</a></li>';
    		}
    		else
    		{
-   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login") .'</a></li>';
+   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login","EOT_LMS") .'</a></li>';
    		}
    }
+   else if (is_user_logged_in())
+   		{
+   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout","EOT_LMS") .'</a></li>';
+   		}
+   		else
+   		{
+   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login","EOT_LMS") .'</a></li>';
+   		}
    return $items;
 }
 
@@ -397,13 +413,14 @@ function track_logins($user_login, $user)
 add_action('wp_login', 'track_logins', 10, 2);
 
 add_filter( 'login_url', 'mysite_login_url', 10, 2);
-function mysite_login_url( $force_reauth, $redirect ){
+function mysite_login_url( $force_reauth, $redirect )
+{
 if(ICL_LANGUAGE_CODE=='fr'){
-$login_url = site_url("/fr/wp-login.php");
+$login_url = site_url("/fr/login/");
 }
 else
 {
-$login_url = site_url("/wp-login.php");
+$login_url = site_url("/login/");
 }
  
 if ( !empty($redirect) )
@@ -411,4 +428,124 @@ $login_url = add_query_arg( 'redirect_to', urlencode( $redirect ), $login_url );
  
 return $login_url ;
 }
+
+
+function redirect_login_page() 
+{
+  
+  if(ICL_LANGUAGE_CODE=='fr'){
+    $login_page  = home_url( '/fr/login/' );
+    }
+    else
+    {
+    $login_page  = home_url( '/login/' );
+    }
+  $page_viewed = basename($_SERVER['REQUEST_URI']);
+ 
+  if( $page_viewed == "wp-login.php" && $_SERVER['REQUEST_METHOD'] == 'GET') {
+    wp_redirect($login_page);
+    exit;
+  }
+}
+add_action('init','redirect_login_page');
+
+function login_failed() 
+{
+    if(ICL_LANGUAGE_CODE=='fr'){
+    $login_page  = home_url( '/fr/login/' );
+    }
+    else
+    {
+    $login_page  = home_url( '/login/' );
+    }
+  
+  wp_redirect( $login_page . '?login=failed' );
+  exit;
+}
+add_action( 'wp_login_failed', 'login_failed' );
+ 
+function verify_username_password( $user, $username, $password ) 
+{
+    if(ICL_LANGUAGE_CODE=='fr'){
+    $login_page  = home_url( '/fr/login/' );
+    }
+    else
+    {
+    $login_page  = home_url( '/login/' );
+    }
+    if( $username == "" || $password == "" ) {
+        wp_redirect( $login_page . "?login=empty" );
+        exit;
+    }
+}
+add_filter( 'authenticate', 'verify_username_password', 1, 3);
+//function logout_page() 
+//{
+//    if(ICL_LANGUAGE_CODE=='fr'){
+//    $login_page  = home_url( '/fr/login/' );
+//    }
+//    else
+//    {
+//    $login_page  = home_url( '/login/' );
+//    }
+//  wp_redirect( $login_page . "?login=false" );
+//  exit;
+//}
+//add_action('wp_logout','logout_page');
+
+
+
+/**
+ * 
+ * 
+ */
+function redirect_lostpassword_page() {
+$lostpassword_page = home_url( '/lostpassword' );
+$page_viewed = basename($_SERVER['REQUEST_URI']);
+
+if( $page_viewed == "wp-login.php?action=lostpassword" && $_SERVER['REQUEST_METHOD'] == 'GET') {
+wp_redirect($lostpassword_page);
+exit;
+}
+}
+add_action('init','redirect_lostpassword_page');
+
+function action_lostpassword_post( $errors ) {
+
+if ( ! isset( $_POST['user_login'] ) || empty( $_POST['user_login'] ) ) {
+$lostpassword_page = home_url( '/lostpassword' );
+wp_redirect( $lostpassword_page . '?id=empty' );
+exit;
+}
+
+elseif ( !email_exists( $_POST['user_login'] ) ) {
+$lostpassword_page = home_url( '/lostpassword' );
+wp_redirect( $lostpassword_page . '?id=failed' );
+exit;
+}
+
+}
+add_action( 'lostpassword_post', 'action_lostpassword_post', 10, 1 );
+
+add_action('wp_logout','auto_redirect_after_logout');
+function auto_redirect_after_logout(){
+wp_redirect( home_url() );
+exit();
+}
+
+
+function my_login_redirect( $redirect_to, $request, $user ) {
+	//is there a user to check?
+    error_log("Lang code: ".json_encode(ICL_LANGUAGE_CODE));
+    if(ICL_LANGUAGE_CODE=='fr'){
+    return home_url('/fr/dashboard/');
+    }
+    else
+    {
+    return home_url('/dashboard/');
+    }
+	
+}
+
+add_filter( 'login_redirect', 'my_login_redirect', 10, 3 );
 
