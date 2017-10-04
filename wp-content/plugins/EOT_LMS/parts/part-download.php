@@ -83,6 +83,7 @@
                 case 'doc': $mime = 'application/msword'; break;
                 case 'docx': $mime = 'application/msword'; break;
                 case 'csv': $mime = 'text/csv'; break;
+                case 'txt': $mime = 'application/txt'; break;
 		case 'jpeg':
 		case 'jpg': $mime = 'image/jpg'; break;
 		default: $mime = 'application/force-download';
