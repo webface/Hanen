@@ -26,107 +26,80 @@
   $resource = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES . " WHERE ID = $resource_id",ARRAY_A);
   
   $file_path = $resource['url'];
-      
+  //error_log($file_path);
+  //$base_name = basename($file_path);
+  //error_log($base_name);    
   //echo "Filepath: $file_path <br>";
-  $fname = $resource['name'];
+  //$fname = $resource['name'];
   
-  $allowed_ext = array (
-
-    // archives
-    'zip' => 'application/zip',
-
-    // documents
-    'pdf' => 'application/pdf',
-    'csv' => 'text/csv',
-    'doc' => 'application/msword',
-    'docx' => 'application/msword',
-    'xls' => 'application/vnd.ms-excel',
-    'xlsx' => 'application/vnd.ms-excel',
-    'ppt' => 'application/vnd.ms-powerpoint',
-    'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    'txt' => 'application/txt',
-    'rtf' => 'application/txt',
-    
-    // executables
-    //'exe' => 'application/octet-stream',
-
-    // images
-    'gif' => 'image/gif',
-    'png' => 'image/png',
-    'jpg' => 'image/jpeg',
-    'jpeg' => 'image/jpeg',
-    'bmp' => 'image/bmp'
-    );
+//  $allowed_ext = array (
+//
+//    // archives
+//    'zip' => 'application/zip',
+//
+//    // documents
+//    'pdf' => 'application/pdf',
+//    'csv' => 'text/csv',
+//    'doc' => 'application/msword',
+//    'docx' => 'application/msword',
+//    'xls' => 'application/vnd.ms-excel',
+//    'xlsx' => 'application/vnd.ms-excel',
+//    'ppt' => 'application/vnd.ms-powerpoint',
+//    'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+//    'txt' => 'application/txt',
+//    'rtf' => 'application/txt',
+//    
+//    // executables
+//    //'exe' => 'application/octet-stream',
+//
+//    // images
+//    'gif' => 'image/gif',
+//    'png' => 'image/png',
+//    'jpg' => 'image/jpeg',
+//    'jpeg' => 'image/jpeg',
+//    'bmp' => 'image/bmp'
+//    );
   
   // Make sure program execution doesn't time out
   set_time_limit(0);
-      
-//      if (!is_file($file_path)) {
-//        die("$file_path File does not exist. Please try again. If the problem persists, please contact system administrators with the details."); 
-//      }
-//      
-//
+// make sure it's a file before doing anything!
+//if(is_file($file_path)) {
 
-  // file size in bytes
-  $head = array_change_key_case(get_headers($file_path, TRUE));
-  $fsize = $head['content-length'];
-  $fext = strtolower(substr(strrchr($file_path,"."),1));
-  error_log($fext);
-  // check if allowed extension
-  if (!array_key_exists($fext, $allowed_ext)) 
-  {
-    die("Not allowed file type."); 
-  }
-  
-  // get mime type
-  if ($allowed_ext[$fext] == '') 
-  {
-    $mtype = '';
-    // mime type is not set, get from server settings
-    if (function_exists('mime_content_type')) 
-    {
-      $mtype = mime_content_type($file_path);
-    }
-    else if (function_exists('finfo_file')) 
-    {
-      $finfo = finfo_open(FILEINFO_MIME); // return mime type
-      $mtype = finfo_file($finfo, $file_path);
-      finfo_close($finfo);  
-    }
-    if ($mtype == '') 
-    {
-      $mtype = "application/force-download";
-    }
-  }
-  else 
-  {
-    // get mime type defined by admin
-    $mtype = $allowed_ext[$fext];
-  }
-  
-  // Browser will try to save file with this filename, regardless original filename.
-  // You can override it if needed.
-  
-  if (!isset($_GET['fc']) || empty($_GET['fc'])) 
-  {
-    $asfname = $fname;
-  }
-  else 
-  {
-    // remove some bad chars
-    $asfname = str_replace(array('"',"'",'\\','/'), '', $_GET['fc']);
-    if ($asfname === '') $asfname = 'untitled';
-  }
-  // set headers
-  header("Pragma: public");
-  header("Expires: 0");
-  header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  header("Cache-Control: public");
-  header("Content-Description: File Transfer");
-  header("Content-Type: $mtype");
-  header("Content-Disposition: attachment; filename=\"$asfname\"");
-  header("Content-Transfer-Encoding: binary");
-  header("Content-Length: " . $fsize);
-  readfile("$file_path");
+	/*
+		Do any processing you'd like here:
+		1.  Increment a counter
+		2.  Do something with the DB
+		3.  Check user permissions
+		4.  Anything you want!
+	*/
+
+	// required for IE
+	if(ini_get('zlib.output_compression')) { ini_set('zlib.output_compression', 'Off');	}
+
+	// get the file mime type using the file extension
+	switch(strtolower(substr(strrchr($file_path, '.'), 1))) {
+		case 'pdf': $mime = 'application/pdf'; break;
+		case 'zip': $mime = 'application/zip'; break;
+                case 'doc': $mime = 'application/msword'; break;
+                case 'docx': $mime = 'application/msword'; break;
+                case 'csv': $mime = 'text/csv'; break;
+		case 'jpeg':
+		case 'jpg': $mime = 'image/jpg'; break;
+		default: $mime = 'application/force-download';
+	}
+	header('Pragma: public'); 	// required
+	header('Expires: 0');		// no cache
+	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	//header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($file_path)).' GMT');
+	header('Cache-Control: private',false);
+	header('Content-Type: '.$mime);
+	header('Content-Disposition: attachment; filename="'.basename($file_path).'"');
+	header('Content-Transfer-Encoding: binary');
+	header('Content-Length: '.filesize($file_path));	// provide file size
+	header('Connection: close');
+	readfile($file_path);		// push it out
+	exit();
+
+//}
 
 ?>
