@@ -27,26 +27,26 @@
 		        	return;
 		        }
 
-                        // Variable declaration
-                        $rep_id = $current_user->ID; // The rep's wordpress user ID
-                        $org_id = $subscription->org_id; // Organization ID
-                        $org_name = get_the_title($org_id);
-                        $full_name = ucwords ($camp_director->user_firstname . " " . $camp_director->user_lastname);
-                        $address = get_post_meta ($org_id, 'org_address', true);
-                        $city = get_post_meta ($org_id, 'org_city', true);
-                        $state = get_post_meta ($org_id, 'org_state', true);
-                        $country = get_post_meta ($org_id, 'org_country', true);
-                        $zip = get_post_meta ($org_id, 'org_zip', true);
-                        $phone = get_post_meta ($org_id, 'org_phone', true);
+                // Variable declaration
+                $rep_id = $current_user->ID; // The rep's wordpress user ID
+                $org_id = $subscription->org_id; // Organization ID
+                $org_name = get_the_title($org_id);
+                $full_name = ucwords ($camp_director->user_firstname . " " . $camp_director->user_lastname);
+                $address = get_post_meta ($org_id, 'org_address', true);
+                $city = get_post_meta ($org_id, 'org_city', true);
+                $state = get_post_meta ($org_id, 'org_state', true);
+                $country = get_post_meta ($org_id, 'org_country', true);
+                $zip = get_post_meta ($org_id, 'org_zip', true);
+                $phone = get_post_meta ($org_id, 'org_phone', true);
 
-                        $args = array(
-                                'role__in' => array(
-                                        'salesrep', 
-                                        'sales_manager'
-                                )
-                        ); // Arguments to get only sales rep
-                        $salesreps = get_users($args); // All sales rep.
-	        ?>
+                $args = array(
+                    'role__in' => array(
+                        'salesrep', 
+                        'sales_manager'
+                    )
+                ); // Arguments to get only sales rep
+                $salesreps = get_users($args); // All sales rep.
+?>
 		       	<style type="text/css">
 		        .table_header {
 		            height: 30px;
@@ -348,6 +348,7 @@
 		            <div class="form-row">
 		                <label style="width:200px;"># of Additional Staff Accounts:</label>
 		                <input type="text" name="accounts" value=""/>
+		                * leave blank or 0 for misc charges that don't require adding additional accounts like data disk.
 		            </div>
 		            <div class="form-row">
 		                <label>Price:</label>

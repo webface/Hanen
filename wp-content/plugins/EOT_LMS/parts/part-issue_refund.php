@@ -23,11 +23,11 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
             $subscriptionsTableObj = new stdClass();
             $subscriptionsTableObj->rows = array();
             $subscriptionsTableObj->headers = array(
-			'Camp Name' => 'center',
-			'Director Name' => 'center',
-			'<div ' . hover_text_attr('The amount paid for this subscription.',true) .'>Amount Paid</div>' => 'center',
-			'<div ' . hover_text_attr('Refund all or part of this amount',true) .'>Actions</div>' => 'center'
-		);
+    			'Camp Name' => 'center',
+    			'Director Name' => 'center',
+    			'<div ' . hover_text_attr('The amount paid for this subscription.',true) .'>Amount Paid</div>' => 'center',
+    			'<div ' . hover_text_attr('Refund all or part of this amount',true) .'>Actions</div>' => 'center'
+    		);
             $org_id = $subscription->org_id;
             $camp_name = get_the_title($org_id);
             $user_id = $subscription->manager_id; // Director's User ID
@@ -48,11 +48,11 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
             $upgradesTableObj = new stdClass();
             $upgradesTableObj->rows = array();
             $upgradesTableObj->headers = array(
-			'Camp Name' => 'center',
-			'Type of upgrade' => 'center',
-			'<div ' . hover_text_attr('The amount paid for this upgrade.',true) .'>Amount Paid</div>' => 'center',
-			'<div ' . hover_text_attr('Refund all or part of this amount',true) .'>Actions</div>' => 'center'
-		);
+    			'Camp Name' => 'center',
+    			'Type of upgrade' => 'center',
+    			'<div ' . hover_text_attr('The amount paid for this upgrade.',true) .'>Amount Paid</div>' => 'center',
+    			'<div ' . hover_text_attr('Refund all or part of this amount',true) .'>Actions</div>' => 'center'
+    		);
             foreach ($upgrades as $upgrade) {
                 $upgradesTableObj->rows[] = array(
                     $camp_name,
@@ -96,7 +96,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
                     }
                 }
        )
-    }</script>
+    }
+</script>
 <?php
         } 
         else 

@@ -83,36 +83,23 @@ define ('SE_LVL_2_MIN', 21);
 define ('SE_MIN_ACC', 21);
 
 // define subscription variables
-$sep1_this_year = strtotime("2017-08-01 00:00");
-$today = strtotime('now');
-$current_year = 2017;
-$next_year = 2018;
-$last_year = 2016;
-$this_year = 2017;
-if($today >= $sep1_this_year)
+$today = time();
+$current_year = date('Y');
+$next_year = date('Y', strtotime('+1 year'));
+$last_year = date('Y', strtotime('-1 year'));
+
+if($today >= strtotime("$current_year-08-01"))
 {
     define ('SUBSCRIPTION_YEAR', $next_year);
-}
-else 
-{
-    define ('SUBSCRIPTION_YEAR', $current_year);
-}
-
-$today_month = strtotime(date( 'Y-m-d H:i:s', current_time( 'timestamp', 0 ) ));
-
-if($today_month >= $sep1_this_year)
-{
-    define ('SUBSCRIPTION_START', "$current_year-09-01");
+    define ('SUBSCRIPTION_START', "$current_year-08-01");
     define ('SUBSCRIPTION_END', "$next_year-10-15");
 }
 else 
 {
-    define ('SUBSCRIPTION_START', "$last_year-09-01");
-    define ('SUBSCRIPTION_END', "$this_year-10-15");
-    
+    define ('SUBSCRIPTION_YEAR', $current_year);
+    define ('SUBSCRIPTION_START', "$last_year-08-01");
+    define ('SUBSCRIPTION_END', "$current_year-10-15");
 }
-
-
 
 // define video variables
 define ('NUM_VIDEOS', 105);

@@ -2,34 +2,44 @@
 /**
   * Functions related to Stripe
 **/
-function refund_customer($charge_id, $part_amount = 0)
+function refund_customer($charge_id = 0, $part_amount = 0)
 {
-        try{
-            if($part_amount == 0)
-            {
-            $refund = \Stripe\Refund::create(array("charge"=> $charge_id));
-            }
-            else 
-            {
-             $refund = \Stripe\Refund::create(array("charge"=> $charge_id , 'amount' => $part_amount));   
-            }
-            $success = 1;
-        } catch (Exception $ex) {
-                throw new Exception ("Refund: " . $ex->getMessage());
-        }
-        if($success == 1)
+    if ($charge_id == 0)
+    {
+    	return false;
+    }
+
+    try
+    {
+        if($part_amount == 0)
         {
-            //error_log(print_r($refund));
-            return true;
+        	$refund = \Stripe\Refund::create(array("charge"=> $charge_id));
         }
         else 
         {
-            return false;
+        	$refund = \Stripe\Refund::create(array("charge"=> $charge_id , 'amount' => $part_amount));   
         }
+        $success = 1;
+    } 
+    catch (Exception $ex) 
+    {
+        throw new Exception ("Refund: " . $ex->getMessage());
+    }
+
+    if($success == 1)
+    {
+        //error_log(print_r($refund));
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
 }
+
 function create_new_customer ($cc_card, $email, $description) {
-        //error_log("Create new customer");
-        //error_log(json_encode($cc_card));
+    //error_log("Create new customer");
+    //error_log(json_encode($cc_card));
 	try {
 		$customer = \Stripe\Customer::create(array(
 			"email" => $email,
@@ -39,7 +49,7 @@ function create_new_customer ($cc_card, $email, $description) {
 	} catch (Exception $e) {
 		throw new Exception ("Customer: " . $e->getMessage());
 	}
-        //error_log(json_encode(array ('customer_id' => $customer->{'id'}, 'card_id' => $customer->{'default_source'})));
+    //error_log(json_encode(array ('customer_id' => $customer->{'id'}, 'card_id' => $customer->{'default_source'})));
 	return array ('customer_id' => $customer->{'id'}, 'card_id' => $customer->{'default_source'});
 }
 
@@ -47,8 +57,8 @@ function charge_customer ($price, $customer_id, $card, $description) {
         //error_log("Charge customer");
         //error_log(json_encode($card));
 	try {
-		if (is_array($card)) {
-
+		if (is_array($card)) 
+		{
 			$cu = \Stripe\Customer::retrieve($customer_id);
 			$new_card = $cu->sources->create(array("source" => $card));
 			$card = $new_card->{'id'};

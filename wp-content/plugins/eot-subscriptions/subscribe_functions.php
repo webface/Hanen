@@ -2929,7 +2929,7 @@ function upgradeSubscription_callback ()
 }
 
 /********************************************************************************************************
- * Upgrade Subscription via sales rep or sales administrator
+ * Allow sales rep or sales administrator to arbitrarily charge a user
  *******************************************************************************************************/
 add_action('wp_ajax_chargeUser', 'chargeUser_callback');
 function chargeUser_callback () 
@@ -2938,7 +2938,7 @@ function chargeUser_callback ()
     require_once ('stripe_functions.php');
 
     // Check permissions only sales rep/manager or director can upgrade account.
-    if( !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') && !current_user_can('is_director') )
+    if( !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
     {
         $result['status'] = false;
         $result['message'] = 'upgradeSubscription_callback Error: Sorry, you do not have permisison to view this page.';
@@ -3324,7 +3324,8 @@ function refund_camp_callback ()
             'trans_id' => $trans_id,
             'subscription_id' => $subscription_id,
             'rep_id' => $current_user->ID,
-            'price' => ($part_amount == 0)? floatval($amount):floatval($part_amount)
+            'price' => ($part_amount == 0)? floatval($amount):floatval($part_amount),
+            'date' => current_time('Y-m-d')
         );
         $refunded = $wpdb->insert(TABLE_REFUNDS, $data);
         $result['success'] = true;

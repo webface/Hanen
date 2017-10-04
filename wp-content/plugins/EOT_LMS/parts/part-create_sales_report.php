@@ -172,11 +172,11 @@
         	// Make associative array
         	$upgrades_array[$upgrade->ID] = $upgrade; // Associative array of upgrades.
         	$upgrade_rep_info = get_userdata($upgrade->rep_id); // Upgrade Rep Info from WP
-                $upgrade_customer_info = get_userdata($upgrade->user_id);
+            $upgrade_customer_info = get_userdata($upgrade->user_id);
         	$upgrade_rep_name = ($upgrade_rep_info) ? $upgrade_rep_info->first_name . " " . $upgrade_rep_info->last_name : ''; // REP first and last name
-		$upgrade_customer_name = ($upgrade_customer_info) ? $upgrade_customer_info->first_name . " " . $upgrade_customer_info->last_name : "";
-                $upgrade_customer_email = $upgrade_customer_info->user_email;
-                $upgrade->org_phone = get_post_meta( $upgrade->org_id, 'phone', true );
+			$upgrade_customer_name = ($upgrade_customer_info) ? $upgrade_customer_info->first_name . " " . $upgrade_customer_info->last_name : "";
+            $upgrade_customer_email = $upgrade_customer_info->user_email;
+            $upgrade->org_phone = get_post_meta( $upgrade->org_id, 'phone', true );
 			$stripe_charge = ($upgrade->method == "stripe" && $upgrade->other_note != "refund") ? '$' . number_format($upgrade->price * 0.029 + 0.3, 2, '.', '') : "";
 			// Populate subscription download table for upgrades
 		 	$subscriptionsTableDownloadObj->rows[] = array(

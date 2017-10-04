@@ -228,7 +228,7 @@
 					'Sales Rep' => 'center',
 					'Discount Note' => 'center',
 					'Other Note' => 'center',
-                                        'Actions' => 'center',
+                    'Actions' => 'center',
 				);
 
 
@@ -244,7 +244,7 @@
 						$upgrade_rep_name, // REP first and last name
 						$upgrade->discount_note,
 						$upgrade->other_note,
-                                                "<a href='./?part=issue_refund&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>"
+                        "<a href='./?part=issue_refund&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>"
 						
 					);
 				}

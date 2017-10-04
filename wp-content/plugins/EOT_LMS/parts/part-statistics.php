@@ -225,7 +225,8 @@
 	</div>-->
 	
 			<h2>Courses</h2>
-			<table>            
+            <div class="bs">
+            <table class="table table-striped table-bordered">            
 				<tbody>
 <?php
 				if (!empty($courses))
@@ -256,6 +257,7 @@
 ?>
 				</tbody>
 			</table>
+            </div>
 <?php
 			}
 	    }
