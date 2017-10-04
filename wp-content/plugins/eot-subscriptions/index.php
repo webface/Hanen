@@ -15,8 +15,8 @@ include_once ('subscription_variables.php');
 include_once ('subscription_templates.php');
 include_once ('subscribe_functions.php');
 include_once ('stripe_functions.php');
-include_once ('stripe/Stripe.php');
-Stripe::setApiKey(STRIPE_SECRET);
+require_once ('stripe-php-5.2.0/init.php');
+\Stripe\Stripe::setApiKey(STRIPE_SECRET);
 
 register_activation_hook( __FILE__, 'eot_subscription_activate' );
 register_deactivation_hook( __FILE__, 'eot_subscription_deactivate' );
@@ -295,8 +295,8 @@ function handle_steps_callback () {
 			echo json_encode(array('status' => 1));
 			break;
 		case 4:
-			include_once ('stripe/Stripe.php');
-			Stripe::setApiKey(STRIPE_SECRET);
+			require_once ('stripe-php-5.2.0/init.php');
+                        \Stripe\Stripe::setApiKey(STRIPE_SECRET);
 			$error = '';
 			$success = '';
 			$org_id = intval ($_REQUEST['org_id']);
@@ -361,8 +361,8 @@ function handle_steps_callback () {
 
 				$org_id = intval ($_REQUEST['org_id']);
 				$user_id = $_REQUEST['user_id'];
-				$price = floatval ($_REQUEST['total_price']);
-
+                                $price = str_replace(",", "", $_REQUEST['total_price']);
+				$price = floatval($price);
 				if ($processPayment) 
 				{ //process payment based on status of variable defined above
 					
@@ -721,8 +721,8 @@ function chargeCustomer($customer_id = 0, $method = '', $price = 0, $data = arra
     * string $director_email
     * string $org_name
    	**/
-   	include_once ('stripe/Stripe.php');
-	Stripe::setApiKey(STRIPE_SECRET);
+   	require_once ('stripe-php-5.2.0/init.php');
+        \Stripe\Stripe::setApiKey(STRIPE_SECRET);
 	if($method == 'stripe')
 	{
 		// Check for variables

@@ -17,7 +17,8 @@
     $num_videos_watched = calculate_videos_watched($org_id);
     $num_resources_downloaded = calculate_resources_downloaded($org_id);
     $num_quizzes_taken=calculate_quizzes_taken($org_id, $subscription_id);
-//d($courses,$num_videos_watched,$num_quizzes_taken,$num_resources_downloaded);
+    //d($staff_accounts,$courses);
+	//d($courses,$num_videos_watched,$num_quizzes_taken,$num_resources_downloaded);
     // check if we have staff accounts and filter out everyone other than learners
     if( isset($staff_accounts['status']) && $staff_accounts['status'] )
     {
@@ -42,7 +43,8 @@
 //			}
 			$course_id = $course['ID']; // The course ID
                         
-			$enrollment = getEnrollments($course_id, 0, $subscription_id, false); // All enrollments in the course
+			$enrollment = getEnrollments($course_id, 0, $org_id, ''); // All enrollments in the course
+                        //d($enrollment);
 			if($enrollment)
 			{
 				foreach($enrollment as $enroll)
@@ -64,7 +66,6 @@
 		// get only uniques for each array
 		$unique_completed_user_ids = array_unique($completed_user_ids);
 		$unique_incomplete_user_ids = array_unique($incomplete_user_ids);
-
 		// only count the user who are not in the incomplete array
 		$num_staff_completed_assignment = count(array_diff($unique_completed_user_ids, $unique_incomplete_user_ids));
 	}

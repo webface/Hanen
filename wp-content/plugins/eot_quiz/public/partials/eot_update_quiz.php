@@ -12,7 +12,7 @@ if (isset($_POST['submit']))
 {
 
     $data = array(
-        'name' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_POST['quizName'])),
+        'name' => preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['quizName'])),
         'description' => filter_var($_POST['quizDescription']),
         'org_id' => $org_id,
         'user_id' => $user_id,

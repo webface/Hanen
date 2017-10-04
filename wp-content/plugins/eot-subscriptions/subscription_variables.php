@@ -83,9 +83,36 @@ define ('SE_LVL_2_MIN', 21);
 define ('SE_MIN_ACC', 21);
 
 // define subscription variables
-define ('SUBSCRIPTION_YEAR', 2017);
-define ('SUBSCRIPTION_START', '2016-09-01');
-define ('SUBSCRIPTION_END', '2017-12-31');
+$sep1_this_year = strtotime("2017-08-01 00:00");
+$today = strtotime('now');
+$current_year = 2017;
+$next_year = 2018;
+$last_year = 2016;
+$this_year = 2017;
+if($today >= $sep1_this_year)
+{
+    define ('SUBSCRIPTION_YEAR', $next_year);
+}
+else 
+{
+    define ('SUBSCRIPTION_YEAR', $current_year);
+}
+
+$today_month = strtotime(date( 'Y-m-d H:i:s', current_time( 'timestamp', 0 ) ));
+
+if($today_month >= $sep1_this_year)
+{
+    define ('SUBSCRIPTION_START', "$current_year-09-01");
+    define ('SUBSCRIPTION_END', "$next_year-10-15");
+}
+else 
+{
+    define ('SUBSCRIPTION_START', "$last_year-09-01");
+    define ('SUBSCRIPTION_END', "$this_year-10-15");
+    
+}
+
+
 
 // define video variables
 define ('NUM_VIDEOS', 105);
@@ -136,6 +163,7 @@ define ('TABLE_CATEGORIES', $wpdb->prefix.'category');
 define ('TABLE_HELP_TOPICS', $wpdb->prefix.'help_topics');
 define ('TABLE_HELP_TOPICS_FOR_VIEW', $wpdb->prefix . 'help_topics_for_view');
 define ('TABLE_TRACK', $wpdb->prefix . 'track');
+define ('TABLE_REFUNDS', $wpdb->prefix . 'refunds');
 
 // base courses (course name => course description)
 $base_courses = array (

@@ -85,7 +85,7 @@ if (isset($_POST['submit']))
         }
         $data = array(
             'quiz_id' => $quiz_id,
-            'quiz_question' =>preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($fields['question0']['label'])),
+            'quiz_question' =>preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($fields['question0']['label'])),
             'quiz_question_type' => 'radio'
         );
         $question_id = $eot_quiz->addQuestion($data);
@@ -93,7 +93,7 @@ if (isset($_POST['submit']))
         {
             $data = array(
                 'question_id' => $question_id,
-                'answer_text' =>preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($choice['title'])),
+                'answer_text' =>preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($choice['title'])),
                 'answer_correct' => $choice['is_correct']
             );
             $eot_quiz->addAnswer($data);
@@ -168,7 +168,7 @@ if (isset($_POST['submit']))
         }
         $data = array(
             'quiz_id' => $quiz_id,
-            'quiz_question' =>preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($fields['question0']['label'])),
+            'quiz_question' =>preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($fields['question0']['label'])),
             'quiz_question_type' => 'checkbox'
         );
         $question_id = $eot_quiz->addQuestion($data);
@@ -176,7 +176,7 @@ if (isset($_POST['submit']))
         {
             $data = array(
                 'question_id' => $question_id,
-                'answer_text' =>preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($choice['title'])),
+                'answer_text' =>preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($choice['title'])),
                 'answer_correct' => $choice['is_correct']
             );
             $eot_quiz->addAnswer($data);
@@ -200,13 +200,13 @@ if (isset($_POST['submit']))
 
         $data = array(
             'quiz_id' => $quiz_id,
-            'quiz_question' =>preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_POST['question_0'])),
+            'quiz_question' =>preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['question_0'])),
             'quiz_question_type' => 'text'
         );
         $question_id = $eot_quiz->addQuestion($data);
         $data = array(
             'question_id' => $question_id,
-            'answer_text' => preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_POST['question_0_answer_0'])),
+            'answer_text' => preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['question_0_answer_0'])),
             'answer_correct' => 1
         );
         $eot_quiz->addAnswer($data);
