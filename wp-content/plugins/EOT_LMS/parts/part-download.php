@@ -26,52 +26,12 @@
   $resource = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES . " WHERE ID = $resource_id",ARRAY_A);
   
   $file_path = $resource['url'];
-  //error_log($file_path);
-  //$base_name = basename($file_path);
-  //error_log($base_name);    
-  //echo "Filepath: $file_path <br>";
-  //$fname = $resource['name'];
-  
-//  $allowed_ext = array (
-//
-//    // archives
-//    'zip' => 'application/zip',
-//
-//    // documents
-//    'pdf' => 'application/pdf',
-//    'csv' => 'text/csv',
-//    'doc' => 'application/msword',
-//    'docx' => 'application/msword',
-//    'xls' => 'application/vnd.ms-excel',
-//    'xlsx' => 'application/vnd.ms-excel',
-//    'ppt' => 'application/vnd.ms-powerpoint',
-//    'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-//    'txt' => 'application/txt',
-//    'rtf' => 'application/txt',
-//    
-//    // executables
-//    //'exe' => 'application/octet-stream',
-//
-//    // images
-//    'gif' => 'image/gif',
-//    'png' => 'image/png',
-//    'jpg' => 'image/jpeg',
-//    'jpeg' => 'image/jpeg',
-//    'bmp' => 'image/bmp'
-//    );
+
   
   // Make sure program execution doesn't time out
   set_time_limit(0);
-// make sure it's a file before doing anything!
-//if(is_file($file_path)) {
 
-	/*
-		Do any processing you'd like here:
-		1.  Increment a counter
-		2.  Do something with the DB
-		3.  Check user permissions
-		4.  Anything you want!
-	*/
+
 
 	// required for IE
 	if(ini_get('zlib.output_compression')) { ini_set('zlib.output_compression', 'Off');	}
@@ -86,21 +46,31 @@
                 case 'txt': $mime = 'application/txt'; break;
 		case 'jpeg':
 		case 'jpg': $mime = 'image/jpg'; break;
+                case 'xls': $mime = 'application/vnd.ms-excel'; break;
+                case 'xlsx': $mime = 'application/vnd.ms-excel'; break;
+                case 'ppt': $mime = 'application/vnd.ms-powerpoint'; break;
+                case 'pptx': $mime = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'; break;
+                case 'rtf': $mime = 'application/txt'; break;
+                case 'exe': $mime = 'application/octet-stream'; break;
+                case 'gif': $mime = 'image/gif'; break;
+                case 'png': $mime = 'image/png'; break;
+                case 'bmp': $mime = 'image/bmp'; break;
 		default: $mime = 'application/force-download';
 	}
+        
+        $file_name = str_replace(array('"',"'",'\\','/'), '', basename($file_path));
+
 	header('Pragma: public'); 	// required
 	header('Expires: 0');		// no cache
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	//header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($file_path)).' GMT');
 	header('Cache-Control: private',false);
 	header('Content-Type: '.$mime);
-	header('Content-Disposition: attachment; filename="'.basename($file_path).'"');
+	header('Content-Disposition: attachment; filename="'.$file_name.'"');
 	header('Content-Transfer-Encoding: binary');
 	header('Content-Length: '.filesize($file_path));	// provide file size
 	header('Connection: close');
 	readfile($file_path);		// push it out
 	exit();
 
-//}
 
 ?>
