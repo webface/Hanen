@@ -26,6 +26,7 @@
   $resource = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES . " WHERE ID = $resource_id",ARRAY_A);
   
   $file_path = $resource['url'];
+  $basename = basename($file_path);
       
   //echo "Filepath: $file_path <br>";
   $fname = $resource['name'];
@@ -124,7 +125,7 @@
   header("Cache-Control: public");
   header("Content-Description: File Transfer");
   header("Content-Type: $mtype");
-  header("Content-Disposition: attachment; filename=\"$asfname\"");
+  header("Content-Disposition: attachment; filename=\"$basename\"");
   header("Content-Transfer-Encoding: binary");
   header("Content-Length: " . $fsize);
   readfile("$file_path");
