@@ -698,10 +698,9 @@ function display_subscription_dashboard ($subscription)
             }
         }
     }
-
 ?>      
     <div class="dashboard_border">
-    <h1><?= $library_title ?> <?= SUBSCRIPTION_YEAR ?> <span class="bor_tag">Director Account</span>
+    <h1><?= $library_title ?> <?= substr($subscription->end_date, 0,4) ?> <span class="bor_tag">Director Account</span>
     </h1>
     <div class="content_right">
         <div class="clear"></div>
