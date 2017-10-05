@@ -40,14 +40,15 @@
 
 <?php 
                         echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>';
+                        $upload_dir = wp_upload_dir()["baseurl"]; // URL to the upload directory.
 ?> 
                         <br />
                         <br />
                         <div id='player_<?= $module['ID']; ?>' style='width:665px;height:388px'>
                             <video id="my-video" user-id="<?=$user_id?>" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
-                                <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $module['video_name'] ?>_en.vtt" srclang="en" label="English" default>
-                                <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $module['video_name'] ?>_es.vtt" srclang="es" label="Spanish">
-                                <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $module['video_name'] ?>_ma.vtt" srclang="man" label="Mandarin">
+                                <track kind="captions" src="<?= $upload_dir ?>/subtitles/<?= $module['video_name'] ?>_en.vtt" srclang="en" label="English" default>
+                                <track kind="captions" src="<?= $upload_dir ?>/subtitles/<?= $module['video_name'] ?>_es.vtt" srclang="es" label="Spanish">
+                                <track kind="captions" src="<?= $upload_dir ?>/subtitles/<?= $module['video_name'] ?>_ma.vtt" srclang="man" label="Mandarin">
 
 <?php 
                                 // Check if we are showing by language or resolution.
