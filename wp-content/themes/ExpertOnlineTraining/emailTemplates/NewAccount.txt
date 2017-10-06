@@ -28,7 +28,7 @@
 	 
 	<p>What’s next? <b>Dig into our awesome content!</b> We are happy to give you a live tour of the site and provide a free, full-featured demo account.</p>
 
-	<p>Your busy season is around the corner, so contact our Customer Success Team today by calling (877) 237-3931, M-F between 9 and 5 ET. We are always happy to connect and answer your questions. You can even book a consultation with a team member by using our <a href="https://app.hubspot.com/meetings/josh33/schedule-a-demo">online scheduler</a>. We look forward to hearing from you!</p>
+	<p>Your busy season is around the corner, so contact our Customer Success Team today by calling (877) 390-2267, M-F between 9 and 5 ET. We are always happy to connect and answer your questions. You can even book a consultation with a team member by using our <a href="http://app.hubspot.com/meetings/josh33/book-a-meeting">online scheduler</a>. We look forward to hearing from you!</p>
 	 
     <p>Sincerely yours,</p>
 

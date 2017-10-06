@@ -356,7 +356,7 @@ else if (current_user_can("is_student"))
                         <div>
                             <b>Technical Support</b>
                             <br>
-                            Toll-free 877-237-3931
+                            Toll-free 877-390-2267
                         </div>
                     </div>
                     <script>

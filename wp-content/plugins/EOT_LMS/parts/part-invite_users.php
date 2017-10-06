@@ -216,7 +216,7 @@ jane@email.com
 
                                             <p><b>When is it due?</b> Directors usually require staff to complete their online learning assignment before arriving on-site. If you have not yet received a due-date for your assignment, check with <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> to get one. As you move through your course, <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> will have access to an electronic dashboard that allows them to track your progress and quiz scores.</p>
 
-                                            <p><b>Got Questions?</b> If you get stuck, watch our online help videos or call us at <b>877-237-3931</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.</p>
+                                            <p><b>Got Questions?</b> If you get stuck, watch our online help videos or call us at <b>877-390-2267</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.</p>
 
                                             <p>Enjoy your training!<br><br>
                                             <img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;"><br><br>
@@ -594,7 +594,7 @@ jane@email.com
     <br>
     If the link above does not work, try to copy/paste this URL into your browser: <?= site_url('/register/?type=Student&code='.$code); ?><br>
     <br>
-    If you run into any technical snags, you can call the toll-free support line: 877-237-3931 during regular business hours. <br>
+    If you run into any technical snags, you can call the toll-free support line: 877-390-2267 during regular business hours. <br>
     <br>
     Sincerely,<br>
     <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?><br>
@@ -665,7 +665,7 @@ jane@email.com
                                         }
                                         else if (count > <?= $max ?> && overall_status == 0)
                                         {
-                                            $('.round_msgbox').html("ERROR: Some emails below did not get sent.<br><br>Please contact us for assistance 1-877-239-3931 M-F 9-5 EST.<br><br>" + sent_emails.replace(/,/g, "")); 
+                                            $('.round_msgbox').html("ERROR: Some emails below did not get sent.<br><br>Please contact us for assistance 1-877-390-2267 M-F 9-5 EST.<br><br>" + sent_emails.replace(/,/g, "")); 
                                         }
                                         else
                                         {

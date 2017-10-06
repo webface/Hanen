@@ -398,7 +398,7 @@
                                     }
                                     else if (count > <?= $max ?> && overall_status == 0)
                                     {
-                                        $('.round_msgbox').html("ERROR: Some accounts below did not get created.<br><br>Please contact us for assistance 1-877-239-3931 M-F 9-5 EST.<br><br>Error message is: " + result.message + "<br><br>" + sent_emails.replace(/,/g, "")); 
+                                        $('.round_msgbox').html("ERROR: Some accounts below did not get created.<br><br>Please contact us for assistance 1-877-390-2267 M-F 9-5 EST.<br><br>Error message is: " + result.message + "<br><br>" + sent_emails.replace(/,/g, "")); 
                                     }
                                     else
                                     {
@@ -519,7 +519,7 @@
 		        <div class="batch_upload round_msgbox">
         			Please be patient while we create your user accounts ... <br />
         			<i class="fa fa-spinner fa-pulse fa-2x"></i> <br />
-        			If you see this message for more than 60 seconds, please call 877-237-3931 for assistance.  
+        			If you see this message for more than 60 seconds, please call 877-390-2267 for assistance.  
     			</div>
     			<script type="text/javascript">
     				jQuery(function($) {
@@ -544,7 +544,7 @@
 								<br><br></li>
 						<li>
 							<b>Help!</b><br>
-							If you're having trouble, just give us a call at <b>877-237-3931</b> and we'll help you. You can even send your spreadsheet to us to get it checked.
+							If you're having trouble, just give us a call at <b>877-390-2267</b> and we'll help you. You can even send your spreadsheet to us to get it checked.
 
 						</li>
 			        </ol>

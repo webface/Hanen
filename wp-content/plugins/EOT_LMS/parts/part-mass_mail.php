@@ -82,7 +82,7 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                                     }
                                     else if (count > <?= $max ?> && overall_status == 0)
                                     {
-                                        $('.round_msgbox').html("ERROR: Some emails below did not get sent.<br><br>Please contact us for assistance 1-877-239-3931 M-F 9-5 EST.<br><br>Error message is: " + result.message + "<br><br>" + sent_emails.replace(/,/g, "")); 
+                                        $('.round_msgbox').html("ERROR: Some emails below did not get sent.<br><br>Please contact us for assistance 1-877-390-2267 M-F 9-5 EST.<br><br>Error message is: " + result.message + "<br><br>" + sent_emails.replace(/,/g, "")); 
                                     }
                                     else
                                     {

@@ -520,7 +520,7 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
 	    <div class="processing_payment round_msgbox">
 	        Attempting to charge Credit card and create the subscription... <br />
 	        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>                          <br />
-	        If you see this message for more than 15 seconds, please call 877-237-3931 for assistance.  
+	        If you see this message for more than 15 seconds, please call 877-390-2267 for assistance.  
 	    </div>
     </form>
 
