@@ -70,7 +70,7 @@
 		              	//  Get the time where they last watched the video.
 		              	$video_last_time  = (isset($video_record['video_time']) && $video_record['video_time'] > 0) ? $video_record['video_time'] : 0;
 		              	echo '<h1 class="video_title">' . $video_name . '</h1>';
-                                //d($video);
+                       $upload_dir = wp_upload_dir()["baseurl"]; // URL to the upload directory.
 
 ?>
 				<b>Length: <?= " (" . $minutes . ":" . str_pad($seconds, 2, "0", STR_PAD_LEFT) . ") "; ?></b>
@@ -82,9 +82,9 @@
 ?>
                 <div id='player_<?= $video_id; ?>' style='width:665px;height:388px'>
                     <video id="my-video" user-id="<?=$user_id?>" track-id="<?=$track_id?>" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
-                        <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_en.vtt" srclang="en" label="English" default>
-                        <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_es.vtt" srclang="es" label="Spanish">
-                        <track kind="captions" src="https://eot-output.s3.amazonaws.com/<?= $video['video_name'] ?>_ma.vtt" srclang="man" label="Mandarin">
+                        <track kind="captions" src="<?= $upload_dir ?>/subtitles/<?= $video['video_name'] ?>_en.vtt" srclang="en" label="English" default>
+                        <track kind="captions" src="<?= $upload_dir ?>/subtitles/<?= $video['video_name'] ?>_es.vtt" srclang="es" label="Spanish">
+                        <track kind="captions" src="<?= $upload_dir ?>/subtitles/<?= $video['video_name'] ?>_ma.vtt" srclang="man" label="Mandarin">
 <?php 
                         // Check if we are showing by language or resolution.
                         if($subLanguage)
