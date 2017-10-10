@@ -518,7 +518,7 @@
 
         <div class="col-md-6">
             <h2>Contact Us</h2>
-            <?= do_shortcode( '[gravityform id="4" title="false" description="true"]' ); ?>            
+            <?= do_shortcode( '[gravityform id="7" title="false" description="true"]' ); ?>            
         </div>
             
             </div>
