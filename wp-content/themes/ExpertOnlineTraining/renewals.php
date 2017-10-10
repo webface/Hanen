@@ -265,10 +265,24 @@
                                 <input id="accounts" style="width:50%" class="form-control" type="number" name="accounts" value="<?= $num_staff?>" min="0"/><br>* This is the number of staff you had last year. If you would prefer to pay for your staff account at a later date, change this number to 0.
                             </div>
 
-                            <div class="form-group">
-                                <label for="total" style="width:200px;">Total $:<span style="color:green" class="total">00.00</span>&nbsp;&nbsp;<span style="font-size:10px" class="per_staff"></span></label>
+                            <table class="data sm">  
+                                <tbody>
+                                    <tr>
+                                        <td><label for="dashboard">Dashboard </label></td>
+                                        <td>$<span style="color:green" class="dashboard"><?= $discounted_price ?></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="staff_price">Staff </label></td>
+                                        <td>$<span style="color:green" class="staff_price"></span>&nbsp;&nbsp;<span style="font-size:10px" class="per_staff"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="total">Total 2018 </label></td>
+                                        <td>$<span style="color:green" class="total">00.00</span></td>
+                                    </tr>
+                                </tbody>
                                 <input style="width:50%" class="form-control" type="hidden" name="total" id="total" value=""/>
-                            </div>  
+                            </table>
+        
 
                             <h2>Billing Address</h2>
                             <div class="form-group">
@@ -394,40 +408,41 @@
             </div>
             <script>
                 $('#submit_bill').click( function() {
-                var button_ref = $(this);
-                $(button_ref).attr('disabled','disabled');
-                $('.processing_payment').slideDown();
-                $('#renewCamp').show();
-                var data = $('#renewCamp').serialize () + "&action=renewCamp";
-                //alert($("#total").val());
-                $.ajax({
-                    type: "POST",
-                    url: eot.ajax_url,
-                    data: data,
-                    dataType: "json",
-                    success: function(response) {
-                        eot_status = response.status;
-                        my_response = response;
-                        $('.processing_payment').slideUp();
-                        if (!eot_status) {
-                            $(button_ref).removeAttr('disabled');
-                            show_error (my_response.message);
-                        }
-                        else
-                        {
-                            // show completed message
-                            //show_error ("SUCCESS: renewed the subscription!");
-                            window.location.href = "/renew?renewed=1";
-                        }
+                    var button_ref = $(this);
+                    $(button_ref).attr('disabled','disabled');
+                    $('.processing_payment').slideDown();
+                    $('#renewCamp').show();
+                    var data = $('#renewCamp').serialize () + "&action=renewCamp";
+                    //alert($("#total").val());
+                    $.ajax({
+                        type: "POST",
+                        url: eot.ajax_url,
+                        data: data,
+                        dataType: "json",
+                        success: function(response) {
+                            eot_status = response.status;
+                            my_response = response;
+                            $('.processing_payment').slideUp();
+                            if (!eot_status) {
+                                $(button_ref).removeAttr('disabled');
+                                show_error (my_response.message);
+                            }
+                            else
+                            {
+                                // show completed message
+                                //show_error ("SUCCESS: renewed the subscription!");
+                                window.location.href = "/renewal/?renewed=1";
+                            }
 
-                        return eot_status;
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) 
-                    {
-                        $('.processing_payment').slideUp();
-                        $(button_ref).removeAttr('disabled');
-                        show_error( "ERROR:Unable to renew your subscription: " + textStatus + " " + errorThrown + "<br>Please contact the site administrator!");
-                    }
+                            return eot_status;
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) 
+                        {
+                            $('.processing_payment').slideUp();
+                            $(button_ref).removeAttr('disabled');
+                            show_error( "ERROR:Unable to renew your subscription: " + textStatus + " " + errorThrown + "<br>Please contact us at 1-877-390-2267 M-F 9-5 ET");
+                        }
+                    });
                 });
 
                 $('#expmonth').focus(function() {
@@ -461,32 +476,36 @@
                         $("#creditcard_opts").fadeIn(500);
                     }
                 });
+                
                 $("#accounts").change(function(){
                     var staff_price = calculate_total($(this).val());
                     var the_total = <?= $discounted_price?>+staff_price;
+                    $(".staff_price").html(parseFloat(staff_price).toFixed(2));
                     $("#total").val(the_total);
                     $(".total").html(parseFloat(the_total).toFixed(2));
 
                 });
+                
                 function calculate_price(num_staff){
                     var staff_price = calculate_total(num_staff);
                     var the_total = <?= $discounted_price ?>+staff_price;
+                    $(".staff_price").html(parseFloat(staff_price).toFixed(2));
                     $("#total").val(the_total);
                     $(".total").html(parseFloat(the_total).toFixed(2));
                 };
                 function calculate_total(num_staff)
                 {
-                    console.log("calculate total: "+num_staff);
+//console.log("calculate total: "+num_staff);
                     if (num_staff <= 99) {
-                        $(".per_staff").html("$14 per staff");
+                        $(".per_staff").html(num_staff + " @ $14 per staff");
                         $("#staff_price").val(num_staff * 14);
                         return num_staff * 14;
                     } else if (num_staff > 99 && num_staff <= 249) {
-                        $(".per_staff").html("$13 per staff");
+                        $(".per_staff").html(num_staff + " @ $13 per staff");
                         $("#staff_price").val(num_staff * 13);
                         return num_staff * 13;
                     } else {
-                        $(".per_staff").html("$12 per staff");
+                        $(".per_staff").html(num_staff + " @ $12 per staff");
                         $("#staff_price").val(num_staff * 12);
                         return num_staff * 12;
                     }
@@ -498,7 +517,8 @@
         </div>
 
         <div class="col-md-6">
-            <h1>Contact Form</h1>
+            <h2>Contact Us</h2>
+            <?= do_shortcode( '[gravityform id="4" title="false" description="true"]' ); ?>            
         </div>
             
             </div>
