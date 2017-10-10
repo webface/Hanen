@@ -233,7 +233,7 @@
             } // end if library
 ?>
 
-            <h3>2018 Subscription Reneal Options</h3>
+            <h3>2018 Subscription Renewal Options</h3>
 
             <p>The regular price of a full-featured Directors’ Dashboard has been $399 per year since we opened shop in 2008. Since then, we have grown the Leadership Essentials library from 12 videos to 120 videos, added greater functionality to our site, and made it mobile-friendly. <strong>And we still charge only $399 for the Directors’ Dashboard.</strong></p>
             <p>However, if you renew your subscription prior to <?= $deadline; ?> you will receive $100 off of our Directors' Dashboard price.</p>
