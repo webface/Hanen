@@ -13,18 +13,33 @@ wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js'
 wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 $query = "
-        	SELECT u.ID as ID, u.display_name,u.user_email,uma.meta_value AS 'first_name', umb.meta_value AS 'last_name', 'manager' as role, s.trans_date, s.dash_price, s.id AS 'subscription_id', s.library_id   
+            SELECT u.ID as ID, u.display_name,u.user_email,uma.meta_value AS 'first_name', umb.meta_value AS 'last_name', s.trans_date, s.dash_price, s.id AS 'subscription_id', s.library_id   
+            FROM wp_subscriptions s 
+            LEFT JOIN wp_users u ON s.manager_id = u.ID 
+            LEFT JOIN wp_usermeta um ON u.ID = um.user_id
+            LEFT JOIN wp_usermeta uma on uma.user_id = u.ID
+            LEFT JOIN wp_usermeta umb on umb.user_id = u.ID
+            WHERE um. meta_key = 'wp_capabilities'
+                AND uma.meta_key = 'first_name'
+                AND umb.meta_key = 'last_name'
+                AND um.meta_value LIKE '%\"manager\"%'
+                AND s.method != 'free' 
+                AND s.end_date <= '2017-12-31'
+        ";
+/*
+$query = "
+        	SELECT u.ID as ID, u.display_name,u.user_email,uma.meta_value AS 'first_name', umb.meta_value AS 'last_name', s.trans_date, s.dash_price, s.id AS 'subscription_id', s.library_id   
         	FROM wp_users u 
         	LEFT JOIN wp_usermeta um ON u.ID = um.user_id
-                LEFT JOIN wp_subscriptions s ON u.ID = s.manager_id
-                LEFT JOIN wp_usermeta uma on uma.user_id = u.ID
-                LEFT JOIN wp_usermeta umb on umb.user_id = u.ID
+            LEFT JOIN wp_subscriptions s ON u.ID = s.manager_id
+            LEFT JOIN wp_usermeta uma on uma.user_id = u.ID
+            LEFT JOIN wp_usermeta umb on umb.user_id = u.ID
         	WHERE um. meta_key = 'wp_capabilities'
                 AND uma.meta_key = 'first_name'
                 AND umb.meta_key = 'last_name'
-        	AND um.meta_value LIKE '%\"manager\"%'
+                AND um.meta_value LIKE '%\"manager\"%'
         ";
-
+*/
 $managers = $wpdb->get_results($query, ARRAY_A);
 //d($managers);
 // Tables that will be displayed in the front end.
