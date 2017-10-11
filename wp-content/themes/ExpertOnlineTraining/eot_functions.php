@@ -4461,12 +4461,16 @@ function updateUser_callback()
                         unset($userdata['user_pass']);
                     }
 
+                    // remove the user_login because the update function below cant do it.
+                    unset($userdata['user_login']);
+                    unset($userdata['user_email']);
+
                     // update the user into WP
-                    $WP_user_id = wp_insert_user ($userdata);
+                    $WP_user_id = wp_update_user ($userdata);
                     
                     // success
                     $result['success'] = true;
-                    $result['message'] = 'User account information has been successfully updated.';
+                    $result['message'] = 'User account information has been successfully updated2.';
                     $result['staff_id'] = $WP_user_id;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
@@ -4486,7 +4490,7 @@ function updateUser_callback()
 
                     // assume we are successful for now... check later.
                     $result['success'] = true;
-                    $result['message'] = 'User account information has been successfully updated.';
+                    $result['message'] = 'User account information has been successfully updated3.';
                     $result['staff_id']=$WP_user_id;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
