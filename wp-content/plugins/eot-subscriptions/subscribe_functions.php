@@ -3385,9 +3385,10 @@ function renewCamp_callback ()
             $start_date = SUBSCRIPTION_START;
             $end_date = SUBSCRIPTION_END;
             $manager_id = $user_id;
+            $autorenew = isset($_REQUEST['auto-renew']) ? filter_var($_REQUEST['auto-renew'], FILTER_SANITIZE_NUMBER_INT) : 0;
 
             // Credit card info
-            $statement_description = "Expert Online Training Subscription for".SUBSCRIPTION_YEAR ;
+            $statement_description = "Expert Online Training Subscription for ". SUBSCRIPTION_YEAR ;
 
             // check if paying by credit card
             if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'Stripe')
@@ -3473,7 +3474,8 @@ function renewCamp_callback ()
 							'count' => $accounts,	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
-							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
+							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : '',	// any notes
+                            'auto-renew' => $autorenew                                          // whether to auto renew next year
 						);
 
 						if (!add_new_subscription($subscription_data)) {

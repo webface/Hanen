@@ -1,3 +1,13 @@
+<style type="text/css">
+    table.data {
+        font-size: 14px;
+    }
+
+    #main p {
+        font-size: 15px;
+    }
+</style>
+
 <?php
 /**
  * Template Name: Renewals
@@ -107,7 +117,6 @@
         <main id="main" class="site-main" role="main">
             <h1 class="article-title">Instantly save $100 off your 2018 Leadership Essentials Dashboard Price</h1>
             <h3>2017 <?= $library->name; ?> Subscription Details:</h3>
-            <p>The following is a summary of your 2017 subscription details.</p>
             <table class="data sm">
                 <tbody>
                     <tr>
@@ -141,14 +150,6 @@
                              <?= $the_subscription->staff_credits; ?>          
                         </td>
                     </tr>
-                    <tr>
-                        <td class="label">
-                            Total Staff Price
-                        </td>
-                        <td class="value">
-                            $<?= number_format($the_subscription->staff_price, 2, ".", "") ?>         
-                        </td>
-                    </tr>
 <?php  
                 if($the_subscription->staff_discount > 0)
                 {
@@ -164,6 +165,15 @@
 <?php 
                 } 
 ?>
+                    <tr>
+                        <td class="label">
+                            Total Staff Price
+                        </td>
+                        <td class="value">
+                            $<?= number_format($the_subscription->staff_price, 2, ".", "") ?>         
+                        </td>
+                    </tr>
+
                     <tr>
                         <td class="label">
 <?php
@@ -317,6 +327,11 @@
                                 <label>Phone Number</label>
                                 <input class="form-control" type="text" name="phone" value="<?php echo $phone; ?>" required/>
                             </div>
+                            <div class="form-group">
+                                <label>Auto-Renew</label><br>
+                                <input type="checkbox" name="auto-renew" value="1" checked> Yes, please auto-renew my subscription next year.
+                            </div>
+
                         <div class="form-group">
                         <label>Payment Method:</label>
                         <select name="method" id ="method" class="form-control">
@@ -324,6 +339,7 @@
                         </select><br />
                         <sub>* if you would like to pay by check please contact us at 1-877-390-2267 M-F 9-5 ET.</sub>
                     </div>
+                    <p>&nbsp;</p>
                     <div id="creditcard_opts">
                         <h2>Credit Card</h2>
 <?php 
@@ -394,7 +410,7 @@
                     <input type="hidden" name="subscription_id" value="<?= $the_subscription->ID ?>">
                     <input type="hidden" name="library_id" value="<?= $library_id ?>">
                     <input type="hidden"  id="staff_price" name="staff_price" value="">
-
+                    
                     <p>
                         <i class="fa fa-lock"></i> This site uses 256-bit encryption to safeguard your credit card information.
                     </p>
