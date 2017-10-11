@@ -3342,6 +3342,7 @@ function refund_camp_callback ()
  * Director Renew Subscription
  *******************************************************************************************************/
 add_action('wp_ajax_renewCamp', 'renewCamp_callback');
+add_action('wp_ajax_nopriv_renewCamp', 'renewCamp_callback');
 function renewCamp_callback () 
 {
 
