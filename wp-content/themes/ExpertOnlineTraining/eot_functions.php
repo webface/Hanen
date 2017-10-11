@@ -2874,7 +2874,8 @@ function getModules_callback()
         {
             // Build the response if successful
             // get modules of the course
-            $modules = getModulesInCourse($course_id);
+            $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the module videos in the specified course
+            $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             /*********************************************************************************************
             * Create HTML template and return it back as message. this will return an HTML div set to the 
             * javascript and the javascript will inject it into the HTML page.
@@ -2882,22 +2883,18 @@ function getModules_callback()
             $html = '<div  id="staff_and_assignment_list_pane" class="scroll-pane" style = "width: 350px">';
             $html.= '  <div style = "width:100%;">';
 
-            $num_modules_type_page = 0;
-            if( $modules && count($modules) > 0 ) 
+            if( $course_videos_titles && count($course_videos_titles) > 0 ) 
             {
-                foreach( $modules as $module )
+                foreach( $course_videos_titles as $title )
                 {   
-                    $module_description_text = $module['description_text']; 
-                    $module_title = $module['title'];
                     //$html.= ' <div class = "staff_and_assignment_list_row" onmouseover="Tip(\''.str_replace('"','&quot;',addslashes($module_description_text)).'\', WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\',TITLE,\'Description\')" onmouseout="UnTip()">';
                     $html.= ' <div class = "staff_and_assignment_list_row">';
-                    $html.= '  <span class="staff_name" >'.$module_title.'</span>';
+                    $html.= '  <span class="staff_name" >'.$title.'</span>';
                     $html.= ' </div>';
-                    $num_modules_type_page++;
                 }
                 $html.= '   </div>'; 
                 $html.= '</div>';  
-                $result['video_count'] = $num_modules_type_page;
+                $result['video_count'] = count($course_videos_titles); // Number of modules.
                 $result['data'] = 'success';
                 $result['message'] = $html;
                 $result['group_id'] = $course_id; // if not included, when clicking on manage assignment/course, it will not open the dialog box.
@@ -6209,8 +6206,16 @@ function getCourseForm_callback ( )
                             /* 
                              * This populates the modules array.
                              */
-                                    $new_module = new module( $module['ID'], $module['title'], $module['category']); // Make a new module.
-                                    array_push($modules, $new_module); // Add the new module to the modules array.
+                            if( $module['category'] )
+                            {
+                              $new_module = new module( $module['ID'], $module['title'], $module['category']); // Make a new module.
+                            }
+                            else
+                            {
+                              $new_module = new module( $module['ID'], $module['title'], 'Custom'); // Custom module.
+                            }
+
+                            array_push($modules, $new_module); // Add the new module to the modules array.
 
                         }
                         //usort($categories, "category_sort"); // Sort the categories based on the function below.
@@ -8523,7 +8528,7 @@ function acceptTerms_callback()
   wp_die();
 }
 
-/*for students only
+/*
  * get subscription id from enrollments
  * @param: $user_id - the user ID
  */
