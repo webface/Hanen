@@ -3364,17 +3364,7 @@ function renewCamp_callback ()
         $subscription = getSubscriptions($subscription_id);
         if($subscription) // get the subscription info for this subscription
         {
-            $staff_credits = intval($subscription->staff_credits); // The staff credits
             $org_id = $subscription->org_id; // The subscription org ID
-            /* 
-             * Calculate the accounts available for the camp from wp_upgrade subscription table.
-             */
-            $upgrades = getUpgrades($subscription_id);
-            foreach ($upgrades as $upgrade)
-            {
-                $staff_credits += intval($upgrade->accounts); 
-            }
-            $accounts = $staff_credits + $ordered_accounts; // New Staff Credits
 
             $rep_id = 0;
             $price = filter_var($_REQUEST['total'], FILTER_SANITIZE_NUMBER_FLOAT);
@@ -3459,7 +3449,7 @@ function renewCamp_callback ()
                 $subscription_data = array (
 							'org_id' => $org_id, 												// org id
 							'manager_id' => $user_id,	 										// manager id
-							'lib_id' => LE_SP_PRP_ID, 												// library id (1=Leadership,2=Clinical,3=Safety)
+							'lib_id' => LE_ID, 												// library id (1=Leadership,2=Clinical,3=Safety)
 							'start' => SUBSCRIPTION_START,										// subscription start date
 							'end' => SUBSCRIPTION_END,											// subscription end date
 							'method' => $method,	// transaction method
@@ -3469,9 +3459,9 @@ function renewCamp_callback ()
 							'data_disk_price' => 0.00,	// Data Disk price for library
 							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
-							'dash_dis' => (isset($_REQUEST['le_sp_prp_dash_disc'])) ? $_REQUEST['le_sp_prp_dash_disc'] : 0.00,	// discount for dashboard
+							'dash_dis' => (isset($_REQUEST['le_sp_prp_dash_disc'])) ? $_REQUEST['le_sp_prp_dash_disc'] : 100.00,	// discount for dashboard
 							'staff_dis' => (isset($_REQUEST['le_sp_prp_staff_disc'])) ? $_REQUEST['le_sp_prp_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => $accounts,	// number of staff accounts for subscription
+							'count' => $ordered_accounts,	                            // number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : '',	// any notes
