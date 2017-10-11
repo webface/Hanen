@@ -2,7 +2,13 @@
 	// make sure the user has permission to this page
     if(current_user_can("is_sales_rep") || current_user_can("is_sales_manager"))
     {
-    	
+?>
+    	<div class="breadcrumb">
+		<?= CRUMB_DASHBOARD ?>    
+		<?= CRUMB_SEPARATOR ?>
+		<span class="current"> List Module Resources</span> 
+		<h1 class="article_page_title">List Module Resources</h1>
+<?php
 		// Tables for module resources.
 		$moduleResourcesTableObj = new stdClass();
 		$moduleResourcesTableObj->rows = array();
