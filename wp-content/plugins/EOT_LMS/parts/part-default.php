@@ -151,6 +151,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
             <li><a href="?part=manage_sales_rep"><b>Manage Sales Rep</b></a></li>
             <li><a href="?part=renewal_script"><b>Renewal Links</b></a></li>
             <li><a href="?part=list_module_resources"><b>Manage Module Resources</b></a></li>
+            <li><a href="?part=view_users_org"><b>View Users Organization</b></a></li>
 <?php
         }
 ?>

@@ -9027,3 +9027,47 @@ function getOtherResourcesInModule($course_id = 0, $resource_id = 0, $type = "")
         
     return array();
 }
+
+/********************************************************************************************************
+ * Delete ORG ID
+ *******************************************************************************************************/
+add_action('wp_ajax_deleteStaffOrgId', 'deleteStaffOrgId_callback');
+function deleteStaffOrgId_callback () 
+{
+    global $wpdb;
+    if( isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['staff_id'] ) )
+    {
+        // This form is generated in getCourseForm function with $form_name = change_course_status_form from this file.
+        $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); // The Org ID
+        $staff_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT); // The staff account ID
+        // Check permissions
+        if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'delete-staff_Org_Id' . $org_id ) ) 
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'deleteStaffOrgId_callback error: Sorry, your nonce did not verify.';
+        }
+        else if( !current_user_can('is_sales_manager') )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = 'deleteStaffOrgId_callback Error: Sorry, you do not have permisison to view this page.';
+        }
+        else
+        {
+          $result = update_user_meta( $staff_id, "org_id", "");
+          $result['data'] = 'success';
+          $result['user_id'] = $staff_id;
+          $result['success'] = ($result == true) ? true : false; // Return Meta ID if the key didnt exist.
+          $result['email'] = $email;
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'deleteStaffOrgId_callback ERROR: Missing some parameters.';
+    }
+    echo json_encode($result);
+    wp_die();
+}
