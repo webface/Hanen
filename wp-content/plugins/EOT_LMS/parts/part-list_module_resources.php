@@ -30,7 +30,7 @@
 			// Find the category name.
 			foreach ($categories as $category) 
 			{
-				if($category_id == $category->id)
+				if($category_id == $category->ID)
 				{
 					$category_name = $category->name;
 					break;
