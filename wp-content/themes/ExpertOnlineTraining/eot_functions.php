@@ -44,7 +44,7 @@ function getLibrary ($library_id = 0)
  * @param date $end_date - the date to end the search till
  * @return array objects - subscriptions information for this library
  *******************************************************************************************************/
-function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $org_id = 0, $start_date = '0000-00-00', $end_date = '0000-00-00') 
+function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $org_id = 0, $start_date = '0000-00-00', $end_date = '0000-00-00', $year_end_date = '0000') 
 {
   global $wpdb;
   $sql = "SELECT * from " . TABLE_SUBSCRIPTIONS;
@@ -68,6 +68,7 @@ function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $o
   {
     $sql .= "  WHERE trans_date >= '" . $start_date . "' AND trans_date <= '" . $end_date . "'";
   }
+  $sql .= ($year_end_date != "0000") ? " AND YEAR(end_date) = $year_end_date" : "";
 
   $date = current_time('Y-m-d');
   $sql .= ($active) ? " AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'" : "";

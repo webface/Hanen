@@ -158,76 +158,98 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
 ?>
     </ul>
 <?php
-    foreach ($libraries as $library) 
+    $years_include = array( 2017, 2018 ); // Years to include.
+    foreach ($years_include as $year) 
     {
-        $library_name = $library->name; // The library name
-        $revenue = 0; // The revenue for the this library
-        $num_inactive = 0; // Nummber of inactive subscriptions.
-        $subscriptions = getSubscriptions(0, $library->ID, 0, 1);
-        /**
-         * This calculates the total amount of all subscriptions in this library.
-         * also counts the subscriptions that are not active.
-         */
-        foreach ($subscriptions as $subscription) 
-        {
-            $price = $subscription->price; // Sold Price for this subscription
-            $status = $subscription->status; // Subscription Status
-            $revenue += $price;
-            if ($status != "active") 
-            {
-                $num_inactive++;
-            }
-        }
-?>
-        <table class="data">
-            <tbody>
-                <tr class="head">
-                    <td colspan="2">
-                        &nbsp;&nbsp;<b><?= $library_name ?></b>
-                    </td>
-                </tr>
-                <tr class="head2">
-                    <td class="label">
-                        <?= SUBSCRIPTION_YEAR ?>              
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <a href="./?part=admin_view_subscriptions&library_id=<?= $library->ID ?>">
-                            Subscribers
-                        </a>
-                    </td>
-                    <td class="value right">
-                        <?= count($subscriptions); ?>           
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        Revenue
-                    </td>
-                    <td class="value right">
-                        $ <?= number_format($revenue, 2, '.', ',') ?>            
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        Inactive Subscriptions
-                    </td>
-                    <td class="value right"> 
-                        <?= $num_inactive ?>        
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label" colspan="2">
-                        <a href="?part=questionnaire&library_id=<?= $library->ID; ?>">Questionnaire Dashboard</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <?php
+        echo '<button class="year_' . $year . '">Show ' . $year . ' sales</button><br><br>';
     }
+    foreach ($years_include as $year) 
+    {
+        foreach ($libraries as $library) 
+        {
+            $library_name = $library->name; // The library name
+            $revenue = 0; // The revenue for the this library
+            $num_inactive = 0; // Nummber of inactive subscriptions.
+            $subscriptions = getSubscriptions(0, $library->ID, 0, 1, 0, 0, $year);
+            /**
+             * This calculates the total amount of all subscriptions in this library.
+             * also counts the subscriptions that are not active.
+             */
+            foreach ($subscriptions as $subscription) 
+            {
+                $price = $subscription->price; // Sold Price for this subscription
+                $status = $subscription->status; // Subscription Status
+                $revenue += $price;
+                if ($status != "active") 
+                {
+                    $num_inactive++;
+                }
+            }
+    ?>
+            <table class="data" id="subscription<?=$year?>" style="display:none">
+                <tbody>
+                    <tr class="head">
+                        <td colspan="2">
+                            &nbsp;&nbsp;<b><?= $library_name ?></b>
+                        </td>
+                    </tr>
+                    <tr class="head2">
+                        <td class="label">
+                            <?= $year ?>              
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <a href="./?part=admin_view_subscriptions&library_id=<?= $library->ID ?>">
+                                Subscribers
+                            </a>
+                        </td>
+                        <td class="value right">
+                            <?= count($subscriptions); ?>           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            Revenue
+                        </td>
+                        <td class="value right">
+                            $ <?= number_format($revenue, 2, '.', ',') ?>            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            Inactive Subscriptions
+                        </td>
+                        <td class="value right"> 
+                            <?= $num_inactive ?>        
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label" colspan="2">
+                            <a href="?part=questionnaire&library_id=<?= $library->ID; ?>">Questionnaire Dashboard</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <?php
+        }
+    }
+    ?>
+    <script>
+    $(document).ready(function(){
+        /*
+         * Toogle form base on year.
+         */
+        $(document).on('click', 'button[class^=year_]', function(){
+            var year = $(this).text().substring(5,10);
+            $('table').slideUp();
+            $('table#subscription'+year).slideDown();                  
+        }); 
+    });
+    </script>
+    <?php
 }
 // Student
 else if (current_user_can("is_student")) 
