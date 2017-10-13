@@ -5952,7 +5952,7 @@ function getCourseForm_callback ( )
             <div class="middle" style ="padding:0px;clear:both;">  
               <div id="video_listing" display="video_list" group_id="null" class="holder osX">
                 <div id="video_listing_pane" class="scroll-pane" style="padding:0px 0px 0px 10px;width: 600px">
-                  <form name = "add_video_group" id = "add_video_group">
+                  <form name="add_video_group" id="add_video_group">
                     <ul class="tree organizeassignment">
                       <h3 class="library_topic">Select which camps to copy this course into:</h3>
               <?php
@@ -6018,7 +6018,6 @@ function getCourseForm_callback ( )
             $course_videos_titles = array_column($course_videos, 'name'); // only the titles of the modules in the specified course
             $course_quizzes_titles = array_column($course_quizzes, 'name');
             $course_handouts_ids = array_column($course_handouts, 'ID');
-            
             $modules_in_portal = getModules($org_id);// all the custom modules in this portal
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library.
             
@@ -6060,10 +6059,11 @@ function getCourseForm_callback ( )
                 array_push($exams[$resource['module_id']], array('ID'=>$resource['ID'],'name'=>$resource['name']));
               }
             }
-            $handouts=array();
-            $handout_resources=  getHandoutResourcesInModules($all_module_ids_string);
+            $handouts = array();
+            $handout_resources = getHandoutResourcesInModules($all_module_ids_string);
             
-            foreach($handout_resources as $handout){
+            foreach($handout_resources as $handout)
+            {
                 if(isset($handouts[$handout['mod_id']]))
                 {
                     array_push($handouts[$handout['mod_id']], array('ID'=>$handout['ID'],'name'=>$handout['name']));
@@ -6229,7 +6229,7 @@ function getCourseForm_callback ( )
                             /************************************************************************************************
                             * Print modules that are in the same category its in.
                             *************************************************************************************************/
-                           
+
                           foreach( $modules as $key => $module )
                           {
                             if ( $module->category == $category_name )
@@ -6250,7 +6250,7 @@ function getCourseForm_callback ( )
                                     foreach($videos_in_course[$module_id] as $video){
                                             $vid_id = $video['ID'];
 ?>
-                                    <input collection="add_remove_from_group" video_length="<?= $module_time ?>" org_id=" <?= $org_id ?>" item_id=" <?= $vid_id ?>" group_id=<?= $course_id ?> assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
+                                    <input collection="add_remove_from_group" video_length="<?= $module_time ?>" org_id="<?= $org_id ?>" item_id="<?= $vid_id ?>" group_id="<?= $course_id ?>" assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
                                     <label for="chk_video_<?= $module_id ?>">
                                         <span name="video_title" class="<?=$video_class?> video_title">
                                           <b>Video</b> - <span class="vtitle"><?= $module->title ?></span>
