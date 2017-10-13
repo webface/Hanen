@@ -163,6 +163,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
     {
         echo '<button class="year_' . $year . '">Show ' . $year . ' sales</button><br><br>';
     }
+
     foreach ($years_include as $year) 
     {
         foreach ($libraries as $library) 

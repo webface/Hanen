@@ -68,6 +68,7 @@ function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $o
   {
     $sql .= "  WHERE trans_date >= '" . $start_date . "' AND trans_date <= '" . $end_date . "'";
   }
+  
   $sql .= ($year_end_date != "0000") ? " AND YEAR(end_date) = $year_end_date" : "";
 
   $date = current_time('Y-m-d');
