@@ -9055,10 +9055,11 @@ function deleteStaffOrgId_callback ()
         }
         else
         {
-          $result = update_user_meta( $staff_id, "org_id", "");
+//          $result = update_user_meta( $staff_id, "org_id", "");
+          $deleted = delete_user_meta( $staff_id, "org_id", $org_id);
           $result['data'] = 'success';
           $result['user_id'] = $staff_id;
-          $result['success'] = ($result == true) ? true : false; // Return Meta ID if the key didnt exist.
+          $result['success'] = $deleted; // Return true if deleted
           $result['email'] = $email;
         }
     }
