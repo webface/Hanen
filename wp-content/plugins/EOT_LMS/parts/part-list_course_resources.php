@@ -43,7 +43,7 @@
 		 			$string
 				);
 			}
-			echo '<h2>' . $course->course_name . '</h2>';
+			echo "<h2>" . $course->course_name . " - $course_id</h2>";
 			CreateDataTable($courseResourcesTableObj); // Print the table in the page	
 		}
 	}
