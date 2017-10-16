@@ -8,12 +8,16 @@ if ( $login === "failed" ) {
   echo '<p class="login-msg"><strong>ERROR:</strong> You are logged out.</p>';
 }
 ?>
-
+<style>
+    .login-branding,.login-form,#nav,#backtoblog,.login-msg{
+        width:400px;
+        margin:auto;
+    }
+</style>
 <div class="login-branding">
   <a href="#" class="login-logo">Expertonlinetraining.com</a>
   <p class="login-desc">
-    Donec sollicitudin molestie malesuada. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Vivamus suscipit tortor eget felis porttitor volutpat. Pellentesque in ipsum id orci porta dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  </p>
+Lorem Ipsum  </p>
 </div>
 <div class="login-form">
 <?php

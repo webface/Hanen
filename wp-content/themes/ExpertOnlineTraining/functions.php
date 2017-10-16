@@ -412,7 +412,7 @@ function track_logins($user_login, $user)
 }
 add_action('wp_login', 'track_logins', 10, 2);
 
-/*
+
 add_filter( 'login_url', 'mysite_login_url', 10, 2);
 function mysite_login_url( $force_reauth, $redirect )
 {
@@ -431,70 +431,69 @@ return $login_url ;
 }
 
 
-function redirect_login_page() 
+/* Main redirection of the default login page */
+function redirect_login_page() {
+    if(ICL_LANGUAGE_CODE=='fr'){
+$login_page  = home_url('/fr/login/');
+}
+else
 {
-  
-  if(ICL_LANGUAGE_CODE=='fr'){
-    $login_page  = home_url( '/fr/login/' );
-    }
-    else
-    {
-    $login_page  = home_url( '/login/' );
-    }
-  $page_viewed = basename($_SERVER['REQUEST_URI']);
- 
-  if( $page_viewed == "wp-login.php" && $_SERVER['REQUEST_METHOD'] == 'GET') {
-    wp_redirect($login_page);
-    exit;
-  }
+$login_page  = home_url('/login/');
+}
+	
+	$page_viewed = basename($_SERVER['REQUEST_URI']);
+
+	if($page_viewed == "wp-login.php" && $_SERVER['REQUEST_METHOD'] == 'GET') {
+		wp_redirect($login_page);
+		exit;
+	}
 }
 add_action('init','redirect_login_page');
 
-function login_failed() 
-{
-    if(ICL_LANGUAGE_CODE=='fr'){
-    $login_page  = home_url( '/fr/login/' );
-    }
-    else
-    {
-    $login_page  = home_url( '/login/' );
-    }
-  
-  wp_redirect( $login_page . '?login=failed' );
-  exit;
+/* Where to go if a login failed */
+function custom_login_failed() {
+	    if(ICL_LANGUAGE_CODE=='fr'){
+$login_page  = home_url('/fr/login/');
 }
-add_action( 'wp_login_failed', 'login_failed' );
- 
-function verify_username_password( $user, $username, $password ) 
+else
 {
-    if(ICL_LANGUAGE_CODE=='fr'){
-    $login_page  = home_url( '/fr/login/' );
-    }
-    else
-    {
-    $login_page  = home_url( '/login/' );
-    }
-    if( $username == "" || $password == "" ) {
-        wp_redirect( $login_page . "?login=empty" );
-        exit;
-    }
+$login_page  = home_url('/login/');
 }
-add_filter( 'authenticate', 'verify_username_password', 1, 3);
-//function logout_page() 
-//{
-//    if(ICL_LANGUAGE_CODE=='fr'){
-//    $login_page  = home_url( '/fr/login/' );
-//    }
-//    else
-//    {
-//    $login_page  = home_url( '/login/' );
-//    }
-//  wp_redirect( $login_page . "?login=false" );
-//  exit;
-//}
-//add_action('wp_logout','logout_page');
+	wp_redirect($login_page . '?login=failed');
+	exit;
+}
+add_action('wp_login_failed', 'custom_login_failed');
 
-*/
+/* Where to go if any of the fields were empty */
+function verify_user_pass($user, $username, $password) {
+	    if(ICL_LANGUAGE_CODE=='fr'){
+$login_page  = home_url('/fr/login/');
+}
+else
+{
+$login_page  = home_url('/login/');
+}
+	if($username == "" || $password == "") {
+		wp_redirect($login_page . "?login=empty");
+		exit;
+	}
+}
+add_filter('authenticate', 'verify_user_pass', 1, 3);
+
+/* What to do on logout */
+function logout_redirect() {
+	    if(ICL_LANGUAGE_CODE=='fr'){
+$login_page  = home_url('/fr/login/');
+}
+else
+{
+$login_page  = home_url('/login/');
+}
+	wp_redirect($login_page . "?login=false");
+	exit;
+}
+add_action('wp_logout','logout_redirect');
+
 
 /**
  * 
@@ -528,26 +527,6 @@ exit;
 }
 add_action( 'lostpassword_post', 'action_lostpassword_post', 10, 1 );
 
-add_action('wp_logout','auto_redirect_after_logout');
-function auto_redirect_after_logout(){
-wp_redirect( home_url() );
-exit();
-}
 
-
-function my_login_redirect( $redirect_to, $request, $user ) {
-	//is there a user to check?
-    error_log("Lang code: ".json_encode(ICL_LANGUAGE_CODE));
-    if(ICL_LANGUAGE_CODE=='fr'){
-    return home_url('/fr/dashboard/');
-    }
-    else
-    {
-    return home_url('/dashboard/');
-    }
-	
-}
-
-add_filter( 'login_redirect', 'my_login_redirect', 10, 3 );
 
 */
