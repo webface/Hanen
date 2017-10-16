@@ -300,7 +300,7 @@ function handle_steps_callback () {
 			$error = '';
 			$success = '';
 			$org_id = intval ($_REQUEST['org_id']);
-			$subscriptions = getSubscriptions(0, 0, true, $org_id); // All subscriptions for this organization
+			$subscriptions = getSubscriptions(0, 0, true, $org_id, '0000-00-00', '0000-00-00', SUBSCRIPTION_YEAR); // All subscriptions for this organization this year
 			$skip_activate_account = 0;
 			$processPayment = true; //variable to enable/disable processing of payment
 			$statement_description = "Expert Online Training - Full Pack " . SUBSCRIPTION_YEAR . " Subscription";
@@ -337,7 +337,7 @@ function handle_steps_callback () {
 				$number_of_licenses = SE_MIN_ACC; // at least 20 
 			}
 
-			// check if there's already an active subscirption for this user and library.
+			// check if there's already an active subscirption for this user and library in this year.
 			if(isset($subscriptions))
 			{
 				foreach ($subscriptions as $subscription)

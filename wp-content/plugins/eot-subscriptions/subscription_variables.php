@@ -13,7 +13,7 @@ define ('LE_LVL_2_MIN', 100);
 define ('LE_LVL_2_MAX', 249);
 define ('LE_LVL_3_PRICE', 12);
 define ('LE_LVL_3_MIN', 250);
-define ('LE_MIN_ACC', 1);
+define ('LE_MIN_ACC', 0);
 define ('DATA_DRIVE', '49.00');
 
 // define variables for Leadership Essentials - Starter Pack - Day Camps
@@ -26,7 +26,7 @@ define ('LE_SP_DC_LVL_2_MIN', 100);
 define ('LE_SP_DC_LVL_2_MAX', 249);
 define ('LE_SP_DC_LVL_3_PRICE', 12);
 define ('LE_SP_DC_LVL_3_MIN', 250);
-define ('LE_SP_DC_MIN_ACC', 1);
+define ('LE_SP_DC_MIN_ACC', 0);
 
 // define variables for Leadership Essentials - Starter Pack - Overnight Camps
 define ('LE_SP_OC_PRICE', 199);
@@ -38,7 +38,7 @@ define ('LE_SP_OC_LVL_2_MIN', 100);
 define ('LE_SP_OC_LVL_2_MAX', 249);
 define ('LE_SP_OC_LVL_3_PRICE', 12);
 define ('LE_SP_OC_LVL_3_MIN', 250);
-define ('LE_SP_OC_MIN_ACC', 1);
+define ('LE_SP_OC_MIN_ACC', 0);
 
 // define variables for Leadership Essentials - Starter Pack - Park & Rec Programs
 define ('LE_SP_PRP_PRICE', 199);
@@ -50,7 +50,7 @@ define ('LE_SP_PRP_LVL_2_MIN', 100);
 define ('LE_SP_PRP_LVL_2_MAX', 249);
 define ('LE_SP_PRP_LVL_3_PRICE', 12);
 define ('LE_SP_PRP_LVL_3_MIN', 250);
-define ('LE_SP_PRP_MIN_ACC', 1);
+define ('LE_SP_PRP_MIN_ACC', 0);
 
 // define variables for Leadership Essentials - Limited
 define ('LEL_PRICE', 199);
