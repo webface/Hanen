@@ -9023,3 +9023,4 @@ function getOtherResourcesInModule($course_id = 0, $resource_id = 0, $type = "")
         
     return array();
 }
+
