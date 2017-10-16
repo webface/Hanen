@@ -163,7 +163,6 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
     {
         echo '<button class="year_' . $year . '">Show ' . $year . ' sales</button><br><br>';
     }
-
     foreach ($years_include as $year) 
     {
         foreach ($libraries as $library) 
@@ -203,7 +202,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
                     </tr>
                     <tr>
                         <td class="label">
-                            <a href="./?part=admin_view_subscriptions&library_id=<?= $library->ID ?>">
+                            <a href="./?part=admin_view_subscriptions&library_id=<?= $library->ID ?>&sub_year=<?= $year ?>">
                                 Subscribers
                             </a>
                         </td>

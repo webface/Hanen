@@ -43,13 +43,13 @@
 	{
 		wp_die('You do not have access to this display.');
 	}
-
-  	if( isset($_REQUEST['library_id']) && $_REQUEST['library_id'] > 0 )
+  	if( isset($_REQUEST['library_id']) && $_REQUEST['library_id'] > 0 && isset($_REQUEST['sub_year']) && $_REQUEST['sub_year'] > 0 )
   	{
 		$library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);
 		$library = getLibraries($library_id); // The library information
 		$library_name = $library->name; // Name of the Library.
-		$subscriptions = getSubscriptions(0, $library_id); // All the subscriptions in this library
+		$year = filter_var($_REQUEST['sub_year'],FILTER_SANITIZE_NUMBER_INT); // Subscription Year
+		$subscriptions = getSubscriptions(0, $library_id, 0, 0, 0, 0, $year); // All the subscriptions in this library
 		$total_amount_paid = 0; // Total amount paid for the subscription
 		$total_num_staff = 0; // Total # of staff for the subscription
 		// Initialize the table and create the headers
@@ -140,7 +140,6 @@
 		CreateDataTable($subscriptionsTableObj);
 		echo 'Download:';
 		CreateDataTable($subscriptionsTableDownloadObj, "100%", 10, true, "EOTSubscription");
-  	}
 ?>
 <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.dataTables.min.js"></script>
 <script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/dataTables.buttons.min.js"></script>
@@ -159,5 +158,12 @@
 		padding-right:10px;
 	}
 </style>
+<?php 
+  	}
+  	else
+  	{
+  		echo 'Invalid library ID or Subscription year';
+  	}
+?>
 
 
