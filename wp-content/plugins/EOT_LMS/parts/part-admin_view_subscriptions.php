@@ -43,13 +43,14 @@
 	{
 		wp_die('You do not have access to this display.');
 	}
-
+  	
   	if( isset($_REQUEST['library_id']) && $_REQUEST['library_id'] > 0 )
   	{
 		$library_id = filter_var($_REQUEST['library_id'],FILTER_SANITIZE_NUMBER_INT);
 		$library = getLibraries($library_id); // The library information
 		$library_name = $library->name; // Name of the Library.
-		$subscriptions = getSubscriptions(0, $library_id); // All the subscriptions in this library
+		$year = isset($_REQUEST['sub_year']) ? filter_var($_REQUEST['sub_year'], FILTER_SANITIZE_NUMBER_INT) : SUBSCRIPTION_YEAR; // Subscription Year
+		$subscriptions = getSubscriptions(0, $library_id, 0, 0, 0, 0, $year); // All the subscriptions in this library
 		$total_amount_paid = 0; // Total amount paid for the subscription
 		$total_num_staff = 0; // Total # of staff for the subscription
 		// Initialize the table and create the headers
@@ -100,64 +101,70 @@
 			$total_num_staff += $num_staff;
 			// Create thata rows, and add them into the table.
 			$subscriptionsTableObj->rows[] = array($camp_name, 
-													$user_info ? "<a href=mailto:" . $user_info->user_email . ">" . $name . "</a>" : "Can't find the user", 
-													$num_staff, 
-													" $" . number_format($price, 2, ".", ""),
-													"<a href='./?part=admin_subscription_details&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-info' aria-hidden='true' ". hover_text_attr('More information<br> for this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=admin_create_account&user_id=".$user_id."&renewal=true'><i class='fa fa-vcard-o' aria-hidden='true' ". hover_text_attr('Renew this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=charge_user&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-cart-plus' aria-hidden='true' ". hover_text_attr('Charge this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=add_upgrade&subscription_id=".$subscription_id."&library_id=".$library_id."'><i class='fa fa-usd' aria-hidden='true' ". hover_text_attr('Upgrade.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-times-circle' aria-hidden='true' ". hover_text_attr('Disable.',true) . "></i>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=issue_refund&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>");
+			$user_info ? "<a href=mailto:" . $user_info->user_email . ">" . $name . "</a>" : "Can't find the user", 
+			$num_staff, 
+			" $" . number_format($price, 2, ".", ""),
+			"<a href='./?part=admin_subscription_details&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-info' aria-hidden='true' ". hover_text_attr('More information<br> for this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=admin_create_account&user_id=".$user_id."&renewal=true'><i class='fa fa-vcard-o' aria-hidden='true' ". hover_text_attr('Renew this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=charge_user&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-cart-plus' aria-hidden='true' ". hover_text_attr('Charge this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=add_upgrade&subscription_id=".$subscription_id."&library_id=".$library_id."'><i class='fa fa-usd' aria-hidden='true' ". hover_text_attr('Upgrade.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-times-circle' aria-hidden='true' ". hover_text_attr('Disable.',true) . "></i>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=issue_refund&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>");
 			$subscriptionsTableDownloadObj->rows[] = array($camp_name, 
-										$user_info ? "<a href=mailto:" . $user_info->user_email . ">" . $name . "</a>" : "Can't find the user", 
-										$num_staff, 
-										" $" . number_format($price, 2, ".", ""));
+			$user_info ? "<a href=mailto:" . $user_info->user_email . ">" . $name . "</a>" : "Can't find the user", 
+			$num_staff, 
+			" $" . number_format($price, 2, ".", ""));
 		}
 ?>
   		<h2><?= $library_name ?></h2>
-<table class="data">
-	<tbody>
-		<tr class="head">
-			<td>
-			  Totals
-			</td>
-			<td class="right">
-			  Total # of Staff
-			</td>
-			<td class="right">
-			  Total Payments
-			</td>
-		</tr>
-		<tr>
-			<td class="label">
-			</td>
-			<td class="value right" style="padding-left: 15px;">    
-				<?= $total_num_staff ?>        
-		  	</td>
-			<td class="right" style="padding-left: 15px;">  
-				$<?= number_format($total_amount_paid, 2, ".", "") ?>  
-		  	</td>
-		</tr>
-	</tbody>
-</table>
+		<table class="data">
+			<tbody>
+				<tr class="head">
+					<td>
+					  Totals
+					</td>
+					<td class="right">
+					  Total # of Staff
+					</td>
+					<td class="right">
+					  Total Payments
+					</td>
+				</tr>
+				<tr>
+					<td class="label">
+					</td>
+					<td class="value right" style="padding-left: 15px;">    
+						<?= $total_num_staff ?>        
+				  	</td>
+					<td class="right" style="padding-left: 15px;">  
+						$<?= number_format($total_amount_paid, 2, ".", "") ?>  
+				  	</td>
+				</tr>
+			</tbody>
+		</table>
 <?php
 		CreateDataTable($subscriptionsTableObj);
 		echo 'Download:';
 		CreateDataTable($subscriptionsTableDownloadObj, "100%", 10, true, "EOTSubscription");
+?>
+		<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.dataTables.min.js"></script>
+		<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/dataTables.buttons.min.js"></script>
+		<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/buttons.flash.min.js"></script>
+		<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jszip.min.js"></script>
+		<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/vfs_fonts.js"></script>
+		<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/buttons.html5.min.js"></script>
+		<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/buttons.print.min.js"></script>
+		<script>
+			$(document).ready(function () {
+				$('#DataTable_2, #DataTable_2_filter, #DataTable_2_paginate, #DataTable_2_info, #DataTable_2_length').hide();
+			})
+		</script>
+		<style>
+			.buttons-html5 {
+				padding-right:10px;
+			}
+		</style>
+<?php 
+  	}
+  	else
+  	{
+  		echo 'Invalid library ID';
   	}
 ?>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.dataTables.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/dataTables.buttons.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/buttons.flash.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jszip.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/vfs_fonts.js"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/buttons.html5.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?= get_template_directory_uri() ?>/js/buttons.print.min.js"></script>
-<script>
-	$(document).ready(function () {
-		$('#DataTable_2, #DataTable_2_filter, #DataTable_2_paginate, #DataTable_2_info, #DataTable_2_length').hide();
-	})
-</script>
-<style>
-	.buttons-html5 {
-		padding-right:10px;
-	}
-</style>
 
 
