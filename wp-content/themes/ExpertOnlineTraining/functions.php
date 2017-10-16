@@ -412,6 +412,7 @@ function track_logins($user_login, $user)
 }
 add_action('wp_login', 'track_logins', 10, 2);
 
+/*
 add_filter( 'login_url', 'mysite_login_url', 10, 2);
 function mysite_login_url( $force_reauth, $redirect )
 {
@@ -493,12 +494,12 @@ add_filter( 'authenticate', 'verify_username_password', 1, 3);
 //}
 //add_action('wp_logout','logout_page');
 
-
+*/
 
 /**
  * 
  * 
- */
+ *
 function redirect_lostpassword_page() {
 $lostpassword_page = home_url( '/lostpassword' );
 $page_viewed = basename($_SERVER['REQUEST_URI']);
@@ -549,3 +550,4 @@ function my_login_redirect( $redirect_to, $request, $user ) {
 
 add_filter( 'login_redirect', 'my_login_redirect', 10, 3 );
 
+*/
