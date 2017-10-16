@@ -159,10 +159,12 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
     </ul>
 <?php
     $years_include = array( 2017, 2018 ); // Years to include.
+
     foreach ($years_include as $year) 
     {
         echo '<button class="year_' . $year . '">Show ' . $year . ' sales</button><br><br>';
     }
+
     foreach ($years_include as $year) 
     {
         foreach ($libraries as $library) 
