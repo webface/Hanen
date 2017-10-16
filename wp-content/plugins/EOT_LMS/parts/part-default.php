@@ -153,6 +153,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
             <li><a href="?part=list_module_resources"><b>Manage Module Resources</b></a></li>
             <li><a href="?part=list_course_resources"><b>Manage Course Resources</b></a></li>
             <li><a href="?part=view_users_org"><b>View Users Organization</b></a></li>
+            <li><a href="?part=manage_course_module_resources"><b>Manage Course Module Resources</b></a></li>
 <?php
         }
 ?>
