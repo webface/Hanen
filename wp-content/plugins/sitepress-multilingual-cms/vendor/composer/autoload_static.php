@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6037ca830891ca0c59c60364db92c458
+class ComposerStaticInit040b26c580e8bc55d1e732b58596cd53
 {
     public static $files = array (
         'b45b351e6b6f7487d819961fef2fda77' => __DIR__ . '/..' . '/jakeasmith/http_build_url/src/http_build_url.php',
@@ -557,6 +557,7 @@ class ComposerStaticInit6037ca830891ca0c59c60364db92c458
         'WPML_Slug_Filter' => __DIR__ . '/../..' . '/inc/url-handling/wpml-slug-filter.class.php',
         'WPML_Slug_Resolution' => __DIR__ . '/../..' . '/inc/query-filtering/wpml-slug-resolution.class.php',
         'WPML_Sunrise_Lang_In_Domains' => __DIR__ . '/../..' . '/inc/tools/sunrise.php',
+        'WPML_Super_Globals_Validation' => __DIR__ . '/../..' . '/classes/request-handling/class-wpml-super-globals-validation.php',
         'WPML_Support_Info' => __DIR__ . '/../..' . '/classes/support/class-wpml-support-info.php',
         'WPML_Support_Info_UI' => __DIR__ . '/../..' . '/classes/support/class-wpml-support-info-ui.php',
         'WPML_Support_Info_UI_Factory' => __DIR__ . '/../..' . '/classes/support/class-wpml-support-info-ui-factory.php',
@@ -761,10 +762,10 @@ class ComposerStaticInit6037ca830891ca0c59c60364db92c458
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6037ca830891ca0c59c60364db92c458::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6037ca830891ca0c59c60364db92c458::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit6037ca830891ca0c59c60364db92c458::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit6037ca830891ca0c59c60364db92c458::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit040b26c580e8bc55d1e732b58596cd53::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit040b26c580e8bc55d1e732b58596cd53::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit040b26c580e8bc55d1e732b58596cd53::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit040b26c580e8bc55d1e732b58596cd53::$classMap;
 
         }, null, ClassLoader::class);
     }
