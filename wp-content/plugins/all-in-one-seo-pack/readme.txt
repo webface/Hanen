@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mrtor
 Tags: seo, all in one seo, google, twitter, page, image seo, social, search engine optimization, sitemap, WordPress SEO, meta, meta description, xml sitemap, google sitemap, sitemaps, robots meta, yahoo, bing, news sitemaps, multisite, canonical, nofollow, noindex, keywords, description, webmaster tools, google webmaster tools, google analytics
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 2.3.16
+Stable tag: 2.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,7 @@ Use **All in One SEO Pack** to optimize your WordPress site for SEO. It's easy a
 First created in 2007, see why AIOSEO is one of the all time most downloaded plugins for WordPress.
 
 * XML Sitemap support - submit your sitemap to Google and Bing and improve your SEO
+* Image XML Sitemap submitted to Google and Bing to improve your Image SEO
 * Google AMP support (Accelerated Mobile Pages)
 * Google Analytics support
 * Support for SEO on Custom Post Types
@@ -82,7 +83,7 @@ https://www.youtube.com/watch?v=A0VKinM5s00
 6. **Additional Pages for XML Sitemap** You can easily configure any additional pages to be added to the sitemap in addition to the dynamically generated WordPress pages. This ensures that search engines like Google will see ALL of your website's content.
 7. **Quick-Edit** Quickly edit your WordPress SEO data without having to go back and forth between different screens.
 8. **SEO Menu** All in One offers an extensive array of premium SEO features for free. Perfect for the novice or advanced user.
-
+9. **Google XML Sitemap** Automatically sent to Google and other search engines. Include images in your sitemap! 
 
 == Upgrade Notice ==
 
