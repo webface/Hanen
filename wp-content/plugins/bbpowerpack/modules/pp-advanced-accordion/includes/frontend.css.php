@@ -18,7 +18,7 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-accordion-item .pp-accordion-button {
-	background-color: <?php echo ( $settings->label_background_color['primary'] ) ? '#' . $settings->label_background_color['primary'] : 'transparent'; ?>;
+	background-color: <?php echo $settings->label_background_color['primary'] ? pp_hex2rgba('#' . $settings->label_background_color['primary'], $settings->label_background_opacity / 100) : 'transparent'; ?>;
 	color: #<?php echo $settings->label_text_color['primary']; ?>;
 	border-style: <?php echo $settings->label_border_style; ?>;
 	<?php if( $settings->label_border_style != 'none' ) { ?>
@@ -47,9 +47,15 @@
 
 .fl-node-<?php echo $id; ?> .pp-accordion-item .pp-accordion-button:hover,
 .fl-node-<?php echo $id; ?> .pp-accordion-item.pp-accordion-item-active .pp-accordion-button {
-	background-color: <?php echo ( $settings->label_background_color['secondary'] ) ? '#' . $settings->label_background_color['secondary'] : 'transparent'; ?>;
+	background-color: <?php echo $settings->label_background_color['secondary'] ? pp_hex2rgba('#' . $settings->label_background_color['secondary'], $settings->label_background_opacity / 100) : 'transparent'; ?>;
 	color: #<?php echo $settings->label_text_color['secondary']; ?>;
 }
+
+.fl-node-<?php echo $id; ?> .pp-accordion-item.pp-accordion-item-active .pp-accordion-button-icon,
+.fl-node-<?php echo $id; ?> .pp-accordion-item:hover .pp-accordion-button-icon {
+	color: #<?php echo $settings->label_text_color['secondary']; ?>;
+}
+
 
 <?php if( $settings->item_spacing == 0 ) : ?>
 .fl-node-<?php echo $id; ?> .pp-accordion-item .pp-accordion-button:last-child {
@@ -83,7 +89,7 @@
 	font-size: <?php echo $settings->content_custom_font_size['desktop']; ?>px;
 	<?php } ?>
 	line-height: <?php echo $settings->content_line_height['desktop']; ?>;
-	background-color: <?php echo ( $settings->content_bg_color ) ? '#' . $settings->content_bg_color : 'transparent'; ?>;
+	background-color: <?php echo $settings->content_bg_color ? pp_hex2rgba('#' . $settings->content_bg_color, $settings->content_bg_opacity / 100) : 'transparent'; ?>;
 	color: #<?php echo $settings->content_text_color; ?>;
 	border-style: <?php echo $settings->content_border_style; ?>;
 	<?php if( $settings->content_border_style != 'none' ) { ?>

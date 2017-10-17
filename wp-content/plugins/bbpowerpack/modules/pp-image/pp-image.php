@@ -24,7 +24,8 @@ class PPImageModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Image', 'bb-powerpack'),
 			'description'   	=> __('Upload a photo or display one from the media library.', 'bb-powerpack'),
-			'category'			=> BB_POWERPACK_CAT,
+			'group'         	=> 'PowerPack Modules',
+            'category'			=> pp_get_modules_cat( 'content' ),
 			'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-image/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-image/',
             'editor_export' 	=> true, // Defaults to true and can be omitted.
@@ -448,12 +449,13 @@ FLBuilder::register_module('PPImageModule', array(
 					),
 					'photo'         => array(
 						'type'          => 'photo',
-						'label'         => __('Photo', 'bb-powerpack')
+						'label'         => __('Photo', 'bb-powerpack'),
+						'connections'   => array( 'photo' ),
 					),
 					'photo_url'     => array(
 						'type'          => 'text',
 						'label'         => __('Photo URL', 'bb-powerpack'),
-						'placeholder'   => __( 'http://www.example.com/my-photo.jpg', 'bb-powerpack' )
+						'placeholder'   => __( 'http://www.example.com/my-photo.jpg', 'bb-powerpack' ),
 					),
 					'crop'          => array(
 						'type'          => 'select',
@@ -545,6 +547,7 @@ FLBuilder::register_module('PPImageModule', array(
 					'link_url'     => array(
 						'type'          => 'link',
 						'label'         => __('Link URL', 'bb-powerpack'),
+						'connections'   => array( 'url' ),
 						'preview'         => array(
 							'type'            => 'none'
 						)

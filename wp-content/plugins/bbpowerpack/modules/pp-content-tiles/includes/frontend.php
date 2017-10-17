@@ -1,5 +1,4 @@
 <?php
-wp_reset_query();
 
 switch ( $settings->layout ) :
 
@@ -23,16 +22,12 @@ switch ( $settings->layout ) :
 
 endswitch;
 
-// Get the query data.
-if ( is_front_page() ) {
-	set_query_var('page', 1);
-} else {
-	set_query_var('paged', 1);
-}
 $query = FLBuilderLoop::query($settings);
 
 // Render the posts.
 if($query->have_posts()) :
+
+	do_action( 'pp_tiles_before_posts', $settings, $query );
 
 ?>
 <div class="pp-post-tiles pp-tile-layout-<?php echo $settings->layout; ?>" itemscope="itemscope" itemtype="http://schema.org/Blog">
@@ -53,12 +48,12 @@ if($query->have_posts()) :
 				echo '<div class="pp-post-tile-right">';
 			}
 
-			include $module->dir . 'includes/post-grid.php';
+			include apply_filters( 'pp_tiles_layout_path', $module->dir . 'includes/post-grid.php', $settings->layout, $settings );
 
 			if ( $count == 1 ) {
 				echo '</div>';
 			}
-			if ( ($count == 4 && $settings->layout == 1) || ($count == 5 && $settings->layout == 2) ) {
+			if ( ($count == 3 && $settings->layout == 3) || ($count == 3 && $settings->layout == 4) || ($count == 4 && $settings->layout == 1) || ($count == 5 && $settings->layout == 2) ) {
 				echo '</div>';
 			}
 
@@ -72,7 +67,10 @@ if($query->have_posts()) :
 </div>
 <div class="fl-clear"></div>
 <?php endif; ?>
+
 <?php
+
+do_action( 'pp_tiles_after_posts', $settings, $query );
 
 // Render the empty message.
 if(!$query->have_posts() && (defined('DOING_AJAX') || isset($_REQUEST['fl_builder']))) :

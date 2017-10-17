@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the PowerPack for Beaver Builder package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2016-12-09 12:39:11+0000\n"
+"PO-Revision-Date: 2017-01-02 07:00:54+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,298 +11,429 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: PowerPack for Beaver Builder\n"
 
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:70
+#: modules/pp-content-grid/pp-content-grid.php:301
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:48
+#: modules/pp-hover-cards/pp-hover-cards.php:48
+msgid "Style 1"
+msgstr ""
+
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:72
+#: modules/pp-content-grid/pp-content-grid.php:303
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:50
+#: modules/pp-hover-cards/pp-hover-cards.php:50
+msgid "Style 3"
+msgstr ""
+
+#: modules/pp-business-hours/pp-business-hours.php:647
+msgid "Close"
+msgstr ""
+
+#: modules/pp-content-tiles/includes/loop-settings.php:161
+msgid "Date Format"
+msgstr ""
+
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:57
+msgid "Style 10"
+msgstr ""
+
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:59
+msgid "Style 12"
+msgstr ""
+
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:162
+#: modules/pp-hover-cards/pp-hover-cards.php:160
+msgid "Hover Card"
+msgstr ""
+
+#: modules/pp-pricing-table/pp-pricing-table.php:99
+msgid "Box Background Color"
+msgstr ""
+
+#: includes/helper-functions.php:422
+msgid "Mon"
+msgstr ""
+
+#: includes/helper-functions.php:423
+msgid "Tue"
+msgstr ""
+
+#: includes/helper-functions.php:424
+msgid "Wed"
+msgstr ""
+
+#: includes/helper-functions.php:425
+msgid "Thu"
+msgstr ""
+
+#: includes/helper-functions.php:426
+msgid "Fri"
+msgstr ""
+
+#: includes/helper-functions.php:427
+msgid "Sat"
+msgstr ""
+
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:69
+msgid "Basic"
+msgstr ""
+
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:111
+msgid "Custom ID Prefix"
+msgstr ""
+
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:113
+msgid "mytab"
+msgstr ""
+
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:114
+msgid "A prefix that will be applied to ID attribute of tabs's in HTML. For example, prefix \"mytab\" will be applied as \"mytab-1\", \"mytab-2\" in ID attribute of Tab 1 and Tab 2 respectively. It should only contain dashes, underscores, letters or numbers. No spaces."
+msgstr ""
+
+#: modules/pp-business-hours/pp-business-hours.php:637
+msgid "Long"
+msgstr ""
+
+#: modules/pp-business-hours/pp-business-hours.php:638
+msgid "Short"
+msgstr ""
+
+#: modules/pp-content-grid/pp-content-grid.php:1517
+msgid "Spacing Top/Bottom"
+msgstr ""
+
+#: modules/pp-content-grid/pp-content-grid.php:1540
+msgid "Spacing Left/Right"
+msgstr ""
+
+#: modules/pp-modal-box/pp-modal-box.php:204
+msgid "Modal Title"
+msgstr ""
+
+#: includes/helper-functions.php:394
+msgid "Sunday"
+msgstr ""
+
+#: includes/helper-functions.php:395
+msgid "Monday"
+msgstr ""
+
+#: includes/helper-functions.php:396
+msgid "Tuesday"
+msgstr ""
+
+#: includes/helper-functions.php:397
+msgid "Wednesday"
+msgstr ""
+
+#: includes/helper-functions.php:398
+msgid "Thursday"
+msgstr ""
+
+#: includes/helper-functions.php:399
+msgid "Friday"
+msgstr ""
+
+#: includes/helper-functions.php:400
+msgid "Saturday"
+msgstr ""
+
+#: includes/helper-functions.php:421
+msgid "Sun"
+msgstr ""
+
 #: modules/pp-pricing-table/pp-pricing-table.php:655
 #: modules/pp-pricing-table/pp-pricing-table.php:1259
 msgid "Duration Color"
-msgstr ""
+msgstr "Farbe Zeitraum"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:743
 msgid "Items Min Height"
-msgstr ""
+msgstr "Minimale Höhe der Elemente"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:747
 msgid "Use this to normalize the height of your boxes when they have different numbers of items."
-msgstr ""
+msgstr "Gleiche die Höhe der Boxen an, wenn sie unterschiedlich viele Elemente beinhalten."
 
 #: modules/pp-pricing-table/pp-pricing-table.php:905
 #: modules/pp-pricing-table/pp-pricing-table.php:912
 msgid "Highlight"
-msgstr ""
+msgstr "Hervorheben"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:937
 msgid "Highlight Package"
-msgstr ""
+msgstr "Angebot hervorheben"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:940
 msgid "Package 1"
-msgstr ""
+msgstr "Angebot 1"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:941
 msgid "Package 2"
-msgstr ""
+msgstr "Angebot 2"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:942
 msgid "Package 3"
-msgstr ""
+msgstr "Angebot 3"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:943
 msgid "Package 4"
-msgstr ""
+msgstr "Angebot 4"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:944
 msgid "Package 5"
-msgstr ""
+msgstr "Angebot 5"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:945
 msgid "Package 6"
-msgstr ""
+msgstr "Angebot 6"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1665
 msgid "Price Font Size"
-msgstr ""
+msgstr "Schriftgröße Preis"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1679
 msgid "Price Custom Font Size"
-msgstr ""
+msgstr "Individuelle Schriftgröße Preis"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1711
 msgid "Duration Font Size"
-msgstr ""
+msgstr "Schriftrgöße Zeitraum"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1725
 msgid "Duration Custom Font Size"
-msgstr ""
+msgstr "Individuelle Schriftgröße Zeitraum"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1932
 msgid "Add Package"
-msgstr ""
+msgstr "Angebot hinzufügen"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1956
 msgid "Price Box"
-msgstr ""
+msgstr "Preisbox"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1964
 msgid "Duration"
-msgstr ""
+msgstr "Zeitraum"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1965
 msgid "per Year"
-msgstr ""
+msgstr "pro Jahr"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1975
 msgctxt "items to be displayed in the pricing box."
 msgid "Items"
-msgstr ""
+msgstr "Elemente"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1980
 msgid "One item per line. HTML is okay."
-msgstr ""
+msgstr "Ein Element pro Zeile, HTML ist ok."
 
 #: modules/pp-pricing-table/pp-pricing-table.php:1996
 msgid "Get Started"
-msgstr ""
+msgstr "Jetzt loslegen"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:2000
 msgid "Button URL"
-msgstr ""
+msgstr "Button URL"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:2016
 msgid "Link No Follow"
-msgstr ""
+msgstr "Link No Follow"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:2033
 msgid "Button Icon Position"
-msgstr ""
+msgstr "Button Icon-Position"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:2100
 msgid "Border Size"
-msgstr ""
+msgstr "Rahmengröße"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:2295
 msgid "Package Top Margin"
-msgstr ""
+msgstr "Angebot Außenabstand oben"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:2303
 msgid "Package Background Color"
-msgstr ""
+msgstr "Angebot Hintergrundfarbe"
 
 #: modules/pp-business-hours/pp-business-hours.php:17
 msgid "Business Hours"
-msgstr ""
+msgstr "Öffnungszeiten"
 
 #: modules/pp-business-hours/pp-business-hours.php:18
 msgid "A module to display business hours."
-msgstr ""
+msgstr "Modul für Öffnungszeiten."
 
 #: modules/pp-business-hours/pp-business-hours.php:43
 #: modules/pp-business-hours/pp-business-hours.php:56
 #: modules/pp-business-hours/pp-business-hours.php:451
 msgid "Timing"
-msgstr ""
+msgstr "Zeiten"
 
 #: modules/pp-business-hours/pp-business-hours.php:82
 msgid "Striped Effect"
-msgstr ""
+msgstr "Wechselnde Farben"
 
 #: modules/pp-business-hours/pp-business-hours.php:97
 msgid "Color 1"
-msgstr ""
+msgstr "Farbe 1"
 
 #: modules/pp-business-hours/pp-business-hours.php:108
 msgid "Color 2"
-msgstr ""
+msgstr "Farbe 2"
 
 #: modules/pp-business-hours/pp-business-hours.php:132
 msgid "Separator Style"
-msgstr ""
+msgstr "Trenner Stil"
 
 #: modules/pp-business-hours/pp-business-hours.php:147
 msgid "Separator Width"
-msgstr ""
+msgstr "Trenner Breite"
 
 #: modules/pp-business-hours/pp-business-hours.php:162
 msgid "Separator Color"
-msgstr ""
+msgstr "Trenner Farbe"
 
 #: modules/pp-business-hours/pp-business-hours.php:316
 #: modules/pp-business-hours/pp-business-hours.php:628
 msgid "Day"
-msgstr ""
+msgstr "Tag"
 
 #: modules/pp-business-hours/pp-business-hours.php:586
 msgid "Status Text Color"
-msgstr ""
+msgstr "Textfarbe Status"
 
 #: modules/pp-business-hours/pp-business-hours.php:604
 msgid "Timing Settings"
-msgstr ""
+msgstr "Zeiten Einstellungen"
 
 #: modules/pp-business-hours/pp-business-hours.php:614
 msgid "Highlight this"
-msgstr ""
+msgstr "Hervorheben"
 
-#: modules/pp-business-hours/pp-business-hours.php:633
+#: modules/pp-business-hours/pp-business-hours.php:643
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
-#: modules/pp-business-hours/pp-business-hours.php:636
+#: modules/pp-business-hours/pp-business-hours.php:646
 msgid "Open"
+msgstr "Geöffnet"
+
+#: modules/pp-business-hours/pp-business-hours.php:679
+msgid "Closed"
 msgstr ""
 
-#: modules/pp-business-hours/pp-business-hours.php:637
-msgid "Close"
-msgstr ""
-
-#: modules/pp-business-hours/pp-business-hours.php:650
+#: modules/pp-business-hours/pp-business-hours.php:660
 msgid "Start Time"
-msgstr ""
+msgstr "Öffnungszeit"
 
-#: modules/pp-business-hours/pp-business-hours.php:659
+#: modules/pp-business-hours/pp-business-hours.php:669
 msgid "End Time"
-msgstr ""
+msgstr "Schließzeit"
 
-#: modules/pp-business-hours/pp-business-hours.php:668
+#: modules/pp-business-hours/pp-business-hours.php:678
 msgid "Status Text"
-msgstr ""
+msgstr "Statustext"
 
-#: modules/pp-business-hours/pp-business-hours.php:690
+#: modules/pp-business-hours/pp-business-hours.php:700
 msgid "Day Color"
-msgstr ""
+msgstr "Farbe Tag"
 
-#: modules/pp-business-hours/pp-business-hours.php:696
+#: modules/pp-business-hours/pp-business-hours.php:706
 msgid "Timing Color"
-msgstr ""
+msgstr "Zeit Farbe"
 
-#: modules/pp-business-hours/pp-business-hours.php:702
+#: modules/pp-business-hours/pp-business-hours.php:712
 msgid "Status Color"
-msgstr ""
+msgstr "Statusfarbe"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:14
 msgid "Pricing Table"
-msgstr ""
+msgstr "Preistabelle"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:15
 msgid "Addon to display pricing table."
-msgstr ""
+msgstr "Eine Erweiterung um eine Preistabelle anzuzeigen."
 
 #: modules/pp-pricing-table/pp-pricing-table.php:60
 msgid "Packages"
-msgstr ""
+msgstr "Angebote"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:71
 msgid "Matrix"
-msgstr ""
+msgstr "Matrix"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:81
 #: modules/pp-pricing-table/pp-pricing-table.php:918
 #: modules/pp-pricing-table/pp-pricing-table.php:951
 #: modules/pp-pricing-table/pp-pricing-table.php:2291
 msgid "Package"
-msgstr ""
+msgstr "Angebot"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:91
 msgid "Items Box"
-msgstr ""
+msgstr "Elemente Box"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:110
 #: modules/pp-pricing-table/pp-pricing-table.php:758
 #: modules/pp-pricing-table/pp-pricing-table.php:1283
 msgid "Alternate Background Color"
-msgstr ""
+msgstr "Alternierende Hintergrundfarbe"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:121
 msgid "Items Text Color"
-msgstr ""
+msgstr "Textfarbe Elemente"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:131
 msgid "Items Border Style"
-msgstr ""
+msgstr "Rahmenstil Elemente"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:158
 msgid "Items Border Width"
-msgstr ""
+msgstr "Rahmenbreite Elemente"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:171
 msgid "Items Border Color"
-msgstr ""
+msgstr "Rahmenfarbe Elemente"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:182
 msgid "Items Alignment"
-msgstr ""
+msgstr "Ausrichtung der Elemente"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:198
 msgid "One feature per line. HTML is okay."
-msgstr ""
+msgstr "Eine Eigenschaft pro Zeile, HTML ist ok."
 
 #: modules/pp-pricing-table/pp-pricing-table.php:209
 msgid "Package Column"
-msgstr ""
+msgstr "Angebots-Spalte"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:217
 msgid "Use this to add space between pricing table columns."
-msgstr ""
+msgstr "Abstand zwischen den Spalten hinzufügen."
 
 #: modules/pp-pricing-table/pp-pricing-table.php:422
 #: modules/pp-pricing-table/pp-pricing-table.php:1146
 #: modules/pp-pricing-table/pp-pricing-table.php:1361
 #: modules/pp-pricing-table/pp-pricing-table.php:1938
 msgid "Featured Title"
-msgstr ""
+msgstr "Hervorgehobener Titel"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:521
 #: modules/pp-pricing-table/pp-pricing-table.php:1173
 #: modules/pp-pricing-table/pp-pricing-table.php:1498
 #: modules/pp-pricing-table/pp-pricing-table.php:1947
 msgid "Package Title"
-msgstr ""
+msgstr "Angebotstitel"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:528
 msgid "Above Price"
-msgstr ""
+msgstr "Über dem Preis"
 
 #: modules/pp-pricing-table/pp-pricing-table.php:529
 msgid "Below Price"
-msgstr ""
+msgstr "Unter dem Preis"
 
 #: includes/admin-settings-wl.php:163
 msgid "Done! To re-enable the form, you will need to first deactivate the plugin and activate it again."
@@ -321,7 +452,7 @@ msgid "Add item number to expand by default."
 msgstr "Füge hier die Nummer des Elements hinzu, das standardmäßig ausgeklappt sein soll."
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:832
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:564
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:576
 #: modules/pp-infolist/pp-infolist.php:516
 #: modules/pp-timeline/pp-timeline.php:514
 msgid "Add Item"
@@ -329,7 +460,7 @@ msgstr "Element hinzufügen"
 
 #: modules/pp-hover-cards-2/pp-hover-cards-2.php:58
 msgid "Style 11"
-msgstr ""
+msgstr "Stil 11"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:121
 #: modules/pp-contact-form-7/pp-contact-form-7.php:75
@@ -342,13 +473,13 @@ msgstr ""
 msgid "Form Background"
 msgstr "Formular Hintergrund"
 
-#: modules/pp-content-grid/includes/frontend.php:145
+#: modules/pp-content-grid/includes/frontend.php:146
 msgid "No post found"
 msgstr "Kein Beitrag gefunden"
 
 #: modules/pp-content-grid/includes/loop-settings.php:87
-#: modules/pp-content-grid/pp-content-grid.php:1716
-#: modules/pp-content-grid/pp-content-grid.php:2438
+#: modules/pp-content-grid/pp-content-grid.php:1739
+#: modules/pp-content-grid/pp-content-grid.php:2461
 #: modules/pp-content-tiles/includes/loop-settings.php:80
 msgid "Filter"
 msgstr "Filter"
@@ -677,11 +808,12 @@ msgid "Text Link"
 msgstr "Textlink"
 
 #: modules/pp-infobox/pp-infobox.php:1029
+#: modules/pp-infobox/pp-infobox.php:1073
 msgid "Leave empty for default font size."
 msgstr "Leer lassen für Standard Schriftgröße"
 
 #: modules/pp-infobox/pp-infobox.php:1041
-#: modules/pp-infobox/pp-infobox.php:1084
+#: modules/pp-infobox/pp-infobox.php:1085
 msgid "Leave empty for default line height."
 msgstr "Leer lassen für Standard Zeilenhöhe"
 
@@ -689,7 +821,7 @@ msgstr "Leer lassen für Standard Zeilenhöhe"
 msgid "Logo Color"
 msgstr "Logo Farbe"
 
-#: modules/pp-modal-box/includes/frontend.php:38
+#: modules/pp-modal-box/includes/frontend.php:26
 msgid "Click here to edit the \"modal-box\" settings. This text is only for editing and will not appear after you publish the changes."
 msgstr "Hier klicken für die \"modal-box\" Einstellungen. Dieser Text wird nur beim editieren angezeigt und verschwindet, nachdem Du die Änderungen publiziert hast."
 
@@ -823,11 +955,11 @@ msgstr "Angebote"
 msgid "Coming Soon"
 msgstr "Bald"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:111
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:118
 msgid "Default Active Tab Index"
 msgstr "Aktiver Tab (ID)"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:114
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:120
 msgid "Enter the index number of the tab that will be appeared as default active tab on page load."
 msgstr "Gib die Nummer (ID) des Tabs an, der beim Laden standardmäßig aktiv sein soll."
 
@@ -868,9 +1000,9 @@ msgstr "Gib eine Liste von %s ein. Nur diese %s werden angezeigt."
 msgid "Enter a list of %s. Only posts with these %s will be shown."
 msgstr "Gib eine Liste von %s ein. Nur Beiträge mit diesen %s werden angezeigt."
 
-#: modules/pp-content-tiles/includes/loop-settings.php:161
-msgid "Date Format"
-msgstr "Datumsformat"
+#: modules/pp-business-hours/pp-business-hours.php:634
+msgid "Day Format"
+msgstr ""
 
 #: modules/pp-content-tiles/includes/loop-settings.php:179
 msgid "Show Taxonomy"
@@ -1518,8 +1650,8 @@ msgstr "Suchbox"
 #: modules/pp-caldera-form/pp-caldera-form.php:109
 #: modules/pp-caldera-form/pp-caldera-form.php:690
 #: modules/pp-caldera-form/pp-caldera-form.php:1020
-#: modules/pp-contact-form-7/pp-contact-form-7.php:640
-#: modules/pp-contact-form-7/pp-contact-form-7.php:725
+#: modules/pp-contact-form-7/pp-contact-form-7.php:642
+#: modules/pp-contact-form-7/pp-contact-form-7.php:727
 #: modules/pp-contact-form/pp-contact-form.php:165
 #: modules/pp-contact-form/pp-contact-form.php:174
 #: modules/pp-contact-form/pp-contact-form.php:183
@@ -1574,8 +1706,8 @@ msgstr "Suchbox im Feld aktivieren"
 #: modules/pp-caldera-form/pp-caldera-form.php:110
 #: modules/pp-caldera-form/pp-caldera-form.php:691
 #: modules/pp-caldera-form/pp-caldera-form.php:1021
-#: modules/pp-contact-form-7/pp-contact-form-7.php:641
-#: modules/pp-contact-form-7/pp-contact-form-7.php:726
+#: modules/pp-contact-form-7/pp-contact-form-7.php:643
+#: modules/pp-contact-form-7/pp-contact-form-7.php:728
 #: modules/pp-contact-form/pp-contact-form.php:166
 #: modules/pp-contact-form/pp-contact-form.php:175
 #: modules/pp-contact-form/pp-contact-form.php:184
@@ -2029,9 +2161,9 @@ msgstr "Vorhergehendes Template anzeigen"
 #: modules/pp-caldera-form/pp-caldera-form.php:314
 #: modules/pp-caldera-form/pp-caldera-form.php:933
 #: modules/pp-contact-form-7/pp-contact-form-7.php:202
-#: modules/pp-contact-form-7/pp-contact-form-7.php:526
+#: modules/pp-contact-form-7/pp-contact-form-7.php:528
 #: modules/pp-contact-form/pp-contact-form.php:458
-#: modules/pp-content-grid/pp-content-grid.php:1852
+#: modules/pp-content-grid/pp-content-grid.php:1875
 #: modules/pp-formidable-form/pp-formidable-form.php:1146
 #: modules/pp-gravity-form/pp-gravity-form.php:248
 #: modules/pp-gravity-form/pp-gravity-form.php:739
@@ -2058,10 +2190,10 @@ msgstr "Nächstes Template anzeigen"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:442
 #: modules/pp-caldera-form/pp-caldera-form.php:1209
-#: modules/pp-contact-form-7/pp-contact-form-7.php:809
+#: modules/pp-contact-form-7/pp-contact-form-7.php:811
 #: modules/pp-contact-form/pp-contact-form.php:586
 #: modules/pp-contact-form/pp-contact-form.php:1352
-#: modules/pp-content-grid/pp-content-grid.php:2146
+#: modules/pp-content-grid/pp-content-grid.php:2169
 #: modules/pp-formidable-form/pp-formidable-form.php:107
 #: modules/pp-formidable-form/pp-formidable-form.php:661
 #: modules/pp-formidable-form/pp-formidable-form.php:1464
@@ -2127,10 +2259,10 @@ msgstr "Logo"
 #: modules/pp-caldera-form/pp-caldera-form.php:538
 #: modules/pp-caldera-form/pp-caldera-form.php:869
 #: modules/pp-contact-form-7/pp-contact-form-7.php:334
-#: modules/pp-contact-form-7/pp-contact-form-7.php:588
+#: modules/pp-contact-form-7/pp-contact-form-7.php:590
 #: modules/pp-contact-form/pp-contact-form.php:682
-#: modules/pp-content-grid/pp-content-grid.php:1631
-#: modules/pp-content-grid/pp-content-grid.php:1750
+#: modules/pp-content-grid/pp-content-grid.php:1654
+#: modules/pp-content-grid/pp-content-grid.php:1773
 #: modules/pp-flipbox/pp-flipbox.php:743
 #: modules/pp-formidable-form/pp-formidable-form.php:757
 #: modules/pp-formidable-form/pp-formidable-form.php:1088
@@ -2169,7 +2301,7 @@ msgid "Carousel Settings"
 msgstr "Karussell Einstellungen"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:590
-#: modules/pp-contact-form-7/pp-contact-form-7.php:366
+#: modules/pp-contact-form-7/pp-contact-form-7.php:368
 #: modules/pp-contact-form/pp-contact-form.php:734
 #: modules/pp-formidable-form/pp-formidable-form.php:499
 #: modules/pp-formidable-form/pp-formidable-form.php:809
@@ -2253,7 +2385,7 @@ msgstr "Bei Hover pausieren"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:624
 #: modules/pp-caldera-form/pp-caldera-form.php:902
-#: modules/pp-contact-form-7/pp-contact-form-7.php:488
+#: modules/pp-contact-form-7/pp-contact-form-7.php:490
 #: modules/pp-contact-form/pp-contact-form.php:1093
 #: modules/pp-content-grid/pp-content-grid.php:1398
 #: modules/pp-formidable-form/pp-formidable-form.php:843
@@ -2300,7 +2432,7 @@ msgid "Slide"
 msgstr "Slide"
 
 #: includes/helper-functions.php:238
-#: modules/pp-content-grid/includes/frontend.php:44
+#: modules/pp-content-grid/includes/frontend.php:45
 #: modules/pp-content-grid/pp-content-grid.php:355
 msgid "All"
 msgstr "Alle"
@@ -2361,7 +2493,7 @@ msgid "Plugin Description"
 msgstr "Pluginbeschreibung"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:711
-#: modules/pp-contact-form-7/pp-contact-form-7.php:420
+#: modules/pp-contact-form-7/pp-contact-form-7.php:422
 #: modules/pp-contact-form/pp-contact-form.php:846
 #: modules/pp-formidable-form/pp-formidable-form.php:930
 #: modules/pp-ninja-form/pp-ninja-form.php:730
@@ -2383,7 +2515,7 @@ msgid "Developer / Agency Name"
 msgstr "Entwickler / Agenturname"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:714
-#: modules/pp-contact-form-7/pp-contact-form-7.php:423
+#: modules/pp-contact-form-7/pp-contact-form-7.php:425
 #: modules/pp-contact-form/pp-contact-form.php:849
 #: modules/pp-formidable-form/pp-formidable-form.php:933
 #: modules/pp-image/pp-image.php:721
@@ -2407,7 +2539,7 @@ msgid "Website URL"
 msgstr "Website URL"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:715
-#: modules/pp-contact-form-7/pp-contact-form-7.php:424
+#: modules/pp-contact-form-7/pp-contact-form-7.php:426
 #: modules/pp-contact-form/pp-contact-form.php:850
 #: modules/pp-formidable-form/pp-formidable-form.php:934
 #: modules/pp-image/pp-image.php:720
@@ -2501,7 +2633,7 @@ msgid "Hide white label settings"
 msgstr "White Label Einstellungen verbergen"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:916
-#: modules/pp-contact-form-7/pp-contact-form-7.php:515
+#: modules/pp-contact-form-7/pp-contact-form-7.php:517
 #: modules/pp-formidable-form/pp-formidable-form.php:1135
 #: modules/pp-gravity-form/pp-gravity-form.php:728
 #: modules/pp-ninja-form/pp-ninja-form.php:935
@@ -2541,7 +2673,7 @@ msgid "Dot Size"
 msgstr "Punktgröße"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:1013
-#: modules/pp-contact-form-7/pp-contact-form-7.php:630
+#: modules/pp-contact-form-7/pp-contact-form-7.php:632
 #: modules/pp-contact-form/pp-contact-form.php:1187
 #: modules/pp-formidable-form/pp-formidable-form.php:1226
 #: modules/pp-gravity-form/pp-gravity-form.php:803
@@ -2563,7 +2695,7 @@ msgid "To re-enable the form, you will need to first deactivate the plugin and a
 msgstr "Um das Formular zu reaktivieren, bitte deaktiviere das Plugin und aktiviere es erneut."
 
 #: modules/pp-caldera-form/pp-caldera-form.php:1017
-#: modules/pp-contact-form-7/pp-contact-form-7.php:722
+#: modules/pp-contact-form-7/pp-contact-form-7.php:724
 #: modules/pp-formidable-form/pp-formidable-form.php:1277
 #: modules/pp-gravity-form/pp-gravity-form.php:893
 #: modules/pp-ninja-form/pp-ninja-form.php:1070
@@ -2592,11 +2724,11 @@ msgstr "%s Optionen"
 #: modules/pp-formidable-form/pp-formidable-form.php:1303
 #: modules/pp-formidable-form/pp-formidable-form.php:2033
 #: modules/pp-ninja-form/pp-ninja-form.php:1096
-#: modules/pp-ninja-form/pp-ninja-form.php:1807
+#: modules/pp-ninja-form/pp-ninja-form.php:1808
 #: modules/pp-subscribe-form/pp-subscribe-form.php:1395
 #: modules/pp-subscribe-form/pp-subscribe-form.php:1846
 #: modules/pp-wpforms/pp-wpforms.php:1062
-#: modules/pp-wpforms/pp-wpforms.php:1747
+#: modules/pp-wpforms/pp-wpforms.php:1748
 msgid "Success Message"
 msgstr "Erfolgsmeldung"
 
@@ -2611,19 +2743,19 @@ msgstr "Modale Box"
 #: includes/admin-settings.php:44
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:835
 #: modules/pp-advanced-tabs/pp-advanced-tabs.php:53
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:272
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:567
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:284
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:579
 #: modules/pp-announcement-bar/pp-announcement-bar.php:35
 #: modules/pp-announcement-bar/pp-announcement-bar.php:112
 #: modules/pp-business-hours/pp-business-hours.php:36
 #: modules/pp-business-hours/pp-business-hours.php:607
 #: modules/pp-caldera-form/pp-caldera-form.php:52
 #: modules/pp-caldera-form/pp-caldera-form.php:670
-#: modules/pp-contact-form-7/pp-contact-form-7.php:379
+#: modules/pp-contact-form-7/pp-contact-form-7.php:381
 #: modules/pp-contact-form/pp-contact-form.php:100
 #: modules/pp-contact-form/pp-contact-form.php:805
 #: modules/pp-content-grid/pp-content-grid.php:1513
-#: modules/pp-content-grid/pp-content-grid.php:1928
+#: modules/pp-content-grid/pp-content-grid.php:1951
 #: modules/pp-dotnav/pp-dotnav.php:68
 #: modules/pp-dual-button/pp-dual-button.php:425
 #: modules/pp-fancy-heading/pp-fancy-heading.php:33
@@ -2665,7 +2797,7 @@ msgid "General"
 msgstr "Allgemein"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:1424
-#: modules/pp-contact-form-7/pp-contact-form-7.php:906
+#: modules/pp-contact-form-7/pp-contact-form-7.php:908
 #: modules/pp-contact-form/pp-contact-form.php:1562
 #: modules/pp-formidable-form/pp-formidable-form.php:1674
 #: modules/pp-gravity-form/pp-gravity-form.php:1047
@@ -2698,7 +2830,7 @@ msgstr "White Label"
 #: modules/pp-info-banner/pp-info-banner.php:1033
 #: modules/pp-info-banner/pp-info-banner.php:1073
 #: modules/pp-ninja-form/pp-ninja-form.php:1534
-#: modules/pp-ninja-form/pp-ninja-form.php:1710
+#: modules/pp-ninja-form/pp-ninja-form.php:1711
 #: modules/pp-wpforms/pp-wpforms.php:1522
 msgid "Description Font Size"
 msgstr "Schriftgröße Beschreibung"
@@ -2720,7 +2852,7 @@ msgstr "Module"
 #: modules/pp-formidable-form/pp-formidable-form.php:1762
 #: modules/pp-formidable-form/pp-formidable-form.php:1998
 #: modules/pp-ninja-form/pp-ninja-form.php:1548
-#: modules/pp-ninja-form/pp-ninja-form.php:1724
+#: modules/pp-ninja-form/pp-ninja-form.php:1725
 #: modules/pp-wpforms/pp-wpforms.php:1536
 msgid "Custom Description Font Size"
 msgstr "Andere Schriftgröße für Beschreibung"
@@ -2792,16 +2924,14 @@ msgid "Extensions"
 msgstr "Erweiterungen"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:1679
-#: modules/pp-wpforms/pp-wpforms.php:1698
+#: modules/pp-wpforms/pp-wpforms.php:1699
 msgid "Field Message Font Size"
 msgstr "Schriftgröße Nachrichtenfeld"
 
 #: modules/pp-flipbox/pp-flipbox.php:306 modules/pp-flipbox/pp-flipbox.php:341
 #: modules/pp-flipbox/pp-flipbox.php:539 modules/pp-flipbox/pp-flipbox.php:574
 #: modules/pp-flipbox/pp-flipbox.php:609 modules/pp-flipbox/pp-flipbox.php:632
-#: modules/pp-infobox/pp-infobox.php:716 modules/pp-infobox/pp-infobox.php:1022
-#: modules/pp-infobox/pp-infobox.php:1066
-#: modules/pp-infobox/pp-infobox.php:1108
+#: modules/pp-infobox/pp-infobox.php:1109
 #: modules/pp-infolist/pp-infolist.php:154
 #: modules/pp-infolist/pp-infolist.php:430
 #: modules/pp-infolist/pp-infolist.php:501
@@ -2823,7 +2953,7 @@ msgid "Support"
 msgstr "Support"
 
 #: modules/pp-caldera-form/pp-caldera-form.php:1693
-#: modules/pp-wpforms/pp-wpforms.php:1712
+#: modules/pp-wpforms/pp-wpforms.php:1713
 msgid "Custom Field Message Font Size"
 msgstr "Individuelle Schriftgröße Nachrichtenfeld"
 
@@ -2895,7 +3025,6 @@ msgid "Big Triangle Side Right"
 msgstr "Großes Dreieck rechte Seite"
 
 #: modules/pp-flipbox/pp-flipbox.php:418
-#: modules/pp-hover-cards/pp-hover-cards.php:622
 #: modules/pp-infolist/pp-infolist.php:664
 #: modules/pp-smart-button/pp-smart-button.php:155
 msgid "http://www.example.com"
@@ -2926,10 +3055,10 @@ msgstr "Gespeicherte Templates"
 #: modules/pp-caldera-form/pp-caldera-form.php:500
 #: modules/pp-caldera-form/pp-caldera-form.php:826
 #: modules/pp-contact-form-7/pp-contact-form-7.php:238
-#: modules/pp-contact-form-7/pp-contact-form-7.php:435
+#: modules/pp-contact-form-7/pp-contact-form-7.php:437
 #: modules/pp-contact-form/pp-contact-form.php:644
-#: modules/pp-content-grid/pp-content-grid.php:1589
-#: modules/pp-content-grid/pp-content-grid.php:1719
+#: modules/pp-content-grid/pp-content-grid.php:1612
+#: modules/pp-content-grid/pp-content-grid.php:1742
 #: modules/pp-content-tiles/pp-content-tiles.php:200
 #: modules/pp-flipbox/pp-flipbox.php:698
 #: modules/pp-formidable-form/pp-formidable-form.php:719
@@ -3036,8 +3165,8 @@ msgstr "Rahmen anzeigen"
 
 #: modules/pp-flipbox/pp-flipbox.php:655 modules/pp-flipbox/pp-flipbox.php:678
 #: modules/pp-flipbox/pp-flipbox.php:824 modules/pp-infobox/pp-infobox.php:660
-#: modules/pp-infobox/pp-infobox.php:683 modules/pp-infobox/pp-infobox.php:739
-#: modules/pp-infobox/pp-infobox.php:762 modules/pp-infobox/pp-infobox.php:929
+#: modules/pp-infobox/pp-infobox.php:683 modules/pp-infobox/pp-infobox.php:762
+#: modules/pp-infobox/pp-infobox.php:929
 #: modules/pp-infolist/pp-infolist.php:177
 #: modules/pp-infolist/pp-infolist.php:367
 msgctxt "bb-powerpack"
@@ -3104,7 +3233,7 @@ msgstr "Das modale Fenster kann durch beliebige andere Element(e) der Seite ausg
 msgid "Top Right to Bottom Left"
 msgstr "Oben rechts nach unten links"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:361
+#: modules/pp-contact-form-7/pp-contact-form-7.php:362
 msgid "Border Color Focus"
 msgstr "Rahmenfarbe aktives Element"
 
@@ -3131,8 +3260,8 @@ msgstr "CSS Klasse"
 #: modules/pp-caldera-form/pp-caldera-form.php:674
 #: modules/pp-caldera-form/pp-caldera-form.php:937
 #: modules/pp-contact-form-7/pp-contact-form-7.php:206
-#: modules/pp-contact-form-7/pp-contact-form-7.php:383
-#: modules/pp-contact-form-7/pp-contact-form-7.php:530
+#: modules/pp-contact-form-7/pp-contact-form-7.php:385
+#: modules/pp-contact-form-7/pp-contact-form-7.php:532
 #: modules/pp-contact-form/pp-contact-form.php:462
 #: modules/pp-contact-form/pp-contact-form.php:809
 #: modules/pp-contact-form/pp-contact-form.php:1173
@@ -3141,8 +3270,8 @@ msgstr "CSS Klasse"
 #: modules/pp-content-grid/pp-content-grid.php:1049
 #: modules/pp-content-grid/pp-content-grid.php:1214
 #: modules/pp-content-grid/pp-content-grid.php:1403
-#: modules/pp-content-grid/pp-content-grid.php:1699
-#: modules/pp-content-grid/pp-content-grid.php:1856
+#: modules/pp-content-grid/pp-content-grid.php:1722
+#: modules/pp-content-grid/pp-content-grid.php:1879
 #: modules/pp-dual-button/pp-dual-button.php:532
 #: modules/pp-flipbox/pp-flipbox.php:844
 #: modules/pp-formidable-form/pp-formidable-form.php:352
@@ -3192,7 +3321,7 @@ msgstr "CSS Klasse"
 msgid "Round Corners"
 msgstr "Kanten abrunden"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:396
+#: modules/pp-contact-form-7/pp-contact-form-7.php:398
 msgid "Enable Box Shadow"
 msgstr "Boxschatten aktivieren"
 
@@ -3211,7 +3340,7 @@ msgstr "Füge diese CSS Klasse dem Element hinzu mit dem Du das modale Fenster a
 msgid "Top Left"
 msgstr "Oben links"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:450
+#: modules/pp-contact-form-7/pp-contact-form-7.php:452
 #: modules/pp-flipbox/pp-flipbox.php:470
 #: modules/pp-gravity-form/pp-gravity-form.php:669
 #: modules/pp-logos-grid/pp-logos-grid.php:288
@@ -3235,7 +3364,7 @@ msgstr "Auto-Load Einstellungen"
 msgid "Top Right"
 msgstr "Oben rechts"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:472
+#: modules/pp-contact-form-7/pp-contact-form-7.php:474
 #: modules/pp-gravity-form/pp-gravity-form.php:636
 msgid "Text Color Hover"
 msgstr "Textfarbe Hover"
@@ -3259,7 +3388,7 @@ msgstr "Anzeigen nach"
 msgid "Bottom Left"
 msgstr "Unten links"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:484
+#: modules/pp-contact-form-7/pp-contact-form-7.php:486
 msgid "Sizes & Alignment"
 msgstr "Größen & Ausrichtung"
 
@@ -3278,7 +3407,7 @@ msgstr "Wenn ein Benutzer die modale Box schließt, wird sie erst nach dieser An
 msgid "Bottom Right"
 msgstr "Unten rechts"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:502
+#: modules/pp-contact-form-7/pp-contact-form-7.php:504
 #: modules/pp-subscribe-form/pp-subscribe-form.php:328
 msgid "Button Width"
 msgstr "Button Breite"
@@ -3301,7 +3430,7 @@ msgstr "\"Bei Klick\" Einstellungen"
 msgid "Separator"
 msgstr "Trenner"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:543
+#: modules/pp-contact-form-7/pp-contact-form-7.php:545
 #: modules/pp-flipbox/pp-flipbox.php:174
 #: modules/pp-gravity-form/pp-gravity-form.php:756
 #: modules/pp-infobox/pp-infobox.php:659
@@ -3321,7 +3450,7 @@ msgstr "Styling-Optionen sind im Tab \"Button Stil\" verfügbar."
 msgid "Enable Separator?"
 msgstr "Trenner aktivieren?"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:565
+#: modules/pp-contact-form-7/pp-contact-form-7.php:567
 #: modules/pp-flipbox/pp-flipbox.php:197
 #: modules/pp-gravity-form/pp-gravity-form.php:778
 #: modules/pp-infobox/pp-infobox.php:682
@@ -3355,8 +3484,8 @@ msgstr "Quelle"
 #: modules/pp-caldera-form/pp-caldera-form.php:798
 #: modules/pp-caldera-form/pp-caldera-form.php:905
 #: modules/pp-contact-form-7/pp-contact-form-7.php:151
-#: modules/pp-contact-form-7/pp-contact-form-7.php:399
-#: modules/pp-contact-form-7/pp-contact-form-7.php:491
+#: modules/pp-contact-form-7/pp-contact-form-7.php:401
+#: modules/pp-contact-form-7/pp-contact-form-7.php:493
 #: modules/pp-contact-form/pp-contact-form.php:130
 #: modules/pp-contact-form/pp-contact-form.php:933
 #: modules/pp-content-grid/includes/loop-settings.php:142
@@ -3442,7 +3571,7 @@ msgstr "Quelle"
 msgid "Yes"
 msgstr "Ja"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:616
+#: modules/pp-contact-form-7/pp-contact-form-7.php:618
 #: modules/pp-dotnav/pp-dotnav.php:187 modules/pp-flipbox/pp-flipbox.php:802
 #: modules/pp-infolist/pp-infolist.php:263
 #: modules/pp-logos-grid/pp-logos-grid.php:515
@@ -3479,8 +3608,8 @@ msgstr "Hier klicken"
 #: modules/pp-caldera-form/pp-caldera-form.php:799
 #: modules/pp-caldera-form/pp-caldera-form.php:906
 #: modules/pp-contact-form-7/pp-contact-form-7.php:152
-#: modules/pp-contact-form-7/pp-contact-form-7.php:400
-#: modules/pp-contact-form-7/pp-contact-form-7.php:492
+#: modules/pp-contact-form-7/pp-contact-form-7.php:402
+#: modules/pp-contact-form-7/pp-contact-form-7.php:494
 #: modules/pp-contact-form/pp-contact-form.php:131
 #: modules/pp-contact-form/pp-contact-form.php:934
 #: modules/pp-content-grid/includes/loop-settings.php:143
@@ -3566,7 +3695,7 @@ msgstr "Hier klicken"
 msgid "No"
 msgstr "Nein"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:633
+#: modules/pp-contact-form-7/pp-contact-form-7.php:635
 #: modules/pp-gravity-form/pp-gravity-form.php:806
 msgid "Errors Style"
 msgstr "Stil der Fehlermeldungen"
@@ -3591,7 +3720,7 @@ msgstr "Exit Intent Einstellungen"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:637
+#: modules/pp-contact-form-7/pp-contact-form-7.php:639
 #: modules/pp-formidable-form/pp-formidable-form.php:1230
 #: modules/pp-gravity-form/pp-gravity-form.php:810
 #: modules/pp-ninja-form/pp-ninja-form.php:1045
@@ -3618,7 +3747,7 @@ msgstr "\"Verlassen\" - Einstellungen"
 msgid "Type"
 msgstr "Typ"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:651
+#: modules/pp-contact-form-7/pp-contact-form-7.php:653
 msgid "Validation Error Color"
 msgstr "Farbe Validierungsfehler"
 
@@ -3638,7 +3767,7 @@ msgstr "Esc zum Verlassen"
 msgid "Big Triangle"
 msgstr "Großes Dreieck"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:662
+#: modules/pp-contact-form-7/pp-contact-form-7.php:664
 msgid "Validation Error Font Size"
 msgstr "Schriftgröße Validierungsfehler"
 
@@ -3655,7 +3784,7 @@ msgstr "Benutzer können die modale Box durch Drücken des Esc Keys schließen."
 msgid "Small Triangle - In"
 msgstr "Kleines Dreieck innen"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:675
+#: modules/pp-contact-form-7/pp-contact-form-7.php:677
 msgid "Validation Error Background Color"
 msgstr "Hintergrundfarbe Validierungsfehler "
 
@@ -3671,7 +3800,7 @@ msgstr "Zum Verlassen klicken"
 msgid "Small Triangle - Out"
 msgstr "Kleines Dreieck außen"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:686
+#: modules/pp-contact-form-7/pp-contact-form-7.php:688
 msgid "Validation Error Border Style"
 msgstr "Rahmenstil Validierungsfehler"
 
@@ -3689,7 +3818,7 @@ msgstr "Neigung"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:207
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:437
-#: modules/pp-contact-form-7/pp-contact-form-7.php:693
+#: modules/pp-contact-form-7/pp-contact-form-7.php:695
 #: modules/pp-heading/pp-heading.php:176 modules/pp-heading/pp-heading.php:456
 #: modules/pp-heading/pp-heading.php:678 modules/pp-heading/pp-heading.php:893
 #: modules/pp-iconlist/pp-iconlist.php:159
@@ -3722,7 +3851,7 @@ msgstr "Hintergrundtransparenz bei Hover"
 msgid "Wave - In"
 msgstr "Welle innen"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:698
+#: modules/pp-contact-form-7/pp-contact-form-7.php:700
 msgid "Validation Error Border Width"
 msgstr "Rahmenbreite Validierungsfehler"
 
@@ -3738,7 +3867,7 @@ msgstr "Rahmen anzeigen"
 msgid "Wave - Out"
 msgstr "Welle außen"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:711
+#: modules/pp-contact-form-7/pp-contact-form-7.php:713
 msgid "Validation Error Border Color"
 msgstr "Rahmenfarbe Validierungsfehler"
 
@@ -3755,7 +3884,7 @@ msgstr "Popup Style"
 msgid "Cloud"
 msgstr "Cloud"
 
-#: modules/pp-contact-form-7/pp-contact-form-7.php:736
+#: modules/pp-contact-form-7/pp-contact-form-7.php:738
 #: modules/pp-gravity-form/pp-gravity-form.php:858
 msgid "Error Field Label Color"
 msgstr "Farbe Eingabefeld Label bei Fehler"
@@ -3811,7 +3940,7 @@ msgstr "Backlight Effekt"
 #: includes/row-settings.php:518 includes/row-settings.php:601
 #: includes/row-settings.php:727 includes/row-settings.php:844
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:100
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:330
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:342
 #: modules/pp-announcement-bar/pp-announcement-bar.php:214
 #: modules/pp-announcement-bar/pp-announcement-bar.php:279
 #: modules/pp-announcement-bar/pp-announcement-bar.php:295
@@ -3827,9 +3956,9 @@ msgstr "Backlight Effekt"
 #: modules/pp-caldera-form/pp-caldera-form.php:1412
 #: modules/pp-column-separator/pp-column-separator.php:134
 #: modules/pp-contact-form-7/pp-contact-form-7.php:82
-#: modules/pp-contact-form-7/pp-contact-form-7.php:782
-#: modules/pp-contact-form-7/pp-contact-form-7.php:838
-#: modules/pp-contact-form-7/pp-contact-form-7.php:894
+#: modules/pp-contact-form-7/pp-contact-form-7.php:784
+#: modules/pp-contact-form-7/pp-contact-form-7.php:840
+#: modules/pp-contact-form-7/pp-contact-form-7.php:896
 #: modules/pp-contact-form/pp-contact-form.php:272
 #: modules/pp-contact-form/pp-contact-form.php:944
 #: modules/pp-contact-form/pp-contact-form.php:1217
@@ -4053,7 +4182,7 @@ msgstr "Box - Oben rechts"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:473
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:562
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:563
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:279
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:291
 #: modules/pp-announcement-bar/pp-announcement-bar.php:45
 #: modules/pp-announcement-bar/pp-announcement-bar.php:413
 #: modules/pp-announcement-bar/pp-announcement-bar.php:416
@@ -4064,7 +4193,7 @@ msgstr "Box - Oben rechts"
 #: modules/pp-caldera-form/pp-caldera-form.php:731
 #: modules/pp-caldera-form/pp-caldera-form.php:961
 #: modules/pp-column-separator/pp-column-separator.php:169
-#: modules/pp-contact-form-7/pp-contact-form-7.php:370
+#: modules/pp-contact-form-7/pp-contact-form-7.php:372
 #: modules/pp-contact-form/pp-contact-form.php:486
 #: modules/pp-contact-form/pp-contact-form.php:487
 #: modules/pp-contact-form/pp-contact-form.php:561
@@ -4088,16 +4217,16 @@ msgstr "Box - Oben rechts"
 #: modules/pp-content-grid/pp-content-grid.php:1429
 #: modules/pp-content-grid/pp-content-grid.php:1483
 #: modules/pp-content-grid/pp-content-grid.php:1484
-#: modules/pp-content-grid/pp-content-grid.php:1542
-#: modules/pp-content-grid/pp-content-grid.php:1543
-#: modules/pp-content-grid/pp-content-grid.php:1792
-#: modules/pp-content-grid/pp-content-grid.php:1793
-#: modules/pp-content-grid/pp-content-grid.php:1881
-#: modules/pp-content-grid/pp-content-grid.php:1882
-#: modules/pp-content-grid/pp-content-grid.php:2121
-#: modules/pp-content-grid/pp-content-grid.php:2122
-#: modules/pp-content-grid/pp-content-grid.php:2273
-#: modules/pp-content-grid/pp-content-grid.php:2274
+#: modules/pp-content-grid/pp-content-grid.php:1565
+#: modules/pp-content-grid/pp-content-grid.php:1566
+#: modules/pp-content-grid/pp-content-grid.php:1815
+#: modules/pp-content-grid/pp-content-grid.php:1816
+#: modules/pp-content-grid/pp-content-grid.php:1904
+#: modules/pp-content-grid/pp-content-grid.php:1905
+#: modules/pp-content-grid/pp-content-grid.php:2144
+#: modules/pp-content-grid/pp-content-grid.php:2145
+#: modules/pp-content-grid/pp-content-grid.php:2296
+#: modules/pp-content-grid/pp-content-grid.php:2297
 #: modules/pp-content-tiles/pp-content-tiles.php:397
 #: modules/pp-content-tiles/pp-content-tiles.php:398
 #: modules/pp-content-tiles/pp-content-tiles.php:638
@@ -4114,6 +4243,7 @@ msgstr "Box - Oben rechts"
 #: modules/pp-formidable-form/pp-formidable-form.php:950
 #: modules/pp-formidable-form/pp-formidable-form.php:1174
 #: modules/pp-gravity-form/pp-gravity-form.php:276
+#: modules/pp-gravity-form/pp-gravity-form.php:277
 #: modules/pp-gravity-form/pp-gravity-form.php:488
 #: modules/pp-heading/pp-heading.php:719 modules/pp-heading/pp-heading.php:726
 #: modules/pp-heading/pp-heading.php:787 modules/pp-heading/pp-heading.php:794
@@ -4250,7 +4380,7 @@ msgstr "Box - Oben links"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:484
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:573
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:574
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:280
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:292
 #: modules/pp-announcement-bar/pp-announcement-bar.php:46
 #: modules/pp-announcement-bar/pp-announcement-bar.php:424
 #: modules/pp-announcement-bar/pp-announcement-bar.php:428
@@ -4261,7 +4391,7 @@ msgstr "Box - Oben links"
 #: modules/pp-caldera-form/pp-caldera-form.php:742
 #: modules/pp-caldera-form/pp-caldera-form.php:972
 #: modules/pp-column-separator/pp-column-separator.php:170
-#: modules/pp-contact-form-7/pp-contact-form-7.php:371
+#: modules/pp-contact-form-7/pp-contact-form-7.php:373
 #: modules/pp-contact-form/pp-contact-form.php:497
 #: modules/pp-contact-form/pp-contact-form.php:498
 #: modules/pp-contact-form/pp-contact-form.php:572
@@ -4285,16 +4415,16 @@ msgstr "Box - Oben links"
 #: modules/pp-content-grid/pp-content-grid.php:1440
 #: modules/pp-content-grid/pp-content-grid.php:1494
 #: modules/pp-content-grid/pp-content-grid.php:1495
-#: modules/pp-content-grid/pp-content-grid.php:1553
-#: modules/pp-content-grid/pp-content-grid.php:1554
-#: modules/pp-content-grid/pp-content-grid.php:1803
-#: modules/pp-content-grid/pp-content-grid.php:1804
-#: modules/pp-content-grid/pp-content-grid.php:1892
-#: modules/pp-content-grid/pp-content-grid.php:1893
-#: modules/pp-content-grid/pp-content-grid.php:2132
-#: modules/pp-content-grid/pp-content-grid.php:2133
-#: modules/pp-content-grid/pp-content-grid.php:2284
-#: modules/pp-content-grid/pp-content-grid.php:2285
+#: modules/pp-content-grid/pp-content-grid.php:1576
+#: modules/pp-content-grid/pp-content-grid.php:1577
+#: modules/pp-content-grid/pp-content-grid.php:1826
+#: modules/pp-content-grid/pp-content-grid.php:1827
+#: modules/pp-content-grid/pp-content-grid.php:1915
+#: modules/pp-content-grid/pp-content-grid.php:1916
+#: modules/pp-content-grid/pp-content-grid.php:2155
+#: modules/pp-content-grid/pp-content-grid.php:2156
+#: modules/pp-content-grid/pp-content-grid.php:2307
+#: modules/pp-content-grid/pp-content-grid.php:2308
 #: modules/pp-content-tiles/pp-content-tiles.php:407
 #: modules/pp-content-tiles/pp-content-tiles.php:408
 #: modules/pp-content-tiles/pp-content-tiles.php:648
@@ -4311,6 +4441,7 @@ msgstr "Box - Oben links"
 #: modules/pp-formidable-form/pp-formidable-form.php:961
 #: modules/pp-formidable-form/pp-formidable-form.php:1185
 #: modules/pp-gravity-form/pp-gravity-form.php:288
+#: modules/pp-gravity-form/pp-gravity-form.php:289
 #: modules/pp-gravity-form/pp-gravity-form.php:489
 #: modules/pp-heading/pp-heading.php:729 modules/pp-heading/pp-heading.php:736
 #: modules/pp-heading/pp-heading.php:797 modules/pp-heading/pp-heading.php:804
@@ -4434,8 +4565,8 @@ msgstr "Fenster - Oben rechts"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:584
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:585
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:611
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:254
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:281
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:266
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:293
 #: modules/pp-announcement-bar/pp-announcement-bar.php:119
 #: modules/pp-announcement-bar/pp-announcement-bar.php:436
 #: modules/pp-announcement-bar/pp-announcement-bar.php:440
@@ -4447,10 +4578,10 @@ msgstr "Fenster - Oben rechts"
 #: modules/pp-caldera-form/pp-caldera-form.php:753
 #: modules/pp-caldera-form/pp-caldera-form.php:919
 #: modules/pp-caldera-form/pp-caldera-form.php:983
-#: modules/pp-contact-form-7/pp-contact-form-7.php:372
-#: modules/pp-contact-form-7/pp-contact-form-7.php:518
-#: modules/pp-contact-form-7/pp-contact-form-7.php:796
-#: modules/pp-contact-form-7/pp-contact-form-7.php:852
+#: modules/pp-contact-form-7/pp-contact-form-7.php:374
+#: modules/pp-contact-form-7/pp-contact-form-7.php:520
+#: modules/pp-contact-form-7/pp-contact-form-7.php:798
+#: modules/pp-contact-form-7/pp-contact-form-7.php:854
 #: modules/pp-contact-form/pp-contact-form.php:508
 #: modules/pp-contact-form/pp-contact-form.php:509
 #: modules/pp-contact-form/pp-contact-form.php:540
@@ -4474,13 +4605,13 @@ msgstr "Fenster - Oben rechts"
 #: modules/pp-content-grid/pp-content-grid.php:1358
 #: modules/pp-content-grid/pp-content-grid.php:1450
 #: modules/pp-content-grid/pp-content-grid.php:1451
-#: modules/pp-content-grid/pp-content-grid.php:1564
-#: modules/pp-content-grid/pp-content-grid.php:1565
-#: modules/pp-content-grid/pp-content-grid.php:1814
-#: modules/pp-content-grid/pp-content-grid.php:1815
-#: modules/pp-content-grid/pp-content-grid.php:1903
-#: modules/pp-content-grid/pp-content-grid.php:1904
-#: modules/pp-content-grid/pp-content-grid.php:1949
+#: modules/pp-content-grid/pp-content-grid.php:1587
+#: modules/pp-content-grid/pp-content-grid.php:1588
+#: modules/pp-content-grid/pp-content-grid.php:1837
+#: modules/pp-content-grid/pp-content-grid.php:1838
+#: modules/pp-content-grid/pp-content-grid.php:1926
+#: modules/pp-content-grid/pp-content-grid.php:1927
+#: modules/pp-content-grid/pp-content-grid.php:1972
 #: modules/pp-dotnav/pp-dotnav.php:131
 #: modules/pp-dual-button/pp-dual-button.php:432
 #: modules/pp-dual-button/pp-dual-button.php:471
@@ -4497,6 +4628,7 @@ msgstr "Fenster - Oben rechts"
 #: modules/pp-formidable-form/pp-formidable-form.php:1138
 #: modules/pp-formidable-form/pp-formidable-form.php:1196
 #: modules/pp-gravity-form/pp-gravity-form.php:300
+#: modules/pp-gravity-form/pp-gravity-form.php:301
 #: modules/pp-gravity-form/pp-gravity-form.php:340
 #: modules/pp-gravity-form/pp-gravity-form.php:355
 #: modules/pp-gravity-form/pp-gravity-form.php:490
@@ -4637,8 +4769,8 @@ msgstr "Fenster - Oben links"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:595
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:596
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:613
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:256
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:282
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:268
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:294
 #: modules/pp-announcement-bar/pp-announcement-bar.php:448
 #: modules/pp-announcement-bar/pp-announcement-bar.php:452
 #: modules/pp-caldera-form/pp-caldera-form.php:375
@@ -4649,10 +4781,10 @@ msgstr "Fenster - Oben links"
 #: modules/pp-caldera-form/pp-caldera-form.php:764
 #: modules/pp-caldera-form/pp-caldera-form.php:921
 #: modules/pp-caldera-form/pp-caldera-form.php:994
-#: modules/pp-contact-form-7/pp-contact-form-7.php:373
-#: modules/pp-contact-form-7/pp-contact-form-7.php:520
-#: modules/pp-contact-form-7/pp-contact-form-7.php:798
-#: modules/pp-contact-form-7/pp-contact-form-7.php:854
+#: modules/pp-contact-form-7/pp-contact-form-7.php:375
+#: modules/pp-contact-form-7/pp-contact-form-7.php:522
+#: modules/pp-contact-form-7/pp-contact-form-7.php:800
+#: modules/pp-contact-form-7/pp-contact-form-7.php:856
 #: modules/pp-contact-form/pp-contact-form.php:519
 #: modules/pp-contact-form/pp-contact-form.php:520
 #: modules/pp-contact-form/pp-contact-form.php:542
@@ -4676,13 +4808,13 @@ msgstr "Fenster - Oben links"
 #: modules/pp-content-grid/pp-content-grid.php:1369
 #: modules/pp-content-grid/pp-content-grid.php:1461
 #: modules/pp-content-grid/pp-content-grid.php:1462
-#: modules/pp-content-grid/pp-content-grid.php:1575
-#: modules/pp-content-grid/pp-content-grid.php:1576
-#: modules/pp-content-grid/pp-content-grid.php:1825
-#: modules/pp-content-grid/pp-content-grid.php:1826
-#: modules/pp-content-grid/pp-content-grid.php:1914
-#: modules/pp-content-grid/pp-content-grid.php:1915
-#: modules/pp-content-grid/pp-content-grid.php:1951
+#: modules/pp-content-grid/pp-content-grid.php:1598
+#: modules/pp-content-grid/pp-content-grid.php:1599
+#: modules/pp-content-grid/pp-content-grid.php:1848
+#: modules/pp-content-grid/pp-content-grid.php:1849
+#: modules/pp-content-grid/pp-content-grid.php:1937
+#: modules/pp-content-grid/pp-content-grid.php:1938
+#: modules/pp-content-grid/pp-content-grid.php:1974
 #: modules/pp-dotnav/pp-dotnav.php:132
 #: modules/pp-dual-button/pp-dual-button.php:434
 #: modules/pp-dual-button/pp-dual-button.php:482
@@ -4699,6 +4831,7 @@ msgstr "Fenster - Oben links"
 #: modules/pp-formidable-form/pp-formidable-form.php:1140
 #: modules/pp-formidable-form/pp-formidable-form.php:1207
 #: modules/pp-gravity-form/pp-gravity-form.php:312
+#: modules/pp-gravity-form/pp-gravity-form.php:313
 #: modules/pp-gravity-form/pp-gravity-form.php:342
 #: modules/pp-gravity-form/pp-gravity-form.php:357
 #: modules/pp-gravity-form/pp-gravity-form.php:491
@@ -4867,7 +5000,7 @@ msgstr "Breakpoint"
 msgid "Show on Mobile"
 msgstr "Auf Mobilgeräten anzeigen"
 
-#: modules/pp-contact-form/includes/frontend.php:95
+#: modules/pp-contact-form/includes/frontend.php:86
 msgid "Message Sent!"
 msgstr "Nachricht gesendet!"
 
@@ -4913,7 +5046,7 @@ msgstr "Du kannst einen individuellen Breakpoint setzen und alle Geräte mit die
 msgid "Box Shadow"
 msgstr "Boxschatten"
 
-#: modules/pp-contact-form/includes/frontend.php:98
+#: modules/pp-contact-form/includes/frontend.php:89
 msgid "Message failed. Please try again."
 msgstr "Versand fehlgeschlagen. Bitte versuche es noch einmal."
 
@@ -5306,9 +5439,9 @@ msgstr "Nach oben sliden"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:405
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:727
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:852
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:226
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:459
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:584
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:237
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:471
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:596
 #: modules/pp-announcement-bar/pp-announcement-bar.php:60
 #: modules/pp-announcement-bar/pp-announcement-bar.php:469
 #: modules/pp-content-grid/includes/loop-settings.php:158
@@ -5432,7 +5565,7 @@ msgstr "Kundenstimmen"
 msgid "Success URL"
 msgstr "Erfolg Ziel-URL"
 
-#: modules/pp-ninja-form/pp-ninja-form.php:1758
+#: modules/pp-ninja-form/pp-ninja-form.php:1759
 msgid "Field Messsage Font Size"
 msgstr "Schriftgröße Nachrichtenfeld"
 
@@ -5455,7 +5588,7 @@ msgstr "Funktionen"
 msgid "Text"
 msgstr "Text"
 
-#: modules/pp-ninja-form/pp-ninja-form.php:1772
+#: modules/pp-ninja-form/pp-ninja-form.php:1773
 msgid "Custom Field Messsage Font Size"
 msgstr "Eigene Schriftgröße Nachrichtenfeld"
 
@@ -5712,7 +5845,6 @@ msgid "Disabled"
 msgstr "Deaktiviert"
 
 #: modules/pp-highlight-box/pp-highlight-box.php:315
-#: modules/pp-info-banner/pp-info-banner.php:130
 msgid "Effect"
 msgstr "Effekt"
 
@@ -5820,7 +5952,7 @@ msgstr "Breakpoint"
 #: modules/pp-caldera-form/pp-caldera-form.php:202
 #: modules/pp-column-separator/pp-column-separator.php:75
 #: modules/pp-contact-form-7/includes/functions.php:8
-#: modules/pp-contact-form-7/pp-contact-form-7.php:689
+#: modules/pp-contact-form-7/pp-contact-form-7.php:691
 #: modules/pp-contact-form/pp-contact-form.php:223
 #: modules/pp-contact-form/pp-contact-form.php:346
 #: modules/pp-content-grid/pp-content-grid.php:131
@@ -5828,8 +5960,8 @@ msgstr "Breakpoint"
 #: modules/pp-content-grid/pp-content-grid.php:581
 #: modules/pp-content-grid/pp-content-grid.php:799
 #: modules/pp-content-grid/pp-content-grid.php:1308
-#: modules/pp-content-grid/pp-content-grid.php:1638
-#: modules/pp-content-grid/pp-content-grid.php:1757
+#: modules/pp-content-grid/pp-content-grid.php:1661
+#: modules/pp-content-grid/pp-content-grid.php:1780
 #: modules/pp-content-tiles/includes/loop-settings.php:198
 #: modules/pp-content-tiles/pp-content-tiles.php:35
 #: modules/pp-content-tiles/pp-content-tiles.php:381
@@ -5910,7 +6042,6 @@ msgid "Error Field Border Color"
 msgstr "Rahmenfarbe Fehlermeldung"
 
 #: modules/pp-highlight-box/pp-highlight-box.php:326
-#: modules/pp-info-banner/pp-info-banner.php:165
 #: modules/pp-smart-button/pp-smart-button.php:206
 msgid "Transition Duration"
 msgstr "Übergangsdauer"
@@ -5925,13 +6056,13 @@ msgstr "Social Icons"
 msgid "Big Triangle with Shadow"
 msgstr "Großes Dreieck mit Schatten"
 
-#: modules/pp-content-tiles/includes/frontend.php:86
+#: modules/pp-content-tiles/includes/frontend.php:81
 msgid "No posts found."
 msgstr "Keine Beiträge gefunden."
 
 #: modules/pp-hover-cards-2/pp-hover-cards-2.php:17
 msgid "Hover Cards 2"
-msgstr ""
+msgstr "Hoverkarten 2"
 
 #: modules/pp-social-icons/pp-social-icons.php:15
 msgid "Display a group of linked social icons."
@@ -6044,10 +6175,9 @@ msgstr "Bogen"
 msgid "Author"
 msgstr "Autor"
 
-#: modules/pp-hover-cards-2/pp-hover-cards-2.php:162
-#: modules/pp-hover-cards/pp-hover-cards.php:160
-msgid "Hover Card"
-msgstr "Hoverkarte"
+#: modules/pp-hover-cards/pp-hover-cards.php:17
+msgid "Hover Cards"
+msgstr ""
 
 #: modules/pp-social-icons/pp-social-icons.php:187
 msgid "Twitter"
@@ -6076,7 +6206,7 @@ msgstr "Google Plus"
 #: modules/pp-caldera-form/pp-caldera-form.php:301
 #: modules/pp-caldera-form/pp-caldera-form.php:701
 #: modules/pp-column-separator/pp-column-separator.php:152
-#: modules/pp-contact-form-7/pp-contact-form-7.php:410
+#: modules/pp-contact-form-7/pp-contact-form-7.php:412
 #: modules/pp-contact-form/pp-contact-form.php:445
 #: modules/pp-contact-form/pp-contact-form.php:836
 #: modules/pp-content-grid/pp-content-grid.php:919
@@ -6113,8 +6243,8 @@ msgstr "YouTube"
 #: includes/row-settings.php:579
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:57
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:86
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:287
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:316
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:299
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:328
 #: modules/pp-announcement-bar/pp-announcement-bar.php:200
 #: modules/pp-announcement-bar/pp-announcement-bar.php:305
 #: modules/pp-content-grid/pp-content-grid.php:732
@@ -6264,8 +6394,8 @@ msgstr "Vimeo"
 #: includes/row-settings.php:483
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:637
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:735
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:354
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:467
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:366
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:479
 #: modules/pp-announcement-bar/pp-announcement-bar.php:477
 #: modules/pp-announcement-bar/pp-announcement-bar.php:571
 #: modules/pp-business-hours/pp-business-hours.php:320
@@ -6275,21 +6405,21 @@ msgstr "Vimeo"
 #: modules/pp-caldera-form/pp-caldera-form.php:1341
 #: modules/pp-caldera-form/pp-caldera-form.php:1432
 #: modules/pp-caldera-form/pp-caldera-form.php:1603
-#: modules/pp-contact-form-7/pp-contact-form-7.php:761
-#: modules/pp-contact-form-7/pp-contact-form-7.php:817
-#: modules/pp-contact-form-7/pp-contact-form-7.php:873
-#: modules/pp-contact-form-7/pp-contact-form-7.php:914
-#: modules/pp-contact-form-7/pp-contact-form-7.php:944
+#: modules/pp-contact-form-7/pp-contact-form-7.php:763
+#: modules/pp-contact-form-7/pp-contact-form-7.php:819
+#: modules/pp-contact-form-7/pp-contact-form-7.php:875
+#: modules/pp-contact-form-7/pp-contact-form-7.php:916
+#: modules/pp-contact-form-7/pp-contact-form-7.php:946
 #: modules/pp-contact-form/pp-contact-form.php:1241
 #: modules/pp-contact-form/pp-contact-form.php:1360
 #: modules/pp-contact-form/pp-contact-form.php:1484
 #: modules/pp-contact-form/pp-contact-form.php:1570
 #: modules/pp-contact-form/pp-contact-form.php:1645
-#: modules/pp-content-grid/pp-content-grid.php:1980
-#: modules/pp-content-grid/pp-content-grid.php:2150
-#: modules/pp-content-grid/pp-content-grid.php:2302
-#: modules/pp-content-grid/pp-content-grid.php:2381
-#: modules/pp-content-grid/pp-content-grid.php:2442
+#: modules/pp-content-grid/pp-content-grid.php:2003
+#: modules/pp-content-grid/pp-content-grid.php:2173
+#: modules/pp-content-grid/pp-content-grid.php:2325
+#: modules/pp-content-grid/pp-content-grid.php:2404
+#: modules/pp-content-grid/pp-content-grid.php:2465
 #: modules/pp-content-tiles/pp-content-tiles.php:232
 #: modules/pp-content-tiles/pp-content-tiles.php:521
 #: modules/pp-dual-button/pp-dual-button.php:616
@@ -6322,7 +6452,7 @@ msgstr "Vimeo"
 #: modules/pp-info-banner/pp-info-banner.php:917
 #: modules/pp-infobox/pp-infobox.php:1010
 #: modules/pp-infobox/pp-infobox.php:1054
-#: modules/pp-infobox/pp-infobox.php:1097
+#: modules/pp-infobox/pp-infobox.php:1098
 #: modules/pp-infolist/pp-infolist.php:419
 #: modules/pp-infolist/pp-infolist.php:490
 #: modules/pp-logos-grid/pp-logos-grid.php:817
@@ -6332,7 +6462,7 @@ msgstr "Vimeo"
 #: modules/pp-ninja-form/pp-ninja-form.php:1248
 #: modules/pp-ninja-form/pp-ninja-form.php:1372
 #: modules/pp-ninja-form/pp-ninja-form.php:1463
-#: modules/pp-ninja-form/pp-ninja-form.php:1634
+#: modules/pp-ninja-form/pp-ninja-form.php:1635
 #: modules/pp-notifications/pp-notifications.php:269
 #: modules/pp-pricing-table/pp-pricing-table.php:1365
 #: modules/pp-pricing-table/pp-pricing-table.php:1516
@@ -6362,7 +6492,7 @@ msgstr "Vimeo"
 #: modules/pp-wpforms/pp-wpforms.php:1236
 #: modules/pp-wpforms/pp-wpforms.php:1360
 #: modules/pp-wpforms/pp-wpforms.php:1451
-#: modules/pp-wpforms/pp-wpforms.php:1622
+#: modules/pp-wpforms/pp-wpforms.php:1623
 msgid "Font"
 msgstr "Schrift"
 
@@ -6381,8 +6511,8 @@ msgstr "Abstandhalter"
 #: includes/row-settings.php:495
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:645
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:743
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:362
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:475
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:374
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:487
 #: modules/pp-announcement-bar/pp-announcement-bar.php:485
 #: modules/pp-announcement-bar/pp-announcement-bar.php:579
 #: modules/pp-business-hours/pp-business-hours.php:332
@@ -6393,11 +6523,11 @@ msgstr "Abstandhalter"
 #: modules/pp-caldera-form/pp-caldera-form.php:1455
 #: modules/pp-caldera-form/pp-caldera-form.php:1626
 #: modules/pp-caldera-form/pp-caldera-form.php:1732
-#: modules/pp-contact-form-7/pp-contact-form-7.php:769
-#: modules/pp-contact-form-7/pp-contact-form-7.php:825
-#: modules/pp-contact-form-7/pp-contact-form-7.php:881
-#: modules/pp-contact-form-7/pp-contact-form-7.php:922
-#: modules/pp-contact-form-7/pp-contact-form-7.php:952
+#: modules/pp-contact-form-7/pp-contact-form-7.php:771
+#: modules/pp-contact-form-7/pp-contact-form-7.php:827
+#: modules/pp-contact-form-7/pp-contact-form-7.php:883
+#: modules/pp-contact-form-7/pp-contact-form-7.php:924
+#: modules/pp-contact-form-7/pp-contact-form-7.php:954
 #: modules/pp-contact-form/pp-contact-form.php:1249
 #: modules/pp-contact-form/pp-contact-form.php:1368
 #: modules/pp-contact-form/pp-contact-form.php:1492
@@ -6405,12 +6535,12 @@ msgstr "Abstandhalter"
 #: modules/pp-contact-form/pp-contact-form.php:1653
 #: modules/pp-contact-form/pp-contact-form.php:1721
 #: modules/pp-contact-form/pp-contact-form.php:1774
-#: modules/pp-content-grid/pp-content-grid.php:1992
-#: modules/pp-content-grid/pp-content-grid.php:2162
-#: modules/pp-content-grid/pp-content-grid.php:2314
-#: modules/pp-content-grid/pp-content-grid.php:2393
-#: modules/pp-content-grid/pp-content-grid.php:2454
-#: modules/pp-content-grid/pp-content-grid.php:2503
+#: modules/pp-content-grid/pp-content-grid.php:2015
+#: modules/pp-content-grid/pp-content-grid.php:2185
+#: modules/pp-content-grid/pp-content-grid.php:2337
+#: modules/pp-content-grid/pp-content-grid.php:2416
+#: modules/pp-content-grid/pp-content-grid.php:2477
+#: modules/pp-content-grid/pp-content-grid.php:2526
 #: modules/pp-content-tiles/pp-content-tiles.php:240
 #: modules/pp-content-tiles/pp-content-tiles.php:424
 #: modules/pp-content-tiles/pp-content-tiles.php:529
@@ -6446,7 +6576,7 @@ msgstr "Abstandhalter"
 #: modules/pp-info-banner/pp-info-banner.php:925
 #: modules/pp-infobox/pp-infobox.php:1021
 #: modules/pp-infobox/pp-infobox.php:1065
-#: modules/pp-infobox/pp-infobox.php:1107
+#: modules/pp-infobox/pp-infobox.php:1108
 #: modules/pp-infolist/pp-infolist.php:429
 #: modules/pp-infolist/pp-infolist.php:500
 #: modules/pp-logos-grid/pp-logos-grid.php:825
@@ -6456,8 +6586,8 @@ msgstr "Abstandhalter"
 #: modules/pp-ninja-form/pp-ninja-form.php:1271
 #: modules/pp-ninja-form/pp-ninja-form.php:1395
 #: modules/pp-ninja-form/pp-ninja-form.php:1486
-#: modules/pp-ninja-form/pp-ninja-form.php:1657
-#: modules/pp-ninja-form/pp-ninja-form.php:1811
+#: modules/pp-ninja-form/pp-ninja-form.php:1658
+#: modules/pp-ninja-form/pp-ninja-form.php:1812
 #: modules/pp-pricing-table/pp-pricing-table.php:1377
 #: modules/pp-pricing-table/pp-pricing-table.php:1528
 #: modules/pp-pricing-table/pp-pricing-table.php:1789
@@ -6488,8 +6618,8 @@ msgstr "Abstandhalter"
 #: modules/pp-wpforms/pp-wpforms.php:1259
 #: modules/pp-wpforms/pp-wpforms.php:1383
 #: modules/pp-wpforms/pp-wpforms.php:1474
-#: modules/pp-wpforms/pp-wpforms.php:1645
-#: modules/pp-wpforms/pp-wpforms.php:1751
+#: modules/pp-wpforms/pp-wpforms.php:1646
+#: modules/pp-wpforms/pp-wpforms.php:1752
 msgid "Font Size"
 msgstr "Schriftgröße"
 
@@ -6532,10 +6662,9 @@ msgstr "Desktop"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:194
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:648
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:746
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:69
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:365
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:446
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:478
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:377
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:458
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:490
 #: modules/pp-announcement-bar/pp-announcement-bar.php:332
 #: modules/pp-announcement-bar/pp-announcement-bar.php:600
 #: modules/pp-business-hours/pp-business-hours.php:335
@@ -6560,7 +6689,7 @@ msgstr "Desktop"
 #: modules/pp-caldera-form/pp-caldera-form.php:1629
 #: modules/pp-caldera-form/pp-caldera-form.php:1682
 #: modules/pp-caldera-form/pp-caldera-form.php:1735
-#: modules/pp-contact-form-7/pp-contact-form-7.php:369
+#: modules/pp-contact-form-7/pp-contact-form-7.php:371
 #: modules/pp-contact-form/pp-contact-form.php:737
 #: modules/pp-contact-form/pp-contact-form.php:1252
 #: modules/pp-contact-form/pp-contact-form.php:1333
@@ -6582,19 +6711,19 @@ msgstr "Desktop"
 #: modules/pp-content-grid/pp-content-grid.php:1286
 #: modules/pp-content-grid/pp-content-grid.php:1299
 #: modules/pp-content-grid/pp-content-grid.php:1388
-#: modules/pp-content-grid/pp-content-grid.php:1599
-#: modules/pp-content-grid/pp-content-grid.php:1624
-#: modules/pp-content-grid/pp-content-grid.php:1730
-#: modules/pp-content-grid/pp-content-grid.php:1743
-#: modules/pp-content-grid/pp-content-grid.php:1845
-#: modules/pp-content-grid/pp-content-grid.php:1995
-#: modules/pp-content-grid/pp-content-grid.php:2041
-#: modules/pp-content-grid/pp-content-grid.php:2105
-#: modules/pp-content-grid/pp-content-grid.php:2165
-#: modules/pp-content-grid/pp-content-grid.php:2211
-#: modules/pp-content-grid/pp-content-grid.php:2369
-#: modules/pp-content-grid/pp-content-grid.php:2430
-#: modules/pp-content-grid/pp-content-grid.php:2491
+#: modules/pp-content-grid/pp-content-grid.php:1622
+#: modules/pp-content-grid/pp-content-grid.php:1647
+#: modules/pp-content-grid/pp-content-grid.php:1753
+#: modules/pp-content-grid/pp-content-grid.php:1766
+#: modules/pp-content-grid/pp-content-grid.php:1868
+#: modules/pp-content-grid/pp-content-grid.php:2018
+#: modules/pp-content-grid/pp-content-grid.php:2064
+#: modules/pp-content-grid/pp-content-grid.php:2128
+#: modules/pp-content-grid/pp-content-grid.php:2188
+#: modules/pp-content-grid/pp-content-grid.php:2234
+#: modules/pp-content-grid/pp-content-grid.php:2392
+#: modules/pp-content-grid/pp-content-grid.php:2453
+#: modules/pp-content-grid/pp-content-grid.php:2514
 #: modules/pp-content-tiles/includes/loop-settings.php:164
 #: modules/pp-content-tiles/pp-content-tiles.php:243
 #: modules/pp-content-tiles/pp-content-tiles.php:289
@@ -6650,11 +6779,11 @@ msgstr "Desktop"
 #: modules/pp-ninja-form/pp-ninja-form.php:1474
 #: modules/pp-ninja-form/pp-ninja-form.php:1489
 #: modules/pp-ninja-form/pp-ninja-form.php:1537
-#: modules/pp-ninja-form/pp-ninja-form.php:1645
-#: modules/pp-ninja-form/pp-ninja-form.php:1660
-#: modules/pp-ninja-form/pp-ninja-form.php:1713
-#: modules/pp-ninja-form/pp-ninja-form.php:1761
-#: modules/pp-ninja-form/pp-ninja-form.php:1814
+#: modules/pp-ninja-form/pp-ninja-form.php:1646
+#: modules/pp-ninja-form/pp-ninja-form.php:1661
+#: modules/pp-ninja-form/pp-ninja-form.php:1714
+#: modules/pp-ninja-form/pp-ninja-form.php:1762
+#: modules/pp-ninja-form/pp-ninja-form.php:1815
 #: modules/pp-pricing-table/pp-pricing-table.php:1380
 #: modules/pp-pricing-table/pp-pricing-table.php:1426
 #: modules/pp-pricing-table/pp-pricing-table.php:1531
@@ -6696,10 +6825,10 @@ msgstr "Desktop"
 #: modules/pp-wpforms/pp-wpforms.php:1462
 #: modules/pp-wpforms/pp-wpforms.php:1477
 #: modules/pp-wpforms/pp-wpforms.php:1525
-#: modules/pp-wpforms/pp-wpforms.php:1633
-#: modules/pp-wpforms/pp-wpforms.php:1648
-#: modules/pp-wpforms/pp-wpforms.php:1701
-#: modules/pp-wpforms/pp-wpforms.php:1754
+#: modules/pp-wpforms/pp-wpforms.php:1634
+#: modules/pp-wpforms/pp-wpforms.php:1649
+#: modules/pp-wpforms/pp-wpforms.php:1702
+#: modules/pp-wpforms/pp-wpforms.php:1755
 msgid "Default"
 msgstr "Standard"
 
@@ -6717,7 +6846,7 @@ msgid "Medium Device"
 msgstr "Tablet"
 
 #: includes/row-settings.php:512
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:447
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:459
 #: modules/pp-business-hours/pp-business-hours.php:428
 #: modules/pp-business-hours/pp-business-hours.php:563
 #: modules/pp-caldera-form/pp-caldera-form.php:1105
@@ -6730,10 +6859,10 @@ msgstr "Tablet"
 #: modules/pp-contact-form/pp-contact-form.php:1544
 #: modules/pp-contact-form/pp-contact-form.php:1630
 #: modules/pp-contact-form/pp-contact-form.php:1705
-#: modules/pp-content-grid/pp-content-grid.php:2106
-#: modules/pp-content-grid/pp-content-grid.php:2370
-#: modules/pp-content-grid/pp-content-grid.php:2431
-#: modules/pp-content-grid/pp-content-grid.php:2492
+#: modules/pp-content-grid/pp-content-grid.php:2129
+#: modules/pp-content-grid/pp-content-grid.php:2393
+#: modules/pp-content-grid/pp-content-grid.php:2454
+#: modules/pp-content-grid/pp-content-grid.php:2515
 #: modules/pp-content-tiles/pp-content-tiles.php:383
 #: modules/pp-content-tiles/pp-content-tiles.php:624
 #: modules/pp-formidable-form/pp-formidable-form.php:1365
@@ -6745,7 +6874,7 @@ msgstr "Tablet"
 #: modules/pp-ninja-form/pp-ninja-form.php:1260
 #: modules/pp-ninja-form/pp-ninja-form.php:1384
 #: modules/pp-ninja-form/pp-ninja-form.php:1475
-#: modules/pp-ninja-form/pp-ninja-form.php:1646
+#: modules/pp-ninja-form/pp-ninja-form.php:1647
 #: modules/pp-pricing-table/pp-pricing-table.php:1473
 #: modules/pp-pricing-table/pp-pricing-table.php:1624
 #: modules/pp-pricing-table/pp-pricing-table.php:1761
@@ -6760,7 +6889,7 @@ msgstr "Tablet"
 #: modules/pp-wpforms/pp-wpforms.php:1248
 #: modules/pp-wpforms/pp-wpforms.php:1372
 #: modules/pp-wpforms/pp-wpforms.php:1463
-#: modules/pp-wpforms/pp-wpforms.php:1634
+#: modules/pp-wpforms/pp-wpforms.php:1635
 msgid "lowercase"
 msgstr "Kleinschreibung"
 
@@ -6779,7 +6908,7 @@ msgid "Small Device"
 msgstr "Mobiltelefon"
 
 #: includes/row-settings.php:513
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:448
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:460
 #: modules/pp-business-hours/pp-business-hours.php:429
 #: modules/pp-business-hours/pp-business-hours.php:564
 #: modules/pp-caldera-form/pp-caldera-form.php:1106
@@ -6792,10 +6921,10 @@ msgstr "Mobiltelefon"
 #: modules/pp-contact-form/pp-contact-form.php:1545
 #: modules/pp-contact-form/pp-contact-form.php:1631
 #: modules/pp-contact-form/pp-contact-form.php:1706
-#: modules/pp-content-grid/pp-content-grid.php:2107
-#: modules/pp-content-grid/pp-content-grid.php:2371
-#: modules/pp-content-grid/pp-content-grid.php:2432
-#: modules/pp-content-grid/pp-content-grid.php:2493
+#: modules/pp-content-grid/pp-content-grid.php:2130
+#: modules/pp-content-grid/pp-content-grid.php:2394
+#: modules/pp-content-grid/pp-content-grid.php:2455
+#: modules/pp-content-grid/pp-content-grid.php:2516
 #: modules/pp-content-tiles/pp-content-tiles.php:384
 #: modules/pp-content-tiles/pp-content-tiles.php:625
 #: modules/pp-formidable-form/pp-formidable-form.php:1366
@@ -6807,7 +6936,7 @@ msgstr "Mobiltelefon"
 #: modules/pp-ninja-form/pp-ninja-form.php:1261
 #: modules/pp-ninja-form/pp-ninja-form.php:1385
 #: modules/pp-ninja-form/pp-ninja-form.php:1476
-#: modules/pp-ninja-form/pp-ninja-form.php:1647
+#: modules/pp-ninja-form/pp-ninja-form.php:1648
 #: modules/pp-pricing-table/pp-pricing-table.php:1474
 #: modules/pp-pricing-table/pp-pricing-table.php:1625
 #: modules/pp-pricing-table/pp-pricing-table.php:1762
@@ -6822,7 +6951,7 @@ msgstr "Mobiltelefon"
 #: modules/pp-wpforms/pp-wpforms.php:1249
 #: modules/pp-wpforms/pp-wpforms.php:1373
 #: modules/pp-wpforms/pp-wpforms.php:1464
-#: modules/pp-wpforms/pp-wpforms.php:1635
+#: modules/pp-wpforms/pp-wpforms.php:1636
 msgid "UPPERCASE"
 msgstr "Großschreibung"
 
@@ -6857,7 +6986,7 @@ msgstr "Sichtbarkeit"
 #: modules/pp-content-grid/pp-content-grid.php:1287
 #: modules/pp-content-grid/pp-content-grid.php:1300
 #: modules/pp-content-grid/pp-content-grid.php:1389
-#: modules/pp-content-grid/pp-content-grid.php:1846
+#: modules/pp-content-grid/pp-content-grid.php:1869
 #: modules/pp-dual-button/pp-dual-button.php:267
 #: modules/pp-dual-button/pp-dual-button.php:285
 #: modules/pp-dual-button/pp-dual-button.php:303
@@ -6902,8 +7031,8 @@ msgstr "Verstecken für"
 #: modules/pp-contact-form/pp-contact-form.php:552
 #: modules/pp-contact-form/pp-contact-form.php:605
 #: modules/pp-content-grid/pp-content-grid.php:1474
-#: modules/pp-content-grid/pp-content-grid.php:2112
-#: modules/pp-content-grid/pp-content-grid.php:2264
+#: modules/pp-content-grid/pp-content-grid.php:2135
+#: modules/pp-content-grid/pp-content-grid.php:2287
 #: modules/pp-content-tiles/pp-content-tiles.php:389
 #: modules/pp-content-tiles/pp-content-tiles.php:630
 #: modules/pp-dotnav/pp-dotnav.php:226
@@ -6960,10 +7089,10 @@ msgstr "Individueller Breakpoint"
 #: modules/pp-content-grid/pp-content-grid.php:1325
 #: modules/pp-content-grid/pp-content-grid.php:1418
 #: modules/pp-content-grid/pp-content-grid.php:1475
-#: modules/pp-content-grid/pp-content-grid.php:1782
-#: modules/pp-content-grid/pp-content-grid.php:1871
-#: modules/pp-content-grid/pp-content-grid.php:2113
-#: modules/pp-content-grid/pp-content-grid.php:2265
+#: modules/pp-content-grid/pp-content-grid.php:1805
+#: modules/pp-content-grid/pp-content-grid.php:1894
+#: modules/pp-content-grid/pp-content-grid.php:2136
+#: modules/pp-content-grid/pp-content-grid.php:2288
 #: modules/pp-formidable-form/pp-formidable-form.php:366
 #: modules/pp-formidable-form/pp-formidable-form.php:518
 #: modules/pp-formidable-form/pp-formidable-form.php:551
@@ -6971,7 +7100,6 @@ msgstr "Individueller Breakpoint"
 #: modules/pp-formidable-form/pp-formidable-form.php:681
 #: modules/pp-formidable-form/pp-formidable-form.php:940
 #: modules/pp-formidable-form/pp-formidable-form.php:1164
-#: modules/pp-gravity-form/pp-gravity-form.php:266
 #: modules/pp-infolist/pp-infolist.php:113
 #: modules/pp-ninja-form/pp-ninja-form.php:351
 #: modules/pp-ninja-form/pp-ninja-form.php:428
@@ -7095,19 +7223,19 @@ msgstr "Position festlegen"
 #: includes/row-settings.php:615 includes/row-settings.php:869
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:174
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:409
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:123
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:230
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:129
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:241
 #: modules/pp-announcement-bar/pp-announcement-bar.php:139
 #: modules/pp-announcement-bar/pp-announcement-bar.php:325
 #: modules/pp-business-hours/pp-business-hours.php:177
-#: modules/pp-business-hours/pp-business-hours.php:684
+#: modules/pp-business-hours/pp-business-hours.php:694
 #: modules/pp-caldera-form/pp-caldera-form.php:142
 #: modules/pp-caldera-form/pp-caldera-form.php:514
 #: modules/pp-caldera-form/pp-caldera-form.php:843
 #: modules/pp-caldera-form/pp-caldera-form.php:1047
 #: modules/pp-contact-form-7/pp-contact-form-7.php:96
 #: modules/pp-contact-form-7/pp-contact-form-7.php:253
-#: modules/pp-contact-form-7/pp-contact-form-7.php:439
+#: modules/pp-contact-form-7/pp-contact-form-7.php:441
 #: modules/pp-contact-form/pp-contact-form.php:286
 #: modules/pp-contact-form/pp-contact-form.php:658
 #: modules/pp-contact-form/pp-contact-form.php:998
@@ -7117,8 +7245,8 @@ msgstr "Position festlegen"
 #: modules/pp-content-grid/pp-content-grid.php:1092
 #: modules/pp-content-grid/pp-content-grid.php:1194
 #: modules/pp-content-grid/pp-content-grid.php:1279
-#: modules/pp-content-grid/pp-content-grid.php:1593
-#: modules/pp-content-grid/pp-content-grid.php:1723
+#: modules/pp-content-grid/pp-content-grid.php:1616
+#: modules/pp-content-grid/pp-content-grid.php:1746
 #: modules/pp-dotnav/pp-dotnav.php:260
 #: modules/pp-dual-button/pp-dual-button.php:259
 #: modules/pp-dual-button/pp-dual-button.php:344
@@ -7200,15 +7328,15 @@ msgstr "Zwischen 0 & 1"
 #: modules/pp-caldera-form/pp-caldera-form.php:873
 #: modules/pp-contact-form-7/pp-contact-form-7.php:162
 #: modules/pp-contact-form-7/pp-contact-form-7.php:338
-#: modules/pp-contact-form-7/pp-contact-form-7.php:592
+#: modules/pp-contact-form-7/pp-contact-form-7.php:594
 #: modules/pp-contact-form/pp-contact-form.php:370
 #: modules/pp-contact-form/pp-contact-form.php:697
 #: modules/pp-contact-form/pp-contact-form.php:1048
 #: modules/pp-content-grid/pp-content-grid.php:603
 #: modules/pp-content-grid/pp-content-grid.php:818
 #: modules/pp-content-grid/pp-content-grid.php:1324
-#: modules/pp-content-grid/pp-content-grid.php:1657
-#: modules/pp-content-grid/pp-content-grid.php:1781
+#: modules/pp-content-grid/pp-content-grid.php:1680
+#: modules/pp-content-grid/pp-content-grid.php:1804
 #: modules/pp-dotnav/pp-dotnav.php:163
 #: modules/pp-dual-button/pp-dual-button.php:518
 #: modules/pp-flipbox/pp-flipbox.php:160 modules/pp-flipbox/pp-flipbox.php:761
@@ -7277,7 +7405,7 @@ msgstr "Lade ein Foto hoch oder wähle eines aus der Medienbibliothek."
 #: includes/row-settings.php:642 includes/row-settings.php:900
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:288
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:518
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:187
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:197
 #: modules/pp-announcement-bar/pp-announcement-bar.php:185
 #: modules/pp-announcement-bar/pp-announcement-bar.php:379
 #: modules/pp-business-hours/pp-business-hours.php:229
@@ -7287,14 +7415,14 @@ msgstr "Lade ein Foto hoch oder wähle eines aus der Medienbibliothek."
 #: modules/pp-caldera-form/pp-caldera-form.php:1068
 #: modules/pp-contact-form-7/pp-contact-form-7.php:175
 #: modules/pp-contact-form-7/pp-contact-form-7.php:351
-#: modules/pp-contact-form-7/pp-contact-form-7.php:605
+#: modules/pp-contact-form-7/pp-contact-form-7.php:607
 #: modules/pp-contact-form/pp-contact-form.php:383
 #: modules/pp-contact-form/pp-contact-form.php:686
 #: modules/pp-content-grid/pp-content-grid.php:617
 #: modules/pp-content-grid/pp-content-grid.php:841
 #: modules/pp-content-grid/pp-content-grid.php:1381
-#: modules/pp-content-grid/pp-content-grid.php:1680
-#: modules/pp-content-grid/pp-content-grid.php:1838
+#: modules/pp-content-grid/pp-content-grid.php:1703
+#: modules/pp-content-grid/pp-content-grid.php:1861
 #: modules/pp-dotnav/pp-dotnav.php:176
 #: modules/pp-dual-button/pp-dual-button.php:295
 #: modules/pp-dual-button/pp-dual-button.php:380
@@ -7378,8 +7506,8 @@ msgstr "Fotoquelle"
 #: modules/pp-contact-form/pp-contact-form.php:1108
 #: modules/pp-content-grid/pp-content-grid.php:630
 #: modules/pp-content-grid/pp-content-grid.php:1417
-#: modules/pp-content-grid/pp-content-grid.php:1531
-#: modules/pp-content-grid/pp-content-grid.php:1870
+#: modules/pp-content-grid/pp-content-grid.php:1554
+#: modules/pp-content-grid/pp-content-grid.php:1893
 #: modules/pp-dual-button/pp-dual-button.php:439
 #: modules/pp-formidable-form/pp-formidable-form.php:365
 #: modules/pp-formidable-form/pp-formidable-form.php:550
@@ -7514,7 +7642,7 @@ msgstr "Bildzuschnitt"
 #: modules/pp-advanced-tabs/pp-advanced-tabs.php:50
 #: modules/pp-announcement-bar/pp-announcement-bar.php:109
 #: modules/pp-business-hours/pp-business-hours.php:53
-#: modules/pp-business-hours/pp-business-hours.php:676
+#: modules/pp-business-hours/pp-business-hours.php:686
 #: modules/pp-caldera-form/pp-caldera-form.php:118
 #: modules/pp-contact-form-7/pp-contact-form-7.php:72
 #: modules/pp-contact-form/pp-contact-form.php:262
@@ -7614,8 +7742,8 @@ msgstr "Bei Hover"
 #: modules/pp-contact-form/pp-contact-form.php:1717
 #: modules/pp-formidable-form/pp-formidable-form.php:1980
 #: modules/pp-gravity-form/pp-gravity-form.php:1131
-#: modules/pp-ninja-form/pp-ninja-form.php:1706
-#: modules/pp-wpforms/pp-wpforms.php:1694
+#: modules/pp-ninja-form/pp-ninja-form.php:1707
+#: modules/pp-wpforms/pp-wpforms.php:1695
 msgid "Error"
 msgstr "Fehler"
 
@@ -7734,8 +7862,8 @@ msgstr "Link URL"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:50
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:842
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:269
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:574
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:281
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:586
 #: modules/pp-announcement-bar/pp-announcement-bar.php:56
 #: modules/pp-announcement-bar/pp-announcement-bar.php:196
 #: modules/pp-contact-form/pp-contact-form.php:970
@@ -7796,7 +7924,7 @@ msgid "Padding allows you to adjust the spacing between image and the outer edge
 msgstr "Mit dem Innenabstand stellst Du den Abstand zwischen Bild und der äußeren Seite des Containers ein."
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:76
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:306
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:318
 msgid "Open Icon"
 msgstr "Öffnen-Icon"
 
@@ -7809,7 +7937,7 @@ msgid "Background color will be visible between the image and outside edge of th
 msgstr "Die Hintergrundfarbe wird zwischen dem Bild und der Außenseite des Containers zu sehen sein wenn Du den Innenabstand erhöhst."
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:81
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:311
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:323
 msgid "Close Icon"
 msgstr "Schließen-Icon"
 
@@ -7887,7 +8015,7 @@ msgstr "Beiträge pro Seite"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:629
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:847
 #: modules/pp-caldera-form/pp-caldera-form.php:1333
-#: modules/pp-contact-form-7/pp-contact-form-7.php:865
+#: modules/pp-contact-form-7/pp-contact-form-7.php:867
 #: modules/pp-contact-form/pp-contact-form.php:1476
 #: modules/pp-formidable-form/pp-formidable-form.php:1588
 #: modules/pp-gravity-form/pp-gravity-form.php:1006
@@ -7902,36 +8030,36 @@ msgstr "Anzahl der Beiträge, die auf einmal angezeigt werden. Sollte weniger od
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:182
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:195
-#: modules/pp-content-grid/pp-content-grid.php:1600
-#: modules/pp-content-grid/pp-content-grid.php:1625
-#: modules/pp-content-grid/pp-content-grid.php:1731
-#: modules/pp-content-grid/pp-content-grid.php:1744
+#: modules/pp-content-grid/pp-content-grid.php:1623
+#: modules/pp-content-grid/pp-content-grid.php:1648
+#: modules/pp-content-grid/pp-content-grid.php:1754
+#: modules/pp-content-grid/pp-content-grid.php:1767
 msgid "Active"
 msgstr "Aktiv"
 
 #: modules/pp-content-grid/pp-content-grid.php:379
 #: modules/pp-content-grid/pp-content-grid.php:1510
-#: modules/pp-content-grid/pp-content-grid.php:2499
+#: modules/pp-content-grid/pp-content-grid.php:2522
 msgid "Pagination"
 msgstr "Paginierung"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:187
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:420
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:159
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:241
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:167
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:252
 #: modules/pp-caldera-form/pp-caldera-form.php:504
 #: modules/pp-caldera-form/pp-caldera-form.php:830
 #: modules/pp-contact-form-7/pp-contact-form-7.php:242
-#: modules/pp-contact-form-7/pp-contact-form-7.php:461
+#: modules/pp-contact-form-7/pp-contact-form-7.php:463
 #: modules/pp-contact-form/pp-contact-form.php:648
 #: modules/pp-contact-form/pp-contact-form.php:1013
 #: modules/pp-content-grid/pp-content-grid.php:1102
 #: modules/pp-content-grid/pp-content-grid.php:1292
-#: modules/pp-content-grid/pp-content-grid.php:1618
-#: modules/pp-content-grid/pp-content-grid.php:1736
-#: modules/pp-content-grid/pp-content-grid.php:2084
-#: modules/pp-content-grid/pp-content-grid.php:2254
-#: modules/pp-content-grid/pp-content-grid.php:2348
+#: modules/pp-content-grid/pp-content-grid.php:1641
+#: modules/pp-content-grid/pp-content-grid.php:1759
+#: modules/pp-content-grid/pp-content-grid.php:2107
+#: modules/pp-content-grid/pp-content-grid.php:2277
+#: modules/pp-content-grid/pp-content-grid.php:2371
 #: modules/pp-content-tiles/pp-content-tiles.php:204
 #: modules/pp-dotnav/pp-dotnav.php:266
 #: modules/pp-dual-button/pp-dual-button.php:277
@@ -7983,8 +8111,8 @@ msgstr "Oben Mitte"
 #: modules/pp-content-grid/pp-content-grid.php:578
 #: modules/pp-content-grid/pp-content-grid.php:796
 #: modules/pp-content-grid/pp-content-grid.php:1305
-#: modules/pp-content-grid/pp-content-grid.php:1635
-#: modules/pp-content-grid/pp-content-grid.php:1754
+#: modules/pp-content-grid/pp-content-grid.php:1658
+#: modules/pp-content-grid/pp-content-grid.php:1777
 #: modules/pp-dual-button/pp-dual-button.php:496
 #: modules/pp-flipbox/pp-flipbox.php:133
 #: modules/pp-formidable-form/pp-formidable-form.php:220
@@ -8086,15 +8214,15 @@ msgid "Flash"
 msgstr "Blinken"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:608
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:251
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:263
 #: modules/pp-caldera-form/pp-caldera-form.php:393
 #: modules/pp-caldera-form/pp-caldera-form.php:446
-#: modules/pp-contact-form-7/pp-contact-form-7.php:793
-#: modules/pp-contact-form-7/pp-contact-form-7.php:849
+#: modules/pp-contact-form-7/pp-contact-form-7.php:795
+#: modules/pp-contact-form-7/pp-contact-form-7.php:851
 #: modules/pp-contact-form/pp-contact-form.php:537
 #: modules/pp-contact-form/pp-contact-form.php:590
 #: modules/pp-contact-form/pp-contact-form.php:1098
-#: modules/pp-content-grid/pp-content-grid.php:1946
+#: modules/pp-content-grid/pp-content-grid.php:1969
 #: modules/pp-dual-button/pp-dual-button.php:429
 #: modules/pp-fancy-heading/pp-fancy-heading.php:277
 #: modules/pp-formidable-form/pp-formidable-form.php:612
@@ -8135,21 +8263,21 @@ msgid "Fade In"
 msgstr "Einblenden"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:612
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:255
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:267
 #: modules/pp-announcement-bar/pp-announcement-bar.php:120
 #: modules/pp-caldera-form/pp-caldera-form.php:397
 #: modules/pp-caldera-form/pp-caldera-form.php:450
 #: modules/pp-caldera-form/pp-caldera-form.php:663
 #: modules/pp-caldera-form/pp-caldera-form.php:920
-#: modules/pp-contact-form-7/pp-contact-form-7.php:519
-#: modules/pp-contact-form-7/pp-contact-form-7.php:797
-#: modules/pp-contact-form-7/pp-contact-form-7.php:853
+#: modules/pp-contact-form-7/pp-contact-form-7.php:521
+#: modules/pp-contact-form-7/pp-contact-form-7.php:799
+#: modules/pp-contact-form-7/pp-contact-form-7.php:855
 #: modules/pp-contact-form/pp-contact-form.php:541
 #: modules/pp-contact-form/pp-contact-form.php:594
 #: modules/pp-contact-form/pp-contact-form.php:798
 #: modules/pp-contact-form/pp-contact-form.php:1102
 #: modules/pp-content-grid/pp-content-grid.php:863
-#: modules/pp-content-grid/pp-content-grid.php:1950
+#: modules/pp-content-grid/pp-content-grid.php:1973
 #: modules/pp-dual-button/pp-dual-button.php:433
 #: modules/pp-fancy-heading/pp-fancy-heading.php:281
 #: modules/pp-formidable-form/pp-formidable-form.php:616
@@ -8210,13 +8338,13 @@ msgid "Fade In Up"
 msgstr "Von unten einblenden"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:626
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:343
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:355
 #: modules/pp-announcement-bar/pp-announcement-bar.php:466
 #: modules/pp-business-hours/pp-business-hours.php:313
 #: modules/pp-caldera-form/pp-caldera-form.php:1082
-#: modules/pp-contact-form-7/pp-contact-form-7.php:750
+#: modules/pp-contact-form-7/pp-contact-form-7.php:752
 #: modules/pp-contact-form/pp-contact-form.php:1230
-#: modules/pp-content-grid/pp-content-grid.php:1959
+#: modules/pp-content-grid/pp-content-grid.php:1982
 #: modules/pp-content-tiles/pp-content-tiles.php:225
 #: modules/pp-dual-button/pp-dual-button.php:605
 #: modules/pp-fancy-heading/pp-fancy-heading.php:144
@@ -8264,8 +8392,8 @@ msgstr "Von oben einblenden"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:649
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:747
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:366
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:479
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:378
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:491
 #: modules/pp-business-hours/pp-business-hours.php:336
 #: modules/pp-business-hours/pp-business-hours.php:382
 #: modules/pp-business-hours/pp-business-hours.php:471
@@ -8286,10 +8414,10 @@ msgstr "Von oben einblenden"
 #: modules/pp-contact-form/pp-contact-form.php:1725
 #: modules/pp-contact-form/pp-contact-form.php:1778
 #: modules/pp-content-grid/pp-content-grid.php:356
-#: modules/pp-content-grid/pp-content-grid.php:1996
-#: modules/pp-content-grid/pp-content-grid.php:2042
-#: modules/pp-content-grid/pp-content-grid.php:2166
-#: modules/pp-content-grid/pp-content-grid.php:2212
+#: modules/pp-content-grid/pp-content-grid.php:2019
+#: modules/pp-content-grid/pp-content-grid.php:2065
+#: modules/pp-content-grid/pp-content-grid.php:2189
+#: modules/pp-content-grid/pp-content-grid.php:2235
 #: modules/pp-content-tiles/pp-content-tiles.php:244
 #: modules/pp-content-tiles/pp-content-tiles.php:290
 #: modules/pp-content-tiles/pp-content-tiles.php:336
@@ -8318,10 +8446,10 @@ msgstr "Von oben einblenden"
 #: modules/pp-ninja-form/pp-ninja-form.php:1399
 #: modules/pp-ninja-form/pp-ninja-form.php:1490
 #: modules/pp-ninja-form/pp-ninja-form.php:1538
-#: modules/pp-ninja-form/pp-ninja-form.php:1661
-#: modules/pp-ninja-form/pp-ninja-form.php:1714
-#: modules/pp-ninja-form/pp-ninja-form.php:1762
-#: modules/pp-ninja-form/pp-ninja-form.php:1815
+#: modules/pp-ninja-form/pp-ninja-form.php:1662
+#: modules/pp-ninja-form/pp-ninja-form.php:1715
+#: modules/pp-ninja-form/pp-ninja-form.php:1763
+#: modules/pp-ninja-form/pp-ninja-form.php:1816
 #: modules/pp-pricing-table/pp-pricing-table.php:1381
 #: modules/pp-pricing-table/pp-pricing-table.php:1427
 #: modules/pp-pricing-table/pp-pricing-table.php:1532
@@ -8348,9 +8476,9 @@ msgstr "Von oben einblenden"
 #: modules/pp-wpforms/pp-wpforms.php:1387
 #: modules/pp-wpforms/pp-wpforms.php:1478
 #: modules/pp-wpforms/pp-wpforms.php:1526
-#: modules/pp-wpforms/pp-wpforms.php:1649
-#: modules/pp-wpforms/pp-wpforms.php:1702
-#: modules/pp-wpforms/pp-wpforms.php:1755
+#: modules/pp-wpforms/pp-wpforms.php:1650
+#: modules/pp-wpforms/pp-wpforms.php:1703
+#: modules/pp-wpforms/pp-wpforms.php:1756
 msgid "Custom"
 msgstr "Individuell"
 
@@ -8368,8 +8496,8 @@ msgstr "Von links einblenden"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:659
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:757
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:376
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:489
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:388
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:501
 #: modules/pp-business-hours/pp-business-hours.php:346
 #: modules/pp-business-hours/pp-business-hours.php:481
 #: modules/pp-caldera-form/pp-caldera-form.php:1130
@@ -8385,8 +8513,8 @@ msgstr "Von links einblenden"
 #: modules/pp-contact-form/pp-contact-form.php:1667
 #: modules/pp-contact-form/pp-contact-form.php:1735
 #: modules/pp-contact-form/pp-contact-form.php:1788
-#: modules/pp-content-grid/pp-content-grid.php:2006
-#: modules/pp-content-grid/pp-content-grid.php:2176
+#: modules/pp-content-grid/pp-content-grid.php:2029
+#: modules/pp-content-grid/pp-content-grid.php:2199
 #: modules/pp-content-tiles/pp-content-tiles.php:254
 #: modules/pp-content-tiles/pp-content-tiles.php:438
 #: modules/pp-content-tiles/pp-content-tiles.php:543
@@ -8405,8 +8533,8 @@ msgstr "Von links einblenden"
 #: modules/pp-ninja-form/pp-ninja-form.php:1285
 #: modules/pp-ninja-form/pp-ninja-form.php:1409
 #: modules/pp-ninja-form/pp-ninja-form.php:1500
-#: modules/pp-ninja-form/pp-ninja-form.php:1671
-#: modules/pp-ninja-form/pp-ninja-form.php:1825
+#: modules/pp-ninja-form/pp-ninja-form.php:1672
+#: modules/pp-ninja-form/pp-ninja-form.php:1826
 #: modules/pp-pricing-table/pp-pricing-table.php:1391
 #: modules/pp-pricing-table/pp-pricing-table.php:1542
 #: modules/pp-pricing-table/pp-pricing-table.php:1803
@@ -8422,8 +8550,8 @@ msgstr "Von links einblenden"
 #: modules/pp-wpforms/pp-wpforms.php:1273
 #: modules/pp-wpforms/pp-wpforms.php:1397
 #: modules/pp-wpforms/pp-wpforms.php:1488
-#: modules/pp-wpforms/pp-wpforms.php:1659
-#: modules/pp-wpforms/pp-wpforms.php:1765
+#: modules/pp-wpforms/pp-wpforms.php:1660
+#: modules/pp-wpforms/pp-wpforms.php:1766
 msgid "Custom Font Size"
 msgstr "Eigene Schriftgröße"
 
@@ -8447,14 +8575,14 @@ msgstr "Von rechts einblenden"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:768
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:799
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:802
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:384
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:387
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:418
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:421
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:497
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:500
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:531
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:534
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:396
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:399
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:430
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:433
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:509
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:512
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:543
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:546
 #: modules/pp-announcement-bar/pp-announcement-bar.php:493
 #: modules/pp-announcement-bar/pp-announcement-bar.php:496
 #: modules/pp-announcement-bar/pp-announcement-bar.php:527
@@ -8508,22 +8636,22 @@ msgstr "Von rechts einblenden"
 #: modules/pp-contact-form/pp-contact-form.php:1796
 #: modules/pp-contact-form/pp-contact-form.php:1799
 #: modules/pp-content-grid/pp-content-grid.php:409
-#: modules/pp-content-grid/pp-content-grid.php:2015
-#: modules/pp-content-grid/pp-content-grid.php:2016
-#: modules/pp-content-grid/pp-content-grid.php:2062
-#: modules/pp-content-grid/pp-content-grid.php:2063
-#: modules/pp-content-grid/pp-content-grid.php:2185
-#: modules/pp-content-grid/pp-content-grid.php:2186
-#: modules/pp-content-grid/pp-content-grid.php:2232
-#: modules/pp-content-grid/pp-content-grid.php:2233
-#: modules/pp-content-grid/pp-content-grid.php:2324
-#: modules/pp-content-grid/pp-content-grid.php:2325
-#: modules/pp-content-grid/pp-content-grid.php:2403
-#: modules/pp-content-grid/pp-content-grid.php:2404
-#: modules/pp-content-grid/pp-content-grid.php:2464
-#: modules/pp-content-grid/pp-content-grid.php:2465
-#: modules/pp-content-grid/pp-content-grid.php:2513
-#: modules/pp-content-grid/pp-content-grid.php:2514
+#: modules/pp-content-grid/pp-content-grid.php:2038
+#: modules/pp-content-grid/pp-content-grid.php:2039
+#: modules/pp-content-grid/pp-content-grid.php:2085
+#: modules/pp-content-grid/pp-content-grid.php:2086
+#: modules/pp-content-grid/pp-content-grid.php:2208
+#: modules/pp-content-grid/pp-content-grid.php:2209
+#: modules/pp-content-grid/pp-content-grid.php:2255
+#: modules/pp-content-grid/pp-content-grid.php:2256
+#: modules/pp-content-grid/pp-content-grid.php:2347
+#: modules/pp-content-grid/pp-content-grid.php:2348
+#: modules/pp-content-grid/pp-content-grid.php:2426
+#: modules/pp-content-grid/pp-content-grid.php:2427
+#: modules/pp-content-grid/pp-content-grid.php:2487
+#: modules/pp-content-grid/pp-content-grid.php:2488
+#: modules/pp-content-grid/pp-content-grid.php:2536
+#: modules/pp-content-grid/pp-content-grid.php:2537
 #: modules/pp-content-tiles/pp-content-tiles.php:263
 #: modules/pp-content-tiles/pp-content-tiles.php:264
 #: modules/pp-content-tiles/pp-content-tiles.php:309
@@ -8617,14 +8745,14 @@ msgstr "Von rechts einblenden"
 #: modules/pp-ninja-form/pp-ninja-form.php:1559
 #: modules/pp-ninja-form/pp-ninja-form.php:1590
 #: modules/pp-ninja-form/pp-ninja-form.php:1593
-#: modules/pp-ninja-form/pp-ninja-form.php:1679
-#: modules/pp-ninja-form/pp-ninja-form.php:1682
-#: modules/pp-ninja-form/pp-ninja-form.php:1732
-#: modules/pp-ninja-form/pp-ninja-form.php:1735
-#: modules/pp-ninja-form/pp-ninja-form.php:1780
-#: modules/pp-ninja-form/pp-ninja-form.php:1783
-#: modules/pp-ninja-form/pp-ninja-form.php:1833
-#: modules/pp-ninja-form/pp-ninja-form.php:1836
+#: modules/pp-ninja-form/pp-ninja-form.php:1680
+#: modules/pp-ninja-form/pp-ninja-form.php:1683
+#: modules/pp-ninja-form/pp-ninja-form.php:1733
+#: modules/pp-ninja-form/pp-ninja-form.php:1736
+#: modules/pp-ninja-form/pp-ninja-form.php:1781
+#: modules/pp-ninja-form/pp-ninja-form.php:1784
+#: modules/pp-ninja-form/pp-ninja-form.php:1834
+#: modules/pp-ninja-form/pp-ninja-form.php:1837
 #: modules/pp-notifications/pp-notifications.php:285
 #: modules/pp-notifications/pp-notifications.php:288
 #: modules/pp-notifications/pp-notifications.php:319
@@ -8701,12 +8829,12 @@ msgstr "Von rechts einblenden"
 #: modules/pp-wpforms/pp-wpforms.php:1547
 #: modules/pp-wpforms/pp-wpforms.php:1578
 #: modules/pp-wpforms/pp-wpforms.php:1581
-#: modules/pp-wpforms/pp-wpforms.php:1667
-#: modules/pp-wpforms/pp-wpforms.php:1670
-#: modules/pp-wpforms/pp-wpforms.php:1720
-#: modules/pp-wpforms/pp-wpforms.php:1723
-#: modules/pp-wpforms/pp-wpforms.php:1773
-#: modules/pp-wpforms/pp-wpforms.php:1776
+#: modules/pp-wpforms/pp-wpforms.php:1668
+#: modules/pp-wpforms/pp-wpforms.php:1671
+#: modules/pp-wpforms/pp-wpforms.php:1721
+#: modules/pp-wpforms/pp-wpforms.php:1724
+#: modules/pp-wpforms/pp-wpforms.php:1774
+#: modules/pp-wpforms/pp-wpforms.php:1777
 msgid "Desktop"
 msgstr "Desktop"
 
@@ -8731,14 +8859,14 @@ msgstr "von oben einschweben"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:779
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:809
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:812
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:395
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:398
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:428
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:431
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:508
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:511
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:541
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:544
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:407
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:410
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:440
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:443
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:520
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:523
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:553
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:556
 #: modules/pp-announcement-bar/pp-announcement-bar.php:504
 #: modules/pp-announcement-bar/pp-announcement-bar.php:507
 #: modules/pp-announcement-bar/pp-announcement-bar.php:537
@@ -8792,22 +8920,22 @@ msgstr "von oben einschweben"
 #: modules/pp-contact-form/pp-contact-form.php:1807
 #: modules/pp-contact-form/pp-contact-form.php:1810
 #: modules/pp-content-grid/pp-content-grid.php:413
-#: modules/pp-content-grid/pp-content-grid.php:2025
-#: modules/pp-content-grid/pp-content-grid.php:2026
-#: modules/pp-content-grid/pp-content-grid.php:2071
-#: modules/pp-content-grid/pp-content-grid.php:2072
-#: modules/pp-content-grid/pp-content-grid.php:2195
-#: modules/pp-content-grid/pp-content-grid.php:2196
-#: modules/pp-content-grid/pp-content-grid.php:2241
-#: modules/pp-content-grid/pp-content-grid.php:2242
-#: modules/pp-content-grid/pp-content-grid.php:2335
-#: modules/pp-content-grid/pp-content-grid.php:2336
-#: modules/pp-content-grid/pp-content-grid.php:2414
-#: modules/pp-content-grid/pp-content-grid.php:2415
-#: modules/pp-content-grid/pp-content-grid.php:2475
-#: modules/pp-content-grid/pp-content-grid.php:2476
-#: modules/pp-content-grid/pp-content-grid.php:2524
-#: modules/pp-content-grid/pp-content-grid.php:2525
+#: modules/pp-content-grid/pp-content-grid.php:2048
+#: modules/pp-content-grid/pp-content-grid.php:2049
+#: modules/pp-content-grid/pp-content-grid.php:2094
+#: modules/pp-content-grid/pp-content-grid.php:2095
+#: modules/pp-content-grid/pp-content-grid.php:2218
+#: modules/pp-content-grid/pp-content-grid.php:2219
+#: modules/pp-content-grid/pp-content-grid.php:2264
+#: modules/pp-content-grid/pp-content-grid.php:2265
+#: modules/pp-content-grid/pp-content-grid.php:2358
+#: modules/pp-content-grid/pp-content-grid.php:2359
+#: modules/pp-content-grid/pp-content-grid.php:2437
+#: modules/pp-content-grid/pp-content-grid.php:2438
+#: modules/pp-content-grid/pp-content-grid.php:2498
+#: modules/pp-content-grid/pp-content-grid.php:2499
+#: modules/pp-content-grid/pp-content-grid.php:2547
+#: modules/pp-content-grid/pp-content-grid.php:2548
 #: modules/pp-content-tiles/pp-content-tiles.php:273
 #: modules/pp-content-tiles/pp-content-tiles.php:274
 #: modules/pp-content-tiles/pp-content-tiles.php:319
@@ -8902,14 +9030,14 @@ msgstr "von oben einschweben"
 #: modules/pp-ninja-form/pp-ninja-form.php:1570
 #: modules/pp-ninja-form/pp-ninja-form.php:1600
 #: modules/pp-ninja-form/pp-ninja-form.php:1603
-#: modules/pp-ninja-form/pp-ninja-form.php:1690
-#: modules/pp-ninja-form/pp-ninja-form.php:1693
-#: modules/pp-ninja-form/pp-ninja-form.php:1743
-#: modules/pp-ninja-form/pp-ninja-form.php:1746
-#: modules/pp-ninja-form/pp-ninja-form.php:1791
-#: modules/pp-ninja-form/pp-ninja-form.php:1794
-#: modules/pp-ninja-form/pp-ninja-form.php:1844
-#: modules/pp-ninja-form/pp-ninja-form.php:1847
+#: modules/pp-ninja-form/pp-ninja-form.php:1691
+#: modules/pp-ninja-form/pp-ninja-form.php:1694
+#: modules/pp-ninja-form/pp-ninja-form.php:1744
+#: modules/pp-ninja-form/pp-ninja-form.php:1747
+#: modules/pp-ninja-form/pp-ninja-form.php:1792
+#: modules/pp-ninja-form/pp-ninja-form.php:1795
+#: modules/pp-ninja-form/pp-ninja-form.php:1845
+#: modules/pp-ninja-form/pp-ninja-form.php:1848
 #: modules/pp-notifications/pp-notifications.php:296
 #: modules/pp-notifications/pp-notifications.php:299
 #: modules/pp-notifications/pp-notifications.php:329
@@ -8986,12 +9114,12 @@ msgstr "von oben einschweben"
 #: modules/pp-wpforms/pp-wpforms.php:1558
 #: modules/pp-wpforms/pp-wpforms.php:1588
 #: modules/pp-wpforms/pp-wpforms.php:1591
-#: modules/pp-wpforms/pp-wpforms.php:1678
-#: modules/pp-wpforms/pp-wpforms.php:1681
-#: modules/pp-wpforms/pp-wpforms.php:1731
-#: modules/pp-wpforms/pp-wpforms.php:1734
-#: modules/pp-wpforms/pp-wpforms.php:1784
-#: modules/pp-wpforms/pp-wpforms.php:1787
+#: modules/pp-wpforms/pp-wpforms.php:1679
+#: modules/pp-wpforms/pp-wpforms.php:1682
+#: modules/pp-wpforms/pp-wpforms.php:1732
+#: modules/pp-wpforms/pp-wpforms.php:1735
+#: modules/pp-wpforms/pp-wpforms.php:1785
+#: modules/pp-wpforms/pp-wpforms.php:1788
 msgid "Tablet"
 msgstr "Tablet"
 
@@ -9017,14 +9145,14 @@ msgstr "von unten einschweben"
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:785
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:815
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:818
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:401
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:404
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:434
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:437
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:514
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:517
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:547
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:550
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:413
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:416
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:446
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:449
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:526
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:529
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:559
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:562
 #: modules/pp-announcement-bar/pp-announcement-bar.php:510
 #: modules/pp-announcement-bar/pp-announcement-bar.php:513
 #: modules/pp-announcement-bar/pp-announcement-bar.php:543
@@ -9078,22 +9206,22 @@ msgstr "von unten einschweben"
 #: modules/pp-contact-form/pp-contact-form.php:1813
 #: modules/pp-contact-form/pp-contact-form.php:1816
 #: modules/pp-content-grid/pp-content-grid.php:417
-#: modules/pp-content-grid/pp-content-grid.php:2030
-#: modules/pp-content-grid/pp-content-grid.php:2031
-#: modules/pp-content-grid/pp-content-grid.php:2076
-#: modules/pp-content-grid/pp-content-grid.php:2077
-#: modules/pp-content-grid/pp-content-grid.php:2200
-#: modules/pp-content-grid/pp-content-grid.php:2201
-#: modules/pp-content-grid/pp-content-grid.php:2246
-#: modules/pp-content-grid/pp-content-grid.php:2247
-#: modules/pp-content-grid/pp-content-grid.php:2341
-#: modules/pp-content-grid/pp-content-grid.php:2342
-#: modules/pp-content-grid/pp-content-grid.php:2420
-#: modules/pp-content-grid/pp-content-grid.php:2421
-#: modules/pp-content-grid/pp-content-grid.php:2481
-#: modules/pp-content-grid/pp-content-grid.php:2482
-#: modules/pp-content-grid/pp-content-grid.php:2530
-#: modules/pp-content-grid/pp-content-grid.php:2531
+#: modules/pp-content-grid/pp-content-grid.php:2053
+#: modules/pp-content-grid/pp-content-grid.php:2054
+#: modules/pp-content-grid/pp-content-grid.php:2099
+#: modules/pp-content-grid/pp-content-grid.php:2100
+#: modules/pp-content-grid/pp-content-grid.php:2223
+#: modules/pp-content-grid/pp-content-grid.php:2224
+#: modules/pp-content-grid/pp-content-grid.php:2269
+#: modules/pp-content-grid/pp-content-grid.php:2270
+#: modules/pp-content-grid/pp-content-grid.php:2364
+#: modules/pp-content-grid/pp-content-grid.php:2365
+#: modules/pp-content-grid/pp-content-grid.php:2443
+#: modules/pp-content-grid/pp-content-grid.php:2444
+#: modules/pp-content-grid/pp-content-grid.php:2504
+#: modules/pp-content-grid/pp-content-grid.php:2505
+#: modules/pp-content-grid/pp-content-grid.php:2553
+#: modules/pp-content-grid/pp-content-grid.php:2554
 #: modules/pp-content-tiles/pp-content-tiles.php:278
 #: modules/pp-content-tiles/pp-content-tiles.php:279
 #: modules/pp-content-tiles/pp-content-tiles.php:324
@@ -9188,14 +9316,14 @@ msgstr "von unten einschweben"
 #: modules/pp-ninja-form/pp-ninja-form.php:1576
 #: modules/pp-ninja-form/pp-ninja-form.php:1606
 #: modules/pp-ninja-form/pp-ninja-form.php:1609
-#: modules/pp-ninja-form/pp-ninja-form.php:1696
-#: modules/pp-ninja-form/pp-ninja-form.php:1699
-#: modules/pp-ninja-form/pp-ninja-form.php:1749
-#: modules/pp-ninja-form/pp-ninja-form.php:1752
-#: modules/pp-ninja-form/pp-ninja-form.php:1797
-#: modules/pp-ninja-form/pp-ninja-form.php:1800
-#: modules/pp-ninja-form/pp-ninja-form.php:1850
-#: modules/pp-ninja-form/pp-ninja-form.php:1853
+#: modules/pp-ninja-form/pp-ninja-form.php:1697
+#: modules/pp-ninja-form/pp-ninja-form.php:1700
+#: modules/pp-ninja-form/pp-ninja-form.php:1750
+#: modules/pp-ninja-form/pp-ninja-form.php:1753
+#: modules/pp-ninja-form/pp-ninja-form.php:1798
+#: modules/pp-ninja-form/pp-ninja-form.php:1801
+#: modules/pp-ninja-form/pp-ninja-form.php:1851
+#: modules/pp-ninja-form/pp-ninja-form.php:1854
 #: modules/pp-notifications/pp-notifications.php:302
 #: modules/pp-notifications/pp-notifications.php:305
 #: modules/pp-notifications/pp-notifications.php:335
@@ -9272,12 +9400,12 @@ msgstr "von unten einschweben"
 #: modules/pp-wpforms/pp-wpforms.php:1564
 #: modules/pp-wpforms/pp-wpforms.php:1594
 #: modules/pp-wpforms/pp-wpforms.php:1597
-#: modules/pp-wpforms/pp-wpforms.php:1684
-#: modules/pp-wpforms/pp-wpforms.php:1687
-#: modules/pp-wpforms/pp-wpforms.php:1737
-#: modules/pp-wpforms/pp-wpforms.php:1740
-#: modules/pp-wpforms/pp-wpforms.php:1790
-#: modules/pp-wpforms/pp-wpforms.php:1793
+#: modules/pp-wpforms/pp-wpforms.php:1685
+#: modules/pp-wpforms/pp-wpforms.php:1688
+#: modules/pp-wpforms/pp-wpforms.php:1738
+#: modules/pp-wpforms/pp-wpforms.php:1741
+#: modules/pp-wpforms/pp-wpforms.php:1791
+#: modules/pp-wpforms/pp-wpforms.php:1794
 msgid "Mobile"
 msgstr "Mobil"
 
@@ -9298,8 +9426,8 @@ msgstr "von rechts einschweben"
 
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:693
 #: modules/pp-advanced-accordion/pp-advanced-accordion.php:791
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:410
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:523
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:422
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:535
 #: modules/pp-announcement-bar/pp-announcement-bar.php:519
 #: modules/pp-business-hours/pp-business-hours.php:378
 #: modules/pp-business-hours/pp-business-hours.php:513
@@ -9307,8 +9435,8 @@ msgstr "von rechts einschweben"
 #: modules/pp-caldera-form/pp-caldera-form.php:1288
 #: modules/pp-contact-form/pp-contact-form.php:1297
 #: modules/pp-contact-form/pp-contact-form.php:1416
-#: modules/pp-content-grid/pp-content-grid.php:2038
-#: modules/pp-content-grid/pp-content-grid.php:2208
+#: modules/pp-content-grid/pp-content-grid.php:2061
+#: modules/pp-content-grid/pp-content-grid.php:2231
 #: modules/pp-content-tiles/pp-content-tiles.php:286
 #: modules/pp-content-tiles/pp-content-tiles.php:470
 #: modules/pp-dual-button/pp-dual-button.php:658
@@ -9325,7 +9453,7 @@ msgstr "von rechts einschweben"
 #: modules/pp-iconlist/pp-iconlist.php:261
 #: modules/pp-image-panels/pp-image-panels.php:164
 #: modules/pp-image/pp-image.php:1024 modules/pp-infobox/pp-infobox.php:1033
-#: modules/pp-infobox/pp-infobox.php:1076
+#: modules/pp-infobox/pp-infobox.php:1077
 #: modules/pp-line-separator/pp-line-separator.php:213
 #: modules/pp-ninja-form/pp-ninja-form.php:1195
 #: modules/pp-ninja-form/pp-ninja-form.php:1319
@@ -9454,8 +9582,9 @@ msgstr "Taxonomie"
 msgid "Bounce In Right"
 msgstr "Von rechts hereinspringen"
 
-#: modules/pp-hover-cards-2/pp-hover-cards-2.php:57
-msgid "Style 10"
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:47
+#: modules/pp-hover-cards/pp-hover-cards.php:47
+msgid "Style 0"
 msgstr ""
 
 #: includes/row-settings.php:122
@@ -9469,12 +9598,15 @@ msgstr "Overlay Farbe 2"
 msgid "Flip In X"
 msgstr "An X-Achse drehen"
 
-#: modules/pp-hover-cards-2/pp-hover-cards-2.php:59
-msgid "Style 12"
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:71
+#: modules/pp-content-grid/pp-content-grid.php:302
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:49
+#: modules/pp-hover-cards/pp-hover-cards.php:49
+msgid "Style 2"
 msgstr ""
 
-#: modules/pp-pricing-table/pp-pricing-table.php:99
-msgid "Box Background Color"
+#: modules/pp-content-grid/pp-content-grid.php:1154
+msgid "Day Background Color"
 msgstr ""
 
 #: modules/pp-info-banner/pp-info-banner.php:152
@@ -9484,12 +9616,9 @@ msgstr ""
 msgid "Flip In Y"
 msgstr "An Y-Achse hereinrotieren"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:72
-#: modules/pp-content-grid/pp-content-grid.php:303
-#: modules/pp-hover-cards-2/pp-hover-cards-2.php:50
-#: modules/pp-hover-cards/pp-hover-cards.php:50
-msgid "Style 3"
-msgstr "Stil 3"
+#: modules/pp-hover-cards-2/pp-hover-cards-2.php:56
+msgid "Style 9"
+msgstr ""
 
 #: modules/pp-content-grid/pp-content-grid.php:1164
 msgid "Day Text Color"
@@ -9578,7 +9707,7 @@ msgid "Style 8"
 msgstr "Stil 8"
 
 #: modules/pp-content-grid/pp-content-grid.php:1275
-#: modules/pp-content-grid/pp-content-grid.php:2377
+#: modules/pp-content-grid/pp-content-grid.php:2400
 msgid "Read More Link/Button"
 msgstr "Mehr lesen Link/Button"
 
@@ -9589,17 +9718,17 @@ msgstr "Mehr lesen Link/Button"
 msgid "Rotate In Up Right"
 msgstr "Von unten rechts hereinrotieren"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:119
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:346
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:579
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:125
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:358
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:591
 #: modules/pp-caldera-form/pp-caldera-form.php:389
 #: modules/pp-caldera-form/pp-caldera-form.php:1085
-#: modules/pp-contact-form-7/pp-contact-form-7.php:753
+#: modules/pp-contact-form-7/pp-contact-form-7.php:755
 #: modules/pp-contact-form/pp-contact-form.php:533
 #: modules/pp-contact-form/pp-contact-form.php:1233
 #: modules/pp-content-grid/includes/loop-settings.php:56
 #: modules/pp-content-grid/pp-content-grid.php:1122
-#: modules/pp-content-grid/pp-content-grid.php:1962
+#: modules/pp-content-grid/pp-content-grid.php:1985
 #: modules/pp-content-tiles/includes/loop-settings.php:42
 #: modules/pp-content-tiles/pp-content-tiles.php:228
 #: modules/pp-fancy-heading/pp-fancy-heading.php:40
@@ -9662,13 +9791,12 @@ msgstr "Automatische"
 msgid "Roll In"
 msgstr "Hereinrollen"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:133
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:140
 msgid "Background Color Active"
 msgstr "Hintergrundfarbe aktiver Tab"
 
 #: modules/pp-business-hours/pp-business-hours.php:60
-#: modules/pp-content-grid/pp-content-grid.php:1517
-#: modules/pp-content-grid/pp-content-grid.php:1932
+#: modules/pp-content-grid/pp-content-grid.php:1955
 #: modules/pp-content-tiles/pp-content-tiles.php:191
 #: modules/pp-dual-button/pp-dual-button.php:579
 #: modules/pp-image/pp-image.php:795 modules/pp-infolist/pp-infolist.php:315
@@ -9685,11 +9813,11 @@ msgstr "Abstand"
 msgid "Zoom In"
 msgstr "Hereinzoomen"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:169
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:178
 msgid "Text Color Active"
 msgstr "Textfarbe aktiver Tab"
 
-#: modules/pp-content-grid/pp-content-grid.php:1966
+#: modules/pp-content-grid/pp-content-grid.php:1989
 #: modules/pp-fancy-heading/pp-fancy-heading.php:151
 #: modules/pp-flipbox/pp-flipbox.php:278 modules/pp-flipbox/pp-flipbox.php:511
 #: modules/pp-hover-cards/pp-hover-cards.php:258
@@ -9699,7 +9827,7 @@ msgstr "Textfarbe aktiver Tab"
 msgid "HTML Tag"
 msgstr "HTML Tag"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:276
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:288
 #: modules/pp-contact-form/pp-contact-form.php:975
 #: modules/pp-dual-button/pp-dual-button.php:91
 #: modules/pp-dual-button/pp-dual-button.php:200
@@ -9710,20 +9838,20 @@ msgstr "HTML Tag"
 msgid "Icon Position"
 msgstr "Icon Position"
 
-#: modules/pp-content-grid/pp-content-grid.php:1976
+#: modules/pp-content-grid/pp-content-grid.php:1999
 #: modules/pp-pricing-table/pp-pricing-table.php:1512
 #: modules/pp-team/pp-team.php:1111
 msgid "Set the HTML tag for title output"
 msgstr "HTML Tag für den Titel"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:302
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:314
 msgid "Responsive Toggle Icons"
 msgstr "Responsive Umschalt-Icons"
 
 #: modules/pp-business-hours/pp-business-hours.php:392
 #: modules/pp-business-hours/pp-business-hours.php:527
-#: modules/pp-content-grid/pp-content-grid.php:2052
-#: modules/pp-content-grid/pp-content-grid.php:2222
+#: modules/pp-content-grid/pp-content-grid.php:2075
+#: modules/pp-content-grid/pp-content-grid.php:2245
 #: modules/pp-content-tiles/pp-content-tiles.php:300
 #: modules/pp-content-tiles/pp-content-tiles.php:484
 #: modules/pp-fancy-heading/pp-fancy-heading.php:235
@@ -9735,6 +9863,7 @@ msgstr "Responsive Umschalt-Icons"
 msgid "Custom Line Height"
 msgstr "Eigene Zeilenhöhe"
 
+#: modules/pp-info-banner/pp-info-banner.php:130
 #: modules/pp-info-banner/pp-info-banner.php:238
 #: modules/pp-infobox/pp-infobox.php:148
 #: modules/pp-infolist/pp-infolist.php:554
@@ -9744,7 +9873,7 @@ msgstr "Eigene Zeilenhöhe"
 msgid "Animation"
 msgstr "Animation"
 
-#: modules/pp-advanced-tabs/pp-advanced-tabs.php:443
+#: modules/pp-advanced-tabs/pp-advanced-tabs.php:455
 #: modules/pp-business-hours/pp-business-hours.php:424
 #: modules/pp-business-hours/pp-business-hours.php:559
 #: modules/pp-caldera-form/pp-caldera-form.php:1101
@@ -9757,10 +9886,10 @@ msgstr "Animation"
 #: modules/pp-contact-form/pp-contact-form.php:1540
 #: modules/pp-contact-form/pp-contact-form.php:1626
 #: modules/pp-contact-form/pp-contact-form.php:1701
-#: modules/pp-content-grid/pp-content-grid.php:2102
-#: modules/pp-content-grid/pp-content-grid.php:2366
-#: modules/pp-content-grid/pp-content-grid.php:2427
-#: modules/pp-content-grid/pp-content-grid.php:2488
+#: modules/pp-content-grid/pp-content-grid.php:2125
+#: modules/pp-content-grid/pp-content-grid.php:2389
+#: modules/pp-content-grid/pp-content-grid.php:2450
+#: modules/pp-content-grid/pp-content-grid.php:2511
 #: modules/pp-content-tiles/pp-content-tiles.php:378
 #: modules/pp-content-tiles/pp-content-tiles.php:619
 #: modules/pp-formidable-form/pp-formidable-form.php:1361
@@ -9772,7 +9901,7 @@ msgstr "Animation"
 #: modules/pp-ninja-form/pp-ninja-form.php:1256
 #: modules/pp-ninja-form/pp-ninja-form.php:1380
 #: modules/pp-ninja-form/pp-ninja-form.php:1471
-#: modules/pp-ninja-form/pp-ninja-form.php:1642
+#: modules/pp-ninja-form/pp-ninja-form.php:1643
 #: modules/pp-pricing-table/pp-pricing-table.php:1469
 #: modules/pp-pricing-table/pp-pricing-table.php:1620
 #: modules/pp-pricing-table/pp-pricing-table.php:1757
@@ -9787,14 +9916,14 @@ msgstr "Animation"
 #: modules/pp-wpforms/pp-wpforms.php:1244
 #: modules/pp-wpforms/pp-wpforms.php:1368
 #: modules/pp-wpforms/pp-wpforms.php:1459
-#: modules/pp-wpforms/pp-wpforms.php:1630
+#: modules/pp-wpforms/pp-wpforms.php:1631
 msgid "Text Transform"
 msgstr "Text Transform"
 
 #: modules/pp-business-hours/pp-business-hours.php:393
 #: modules/pp-business-hours/pp-business-hours.php:528
-#: modules/pp-content-grid/pp-content-grid.php:2053
-#: modules/pp-content-grid/pp-content-grid.php:2223
+#: modules/pp-content-grid/pp-content-grid.php:2076
+#: modules/pp-content-grid/pp-content-grid.php:2246
 #: modules/pp-pricing-table/pp-pricing-table.php:1438
 #: modules/pp-pricing-table/pp-pricing-table.php:1589
 #: modules/pp-team/pp-team.php:1188 modules/pp-team/pp-team.php:1340
@@ -9802,6 +9931,7 @@ msgstr "Text Transform"
 msgid "Recommended values between 1-2"
 msgstr "Empfohlene Werte zwischen 1-2"
 
+#: modules/pp-info-banner/pp-info-banner.php:165
 #: modules/pp-info-banner/pp-info-banner.php:273
 #: modules/pp-infobox/pp-infobox.php:187
 #: modules/pp-infolist/pp-infolist.php:593
@@ -9812,7 +9942,7 @@ msgstr "Dauer der Animation"
 msgid "Announcement Bar"
 msgstr "Infobalken"
 
-#: modules/pp-content-grid/pp-content-grid.php:2298
+#: modules/pp-content-grid/pp-content-grid.php:2321
 #: modules/pp-content-tiles/includes/loop-settings.php:127
 #: modules/pp-content-tiles/pp-content-tiles.php:517
 msgid "Meta"
@@ -9881,7 +10011,7 @@ msgstr "Schriftgröße Button"
 #: modules/pp-info-banner/pp-info-banner.php:287
 #: modules/pp-info-banner/pp-info-banner.php:315
 #: modules/pp-infobox/pp-infobox.php:237 modules/pp-infobox/pp-infobox.php:240
-#: modules/pp-infobox/pp-infobox.php:281 modules/pp-infobox/pp-infobox.php:1089
+#: modules/pp-infobox/pp-infobox.php:281 modules/pp-infobox/pp-infobox.php:1090
 #: modules/pp-infolist/pp-infolist.php:637
 #: modules/pp-infolist/pp-infolist.php:663
 #: modules/pp-logos-grid/pp-logos-grid.php:916
@@ -9904,8 +10034,8 @@ msgstr "Breakpoint 2 Stil"
 #: modules/pp-announcement-bar/pp-announcement-bar.php:321
 #: modules/pp-caldera-form/pp-caldera-form.php:823
 #: modules/pp-caldera-form/pp-caldera-form.php:1595
-#: modules/pp-contact-form-7/pp-contact-form-7.php:432
-#: modules/pp-contact-form-7/pp-contact-form-7.php:936
+#: modules/pp-contact-form-7/pp-contact-form-7.php:434
+#: modules/pp-contact-form-7/pp-contact-form-7.php:938
 #: modules/pp-contact-form/pp-contact-form.php:958
 #: modules/pp-contact-form/pp-contact-form.php:1637
 #: modules/pp-content-grid/includes/loop-settings.php:197
@@ -9925,7 +10055,7 @@ msgstr "Breakpoint 2 Stil"
 #: modules/pp-modal-box/pp-modal-box.php:473
 #: modules/pp-modal-box/pp-modal-box.php:1320
 #: modules/pp-ninja-form/pp-ninja-form.php:842
-#: modules/pp-ninja-form/pp-ninja-form.php:1626
+#: modules/pp-ninja-form/pp-ninja-form.php:1627
 #: modules/pp-pricing-table/pp-pricing-table.php:1851
 #: modules/pp-pricing-table/pp-pricing-table.php:1988
 #: modules/pp-subscribe-form/pp-subscribe-form.php:1073
@@ -9933,7 +10063,7 @@ msgstr "Breakpoint 2 Stil"
 #: modules/pp-timeline/pp-timeline.php:476
 #: modules/pp-timeline/pp-timeline.php:538
 #: modules/pp-timeline/pp-timeline.php:794
-#: modules/pp-wpforms/pp-wpforms.php:842 modules/pp-wpforms/pp-wpforms.php:1614
+#: modules/pp-wpforms/pp-wpforms.php:842 modules/pp-wpforms/pp-wpforms.php:1615
 msgid "Button"
 msgstr "Button"
 
@@ -10076,13 +10206,13 @@ msgstr "Icon links"
 #: modules/pp-business-hours/pp-business-hours.php:192
 #: modules/pp-caldera-form/pp-caldera-form.php:203
 #: modules/pp-contact-form-7/pp-contact-form-7.php:191
-#: modules/pp-contact-form-7/pp-contact-form-7.php:690
+#: modules/pp-contact-form-7/pp-contact-form-7.php:692
 #: modules/pp-contact-form/pp-contact-form.php:347
 #: modules/pp-content-grid/pp-content-grid.php:582
 #: modules/pp-content-grid/pp-content-grid.php:800
 #: modules/pp-content-grid/pp-content-grid.php:1309
-#: modules/pp-content-grid/pp-content-grid.php:1639
-#: modules/pp-content-grid/pp-content-grid.php:1758
+#: modules/pp-content-grid/pp-content-grid.php:1662
+#: modules/pp-content-grid/pp-content-grid.php:1781
 #: modules/pp-dual-button/pp-dual-button.php:500
 #: modules/pp-flipbox/pp-flipbox.php:137
 #: modules/pp-formidable-form/pp-formidable-form.php:224
@@ -10149,12 +10279,12 @@ msgstr "Icon rechts"
 #: modules/pp-business-hours/pp-business-hours.php:193
 #: modules/pp-caldera-form/pp-caldera-form.php:204
 #: modules/pp-contact-form-7/pp-contact-form-7.php:189
-#: modules/pp-contact-form-7/pp-contact-form-7.php:692
+#: modules/pp-contact-form-7/pp-contact-form-7.php:694
 #: modules/pp-contact-form/pp-contact-form.php:348
 #: modules/pp-content-grid/pp-content-grid.php:583
 #: modules/pp-content-grid/pp-content-grid.php:801
-#: modules/pp-content-grid/pp-content-grid.php:1640
-#: modules/pp-content-grid/pp-content-grid.php:1759
+#: modules/pp-content-grid/pp-content-grid.php:1663
+#: modules/pp-content-grid/pp-content-grid.php:1782
 #: modules/pp-dual-button/pp-dual-button.php:501
 #: modules/pp-flipbox/pp-flipbox.php:138
 #: modules/pp-formidable-form/pp-formidable-form.php:225
@@ -10221,12 +10351,12 @@ msgstr "Icon oben"
 #: modules/pp-business-hours/pp-business-hours.php:194
 #: modules/pp-caldera-form/pp-caldera-form.php:205
 #: modules/pp-contact-form-7/pp-contact-form-7.php:190
-#: modules/pp-contact-form-7/pp-contact-form-7.php:691
+#: modules/pp-contact-form-7/pp-contact-form-7.php:693
 #: modules/pp-contact-form/pp-contact-form.php:349
 #: modules/pp-content-grid/pp-content-grid.php:584
 #: modules/pp-content-grid/pp-content-grid.php:802
-#: modules/pp-content-grid/pp-content-grid.php:1641
-#: modules/pp-content-grid/pp-content-grid.php:1760
+#: modules/pp-content-grid/pp-content-grid.php:1664
+#: modules/pp-content-grid/pp-content-grid.php:1783
 #: modules/pp-dual-button/pp-dual-button.php:502
 #: modules/pp-flipbox/pp-flipbox.php:139
 #: modules/pp-formidable-form/pp-formidable-form.php:226

@@ -1,5 +1,5 @@
 (function($) {
-
+<?php if ( count($settings->testimonials) > 1 ) : ?>
 	// Clear the controls in case they were already created.
 	$('.fl-node-<?php echo $id; ?> .pp-arrow-wrapper .pp-slider-next').empty();
 	$('.fl-node-<?php echo $id; ?> .pp-arrow-wrapper .pp-slider-prev').empty();
@@ -16,7 +16,7 @@
 		auto : true,
 		autoStart : <?php echo $settings->autoplay; ?>,
 		autoHover : <?php echo $settings->hover_pause; ?>,
-		<?php echo $settings->adaptive_height == 'no' ? 'adaptiveHeight: true,' : ''; ?>
+		<?php echo $settings->adaptive_height == 'no' ? 'adaptiveHeight: true' : 'adaptiveHeight: false'; ?>,
 		pause : <?php echo $settings->pause * 1000; ?>,
 		mode : '<?php echo $settings->transition; ?>',
 		speed : <?php echo $settings->speed * 1000;  ?>,
@@ -48,6 +48,8 @@
 		};
 	}
 
-	$('.fl-node-<?php echo $id; ?> .pp-testimonials').bxSlider($.extend({}, sliderOptions, carouselOptions));
 
+
+	$('.fl-node-<?php echo $id; ?> .pp-testimonials').bxSlider($.extend({}, sliderOptions, carouselOptions));
+<?php endif; ?>
 })(jQuery);

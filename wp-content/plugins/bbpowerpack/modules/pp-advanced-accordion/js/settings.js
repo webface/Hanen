@@ -1,6 +1,6 @@
 (function($){
 
-	FLBuilder.registerModuleHelper('accordion', {
+	FLBuilder.registerModuleHelper('pp-advanced-accordion', {
 
 		rules: {
 			item_spacing: {

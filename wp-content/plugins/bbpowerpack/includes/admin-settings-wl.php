@@ -62,6 +62,14 @@
             </tr>
             <tr valign="top">
                 <th scope="row" valign="top">
+                    <?php esc_html_e('Category in Templates Lightbox', 'bb-powerpack'); ?>
+                </th>
+                <td>
+                    <input id="ppwl_tmpcat_label" name="ppwl_tmpcat_label" type="text" class="regular-text" value="<?php echo self::get_option('ppwl_tmpcat_label'); ?>" placeholder="PowerPack Layouts" />
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row" valign="top">
                     <?php esc_html_e('Row Templates Shortcut', 'bb-powerpack'); ?>
                 </th>
                 <td>

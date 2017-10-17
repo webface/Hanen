@@ -1,6 +1,6 @@
 ( function( $ ) {
 
-	FLBuilderSubscribeForm = function( settings )
+	PPSubscribeForm = function( settings )
 	{
 		this.settings	= settings;
 		this.nodeClass	= '.fl-node-' + settings.id;
@@ -9,7 +9,7 @@
 		this._init();
 	};
 
-	FLBuilderSubscribeForm.prototype = {
+	PPSubscribeForm.prototype = {
 
 		settings	: {},
 		nodeClass	: '',
@@ -19,6 +19,7 @@
 		_init: function()
 		{
 			this.button.on( 'click', $.proxy( this._submitForm, this ) );
+			this.form.find( 'input[type="email"]' ).on( 'keypress', $.proxy( this._onEnterKey, this) );
 		},
 
 		_submitForm: function( e )
@@ -58,7 +59,7 @@
 				this.button.addClass( 'pp-form-button-disabled' );
 
 				$.post( FLBuilderLayoutConfig.paths.wpAjaxUrl, {
-					action  			: 'fl_builder_subscribe_form_submit',
+					action  			: 'pp_subscribe_form_submit',
 					name    			: name.val(),
 					email   			: email.val(),
 					post_id 			: postId,
@@ -92,6 +93,13 @@
 				window.location.href = data.url;
 			}
 		},
+
+		_onEnterKey: function( e )
+		{
+			if (e.which == 13) {
+		    	this.button.trigger( 'click' );
+		  	}
+		}
 	}
 
 })( jQuery );

@@ -24,6 +24,8 @@ final class BB_PowerPack_Admin_Settings {
      */
 	static public $templates_count;
 
+    static public $scheme = '';
+
 	/**
 	 * Initializes the admin settings.
 	 *
@@ -90,8 +92,7 @@ final class BB_PowerPack_Admin_Settings {
 	 */
 	static public function menu()
 	{
-        $admin_label = self::get_option( 'ppwl_admin_label' );
-        $admin_label = trim( $admin_label ) !== '' ? trim( $admin_label ) : esc_html__( 'PowerPack', 'bb-powerpack' );
+        $admin_label = pp_get_admin_label();
 
 		if ( current_user_can( 'manage_options' ) ) {
 
@@ -124,6 +125,77 @@ final class BB_PowerPack_Admin_Settings {
 	{
 		include BB_POWERPACK_DIR . 'includes/admin-settings.php';
 	}
+
+    /**
+	 * Renders tabs for admin settings.
+	 *
+	 * @since 1.2.7
+	 * @return void
+	 */
+    static public function render_tabs( $current_tab )
+    {
+        $tabs = apply_filters( 'pp_admin_settings_tabs', array(
+            'general'   => array(
+                'title'     => esc_html__('License', 'bb-powerpack'),
+                'show'      => is_network_admin() || ! is_multisite(),
+                'priority'  => 50
+            ),
+            'white-label'   => array(
+                'title'     => esc_html__('White Label', 'bb-powerpack'),
+                'show'      => ( is_network_admin() || ! is_multisite() ) && ( ! self::get_option( 'ppwl_hide_form' ) || self::get_option( 'ppwl_hide_form' ) == 0 ),
+                'priority'  => 100
+            ),
+            'modules'   => array(
+                'title'     => esc_html__('Modules', 'bb-powerpack'),
+                'show'      => ( is_network_admin() || ! is_multisite() ) && ( ! self::get_option( 'ppwl_hide_modules_tab' ) || self::get_option( 'ppwl_hide_modules_tab' ) == 0 ),
+                'priority'  => 150
+            ),
+            'templates' => array(
+                'title'     => esc_html__('Templates', 'bb-powerpack'),
+                'show'      => ! self::get_option( 'ppwl_hide_templates_tab' ) || self::get_option( 'ppwl_hide_templates_tab' ) == 0,
+                'priority'  => 200
+            ),
+            'extensions' => array(
+                'title'     => esc_html__('Extensions', 'bb-powerpack'),
+                'show'      => is_network_admin() || ! is_multisite(),
+                'priority'  => 250
+            ),
+        ) );
+
+        $sorted_data = array();
+
+        foreach ( $tabs as $key => $data ) {
+            $data['key'] = $key;
+            $sorted_data[ $data['priority'] ] = $data;
+        }
+
+        ksort( $sorted_data );
+
+        foreach ( $sorted_data as $data ) {
+            if ( $data['show'] ) {
+                ?>
+                <a href="<?php echo self::get_form_action( '&tab=' . $data['key'] ); ?>" class="nav-tab<?php echo ( $current_tab == $data['key'] ? ' nav-tab-active' : '' ); ?>"><?php echo $data['title']; ?></a>
+                <?php
+            }
+        }
+    }
+
+    /**
+	 * Get current tab.
+	 *
+	 * @since 1.2.7
+	 * @return string
+	 */
+    static public function get_current_tab()
+    {
+        $current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+
+        if ( is_multisite() && ! is_network_admin() ) {
+            $current_tab = 'templates';
+        }
+
+        return $current_tab;
+    }
 
     /**
 	 * Renders the update message.
@@ -172,6 +244,15 @@ final class BB_PowerPack_Admin_Settings {
 		self::$errors[] = $message;
 	}
 
+    static public function is_network_admin()
+    {
+        if ( is_multisite() && isset( $_SERVER['HTTP_REFERER'] ) && preg_match( '#^'.network_admin_url().'#i', $_SERVER['HTTP_REFERER'] ) ) {
+	        return true;
+        }
+
+        return false;
+    }
+
     /**
 	 * Returns an option from the database for
 	 * the admin settings page.
@@ -211,7 +292,7 @@ final class BB_PowerPack_Admin_Settings {
 	 */
     static public function update_option( $key, $value, $network_override = true )
     {
-    	if ( is_network_admin() ) {
+    	if ( is_network_admin() || self::is_network_admin() ) {
     		update_site_option( $key, $value );
     	}
         // Delete the option if network overrides are allowed and the override checkbox isn't checked.
@@ -302,6 +383,7 @@ final class BB_PowerPack_Admin_Settings {
         }
         $admin_label            = isset( $_POST['ppwl_admin_label'] ) ? sanitize_text_field( $_POST['ppwl_admin_label'] ) : 'PowerPack';
         $category_label         = isset( $_POST['ppwl_builder_label'] ) ? sanitize_text_field( $_POST['ppwl_builder_label'] ) : 'PowerPack ' . __( 'Modules', 'bb-powerpack' );
+        $tmpl_category_label    = isset( $_POST['ppwl_tmpcat_label'] ) ? sanitize_text_field( $_POST['ppwl_tmpcat_label'] ) : 'PowerPack Layouts';
         $row_templates_label    = isset( $_POST['ppwl_rt_label'] ) ? sanitize_text_field( $_POST['ppwl_rt_label'] ) : 'PowerPack ' . __( 'Row Templates', 'bb-powerpack' );
         $support_link           = isset( $_POST['ppwl_support_link'] ) ? esc_url_raw( $_POST['ppwl_support_link'] ) : 'httsp://wpbeaveraddons.com/contact/';
         $hide_support_msg       = isset( $_POST['ppwl_hide_support_msg'] ) ? absint( $_POST['ppwl_hide_support_msg'] ) : 0;
@@ -312,6 +394,7 @@ final class BB_PowerPack_Admin_Settings {
         $hide_plugin            = isset( $_POST['ppwl_hide_plugin'] ) ? absint( $_POST['ppwl_hide_plugin'] ) : 0;
         self::update_option( 'ppwl_admin_label', $admin_label );
         self::update_option( 'ppwl_builder_label', $category_label );
+        self::update_option( 'ppwl_tmpcat_label', $tmpl_category_label );
         self::update_option( 'ppwl_rt_label', $row_templates_label );
         self::update_option( 'ppwl_support_link', $support_link );
         self::update_option( 'ppwl_hide_support_msg', $hide_support_msg );
@@ -742,7 +825,11 @@ final class BB_PowerPack_Admin_Settings {
     static public function clear_enabled_templates()
     {
         if ( isset( $_GET['page'] ) && 'pp-settings' == $_GET['page'] && isset( $_GET['clear_enabled_templates'] ) ) {
-            self::delete_option( 'bb_powerpack_page_templates' );
+            self::update_option( 'bb_powerpack_page_templates', array('disabled') );
+            self::update_option( 'bb_powerpack_templates', array('disabled') );
+            self::delete_option( 'bb_powerpack_row_templates_type' );
+            self::delete_option( 'bb_powerpack_row_templates_all' );
+            self::delete_option( 'bb_powerpack_override_ms' );
         }
     }
 

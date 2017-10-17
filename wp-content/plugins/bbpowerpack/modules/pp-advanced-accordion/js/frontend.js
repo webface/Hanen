@@ -70,7 +70,25 @@
 				item 		= content.parent(),
 				win  		= $( window );
 
+			// Gallery module support.
 			FLBuilderLayout.refreshGalleries( content );
+
+			// Content Grid module support.
+			if ( 'undefined' !== typeof $.fn.isotope ) {
+				content.find('.pp-content-post-grid.pp-masonry-active').isotope('layout');
+
+				var highestBox = 0;
+				var contentHeight = 0;
+
+	            content.find('.pp-equal-height .pp-content-post').css('height', '').each(function(){
+	                if($(this).height() > highestBox) {
+	                	highestBox = $(this).height();
+	                	contentHeight = $(this).find('.pp-content-post-data').outerHeight();
+	                }
+	            });
+
+	            $(this.nodeClass).find('.pp-equal-height .pp-content-post').height(highestBox);
+			}
 
 			if ( item.offset().top < win.scrollTop() + 100 ) {
 				$( 'html, body' ).animate({

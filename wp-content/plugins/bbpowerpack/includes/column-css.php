@@ -26,7 +26,7 @@ function pp_column_gradient_css( $css, $nodes, $global_settings ) {
             ?>
             <?php if ( $column->settings->gradient_type == 'linear' ) { ?>
                 <?php if ( $column->settings->linear_direction == 'bottom' ) { ?>
-                    .fl-node-<?php echo $column->node; ?> {
+                    .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                         background-color: #<?php echo $column->settings->gradient_color['primary']; ?>;
                         background-image: -webkit-linear-gradient(top, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
                         background-image: -moz-linear-gradient(bottom, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
@@ -36,7 +36,7 @@ function pp_column_gradient_css( $css, $nodes, $global_settings ) {
                     }
                 <?php } ?>
                 <?php if ( $column->settings->linear_direction == 'right' ) { ?>
-                    .fl-node-<?php echo $column->node; ?> {
+                    .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                         background-color: #<?php echo $column->settings->gradient_color['primary']; ?>;
                         background-image: -webkit-linear-gradient(left, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
                         background-image: -moz-linear-gradient(right, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
@@ -46,7 +46,7 @@ function pp_column_gradient_css( $css, $nodes, $global_settings ) {
                     }
                 <?php } ?>
                 <?php if ( $column->settings->linear_direction == 'top_right_diagonal' ) { ?>
-                    .fl-node-<?php echo $column->node; ?> {
+                    .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                         background-color: #<?php echo $column->settings->gradient_color['primary']; ?>;
                         background-image: -webkit-linear-gradient(45deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
                         background-image: -moz-linear-gradient(45deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
@@ -56,7 +56,7 @@ function pp_column_gradient_css( $css, $nodes, $global_settings ) {
                     }
                 <?php } ?>
                 <?php if ( $column->settings->linear_direction == 'top_left_diagonal' ) { ?>
-                    .fl-node-<?php echo $column->node; ?> {
+                    .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                         background-color: #<?php echo $column->settings->gradient_color['primary']; ?>;
                         background-image: -webkit-linear-gradient(135deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
                         background-image: -moz-linear-gradient(315deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
@@ -66,7 +66,7 @@ function pp_column_gradient_css( $css, $nodes, $global_settings ) {
                     }
                 <?php } ?>
                 <?php if ( $column->settings->linear_direction == 'bottom_right_diagonal' ) { ?>
-                    .fl-node-<?php echo $column->node; ?> {
+                    .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                         background-color: #<?php echo $column->settings->gradient_color['primary']; ?>;
                         background-image: -webkit-linear-gradient(315deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
                         background-image: -moz-linear-gradient(135deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
@@ -76,7 +76,7 @@ function pp_column_gradient_css( $css, $nodes, $global_settings ) {
                     }
                 <?php } ?>
                 <?php if ( $column->settings->linear_direction == 'bottom_left_diagonal' ) { ?>
-                    .fl-node-<?php echo $column->node; ?> {
+                    .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                         background-color: #<?php echo $column->settings->gradient_color['primary']; ?>;
                         background-image: -webkit-linear-gradient(255deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
                         background-image: -moz-linear-gradient(210deg, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
@@ -87,7 +87,7 @@ function pp_column_gradient_css( $css, $nodes, $global_settings ) {
                 <?php } ?>
             <?php } ?>
             <?php if ( $column->settings->gradient_type == 'radial' ) { ?>
-                .fl-node-<?php echo $column->node; ?> {
+                .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                     background-color: #<?php echo $column->settings->gradient_color['primary']; ?>;
                     background-image: -webkit-radial-gradient(circle, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
                     background-image: -moz-radial-gradient(circle, <?php echo '#'.$column->settings->gradient_color['primary']; ?> 0%, <?php echo '#'.$column->settings->gradient_color['secondary']; ?> 100%);
@@ -320,7 +320,7 @@ function pp_column_round_corners_css( $css, $nodes, $global_settings ) {
         ob_start();
     ?>
 
-        .fl-node-<?php echo $column->node; ?> .fl-col-content {
+        .fl-node-<?php echo $column->node; ?> > .fl-col-content {
             <?php if ( isset( $column->settings->pp_round_corners ) ) { ?>
                 <?php if ( $column->settings->pp_round_corners['top_left'] > 0 ) { ?>
                 border-top-left-radius: <?php echo $column->settings->pp_round_corners['top_left']; ?>px;
@@ -353,7 +353,7 @@ function pp_column_shadow_css( $css, $nodes, $global_settings ) {
 
         <?php if ( isset( $column->settings->pp_box_shadow ) ) { ?>
 
-            .fl-node-<?php echo $column->node; ?> .fl-col-content {
+            .fl-node-<?php echo $column->node; ?> > .fl-col-content {
                 -webkit-box-shadow: <?php echo $column->settings->pp_box_shadow['vertical']; ?>px <?php echo $column->settings->pp_box_shadow['horizontal']; ?>px <?php echo $column->settings->pp_box_shadow['blur']; ?>px <?php echo $column->settings->pp_box_shadow['spread']; ?>px <?php echo pp_hex2rgba('#'.$column->settings->pp_box_shadow_color, $column->settings->pp_box_shadow_opacity / 100); ?>;
                 -moz-box-shadow: <?php echo $column->settings->pp_box_shadow['vertical']; ?>px <?php echo $column->settings->pp_box_shadow['horizontal']; ?>px <?php echo $column->settings->pp_box_shadow['blur']; ?>px <?php echo $column->settings->pp_box_shadow['spread']; ?>px <?php echo pp_hex2rgba('#'.$column->settings->pp_box_shadow_color, $column->settings->pp_box_shadow_opacity / 100); ?>;
                 box-shadow: <?php echo $column->settings->pp_box_shadow['vertical']; ?>px <?php echo $column->settings->pp_box_shadow['horizontal']; ?>px <?php echo $column->settings->pp_box_shadow['blur']; ?>px <?php echo $column->settings->pp_box_shadow['spread']; ?>px <?php echo pp_hex2rgba('#'.$column->settings->pp_box_shadow_color, $column->settings->pp_box_shadow_opacity / 100); ?>;
@@ -364,7 +364,7 @@ function pp_column_shadow_css( $css, $nodes, $global_settings ) {
             }
 
             <?php if ( 'yes' == $column->settings->pp_box_shadow_hover_switch ) { ?>
-                .fl-node-<?php echo $column->node; ?> .fl-col-content:hover {
+                .fl-node-<?php echo $column->node; ?> > .fl-col-content:hover {
                     -webkit-box-shadow: <?php echo $column->settings->pp_box_shadow_hover['vertical']; ?>px <?php echo $column->settings->pp_box_shadow_hover['horizontal']; ?>px <?php echo $column->settings->pp_box_shadow_hover['blur']; ?>px <?php echo $column->settings->pp_box_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba('#'.$column->settings->pp_box_shadow_color_hover, $column->settings->pp_box_shadow_opacity_hover / 100); ?>;
                     -moz-box-shadow: <?php echo $column->settings->pp_box_shadow_hover['vertical']; ?>px <?php echo $column->settings->pp_box_shadow_hover['horizontal']; ?>px <?php echo $column->settings->pp_box_shadow_hover['blur']; ?>px <?php echo $column->settings->pp_box_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba('#'.$column->settings->pp_box_shadow_color_hover, $column->settings->pp_box_shadow_opacity_hover / 100); ?>;
                     box-shadow: <?php echo $column->settings->pp_box_shadow_hover['vertical']; ?>px <?php echo $column->settings->pp_box_shadow_hover['horizontal']; ?>px <?php echo $column->settings->pp_box_shadow_hover['blur']; ?>px <?php echo $column->settings->pp_box_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba('#'.$column->settings->pp_box_shadow_color_hover, $column->settings->pp_box_shadow_opacity_hover / 100); ?>;

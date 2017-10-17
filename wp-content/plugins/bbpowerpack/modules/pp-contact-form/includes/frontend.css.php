@@ -1,27 +1,34 @@
 <?php
 
+// Background Color
+if ( ! empty( $settings->btn_bg_color ) && empty( $settings->btn_bg_hover_color ) ) {
+	$settings->btn_bg_hover_color = $settings->btn_bg_color;
+}
 
+// Background Gradient
+if ( ! empty( $settings->btn_bg_color ) ) {
+	$bg_grad_start = FLBuilderColor::adjust_brightness( $settings->btn_bg_color, 30, 'lighten' );
+}
+if ( ! empty( $settings->btn_bg_hover_color ) ) {
+	$bg_hover_grad_start = FLBuilderColor::adjust_brightness( $settings->btn_bg_hover_color, 30, 'lighten' );
+}
 
-FLBuilder::render_module_css('button', $id, array(
-	'bg_color'          => $settings->btn_bg_color,
-	'bg_hover_color'    => $settings->btn_bg_hover_color,
-	'bg_opacity'        => $settings->btn_bg_opacity,
-	'bg_hover_opacity'  => $settings->btn_bg_hover_opacity,
-	'button_transition' => $settings->btn_button_transition,
-	'border_radius'     => $settings->btn_border_radius,
-	'border_size'       => $settings->btn_border_size,
-	'icon'              => $settings->btn_icon,
-	'icon_position'     => $settings->btn_icon_position,
-	'link'              => '#',
-	'link_target'       => '_self',
-	'style'             => $settings->btn_style,
-	'text'              => $settings->btn_text,
-	'text_color'        => $settings->btn_text_color,
-	'text_hover_color'  => $settings->btn_text_hover_color,
-	'width'             => $settings->btn_width,
-	'align'				=> $settings->btn_align,
-	'icon_animation'	=> $settings->btn_icon_animation
-));
+// Border Size
+if ( 'transparent' == $settings->btn_style ) {
+	$border_size = $settings->btn_border_size;
+}
+else {
+	$border_size = 1;
+}
+
+// Border Color
+if ( ! empty( $settings->btn_bg_color ) ) {
+	$border_color = FLBuilderColor::adjust_brightness( $settings->btn_bg_color, 12, 'darken' );
+}
+if ( ! empty( $settings->btn_bg_hover_color ) ) {
+	$border_hover_color = FLBuilderColor::adjust_brightness( $settings->btn_bg_hover_color, 12, 'darken' );
+}
+
 ?>
 
 <?php if ('right' == $settings->btn_align): ?>
@@ -43,32 +50,141 @@ FLBuilder::render_module_css('button', $id, array(
 }
 <?php endif; ?>
 
-.fl-node-<?php echo $id; ?> .pp-contact-form .fl-button-wrap {
+.fl-node-<?php echo $id; ?> .pp-contact-form .fl-button-wrap,
+.fl-node-<?php echo $id; ?> .pp-contact-form .pp-button-wrap {
 	margin-top: <?php echo $settings->button_margin; ?>px;
+	<?php if ('left' == $settings->btn_align): ?>
+		text-align: left;
+	<?php endif; ?>
+	<?php if ('center' == $settings->btn_align): ?>
+		text-align: center;
+	<?php endif; ?>
+	<?php if ('right' == $settings->btn_align): ?>
+		text-align: right;
+	<?php endif; ?>
+	<?php if ( 'full' == $settings->btn_width ) : ?>
+		text-align: center;
+	<?php endif; ?>
 }
 
 .fl-node-<?php echo $id; ?> .pp-contact-form a.fl-button,
 .fl-node-<?php echo $id; ?> .pp-contact-form a.fl-button:visited {
-	<?php if( $settings->button_font_size['desktop'] && $settings->button_size == 'custom' ) { ?>
-	font-size: <?php echo $settings->button_font_size['desktop']; ?>px;
-	<?php } ?>
+
+	border-radius: <?php echo $settings->btn_border_radius; ?>px;
+	-moz-border-radius: <?php echo $settings->btn_border_radius; ?>px;
+	-webkit-border-radius: <?php echo $settings->btn_border_radius; ?>px;
+
+	<?php if ( ! empty( $settings->btn_bg_color ) ) : ?>
+		background: #<?php echo $settings->btn_bg_color; ?>;
+		border: <?php echo $border_size; ?>px solid #<?php echo $border_color; ?>;
+
+		<?php if ( 'transparent' == $settings->btn_style ) : // Transparent ?>
+		background-color: <?php echo pp_hex2rgba( '#' . $settings->btn_bg_color, $settings->btn_bg_opacity ); ?>;
+		<?php endif; ?>
+
+		<?php if( 'gradient' == $settings->btn_style ) : // Gradient ?>
+		background: -moz-linear-gradient(top,  #<?php echo $bg_grad_start; ?> 0%, #<?php echo $settings->btn_bg_color; ?> 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#<?php echo $bg_grad_start; ?>), color-stop(100%,#<?php echo $settings->btn_bg_color; ?>)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  #<?php echo $bg_grad_start; ?> 0%,#<?php echo $settings->btn_bg_color; ?> 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  #<?php echo $bg_grad_start; ?> 0%,#<?php echo $settings->btn_bg_color; ?> 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  #<?php echo $bg_grad_start; ?> 0%,#<?php echo $settings->btn_bg_color; ?> 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  #<?php echo $bg_grad_start; ?> 0%,#<?php echo $settings->btn_bg_color; ?> 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#<?php echo $bg_grad_start; ?>', endColorstr='#<?php echo $settings->btn_bg_color; ?>',GradientType=0 ); /* IE6-9 */
+		<?php endif; ?>
+
+	<?php endif; ?>
+
+	<?php if ( 'full' == $settings->btn_width ) : ?>
+	width: 100%;
+	<?php endif; ?>
+
 	<?php if( $settings->button_font_family['family'] != 'Default' ) { ?>
-    <?php FLBuilderFonts::font_css( $settings->button_font_family ); ?>
+    	<?php FLBuilderFonts::font_css( $settings->button_font_family ); ?>
     <?php } ?>
-	text-transform: <?php echo $settings->button_text_transform; ?>;
+	<?php if( $settings->button_font_size['desktop'] && $settings->button_size == 'custom' ) { ?>
+		font-size: <?php echo $settings->button_font_size['desktop']; ?>px;
+	<?php } ?>
+		text-transform: <?php echo $settings->button_text_transform; ?>;
 	<?php if( $settings->button_padding['top'] >= 0 ) { ?>
-	padding-top: <?php echo $settings->button_padding['top']; ?>px;
+		padding-top: <?php echo $settings->button_padding['top']; ?>px;
 	<?php } ?>
 	<?php if( $settings->button_padding['right'] >= 0 ) { ?>
-	padding-right: <?php echo $settings->button_padding['right']; ?>px;
+		padding-right: <?php echo $settings->button_padding['right']; ?>px;
 	<?php } ?>
 	<?php if( $settings->button_padding['bottom'] >= 0 ) { ?>
-	padding-bottom: <?php echo $settings->button_padding['bottom']; ?>px;
+		padding-bottom: <?php echo $settings->button_padding['bottom']; ?>px;
 	<?php } ?>
 	<?php if( $settings->button_padding['left'] >= 0 ) { ?>
-	padding-left: <?php echo $settings->button_padding['left']; ?>px;
+		padding-left: <?php echo $settings->button_padding['left']; ?>px;
 	<?php } ?>
 }
+
+<?php if ( ! empty( $settings->btn_text_color ) ) : ?>
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button,
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:visited,
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button *,
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:visited * {
+	color: #<?php echo $settings->btn_text_color; ?>;
+}
+<?php endif; ?>
+
+<?php if ( ! empty( $settings->btn_bg_hover_color ) ) : ?>
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:hover,
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:focus {
+
+	background: #<?php echo $settings->btn_bg_hover_color; ?>;
+	border: <?php echo $border_size; ?>px solid #<?php echo $border_hover_color; ?>;
+
+	<?php if ( 'transparent' == $settings->btn_style ) : // Transparent ?>
+	background-color: <?php echo pp_hex2rgba( '#' . $settings->btn_bg_hover_color, $settings->btn_bg_hover_opacity ); ?>;
+	border-color: #<?php echo $settings->btn_bg_hover_color; ?>
+	<?php endif; ?>
+
+	<?php if ( 'gradient' == $settings->btn_style ) : // Gradient ?>
+	background: -moz-linear-gradient(top,  #<?php echo $bg_hover_grad_start; ?> 0%, #<?php echo $settings->btn_bg_hover_color; ?> 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#<?php echo $bg_hover_grad_start; ?>), color-stop(100%,#<?php echo $settings->btn_bg_hover_color; ?>)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #<?php echo $bg_hover_grad_start; ?> 0%,#<?php echo $settings->btn_bg_hover_color; ?> 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #<?php echo $bg_hover_grad_start; ?> 0%,#<?php echo $settings->btn_bg_hover_color; ?> 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #<?php echo $bg_hover_grad_start; ?> 0%,#<?php echo $settings->btn_bg_hover_color; ?> 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #<?php echo $bg_hover_grad_start; ?> 0%,#<?php echo $settings->btn_bg_hover_color; ?> 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#<?php echo $bg_hover_grad_start; ?>', endColorstr='#<?php echo $settings->btn_bg_hover_color; ?>',GradientType=0 ); /* IE6-9 */
+	<?php endif; ?>
+}
+<?php endif; ?>
+
+<?php if ( ! empty( $settings->btn_text_hover_color ) ) : ?>
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:hover,
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:focus,
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:hover *,
+.fl-builder-content .fl-node-<?php echo $id; ?> a.fl-button:focus * {
+	color: #<?php echo $settings->btn_text_hover_color; ?>;
+}
+<?php endif; ?>
+
+
+<?php if ('enable' == $settings->btn_button_transition): ?>
+	.fl-builder-content .fl-node-<?php echo $id; ?> .fl-button,
+	.fl-builder-content .fl-node-<?php echo $id; ?> .fl-button * {
+		-webkit-transition: all 0.2s ease-in-out;
+	  	-moz-transition: all 0.2s ease-in-out;
+	  	-o-transition: all 0.2s ease-in-out;
+		transition: all 0.2s ease-in-out;
+	}
+<?php endif; ?>
+
+<?php if ( empty( $settings->btn_text ) ) : ?>
+	<?php if ('after' == $settings->btn_icon_position): ?>
+	.fl-builder-content .fl-node-<?php echo $id; ?> .fl-button i.fl-button-icon-after {
+		margin-left: 0;
+	}
+	<?php endif; ?>
+	<?php if ('before' == $settings->btn_icon_position): ?>
+	.fl-builder-content .fl-node-<?php echo $id; ?> .fl-button i.fl-button-icon-before {
+		margin-right: 0;
+	}
+	<?php endif; ?>
+<?php endif; ?>
+
 
 .fl-node-<?php echo $id; ?> .pp-contact-form {
 	background-color: <?php echo $settings->form_bg_color && $settings->form_bg_type == 'color' ? pp_hex2rgba('#' . $settings->form_bg_color, $settings->form_background_opacity / 100) : 'transparent'; ?>;
@@ -176,7 +292,6 @@ FLBuilder::render_module_css('button', $id, array(
     <?php } ?>
 }
 
-
 <?php if( $settings->name_toggle == 'show' || $settings->email_toggle == 'show' || $settings->phone_toggle == 'show' ) { ?>
 	.fl-node-<?php echo $id; ?> .pp-contact-form.pp-form-inline .pp-input-group {
 		width: 100%;
@@ -241,15 +356,16 @@ FLBuilder::render_module_css('button', $id, array(
 	background-color: <?php echo $settings->input_field_bg_color ? pp_hex2rgba('#' . $settings->input_field_bg_color, $settings->input_field_background_opacity / 100 ) : 'transparent'; ?>;
 	border-width: 0;
 	border-color: <?php echo $settings->input_field_border_color ? '#' . $settings->input_field_border_color : 'transparent'; ?>;
-    <?php if( $settings->input_field_border_radius >= 0 ) { ?>
+    <?php if( $settings->input_field_border_width >= 0 ) { ?>
+		border-style: solid;
+    	<?php echo $settings->input_field_border_position; ?>-width: <?php echo $settings->input_field_border_width; ?>px;
+    <?php } ?>
+	<?php if( $settings->input_field_border_radius >= 0 ) { ?>
 	border-radius: <?php echo $settings->input_field_border_radius; ?>px;
     -moz-border-radius: <?php echo $settings->input_field_border_radius; ?>px;
     -webkit-border-radius: <?php echo $settings->input_field_border_radius; ?>px;
     -ms-border-radius: <?php echo $settings->input_field_border_radius; ?>px;
     -o-border-radius: <?php echo $settings->input_field_border_radius; ?>px;
-    <?php } ?>
-    <?php if( $settings->input_field_border_width >= 0 ) { ?>
-    <?php echo $settings->input_field_border_position; ?>-width: <?php echo $settings->input_field_border_width; ?>px;
     <?php } ?>
     <?php if( $settings->input_field_box_shadow == 'yes' ) { ?>
         box-shadow: <?php echo ($settings->input_shadow_direction == 'inset') ? $settings->input_shadow_direction : ''; ?> 0 0 10px #<?php echo $settings->input_shadow_color; ?>;
@@ -301,6 +417,7 @@ FLBuilder::render_module_css('button', $id, array(
 .fl-node-<?php echo $id; ?> .pp-contact-form input[type=tel]:focus,
 .fl-node-<?php echo $id; ?> .pp-contact-form input[type=email]:focus {
 	border-color: <?php echo $settings->input_field_focus_color ? '#' . $settings->input_field_focus_color : 'transparent'; ?>;
+	outline: none;
 }
 
 .fl-node-<?php echo $id; ?> .pp-contact-form input[type=text]::-webkit-input-placeholder {

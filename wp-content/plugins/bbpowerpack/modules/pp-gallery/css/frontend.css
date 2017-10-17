@@ -1,0 +1,78 @@
+div.mfp-wrap .mfp-close,
+div.mfp-wrap .mfp-close:hover,
+div.mfp-wrap .mfp-close:focus {
+	opacity: 1;
+    background-color: rgba(0,0,0,0.8) !important;
+    padding: 1px 7px !important;
+    height: 30px;
+    width: 30px;
+    border-radius: 0;
+    line-height: 1 !important;
+    font-family: inherit !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    top: 0 !important;
+    right: 0 !important;
+}
+
+.admin-bar div.mfp-wrap .mfp-close,
+.admin-bar div.mfp-wrap .mfp-close:active,
+.admin-bar div.mfp-wrap .mfp-close:hover,
+.admin-bar div.mfp-wrap .mfp-close:focus {
+    top: 0 !important;
+}
+
+div.mfp-wrap .mfp-close:hover,
+div.mfp-wrap .mfp-close:focus {
+	background-color: #000 !important;
+}
+
+div.mfp-wrap .mfp-bottom-bar {
+    margin-top: 10px;
+}
+
+.pp-photo-gallery-item {
+    float: left;
+    text-align: center;
+}
+
+.pp-gallery-masonry-item {
+    float: left;
+}
+
+.pp-photo-gallery-content {
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+}
+
+.pp-photo-gallery-content > a {
+	display: block;
+}
+
+.pp-photo-gallery {
+    position: relative;
+    text-align: center;
+}
+
+/* Overlay */
+.pp-gallery-overlay {
+	position: absolute;
+	overflow: hidden;
+	transition: .5s ease;
+}
+
+.pp-gallery-overlay .pp-caption {
+	margin-bottom: 10px;
+}
+
+.pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img,
+.pp-masonry-content .pp-photo-gallery-content .pp-gallery-img {
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	-webkit-transform-style: preserve-3d;
+	will-change: transform;
+}

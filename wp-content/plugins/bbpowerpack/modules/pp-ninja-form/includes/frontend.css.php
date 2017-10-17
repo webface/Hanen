@@ -48,6 +48,12 @@
 	<?php } ?>
 }
 
+<?php if( $settings->form_bg_image && $settings->form_bg_type == 'image' ) { ?>
+.fl-node-<?php echo $id; ?> .pp-ninja-form-content:before {
+	background-color: <?php echo ( $settings->form_bg_overlay ) ? pp_hex2rgba('#' . $settings->form_bg_overlay, $settings->form_bg_overlay_opacity / 100 ) : 'transparent'; ?>;
+}
+<?php } ?>
+
 .fl-node-<?php echo $id; ?> .pp-ninja-form-content .ninja-forms-form .field-wrap {
 	list-style-type: none !important;
     <?php if( $settings->input_field_margin >= 0 ) { ?>
@@ -189,7 +195,9 @@
         -webkit-box-shadow: <?php echo ($settings->input_shadow_direction == 'inset') ? $settings->input_shadow_direction : ''; ?> 0 0 10px #<?php echo $settings->input_shadow_color; ?>;
         -ms-box-shadow: <?php echo ($settings->input_shadow_direction == 'inset') ? $settings->input_shadow_direction : ''; ?> 0 0 10px #<?php echo $settings->input_shadow_color; ?>;
         -o-box-shadow: <?php echo ($settings->input_shadow_direction == 'inset') ? $settings->input_shadow_direction : ''; ?> 0 0 10px #<?php echo $settings->input_shadow_color; ?>;
-    <?php } ?>
+    <?php } else { ?>
+		box-shadow: none;
+	<?php } ?>
     <?php if( $settings->input_field_padding['top'] >= 0 ) { ?>
     padding-top: <?php echo $settings->input_field_padding['top']; ?>px;
     <?php } ?>
@@ -345,7 +353,8 @@
     text-align: <?php echo $settings->button_alignment; ?>;
 }
 
-.fl-node-<?php echo $id; ?> .pp-ninja-form-content .ninja-forms-form-wrap input[type="submit"] {
+.fl-node-<?php echo $id; ?> .pp-ninja-form-content .ninja-forms-form-wrap input[type="submit"],
+.fl-node-<?php echo $id; ?> .pp-ninja-form-content .ninja-forms-form-wrap .submit-wrap input[type="button"] {
     <?php if( $settings->button_text_color['primary'] ) { ?>
 	color: #<?php echo $settings->button_text_color['primary']; ?>;
     <?php } ?>
@@ -383,7 +392,8 @@
     <?php if( $settings->button_width == 'true' ) { ?>width: 100%; <?php } ?>
 }
 
-.fl-node-<?php echo $id; ?> .pp-ninja-form-content .ninja-forms-form-wrap input[type="submit"]:hover {
+.fl-node-<?php echo $id; ?> .pp-ninja-form-content .ninja-forms-form-wrap input[type="submit"]:hover,
+.fl-node-<?php echo $id; ?> .pp-ninja-form-content .ninja-forms-form-wrap .submit-wrap input[type="button"]:hover {
     <?php if( $settings->button_text_color['secondary'] ) { ?>
 	color: #<?php echo $settings->button_text_color['secondary']; ?>;
     <?php } ?>

@@ -49,12 +49,12 @@ function pp_get_upload_dir()
 {
 	$wp_info = wp_upload_dir();
 
-	if ( is_multisite() ) {
-		$wp_info = array(
-			'basedir' => ABSPATH . 'wp-content/uploads',
-			'baseurl' => network_site_url( '/wp-content/uploads' )
-		);
-	}
+	// Get main upload directory for every sub-sites.
+    if ( is_multisite() ) {
+        switch_to_blog(1);
+        $wp_info = wp_upload_dir();
+        restore_current_blog();
+    }
 
 	$dir_name = basename( BB_POWERPACK_DIR );
 
@@ -106,22 +106,24 @@ function pp_download_template( $url, $path, $filename = '' )
 			unlink($path);
 		}
 
-		$ch = curl_init();
-        curl_setopt( $ch, CURLOPT_URL, $url );
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 30 );
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-        $content = curl_exec($ch);
-        if ( curl_errno($ch) ) {
-            pp_set_error( 'fetch_error' );
-            $content = '';
-        } else {
-            curl_close($ch);
-        }
+		if ( function_exists( 'curl_init' ) ) {
+			$ch = curl_init();
+	        curl_setopt( $ch, CURLOPT_URL, $url );
+	        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 30 );
+	        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+	        $content = curl_exec($ch);
+	        if ( curl_errno($ch) ) {
+	            pp_set_error( 'fetch_error' );
+	            $content = '';
+	        } else {
+	            curl_close($ch);
+	        }
 
-		if ( $content != '' ) {
-			$file = $content;
-        	file_put_contents( $path, $file );
-        	$downloaded = true;
+			if ( $content != '' ) {
+				$file = $content;
+	        	file_put_contents( $path, $file );
+	        	$downloaded = true;
+			}
 		}
 
 		// If not downloaded, retrive the content in a new file.
@@ -186,11 +188,13 @@ function pp_row_templates_categories()
         'pp-contact-forms'      => __('Contact Forms', 'bb-powerpack'),
         'pp-call-to-action'     => __('Call To Action', 'bb-powerpack'),
         'pp-hero'               => __('Hero', 'bb-powerpack'),
+        'pp-heading'            => __('Heading', 'bb-powerpack'),
         'pp-subscribe-forms'    => __('Subscribe Forms', 'bb-powerpack'),
         'pp-content'            => __('Content', 'bb-powerpack'),
         'pp-blog-posts'         => __('Blog Posts', 'bb-powerpack'),
         'pp-lead-generation'    => __('Lead Generation', 'bb-powerpack'),
         'pp-logos'              => __('Logos', 'bb-powerpack'),
+        'pp-faq'              	=> __('FAQ', 'bb-powerpack'),
         'pp-team'               => __('Team', 'bb-powerpack'),
         'pp-testimonials'       => __('Testimonials', 'bb-powerpack'),
         'pp-features'           => __('Features', 'bb-powerpack'),
@@ -325,13 +329,19 @@ function pp_get_template_screenshot_url( $type, $category, $mode = '' )
  */
 function pp_modules()
 {
-    $categories = FLBuilderModel::get_categorized_modules( true );
-    $modules    = array();
-
-    foreach ( $categories[BB_POWERPACK_CAT] as $title => $module ) {
-        $slug = is_object( $module ) ? $module->slug : $module['slug'];
-        $modules[$slug] = $title;
-    }
+    // $categories = FLBuilderModel::get_categorized_modules( true );
+    // $modules    = array();
+	//
+    // foreach ( $categories[BB_POWERPACK_CAT] as $title => $module ) {
+    //     $slug = is_object( $module ) ? $module->slug : $module['slug'];
+    //     $modules[$slug] = $title;
+    // }
+	foreach(FLBuilderModel::$modules as $module) {
+		if ( $module->category == BB_POWERPACK_CAT ) {
+			$slug = is_object( $module ) ? $module->slug : $module['slug'];
+			$modules[$slug] = $module->name;
+		}
+	}
 
     return $modules;
 }
@@ -379,4 +389,124 @@ function pp_hex2rgba( $hex, $opacity )
 	$rgba = array($r, $g, $b, $opacity);
 
 	return 'rgba(' . implode(', ', $rgba) . ')';
+}
+
+/**
+ * Returns long day format.
+ *
+ * @since 1.2.2
+ * @param string $day
+ * @return mixed
+ */
+function pp_long_day_format( $day = '' )
+{
+	$days = array(
+		'Sunday'        => __('Sunday', 'bb-powerpack'),
+		'Monday'        => __('Monday', 'bb-powerpack'),
+		'Tuesday'       => __('Tuesday', 'bb-powerpack'),
+		'Wednesday'     => __('Wednesday', 'bb-powerpack'),
+		'Thursday'      => __('Thursday', 'bb-powerpack'),
+		'Friday'        => __('Friday', 'bb-powerpack'),
+		'Saturday'      => __('Saturday', 'bb-powerpack'),
+	);
+
+	if ( isset( $days[$day] ) ) {
+		return $days[$day];
+	}
+	else {
+		return $days;
+	}
+}
+
+/**
+ * Returns short day format.
+ *
+ * @since 1.2.2
+ * @param string $day
+ * @return string
+ */
+function pp_short_day_format( $day )
+{
+	$days = array(
+		'Sunday'        => __('Sun', 'bb-powerpack'),
+		'Monday'        => __('Mon', 'bb-powerpack'),
+		'Tuesday'       => __('Tue', 'bb-powerpack'),
+		'Wednesday'     => __('Wed', 'bb-powerpack'),
+		'Thursday'      => __('Thu', 'bb-powerpack'),
+		'Friday'        => __('Fri', 'bb-powerpack'),
+		'Saturday'      => __('Sat', 'bb-powerpack'),
+	);
+
+	if ( isset( $days[$day] ) ) {
+		return $days[$day];
+	}
+}
+
+/**
+ * Returns user agent.
+ *
+ * @since 1.2.4
+ * @return string
+ */
+function pp_get_user_agent()
+{
+	$user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+	if (stripos( $user_agent, 'Chrome') !== false)
+	{
+	    return 'chrome';
+	}
+	elseif (stripos( $user_agent, 'Safari') !== false)
+	{
+	   return 'safari';
+	}
+	elseif (stripos( $user_agent, 'Firefox') !== false)
+	{
+	   return 'firefox';
+	}
+}
+
+function pp_get_modules_categories( $cat = '' )
+{
+	$cats = array(
+		'creative'		=> __('Creative Modules', 'bb-powerpack'),
+		'content'		=> __('Content Modules', 'bb-powerpack'),
+		'lead_gen'		=> __('Lead Generation Modules', 'bb-powerpack'),
+		'form_style'	=> __('Form Styler Modules', 'bb-powerpack')
+	);
+
+	if ( empty( $cat ) ) {
+		return $cats;
+	}
+
+	if ( isset( $cats[$cat] ) ) {
+		return $cats[$cat];
+	} else {
+		return $cat;
+	}
+}
+
+/**
+ * Returns modules category name for Beaver Builder 2.0 compatibility.
+ *
+ * @since 1.3
+ * @return string
+ */
+function pp_get_modules_cat( $cat )
+{
+	return class_exists( 'FLBuilderUIContentPanel' ) ? pp_get_modules_categories( $cat ) : BB_POWERPACK_CAT;
+}
+
+/**
+ * Returns admin label for PowerPack settings.
+ *
+ * @since 1.3
+ * @return string
+ */
+function pp_get_admin_label()
+{
+	$admin_label = BB_PowerPack_Admin_Settings::get_option( 'ppwl_admin_label' );
+	$admin_label = trim( $admin_label ) !== '' ? trim( $admin_label ) : 'PowerPack';
+
+	return $admin_label;
 }

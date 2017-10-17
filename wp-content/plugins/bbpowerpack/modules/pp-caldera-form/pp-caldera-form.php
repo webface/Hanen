@@ -16,7 +16,8 @@ class PPCalderaFormModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Caldera Form', 'bb-powerpack'),
             'description'   => __('A module for Caldera Form.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-caldera-form/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-caldera-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -85,6 +86,7 @@ FLBuilder::register_module('PPCalderaFormModule', array(
                         'label'         => __('Custom Title', 'bb-powerpack'),
                         'default'       => '',
                         'description'   => '',
+                        'connections'   => array('string'),
 						'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-form-title'
@@ -96,6 +98,7 @@ FLBuilder::register_module('PPCalderaFormModule', array(
                         'default'           => '',
                         'placeholder'       => '',
                         'rows'              => '6',
+                        'connections'   => array('string', 'html'),
                         'preview'           => array(
                             'type'          => 'text',
                             'selector'      => '.pp-form-description'
@@ -133,7 +136,7 @@ FLBuilder::register_module('PPCalderaFormModule', array(
                                 'fields'    => array('form_bg_color','form_background_opacity')
                             ),
                             'image' => array(
-                                'fields'    => array('form_bg_image','form_bg_size','form_bg_repeat')
+                                'fields'    => array('form_bg_image','form_bg_size','form_bg_repeat', 'form_bg_overlay', 'form_bg_overlay_opacity')
                             )
                         )
                     ),
@@ -164,6 +167,7 @@ FLBuilder::register_module('PPCalderaFormModule', array(
                         'type'              => 'photo',
                         'label'             => __('Background Image', 'bb-powerpack'),
                         'default'           => '',
+						'show_remove'		=> true,
                         'preview'           => array(
                             'type'              => 'css',
                             'selector'          => '.pp-caldera-form-content',
@@ -188,6 +192,19 @@ FLBuilder::register_module('PPCalderaFormModule', array(
                             'repeat-y'      => __('Repeat Y', 'bb-powerpack'),
                             'no-repeat'     => __('No Repeat', 'bb-powerpack'),
                         )
+                    ),
+					'form_bg_overlay'     => array(
+                        'type'          => 'color',
+                        'label'         => __('Background Overlay Color', 'bb-powerpack'),
+                        'default'       => '000000',
+                        'show_reset'    => true,
+                    ),
+                    'form_bg_overlay_opacity'    => array(
+                        'type'                 => 'text',
+                        'label'                => __('Background Overlay Opacity', 'bb-powerpack'),
+                        'class'                => 'bb-cf-input input-small',
+                        'default'              => '50',
+                        'description'          => __('%', 'bb-powerpack'),
                     ),
                 )
             ),

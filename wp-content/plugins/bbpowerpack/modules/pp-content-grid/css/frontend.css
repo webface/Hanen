@@ -72,8 +72,11 @@
 	-o-transition: all 0.2s ease-in;
 }
 
+.pp-content-post a {
+	border: none;
+}
+
 .pp-content-post a:hover {
-	text-decoration: none;
 }
 
 .pp-content-grid-post .pp-content-category-list,
@@ -88,6 +91,11 @@
 .pp-content-grid-post .pp-content-grid-more,
 .pp-content-carousel-post .pp-content-carousel-more {
 	display: inline-block;
+}
+
+.pp-content-post .pp-post-title a,
+.pp-content-post .pp-more-link-button {
+	text-decoration: none;
 }
 
 .pp-content-post .pp-post-title-divider {
@@ -107,6 +115,10 @@
 }
 
 .pp-content-post .pp-post-image a {
+	display: block;
+}
+
+.pp-content-post .pp-post-image .fl-photo-content {
 	display: block;
 }
 
@@ -245,7 +257,6 @@
 	padding-bottom: 0;
 }
 .pp-content-body a {
-	text-decoration: none;
 }
 .pp-content-grid-title,
 .pp-content-carousel-title {
@@ -294,6 +305,11 @@
 	-moz-transition: all 0.2s ease-in;
 	-ms-transition: all 0.2s ease-in;
 	-o-transition: all 0.2s ease-in;
+}
+
+.pp-content-grid-pagination li .page-numbers {
+	min-width: 35px !important;
+	display: block !important;
 }
 
 .pp-content-grid-pagination li .page-numbers:last-child {
@@ -417,7 +433,6 @@ body .pp-post-feed-meta {
 
 .pp-content-carousel-image img {
 	height: auto;
-	width: 100%;
 }
 
 .fl-module-pp-content-grid .bx-wrapper .bx-pager {
@@ -449,11 +464,6 @@ body .pp-post-feed-meta {
 .fl-module-pp-content-grid .bx-wrapper .bx-next::before {
 	content: "\f105";
 	font-family: "FontAwesome";
-}
-
-.fl-module-pp-content-grid a,
-.fl-module-pp-content-grid a:hover {
-	text-decoration: none;
 }
 
 .pp-content-post-carousel .owl-theme .owl-controls .owl-page span {

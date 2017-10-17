@@ -16,7 +16,8 @@ class PPNinjaFormModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Ninja Form', 'bb-powerpack'),
             'description'   => __('A module for Ninja Form.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-ninja-form/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-ninja-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -152,7 +153,7 @@ FLBuilder::register_module('PPNinjaFormModule', array(
                                 'fields'    => array('form_bg_color','form_background_opacity')
                             ),
                             'image' => array(
-                                'fields'    => array('form_bg_image','form_bg_size','form_bg_repeat')
+                                'fields'    => array('form_bg_image','form_bg_size','form_bg_repeat', 'form_bg_overlay', 'form_bg_overlay_opacity')
                             )
                         )
                     ),
@@ -183,6 +184,7 @@ FLBuilder::register_module('PPNinjaFormModule', array(
                         'type'              => 'photo',
                         'label'             => __('Background Image', 'bb-powerpack'),
                         'default'           => '',
+						'show_remove'		=> true,
                         'preview'           => array(
                             'type'              => 'css',
                             'selector'          => '.pp-ninja-form-content',
@@ -207,6 +209,19 @@ FLBuilder::register_module('PPNinjaFormModule', array(
                             'repeat-y'      => __('Repeat Y', 'bb-powerpack'),
                             'no-repeat'     => __('No Repeat', 'bb-powerpack'),
                         )
+                    ),
+					'form_bg_overlay'     => array(
+                        'type'          => 'color',
+                        'label'         => __('Background Overlay Color', 'bb-powerpack'),
+                        'default'       => '000000',
+                        'show_reset'    => true,
+                    ),
+                    'form_bg_overlay_opacity'    => array(
+                        'type'                 => 'text',
+                        'label'                => __('Background Overlay Opacity', 'bb-powerpack'),
+                        'class'                => 'bb-nf-input input-small',
+                        'default'              => '50',
+                        'description'          => __('%', 'bb-powerpack'),
                     ),
                 )
             ),
@@ -1226,7 +1241,7 @@ FLBuilder::register_module('PPNinjaFormModule', array(
                     'title_color'       => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '333333',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
@@ -1350,7 +1365,7 @@ FLBuilder::register_module('PPNinjaFormModule', array(
                     'description_color' => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '333333',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
@@ -1441,7 +1456,7 @@ FLBuilder::register_module('PPNinjaFormModule', array(
                     'form_label_color'  => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '333333',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
@@ -1613,7 +1628,8 @@ FLBuilder::register_module('PPNinjaFormModule', array(
                     'input_desc_color'  => array(
                         'type'                  => 'color',
                         'label'                 => __('Description Color', 'bb-powerpack'),
-                        'default'               => '000000',
+                        'default'               => '',
+                        'show_reset'            => true,
                         'preview'               => array(
                             'type'              => 'css',
                             'selector'          => '.pp-ninja-form-content .ninja-forms-form .ninja-forms-field-description',

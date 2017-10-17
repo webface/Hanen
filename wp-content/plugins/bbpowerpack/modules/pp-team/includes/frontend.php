@@ -1,19 +1,10 @@
 <?php
 
-/**
- * This file should be used to render each module instance.
- * You have access to two variables in this file:
- *
- * $module An instance of your module class.
- * $settings The module's settings.
- *
- */
-
 $photo    = $module->get_data();
 $classes  = $module->get_classes();
 $src      = '';
 if ( '' != $settings->member_image ) {
-$src      = $module->get_src();
+	$src      = $module->get_src();
 }
 $link     = $module->get_link();
 $alt      = $module->get_alt();
@@ -34,6 +25,10 @@ $filetype = pathinfo($src, PATHINFO_EXTENSION);
         </div>
     <?php } ?>
     <div class="pp-member-content">
+		<?php if( $settings->content_position == 'hover' || $settings->content_position == 'over' ) { ?>
+			<div class="pp-member-content-inner-wrapper">
+				<div class="pp-member-content-inner">
+		<?php } ?>
         <?php if( $settings->link_url && $settings->link_target ) { ?>
         <a href="<?php echo $settings->link_url; ?>" target="<?php echo $settings->link_target; ?>">
         <?php } ?>
@@ -44,50 +39,123 @@ $filetype = pathinfo($src, PATHINFO_EXTENSION);
         <?php if( $settings->separator_position == 'below_title' && $settings->separator_display == 'yes' ) { ?>
             <div class="pp-member-separator"></div>
         <?php } ?>
-        <div class="pp-member-designation"><?php echo $settings->member_designation; ?></div>
+		<?php if( $settings->member_designation ) { ?>
+        	<div class="pp-member-designation"><?php echo $settings->member_designation; ?></div>
+		<?php } ?>
         <?php if( $settings->separator_position == 'below_designation' && $settings->separator_display == 'yes' ) { ?>
             <div class="pp-member-separator"></div>
         <?php } ?>
-        <div class="pp-member-description"><?php echo $settings->member_description; ?></div>
+		<?php if( $settings->member_description ) { ?>
+        	<div class="pp-member-description"><?php echo $settings->member_description; ?></div>
+		<?php } ?>
+		<?php if ($settings->email || $settings->facebook_url || $settings->twiiter_url || $settings->googleplus_url || $settings->pinterest_url || $settings->linkedin_url || $settings->youtube_url ||
+	 	$settings->instagram_url || $settings->vimeo_url || $settings->github_url || $settings->dribbble_url || $settings->tumblr_url ) { ?>
         <div class="pp-member-social-icons">
             <ul>
+				<?php if ($settings->email) { ?>
+                    <li class="pp-social-email">
+						<a href="mailto:<?php echo $settings->email; ?>">
+							<span class="fa fa-envelope"></span>
+						</a>
+					</li>
+                <?php } ?>
                 <?php if ($settings->facebook_url) { ?>
-                    <li class="pp-social-fb"><a href="<?php echo $settings->facebook_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-fb">
+						<a href="<?php echo $settings->facebook_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-facebook"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->twiiter_url) { ?>
-                    <li class="pp-social-twitter"><a href="<?php echo  $settings->twiiter_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-twitter">
+						<a href="<?php echo  $settings->twiiter_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-twitter"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->googleplus_url) { ?>
-                    <li class="pp-social-gplus"><a href="<?php echo $settings->googleplus_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-gplus">
+						<a href="<?php echo $settings->googleplus_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-google-plus"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if ($settings->pinterest_url) { ?>
-                    <li class="pp-social-pinterest"><a href="<?php echo $settings->pinterest_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-pinterest">
+						<a href="<?php echo $settings->pinterest_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-pinterest"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->linkedin_url) { ?>
-                    <li class="pp-social-linkedin"><a href="<?php echo $settings->linkedin_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-linkedin">
+						<a href="<?php echo $settings->linkedin_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-linkedin"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->youtube_url) { ?>
-                    <li class="pp-social-youtube"><a href="<?php echo $settings->youtube_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-youtube">
+						<a href="<?php echo $settings->youtube_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-youtube"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->instagram_url) { ?>
-                    <li class="pp-social-instagram"><a href="<?php echo $settings->instagram_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-instagram">
+						<a href="<?php echo $settings->instagram_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-instagram"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->vimeo_url) { ?>
-                    <li class="pp-social-vimeo"><a href="<?php echo $settings->vimeo_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-vimeo">
+						<a href="<?php echo $settings->vimeo_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-vimeo"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->github_url) { ?>
-                    <li class="pp-social-github"><a href="<?php echo $settings->github_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-github">
+						<a href="<?php echo $settings->github_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-github"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->dribbble_url) { ?>
-                    <li class="pp-social-dribbble"><a href="<?php echo $settings->dribbble_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-dribbble">
+						<a href="<?php echo $settings->dribbble_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-dribbble"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if($settings->tumblr_url) { ?>
-                    <li class="pp-social-tumblr"><a href="<?php echo $settings->tumblr_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-tumblr">
+						<a href="<?php echo $settings->tumblr_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-tumblr"></span>
+						</a>
+					</li>
                 <?php } ?>
                 <?php if( $settings->flickr_url) { ?>
-                    <li class="pp-social-flickr"><a href="<?php echo $settings->flickr_url; ?>" target="_blank"></a></li>
+                    <li class="pp-social-flickr">
+						<a href="<?php echo $settings->flickr_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-flickr"></span>
+						</a>
+					</li>
+                <?php } ?>
+				<?php if( $settings->wordpress_url) { ?>
+                    <li class="pp-social-wordpress">
+						<a href="<?php echo $settings->wordpress_url; ?>" target="<?php echo $settings->social_link_target; ?>">
+							<span class="fa fa-wordpress"></span>
+						</a>
+					</li>
                 <?php } ?>
             </ul>
         </div>
+		<?php } ?>
+		<?php if( $settings->content_position == 'hover' ) { ?>
+				</div>
+			</div>
+		<?php } ?>
     </div>
 </div>

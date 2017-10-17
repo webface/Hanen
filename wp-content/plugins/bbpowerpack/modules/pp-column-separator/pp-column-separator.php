@@ -16,7 +16,8 @@ class PPColumnSeparatorModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Column Separator', 'bb-powerpack'),
             'description'   => __('Addon to add separators to the column.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-column-separator/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-column-separator/',
             'editor_export' => true, // Defaults to true and can be omitted.

@@ -1,0 +1,65 @@
+/*.pp-animated-text-prefix {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pp-animated-text-suffix {
+    display: inline-block;
+    vertical-align: middle;
+}*/
+
+/*** Typed CSS ***/
+/*.pp-animated-text-wrap {
+    display: inline-block;
+    vertical-align: middle;
+}*/
+
+/*.pp-typed-main-wrap{
+	display: inline-block;
+    vertical-align: middle;
+}*/
+/*.pp-typed-main {
+    display: inline-block;
+    /*vertical-align: middle;*/
+
+/*}*/
+
+/*span.typed-cursor {
+    display: inline-block;*/
+    /*vertical-align: middle;*/
+/*}*/
+
+/*** Slide CSS ***/
+
+.pp-animated-text-slide_up .pp-animated-text-prefix {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.pp-animated-text-slide_up .pp-animated-text-suffix {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pp-animated-text-main.pp-slide-main {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    box-sizing: content-box;
+    /*padding: 0px 20px;*/
+}
+
+
+.pp-slide-block {
+    display: block;
+    vertical-align: middle;
+}
+
+span.pp-slide_text {
+    display: inline-block;
+}
+
+.pp-animated-text-slide_up .pp-animated-text-main.pp-slide-main {
+    max-width: 100%;
+}

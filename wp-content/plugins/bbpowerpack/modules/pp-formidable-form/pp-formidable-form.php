@@ -16,7 +16,8 @@ class PPFormidableFormModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Formidable Form', 'bb-powerpack'),
             'description'   => __('A module for Formidable Form.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-formidable-form/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-formidable-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -154,7 +155,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                                 'fields'    => array('form_bg_color','form_background_opacity')
                             ),
                             'image' => array(
-                                'fields'    => array('form_bg_image','form_bg_size','form_bg_repeat')
+                                'fields'    => array('form_bg_image','form_bg_size','form_bg_repeat', 'form_bg_overlay', 'form_bg_overlay_opacity')
                             )
                         )
                     ),
@@ -185,6 +186,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                     'type'              => 'photo',
                         'label'         => __('Background Image', 'bb-powerpack'),
                         'default'       => '',
+						'show_remove'	=> true,
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-ff-content',
@@ -209,6 +211,19 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                             'repeat-y'      => __('Repeat Y', 'bb-powerpack'),
                             'no-repeat'     => __('No Repeat', 'bb-powerpack'),
                         )
+                    ),
+					'form_bg_overlay'     => array(
+                        'type'          => 'color',
+                        'label'         => __('Background Overlay Color', 'bb-powerpack'),
+                        'default'       => '000000',
+                        'show_reset'    => true,
+                    ),
+                    'form_bg_overlay_opacity'    => array(
+                        'type'                 => 'text',
+                        'label'                => __('Background Overlay Opacity', 'bb-powerpack'),
+                        'class'                => 'bb-ff-input input-small',
+                        'default'              => '50',
+                        'description'          => __('%', 'bb-powerpack'),
                     ),
                 )
             ),
@@ -1078,7 +1093,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                         'default'              => '100',
                         'preview'              => array(
                             'type'             => 'css',
-                            'selector'         => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                            'selector'         => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                             'property'         => 'opacity',
                         )
                     ),
@@ -1095,7 +1110,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                         'default'            => '1',
                         'preview'            => array(
                             'type'           => 'css',
-                            'selector'       => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                            'selector'       => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                             'property'       => 'border-width',
                             'unit'           => 'px'
                         )
@@ -1107,7 +1122,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                         'show_reset'         => true,
                         'preview'            => array(
                             'type'           => 'css',
-                            'selector'       => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                            'selector'       => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                             'property'       => 'border-color'
                         )
                     ),
@@ -1153,7 +1168,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                         'default'             => '2',
                         'preview'             => array(
                             'type'            => 'css',
-                            'selector'        => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                            'selector'        => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                             'property'        => 'border-radius',
                             'unit'            => 'px'
                         )
@@ -1175,7 +1190,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                                 'tooltip'       => 'Top',
                                 'icon'		=> 'fa-long-arrow-up',
                                 'preview'       => array(
-                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                                     'property'  => 'padding-top',
                                     'unit'      => 'px'
                                 )
@@ -1186,7 +1201,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                                 'tooltip'       => 'Bottom',
                                 'icon'		=> 'fa-long-arrow-down',
                                 'preview'       => array(
-                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                                     'property'  => 'padding-bottom',
                                     'unit'      => 'px'
                                 )
@@ -1197,7 +1212,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                                 'tooltip'       => 'Left',
                                 'icon'		=> 'fa-long-arrow-left',
                                 'preview'       => array(
-                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                                     'property'  => 'padding-left',
                                     'unit'      => 'px'
                                 )
@@ -1208,7 +1223,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                                 'tooltip'       => 'Right',
                                 'icon'		=> 'fa-long-arrow-right',
                                 'preview'       => array(
-                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                                    'selector'  => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                                     'property'  => 'padding-right',
                                     'unit'      => 'px'
                                 )
@@ -1848,7 +1863,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                         'label'         => __('Font', 'bb-powerpack'),
                         'preview'         => array(
                             'type'            => 'font',
-                            'selector'        => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]'
+                            'selector'        => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button'
                         )
                     ),
                     'button_text_transform'    => array(
@@ -1890,7 +1905,7 @@ FLBuilder::register_module('PPFormidableFormModule', array(
                                 'maxlength'     => 3,
                                 'tooltip'       => __('Desktop', 'bb-powerpack'),
                                 'preview'           => array(
-                                    'selector'      => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit]',
+                                    'selector'      => '.pp-ff-content .frm_style_formidable-style.with_frm_style input[type=submit], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=button], .pp-ff-content .frm_style_formidable-style.with_frm_style input[type=reset], .pp-ff-content .frm_style_formidable-style.with_frm_style .frm_submit button',
                                     'property'      => 'font-size',
                                     'unit'          => 'px'
                                 ),

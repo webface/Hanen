@@ -95,7 +95,7 @@ if ( ! class_exists( 'WP_Async_Task_Smush' ) ) {
 			try {
 				$data = $this->prepare_data( $data );
 			} catch ( Exception $e ) {
-				error_log( sprintf( "Async Smush: Error in prepare_data function in %s at line %s: %s", __FILE__, __LINE__, $e->getMessage() ) );	  		 	 	 	 	   	  		
+				error_log( sprintf( "Async Smush: Error in prepare_data function in %s at line %s: %s", __FILE__, __LINE__, $e->getMessage() ) );
 				return;
 			}
 

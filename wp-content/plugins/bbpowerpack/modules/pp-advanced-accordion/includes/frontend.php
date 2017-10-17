@@ -5,7 +5,7 @@
 			<?php if( $settings->items[$i]->accordion_font_icon ) { ?>
 				<span class="pp-accordion-icon <?php echo $settings->items[$i]->accordion_font_icon; ?>"></span>
 			<?php } ?>
-			<span class="pp-accordion-button-label"><?php echo $settings->items[ $i ]->label; ?></span>
+			<span class="pp-accordion-button-label" itemprop="name description"><?php echo $settings->items[ $i ]->label; ?></span>
 
 			<?php if( $settings->accordion_open_icon != '' ) { ?>
 				<span class="pp-accordion-button-icon pp-accordion-open <?php echo $settings->accordion_open_icon; ?>"></span>
@@ -20,7 +20,9 @@
 			<?php } ?>
 
 		</div>
-		<div class="pp-accordion-content fl-clearfix"><?php echo $settings->items[ $i ]->content; ?></div>
+		<div class="pp-accordion-content fl-clearfix">
+			<div itemprop="text"><?php echo $settings->items[ $i ]->content; ?></div>
+		</div>
 	</div>
 	<?php endfor; ?>
 </div>

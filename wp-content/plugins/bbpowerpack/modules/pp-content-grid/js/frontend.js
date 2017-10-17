@@ -1,6 +1,6 @@
 (function($) {
 
-	FLBuilderContentGrid = function(settings)
+	PPContentGrid = function(settings)
 	{
 		this.settings       = settings;
 		this.nodeClass      = '.fl-node-' + settings.id;
@@ -15,7 +15,7 @@
 		}
 	};
 
-	FLBuilderContentGrid.prototype = {
+	PPContentGrid.prototype = {
 
 		settings        : {},
 		nodeClass       : '',
@@ -52,7 +52,7 @@
 			var postFilterData = {
 				itemSelector: '.pp-content-post',
 				percentPosition: true,
-				transitionDuration: '0.6s',
+				transitionDuration: '0.4s',
 			};
 
 			if ( !this.masonry ) {
@@ -159,20 +159,33 @@
 
 		_infiniteScroll: function(settings)
 		{
-			$(this.wrapperClass).infinitescroll({
-				navSelector     : this.nodeClass + ' .pp-content-grid-pagination',
-				nextSelector    : this.nodeClass + ' .pp-content-grid-pagination a.next',
-				itemSelector    : this.postClass,
-				prefill         : true,
-				bufferPx        : 200,
-				animate			: false,
-				loading         : {
-					msgText         : 'Loading',
-					finishedMsg     : '',
-					img             : FLBuilderLayoutConfig.paths.pluginUrl + 'img/ajax-loader-grey.gif',
-					speed           : 1
+			var path 		= $(this.nodeClass + ' .pp-content-grid-pagination a.next').attr('href'),
+				pagePattern = /(.*?(\/|\&|\?)paged-[0-9]{1,}(\/|=))([0-9]{1,})+(.*)/,
+				pageMatched = null,
+				scrollData	= {
+					navSelector     : this.nodeClass + ' .pp-content-grid-pagination',
+					nextSelector    : this.nodeClass + ' .pp-content-grid-pagination a.next',
+					itemSelector    : this.postClass,
+					prefill         : true,
+					bufferPx        : 200,
+					loading         : {
+						msgText         : 'Loading',
+						finishedMsg     : '',
+						img             : FLBuilderLayoutConfig.paths.pluginUrl + 'img/ajax-loader-grey.gif',
+						speed           : 1
+					}
+				};
+
+			// Define path since Infinitescroll incremented our custom pagination '/paged-2/2/' to '/paged-3/2/'.
+			if ( pagePattern.test( path ) ) {
+				scrollData.path = function( currPage ){
+					pageMatched = path.match( pagePattern );
+					path = pageMatched[1] + currPage + pageMatched[5];
+					return path;
 				}
-			}, $.proxy(this._infiniteScrollComplete, this));
+			}
+
+			$(this.wrapperClass).infinitescroll( scrollData, $.proxy(this._infiniteScrollComplete, this) );
 
 			setTimeout(function(){
 				$(window).trigger('resize');

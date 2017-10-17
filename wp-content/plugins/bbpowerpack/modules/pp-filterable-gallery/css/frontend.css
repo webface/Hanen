@@ -1,0 +1,106 @@
+div.mfp-wrap .mfp-close {
+	opacity: 1;
+    background-color: rgba(0,0,0,0.8) !important;
+    padding: 1px 7px !important;
+    height: 30px;
+    width: 30px;
+    border-radius: 0;
+    line-height: 1 !important;
+    font-family: inherit !important;
+    font-weight: bold !important;
+	font-size: 16px;
+    text-align: center !important;
+    top: 0 !important;
+    right: 0 !important;
+}
+
+.admin-bar div.mfp-wrap .mfp-close,
+.admin-bar div.mfp-wrap .mfp-close:active,
+.admin-bar div.mfp-wrap .mfp-close:hover,
+.admin-bar div.mfp-wrap .mfp-close:focus {
+    top: 0 !important;
+}
+
+div.mfp-wrap .mfp-close:hover,
+div.mfp-wrap .mfp-close:focus {
+	background-color: #000 !important;
+}
+
+div.mfp-wrap .mfp-bottom-bar {
+    margin-top: 10px;
+}
+
+.pp-photo-gallery-item {
+    float: left;
+    text-align: center;
+}
+
+.pp-masonry-item {
+    float: left;
+}
+
+.pp-photo-gallery-content {
+    position: relative;
+    text-align: center;
+	overflow: hidden;
+}
+
+.pp-photo-gallery {
+    position: relative;
+    text-align: center;
+}
+
+/* Overlay */
+.pp-gallery-overlay {
+	position: absolute;
+	overflow: hidden;
+	transition: .5s ease;
+}
+
+.pp-gallery-overlay .pp-caption {
+	margin-bottom: 10px;
+}
+
+.pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img,
+.pp-masonry-content .pp-photo-gallery-content .pp-gallery-img {
+	-webkit-transition: all 0.5s ease-out;
+	-moz-transition: all 0.5s ease-out;
+	-o-transition: all 0.5s ease-out;
+	-ms-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out;
+	-webkit-transform-style: preserve-3d;
+	will-change: transform;
+}
+
+/* Gallery Filters */
+.pp-gallery-filters {
+	padding-left: 0;
+	margin-bottom: 30px;
+}
+
+.pp-gallery-filters .pp-gallery-filter-label {
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: #eee;
+	margin-right: 10px;
+	color: #000;
+	cursor: pointer;
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	-ms-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+}
+
+.pp-gallery-filters .pp-gallery-filter-label:hover {
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	-ms-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+}
+
+.pp-gallery-filters .pp-gallery-filter-label.pp-filter-active {
+	background-color: #bbb;
+	color: #fff;
+}

@@ -24,17 +24,31 @@
 	font-size: <?php echo $settings->size; ?>px;
 	height: <?php echo $settings->box_size; ?>px;
 	width: <?php echo $settings->box_size; ?>px;
-	line-height: <?php echo $settings->size * 2; ?>px;
+	line-height: <?php echo $settings->box_size; ?>px;
 	text-align: center;
+	<?php if ( $settings->border_width >= 0 ) { ?>
+		border: <?php echo $settings->border_width; ?>px solid #<?php echo $settings->border_color; ?>;
+	<?php } ?>
 }
 
 .fl-node-<?php echo $id; ?> .fl-module-content .pp-social-icon i:hover,
 .fl-node-<?php echo $id; ?> .fl-module-content .pp-social-icon a:hover i {
 	color: #<?php echo '' != $settings->hover_color ? $settings->hover_color : $settings->color; ?>;
 	background: #<?php echo $settings->bg_hover_color; ?>;
+	<?php if ( $settings->border_width >= 0 ) { ?>
+		border-color: #<?php echo $settings->border_hover_color; ?>;
+	<?php } ?>
 }
 
 <?php foreach ( $settings->icons as $i => $icon ) : ?>
+	<?php if ( $icon->border_width >= 0 ) : ?>
+		.fl-node-<?php echo $id; ?> .fl-module-content .pp-social-icon:nth-child(<?php echo $i + 1; ?>) i {
+			border: <?php echo $icon->border_width; ?>px solid #<?php echo $icon->border_color; ?>;
+		}
+		.fl-node-<?php echo $id; ?> .fl-module-content .pp-social-icon:nth-child(<?php echo $i + 1; ?>) a:hover i {
+			border-color: #<?php echo $icon->border_hover_color; ?>;
+		}
+	<?php endif; ?>
 	<?php if ( isset( $icon->color ) || isset( $icon->bg_color ) ) : ?>
 		.fl-node-<?php echo $id; ?> .fl-module-content .pp-social-icon:nth-child(<?php echo $i + 1; ?>) i {
 			<?php if ( isset( $icon->color ) ) : ?>
@@ -77,6 +91,18 @@
 <?php } ?>
 
 @media only screen and (max-width: <?php echo $settings->breakpoint; ?>px) {
+	.fl-node-<?php echo $id; ?> .pp-responsive-left {
+		text-align: left;
+	}
+
+	.fl-node-<?php echo $id; ?> .pp-responsive-center {
+		text-align: center;
+	}
+
+	.fl-node-<?php echo $id; ?> .pp-responsive-right {
+		text-align: right;
+	}
+
 	/* Left */
 	.fl-node-<?php echo $id; ?> .pp-responsive-left .pp-social-icon {
 		margin-right: <?php echo $settings->spacing; ?>px;

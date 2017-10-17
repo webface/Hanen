@@ -1,3 +1,269 @@
+== 1.4.0.2 ==
+Release date: October 5, 2017
+* Enhancement: Added lightbox overlay color option in Photo Gallery module
+* Fix: Smart Button text color reversed in hover and visited state
+* Fix: Modal Box scrolling issue in iOS Safari
+* Fix: Mega menu cut off issue in Advanced Menu module
+
+== 1.4.0.1 ==
+Release date: October 2, 2017
+* Enhancement: Added field connection in Photo Gallery module
+* Enhancement: Added field connection in Filterable Gallery module
+* Fix: PHP notice in Photo Gallery module
+* Fix: Lightbox was not working for grid layout in Filterable Gallery module
+
+== 1.4.0 ==
+Release date: September 29, 2017
+* New: Added Photo Gallery module
+* Enhancement: Added Radio & Checkbox input styling options in Gravity Forms module
+* Enhancement: Added column classes in Contact Form 7 module
+* Enhancement: Added mega menu support in Advanced Menu module
+* Enhancement: Added field to change label for "All" in Filterable Gallery module
+* Enhancement: Added left/right direction for Half Overlay in Row settings
+* Enhancement: Added box as link type in FlipBox module
+* Fix: Floating Subscribe Form cut off issue on small devices
+* Fix: Smart Heading description responsive font sizes were not working
+* Fix: Active link color was not working for sub-menu and toggle arrows in Advanced Menu module
+* Fix: Row Separators top/bottom margins
+* Fix: Alt tag was missing for image icon in Highlight Box module
+* Fix: Horizontal & Vertical drop shadow was in reverse order in Smart Button module
+* Fix: Image size in InfoBox layout-3 and layout-4
+* Fix: Smart Button transition effects
+* Fix: Lightbox was also loading the images from hidden gallery items when filter is active in Filterable Gallery module
+
+== 1.3.2 ==
+Release date: September 1, 2017
+* Enhancement: Added Email field in Team module
+* Enhancement: Added Border options for button in Info Box module
+* Enhancement: Added Full Width option for Button in Info Box module
+* Enhancement: Scroll position will revert to the link while using Modal Box URL trigger
+* Fix: Contact Form was not working on some server
+* Fix: Button transition wasn't working in Subscribe Form module
+* Fix: Content Grid pagination issue
+* Fix: FlipBox height issue in Safari
+* Fix: Templates were not loading in backend when using custom directory for uploads
+* Fix: Video was playing in the background in FireFox when closing Modal Box
+* Fix: Smart Heading module sub-heading styling was not working on 'p' element in some cases
+* Fix: Info Box image size issue
+
+== 1.3.1 ==
+Release date: August 17, 2017
+* New: Added a new row separator named Water
+* Enhancement: Added custom CSS class field for button in InfoBox module
+* Enhancement: Added WordPress URL field in Team module
+* Enhancement: Added shortcode support in button field of Pricing Table module
+* Enhancement: Added custom width option for button in InfoBox module
+* Enhancement: Added border options in Social Icons module
+* Enhancement: Added typography settings for submenu in Advanced Menu module
+* Enhancement: Removed unnecessary HTML tag option from typography settings in Advanced Menu module
+* Enhancement: Added Hide on Mobile field for Down Arrow in row settings
+* Enhancement: Added animation option for Down Arrow in row settings
+* Enhancement: Added subject field to enter default subject in Contact Form module
+* Enhancement: Added custom label fields in Contact Form module
+* Enhancement: Added PowerPack as prefix to modules settings form heading to distinguish from other add-ons
+* Fix: Default margin issue in Advanced Menu full screen overlay
+* Fix: Posts filters were not working properly when excluding some taxonomies in Content Grid module
+* Fix: Row Templates mode wasn't working properly in multisite network
+* Fix: Contact Form Reply-To headers incorrectly set
+* Fix: Content Grid scroll pagination issue
+* Fix: Minor CSS issues in Business Hours module
+
+== 1.3.0.3 ==
+Release date: August 3, 2017
+* Enhancement: Added field connections for Read More button text in Content Grid module
+* Enhancement: Added hook pp_cg_before_posts in Content Grid module
+* Enhancement: Added hook pp_cg_module_layout_path in Content Grid module
+* Enhancement: Added hook pp_cg_after_posts in Content Grid module
+* Enhancement: Added hook pp_cg_after_pagination in Content Grid module
+* Enhancement: Added hook pp_tiles_before_posts in Content Tiles module
+* Enhancement: Added hook pp_tiles_layout_path in Content Tiles module
+* Enhancement: Added hook pp_tiles_after_posts in Content Tiles module
+* Enhancement: Added hook pp_before_table_module in Table module
+* Enhancement: Added hook pp_after_table_module in Table module
+* Fix: Field connection post:title shortcode for Button Text field was rendering page title in Content Grid
+* Fix: Off canvas menu iOS Safari compatibility issue in Advanced Menu module
+* Fix: Submenu toggle was not working for small devices breakpoint in Advanced Menu module
+* Fix: List spacing issue in InfoList module
+* Fix: Fields toggle issue in Content Grid module
+
+== 1.3.0.2 ==
+Release date: July 26, 2017
+* Enhancement: Added image alt tag in InfoBox module
+* Enhancement: Added AJAX field in Gravity Forms module
+* Enhancement: Added field to change "All" filter label in Content Grid module
+* Enhancement: Added custom breakpoint for scrollable feature in Table module
+* Fix: Off canvas menu scroll issue on iOS Safari in Advanced Menu module
+* Fix: Masonry was not loading after publishing the page in Custom Grid module
+* Fix: Horizontal scroll issue while using 3D slider module
+
+== 1.3.0.1 ==
+Release date: July 18, 2017
+* Enhancement: Added placeholder toggle and color option in Contact Form 7 module
+* Fix: PHP notice caused by Custom Grid
+
+== 1.3 ==
+Release date: July 17, 2017
+* New: Added Advanced Menu module
+* New: Added Custom Grid module
+* New: Added Filterable Gallery Module
+* New: Added 3D Slider module
+* New: Added Table module
+* Enhancement: Added title prefix option in InfoBox module
+* Enhancement: Added margin options for title and description in FlipBox module
+* Enhancement: Added padding option for button in FlipBox module
+* Enhancement: Added round corners option for box in Smart Banner module
+* Enhancement: Added smooth transition on button in Smart Banner module
+* Enhancement: Added zoom effect on background image in Smart Banner module
+* Enhancement: Added box shadow option in Team module
+* Enhancement: Added Field Connections for image field in Team module
+* Enhancement: Added content background color option in Team module
+* Enhancement: Added content position option in Team module
+* Enhancement: Added title alignment option in Image Panel module
+* Enhancement: Added box shadow option in Testimonial module
+* Enhancement: Added spacing option for Layout-3 in Testimonial module
+* Enhancement: Added content padding option in Advanced Tabs module
+* Enhancement: Added content border option in Advanced Tabs module
+* Enhancement: Added background image option in Advanced Tabs module
+* Enhancement: Added margin option for Style-8 in Advanced Tabs module
+* Enhancement: Added margin option for content in Subscribe Form module
+* Enhancement: Added responsive form padding option in Subscribe Form module
+* Enhancement: Added round corners option in Highlight Box module
+* Enhancement: Added margin and padding options for items in Restaurant Menu module
+* Enhancement: Added round corners and box shadow options for items in Restaurant Menu module
+* Enhancement: Added background opacity option for label and content in Advanced Accordion module
+* Enhancement: Added title border option in Timeline module
+* Enhancement: Subscribe Form can be submitted by pressing enter key
+* Enhancement: Rearranged fields in InfoBox module
+* Enhancement: Rearranged fields in Team module
+* Fix: Image alignment for "Icon on Top" layout in InfoBox module
+* Fix: Removed default margins on image in InfoBox module
+* Fix: Images margins of left and right icon layout in InfoBox module
+* Fix: Icon border radius preview in FlipBox module
+* Fix: Image height in Smart Banner module
+* Fix: Preview selectors for content padding in Smart Banner module
+* Fix: Pagination issues when using multiple grid modules on same page in Content Grid module
+* Fix: Border and Round Corners were not working in Hover Cards 2 module
+* Fix: Minor CSS issues in Team module
+* Fix: Minor CSS issues in InfoList module
+* Fix: Minor CSS issues in Testimonial module
+* Fix: Minor CSS issues in Advanced Tabs module
+* Fix: Minor CSS issues in Advanced Accordion module
+* Fix: Minor CSS issues in Pricing Table module
+* Fix: Input border was not working in Contact Form module
+* Fix: Input border was not working in Subscribe Form module
+
+== 1.2.8 ==
+Release date: June 19, 2017
+* Enhancement: Icon can now be removable in Announcement Bar module
+* Enhancement: Added filter pp_cg_loop_settings in Content Grid module
+* Enhancement: Added action pp_cg_loop_settings_before_form in Content Grid module
+* Enhancement: Added action pp_cg_loop_settings_after_form in Content Grid module
+* Enhancement: Added Full Content option in Content Grid module
+* Enhancement: Added meta separator field in Content Grid module
+* Enhancement: Added filter pp_tiles_loop_settings in Content Tiles module
+* Enhancement: Added action pp_tiles_loop_settings_before_form in Content Tiles module
+* Enhancement: Added action pp_tiles_loop_settings_after_form in Content Tiles module
+* Enhancement: Added dots ... at the end of the limited post description in Content Grid module
+* Enhancement: Modal Box can now be opened via URL
+* Enhancement: Added content alignment option in InfoBox module
+* Enhancement: Added No Icon layout type in InfoBox module
+* Enhancement: Added an option to choose the image size between default and custom in InfoBox module
+* Enhancement: Added custom height option for input fields in Gravity Forms module
+* Enhancement: Added field connection in Social Icons module
+* Fix: Query filters JS toggle issue in Content Grid
+* Fix: Removed "Link" option from Content Grid to fix the link issue on some server
+* Fix: Layout break when using saved templates in Modal Box
+* Fix: Sub labels were not hiding when labels are turned off in Gravity Forms module
+* Fix: Minor CSS issues in Gravity Forms module
+* Fix: Unable to remove post meta text color in Content Grid module
+* Fix: Parent column round corners CSS was applying to child column
+* Fix: Beaver Themer layout break when using Content Tiles due to wp_reset_query()
+
+== 1.2.7 ==
+Release date: May 25, 2017
+* Fix: Links not working in Content Grid module after updating to 1.2.6
+* Fix: Font size CSS output for post title in Content Grid module
+* Fix: WooCommerce deprecated functions in Content Grid
+* Fix: Removed default colors in Smart Heading module
+* Fix: Minor CSS errors in all form modules
+
+== 1.2.6 ==
+Release date: May 11, 2017
+* New: Added an option in White Label settings to change the category label in templates lightbox
+* Enhancement: Added new link type option in Content Grid module
+* Enhancement: Added Beaver Themer compatibility in Content Grid module
+* Enhancement: Added match fields to filters in Content Tiles module
+* Enhancement: Added mouse wheel and touch swipe feature in Dot / One Page Navigation module
+* Enhancement: Added field connections to Smart Banner image field
+* Enhancement: Added field connections to custom title and description fields in all form modules
+* Fix: Button text hover color CSS was not working in Contact Form module
+* Fix: Modal Box not closing when animation speed is set to 0
+* Fix: Changed field connection from alignment field to sub-heading field in Smart Heading module
+* Fix: Responsive alignment issue in Social Icons module
+* Fix: Minor CSS issues with multi input fields in settings lightbox
+* Fix: Deprecated functions issue with BB 1.10
+* Fix: Image width issue in Content Grid carousel layout
+* Fix: Gravity Form right padding issue
+* Fix: Caption not linked in Image module
+
+== 1.2.5 ==
+Release date: April 24, 2017
+* Enhancement: Images will be stacked in Images Panel module on device
+* Fix: Grid layout issue when using shortcode to render Content Grid in Advanced Accordion module
+* Fix: CSS not working for featured title in Pricing Table module
+* Fix: Undefined function error when fetching templates
+* Fix: Content alignment issue in Hover Card module on iOS devices
+
+== 1.2.4 ==
+Release date: April 7, 2017
+* New: Added new row templates including Heading and FAQs
+* Enhancement: Added link field in Smart Heading module
+* Enhancement: Added list style format (as Style 8) in Content Grid module
+* Enhancement: Added responsive fields for font-size and line-height in Infobox module
+* Enhancement: Added link target option in Infobox module
+* Enhancement: Added background overlay options in all form modules
+* Enhancement: Updated hover transitions in Infobox module and button module
+* Fix: HTML render issue in Content Tiles module
+* Fix: Modal Box responsive layout issue and other minor issues on different viewport
+* Fix: Announcement Bar responsive header overlap issue
+* Fix: Box shadow CSS output in all form modules
+* Fix: Button CSS output in Formidable form module
+* Fix: Hours output in Business Hours module
+* Fix: Contact Form 7 submission issues
+* Fix: Subscribe Form submission issues
+* Fix: PHP notice in Contact Form 7
+* Fix: PHP notice in Dot / One Page navigation module's CSS
+
+== 1.2.3 ==
+Release date: February 3, 2017
+* Enhancement: Added overlay effects in Modal Box module
+* Fix: Empty heading markup output in Testimonials module
+* Fix: Fullscreen video issue in Modal Box module
+* Fix: Contact Form error on submit
+* Fix: PHP warnings in Contact Form, Subscribe Form, and Pricing Table module when using PowerPack with Beaver Builder Lite version
+
+== 1.2.2 ==
+Release date: January 24, 2017
+* Enhancement: Added schema markup in Business Hours module
+* Enhancement: Changed sequence of tab IDs in Advanced Tabs module to start from 1
+* Enhancement: Added a field to input custom prefix for tab IDs attribute in Advanced Tabs module
+* Enhancement: Added a field in Content Grid module to control vertical spacing of pagination
+* Enhancement: Testimonials Module won't create slider while having only one testimonial
+* Enhancement: Removed default font sizes from InfoBox module to retain theme's style
+* Enhancement: Removed default typography values from Gravity Forms module to retain theme's style
+* Enhancement: Removed default text color values from WPForms module to retain theme's style
+* Enhancement: Removed default text color values from Ninja Forms module to retain theme's style
+* Enhancement: Removed default text color, input border color, typography values from Contact Form 7 module to retain theme's style
+* Fix: Image animation on page scroll in Smart Banner module
+* Fix: Ninja Forms submit button styling bug
+* Fix: Minor issues of Modal Box module
+* Fix: Minor styling issues of Advanced Tabs module
+* Fix: Image width issue in Testimonial module on small device
+* Fix: Exit Intent popup reappear issue when cookie duration is set in Subscribe Form module
+* Fix: Equal height issue of posts when displaying Content Grid in Advanced Tab module via shortcode
+* Fix: Hover Cards 2 responsive size issue
+* Fix: PHP warnings in Contact Form submit button when using Beaver Builder Lite
+
 == 1.2.1 ==
 Release date: December 23, 2016
 * New: Added Pricing Table module

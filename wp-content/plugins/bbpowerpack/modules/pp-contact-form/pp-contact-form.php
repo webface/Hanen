@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @class FLHtmlModule
+ * @class PPContactFormModule
  */
 class PPContactFormModule extends FLBuilderModule {
 
@@ -13,22 +13,23 @@ class PPContactFormModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          => __('Contact Form', 'bb-powerpack'),
             'description'   => __('Advanced module for Contact Form.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+			'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-contact-form/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-contact-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
 		));
 
-		add_action('wp_ajax_fl_builder_email', array($this, 'send_mail'));
-		add_action('wp_ajax_nopriv_fl_builder_email', array($this, 'send_mail'));
+		add_action('wp_ajax_pp_send_email', array($this, 'send_mail'));
+		add_action('wp_ajax_nopriv_pp_send_email', array($this, 'send_mail'));
 	}
 
 	/**
 	 * @method send_mail
 	 */
 	public function send_mail() {
-	    global $fl_contact_from_name, $fl_contact_from_email;
+	    //global $pp_contact_from_name, $pp_contact_from_email;
 
 		// Get the contact form post data
     	$node_id			= isset( $_POST['node_id'] ) ? sanitize_text_field( $_POST['node_id'] ) : false;
@@ -36,7 +37,13 @@ class PPContactFormModule extends FLBuilderModule {
 		$template_node_id   = isset( $_POST['template_node_id'] ) ? sanitize_text_field( $_POST['template_node_id'] ) : false;
 
 		$subject 			= (isset($_POST['subject']) ? $_POST['subject'] : __('Contact Form Submission', 'bb-powerpack'));
-		$mailto 			= get_option('admin_email');
+		$admin_email 		= get_option('admin_email');
+		$site_name 			= get_option( 'blogname' );
+
+		$response 			= array(
+			'error' 	=> true,
+			'message' 	=> __( 'Message failed. Please try again.', 'bb-powerpack' ),
+		);
 
 		if ( $node_id ) {
 
@@ -53,41 +60,45 @@ class PPContactFormModule extends FLBuilderModule {
 
 			if ( isset($settings->mailto_email) && !empty($settings->mailto_email) ) {
 				$mailto   = $settings->mailto_email;
+			} else {
+				$mailto   = $mailto;
 			}
 
-			$fl_contact_from_email = (isset($_POST['email']) ? sanitize_email($_POST['email']) : null);
-			$fl_contact_from_name = (isset($_POST['name']) ? $_POST['name'] : null);
+			if ( isset( $settings->subject_toggle ) && ( 'hide' == $settings->subject_toggle ) && isset( $settings->subject_hidden ) && ! empty( $settings->subject_hidden ) ) {
+				$subject   = $settings->subject_hidden;
+			}
 
-			add_filter('wp_mail_from', 'PPContactFormModule::mail_from');
-			add_filter('wp_mail_from_name', 'PPContactFormModule::from_name');
+			$response['error'] = false;
+
+			$pp_contact_from_email = (isset($_POST['email']) ? sanitize_email($_POST['email']) : null);
+			$pp_contact_from_name = (isset($_POST['name']) ? $_POST['name'] : null);
+
+			$headers = array(
+				'From: ' . $site_name . ' <' . $admin_email . '>',
+				  'Reply-To: ' . $pp_contact_from_name . ' <' . $pp_contact_from_email . '>',
+			);
 
 			// Build the email
 			$template = "";
 
-			if (isset($_POST['name']))  $template .= "Name: $_POST[name] \r\n";
-			if (isset($_POST['email'])) $template .= "Email: $_POST[email] \r\n";
-			if (isset($_POST['phone'])) $template .= "Phone: $_POST[phone] \r\n";
+			if ( isset( $_POST['name'] ) ) {  $template .= "Name: $_POST[name] \r\n";
+			}
+			if ( isset( $_POST['email'] ) ) { $template .= "Email: $_POST[email] \r\n";
+			}
+			if ( isset( $_POST['phone'] ) ) { $template .= "Phone: $_POST[phone] \r\n";
+			}
 
 			$template .= __('Message', 'bb-powerpack') . ": \r\n" . $_POST['message'];
 
-			// Double check the mailto email is proper and send
-			if ($mailto) {
-				wp_mail($mailto, $subject, $template);
-				die('1');
-			} else {
-				die($mailto);
+			// Double check the mailto email is proper and no validation error found, then send.
+			if ( $mailto && false === $response['error'] ) {
+				wp_mail( $mailto, $subject, $template, $headers );
+				$response['message'] = __( 'Sent!', 'bb-powerpack' );
+				$response['error'] = false;
 			}
+
+			wp_send_json( $response );
 		}
-	}
-
-	static public function mail_from($original_email_address) {
-		global $fl_contact_from_email;
-		return ($fl_contact_from_email != '') ? $fl_contact_from_email : $original_email_address;
-	}
-
-	static public function from_name($original_name) {
-		global $fl_contact_from_name;
-		return ($fl_contact_from_name != '') ? $fl_contact_from_name : $original_name;
 	}
 
 }
@@ -141,6 +152,7 @@ FLBuilder::register_module('PPContactFormModule', array(
                         'label'         => __('Custom Title', 'bb-powerpack'),
                         'default'       => '',
                         'description'   => '',
+						'connections'   => array('string'),
 						'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-form-title'
@@ -152,6 +164,7 @@ FLBuilder::register_module('PPContactFormModule', array(
                         'default'           => '',
                         'placeholder'       => '',
                         'rows'              => '6',
+						'connections'   	=> array('string', 'html'),
                         'preview'           => array(
                             'type'          => 'text',
                             'selector'      => '.pp-form-description'
@@ -184,14 +197,25 @@ FLBuilder::register_module('PPContactFormModule', array(
 							'hide'      => __('Hide', 'bb-powerpack'),
 						)
 					),
-					'subject_toggle'   => array(
-						'type'          => 'pp-switch',
-						'label'         => __('Subject Field', 'bb-powerpack'),
-						'default'       => 'hide',
-						'options'       => array(
-							'show'      => __('Show', 'bb-powerpack'),
-							'hide'      => __('Hide', 'bb-powerpack'),
-						)
+					'subject_toggle'	=> array(
+						'type'		  		=> 'pp-switch',
+						'label'		  		=> __( 'Subject Field', 'bb-powerpack' ),
+						'default'		  	=> 'hide',
+						'options'		  	=> array(
+							'show'	   			=> __( 'Show', 'bb-powerpack' ),
+							'hide'	   			=> __( 'Hide', 'bb-powerpack' ),
+						),
+						'toggle'			=> array(
+							'hide'				=> array(
+								'fields'			=> array( 'subject_hidden' ),
+							),
+						),
+					),
+					'subject_hidden'	=> array(
+						'type'		  		=> 'text',
+						'label'		  		=> __( 'Email Subject', 'bb-powerpack' ),
+						'default'			=> __( 'Contact Form Submission', 'bb-powerpack' ),
+						'help'				=> __( 'You can choose the subject of the email. Defaults to Contact Form Submission.', 'bb-powerpack' ),
 					),
 					'message_toggle'   => array(
 						'type'          => 'pp-switch',
@@ -211,6 +235,36 @@ FLBuilder::register_module('PPContactFormModule', array(
                             'none'     => __('Hide', 'bb-powerpack'),
                         ),
                     ),
+				)
+			),
+			'custom_labels'	=> array(
+				'title'			=> __('Custom Labels', 'bb-powerpack'),
+				'fields'		=> array(
+					'name_label'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Name', 'bb-powerpack'),
+						'default'		=> _x( 'Name', 'Contact form Name field label.', 'bb-powerpack' )
+					),
+					'email_label'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Email', 'bb-powerpack'),
+						'default'		=> _x( 'Email', 'Contact form Email field label.', 'bb-powerpack' )
+					),
+					'phone_label'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Phone', 'bb-powerpack'),
+						'default'		=> _x( 'Phone', 'Contact form Phone field label.', 'bb-powerpack' )
+					),
+					'subject_label'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Subject', 'bb-powerpack'),
+						'default'		=> _x( 'Subject', 'Contact form Subject field label.', 'bb-powerpack' )
+					),
+					'message_label'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Message', 'bb-powerpack'),
+						'default'		=> _x( 'Your Message', 'Contact form Message field label.', 'bb-powerpack' )
+					),
 				)
 			),
 			'success'       => array(

@@ -16,7 +16,8 @@ class PPInfoListModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Info List', 'bb-powerpack'),
             'description'   => __('Addon to display info list.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-infolist/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-infolist/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -151,7 +152,7 @@ FLBuilder::register_module('PPInfoListModule', array(
                         'maxlength'     => '2',
                         'default'       => '16',
                         'label'         => __('Icon Size', 'bb-powerpack'),
-                        'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'     => array(
@@ -174,7 +175,7 @@ FLBuilder::register_module('PPInfoListModule', array(
                         'size'      => '5',
                         'maxlength'     => '3',
                         'default'       => '40',
-                        'description'   => _x( 'px', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'      => 'css',
                             'rules'     => array(
@@ -227,7 +228,7 @@ FLBuilder::register_module('PPInfoListModule', array(
                         'default'       => 1,
                         'size'          => 5,
                         'maxlength'     => 2,
-                        'description'   => _x( 'px', 'Value unit for border width. Such as: "10px"', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'     => array(
@@ -282,7 +283,7 @@ FLBuilder::register_module('PPInfoListModule', array(
                         'default'       => '0',
                         'size'          => '5',
                         'maxlength'     => '3',
-                        'description'   => _x( 'px', 'Value unit for border radius. Such as: "10px"', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'     => array(
@@ -364,7 +365,7 @@ FLBuilder::register_module('PPInfoListModule', array(
                         'maxlength'     => '3',
                         'default'     => '0',
                         'label'         => __('Inside Spacing', 'bb-powerpack'),
-                        'description'   => _x( 'px', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'help'      => __('Space between icon and the border', 'bb-powerpack'),
                         'preview'       => array(
                             'type'          => 'css',
@@ -427,7 +428,7 @@ FLBuilder::register_module('PPInfoListModule', array(
                         'size'          => '5',
                         'maxlength'     => '2',
 						'label'         => __('Font Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-infolist-title h3',
@@ -498,7 +499,7 @@ FLBuilder::register_module('PPInfoListModule', array(
                         'size'          => '5',
                         'maxlength'     => '2',
 						'label'         => __('Font Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-infolist-description',
@@ -548,6 +549,7 @@ FLBuilder::register_settings_form('pp_list_item', array(
                             'type'      => 'photo',
                             'label'     => __('Image Icon', 'bb-powerpack'),
                             'show_remove'    => true,
+                            'connections'   => array( 'photo' ),
                         ),
                         'icon_animation'     => array(
                             'type'      => 'select',
@@ -610,6 +612,7 @@ FLBuilder::register_settings_form('pp_list_item', array(
                             'type'      => 'text',
                             'label'     => '',
                             'default'     => '',
+                            'connections'   => array( 'string', 'html', 'url' ),
                             'preview'       => array(
     							'type'          => 'text',
     							'selector'      => '.pp-infolist-title h3'
@@ -626,6 +629,7 @@ FLBuilder::register_settings_form('pp_list_item', array(
                             'default'   => '',
                             'media_buttons' => false,
                             'rows'      => 4,
+                            'connections'   => array( 'string', 'html', 'url' ),
                             'preview'   => array(
     							'type'       => 'text',
     							'selector'   => '.pp-infolist-description'
@@ -662,6 +666,7 @@ FLBuilder::register_settings_form('pp_list_item', array(
                             'type'          => 'link',
     						'label'         => __('Link', 'bb-powerpack'),
     						'placeholder'   => __( 'http://www.example.com', 'bb-powerpack' ),
+                            'connections'   => array( 'url' ),
     						'preview'       => array(
     							'type'          => 'none'
     						)

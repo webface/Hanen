@@ -322,17 +322,17 @@ function pp_column_shadow( $form, $id ) {
                         ),
                         'options'   => array(
                             'vertical'  => array(
-                                'icon'          => 'fa-arrows-v',
-                                'placeholder'   => __('Vertical', 'bb-powerpack'),
-                                'tooltip'       => __('Vertical', 'bb-powerpack'),
+                                'icon'          => 'fa-arrows-h',
+                                'placeholder'   => __('Horizontal', 'bb-powerpack'),
+                                'tooltip'       => __('Horizontal', 'bb-powerpack'),
                                 'preview'       => array(
                                     'type'          => 'none'
                                 )
                             ),
                             'horizontal' => array(
-                                'icon'          => 'fa-arrows-h',
-                                'placeholder'   => __('Horizontal', 'bb-powerpack'),
-                                'tooltip'       => __('Horizontal', 'bb-powerpack'),
+                                'icon'          => 'fa-arrows-v',
+                                'placeholder'   => __('Vertical', 'bb-powerpack'),
+                                'tooltip'       => __('Vertical', 'bb-powerpack'),
                                 'preview'       => array(
                                     'type'          => 'none'
                                 )
@@ -410,17 +410,17 @@ function pp_column_shadow( $form, $id ) {
                         ),
                         'options'   => array(
                             'vertical'  => array(
-                                'icon'          => 'fa-arrows-v',
-                                'placeholder'   => __('Vertical', 'bb-powerpack'),
-                                'tooltip'       => __('Vertical', 'bb-powerpack'),
+                                'icon'          => 'fa-arrows-h',
+                                'placeholder'   => __('Horizontal', 'bb-powerpack'),
+                                'tooltip'       => __('Horizontal', 'bb-powerpack'),
                                 'preview'       => array(
                                     'type'          => 'none'
                                 )
                             ),
                             'horizontal' => array(
-                                'icon'          => 'fa-arrows-h',
-                                'placeholder'   => __('Horizontal', 'bb-powerpack'),
-                                'tooltip'       => __('Horizontal', 'bb-powerpack'),
+                                'icon'          => 'fa-arrows-v',
+                                'placeholder'   => __('Vertical', 'bb-powerpack'),
+                                'tooltip'       => __('Vertical', 'bb-powerpack'),
                                 'preview'       => array(
                                     'type'          => 'none'
                                 )

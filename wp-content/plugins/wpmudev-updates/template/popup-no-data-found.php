@@ -57,6 +57,6 @@
 	);
 	?>
 	</small></p>
-	<span class="the-hero"><i class="dev-icon dev-icon-devman"></i></span>
+	<span aria-hidden="true" class="the-hero"><i class="dev-icon dev-icon-devman"></i></span>
 </div>
 </dialog>

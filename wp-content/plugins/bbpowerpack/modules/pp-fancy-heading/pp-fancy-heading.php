@@ -16,7 +16,8 @@ class PPFancyHeadingModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Fancy Heading', 'bb-powerpack'),
             'description'   => __('Fancy Heading module with animated colors and backgroud cliping.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-fancy-heading/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-fancy-heading/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -39,6 +40,7 @@ FLBuilder::register_module('PPFancyHeadingModule', array(
                         'type'          => 'text',
                         'label'         => __('Title', 'bb-powerpack'),
                         'default'       => __('AWESOME TITLE!', 'bb-powerpack'),
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'         => array(
                             'type'             => 'text',
                             'selector'         => '.pp-fancy-heading-title',

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * List of modules.
+ */
 $modules = array(
     'modules/pp-highlight-box/pp-highlight-box.php',
     'modules/pp-testimonials/pp-testimonials.php',
@@ -37,7 +39,18 @@ $modules = array(
 	'modules/pp-pricing-table/pp-pricing-table.php',
 	'modules/pp-business-hours/pp-business-hours.php',
 	'modules/pp-hover-cards-2/pp-hover-cards-2.php',
+	'modules/pp-3d-slider/pp-3d-slider.php',
+    'modules/fl-button/fl-button.php',
+    'modules/pp-table/pp-table.php',
+    'modules/pp-filterable-gallery/pp-filterable-gallery.php',
+    'modules/pp-advanced-menu/pp-advanced-menu.php',
+    'modules/pp-gallery/pp-gallery.php',
 );
+
+/* Custom Grid */
+if ( class_exists('FLThemeBuilderLoader') ) {
+    $modules[] = 'modules/pp-custom-grid/pp-custom-grid.php';
+}
 
 /* Form Modules */
 if ( class_exists( 'GFForms' ) ) {
@@ -59,14 +72,32 @@ if ( function_exists( 'Ninja_Forms' ) ) {
     $modules[] = 'modules/pp-ninja-form/pp-ninja-form.php';
 }
 
-foreach ( $modules as $module ) {
-    if ( is_child_theme() && file_exists( get_stylesheet_directory() . '/bb-powerpack/' . $module ) ) {
-        require_once get_stylesheet_directory() . '/bb-powerpack/' . $module;
+$theme_dir = '';
+
+if ( is_child_theme() ) {
+    $theme_dir = get_stylesheet_directory();
+} else {
+    $theme_dir = get_template_directory();
+}
+
+/**
+ * Loop through each module path and
+ * check if the module is available in theme
+ * to override. If available, load the module
+ * from theme.
+ */
+foreach ( $modules as $module )
+{
+    if ( file_exists( $theme_dir . '/bb-powerpack/' . $module ) )
+    {
+        require_once $theme_dir . '/bb-powerpack/' . $module;
     }
-    elseif ( file_exists( get_template_directory() . '/bb-powerpack/' . $module ) ) {
-        require_once get_template_directory() . '/bb-powerpack/' . $module;
+    elseif ( file_exists( $theme_dir . '/bbpowerpack/' . $module ) )
+    {
+        require_once $theme_dir . '/bbpowerpack/' . $module;
     }
-    else {
+    else
+    {
         require_once BB_POWERPACK_DIR . $module;
     }
 }

@@ -16,7 +16,8 @@ class PPContactForm7Module extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Contact Form 7', 'bb-powerpack'),
             'description'   => __('A module for Contact Form 7.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-contact-form-7/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-contact-form-7/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -48,6 +49,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'label'         => __('Custom Title', 'bb-powerpack'),
                         'default'       => '',
                         'description'   => '',
+                        'connections'   => array('string'),
 						'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-cf7-form-title'
@@ -59,6 +61,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'default'           => '',
                         'placeholder'       => '',
                         'rows'              => '6',
+                        'connections'       => array('string', 'html'),
                         'preview'           => array(
                             'type'          => 'text',
                             'selector'      => '.pp-cf7-form-description'
@@ -240,7 +243,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                     'input_field_text_color'    => array(
                         'type'                      => 'color',
                         'label'                     => __('Text Color', 'bb-powerpack'),
-                        'default'                   => '333333',
+                        'default'                   => '',
                         'show_reset'                => true,
                         'preview'                   => array(
                             'type'                      => 'css',
@@ -251,7 +254,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                     'input_field_bg_color'  => array(
                         'type'                  => 'color',
                         'label'                 => __('Background Color', 'bb-powerpack'),
-                        'default'               => 'ffffff',
+                        'default'               => '',
                         'show_reset'            => true,
                         'preview'               => array(
                             'type'                  => 'css',
@@ -264,6 +267,18 @@ FLBuilder::register_module('PPContactForm7Module', array(
             'input_sizes'               => array(
                 'title'                     => __('Sizes & Padding', 'bb-powerpack'),
                 'fields'                    => array(
+					'input_width'              => array(
+						'type'                      => 'text',
+						'label'                     => __('Input Width', 'bb-powerpack'),
+						'description'               => '%',
+						'class'                     => 'bb-gf-input input-small',
+						'preview'                   => array(
+							'type'                      => 'css',
+							'selector'                  => '.pp-cf7-content input.wpcf7-text, .pp-cf7-content .wpcf7-quiz, .pp-cf7-content .wpcf7-number, .pp-cf7-content .wpcf7-date, .pp-cf7-content .wpcf7-file',
+							'property'                  => 'width',
+							'unit'                      => '%'
+						),
+					),
                     'input_height'              => array(
                         'type'                      => 'text',
                         'label'                     => __('Input Height', 'bb-powerpack'),
@@ -349,7 +364,8 @@ FLBuilder::register_module('PPContactForm7Module', array(
                     'input_field_border_color'  => array(
                         'type'                      => 'color',
                         'label'                     => __('Border Color', 'bb-powerpack'),
-                        'default'                   => '333333',
+                        'default'                   => '',
+                        'show_reset'                => true,
                         'preview'                   => array(
                             'type'                      => 'css',
                             'selector'                  => '.pp-cf7-content input.wpcf7-text, .pp-cf7-content .wpcf7-textarea, .pp-cf7-content .wpcf7-quiz, .pp-cf7-content .wpcf7-number, .pp-cf7-content .wpcf7-date,.pp-cf7-content .wpcf7-file',
@@ -359,7 +375,8 @@ FLBuilder::register_module('PPContactForm7Module', array(
                     'input_field_border_focus'  => array(
                         'type'                      => 'color',
                         'label'                     => __('Border Color Focus', 'bb-powerpack'),
-                        'default'                   => '333333',
+                        'default'                   => '',
+                        'show_reset'                => true,
                     ),
                     'input_field_border_position'   => array(
                         'type'                          => 'select',
@@ -423,6 +440,36 @@ FLBuilder::register_module('PPContactForm7Module', array(
                             'out'                       => __('Outside', 'bb-powerpack'),
                             'inset'                     => __('Inside', 'bb-powerpack'),
                         ),
+                    ),
+                )
+            ),
+            'placeholder_style'      => array( // Section
+                'title'         => __('Placeholder', 'bb-powerpack'), // Section Title
+                'fields'        => array( // Section Fields
+                    'show_placeholder' 	=> array(
+                        'type'          => 'pp-switch',
+                        'label'         => __('Show Placeholder', 'bb-powerpack'),
+                        'default'       => 'yes',
+                        'options'		=> array(
+                       		'yes'	         => __('Yes', 'bb-powerpack'),
+                       		'no'	         => __('No', 'bb-powerpack'),
+                        ),
+                        'toggle' => array(
+                            'yes' => array(
+                                'fields' => array('placeholder_color')
+                            )
+                        )
+                    ),
+                    'placeholder_color'  => array(
+                        'type'                  => 'color',
+                        'label'                 => __('Color', 'bb-powerpack'),
+                        'default'               => '999999',
+                        'show_reset'            => true,
+                        'preview'               => array(
+                            'type'              => 'css',
+                            'selector'          => '.pp-cf7-content input[type=text]::-webkit-input-placeholder, .pp-cf7-content input[type=tel]::-webkit-input-placeholder, .pp-cf7-content input[type=email]::-webkit-input-placeholder, .pp-cf7-content textarea::-webkit-input-placeholder',
+                            'property'          => 'color'
+                        )
                     ),
                 )
             ),
@@ -662,7 +709,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'label'                         => __('Validation Error Font Size', 'bb-powerpack'),
                         'description'                   => 'px',
                         'class'                         => 'bb-gf-input input-small',
-                        'default'                       => 13,
+                        'default'                       => '',
                         'preview'                       => array(
                             'type'                          => 'css',
                             'selector'                      => '.wpcf7-response-output',
@@ -769,7 +816,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'label'         => __('Font Size', 'bb-powerpack'),
                         'description'   => 'px',
                         'class'         => 'bb-gf-input input-small',
-                        'default'       => '18',
+                        'default'       => '',
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-cf7-form-title',
@@ -780,7 +827,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                     'title_color'       => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '333333',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
@@ -825,7 +872,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'label'                => __('Font Size', 'bb-powerpack'),
                         'description'          => 'px',
                         'class'                => 'bb-gf-input input-small',
-                        'default'              => '14',
+                        'default'              => '',
                         'preview'              => array(
                             'type'             => 'css',
                             'selector'         => '.pp-cf7-form-description',
@@ -836,7 +883,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                     'description_color' => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '333333',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
@@ -881,7 +928,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'label'         => __('Font Size', 'bb-powerpack'),
                         'description'   => 'px',
                         'class'         => 'bb-gf-input input-small',
-                        'default'       => '18',
+                        'default'       => '',
                         'preview'           => array(
                             'type'          => 'css',
                             'selector'      => '.pp-cf7-content form p',
@@ -892,7 +939,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                     'form_label_color'  => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '333333',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
@@ -922,7 +969,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'label'         => __('Font Size', 'bb-powerpack'),
                         'description'   => 'px',
                         'class'         => 'bb-gf-input input-small',
-                        'default'       => '16',
+                        'default'       => '',
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-cf7-content input.wpcf7-text, .pp-cf7-content .wpcf7-textarea, .pp-cf7-content .wpcf7-quiz, .pp-cf7-content .wpcf7-number, .pp-cf7-content .wpcf7-date,.pp-cf7-content .wpcf7-file',
@@ -952,7 +999,7 @@ FLBuilder::register_module('PPContactForm7Module', array(
                         'label'         => __('Font Size', 'bb-powerpack'),
                         'description'   => 'px',
                         'class'         => 'bb-gf-input input-small',
-                        'default'       => '18',
+                        'default'       => '',
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-cf7-content .wpcf7-submit',

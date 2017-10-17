@@ -87,6 +87,8 @@
 	<?php if( $settings->content_line_height == 'custom' && !empty($settings->content_line_height_custom['desktop']) ) { ?>
     line-height: <?php echo $settings->content_line_height_custom['desktop']; ?>;
     <?php } ?>
+	margin-top: <?php echo $settings->content_margin['top']; ?>px;
+	margin-bottom: <?php echo $settings->content_margin['bottom']; ?>px;
 	<?php if ( 'standard' != $settings->box_type && 'fixed_bottom' != $settings->box_type ) { ?>
 		<?php if ( !empty($settings->box_padding['top']) ) { ?>
 		padding-top: <?php echo $settings->box_padding['top']; ?>px;
@@ -286,6 +288,7 @@
     <?php } ?>
 	background-color: <?php echo $settings->input_field_bg_color ? pp_hex2rgba('#' . $settings->input_field_bg_color, $settings->input_field_background_opacity / 100 ) : 'transparent'; ?>;
 	border-width: 0;
+	border-style: solid;
 	border-color: <?php echo $settings->input_field_border_color ? '#' . $settings->input_field_border_color : 'transparent'; ?>;
     <?php if( $settings->input_field_border_radius >= 0 ) { ?>
 	border-radius: <?php echo $settings->input_field_border_radius; ?>px;
@@ -420,7 +423,7 @@
 
 <?php
 
-FLBuilder::render_module_css('button', $id, array(
+FLBuilder::render_module_css('fl-button', $id, array(
 	'align'             => '',
 	'bg_color'          => $settings->btn_bg_color,
 	'bg_hover_color'    => $settings->btn_bg_hover_color,
@@ -439,6 +442,16 @@ FLBuilder::render_module_css('button', $id, array(
 	'width'             => 'full'
 ));
 ?>
+
+<?php if ('enable' == $settings->btn_button_transition): ?>
+.fl-builder-content .fl-node-<?php echo $id; ?> .fl-button,
+.fl-builder-content .fl-node-<?php echo $id; ?> .fl-button * {
+	-webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+}
+<?php endif; ?>
 
 .fl-node-<?php echo $id; ?> .pp-subscribe-form a.fl-button:focus {
 	border: 0;
@@ -554,7 +567,24 @@ FLBuilder::render_module_css('button', $id, array(
 	text-transform: <?php echo $settings->success_message_text_transform; ?>;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: <?php echo $global_settings->medium_breakpoint; ?>px) {
+	.fl-node-<?php echo $id; ?> .pp-subscribe-form {
+		<?php if ( isset( $settings->form_padding['responsive_medium'] ) ) { ?>
+			<?php if( $settings->form_padding['responsive_medium']['top'] >= 0 ) { ?>
+				padding-top: <?php echo $settings->form_padding['responsive_medium']['top']; ?>px;
+			<?php } ?>
+			<?php if( $settings->form_padding['responsive_medium']['right'] >= 0 ) { ?>
+				padding-right: <?php echo $settings->form_padding['responsive_medium']['right']; ?>px;
+			<?php } ?>
+			<?php if( $settings->form_padding['responsive_medium']['bottom'] >= 0 ) { ?>
+				padding-bottom: <?php echo $settings->form_padding['responsive_medium']['bottom']; ?>px;
+			<?php } ?>
+			<?php if( $settings->form_padding['responsive_medium']['left'] >= 0 ) { ?>
+				padding-left: <?php echo $settings->form_padding['responsive_medium']['left']; ?>px;
+			<?php } ?>
+		<?php } ?>
+	}
+
 	.fl-node-<?php echo $id; ?> .pp-subscribe-form input[type=text],
 	.fl-node-<?php echo $id; ?> .pp-subscribe-form input[type=email] {
 		<?php if( $settings->input_font_size['tablet'] && $settings->input_size == 'custom' ) { ?>
@@ -593,7 +623,23 @@ FLBuilder::render_module_css('button', $id, array(
 	}
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: <?php echo $global_settings->responsive_breakpoint; ?>px) {
+	.fl-node-<?php echo $id; ?> .pp-subscribe-form {
+		<?php if ( isset( $settings->form_padding['responsive_small'] ) ) { ?>
+			<?php if( $settings->form_padding['responsive_small']['top'] >= 0 ) { ?>
+				padding-top: <?php echo $settings->form_padding['responsive_small']['top']; ?>px;
+			<?php } ?>
+			<?php if( $settings->form_padding['responsive_small']['right'] >= 0 ) { ?>
+				padding-right: <?php echo $settings->form_padding['responsive_small']['right']; ?>px;
+			<?php } ?>
+			<?php if( $settings->form_padding['responsive_small']['bottom'] >= 0 ) { ?>
+				padding-bottom: <?php echo $settings->form_padding['responsive_small']['bottom']; ?>px;
+			<?php } ?>
+			<?php if( $settings->form_padding['responsive_small']['left'] >= 0 ) { ?>
+				padding-left: <?php echo $settings->form_padding['responsive_small']['left']; ?>px;
+			<?php } ?>
+		<?php } ?>
+	}
 	.fl-node-<?php echo $id; ?> .pp-subscribe-form input[type=text],
 	.fl-node-<?php echo $id; ?> .pp-subscribe-form input[type=email] {
 		<?php if( $settings->input_font_size['mobile'] && $settings->input_size == 'custom' ) { ?>

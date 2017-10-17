@@ -21,6 +21,7 @@
     padding-bottom: <?php echo ($settings->box_bottom_padding) ? $settings->box_bottom_padding : '0'; ?>px;
     padding-left: <?php echo ($settings->box_left_padding) ? $settings->box_left_padding : '0'; ?>px;
     padding-right: <?php echo ($settings->box_right_padding) ? $settings->box_right_padding : '0'; ?>px;
+	border-radius: <?php echo $settings->box_border_radius; ?>px;
     <?php if( $settings->box_font['family'] != 'Default' ) { ?>
     <?php FLBuilderFonts::font_css( $settings->box_font ); ?>
     <?php } ?>

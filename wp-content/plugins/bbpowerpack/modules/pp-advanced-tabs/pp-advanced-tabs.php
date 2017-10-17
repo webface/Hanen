@@ -13,11 +13,12 @@ class PPAdvancedTabsModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Advanced Tabs', 'bb-powerpack'),
 			'description'   	=> __('Display a collection of tabbed content.', 'bb-powerpack'),
-			'category'		=> BB_POWERPACK_CAT,
-            'dir'           => BB_POWERPACK_DIR . 'modules/pp-advanced-tabs/',
-            'url'           => BB_POWERPACK_URL . 'modules/pp-advanced-tabs/',
-            'editor_export' => true, // Defaults to true and can be omitted.
-            'enabled'       => true, // Defaults to true and can be omitted.
+			'group'         	=> 'PowerPack Modules',
+            'category'			=> pp_get_modules_cat( 'creative' ),
+            'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-advanced-tabs/',
+            'url'           	=> BB_POWERPACK_URL . 'modules/pp-advanced-tabs/',
+            'editor_export' 	=> true, // Defaults to true and can be omitted.
+            'enabled'       	=> true, // Defaults to true and can be omitted.
 			'partial_refresh'	=> true
 		));
 
@@ -66,7 +67,7 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 						'label'         => __('Select Style', 'bb-powerpack'),
 						'default'       => 'default',
 						'options'       => array(
-							'default'    => __('Default', 'bb-powerpack'),
+							'default'    => __('Basic', 'bb-powerpack'),
 							'style-1'    => __('Style 1', 'bb-powerpack'),
 							'style-2'    => __('Style 2', 'bb-powerpack'),
 							'style-3'    => __('Style 3', 'bb-powerpack'),
@@ -78,41 +79,47 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 						),
 						'toggle'	=> array(
 							'default'	=> array(
-								'fields'	=> array('border_color', 'label_text_color')
+								'fields'	=> array('border_color', 'label_background_color', 'label_background_active_color', 'label_text_color')
 							),
 							'style-1'	=> array(
-								'fields'	=> array('border_color', 'label_background_color', 'label_background_active_color', 'label_text_color', 'content_bg_color')
+								'fields'	=> array('border_color', 'label_background_color', 'label_background_active_color', 'label_text_color', 'content_border_width', 'content_border_color')
 							),
 							'style-2'	=> array(
-								'fields'	=> array('border_color', 'label_background_color', 'label_background_active_color', 'label_text_color', 'content_bg_color')
+								'fields'	=> array('border_color', 'label_background_color', 'label_background_active_color', 'label_text_color', 'content_border_width', 'content_border_color')
 							),
 							'style-3'	=> array(
-								'fields'	=> array('label_background_color', 'label_background_active_color', 'label_text_color', 'content_bg_color')
+								'fields'	=> array('label_background_color', 'label_background_active_color', 'label_text_color', 'content_border_width', 'content_border_color')
 							),
 							'style-4'	=> array(
-								'fields'	=> array('label_background_color', 'label_background_active_color', 'label_text_color', 'content_bg_color')
+								'fields'	=> array('label_background_color', 'label_background_active_color', 'label_text_color', 'content_border_width', 'content_border_color')
 							),
 							'style-5'	=> array(
-								'fields'	=> array('label_background_active_color', 'label_text_color')
+								'fields'	=> array('label_background_active_color', 'label_text_color', 'content_border_width', 'content_border_color')
 							),
 							'style-6'	=> array(
-								'fields'	=> array('label_text_color', 'content_bg_color')
+								'fields'	=> array('label_text_color', 'content_border_width', 'content_border_color')
 							),
 							'style-7'	=> array(
-								'fields'	=> array('border_color', 'label_text_color', 'label_text_hover_color')
+								'fields'	=> array('border_color', 'label_text_color', 'label_text_hover_color', 'content_border_width', 'content_border_color')
 							),
 							'style-8'	=> array(
-								'fields'	=> array('border_color', 'label_background_active_color', 'label_text_color')
+								'fields'	=> array('border_color', 'label_background_active_color', 'label_text_color', 'label_margin', 'content_border_width', 'content_border_color')
 							),
 						)
+					),
+					'tab_id_prefix'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Custom ID Prefix', 'bb-powerpack'),
+						'default'		=> '',
+						'placeholder'	=> __('mytab', 'bb-powerpack'),
+						'help'			=> __('A prefix that will be applied to ID attribute of tabs\'s in HTML. For example, prefix "mytab" will be applied as "mytab-1", "mytab-2" in ID attribute of Tab 1 and Tab 2 respectively. It should only contain dashes, underscores, letters or numbers. No spaces.', 'bb-powerpack')
 					),
 					'tab_default'	=> array(
 						'type'			=> 'text',
 						'label'			=> __('Default Active Tab Index', 'bb-powerpack'),
 						'default'		=> 1,
-						'size'			=> 5,
 						'help'			=> __('Enter the index number of the tab that will be appeared as default active tab on page load.', 'bb-powerpack')
-					)
+					),
 				)
 			),
 			'label_style'       => array(
@@ -122,16 +129,18 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 						'type'          => 'color',
 						'label'         => __('Background Color', 'bb-powerpack'),
 						'default'       => 'ffffff',
+						'show_reset'	=> true,
 						'preview'	=> array(
 							'type'	=> 'css',
-							'selector'	=> '.pp-tabs .pp-tabs-label',
+							'selector'	=> '.pp-tabs .pp-tabs-label:not(.pp-tab-active)',
 							'property'	=> 'background-color',
 						)
 					),
 					'label_background_active_color'  => array(
 						'type'          => 'color',
 						'label'         => __('Background Color Active', 'bb-powerpack'),
-						'default'       => 'e4e4e4',
+						'default'       => 'f7f7f7',
+						'show_reset'	=> true,
 						'preview'	=> array(
 							'type'	=> 'css',
 							'rules'	=>	array(
@@ -157,7 +166,8 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 					'label_text_color'    => array(
 						'type'          => 'color',
 						'label'         => __('Text Color', 'bb-powerpack'),
-						'default'       => 'dddddd',
+						'default'       => '666666',
+						'show_reset'	=> true,
 						'preview'	=> array(
 							'type'	=> 'css',
 							'selector'	=> '.pp-tabs .pp-tabs-label',
@@ -167,7 +177,8 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 					'label_active_text_color'    => array(
 						'type'          => 'color',
 						'label'         => __('Text Color Active', 'bb-powerpack'),
-						'default'       => '777777',
+						'default'       => '333333',
+						'show_reset'	=> true,
 						'preview'	=> array(
 							'type'	=> 'css',
 							'rules'	=> array(
@@ -186,6 +197,7 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 						'type'          => 'color',
 						'label'         => __('Border Color', 'bb-powerpack'),
 						'default'       => 'eeeeee',
+						'show_reset'	=> true,
 						'preview'	=> array(
 							'type'	=> 'css',
 							'rules'	=> array(
@@ -220,30 +232,179 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 							)
 						)
 					),
+					'label_margin'   => array(
+                        'type'          => 'text',
+                        'label'         => __('Space between labels', 'bb-powerpack'),
+                        'description'   => 'px',
+                        'size'			=> 5,
+						'maxlength'		=> 3,
+                        'default'       => '15',
+                        'preview'       => array(
+                            'type'      => 'css',
+							'rules'		=> array(
+								array(
+									'selector'  => '.pp-tabs-horizontal.pp-tabs-style-8 .pp-tabs-label',
+									'property'  => 'margin-left',
+									'unit'      => 'px'
+								),
+								array(
+									'selector'  => '.pp-tabs-horizontal.pp-tabs-style-8 .pp-tabs-label',
+									'property'  => 'margin-right',
+									'unit'      => 'px'
+								),
+							)
+                        )
+                    ),
 				)
 			),
 			'content_style'       => array(
 				'title'         => __('Content', 'bb-powerpack'),
 				'fields'        => array(
+					'content_bg_type'        => array(
+						'type'          => 'pp-switch',
+						'label'         => __('Background Type', 'bb-powerpack'),
+						'default'       => 'color',
+						'options'       => array(
+							'color'    		=> __('Color', 'bb-powerpack'),
+							'image'    		=> __('Image', 'bb-powerpack'),
+						),
+						'toggle'	=> array(
+							'color'	=> array(
+								'fields'	=> array('content_bg_color')
+							),
+							'image'	=> array(
+								'fields'	=> array('content_bg_image', 'content_bg_size', 'content_bg_repeat')
+							),
+						)
+					),
+					'content_bg_image'     => array(
+						'type'              => 'photo',
+						'label'         => __('Background Image', 'bb-powerpack'),
+						'default'       => '',
+						'show_remove'	=> true,
+						'preview'       => array(
+							'type'      => 'css',
+							'selector'  => '.pp-tabs-panels .pp-tabs-panel-content',
+							'property'  => 'background-image'
+						)
+					),
+					'content_bg_size'      => array(
+						'type'          => 'pp-switch',
+						'label'         => __('Background Size', 'bb-powerpack'),
+						'default'       => 'cover',
+						'options'       => array(
+							'contain'   => __('Contain', 'bb-powerpack'),
+							'cover'     => __('Cover', 'bb-powerpack'),
+						),
+						'preview'       => array(
+							'type'      => 'css',
+							'selector'  => '.pp-tabs-panels .pp-tabs-panel-content',
+							'property'  => 'background-size'
+						)
+					),
+					'content_bg_repeat'    => array(
+						'type'          => 'pp-switch',
+						'label'         => __('Background Repeat', 'bb-powerpack'),
+						'default'       => 'no-repeat',
+						'options'       => array(
+							'repeat-x'      => __('Repeat X', 'bb-powerpack'),
+							'repeat-y'      => __('Repeat Y', 'bb-powerpack'),
+							'no-repeat'     => __('No Repeat', 'bb-powerpack'),
+						),
+						'preview'       => array(
+							'type'      => 'css',
+							'selector'  => '.pp-tabs-panels .pp-tabs-panel-content',
+							'property'  => 'background-repeat'
+						)
+					),
 					'content_bg_color'  => array(
 						'type'          => 'color',
 						'label'         => __('Background Color', 'bb-powerpack'),
-						'default'       => 'f7f7f7',
+						'default'       => '',
 						'show_reset'	=> true,
-						'preview'	=> array(
-							'type'	=> 'css',
-							'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
-							'property'	=> 'background-color'
+						'preview'		=> array(
+							'type'			=> 'css',
+							'selector'		=> '.pp-tabs-panels .pp-tabs-panel-content',
+							'property'		=> 'background-color'
 						)
 					),
 					'content_text_color'  => array(
 						'type'          => 'color',
 						'label'         => __('Text Color', 'bb-powerpack'),
-						'default'       => '333333',
-						'preview'	=> array(
-							'type'	=> 'css',
-							'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
-							'property'	=> 'color'
+						'default'       => '',
+						'show_reset'	=> true,
+						'preview'		=> array(
+							'type'			=> 'css',
+							'selector'		=> '.pp-tabs-panels .pp-tabs-panel-content',
+							'property'		=> 'color'
+						)
+					),
+					'content_border_width'   => array(
+                        'type'      => 'pp-multitext',
+                        'label'     => __('Border Width', 'bb-powerpack'),
+                        'description'   => 'px',
+                        'default'       => array(
+                            'top' => 0,
+                            'right' => 0,
+                            'bottom' => 0,
+                            'left' => 0,
+                        ),
+                        'options' 		=> array(
+                            'top' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Top', 'bb-powerpack'),
+                                'tooltip'       => __('Top', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-up',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'border-top-width',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'bottom' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Bottom', 'bb-powerpack'),
+                                'tooltip'       => __('Bottom', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-down',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'border-bottom-width',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'left' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Left', 'bb-powerpack'),
+                                'tooltip'       => __('Left', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-left',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'border-left-width',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'right' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Right', 'bb-powerpack'),
+                                'tooltip'       => __('Right', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-right',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'border-right-width',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                        )
+                    ),
+					'content_border_color'  => array(
+						'type'          => 'color',
+						'label'         => __('Border Color', 'bb-powerpack'),
+						'default'       => '',
+						'show_reset'	=> true,
+						'preview'		=> array(
+							'type'			=> 'css',
+							'selector'		=> '.pp-tabs-panels .pp-tabs-panel-content',
+							'property'		=> 'border-color'
 						)
 					),
 					'content_alignment'        => array(
@@ -251,9 +412,9 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 						'label'         => __('Alignment', 'bb-powerpack'),
 						'default'       => 'left',
 						'options'       => array(
-							'left'    => __('Left', 'bb-powerpack'),
-							'center'    => __('Center', 'bb-powerpack'),
-							'right'    => __('Right', 'bb-powerpack'),
+							'left'    		=> __('Left', 'bb-powerpack'),
+							'center'    	=> __('Center', 'bb-powerpack'),
+							'right'    		=> __('Right', 'bb-powerpack'),
 						),
 						'preview'	=> array(
 							'type'	=>	'css',
@@ -261,6 +422,63 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 							'property'	=> 'text-align'
 						)
 					),
+					'content_padding'   => array(
+                        'type'      => 'pp-multitext',
+                        'label'     => __('Padding', 'bb-powerpack'),
+                        'description'   => 'px',
+                        'default'       => array(
+                            'top' => 30,
+                            'right' => 30,
+                            'bottom' => 30,
+                            'left' => 30,
+                        ),
+                        'options' 		=> array(
+                            'top' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Top', 'bb-powerpack'),
+                                'tooltip'       => __('Top', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-up',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'padding-top',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'bottom' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Bottom', 'bb-powerpack'),
+                                'tooltip'       => __('Bottom', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-down',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'padding-bottom',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'left' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Left', 'bb-powerpack'),
+                                'tooltip'       => __('Left', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-left',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'padding-left',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'right' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Right', 'bb-powerpack'),
+                                'tooltip'       => __('Right', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-right',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-tabs-panels .pp-tabs-panel-content',
+                                    'property'	=> 'padding-right',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                        )
+                    ),
 				)
 			)
 		)
@@ -276,10 +494,10 @@ FLBuilder::register_module('PPAdvancedTabsModule', array(
 						'label'         => __('Icon Position', 'bb-powerpack'),
 						'default'       => 'left',
 						'options'       => array(
-							'top'    => __('Top', 'bb-powerpack'),
-							'bottom'    => __('Bottom', 'bb-powerpack'),
-							'left'    => __('Left', 'bb-powerpack'),
-							'right'    => __('Right', 'bb-powerpack'),
+							'top'    		=> __('Top', 'bb-powerpack'),
+							'bottom'    	=> __('Bottom', 'bb-powerpack'),
+							'left'    		=> __('Left', 'bb-powerpack'),
+							'right'    		=> __('Right', 'bb-powerpack'),
 						),
 					),
 					'tab_icon_size'   => array(
@@ -576,8 +794,9 @@ FLBuilder::register_settings_form('tab_items_form', array(
 						),
 						'label'         => array(
 							'type'          => 'text',
-							'label'         => __('Title', 'bb-powerpack')
-						)
+							'label'         => __('Title', 'bb-powerpack'),
+							'connections'   => array( 'string', 'html', 'url' ),
+						),
 					)
 				),
 				'content'       => array(
@@ -585,7 +804,8 @@ FLBuilder::register_settings_form('tab_items_form', array(
 					'fields'        => array(
 						'content'       => array(
 							'type'          => 'editor',
-							'label'         => ''
+							'label'         => '',
+							'connections'   => array( 'string', 'html', 'url' ),
 						)
 					)
 				)

@@ -16,7 +16,8 @@ class PPHoverCardsModuleNew extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Hover Cards 2', 'bb-powerpack'),
             'description'   => __('Addon to display hover cards.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-hover-cards-2/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-hover-cards-2/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -160,7 +161,7 @@ FLBuilder::register_module('PPHoverCardsModuleNew', array(
                     'card_content'   => array(
                         'type'      => 'form',
                         'label'     => __('Hover Card', 'bb-powerpack'),
-                        'form'      => 'pp_hover_card_form',
+                        'form'      => 'pp_hover_card_2_form',
                         'preview_text'  => 'title',
                         'multiple'  => true
                     ),
@@ -349,7 +350,7 @@ FLBuilder::register_module('PPHoverCardsModuleNew', array(
 /**
  * Register a settings form to use in the "form" field type above.
  */
-FLBuilder::register_settings_form('pp_hover_card_form', array(
+FLBuilder::register_settings_form('pp_hover_card_2_form', array(
 	'title' => __('Add Hover Card', 'bb-powerpack'),
 	'tabs'  => array(
 		'general'      => array( // Tab
@@ -383,7 +384,8 @@ FLBuilder::register_settings_form('pp_hover_card_form', array(
                         'hover_card_custom_icon'     => array(
                             'type'              => 'photo',
                             'label'         => __('Image', 'bb-powerpack'),
-                            'show_remove'   => true
+                            'show_remove'   => true,
+                            'connections'   => array( 'photo' ),
                         ),
                     ),
                 ),
@@ -392,7 +394,8 @@ FLBuilder::register_settings_form('pp_hover_card_form', array(
                     'fields'     => array(
                         'title'         => array(
                             'type'          => 'text',
-                            'label'         => ''
+                            'label'         => '',
+                            'connections'   => array( 'string', 'html', 'url' ),
                         ),
                     ),
                 ),
@@ -403,7 +406,8 @@ FLBuilder::register_settings_form('pp_hover_card_form', array(
 							'type'          => 'editor',
 							'label'         => '',
                             'media_buttons' => false,
-                            'rows'          => 10
+                            'rows'          => 10,
+                            'connections'   => array( 'string', 'html', 'url' ),
 						)
 					)
 				),
@@ -427,7 +431,8 @@ FLBuilder::register_settings_form('pp_hover_card_form', array(
                         'box_link'   => array(
                             'type'      => 'link',
                             'label'     => __('Link', 'bb-powerpack'),
-                            'placeholder'   => 'http://www.example.com'
+                            'placeholder'   => 'http://www.example.com',
+                            'connections'   => array( 'url' ),
                         ),
                         'link_target'   => array(
                             'type'      => 'pp-switch',

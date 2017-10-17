@@ -16,7 +16,8 @@ class PPBusinessHoursModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Business Hours', 'bb-powerpack'),
             'description'   => __('A module to display business hours.', 'bb-powerpack'),
-			'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-business-hours/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-business-hours/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -312,7 +313,7 @@ FLBuilder::register_module('PPBusinessHoursModule', array(
 	'typography'	=> array(
 		'title'	=> __( 'Typography', 'bb-powerpack' ),
 		'sections'	=> array(
-			'title_typography'	=> array(
+			'day_typography'	=> array(
 				'title'	=> __( 'Day', 'bb-powerpack' ),
 				'fields'	=> array(
 					'title_font'	=> array(
@@ -624,9 +625,19 @@ FLBuilder::register_settings_form('bh_settings_form', array(
 							)
 	                    ),
                         'title'       => array(
-                            'type'          => 'text',
+                            'type'          => 'select',
                             'label'         => __( 'Day', 'bb-powerpack' ),
-                            'default'       => ''
+                            'default'       => 'Monday',
+                            'options'       => pp_long_day_format()
+                        ),
+                        'day_format'    => array(
+                            'type'          => 'pp-switch',
+                            'label'         => __( 'Day Format', 'bb-powerpack' ),
+                            'default'       => 'long',
+                            'options'       => array(
+                                'long'          => __('Long', 'bb-powerpack'),
+                                'short'         => __('Short', 'bb-powerpack'),
+                            )
                         ),
 						'status'   => array(
 	                        'type'          => 'pp-switch',
@@ -651,7 +662,7 @@ FLBuilder::register_settings_form('bh_settings_form', array(
 							'default'		=>array(
 								'hours'			=> '01',
 								'minutes'		=> '00',
-								'day_period'	=> 'am'
+								'day_period'	=> __('am', 'bb-powerpack')
 							)
 						),
 						'end_time' => array(
@@ -660,13 +671,13 @@ FLBuilder::register_settings_form('bh_settings_form', array(
 							'default'		=>array(
 								'hours'			=> '01',
 								'minutes'		=> '00',
-								'day_period'	=> 'am'
+								'day_period'	=> __('am', 'bb-powerpack')
 							)
 						),
 						'status_text'       => array(
                             'type'          => 'text',
                             'label'         => __( 'Status Text', 'bb-powerpack' ),
-                            'default'       => 'Closed'
+                            'default'       => __( 'Closed', 'bb-powerpack' )
                         ),
                     )
                 )

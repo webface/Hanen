@@ -136,6 +136,12 @@ function pp_row_overlay_css( $css, $nodes, $global_settings ) {
                 width: 50%;
             }
         <?php } ?>
+        <?php if ( $row->settings->pp_bg_overlay_type == 'half_right' ) { ?>
+            .fl-node-<?php echo $row->node; ?> > .fl-row-content-wrap:after {
+                width: 50%;
+				left: auto;
+            }
+        <?php } ?>
         <?php if ( $row->settings->pp_bg_overlay_type == 'gradient' ) { ?>
 
             <?php
@@ -230,11 +236,17 @@ function pp_row_separators_css( $css, $nodes, $global_settings ) {
                 left: 0;
                 width: 100%;
             }
+			.fl-node-<?php echo $row->node; ?> .pp-row-separator-top {
+				margin-top: -1px;
+			}
             .fl-node-<?php echo $row->node; ?> .pp-row-separator-top,
             .fl-node-<?php echo $row->node; ?> .pp-row-separator-top svg {
                 top: 0;
                 bottom: auto;
             }
+			.fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom {
+				margin-bottom: -1px;
+			}
             .fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom,
             .fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom svg {
                 top: auto;
@@ -296,6 +308,12 @@ function pp_row_separators_css( $css, $nodes, $global_settings ) {
             }
             <?php } ?>
 
+            <?php if ( 'water' == $row->settings->separator_type_bottom ) { ?>
+            .fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom svg.pp-water-separator {
+                <?php echo $scaleY; ?>
+            }
+            <?php } ?>
+
             <?php if ( 'triangle_right' == $row->settings->separator_type_bottom ) { ?>
             .fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom svg.pp-big-triangle-right {
                 <?php echo $scaleX; ?>
@@ -351,7 +369,7 @@ function pp_row_separators_css( $css, $nodes, $global_settings ) {
             }
             <?php } ?>
 
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: <?php echo $global_settings->medium_breakpoint; ?>px) {
                 .fl-node-<?php echo $row->node; ?> .pp-row-separator-top {
                     <?php if ( 'no' == $row->settings->separator_tablet ) { ?>
                         display: none;
@@ -373,7 +391,7 @@ function pp_row_separators_css( $css, $nodes, $global_settings ) {
                     }
                 <?php } ?>
             }
-            @media only screen and (max-width: 480px) {
+            @media only screen and (max-width: <?php echo $global_settings->responsive_breakpoint; ?>px) {
                 .fl-node-<?php echo $row->node; ?> .pp-row-separator-top {
                     <?php if ( 'no' == $row->settings->separator_mobile ) { ?>
                         display: none;
@@ -524,6 +542,11 @@ function pp_row_downarrow_css( $css, $nodes, $global_settings ) {
                 background-color: <?php echo '' != $row->settings->da_arrow_bg['secondary'] ? '#'.$row->settings->da_arrow_bg['secondary'] : 'transparent'; ?>;
                 border-color: <?php echo '#'.$row->settings->da_arrow_border_color['secondary']; ?>;
             }
+            .fl-node-<?php echo $row->node; ?> .pp-down-arrow-wrap .pp-down-arrow.pp-da-bounce {
+                -moz-animation: bounce 2s infinite;
+                -webkit-animation: bounce 2s infinite;
+                animation: bounce 2s infinite;
+            }
             .fl-node-<?php echo $row->node; ?> .pp-down-arrow-wrap .pp-down-arrow svg {
                 width: 45px;
 	            height: 45px;
@@ -536,6 +559,63 @@ function pp_row_downarrow_css( $css, $nodes, $global_settings ) {
             .fl-node-<?php echo $row->node; ?> .pp-down-arrow-wrap .pp-down-arrow:hover svg path {
                 stroke: <?php echo '#'.$row->settings->da_arrow_color['secondary']; ?>;
 	            fill: <?php echo '#'.$row->settings->da_arrow_color['secondary']; ?>;
+            }
+
+            @media only screen and (max-width: 767px) {
+                .fl-node-<?php echo $row->node; ?> .pp-down-arrow-container {
+                    <?php if ( $row->settings->da_hide_mobile == 'yes' ) : ?>
+                        display: none;
+                    <?php endif; ?>
+                }
+            }
+
+            @-moz-keyframes pp-da-bounce {
+              0%, 20%, 50%, 80%, 100% {
+                -moz-transform: translateY(0);
+                transform: translateY(0);
+              }
+              40% {
+                -moz-transform: translateY(-30px);
+                transform: translateY(-30px);
+              }
+              60% {
+                -moz-transform: translateY(-15px);
+                transform: translateY(-15px);
+              }
+            }
+            @-webkit-keyframes pp-da-bounce {
+              0%, 20%, 50%, 80%, 100% {
+                -webkit-transform: translateY(0);
+                transform: translateY(0);
+              }
+              40% {
+                -webkit-transform: translateY(-30px);
+                transform: translateY(-30px);
+              }
+              60% {
+                -webkit-transform: translateY(-15px);
+                transform: translateY(-15px);
+              }
+            }
+            @keyframes pp-da-bounce {
+              0%, 20%, 50%, 80%, 100% {
+                -moz-transform: translateY(0);
+                -ms-transform: translateY(0);
+                -webkit-transform: translateY(0);
+                transform: translateY(0);
+              }
+              40% {
+                -moz-transform: translateY(-30px);
+                -ms-transform: translateY(-30px);
+                -webkit-transform: translateY(-30px);
+                transform: translateY(-30px);
+              }
+              60% {
+                -moz-transform: translateY(-15px);
+                -ms-transform: translateY(-15px);
+                -webkit-transform: translateY(-15px);
+                transform: translateY(-15px);
+              }
             }
         <?php } ?>
 

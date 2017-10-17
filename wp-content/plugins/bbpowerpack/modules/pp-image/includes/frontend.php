@@ -20,6 +20,9 @@ if( 'hover' == $settings->show_caption ) {
 				<?php endif; ?>
 						<img class="<?php echo $classes; ?>" src="<?php echo $src; ?>" alt="<?php echo $alt; ?>" itemprop="image" <?php echo $attrs; ?> />
 						<div class="pp-overlay-bg"></div>
+						<?php if($photo && !empty($photo->caption) && 'overlay' == $settings->show_caption) : ?>
+							<div class="pp-photo-caption pp-photo-caption-overlay" itemprop="caption"><?php echo $photo->caption; ?></div>
+						<?php endif; ?>
 				<?php if(!empty($link)) : ?>
 					</a>
 				<?php endif; ?>
@@ -32,11 +35,14 @@ if( 'hover' == $settings->show_caption ) {
 						</a>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if($photo && !empty($photo->caption) && 'overlay' == $settings->show_caption) : ?>
-				<div class="pp-photo-caption pp-photo-caption-overlay" itemprop="caption"><?php echo $photo->caption; ?></div>
-				<?php endif; ?>
 				<?php if($photo && !empty($photo->caption) && 'below' == $settings->show_caption) : ?>
+					<?php if(!empty($link)) : ?>
+						<a href="<?php echo $link; ?>" target="<?php echo $settings->link_target; ?>" itemprop="url">
+					<?php endif; ?>
 					<div class="pp-photo-caption pp-photo-caption-below" itemprop="caption"><?php echo $photo->caption; ?></div>
+					<?php if(!empty($link)) : ?>
+						</a>
+					<?php endif; ?>
 				<?php endif; ?>
 			</div>
 		</div>

@@ -16,7 +16,8 @@ class PPNotificationsModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Alert Box', 'bb-powerpack'),
             'description'   => __('Addon to display notifications.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'lead_gen' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-notifications/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-notifications/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -74,6 +75,7 @@ FLBuilder::register_module('PPNotificationsModule', array(
                     'notification_content'  => array(
                         'type'  => 'textarea',
                         'label' => __('Content', 'bb-powerpack'),
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'   => array(
                             'type'  => 'text',
                             'selector'  => '.pp-notification-content p'

@@ -23,7 +23,8 @@
         <div class="custom_icon">
             <div class="custom_icon_inner">
                 <div class="custom_icon_inner_wrap">
-                    <img src="<?php echo $settings->box_custom_icon_src; ?>" />
+					<?php $alt = get_post_meta($settings->box_custom_icon , '_wp_attachment_image_alt', true); ?>
+                    <img src="<?php echo $settings->box_custom_icon_src; ?>" alt="<?php echo $alt; ?>" />
                 </div>
             </div>
         </div>

@@ -17,15 +17,16 @@ class PPSubscribeFormModule extends FLBuilderModule {
 		parent::__construct( array(
 			'name'          	=> __( 'Subscribe Form', 'bb-powerpack' ),
 			'description'   	=> __( 'Adds a simple subscribe form to your layout.', 'bb-powerpack' ),
-			'category'			=> BB_POWERPACK_CAT,
+			'group'         	=> 'PowerPack Modules',
+            'category'			=> pp_get_modules_cat( 'form_style' ),
             'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-subscribe-form/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-subscribe-form/',
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true
 		));
 
-		add_action( 'wp_ajax_fl_builder_subscribe_form_submit', array( $this, 'submit' ) );
-		add_action( 'wp_ajax_nopriv_fl_builder_subscribe_form_submit', array( $this, 'submit' ) );
+		add_action( 'wp_ajax_pp_subscribe_form_submit', array( $this, 'submit' ) );
+		add_action( 'wp_ajax_nopriv_pp_subscribe_form_submit', array( $this, 'submit' ) );
 
 		$this->add_js( 'jquery-cookie', $this->url . 'js/jquery.cookie.min.js', array('jquery') );
 	}
@@ -40,6 +41,7 @@ class PPSubscribeFormModule extends FLBuilderModule {
 	{
 		$name       		= isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : false;
 		$email      		= isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
+		$post_id     		= isset( $_POST['post_id'] ) ? $_POST['post_id'] : false;
 		$node_id    		= isset( $_POST['node_id'] ) ? sanitize_text_field( $_POST['node_id'] ) : false;
 		$template_id    	= isset( $_POST['template_id'] ) ? sanitize_text_field( $_POST['template_id'] ) : false;
 		$template_node_id   = isset( $_POST['template_node_id'] ) ? sanitize_text_field( $_POST['template_node_id'] ) : false;
@@ -83,6 +85,8 @@ class PPSubscribeFormModule extends FLBuilderModule {
 					$result['url']  = $settings->success_url;
 				}
 			}
+
+			do_action( 'pp_subscribe_form_submission_complete', $response, $settings, $email, $name, $template_id, $post_id );
 		}
 		else {
 			$result['error'] = __( 'There was an error subscribing. Please try again.', 'bb-powerpack' );
@@ -259,6 +263,7 @@ FLBuilder::register_module( 'PPSubscribeFormModule', array(
 						'label'         => '',
 						'rows'          => 6,
 						'default'       => __( 'Place your content here. It will appear above the form.', 'bb-powerpack' ),
+						'connections'   => array( 'string', 'html', 'url' ),
 						'preview'       => array(
 							'type'          => 'text',
 							'selector'		=> '.pp-subscribe-content'
@@ -732,6 +737,18 @@ FLBuilder::register_module( 'PPSubscribeFormModule', array(
                             'right' => 15,
                             'bottom' => 15,
                             'left' => 15,
+							'responsive_medium'	=> array(
+								'top' 			=> 15,
+	                            'right' 		=> 15,
+	                            'bottom' 		=> 15,
+	                            'left' 			=> 15,
+							),
+							'responsive_small'	=> array(
+								'top' 			=> 15,
+	                            'right' 		=> 15,
+	                            'bottom' 		=> 15,
+	                            'left' 			=> 15,
+							)
                         ),
                         'options' 		=> array(
                             'top' => array(
@@ -779,6 +796,10 @@ FLBuilder::register_module( 'PPSubscribeFormModule', array(
                                 )
                             ),
                         ),
+						'responsive'	=> array(
+							'medium'		=> array(),
+							'small'			=> array()
+						)
                     )
                 )
             ),
@@ -1189,8 +1210,8 @@ FLBuilder::register_module( 'PPSubscribeFormModule', array(
 						'label'         => __('Transition', 'bb-powerpack'),
 						'default'       => 'disable',
 						'options'       => array(
-							'disable'        => __('Disabled', 'bb-powerpack'),
-							'enable'         => __('Enabled', 'bb-powerpack')
+							'enable'         => __('Enable', 'bb-powerpack'),
+							'disable'        => __('Disable', 'bb-powerpack'),
 						)
 					)
 				)
@@ -1431,6 +1452,7 @@ FLBuilder::register_module( 'PPSubscribeFormModule', array(
 						'media_buttons' => false,
 						'rows'          => 8,
 						'default'       => __( 'Thanks for subscribing! Please check your email for further instructions.', 'bb-powerpack' ),
+						'connections'   => array( 'string', 'html', 'url' ),
 						'preview'       => array(
 							'type'             => 'none'
 						)
@@ -1438,6 +1460,7 @@ FLBuilder::register_module( 'PPSubscribeFormModule', array(
 					'success_url'  => array(
 						'type'          => 'link',
 						'label'         => __( 'Success URL', 'bb-powerpack' ),
+						'connections'   => array( 'url' ),
 						'preview'       => array(
 							'type'             => 'none'
 						)
@@ -1558,6 +1581,37 @@ FLBuilder::register_module( 'PPSubscribeFormModule', array(
                                 'tooltip'       => __('Mobile', 'bb-powerpack')
                             ),
                         ),
+                    ),
+					'content_margin'       => array(
+                        'type'              => 'pp-multitext',
+                        'label'             => __('Margin', 'bb-powerpack'),
+                        'description'       => 'px',
+                        'default'           => array(
+                            'top'               => 0,
+                            'bottom'            => 0,
+                        ),
+                        'options'           => array(
+                            'top'               => array(
+                                'placeholder'       => __('Top', 'bb-powerpack'),
+                                'tooltip'           => __('Top', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-up',
+                                'preview'           => array(
+                                    'selector'          => '.pp-subscribe-content',
+                                    'property'          => 'margin-top',
+                                    'unit'              => 'px'
+                                ),
+                            ),
+                            'bottom'            => array(
+                                'placeholder'       => __('Bottom', 'bb-powerpack'),
+                                'tooltip'           => __('Bottom', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-down',
+                                'preview'           => array(
+                                    'selector'          => '.pp-subscribe-content',
+                                    'property'          => 'margin-bottom',
+                                    'unit'              => 'px'
+                                ),
+                            ),
+                        )
                     ),
                 )
             ),

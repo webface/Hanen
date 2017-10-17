@@ -99,7 +99,17 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 	padding-bottom: <?php echo $padding['bottom']; ?>px;
 	padding-left: <?php echo $padding['left']; ?>px;
 	padding-right: <?php echo $padding['right']; ?>px;
+	<?php if( $card->hover_card_box_border != 'none' ) { ?>
+		border-style: <?php echo $card->hover_card_box_border; ?>;
+		border-width: <?php echo $card->hover_card_box_border_width; ?>px;
+		border-color: <?php echo $card->hover_card_box_border_color ? pp_hex2rgba('#' . $card->hover_card_box_border_color, $card->hover_card_box_border_opacity) : 'transparent'; ?>;
+	<?php  } ?>
 }
+
+.fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?> img {
+	border-radius: <?php echo $card->hover_card_box_border_radius; ?>px;
+}
+
 .fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?>:before {
     background: <?php echo $card->hover_card_overlay != '' ? pp_hex2rgba('#'.$card->hover_card_overlay, $card->hover_card_overlay_opacity) : 'none'; ?>;
 }
@@ -139,8 +149,8 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 	<?php if( $settings->hover_card_description_line_height['desktop'] ) { ?>line-height: <?php echo $settings->hover_card_description_line_height['desktop']; ?>;<?php } ?>
 }
 
-@media only screen and (max-width: 768px) {
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container {
+@media only screen and (max-width: <?php echo $global_settings->medium_breakpoint; ?>px) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card {
         <?php if( $settings->hover_card_column_width['tablet'] >= 0 ) { ?>
         width: <?php echo $tablet; ?>%;
         <?php } ?>
@@ -148,30 +158,34 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 		height: <?php echo $settings->hover_card_height['tablet']; ?>px;
 		<?php } ?>
     }
-	.fl-node-<?php echo $id; ?> .pp-hover-card-container .pp-hover-card-title {
+	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-image {
+		width: 100%;
+		height: auto;
+	}
+	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-title {
 		<?php if( $settings->hover_card_title_font_size['tablet'] ) { ?>font-size: <?php echo $settings->hover_card_title_font_size['tablet']; ?>px;<?php } ?>
 		<?php if( $settings->hover_card_title_line_height['tablet'] ) { ?>line-height: <?php echo $settings->hover_card_title_line_height['tablet']; ?>;<?php } ?>
 	}
-	.fl-node-<?php echo $id; ?> .pp-hover-card-container .pp-hover-card-description {
+	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-description {
 		<?php if( $settings->hover_card_description_font_size['tablet'] ) { ?>font-size: <?php echo $settings->hover_card_description_font_size['tablet']; ?>px;<?php } ?>
 		<?php if( $settings->hover_card_description_line_height['tablet'] ) { ?>line-height: <?php echo $settings->hover_card_description_line_height['tablet']; ?>;<?php } ?>
 	}
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['desktop']; ?>n+1) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['desktop']; ?>n+1) {
         clear: none;
     }
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n+1) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n+1) {
         clear: left;
     }
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['desktop']; ?>n) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['desktop']; ?>n) {
         margin-right: <?php echo $settings->hover_card_spacing; ?>%;
     }
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n) {
         margin-right: 0;
     }
 }
 
-@media only screen and (max-width: 480px) {
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container {
+@media only screen and (max-width: <?php echo $global_settings->responsive_breakpoint; ?>px) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card {
         <?php if( $settings->hover_card_column_width['mobile'] >= 0 ) { ?>
         width: <?php echo $mobile; ?>%;
         <?php } ?>
@@ -179,27 +193,27 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 		height: <?php echo $settings->hover_card_height['mobile']; ?>px;
 		<?php } ?>
     }
-	.fl-node-<?php echo $id; ?> .pp-hover-card-container .pp-hover-card-title h3 {
+	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-title h3 {
 		<?php if( $settings->hover_card_title_font_size['mobile'] ) { ?>font-size: <?php echo $settings->hover_card_title_font_size['mobile']; ?>px;<?php } ?>
 		<?php if( $settings->hover_card_title_line_height['mobile'] ) { ?>line-height: <?php echo $settings->hover_card_title_line_height['mobile']; ?>;<?php } ?>
 	}
-	.fl-node-<?php echo $id; ?> .pp-hover-card-container .pp-hover-card-description {
+	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-description {
 		<?php if( $settings->hover_card_description_font_size['mobile'] ) { ?>font-size: <?php echo $settings->hover_card_description_font_size['mobile']; ?>px;<?php } ?>
 		<?php if( $settings->hover_card_description_line_height['mobile'] ) { ?>line-height: <?php echo $settings->hover_card_description_line_height['mobile']; ?>;<?php } ?>
 	}
 	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-inner .pp-more-link {
 		<?php if( $settings->button_font_size_f['hover_card_button_font_size_mobile'] ) { ?>font-size: <?php echo $settings->button_font_size_f['hover_card_button_font_size_mobile']; ?>px;<?php } ?>
 	}
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n+1) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n+1) {
             clear: none;
     }
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['mobile']; ?>n+1) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['mobile']; ?>n+1) {
             clear: left;
     }
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n) {
             margin-right: <?php echo $settings->hover_card_spacing; ?>%;
     }
-    .fl-node-<?php echo $id; ?> .pp-hover-card-container:nth-of-type(<?php echo $settings->hover_card_column_width['mobile']; ?>n) {
+    .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['mobile']; ?>n) {
             margin-right: 0;
     }
 }

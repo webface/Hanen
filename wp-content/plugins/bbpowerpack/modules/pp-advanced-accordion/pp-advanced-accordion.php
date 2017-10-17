@@ -13,11 +13,12 @@ class PPAccordionModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Advanced Accordion', 'bb-powerpack'),
 			'description'   	=> __('Display a collapsible accordion of items.', 'bb-powerpack'),
-			'category'		=> BB_POWERPACK_CAT,
-            'dir'           => BB_POWERPACK_DIR . 'modules/pp-advanced-accordion/',
-            'url'           => BB_POWERPACK_URL . 'modules/pp-advanced-accordion/',
-            'editor_export' => true, // Defaults to true and can be omitted.
-            'enabled'       => true, // Defaults to true and can be omitted.
+			'group'         	=> 'PowerPack Modules',
+            'category'			=> pp_get_modules_cat( 'content' ),
+            'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-advanced-accordion/',
+            'url'           	=> BB_POWERPACK_URL . 'modules/pp-advanced-accordion/',
+            'editor_export' 	=> true, // Defaults to true and can be omitted.
+            'enabled'       	=> true, // Defaults to true and can be omitted.
 			'partial_refresh'	=> true
 		));
 
@@ -181,6 +182,13 @@ FLBuilder::register_module('PPAccordionModule', array(
 							'primary'	=> __('Default', 'bb-powerpack'),
 							'secondary' => __('Active', 'bb-powerpack')
 						)
+                    ),
+					'label_background_opacity'    => array(
+                        'type'                 => 'text',
+                        'label'                => __('Background Opacity', 'bb-powerpack'),
+						'size'				   => 5,
+                        'description'          => '%',
+                        'default'              => '100',
                     ),
 					'label_text_color'      => array(
 						'type'      => 'pp-color',
@@ -415,6 +423,13 @@ FLBuilder::register_module('PPAccordionModule', array(
 							'property'	=> 'background-color'
 						)
 					),
+					'content_bg_opacity'    => array(
+                        'type'                 => 'text',
+                        'label'                => __('Background Opacity', 'bb-powerpack'),
+						'size'				   => 5,
+                        'description'          => '%',
+                        'default'              => '100',
+                    ),
 					'content_text_color'  => array(
 						'type'          => 'color',
 						'label'         => __('Text Color', 'bb-powerpack'),
@@ -844,7 +859,8 @@ FLBuilder::register_settings_form('pp_accordion_items_form', array(
 						),
 						'label'         => array(
 							'type'          => 'text',
-							'label'         => __('Label', 'bb-powerpack')
+							'label'         => __('Label', 'bb-powerpack'),
+							'connections'   => array( 'string', 'html', 'url' ),
 						)
 					)
 				),
@@ -853,7 +869,8 @@ FLBuilder::register_settings_form('pp_accordion_items_form', array(
 					'fields'        => array(
 						'content'       => array(
 							'type'          => 'editor',
-							'label'         => ''
+							'label'         => '',
+							'connections'   => array( 'string', 'html', 'url' ),
 						)
 					)
 				)

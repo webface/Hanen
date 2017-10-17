@@ -13,7 +13,8 @@ class PPPricingTableModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Pricing Table', 'bb-powerpack'),
 			'description'   => __('Addon to display pricing table.', 'bb-powerpack'),
-			'category'		=> BB_POWERPACK_CAT,
+			'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-pricing-table/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-pricing-table/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -42,13 +43,46 @@ class PPPricingTableModule extends FLBuilderModule {
 			'link_nofollow' 	=> $this->settings->pricing_columns[$column]->btn_link_nofollow,
 			'link_target'       => $this->settings->pricing_columns[$column]->btn_link_target,
 			'style'             => $this->settings->pricing_columns[$column]->btn_style,
-			'text'              => $this->settings->pricing_columns[$column]->button_text,
+			'text'              => $this->get_shortcode_text( $this->settings->pricing_columns[$column]->button_text ),
 			'text_color'        => $this->settings->pricing_columns[$column]->btn_text_color,
 			'text_hover_color'  => $this->settings->pricing_columns[$column]->btn_text_hover_color,
 			'width'             => $this->settings->pricing_columns[$column]->btn_width
 		);
 
-		FLBuilder::render_module_html('button', $btn_settings);
+		FLBuilder::render_module_html('fl-button', $btn_settings);
+	}
+
+	/**
+	 * Check if the provided text is shortcode.
+	 *
+	 * @since 1.3
+	 * @param string $text
+	 * @return boolean
+	 */
+	public function is_shortcode( $text )
+	{
+		if ( empty( $text ) ) {
+			return false;
+		}
+		if ( $text[0] == '[' && $text[strlen($text) - 1] == ']' ) {
+			return true;
+		}
+	}
+
+	/**
+	 * Get shortcode content.
+	 *
+	 * @since 1.3
+	 * @param string $text
+	 * @return string
+	 */
+	public function get_shortcode_text( $text )
+	{
+		if ( $this->is_shortcode( $text ) ) {
+			return do_shortcode( $text );
+		}
+
+		return $text;
 	}
 }
 
@@ -196,7 +230,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
 						'type'          => 'text',
 						'label'         => '',
 						'placeholder'   => __( 'One feature per line. HTML is okay.', 'bb-powerpack' ),
-						'multiple'      => true
+						'multiple'      => true,
 					)
 				)
 			)
@@ -273,7 +307,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
 						'description'   => 'px',
 						'preview'              => array(
 							'type'		=> 'css',
-							'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column',
+							'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column, .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul',
 							'property'	=> 'border-width',
 							'unit'		=> 'px'
 						)
@@ -284,7 +318,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
 						'show_reset'   => true,
 						'preview'              => array(
 							'type'		=> 'css',
-							'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column',
+							'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column, .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul',
 							'property'	=> 'border-color',
 						)
 					),
@@ -354,7 +388,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
 						'default'           => 0,
 						'preview'			=> array(
 							'type'				=> 'css',
-							'selector'			=> '.pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column',
+							'selector'			=> '.pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column, .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul',
 							'property'			=> 'border-radius',
 							'unit'				=> 'px'
 						)
@@ -376,7 +410,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Top', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-up',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column, .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul',
 									'property'	=> 'padding-top',
 									'unit'		=> 'px'
 		                        )
@@ -387,7 +421,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Bottom', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-down',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column, .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul',
 									'property'	=> 'padding-bottom',
 									'unit'		=> 'px'
 		                        )
@@ -398,7 +432,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Left', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-left',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column, .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul',
 									'property'	=> 'padding-left',
 									'unit'		=> 'px'
 		                        )
@@ -409,7 +443,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Right', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-right',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-highlight) .pp-pricing-table-column, .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul',
 									'property'	=> 'padding-right',
 									'unit'		=> 'px'
 		                        )
@@ -583,7 +617,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Top', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-up',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-matrix) .pp-pricing-table-column .pp-pricing-table-title',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column .pp-pricing-table-title',
 									'property'	=> 'padding-top',
 									'unit'		=> 'px'
 		                        )
@@ -594,7 +628,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Bottom', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-down',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-matrix) .pp-pricing-table-column .pp-pricing-table-title',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column .pp-pricing-table-title',
 									'property'	=> 'padding-bottom',
 									'unit'		=> 'px'
 		                        )
@@ -605,7 +639,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Left', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-left',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-matrix) .pp-pricing-table-column .pp-pricing-table-title',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column .pp-pricing-table-title',
 									'property'	=> 'padding-left',
 									'unit'		=> 'px'
 		                        )
@@ -616,7 +650,7 @@ FLBuilder::register_module('PPPricingTableModule', array(
                                 'tooltip'       => __( 'Right', 'bb-powerpack' ),
                     			'icon'		=> 'fa-long-arrow-right',
 								'preview'              => array(
-									'selector'	=> '.pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-matrix) .pp-pricing-table-column .pp-pricing-table-title',
+									'selector'	=> '.pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column .pp-pricing-table-title',
 									'property'	=> 'padding-right',
 									'unit'		=> 'px'
 		                        )
@@ -1940,6 +1974,7 @@ FLBuilder::register_settings_form('pp_pricing_column_form', array(
 						'hl_featured_title'          => array(
 							'type'          => 'text',
 							'label'         => __('Title', 'bb-powerpack'),
+							'connections'   => array( 'string', 'html', 'url' ),
 						),
 					)
 				),
@@ -1949,6 +1984,7 @@ FLBuilder::register_settings_form('pp_pricing_column_form', array(
 						'title'          => array(
 							'type'          => 'text',
 							'label'         => __('Title', 'bb-powerpack'),
+							'connections'   => array( 'string', 'html', 'url' ),
 						),
 					),
 				),
@@ -1994,10 +2030,12 @@ FLBuilder::register_settings_form('pp_pricing_column_form', array(
 							'type'          => 'text',
 							'label'         => __('Button Text', 'bb-powerpack'),
 							'default'       => __('Get Started', 'bb-powerpack'),
+							'connections'	=> array('string')
 						),
 						'button_url'    => array(
 							'type'          => 'link',
-							'label'         => __('Button URL', 'bb-powerpack')
+							'label'         => __('Button URL', 'bb-powerpack'),
+							'connections'   => array( 'url' ),
 						),
 						'btn_link_target'    	=> array(
 							'type'          => 'pp-switch',

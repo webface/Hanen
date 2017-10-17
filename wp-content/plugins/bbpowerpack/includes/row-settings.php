@@ -103,7 +103,8 @@ function pp_row_overlay( $form, $id ) {
         'default'   => 'full_width',
         'options'   => array(
             'full_width'    => __('Full', 'bb-powerpack'),
-            'half_width'    => __('Half', 'bb-powerpack'),
+            'half_width'    => __('Half Overlay - Left', 'bb-powerpack'),
+            'half_right'    => __('Half Overlay - Right', 'bb-powerpack'),
             'vertical_left' => __('Vertical Angled Left', 'bb-powerpack'),
             'vertical_right' => __('Vertical Angled Right', 'bb-powerpack'),
             'gradient'      => __('Gradient', 'bb-powerpack')
@@ -197,6 +198,7 @@ function pp_row_separators( $form, $id ) {
                             'wave'                      => __('Wave', 'bb-powerpack'),
                             'cloud'                     => __('Cloud', 'bb-powerpack'),
                             'slit'                      => __('Slit', 'bb-powerpack'),
+                            'water'                     => __('Water', 'bb-powerpack'),
                             'zigzag'                    => __('ZigZag', 'bb-powerpack'),
                         ),
                         'toggle'                    => array(
@@ -314,6 +316,7 @@ function pp_row_separators( $form, $id ) {
                             'wave'                      => __('Wave', 'bb-powerpack'),
                             'cloud'                     => __('Cloud', 'bb-powerpack'),
                             'slit'                      => __('Slit', 'bb-powerpack'),
+                            'water'                     => __('Water', 'bb-powerpack'),
                             'zigzag'                    => __('ZigZag', 'bb-powerpack'),
                         ),
                         'toggle'                    => array(
@@ -825,6 +828,24 @@ function pp_row_downarrow( $form, $id ) {
                         'class'                 => 'input-small',
                         'help'                  => __('If your theme uses a sticky header, then please enter the header height in px (numbers only) to avoid overlapping of row content.', 'bb-powerpack')
                     ),
+                    'da_animation'          => array(
+                        'type'                  => 'pp-switch',
+                        'label'                 => __('Enable Animation', 'bb-powerpack'),
+                        'default'               => 'no',
+                        'options'               => array(
+                            'yes'                   => __('Yes', 'bb-powerpack'),
+                            'no'                    => __('No', 'bb-powerpack')
+                        )
+                    ),
+                    'da_hide_mobile'    => array(
+                        'type'              => 'pp-switch',
+                        'label'             => __('Hide on Mobile', 'bb-powerpack'),
+                        'default'           => 'no',
+                        'options'           => array(
+                            'yes'               => __('Yes', 'bb-powerpack'),
+                            'no'                => __('No', 'bb-powerpack'),
+                        )
+                    )
                 )
             ),
             'da_style'      => array(

@@ -14,7 +14,7 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-tabs-label .pp-tab-icon {
-	width: <?php echo $settings->tab_icon_size; ?>px;
+	<!-- width: <?php //echo $settings->tab_icon_size; ?>px; -->
 	font-size: <?php echo $settings->tab_icon_size; ?>px;
 	<?php if( $settings->tab_icon_position == 'left' ) { ?>
 		margin-right: 15px;
@@ -53,9 +53,43 @@
 	font-size: <?php echo $settings->tab_content_font_size['desktop']; ?>px;
 	<?php } ?>
 	line-height: <?php echo $settings->tab_content_line_height['desktop']; ?>;
-	background-color: #<?php echo $settings->content_bg_color; ?>;
+	<?php if( $settings->content_bg_color ) { ?>background-color: #<?php echo $settings->content_bg_color; ?>;<?php } ?>
+	<?php if( $settings->content_bg_type == 'image' && $settings->content_bg_image ) { ?>
+		background-image: url( <?php echo $settings->content_bg_image_src; ?> );
+		background-size: <?php echo $settings->content_bg_size; ?>;
+		background-repeat: <?php echo $settings->content_bg_repeat; ?>;
+	<?php } ?>
 	color: #<?php echo $settings->content_text_color; ?>;
-	text-align: <?php echo $settings->content_alignment; ?>
+	text-align: <?php echo $settings->content_alignment; ?>;
+	<?php if( $settings->tab_style != 'default' ) { ?>
+		border-style: solid;
+		border-color: #<?php echo $settings->content_border_color; ?>;
+		<?php if( $settings->content_border_width['top'] >= 0 ) { ?>
+		border-top-width: <?php echo $settings->content_border_width['top']; ?>px;
+		<?php } ?>
+		<?php if( $settings->content_border_width['right'] >= 0 ) { ?>
+		border-right-width: <?php echo $settings->content_border_width['right']; ?>px;
+		<?php } ?>
+		<?php if( $settings->content_border_width['bottom'] >= 0 ) { ?>
+		border-bottom-width: <?php echo $settings->content_border_width['bottom']; ?>px;
+		<?php } ?>
+		<?php if( $settings->content_border_width['left'] >= 0 ) { ?>
+		border-left-width: <?php echo $settings->content_border_width['left']; ?>px;
+		<?php } ?>
+	<?php } ?>
+
+	<?php if( $settings->content_padding['top'] >= 0 ) { ?>
+	padding-top: <?php echo $settings->content_padding['top']; ?>px;
+	<?php } ?>
+	<?php if( $settings->content_padding['right'] >= 0 ) { ?>
+	padding-right: <?php echo $settings->content_padding['right']; ?>px;
+	<?php } ?>
+	<?php if( $settings->content_padding['bottom'] >= 0 ) { ?>
+	padding-bottom: <?php echo $settings->content_padding['bottom']; ?>px;
+	<?php } ?>
+	<?php if( $settings->content_padding['left'] >= 0 ) { ?>
+	padding-left: <?php echo $settings->content_padding['left']; ?>px;
+	<?php } ?>
 }
 
 .fl-node-<?php echo $id; ?> .pp-tabs .pp-tabs-label {
@@ -80,6 +114,12 @@
 	color: #<?php echo $settings->tab_toggle_icon_color; ?>;
 }
 
+.fl-node-<?php echo $id; ?> .pp-tabs .pp-tabs-label.pp-tab-active .pp-toggle-icon {
+	color: #<?php echo $settings->label_active_text_color; ?>;
+}
+
+
+
 /*  Style 1
 ------------------------------------ */
 
@@ -89,7 +129,7 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-tabs-style-1 .pp-tabs-label:hover {
-	color: #<?php echo $settings->label_background_active_color; ?>;
+	color: #<?php echo $settings->label_active_text_color; ?>;
 }
 
 /*  Style 2
@@ -105,7 +145,7 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-tabs-style-2 .pp-tabs-label:hover {
-	color: #<?php echo $settings->label_background_active_color; ?>;
+	color: #<?php echo $settings->label_text_color; ?>;
 }
 
 /*  Style 3
@@ -116,7 +156,7 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-tabs-style-3 .pp-tabs-label:hover {
-	color: #<?php echo $settings->label_background_active_color; ?>;
+	color: #<?php echo $settings->label_text_color; ?>;
 }
 
 
@@ -138,11 +178,7 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-tabs-style-5 .pp-tabs-label:hover {
-	color: #<?php echo $settings->label_active_text_color; ?>;
-}
-
-.fl-node-<?php echo $id; ?> .pp-tabs-style-5 .pp-tabs-panels .pp-tabs-panel-content {
-	background-color: #<?php echo $settings->label_background_active_color; ?>;
+	color: #<?php echo $settings->label_text_color; ?>;
 }
 
 /*  Style 6
@@ -206,10 +242,13 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-tabs-style-8 .pp-tabs-label:hover {
-	color: #<?php echo $settings->label_background_active_color; ?>;
+	color: #<?php echo $settings->label_text_color; ?>;
 }
 
-
+.fl-node-<?php echo $id; ?> .pp-tabs-horizontal.pp-tabs-style-8 .pp-tabs-label {
+	margin-left: <?php echo $settings->label_margin; ?>px;
+	margin-right: <?php echo $settings->label_margin; ?>px;
+}
 
 @media only screen and (min-width: 769px) {
 	.fl-node-<?php echo $id; ?> .pp-tabs-vertical.pp-tabs-style-2 .pp-tabs-label.pp-tab-active .pp-tab-label-inner:after {

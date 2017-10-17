@@ -2,13 +2,17 @@
 $activeTabIndex = absint($settings->tab_default);
 $activeTabIndex = $activeTabIndex > count($settings->items) ? 0 : $activeTabIndex;
 $activeTabIndex = $activeTabIndex < 1 ? 0 : $activeTabIndex - 1;
+$css_id = '';
 ?>
 
 <div class="pp-tabs pp-tabs-<?php echo $settings->layout; ?> pp-tabs-<?php echo $settings->tab_style; ?> pp-clearfix">
 
 	<div class="pp-tabs-labels pp-clearfix">
-		<?php for($i = 0; $i < count($settings->items); $i++) : if(!is_object($settings->items[$i])) continue; ?>
-		<div id="pp-tab-<?php echo $id; ?>-<?php echo $i; ?>" class="pp-tabs-label<?php if($i == $activeTabIndex) echo ' pp-tab-active'; ?> <?php echo 'pp-tab-icon-' . $settings->tab_icon_position; ?>" data-index="<?php echo $i; ?>">
+		<?php for( $i = 0; $i < count($settings->items); $i++ ) :
+			if( !is_object($settings->items[$i]) ) continue;
+			$css_id = ( $settings->tab_id_prefix != '' ) ? $settings->tab_id_prefix . '-' . ($i+1) : 'pp-tab-' . $id . '-' . ($i+1);
+			?>
+		<div id="<?php echo $css_id; ?>" class="pp-tabs-label<?php if($i == $activeTabIndex) echo ' pp-tab-active'; ?> <?php echo 'pp-tab-icon-' . $settings->tab_icon_position; ?>" data-index="<?php echo $i; ?>">
 			<div class="pp-tab-label-inner">
 				<?php if( $settings->tab_icon_position == 'left' || $settings->tab_icon_position == 'top' ) { ?>
 					<?php if( $settings->items[$i]->tab_font_icon ) { ?>
