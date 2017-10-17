@@ -16,7 +16,8 @@ class PPInfoBannerModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Smart Banner', 'bb-powerpack'),
             'description'   => __('A module for creating attractive call to action banners.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'lead_gen' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-info-banner/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-info-banner/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -41,6 +42,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'type'              => 'photo',
                         'label'             => __('Image', 'bb-powerpack'),
                         'default'           => '',
+                        'connections'       => array( 'photo' ),
                     ),
                     'banner_image_arrangement'    => array(
                         'type'          => 'pp-switch',
@@ -101,15 +103,15 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'label'         => __('Alignment', 'bb-powerpack'),
                         'default'       => 'top-right',
                         'options'       => array(
-                            'top-left'      => __('Top Left', 'bb-powerpack'),
-                            'top-right'     => __('Top Right', 'bb-powerpack'),
-                            'top-center'    => __('Top Center', 'bb-powerpack'),
-							'center-left'      => __('Left Center', 'bb-powerpack'),
-                            'center-right'     => __('Right Center', 'bb-powerpack'),
-                            'center'    => __('Center', 'bb-powerpack'),
-							'bottom-left'      => __('Bottom Left', 'bb-powerpack'),
-                            'bottom-right'     => __('Bottom Right', 'bb-powerpack'),
-                            'bottom-center'    => __('Bottom Center', 'bb-powerpack'),
+                            'top-left'      	=> __('Top Left', 'bb-powerpack'),
+                            'top-right'     	=> __('Top Right', 'bb-powerpack'),
+                            'top-center'    	=> __('Top Center', 'bb-powerpack'),
+							'center-left'      	=> __('Left Center', 'bb-powerpack'),
+                            'center-right'     	=> __('Right Center', 'bb-powerpack'),
+                            'center'    		=> __('Center', 'bb-powerpack'),
+							'bottom-left'      	=> __('Bottom Left', 'bb-powerpack'),
+                            'bottom-right'     	=> __('Bottom Right', 'bb-powerpack'),
+                            'bottom-center'    	=> __('Bottom Center', 'bb-powerpack'),
                         )
                     ),
 					'banner_image_height'   => array(
@@ -127,7 +129,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                     ),
                     'banner_image_effect'    => array(
                         'type'          => 'select',
-                        'label'         => __('Effect', 'bb-powerpack'),
+                        'label'         => __('Animation', 'bb-powerpack'),
                         'default'       => 'zoomIn',
                         'options'       => array(
                             'none'          => __('None', 'bb-powerpack'),
@@ -162,7 +164,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                     ),
                     'banner_image_transition_duration'   => array(
                         'type'          => 'text',
-                        'label'         => __('Transition Duration', 'bb-powerpack'),
+                        'label'         => __('Animation Duration', 'bb-powerpack'),
                         'description'   => 'ms',
                         'class'         => 'bb-info-banner-input input-small',
                         'default'       => '1000',
@@ -186,7 +188,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'show_reset'    => true,
                         'preview'         => array(
                             'type'            => 'css',
-                            'selector'        => '.pp-info-banner-content:before',
+                            'selector'        => '.pp-info-banner-content .pp-info-banner-bg:before',
                             'property'        => 'background-color'
                         )
                     ),
@@ -198,7 +200,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'default'       => '0.5',
                         'preview'       => array(
                             'type'      => 'css',
-                            'selector'  => '.pp-info-banner-content:before',
+                            'selector'  => '.pp-info-banner-content .pp-info-banner-bg:before',
                             'property'  => 'opacity',
                         )
                     ),
@@ -217,6 +219,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'label'         => __('Title', 'bb-powerpack'),
                         'class'         => '',
                         'default'       => '',
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-info-banner-content .banner-title',
@@ -228,6 +231,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'default'           => '',
                         'placeholder'       => '',
                         'rows'              => '6',
+                        'connections'       => array( 'string', 'html', 'url' ),
                         'preview'           => array(
                             'type'          => 'text',
                             'selector'      => '.pp-info-banner-content .banner-description'
@@ -305,6 +309,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'label'         => __('Text', 'bb-powerpack'),
                         'class'         => '',
                         'default'       => '',
+                        'connections'   => array('string'),
                         'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-info-banner-content .banner-button',
@@ -313,6 +318,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
 					'button_link'          => array(
 						'type'          => 'link',
 						'label'         => __('Link', 'bb-powerpack'),
+                        'connections'   => array( 'url' ),
 					),
 					'button_target'   => array(
 						'type'          => 'select',
@@ -420,6 +426,19 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                             'unit'      => 'px'
                         )
                     ),
+					'banner_border_radius'   => array(
+                        'type'          => 'text',
+                        'label'         => __('Round Corners', 'bb-powerpack'),
+                        'description'   => 'px',
+                        'class'         => 'bb-info-banner-input input-small',
+                        'default'       => '',
+                        'preview'       => array(
+                            'type'      => 'css',
+                            'selector'  => '.pp-info-banner-content',
+                            'property'  => 'border-radius',
+                            'unit'      => 'px'
+                        )
+                    ),
 					'banner_info_padding'   => array(
                         'type'          => 'text',
                         'label'         => __('Padding Top', 'bb-powerpack'),
@@ -428,7 +447,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'default'       => '20',
                         'preview'       => array(
                             'type'      => 'css',
-                            'selector'  => '.pp-info-banner-content',
+                            'selector'  => '.pp-info-banner-content .info-banner-wrap',
                             'property'  => 'padding-top',
                             'unit'      => 'px'
                         )
@@ -441,7 +460,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'default'       => '20',
                         'preview'       => array(
                             'type'      => 'css',
-                            'selector'  => '.pp-info-banner-content',
+                            'selector'  => '.pp-info-banner-content .info-banner-wrap',
                             'property'  => 'padding-bottom',
                             'unit'      => 'px'
                         )
@@ -454,7 +473,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'default'       => '20',
                         'preview'       => array(
                             'type'      => 'css',
-                            'selector'  => '.pp-info-banner-content',
+                            'selector'  => '.pp-info-banner-content .info-banner-wrap',
                             'property'  => 'padding-left',
                             'unit'      => 'px'
                         )
@@ -467,7 +486,7 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                         'default'       => '20',
                         'preview'       => array(
                             'type'      => 'css',
-                            'selector'  => '.pp-info-banner-content',
+                            'selector'  => '.pp-info-banner-content .info-banner-wrap',
                             'property'  => 'padding-right',
                             'unit'      => 'px'
                         )
@@ -858,6 +877,17 @@ FLBuilder::register_module('PPInfoBannerModule', array(
                             'selector'  => '.pp-info-banner-content .banner-title',
                             'property'  => 'font-size',
                             'unit'      => 'px'
+                        )
+                    ),
+					'banner_title_line_height'   => array(
+                        'type'          => 'text',
+                        'label'         => __('Line Height', 'bb-powerpack'),
+                        'class'         => 'bb-info-banner-input input-small',
+                        'default'       => '1',
+                        'preview'       => array(
+                            'type'      => 'css',
+                            'selector'  => '.pp-info-banner-content .banner-title',
+                            'property'  => 'line-height',
                         )
                     ),
                     'banner_title_spacing'  => array(

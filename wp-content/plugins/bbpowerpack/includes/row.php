@@ -127,6 +127,15 @@ function pp_row_separator_html( $type, $position, $color, $height, $shadow ) {
 			        <path class="pp-slit-3" d="M47 0 L50 100 L53 0 Z"></path>
     			</svg>
             <?php break; ?>
+            <?php case 'water': ?>
+                <svg class="pp-water-separator" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" fill="#<?php echo $color; ?>" width="100%" height="<?php echo $height; ?>" viewBox="0 0 1920 127" xml:space="preserve" preserveAspectRatio="none">
+                <path d="M0,62c0,0,91.667-14.667,175.667,30.667C236.333,124,253,113.333,290.333,91.333s53.333-10,74,4
+                    s59.333,17.333,98.667-8.667c39.333-26,42,4,65.333,12S593.667,80,608.333,66C623,52,678.332,34,730.999,72s84,70.667,135.333,44
+                    s31.334-50.667,100-22.667s67.998,15.333,113.332-4.667s26.667,21.333,68.667-4s61.333-34.667,144,12s111.999,12.665,137.999-4.668
+                    s38,27.333,82,12s89.581-54.75,144-10c65.669,54.002,139.334-34,180.667-16.667c31.883,13.37,61.386,26.345,83.002,19.951V0H1.24
+                    L0,62z"/>
+                </svg>
+            <?php break; ?>
             <?php case 'box': ?>
                 <div class="pp-box"></div>
             <?php break; ?>
@@ -242,7 +251,7 @@ function pp_output_after_col_group( $groups, $cols ) {
         ?>
         <div class="pp-down-arrow-container">
             <div class="pp-down-arrow-wrap">
-                <div class="pp-down-arrow" data-row-id="<?php echo $row->node; ?>" data-top-offset="<?php echo $row->settings->da_top_offset; ?>" data-transition-speed="<?php echo $row->settings->da_transition_speed; ?>">
+                <div class="pp-down-arrow<?php echo ($row->settings->da_animation == 'yes') ? ' pp-da-bounce' : ''; ?>" data-row-id="<?php echo $row->node; ?>" data-top-offset="<?php echo $row->settings->da_top_offset; ?>" data-transition-speed="<?php echo $row->settings->da_transition_speed; ?>">
                     <svg xmlns="http://www.w3.org/2000/svg">
         				<path stroke="null" d="m1.00122,14.45485c0,-0.24438 0.10878,-0.48877 0.32411,-0.67587c0.4329,-0.37231 1.13663,-0.37231 1.56952,0l19.19382,16.50735l19.19381,-16.50735c0.4329,-0.37231 1.13663,-0.37231 1.56952,0s0.43289,0.97753 0,1.34983l-19.97969,17.18324c-0.43289,0.3723 -1.13662,0.3723 -1.56951,0l-19.97969,-17.18324c-0.21755,-0.1871 -0.32411,-0.43149 -0.32411,-0.67587l0.00222,0.00191z" fill="#000000" id="svg_1"/>
         			</svg>

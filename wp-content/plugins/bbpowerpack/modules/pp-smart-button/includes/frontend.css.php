@@ -60,10 +60,13 @@ if ( isset( $settings->three_d ) && $settings->three_d ) {
 
 <?php if ( ! empty( $settings->text_color['primary'] ) ) : ?>
 .fl-node-<?php echo $id; ?> a.pp-button,
-.fl-node-<?php echo $id; ?> a.pp-button:visited,
-.fl-node-<?php echo $id; ?> a.pp-button *,
-.fl-node-<?php echo $id; ?> a.pp-button:visited * {
+.fl-node-<?php echo $id; ?> a.pp-button span {
 	color: #<?php echo $settings->text_color['primary']; ?>;
+	-webkit-transition: all .3s ease 0s;
+    -moz-transition: all .3s ease 0s;
+    -o-transition: all .3s ease 0s;
+    -ms-transition: all .3s ease 0s;
+    transition: all .3s ease 0s;
 }
 <?php endif; ?>
 
@@ -126,15 +129,22 @@ $btn_effect = $settings->button_effect;
 if( $settings->style == 'flat' ) {
 	switch( $btn_effect ) {
 	    case 'fade': ?>
-	    .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	        transition: background-color, color;
-	        <?php if($settings->button_effect_duration) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
+	    .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+		.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+		.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+		.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			<?php if($settings->button_effect_duration) { ?>
+				transition-duration: <?php echo $settings->button_effect_duration; ?>ms;
+			<?php } ?>
 	    }
 	    <?php
 	    break;
 
 	    case 'sweep_right': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -165,7 +175,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'sweep_left': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -196,7 +209,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'sweep_bottom': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -227,7 +243,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'sweep_top': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -258,7 +277,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'bounce_right': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -290,7 +312,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'bounce_left': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -322,7 +347,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'bounce_bottom': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -354,7 +382,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'bounce_top': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -386,7 +417,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'radial_out': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -414,7 +448,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'radial_in': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -442,7 +479,10 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'rectangle_out': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -469,8 +509,13 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'rectangle_in': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	            <?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
+			}
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -497,11 +542,16 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'shutter_in_horizontal': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	            <?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
-	            overflow: hidden;
-	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
-	        }
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
+			}
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+				overflow: hidden;
+				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
+			}
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
 	            content: "";
 	            <?php if( $settings->bg_color['primary']) { ?>background: #<?php echo $settings->bg_color['primary']; ?>;<?php } ?>
@@ -530,10 +580,13 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'shutter_out_horizontal': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	            overflow: hidden;
-	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
-	        }
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+				overflow: hidden;
+				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
+			}
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
 	            content: "";
 	            <?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
@@ -562,11 +615,16 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'shutter_in_vertical': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	            <?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
-	            overflow: hidden;
-	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
-	        }
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
+			}
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+				overflow: hidden;
+				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
+			}
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
 	            content: "";
 	            <?php if( $settings->bg_color['primary']) { ?>background: #<?php echo $settings->bg_color['primary']; ?>;<?php } ?>
@@ -595,10 +653,13 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'shutter_out_vertical': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	            overflow: hidden;
-	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
-	        }
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+				overflow: hidden;
+				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
+			}
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
 	            content: "";
 	            <?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
@@ -627,10 +688,13 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'shutter_out_diagonal': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	            overflow: hidden;
-	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
-	        }
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+				overflow: hidden;
+				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
+			}
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:after {
 	            content: "";
 	            position: absolute;
@@ -657,11 +721,16 @@ if( $settings->style == 'flat' ) {
 	    break;
 
 	    case 'shutter_in_diagonal': ?>
-	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
-	            <?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
-	            overflow: hidden;
-	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
-	        }
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button {
+				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
+			}
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+				overflow: hidden;
+				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
+			}
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:after {
 	            content: "";
 	            position: absolute;

@@ -19,7 +19,8 @@ class PPRestaurantMenuModule extends FLBuilderModule {
         parent::__construct(array(
             'name'              => __('Restaurant / Services Menu', 'bb-powerpack'),
             'description'       => __('Restaurant and Services Menu', 'bb-powerpack'),
-            'category'          => BB_POWERPACK_CAT,
+            'group'             => 'PowerPack Modules',
+            'category'		    => pp_get_modules_cat( 'content' ),
             'dir'               => BB_POWERPACK_DIR . 'modules/pp-restaurant-menu/',
             'url'               => BB_POWERPACK_URL . 'modules/pp-restaurant-menu/',
             'editor_export'     => true,
@@ -39,7 +40,8 @@ FLBuilder::register_module('PPRestaurantMenuModule', array(
                     'menu_heading'     => array(
                         'type'          => 'text',
                         'label'         => __('Heading', 'bb-powerpack'),
-                        'default'       => __( 'MENU TITLE', 'bb-powerpack' )
+                        'default'       => __( 'MENU TITLE', 'bb-powerpack' ),
+                        'connections'   => array( 'string', 'html', 'url' ),
                     ),
                     'menu_heading_align'     => array(
                         'type'          => 'pp-switch',
@@ -488,6 +490,302 @@ FLBuilder::register_module('PPRestaurantMenuModule', array(
                     ),
                 )
             ),
+            'card_structure'    => array(
+                'title'             => __('Structure', 'bb-powerpack'),
+                'fields'            => array(
+                    'card_padding'      => array(
+                        'type'              => 'pp-switch',
+                        'label'             => __('Padding', 'bb-powerpack'),
+                        'default'           => 'auto',
+                        'options'           => array(
+                            'auto'              => __('Auto', 'bb-powerpack'),
+                            'custom'            => __('Custom', 'bb-powerpack')
+                        ),
+                        'toggle'            => array(
+                            'custom'            => array(
+                                'fields'            => array('card_padding_custom')
+                            )
+                        )
+                    ),
+                    'card_padding_custom' => array(
+                        'type'              => 'pp-multitext',
+                        'label'             => __('Custom Padding', 'bb-powerpack'),
+                        'description'       => 'px',
+                        'default'           => array(
+                            'top'               => '',
+                            'bottom'            => '',
+                            'left'              => '',
+                            'right'             => '',
+                        ),
+                        'options'           => array(
+                            'top'               => array(
+                                'placeholder'       => __('Top', 'bb-powerpack'),
+                                'tooltip'           => __('Top', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-up',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'padding-top',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'padding-top',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                            'bottom'            => array(
+                                'placeholder'       => __('Bottom', 'bb-powerpack'),
+                                'tooltip'           => __('Bottom', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-down',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'padding-bottom',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'padding-bottom',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                            'left'            => array(
+                                'placeholder'       => __('Left', 'bb-powerpack'),
+                                'tooltip'           => __('Left', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-left',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'padding-left',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'padding-left',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                            'right'            => array(
+                                'placeholder'       => __('Right', 'bb-powerpack'),
+                                'tooltip'           => __('Right', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-right',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'padding-right',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'padding-right',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                        )
+                    ),
+                    'card_margin'      => array(
+                        'type'              => 'pp-switch',
+                        'label'             => __('Margin', 'bb-powerpack'),
+                        'default'           => 'auto',
+                        'options'           => array(
+                            'auto'              => __('Auto', 'bb-powerpack'),
+                            'custom'            => __('Custom', 'bb-powerpack')
+                        ),
+                        'toggle'            => array(
+                            'custom'            => array(
+                                'fields'            => array('card_margin_custom')
+                            )
+                        )
+                    ),
+                    'card_margin_custom' => array(
+                        'type'              => 'pp-multitext',
+                        'label'             => __('Custom Margin', 'bb-powerpack'),
+                        'description'       => 'px',
+                        'default'           => array(
+                            'top'               => '',
+                            'bottom'            => '',
+                            'left'              => '',
+                            'right'             => '',
+                        ),
+                        'options'           => array(
+                            'top'               => array(
+                                'placeholder'       => __('Top', 'bb-powerpack'),
+                                'tooltip'           => __('Top', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-up',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'margin-top',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'margin-top',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                            'bottom'            => array(
+                                'placeholder'       => __('Bottom', 'bb-powerpack'),
+                                'tooltip'           => __('Bottom', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-down',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'margin-bottom',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'margin-bottom',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                            'left'            => array(
+                                'placeholder'       => __('Left', 'bb-powerpack'),
+                                'tooltip'           => __('Left', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-left',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'margin-left',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'margin-left',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                            'right'            => array(
+                                'placeholder'       => __('right', 'bb-powerpack'),
+                                'tooltip'           => __('right', 'bb-powerpack'),
+                                'icon'              => 'fa-long-arrow-right',
+                                'preview'           => array(
+                                    'rules'             => array(
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item',
+                                            'property'          => 'margin-right',
+                                            'unit'              => 'px'
+                                        ),
+                                        array(
+                                            'selector'          => '.pp-restaurant-menu-item-inline',
+                                            'property'          => 'margin-right',
+                                            'unit'              => 'px'
+                                        )
+                                    )
+                                ),
+                            ),
+                        )
+                    ),
+                    'card_radius'   => array(
+                        'type'          => 'text',
+                        'label'         => __('Round Corners', 'bb-powerpack'),
+                        'default'       => '',
+                        'description'   => 'px',
+                        'size'          => 5,
+                        'preview'       => array(
+                            'type'              => 'css',
+                            'rules'             => array(
+                                array(
+                                    'selector'          => '.pp-restaurant-menu-item',
+                                    'property'          => 'border-radius',
+                                    'unit'              => 'px'
+                                ),
+                                array(
+                                    'selector'          => '.pp-restaurant-menu-item-inline',
+                                    'property'          => 'border-radius',
+                                    'unit'              => 'px'
+                                )
+                            )
+                        )
+                    ),
+                    'card_shadow_enable'    => array(
+                        'type'                  => 'pp-switch',
+                        'label'                 => __('Enable Shadow', 'bb-powerpack'),
+                        'default'               => 'no',
+                        'options'               => array(
+                            'yes'                   => __('Yes', 'bb-powerpack'),
+                            'no'                    => __('No', 'bb-powerpack')
+                        ),
+                        'toggle'                => array(
+                            'yes'                   => array(
+                                'sections'              => array('card_shadow')
+                            )
+                        )
+                    ),
+                )
+            ),
+            'card_shadow'   => array(
+                'title'         => __('Shadow', 'bb-powerpack'),
+                'fields'        => array(
+                    'card_shadow' 		=> array(
+                        'type'              => 'pp-multitext',
+                        'label'             => __('Shadow', 'bb-powerpack'),
+                        'default'           => array(
+                            'vertical'			=> 0,
+                            'horizontal'		=> 0,
+                            'blur'				=> 10,
+                            'spread'			=> 0
+                        ),
+                        'options'			=> array(
+                            'horizontal'		=> array(
+                                'placeholder'		=> __('Horizontal', 'bb-powerpack'),
+                                'tooltip'			=> __('Horizontal', 'bb-powerpack'),
+                                'icon'				=> 'fa-arrows-h'
+                            ),
+                            'vertical'			=> array(
+                                'placeholder'		=> __('Vertical', 'bb-powerpack'),
+                                'tooltip'			=> __('Vertical', 'bb-powerpack'),
+                                'icon'				=> 'fa-arrows-v'
+                            ),
+                            'blur'				=> array(
+                                'placeholder'		=> __('Blur', 'bb-powerpack'),
+                                'tooltip'			=> __('Blur', 'bb-powerpack'),
+                                'icon'				=> 'fa-circle-o'
+                            ),
+                            'spread'			=> array(
+                                'placeholder'		=> __('Spread', 'bb-powerpack'),
+                                'tooltip'			=> __('Spread', 'bb-powerpack'),
+                                'icon'				=> 'fa-paint-brush'
+                            ),
+                        )
+                    ),
+                    'card_shadow_color'     => array(
+                        'type'                  => 'color',
+                        'label'                 => __('Shadow Color', 'bb-powerpack'),
+                        'default'               => '000000',
+                    ),
+                    'card_shadow_opacity'   => array(
+                        'type'                  => 'text',
+                        'label'                 => __('Shadow Opacity', 'bb-powerpack'),
+                        'description'           => '%',
+                        'size'                  => 5,
+                        'default'               => 30,
+                    ),
+                )
+            )
         )
     ),
     'typography'    => array(
@@ -539,7 +837,7 @@ FLBuilder::register_module('PPRestaurantMenuModule', array(
                             'selector'  => '.pp-restaurant-menu-item-title'
                         )
                     ),
-                     'items_title_font_style'     => array(
+                    'items_title_font_style'     => array(
                         'type'          => 'pp-switch',
                         'label'         => __('Font Style', 'bb-powerpack'),
                         'default'       => 'normal',
@@ -723,17 +1021,20 @@ FLBuilder::register_settings_form('restaurant_menu_form', array(
                         ),
                         'menu_item_images'          => array(
                            'type'          => 'photo',
-                           'label'         => __('Select Photo', 'bb-powerpack')
+                           'label'         => __('Select Photo', 'bb-powerpack'),
+                           'connections'   => array( 'photo' ),
                         ),
                         'menu_items_title'     => array(
                             'type'          => 'text',
                             'label'         => __('Title', 'bb-powerpack'),
-                            'default'       => __('Menu Item', 'bb-powerpack')
+                            'default'       => __('Menu Item', 'bb-powerpack'),
+                            'connections'   => array( 'string', 'html', 'url' ),
                         ),
                         'menu_items_link'     => array(
                             'type'          => 'link',
                             'label'         => __('Link To', 'bb-powerpack'),
-                            'default'       => ''
+                            'default'       => '',
+                            'connections'   => array( 'url' ),
                         ),
                         'menu_items_link_target'     => array(
                             'type'          => 'select',
@@ -747,7 +1048,8 @@ FLBuilder::register_settings_form('restaurant_menu_form', array(
                         'menu_item_description'          => array(
                            'type'          => 'text',
                            'label'         => __('Item Description', 'bb-powerpack'),
-                           'default'       => __('Lorem Ipsum is simply dummy text', 'bb-powerpack')
+                           'default'       => __('Lorem Ipsum is simply dummy text', 'bb-powerpack'),
+                           'connections'   => array( 'string', 'html', 'url' ),
                        ),
                        'menu_items_price'     => array(
                            'type'          => 'text',

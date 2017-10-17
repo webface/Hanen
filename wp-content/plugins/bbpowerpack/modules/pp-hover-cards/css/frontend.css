@@ -188,6 +188,7 @@
 .pp-hover-card-container.powerpack-style .pp-hover-card-inner .card-inner-wrap {
 	display: table-cell;
 	vertical-align: middle;
+	width: 100%;
 }
 
 .pp-hover-card-container.style-1 .pp-hover-card-title,

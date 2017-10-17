@@ -46,3 +46,10 @@
 	margin-top: 0;
 	margin-bottom: 0;
 }
+
+@media only screen and (max-width: 768px) {
+	.pp-image-panels-wrap .pp-panel-link {
+		width: 100% !important;
+		text-align: center;
+	}
+}

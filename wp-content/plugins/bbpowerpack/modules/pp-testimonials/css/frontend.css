@@ -13,6 +13,7 @@
 .fl-module .pp-testimonials-image img {
 	border: 0 solid;
 	height: 100%;
+	width: 100%;
 	margin: 0 auto;
 	max-height: 150px;
 	max-width: 150px;
@@ -125,7 +126,7 @@
 /* Layout 3 */
 .pp-testimonials .layout-3 .pp-testimonials-image {
 	float: left;
-	margin-right: 3%;
+	margin-right: 30px;
 	max-width: 150px;
 	width: 22%;
 }
@@ -159,10 +160,6 @@
 .pp-testimonials .layout-4 .pp-testimonials-content p:last-of-type {
 	margin-bottom: 15px;
 }
-.pp-testimonials .layout-4.carousel-enabled .layout-4-content {
-	padding-top: 80px;
-	top: -50px;
-}
 .pp-testimonials .layout-4-container .bx-wrapper {
 	margin-bottom: 0;
 }
@@ -189,9 +186,6 @@
 .pp-testimonials .layout-5 .pp-vertical-align {
 	margin: 0 auto;
 	width: 100%;
-}
-.pp-testimonials .layout-5 .pp-content-wrapper {
-	margin-top: 25px;
 }
 
 /* Wrappers */

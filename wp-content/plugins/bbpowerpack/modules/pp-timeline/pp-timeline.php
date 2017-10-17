@@ -16,7 +16,8 @@ class PPTimelineModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Timeline', 'bb-powerpack'),
             'description'   => __('Addon to display content in timeline format.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-timeline/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-timeline/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -493,7 +494,7 @@ FLBuilder::register_module('PPTimelineModule', array(
                         'maxlength'     => 2,
                         'default'       => 16,
 						'label'         => __('Font Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'         => array(
 							'type'            => 'css',
 							'selector'        => '.pp-timeline-content-wrapper .pp-timeline-item .pp-timeline-content a',
@@ -521,7 +522,8 @@ FLBuilder::register_settings_form('pp_timeline_form', array(
                     'fields'     => array(
                         'title'     => array(
                             'type'          => 'text',
-                            'label'         => ''
+                            'label'         => '',
+                            'connections'   => array( 'string', 'html' ),
                         ),
                     ),
                 ),
@@ -530,7 +532,8 @@ FLBuilder::register_settings_form('pp_timeline_form', array(
 					'fields'        => array( // Section Fields
 						'content'          => array(
 							'type'          => 'editor',
-							'label'         => ''
+							'label'         => '',
+                            'connections'   => array( 'string', 'html', 'url' ),
 						)
 					)
 				),
@@ -543,7 +546,8 @@ FLBuilder::register_settings_form('pp_timeline_form', array(
                         ),
                         'button_link'   => array(
                             'type'  => 'link',
-                            'label' => __('Link', 'bb-powerpack')
+                            'label' => __('Link', 'bb-powerpack'),
+                            'connections'   => array( 'url' ),
                         ),
                         'button_target' => array(
                             'type'  => 'pp-switch',
@@ -652,6 +656,18 @@ FLBuilder::register_settings_form('pp_timeline_form', array(
                                 'secondary'   => __('Background', 'bb-powerpack'),
                             ),
                         ),
+						'title_border'	=> array(
+							'type'			=> 'text',
+							'label'			=> __('Border Width', 'bb-powerpack'),
+							'default'		=> 0,
+							'size'			=> 5,
+							'description'	=> 'px'
+						),
+						'title_border_color' => array(
+							'type'				=> 'color',
+							'label'				=> __('Border Color', 'bb-powerpack'),
+							'show_reset'		=> true,
+						)
                     ),
                 ),
                 'text_styling'  => array(

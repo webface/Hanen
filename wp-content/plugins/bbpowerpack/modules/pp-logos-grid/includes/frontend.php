@@ -1,17 +1,3 @@
-<?php
-
-/**
- * This file should be used to render each module instance.
- * You have access to two variables in this file:
- *
- * $module An instance of your module class.
- * $settings The module's settings.
- *
- * PPLogosGridModule:
- */
-
-?>
-
 <div class="pp-logos-content clearfix">
     <div class="pp-logos-wrapper clearfix">
 		<?php
@@ -22,7 +8,11 @@
 			}
 
 			$logos_grid = $settings->logos_grid[$i];
-            $alt = !empty($logos_grid->upload_logo_title) ? $logos_grid->upload_logo_title : basename($logos_grid->upload_logo_grid_src);
+			$alt = $logos_grid->upload_logo_title;
+
+			if ( empty( $alt ) && isset( $logos_grid->upload_logo_grid_src ) ) {
+				$alt = $logos_grid->upload_logo_grid_src;
+			}
 
 		?>
 		<div class="pp-logo pp-logo-<?php echo $i; ?>">

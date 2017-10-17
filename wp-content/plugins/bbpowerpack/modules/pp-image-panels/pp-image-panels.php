@@ -16,7 +16,8 @@ class PPImagePanelsModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Image Panels', 'bb-powerpack'),
             'description'   => __('Create beautiful images panels.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-image-panels/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-image-panels/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -252,6 +253,21 @@ FLBuilder::register_module('PPImagePanelsModule', array(
                             ),
                         ),
                     ),
+					'title_alignment'    => array(
+                        'type'      => 'pp-switch',
+                        'label'     => __('Alignment', 'bb-powerpack'),
+                        'default'   => 'left',
+                        'options'   => array(
+                            'left'  => __('Left', 'bb-powerpack'),
+                            'center'  => __('Center', 'bb-powerpack'),
+                            'Right'  => __('Right', 'bb-powerpack'),
+                        ),
+						'preview'           => array(
+							'type'			=> 'css',
+							'selector'      => '.pp-image-panels-wrap .pp-panel-item .pp-panel-title h3',
+							'property'      => 'text-align',
+						),
+                    ),
                 )
             ),
         ),
@@ -272,11 +288,13 @@ FLBuilder::register_settings_form('pp_image_panels_form', array(
                     'fields'     => array(
                         'title'     => array(
                             'type'          => 'text',
-                            'label'         => __('Title', 'bb-powerpack')
+                            'label'         => __('Title', 'bb-powerpack'),
+                            'connections'   => array( 'string', 'html', 'url' ),
                         ),
                         'photo'     => array(
                             'type'          => 'photo',
-                            'label'         => __('Image', 'bb-powerpack')
+                            'label'         => __('Image', 'bb-powerpack'),
+                            'connections'   => array( 'photo' ),
                         ),
                         'position'  => array(
                             'type'      => 'pp-switch',
@@ -329,6 +347,7 @@ FLBuilder::register_settings_form('pp_image_panels_form', array(
                         'link'  => array(
                             'type'      => 'link',
                             'label'     => __('Link', 'bb-powerpack'),
+                            'connections'   => array( 'url' ),
                         ),
                         'link_target'   => array(
                             'type'      => 'pp-switch',

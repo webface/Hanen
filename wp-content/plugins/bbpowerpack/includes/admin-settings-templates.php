@@ -59,7 +59,7 @@
                 <li><a href="<?php echo self::get_form_action( '&tab=templates&navigate=page-templates&filter='.$filter_key ); ?>" class="" data-filter="<?php echo $filter_key; ?>"><?php echo $filter_name; ?></a><span>|</span></li>
             <?php endforeach; ?>
         </ul>
-        <ul class="filter-sublinks filter-row-templates" <?php echo ( 'row-templates' !== $navigate ) ? 'style="display:none;"' : ''; ?>>
+        <ul class="filter-sublinks filter-row-templates" <?php echo ( 'row-templates' !== $navigate ) ? 'style="display:none;"' : ''; ?> data-scheme="<?php echo self::get_option('bb_powerpack_row_templates_type'); ?>">
             <li class="filter-label"><strong><?php esc_html_e( 'Mode: ', 'bb-powerpack' ); ?></strong></li>
             <li>
                 <label>

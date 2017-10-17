@@ -16,7 +16,7 @@
         $breakpoint = '<= ' . $medium_device;
     }
     if ( $responsive_display == 'mobile' ) {
-        $breakpoint = '=== ' . $small_device;
+        $breakpoint = '<= ' . $small_device;
     }
 ?>
 
@@ -33,10 +33,19 @@
                 $('html').addClass('pp-bottom-bar');
             }
             if( $('.fl-node-<?php echo $id; ?> .pp-announcement-bar-wrap').hasClass('pp-announcement-bar-top') ) {
-                $('html').addClass('pp-announcement-bar pp-top-bar');
+                var thisHeight = $('.fl-node-<?php echo $id; ?> .pp-announcement-bar-wrap').outerHeight();
+
                 if( $('body').hasClass('admin-bar') ) {
                     $('html').addClass('pp-top-bar-admin');
+                    thisHeight = thisHeight + $('#wpadminbar').outerHeight();
                 }
+
+                var style = '<style id="pp-style"> .pp-announcement-bar.pp-top-bar { margin-top: ' + thisHeight + 'px !important; } </style>';
+                if ( $( '#pp-style' ).length === 0 ) {
+                    $('head').append(style);
+                }
+
+                $('html').addClass('pp-announcement-bar pp-top-bar');
             }
 
             <?php if( $settings->announcement_bar_position == 'bottom' ) { ?>

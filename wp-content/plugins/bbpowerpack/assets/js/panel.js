@@ -81,8 +81,8 @@
 			$('html').toggleClass('pp-previewing');
 			if ( $('html').hasClass('pp-previewing') ) {
 				$(this).find('span').removeClass('fa-eye').addClass('fa-eye-slash');
-				if ( $('.fl-builder-panel').is(':visible') ) {
-					$('.fl-builder-panel').stop(true, true).animate({ right : '-350px' }, 500);
+				if ( $('.fl-builder-panel, .pp-panel').is(':visible') ) {
+					$('.fl-builder-panel, .pp-panel').stop(true, true).animate({ right : '-350px' }, 500);
 				}
 				$('.fl-builder-bar').stop(true, true).slideUp(500);
 				FLBuilder._destroyOverlayEvents();

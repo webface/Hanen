@@ -1,7 +1,3 @@
-/**
- * This file should contain frontend logic for
- * all module instances.
- */
 var PPModal;
 ;(function($) {
     PPModal = {
@@ -15,13 +11,14 @@ var PPModal;
             if((PPModal.settings.exit_intent || PPModal.settings.auto_load) && PPModal.cookie.get() && !PPModal.settings.previewing){
                 return;
             }
+            if(!PPModal.settings.previewing && 'undefined' !== typeof PPModal.settings.visible && !PPModal.settings.visible) {
+                return;
+            }
             if(PPModal.isActive) {
                 return;
             }
             PPModal.responsive();
             PPModal.show();
-            PPModal.adjust();
-            PPModal.events();
         },
         modal: function() {
             return $('#modal-'+PPModal.settings.id+' .pp-modal');
@@ -29,32 +26,28 @@ var PPModal;
         show: function() {
             if('fullscreen' !== PPModal.settings.layout) {
                 if ( typeof PPModal.settings.height === 'undefined' ) {
-                    var $clone = PPModal.modal().clone().css({
-                        display: 'block',
-                        position: 'absolute',
-                        top: '-99999px',
-                        width: PPModal.settings.width + 'px',
-                        visibility: 'hidden'
-                    }).addClass('pp-modal-clone');
+
+                    $('#modal-'+PPModal.settings.id).addClass('pp-modal-height-auto');
+                    var modalHeight = PPModal.modal().outerHeight();
+                    $('#modal-'+PPModal.settings.id).removeClass('pp-modal-height-auto');
+
                     if('photo' === PPModal.settings.type) {
-                        $clone.find('.pp-modal-content-inner img').css('max-width', '100%');
+                        PPModal.modal().find('.pp-modal-content-inner img').css('max-width', '100%');
                     }
-                    $('body').append($clone);
-                    var topPos = ($(window).height() - $clone.find('.pp-modal-body').outerHeight())/2;
+
+                    var topPos = ($(window).height() - modalHeight)/2;
                     if ( topPos < 0 ) {
                         topPos = 0;
                     }
                     PPModal.modal().css('top', topPos + 'px');
-                    //console.log($clone.find('.pp-modal-body').outerHeight());
-                    $clone.remove();
                 } else {
                     PPModal.modal().css('top', ($(window).height() - PPModal.settings.height)/2 + 'px');
                 }
             }
             setTimeout(function(){
-                $('#modal-'+PPModal.settings.id).fadeIn(400);
-                PPModal.modal()
-                    .removeClass(PPModal.settings.animation_load+' animated')
+                $('#modal-'+PPModal.settings.id).show();
+                PPModal.modal().parent().removeClass(PPModal.settings.animation_load+' animated');
+                PPModal.modal().parent()
                     .addClass('modal-visible')
                     .addClass(PPModal.settings.animation_load+' animated')
                     .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
@@ -67,19 +60,22 @@ var PPModal;
                         }
                         if('video' == PPModal.settings.type) {
                             var src = '';
-                            if(PPModal.modal().find('iframe, source').attr('src') === undefined) {
+                            var m_src = PPModal.modal().find('iframe, source').attr('src');
+                            if(m_src === undefined || m_src === '') {
                                 src = PPModal.modal().find('iframe, source').data('src');
                             } else {
                                 src = PPModal.modal().find('iframe, source').attr('src');
                             }
-                            if((src.search('youtube') !== -1 || src.search('vimeo') !== -1) && src.search('autoplay=1') == -1) {
-                                if(typeof src.split('?')[1] === 'string') {
-                                    src = src + '&autoplay=1&rel=0';
-                                } else {
-                                    src = src + '?autoplay=1&rel=0';
+                            if ( src ) {
+                                if((src.search('youtube') !== -1 || src.search('vimeo') !== -1) && src.search('autoplay=1') == -1) {
+                                    if(typeof src.split('?')[1] === 'string') {
+                                        src = src + '&autoplay=1&rel=0';
+                                    } else {
+                                        src = src + '?autoplay=1&rel=0';
+                                    }
                                 }
+                                PPModal.modal().find('iframe, source').attr('src', src);
                             }
-                            PPModal.modal().find('iframe, source').attr('src', src);
                             if(PPModal.modal().find('video').length) {
                                 PPModal.modal().find('video')[0].play();
                             }
@@ -88,21 +84,34 @@ var PPModal;
 
                 PPModal.isActive = true;
                 if(PPModal.settings.exit_intent || PPModal.settings.auto_load){
-                    PPModal.cookie.set();
+                    if(!PPModal.settings.previewing) {
+                        PPModal.cookie.set();
+                    }
                 }
+                PPModal.adjust();
+                PPModal.events();
             }, PPModal.settings.auto_load ? parseFloat(PPModal.settings.delay) * 1000 : 0);
         },
         hide: function() {
-            PPModal.modal()
+            PPModal.modal().trigger('beforeclose');
+            PPModal.modal().parent()
                 .removeClass(PPModal.settings.animation_exit+' animated')
                 .addClass(PPModal.settings.animation_exit+' animated')
                 .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     $(this).removeClass(PPModal.settings.animation_exit+' animated').removeClass('modal-visible');
                     $(this).find('.pp-modal-content').removeAttr('style');
-                    $('#modal-'+PPModal.settings.id).fadeOut(100);
+                    $('#modal-'+PPModal.settings.id).removeAttr('style');
                     PPModal.isActive = false;
                     PPModal.reset();
                 });
+            if (window.location.hash) {
+                var hashVal = window.location.hash;
+                if ('#modal-' + PPModal.settings.id === hashVal) {
+                    var scrollTop = PPModal.settings.scrollTop || $(window).scrollTop();
+                    window.location.href = window.location.href.split('#')[0] + '#';
+                    $(window).scrollTop(scrollTop);
+                }
+            }
         },
         adjust: function() {
             var mH = 0, hH = 0, cH = 0, eq = 0;
@@ -140,6 +149,9 @@ var PPModal;
             if($(window).width() <= PPModal.settings.breakpoint){
                 PPModal.modal().removeClass('layout-standard').addClass('layout-fullscreen');
             }
+            if ( $(window).width() <= PPModal.modal().width() ) {
+               PPModal.modal().css('width', $(window).width() - 20 + 'px');
+            }
         },
         events: function() {
             $(document).keyup(function(e) {
@@ -151,7 +163,7 @@ var PPModal;
                 PPModal.hide();
             });
             $(document).on('click', function(e) {
-                if (PPModal.settings.click_exit && PPModal.isActive && !PPModal.settings.previewing && !PPModal.modal().is(e.target) && PPModal.modal().has(e.target).length === 0) {
+                if (PPModal.settings.click_exit && PPModal.isActive && !PPModal.settings.previewing && !PPModal.modal().is(e.target) && PPModal.modal().has(e.target).length === 0 && e.which) {
                     PPModal.hide();
                 }
             });
@@ -174,7 +186,7 @@ var PPModal;
         reset: function() {
             if('url' == PPModal.settings.type || 'video' == PPModal.settings.type) {
                 var src = PPModal.modal().find('iframe, source').attr('src');
-                PPModal.modal().find('iframe, source').attr('data-src', src).removeAttr('src');
+                PPModal.modal().find('iframe, source').attr('data-src', src).attr('src', '');
                 if(PPModal.modal().find('video').length) {
                     PPModal.modal().find('video')[0].pause();
                 }

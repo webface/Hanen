@@ -53,6 +53,11 @@ for( $i = 0; $i < $number_items; $i++ ) {
 	.fl-node-<?php echo $id; ?> .pp-timeline-content-wrapper .pp-timeline-item-<?php echo $i; ?> .pp-timeline-content .pp-timeline-title-wrapper {
 		background: <?php echo ($timeline->title_color->secondary) ? '#'.$timeline->title_color->secondary : 'transparent' ?>;
 		color: <?php echo ($timeline->title_color->primary) ? '#'.$timeline->title_color->primary : '#000' ?>;
+		<?php if( $timeline->title_border != '' ) { ?>
+			border-bottom-width: <?php echo $timeline->title_border; ?>px;
+			border-bottom-color: #<?php echo $timeline->title_border_color; ?>;
+			border-bottom-style: solid;
+		<?php } ?>
 	}
 	.fl-node-<?php echo $id; ?> .pp-timeline-content-wrapper .pp-timeline-item-<?php echo $i; ?> .pp-timeline-content .pp-timeline-text-wrapper p {
 		color: <?php echo ($timeline->text_color) ? '#'.$timeline->text_color : '#000' ?>;

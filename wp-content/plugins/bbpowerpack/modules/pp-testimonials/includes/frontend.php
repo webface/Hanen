@@ -10,8 +10,9 @@ if($settings->heading == '') {
 	<?php if( $settings->testimonial_layout == '4' ) { ?>
 		<div class="layout-4-container <?php echo ( $settings->carousel == 1 ) ? 'carousel-enabled' : ''; ?>">
 	<?php } ?>
-
-	<h2 class="pp-testimonials-heading"><?php echo $settings->heading; ?></h2>
+	<?php if ( $settings->heading != '' ) { ?>
+		<h2 class="pp-testimonials-heading"><?php echo $settings->heading; ?></h2>
+	<?php } ?>
 	<?php if ( $settings->arrows ) { ?>
 	<div class="pp-arrow-wrapper">
 		<div class="pp-slider-prev pp-slider-nav"></div>

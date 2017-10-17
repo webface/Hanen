@@ -36,6 +36,9 @@ if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT'])) {
 				</div>
 			</div>
 			<div class="pp-flipbox pp-flipbox-back">
+				<?php if( $settings->link_type == 'box' ) { ?>
+					<a class="pp-flipbox-link" href="<?php echo $settings->link; ?>" target="<?php echo $settings->link_target; ?>">
+				<?php } ?>
 				<div class="pp-flipbox-inner">
 					<div class="pp-flipbox-title">
 						<<?php echo $settings->back_title_tag; ?> class="pp-flipbox-back-title"><?php echo $settings->back_title; ?></<?php echo $settings->back_title_tag; ?>>
@@ -47,6 +50,9 @@ if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT'])) {
 						<a class="pp-more-link" href="<?php echo $settings->link; ?>" target="<?php echo $settings->link_target; ?>"><?php echo $settings->link_text; ?></a>
 					<?php } ?>
 				</div>
+				<?php if( $settings->link_type == 'box' ) { ?>
+					</a>
+				<?php } ?>
 			</div>
 		</div>
 

@@ -108,24 +108,6 @@
     transition: opacity 0.3s ease;
 }
 
-.pp-dotnav-arrow {
-    position: absolute;
-    bottom: <?php echo $settings->arrow_bottom_margin; ?>px;
-    left: 50%;
-    margin-left: -30px;
-    background-color: <?php echo $settings->arrow_bg_color ? '#' . $settings->arrow_bg_color : 'transparent'; ?>;
-    border-radius: <?php echo $settings->arrow_border_radius; ?>px;
-}
-.pp-dotnav-arrow .pp-arrow {
-    width: <?php echo $settings->arrow_width; ?>px;
-	height: <?php echo $settings->arrow_height; ?>px;
-}
-.pp-dotnav-arrow .pp-arrow path {
-    stroke: #<?php echo $settings->arrow_color; ?>;
-    fill: transparent;
-    stroke-width: <?php echo $settings->arrow_stroke_width; ?>px;
-}
-
 @media only screen and (max-width: <?php echo $settings->dot_hide_on; ?>px) {
     .fl-node-<?php echo $id; ?> .pp-dotnav {
         display: none;

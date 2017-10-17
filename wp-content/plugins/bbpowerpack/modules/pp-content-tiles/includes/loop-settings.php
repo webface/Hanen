@@ -19,110 +19,133 @@ FLBuilderModel::default_settings($settings, array(
 	)
 ));
 
+$settings = apply_filters( 'pp_tiles_loop_settings', $settings );
+do_action( 'pp_tiles_loop_settings_before_form', $settings ); // e.g Add custom FLBuilder::render_settings_field()
+
 ?>
-<div id="fl-builder-settings-section-general" class="fl-loop-builder fl-builder-settings-section">
+<div class="fl-custom-query fl-loop-data-source" data-source="custom_query">
+	<div id="fl-builder-settings-section-general" class="fl-loop-builder fl-builder-settings-section">
 
-	<table class="fl-form-table">
-	<?php
-
-	// Post type
-	FLBuilder::render_settings_field('post_type', array(
-		'type'          => 'post-type',
-		'label'         => __('Post Type', 'bb-powerpack'),
-	), $settings);
-
-	// Order by
-	FLBuilder::render_settings_field('order_by', array(
-		'type'          => 'select',
-		'label'         => __('Order By', 'bb-powerpack'),
-		'options'       => array(
-			'ID'            => __('ID', 'bb-powerpack'),
-			'date'          => __('Date', 'bb-powerpack'),
-			'modified'      => __('Date Last Modified', 'bb-powerpack'),
-			'title'         => __('Title', 'bb-powerpack'),
-			'author'        => __('Author', 'bb-powerpack'),
-			'comment_count' => __('Comment Count', 'bb-powerpack'),
-			'menu_order'    => __('Menu Order', 'bb-powerpack'),
-			'rand'        	=> __('Random', 'bb-powerpack'),
-		)
-	), $settings);
-
-	// Order
-	FLBuilder::render_settings_field('order', array(
-		'type'          => 'select',
-		'label'         => __('Order', 'bb-powerpack'),
-		'options'       => array(
-			'DESC'          => __('Descending', 'bb-powerpack'),
-			'ASC'           => __('Ascending', 'bb-powerpack'),
-		)
-	), $settings);
-
-	// Offset
-	FLBuilder::render_settings_field('offset', array(
-		'type'          => 'text',
-		'label'         => _x('Offset', 'How many posts to skip.', 'bb-powerpack'),
-		'default'       => '0',
-		'size'          => '4',
-		'help'          => __('Skip this many posts that match the specified criteria.', 'bb-powerpack')
-	), $settings);
-
-	// No results message
-	FLBuilder::render_settings_field('no_results_message', array(
-		'type' 			=> 'text',
-		'label'			=> __('No Results Message', 'bb-powerpack'),
-		'default'		=> __('No Posts Found.', 'bb-powerpack')
-	), $settings);
-
-	?>
-	</table>
-</div>
-<div id="fl-builder-settings-section-filter" class="fl-builder-settings-section">
-	<h3 class="fl-builder-settings-title"><?php esc_html_e('Filter', 'bb-powerpack'); ?></h3>
-	<?php foreach(FLBuilderLoop::post_types() as $slug => $type) : ?>
-		<table class="fl-form-table fl-loop-builder-filter fl-loop-builder-<?php echo $slug; ?>-filter" <?php if($slug == $settings->post_type) echo 'style="display:table;"'; ?>>
+		<table class="fl-form-table">
 		<?php
 
-		// Posts
-		FLBuilder::render_settings_field('posts_' . $slug, array(
-			'type'          => 'suggest',
-			'action'        => 'fl_as_posts',
-			'data'          => $slug,
-			'label'         => $type->label,
-			'help'          => sprintf(__('Enter a list of %s. Only these %s will be shown.', 'bb-powerpack'), $type->label, $type->label)
+		// Post type
+		FLBuilder::render_settings_field('post_type', array(
+			'type'          => 'post-type',
+			'label'         => __('Post Type', 'bb-powerpack'),
 		), $settings);
 
-		// Taxonomies
-		$taxonomies = FLBuilderLoop::taxonomies($slug);
+		// Order by
+		FLBuilder::render_settings_field('order_by', array(
+			'type'          => 'select',
+			'label'         => __('Order By', 'bb-powerpack'),
+			'options'       => array(
+				'author'         => __('Author', 'bb-powerpack'),
+				'comment_count'  => __('Comment Count', 'bb-powerpack'),
+				'date'           => __('Date', 'bb-powerpack'),
+				'modified'       => __('Date Last Modified', 'bb-powerpack'),
+				'ID'             => __('ID', 'bb-powerpack'),
+				'menu_order'     => __('Menu Order', 'bb-powerpack'),
+				'meta_value'     => __('Meta Value (Alphabetical)', 'bb-powerpack'),
+				'meta_value_num' => __('Meta Value (Numeric)', 'bb-powerpack'),
+				'rand'        	 => __('Random', 'bb-powerpack'),
+				'title'          => __('Title', 'bb-powerpack'),
+			),
+			'toggle'		=> array(
+				'meta_value' 	=> array(
+					'fields'		=> array( 'order_by_meta_key' )
+				),
+				'meta_value_num' => array(
+					'fields'		=> array( 'order_by_meta_key' )
+				)
+			)
+		), $settings);
 
-		foreach($taxonomies as $tax_slug => $tax) {
+		// Meta Key
+		FLBuilder::render_settings_field('order_by_meta_key', array(
+			'type'          => 'text',
+			'label'         => __('Meta Key', 'bb-powerpack'),
+		), $settings);
 
-			FLBuilder::render_settings_field('tax_' . $slug . '_' . $tax_slug, array(
-				'type'          => 'suggest',
-				'action'        => 'fl_as_terms',
-				'data'          => $tax_slug,
-				'label'         => $tax->label,
-				'help'          => sprintf(__('Enter a list of %s. Only posts with these %s will be shown.', 'bb-powerpack'), $tax->label, $tax->label)
-			), $settings);
-		}
+		// Order
+		FLBuilder::render_settings_field('order', array(
+			'type'          => 'select',
+			'label'         => __('Order', 'bb-powerpack'),
+			'options'       => array(
+				'DESC'          => __('Descending', 'bb-powerpack'),
+				'ASC'           => __('Ascending', 'bb-powerpack'),
+			)
+		), $settings);
+
+		// Offset
+		FLBuilder::render_settings_field('offset', array(
+			'type'          => 'text',
+			'label'         => _x('Offset', 'How many posts to skip.', 'bb-powerpack'),
+			'default'       => '0',
+			'size'          => '4',
+			'help'          => __('Skip this many posts that match the specified criteria.', 'bb-powerpack')
+		), $settings);
+
+		// No results message
+		FLBuilder::render_settings_field('no_results_message', array(
+			'type' 			=> 'text',
+			'label'			=> __('No Results Message', 'bb-powerpack'),
+			'default'		=> __('No Posts Found.', 'bb-powerpack')
+		), $settings);
 
 		?>
 		</table>
-	<?php endforeach; ?>
-	<table class="fl-form-table">
-	<?php
+	</div>
+	<div id="fl-builder-settings-section-filter" class="fl-builder-settings-section">
+		<h3 class="fl-builder-settings-title"><?php esc_html_e('Filter', 'bb-powerpack'); ?></h3>
+		<?php foreach(FLBuilderLoop::post_types() as $slug => $type) : ?>
+			<table class="fl-form-table fl-loop-builder-filter fl-loop-builder-<?php echo $slug; ?>-filter" <?php if($slug == $settings->post_type) echo 'style="display:table;"'; ?>>
+			<?php
 
-	// Author
-	FLBuilder::render_settings_field('users', array(
-		'type'          => 'suggest',
-		'action'        => 'fl_as_users',
-		'label'         => __('Authors', 'bb-powerpack'),
-		'help'          => __('Enter a list of authors usernames. Only posts with these authors will be shown.', 'bb-powerpack')
-	), $settings);
+			// Posts
+			FLBuilder::render_settings_field('posts_' . $slug, array(
+				'type'          => 'suggest',
+				'action'        => 'fl_as_posts',
+				'data'          => $slug,
+				'label'         => $type->label,
+				'help'          => sprintf(__('Enter a list of %s. Only these %s will be shown.', 'bb-powerpack'), $type->label, $type->label),
+				'matching'      => true
+			), $settings);
 
-	?>
-	</table>
+			// Taxonomies
+			$taxonomies = FLBuilderLoop::taxonomies($slug);
+
+			foreach($taxonomies as $tax_slug => $tax) {
+
+				FLBuilder::render_settings_field('tax_' . $slug . '_' . $tax_slug, array(
+					'type'          => 'suggest',
+					'action'        => 'fl_as_terms',
+					'data'          => $tax_slug,
+					'label'         => $tax->label,
+					'help'          => sprintf(__('Enter a list of %s. Only posts with these %s will be shown.', 'bb-powerpack'), $tax->label, $tax->label),
+					'matching'      => true
+				), $settings);
+			}
+
+			?>
+			</table>
+		<?php endforeach; ?>
+		<table class="fl-form-table">
+		<?php
+
+		// Author
+		FLBuilder::render_settings_field('users', array(
+			'type'          => 'suggest',
+			'action'        => 'fl_as_users',
+			'label'         => __('Authors', 'bb-powerpack'),
+			'help'          => __('Enter a list of authors usernames. Only posts with these authors will be shown.', 'bb-powerpack'),
+			'matching'      => true
+		), $settings);
+
+		?>
+		</table>
+	</div>
 </div>
-
 <div id="fl-builder-settings-section-meta" class="fl-builder-settings-section">
 	<h3 class="fl-builder-settings-title"><?php esc_html_e('Meta', 'bb-powerpack'); ?></h3>
 	<table class="fl-form-table">
@@ -214,6 +237,10 @@ FLBuilderModel::default_settings($settings, array(
 	?>
 	</table>
 </div>
+
+<?php
+do_action( 'pp_tiles_loop_settings_after_form', $settings ); // e.g Add custom FLBuilder::render_settings_field()
+?>
 
 <script type="text/javascript">
 	;(function($) {

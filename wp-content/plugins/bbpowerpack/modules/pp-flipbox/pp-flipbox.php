@@ -16,7 +16,8 @@ class PPFlipBoxModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Flip Box', 'bb-powerpack'),
             'description'   => __('Addon to display flip box.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-flipbox/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-flipbox/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -78,7 +79,8 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         ),
                         'toggle'        => array(
                             'icon'      => array(
-                                'fields'        => array('icon_select', 'icon_color', 'icon_font_size', 'icon_color_hover', 'icon_background', 'icon_background_hover', 'icon_width'),
+                                'fields'        => array('icon_select', 'icon_font_size', 'icon_width'),
+								'sections'		=> array('icon_colors'),
                                 'tabs'      => array('icon_styles')
                             ),
                             'image'      => array(
@@ -94,6 +96,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                     'image_select'       => array(
                         'type'      => 'photo',
                         'label'     => __('Image Icon', 'bb-powerpack'),
+                        'connections'   => array( 'photo' ),
                     ),
                 ),
             ),
@@ -229,6 +232,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'label'             => __('Title', 'bb-powerpack'),
                         'type'              => 'text',
                         'default'           => __('Front Title', 'bb-powerpack'),
+                        'connections'       => array( 'string', 'html', 'url' ),
                         'preview'           => array(
                             'type'              => 'text',
                             'selector'          => '.pp-flipbox-front .pp-flipbox-title h3'
@@ -238,6 +242,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'type'                  => 'editor',
                         'label'                 => '',
                         'default'               => __('Front Description', 'bb-powerpack'),
+                        'connections'           => array( 'string', 'html', 'url' ),
                         'preview'               => array(
                             'type'                  => 'text',
                             'selector'              => '.pp-flipbox-front .pp-flipbox-description'
@@ -303,7 +308,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'label'         => __('Title Font Size', 'bb-powerpack'),
                         'size'          => '5',
                         'maxlength'     => '2',
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-flipbox-front .pp-flipbox-title h3',
@@ -320,6 +325,37 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                             'selector'      => '.pp-flipbox-front .pp-flipbox-title h3',
                             'property'      => 'color',
                         )
+					),
+					'front_title_margin'       => array(
+						'type'              => 'pp-multitext',
+						'label'             => __('Title Margin', 'bb-powerpack'),
+						'description'       => 'px',
+						'default'           => array(
+							'top'               => 0,
+							'bottom'            => 0,
+						),
+						'options'           => array(
+							'top'               => array(
+								'placeholder'       => __('Top', 'bb-powerpack'),
+								'tooltip'           => __('Top', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-up',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-front .pp-flipbox-title h3',
+									'property'          => 'margin-top',
+									'unit'              => 'px'
+								),
+							),
+							'bottom'            => array(
+								'placeholder'       => __('Bottom', 'bb-powerpack'),
+								'tooltip'           => __('Bottom', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-down',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-front .pp-flipbox-title h3',
+									'property'          => 'margin-bottom',
+									'unit'              => 'px'
+								),
+							),
+						)
 					),
                     'front_text_font'   => array(
                         'type'              => 'font',
@@ -338,7 +374,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'size'          => '5',
                         'maxlength'     => '2',
 						'label'         => __('Description Font Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-flipbox-front .pp-flipbox-description',
@@ -356,6 +392,37 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                             'property'      => 'color',
                         )
 					),
+					'front_text_margin'       => array(
+						'type'              => 'pp-multitext',
+						'label'             => __('Description Margin', 'bb-powerpack'),
+						'description'       => 'px',
+						'default'           => array(
+							'top'               => 0,
+							'bottom'            => 0,
+						),
+						'options'           => array(
+							'top'               => array(
+								'placeholder'       => __('Top', 'bb-powerpack'),
+								'tooltip'           => __('Top', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-up',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-front .pp-flipbox-description',
+									'property'          => 'margin-top',
+									'unit'              => 'px'
+								),
+							),
+							'bottom'            => array(
+								'placeholder'       => __('Bottom', 'bb-powerpack'),
+								'tooltip'           => __('Bottom', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-down',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-front .pp-flipbox-description',
+									'property'          => 'margin-bottom',
+									'unit'              => 'px'
+								),
+							),
+						)
+					),
                 ),
             )
 
@@ -370,6 +437,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                     'back_title'     => array(
                         'label'     => __('Title', 'bb-powerpack'),
                         'type'      => 'text',
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'       => array(
                             'type'          => 'text',
                             'selector'      => '.pp-flipbox-back .pp-flipbox-title h3'
@@ -379,6 +447,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'type'      => 'editor',
                         'label'     => '',
                         'default'     => '',
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'       => array(
                             'type'          => 'text',
                             'selector'      => '.pp-flipbox-back .pp-flipbox-description'
@@ -394,19 +463,24 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'label'     => __('Link Type', 'bb-powerpack'),
                         'default'     => 'none',
                         'options'   => array(
-                            'none'  => __('None', 'bb-powerpack'),
-                            'custom'  => __('Button', 'bb-powerpack'),
+                            'none'  	=> __('None', 'bb-powerpack'),
+                            'custom'  	=> __('Button', 'bb-powerpack'),
+                            'box'  		=> __('Box', 'bb-powerpack'),
                         ),
                         'toggle'    => array(
                             'custom'     => array(
-                                'fields'    => array('link_text', 'link_color', 'link_color_hover', 'link_background', 'link_background_hover', 'link_font', 'link_font_size', 'link', 'link_target')
+                                'fields'    => array('link_text', 'link_color', 'link_color_hover', 'link_background', 'link_background_hover', 'link_font', 'link_font_size', 'link', 'link_target', 'link_padding')
                             ),
+							'box'		=> array(
+								'fields'	=> array('link', 'link_target')
+							)
                         )
                     ),
                     'link_text'     => array(
                         'type'      => 'text',
                         'label'         => __('Text', 'bb-powerpack'),
                         'default'       => __('Know More', 'bb-powerpack'),
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-more-link'
@@ -416,6 +490,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'type'          => 'link',
 						'label'         => __('Link', 'bb-powerpack'),
 						'placeholder'   => __( 'http://www.example.com', 'bb-powerpack' ),
+                        'connections'   => array( 'url' ),
 						'preview'       => array(
 							'type'          => 'none'
 						)
@@ -435,7 +510,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                     'link_color'    => array(
                         'type'      => 'color',
                         'label'     => __('Text Color', 'bb-powerpack'),
-                        'default'   => '000000',
+                        'default'   => '',
                         'show_reset'    => true,
                         'preview'   => array(
                             'type'  => 'css',
@@ -446,7 +521,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                     'link_color_hover'    => array(
                         'type'      => 'color',
                         'label'     => __('Text Hover Color', 'bb-powerpack'),
-                        'default'   => 'dddddd',
+                        'default'   => '',
                         'show_reset'    => true,
                         'preview'   => array(
                             'type'  => 'css',
@@ -457,7 +532,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                     'link_background'    => array(
                         'type'      => 'color',
                         'label'     => __('Background Color', 'bb-powerpack'),
-                        'default'   => 'ffffff',
+                        'default'   => '',
                         'show_reset'    => true,
                         'preview'   => array(
                             'type'  => 'css',
@@ -468,13 +543,70 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                     'link_background_hover'    => array(
                         'type'      => 'color',
                         'label'     => __('Background Color Hover', 'bb-powerpack'),
-                        'default'   => 'ffffff',
+                        'default'   => '',
                         'show_reset'    => true,
                         'preview'   => array(
                             'type'  => 'css',
                             'selector'  => '.pp-more-link:hover',
                             'property'  => 'background'
                         ),
+                    ),
+					'link_padding'   => array(
+                        'type'      => 'pp-multitext',
+                        'label'     => __('Padding', 'bb-powerpack'),
+                        'description'   => 'px',
+                        'default'       => array(
+                            'top' => 10,
+                            'right' => 20,
+                            'bottom' => 10,
+                            'left' => 20,
+                        ),
+                        'options' 		=> array(
+                            'top' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Top', 'bb-powerpack'),
+                                'tooltip'       => __('Top', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-up',
+                                'preview'       => array(
+                                    'selector'	=> '.pp-more-link',
+                                    'property'	=> 'padding-top',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'bottom' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Bottom', 'bb-powerpack'),
+                                'tooltip'       => __('Bottom', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-down',
+                                'preview'       => array(
+                                    'selector'	=> '.pp-more-link',
+                                    'property'	=> 'padding-bottom',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'left' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Left', 'bb-powerpack'),
+                                'tooltip'       => __('Left', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-left',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-more-link',
+                                    'property'	=> 'padding-left',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                            'right' => array(
+                                'maxlength' => 3,
+                                'placeholder'   => __('Right', 'bb-powerpack'),
+                                'tooltip'       => __('Right', 'bb-powerpack'),
+                                'icon'		=> 'fa-long-arrow-right',
+                                'preview'              => array(
+                                    'selector'	=> '.pp-more-link',
+                                    'property'	=> 'padding-right',
+                                    'unit'		=> 'px'
+                                )
+                            ),
+                        )
                     ),
                 ),
             ),
@@ -536,7 +668,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'size'          => '5',
                         'maxlength'     => '2',
 						'label'         => __('Title Font Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-flipbox-back .pp-flipbox-title h3',
@@ -553,6 +685,37 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                             'selector'      => '.pp-flipbox-back .pp-flipbox-title h3',
                             'property'      => 'color',
                         )
+					),
+					'back_title_margin'       => array(
+						'type'              => 'pp-multitext',
+						'label'             => __('Title Margin', 'bb-powerpack'),
+						'description'       => 'px',
+						'default'           => array(
+							'top'               => 0,
+							'bottom'            => 0,
+						),
+						'options'           => array(
+							'top'               => array(
+								'placeholder'       => __('Top', 'bb-powerpack'),
+								'tooltip'           => __('Top', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-up',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-back .pp-flipbox-title h3',
+									'property'          => 'margin-top',
+									'unit'              => 'px'
+								),
+							),
+							'bottom'            => array(
+								'placeholder'       => __('Bottom', 'bb-powerpack'),
+								'tooltip'           => __('Bottom', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-down',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-back .pp-flipbox-title h3',
+									'property'          => 'margin-bottom',
+									'unit'              => 'px'
+								),
+							),
+						)
 					),
                     'back_text_font'          => array(
                         'type'          => 'font',
@@ -571,7 +734,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'size'          => '5',
                         'maxlength'     => '2',
 						'label'         => __('Description Font Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-flipbox-back .pp-flipbox-description',
@@ -588,6 +751,37 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                             'selector'      => '.pp-flipbox-back .pp-flipbox-description',
                             'property'      => 'color',
                         )
+					),
+					'back_text_margin'       => array(
+						'type'              => 'pp-multitext',
+						'label'             => __('Description Margin', 'bb-powerpack'),
+						'description'       => 'px',
+						'default'           => array(
+							'top'               => 0,
+							'bottom'            => 0,
+						),
+						'options'           => array(
+							'top'               => array(
+								'placeholder'       => __('Top', 'bb-powerpack'),
+								'tooltip'           => __('Top', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-up',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-back .pp-flipbox-description',
+									'property'          => 'margin-top',
+									'unit'              => 'px'
+								),
+							),
+							'bottom'            => array(
+								'placeholder'       => __('Bottom', 'bb-powerpack'),
+								'tooltip'           => __('Bottom', 'bb-powerpack'),
+								'icon'              => 'fa-long-arrow-down',
+								'preview'           => array(
+									'selector'          => '.pp-flipbox-back .pp-flipbox-description',
+									'property'          => 'margin-bottom',
+									'unit'              => 'px'
+								),
+							),
+						)
 					),
                     'link_font'          => array(
                         'type'          => 'font',
@@ -606,7 +800,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'size'          => '5',
                         'maxlength'     => '2',
 						'label'         => __('Link Font Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-more-link',
@@ -629,7 +823,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'size'          => '5',
                         'maxlength'     => '2',
 						'label'         => __('Icon Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'Value unit for font size. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'     => array(
@@ -652,7 +846,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'maxlength'     => '3',
                         'default'       => '0',
 						'label'         => __('Icon Box Size', 'bb-powerpack'),
-                        'description'   => _x( 'px', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'           => array(
@@ -675,7 +869,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'maxlength'     => '3',
                         'default'     => '100',
 						'label'         => __('Icon Size', 'bb-powerpack'),
-						'description'   => _x( 'px', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'           => array(
@@ -762,7 +956,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
 						'default'       => 1,
                         'size'          => 5,
                         'maxlength'     => 2,
-                        'description'   => _x( 'px', 'Value unit for border width. Such as: "10px"', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'     => array(
@@ -821,7 +1015,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                         'maxlength'     => '3',
                         'default'     => '0',
                         'label'         => __('Inside Spacing', 'bb-powerpack'),
-						'description'   => _x( 'px', 'bb-powerpack' ),
+						'description'   => 'px',
                         'help'      => __('The space between icon and the border', 'bb-powerpack'),
                         'preview'       => array(
                             'type'          => 'css',
@@ -845,7 +1039,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
 						'default'       => 0,
                         'size'          => 5,
                         'maxlength'     => 3,
-                        'description'   => _x( 'px', 'Value unit for border radius. Such as: "10px"', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'rules'     => array(

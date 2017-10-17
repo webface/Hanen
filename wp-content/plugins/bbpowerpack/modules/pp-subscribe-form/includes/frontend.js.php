@@ -1,6 +1,6 @@
 ;(function($) {
 
-	new FLBuilderSubscribeForm({
+	new PPSubscribeForm({
 		id: '<?php echo $id ?>',
 		type: '<?php echo $settings->box_type; ?>',
 		cookie: <?php echo absint($settings->display_after); ?>
@@ -40,7 +40,8 @@
 								if ( $('.pp-subscribe-<?php echo $id; ?>.pp-subscribe-slidein').width() > $(window).width() ) {
 									$('.pp-subscribe-<?php echo $id; ?>').css({
 										'max-width': '90%',
-										'<?php echo $settings->slidein_position; ?>': '5%'
+										'<?php echo $settings->slidein_position; ?>': '5%',
+										'height': 'auto'
 									});
 								}
 							<?php } ?>
@@ -82,6 +83,9 @@
 					width = '90%';
 				}
 				document.addEventListener('mouseout', function(e) {
+					if ( $.cookie('pp_subscribe_<?php echo $id ?>') !== undefined && parseInt($.cookie('pp_subscribe_<?php echo $id ?>')) > 0 ) {
+						return;
+					}
 					e = e ? e : window.event;
 					var pos = e.relatedTarget || e.toElement;
 					if ( (!pos || null === pos) && $('.pp-subscribe-<?php echo $id; ?>').hasClass('pp-box-active') === false ) {

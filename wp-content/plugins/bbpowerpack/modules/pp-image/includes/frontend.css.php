@@ -28,6 +28,7 @@
 }
 .fl-node-<?php echo $id; ?> .pp-photo-container .pp-photo-content .pp-photo-content-inner a {
     display: block;
+    text-decoration: none !important;
 }
 <?php if( $settings->image_border_type == 'inside' ) { ?>
     <?php if(!empty($settings->link_type)) { ?>

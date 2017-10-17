@@ -16,7 +16,8 @@ class PPLogosGridModule extends FLBuilderModule {
         parent::__construct(array(
             'name'              => __('Logo Grid & Carousel', 'bb-powerpack'),
             'description'       => __('A module for Logo Grid & Carousel.', 'bb-powerpack'),
-            'category'		    => BB_POWERPACK_CAT,
+            'group'             => 'PowerPack Modules',
+            'category'		    => pp_get_modules_cat( 'creative' ),
             'dir'               => BB_POWERPACK_DIR . 'modules/pp-logos-grid/',
             'url'               => BB_POWERPACK_URL . 'modules/pp-logos-grid/',
             'editor_export'     => true, // Defaults to true and can be omitted.
@@ -902,10 +903,12 @@ FLBuilder::register_settings_form('logos_grid_form', array(
 						'upload_logo_grid'  => array(
 							'type'          => 'photo',
                             'label'         => __('Upload', 'bb-powerpack'),
+                            'connections'   => array( 'photo' ),
 						),
                         'upload_logo_title'   => array(
                             'type'          => 'text',
                             'label'         => __('Title', 'bb-powerpack'),
+                            'connections'   => array( 'string', 'html', 'url' ),
                             'preview'         => array(
                                 'type'            => 'text',
                                 'selector'        => '.pp-logos-content .pp-logo div.title-wrapper p.logo-title',
@@ -914,6 +917,7 @@ FLBuilder::register_settings_form('logos_grid_form', array(
                         'upload_logo_link'          => array(
                             'type'          => 'link',
                             'label'         => __('Link', 'bb-powerpack'),
+                            'connections'   => array( 'url' ),
                             'preview'       => array(
                                 'type'      => 'none'
                             )

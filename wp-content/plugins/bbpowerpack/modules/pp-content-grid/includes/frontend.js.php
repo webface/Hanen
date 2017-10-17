@@ -8,7 +8,7 @@ $speed          = !empty( $settings->transition_speed ) ? $settings->transition_
 
 ;(function($) {
 
-	new FLBuilderContentGrid({
+	new PPContentGrid({
 		id: '<?php echo $id ?>',
 		layout: '<?php echo $settings->layout; ?>',
 		pagination: '<?php echo $settings->pagination; ?>',

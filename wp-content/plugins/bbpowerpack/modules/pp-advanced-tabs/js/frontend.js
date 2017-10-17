@@ -28,6 +28,9 @@
 			if(location.hash && location.hash.search('pp-tab') !== -1) {
 				$(location.hash).trigger('click');
 			}
+			else if( location.hash && $(location.hash).length > 0 ) {
+				$(location.hash).trigger('click');
+			}
 		},
 
 		_labelClick: function(e)
@@ -55,6 +58,7 @@
 			// Content Grid module support.
 			if ( 'undefined' !== typeof $.fn.isotope ) {
 				wrap.find('.pp-tabs-panel-content[data-index="' + index + '"] .pp-content-post-grid.pp-masonry-active').isotope('layout');
+				this._gridLayoutMatchHeight();
 			}
 		},
 
@@ -73,7 +77,7 @@
 			if(index == activeIndex) {
 				activeContent.slideUp('normal');
 				activeContent.removeClass('pp-tab-active');
-				$(this.nodeClass + ' .pp-tabs-panels .pp-tabs-label').removeClass('pp-tab-active'); console.log($(this.nodeClass + ' .pp-tabs-panels .pp-tabs-label'));
+				$(this.nodeClass + ' .pp-tabs-panels .pp-tabs-label').removeClass('pp-tab-active');
 				wrap.removeClass('pp-tabs-animation');
 				return;
 			}
@@ -123,7 +127,24 @@
 				panels  = wrap.find('.pp-tabs-panels');
 
 			panels.css('min-height', labels.height() + 'px');
-		}
+		},
+
+		_gridLayoutMatchHeight: function()
+		{
+			var highestBox = 0;
+			var contentHeight = 0;
+
+            $(this.nodeClass).find('.pp-equal-height .pp-content-post').css('height', '').each(function(){
+
+                if($(this).height() > highestBox) {
+                	highestBox = $(this).height();
+                	contentHeight = $(this).find('.pp-content-post-data').outerHeight();
+                }
+            });
+
+            $(this.nodeClass).find('.pp-equal-height .pp-content-post').height(highestBox);
+            //$(this.postClass).find('.pp-content-post-data').css('min-height', contentHeight + 'px').addClass('pp-content-relative');
+		},
 	};
 
 })(jQuery);

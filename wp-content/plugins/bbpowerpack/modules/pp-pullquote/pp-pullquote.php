@@ -16,7 +16,8 @@ class PPQuoteModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Pullquote', 'bb-powerpack'),
             'description'   => __('Addon to display quote.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-pullquote/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-pullquote/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -88,6 +89,7 @@ FLBuilder::register_module('PPQuoteModule', array(
                     'pullquote_content'   => array(
                         'type'  => 'textarea',
                         'label' => __('Quote', 'bb-powerpack'),
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'   => array(
                             'type'  => 'text',
                             'selector'  => '.pp-pullquote-content p'
@@ -96,6 +98,7 @@ FLBuilder::register_module('PPQuoteModule', array(
                     'pullquote_title'   => array(
                         'type'  => 'text',
                         'label' => __('Name', 'bb-powerpack'),
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'   => array(
                             'type'  => 'text',
                             'selector'  => '.pp-pullquote-title h4'
@@ -249,7 +252,7 @@ FLBuilder::register_module('PPQuoteModule', array(
                         'maxlength'     => '3',
                         'size'          => '5',
 						'label'         => __('Round Corners', 'bb-powerpack'),
-                        'description'   => _x( 'px', 'Value unit for border radius. Such as: "5 px"', 'bb-powerpack' ),
+                        'description'   => 'px',
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-pullquote-wrapper',

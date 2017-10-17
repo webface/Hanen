@@ -16,14 +16,13 @@ class PPDotNavModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Dot / One Page Navigation', 'bb-powerpack'),
             'description'   => __('A beautiful one page dot navigation.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-dotnav/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-dotnav/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
         ));
-
-        $this->add_css('settings-style', $this->url . 'css/settings.css');
     }
 
     public function get_dot_html()
@@ -93,23 +92,60 @@ FLBuilder::register_module('PPDotNavModule', array(
                         'description'   => 'ms',
                         'class'         => 'input-small'
                     ),
+                    'scroll_wheel'   => array(
+                        'type'          => 'pp-switch',
+                        'label'         => __('Scroll Wheel', 'bb-powerpack'),
+                        'default'       => 'disable',
+                        'options'       => array(
+                            'enable'        => __('Enable', 'bb-powerpack'),
+                            'disable'       => __('Disable', 'bb-powerpack')
+                        ),
+                        'toggle'        => array(
+                            'enable'        => array(
+                                'fields'        => array('scroll_touch')
+                            )
+                        ),
+                        'preview'       => array(
+                            'type'          => 'none'
+                        ),
+                        'help'          => __('By enabling this option, mouse wheel will be used to navigate from one row to another.', 'bb-powerpack')
+                    ),
+                    'scroll_touch'   => array(
+                        'type'          => 'pp-switch',
+                        'label'         => __('Touch Swipe', 'bb-powerpack'),
+                        'default'       => 'enable',
+                        'options'       => array(
+                            'enable'        => __('Enable', 'bb-powerpack'),
+                            'disable'       => __('Disable', 'bb-powerpack')
+                        ),
+                        'preview'       => array(
+                            'type'          => 'none'
+                        ),
+                        'help'          => __('By enabling this option, touch swipe will be used to navigate from one row to another in mobile devices.', 'bb-powerpack')
+                    ),
                     'scroll_keys'   => array(
-                        'type'          => 'select',
+                        'type'          => 'pp-switch',
                         'label'         => __('Scroll Keys', 'bb-powerpack'),
                         'default'       => 'disable',
                         'options'       => array(
                             'enable'        => __('Enable', 'bb-powerpack'),
                             'disable'       => __('Disable', 'bb-powerpack')
                         ),
+                        'preview'       => array(
+                            'type'          => 'none'
+                        ),
                         'help'          => __('By enabling this option, UP and DOWN arrow keys will be used to navigate from one row to another.', 'bb-powerpack')
                     ),
                     'dot_label'   => array(
-                        'type'          => 'select',
+                        'type'          => 'pp-switch',
                         'label'         => __('Labels', 'bb-powerpack'),
                         'default'       => 'enable',
                         'options'       => array(
                             'enable'        => __('Enable', 'bb-powerpack'),
                             'disable'       => __('Disable', 'bb-powerpack')
+                        ),
+                        'preview'       => array(
+                            'type'          => 'none'
                         ),
                         'help'          => __('Enable this option to display labels on hover for the dots.', 'bb-powerpack')
                     )
@@ -124,7 +160,7 @@ FLBuilder::register_module('PPDotNavModule', array(
                 'title'         => __('Dot', 'bb-powerpack'), // Section Title
                 'fields'        => array( // Section Fields
                     'dot_position'   => array(
-                        'type'          => 'select',
+                        'type'          => 'pp-switch',
                         'label'         => __('Position', 'bb-powerpack'),
                         'default'       => 'right',
                         'options'       => array(

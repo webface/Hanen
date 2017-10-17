@@ -17,6 +17,10 @@
 	padding: 20px 15px;
 }
 
+.pp-tabs-panel-label span {
+	width: auto;
+}
+
 /*  Panels
 ------------------------------------ */
 

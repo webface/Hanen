@@ -12,6 +12,7 @@
 	padding-right: <?php echo $settings->title_padding['title_right_padding']; ?>px;
 	padding-bottom: <?php echo $settings->title_padding['title_bottom_padding']; ?>px;
 	padding-left: <?php echo $settings->title_padding['title_left_padding']; ?>px;
+	text-align: <?php echo $settings->title_alignment; ?>;
 }
 <?php
 $number_panels = count($settings->image_panels);
@@ -55,7 +56,7 @@ for( $i = 0; $i < $number_panels; $i++ ) {
 	?>
 		.fl-node-<?php echo $id; ?> .pp-image-panels-wrap .pp-panel-link-<?php echo $i; ?>,
 		.fl-node-<?php echo $id; ?> .pp-image-panels-wrap .pp-panel-item-<?php echo $i; ?> {
-			width: 100%;
+			width: 100% !important;
 		}
 	<?php } ?>
 }

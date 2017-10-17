@@ -29,6 +29,12 @@
 		<?php if( $settings->box_border_style ) { ?>border-style: <?php echo $settings->box_border_style; ?>;<?php } ?>
 		<?php if( $settings->box_border_width ) { ?>border-width: <?php echo $settings->box_border_width; ?>px;<?php } ?>
 		<?php if( $settings->layout_4_content_bg ) { ?>background: #<?php echo $settings->layout_4_content_bg; ?>;<?php } ?>
+		<?php if ( 'yes' == $settings->box_shadow_setting ) { ?>
+			-webkit-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-moz-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-o-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+		<?php } ?>
 	}
 	<?php if( $settings->show_arrow == 'yes' ) { ?>
 		.fl-node-<?php echo $id; ?> .pp-testimonial.layout-1 .pp-arrow-top {
@@ -43,6 +49,12 @@
 		<?php if( $settings->box_border_style ) { ?>border-style: <?php echo $settings->box_border_style; ?>;<?php } ?>
 		<?php if( $settings->box_border_width ) { ?>border-width: <?php echo $settings->box_border_width; ?>px;<?php } ?>
 		<?php if( $settings->layout_4_content_bg ) { ?>background: #<?php echo $settings->layout_4_content_bg; ?><?php } ?>
+		<?php if ( 'yes' == $settings->box_shadow_setting ) { ?>
+			-webkit-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-moz-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-o-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+		<?php } ?>
 	}
 	<?php if( $settings->show_arrow == 'yes' ) { ?>
 		.fl-node-<?php echo $id; ?> .pp-testimonial.layout-2 .pp-arrow-bottom {
@@ -50,19 +62,32 @@
 		}
 	<?php } ?>
 <?php } ?>
-<?php if( $settings->testimonial_layout == '3' ) { ?>
+<?php if( $settings->testimonial_layout == '3' ) {
+	$wd = $settings->image_size + 30; ?>
 	.fl-node-<?php echo $id; ?> .pp-testimonial.layout-3 .pp-content-wrapper {
+		width: calc(100% - <?php echo $wd; ?>px);
 		<?php if( $settings->box_border_color ) { ?>border-color: #<?php echo $settings->box_border_color; ?>;<?php } ?>
 		<?php if( $settings->box_border_radius ) { ?>border-radius: <?php echo $settings->box_border_radius; ?>px;<?php } ?>
 		<?php if( $settings->box_border_style ) { ?>border-style: <?php echo $settings->box_border_style; ?>;<?php } ?>
 		<?php if( $settings->box_border_width ) { ?>border-width: <?php echo $settings->box_border_width; ?>px;<?php } ?>
 		<?php if( $settings->layout_4_content_bg ) { ?>background: #<?php echo $settings->layout_4_content_bg; ?>;<?php } ?>
+		<?php if ( 'yes' == $settings->box_shadow_setting ) { ?>
+			-webkit-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-moz-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-o-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+		<?php } ?>
 	}
 	<?php if( $settings->show_arrow == 'yes' ) { ?>
 		.fl-node-<?php echo $id; ?> .pp-testimonial.layout-3 .pp-arrow-left {
 			<?php if( $settings->layout_4_content_bg ) { ?>border-right-color: #<?php echo $settings->layout_4_content_bg; ?><?php } ?>
 		}
 	<?php } ?>
+	.fl-node-<?php echo $id; ?> .pp-testimonials .layout-3 .pp-testimonials-image {
+		max-height: <?php echo $settings->image_size; ?>px;
+		max-width: <?php echo $settings->image_size; ?>px;
+	}
+
 <?php } ?>
 <?php if( $settings->testimonial_layout == '4' ) { ?>
 	.fl-node-<?php echo $id; ?> .pp-testimonial.layout-4 .layout-4-content {
@@ -71,6 +96,12 @@
 		<?php if( $settings->box_border_style ) { ?>border-style: <?php echo $settings->box_border_style; ?>;<?php } ?>
 		<?php if( $settings->box_border_width ) { ?>border-width: <?php echo $settings->box_border_width; ?>px;<?php } ?>
 		<?php if( $settings->layout_4_content_bg ) { ?>background: #<?php echo $settings->layout_4_content_bg; ?>;<?php } ?>
+		<?php if ( 'yes' == $settings->box_shadow_setting ) { ?>
+			-webkit-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-moz-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-o-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+		<?php } ?>
 	}
 <?php } ?>
 <?php if( $settings->testimonial_layout == '5' ) { ?>
@@ -80,6 +111,12 @@
 		<?php if( $settings->box_border_style ) { ?>border-style: <?php echo $settings->box_border_style; ?>;<?php } ?>
 		<?php if( $settings->box_border_width ) { ?>border-width: <?php echo $settings->box_border_width; ?>px;<?php } ?>
 		<?php if( $settings->layout_4_content_bg ) { ?>background: #<?php echo $settings->layout_4_content_bg; ?>;<?php } ?>
+		<?php if ( 'yes' == $settings->box_shadow_setting ) { ?>
+			-webkit-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-moz-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			-o-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+			box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+		<?php } ?>
 	}
 	<?php if( $settings->show_arrow == 'yes' ) { ?>
 		.fl-node-<?php echo $id; ?> .pp-testimonial.layout-5 .pp-arrow-top {

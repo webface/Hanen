@@ -46,6 +46,11 @@
 	width: auto;
 }
 
+.pp-flipbox-back a.pp-flipbox-link,
+.pp-flipbox-back a.pp-flipbox-link:hover {
+	text-decoration: none;
+}
+
 /* Default layout */
 .pp-flip-box {
 	display: block;

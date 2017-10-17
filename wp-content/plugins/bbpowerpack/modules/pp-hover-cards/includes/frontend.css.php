@@ -144,12 +144,12 @@ for($i = 0; $i < $number_cards; $i++) {
 }
 
 /* Button */
-	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-inner .pp-more-link {
-		<?php if( $settings->button_font['family'] != 'Default' ) { ?><?php FLBuilderFonts::font_css( $settings->button_font ); ?><?php } ?>
-		<?php if( $settings->button_font_size_f['button_font_size'] ) { ?>font-size: <?php echo $settings->button_font_size_f['button_font_size']; ?>px;<?php } ?>
-	}
+.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-inner .pp-more-link {
+	<?php if( $settings->button_font['family'] != 'Default' ) { ?><?php FLBuilderFonts::font_css( $settings->button_font ); ?><?php } ?>
+	<?php if( $settings->button_font_size_f['button_font_size'] ) { ?>font-size: <?php echo $settings->button_font_size_f['button_font_size']; ?>px;<?php } ?>
+}
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: <?php echo $global_settings->medium_breakpoint; ?>px) {
     .fl-node-<?php echo $id; ?> .pp-hover-card-container {
         <?php if( $settings->hover_card_column_width['hover_card_columns_tablet'] >= 0 ) { ?>
         width: <?php echo $hover_card_columns_tablet; ?>%;
@@ -183,7 +183,7 @@ for($i = 0; $i < $number_cards; $i++) {
     }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: <?php echo $global_settings->responsive_breakpoint; ?>px) {
     .fl-node-<?php echo $id; ?> .pp-hover-card-container {
         <?php if( $settings->hover_card_column_width['hover_card_columns_mobile'] >= 0 ) { ?>
         width: <?php echo $hover_card_columns_mobile; ?>%;

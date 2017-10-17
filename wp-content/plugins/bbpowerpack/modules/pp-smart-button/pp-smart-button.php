@@ -13,7 +13,8 @@ class PPSmartButtonModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Smart Button', 'bb-powerpack'),
 			'description'   	=> __('A simple call to action button.', 'bb-powerpack'),
-			'category'		=> BB_POWERPACK_CAT,
+			'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-smart-button/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-smart-button/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -97,6 +98,7 @@ FLBuilder::register_module('PPSmartButtonModule', array(
 						'type'          => 'text',
 						'label'         => __('Text', 'bb-powerpack'),
 						'default'       => __('Click Here', 'bb-powerpack'),
+						'connections'   => array( 'string' ),
 						'preview'         => array(
 							'type'            => 'text',
 							'selector'        => '.pp-button-text'
@@ -153,6 +155,7 @@ FLBuilder::register_module('PPSmartButtonModule', array(
 						'type'          => 'link',
 						'label'         => __('Link', 'bb-powerpack'),
 						'placeholder'   => __( 'http://www.example.com', 'bb-powerpack' ),
+						'connections'   => array( 'url' ),
 						'preview'       => array(
 							'type'          => 'none'
 						)
@@ -479,14 +482,14 @@ FLBuilder::register_module('PPSmartButtonModule', array(
 						),
 						'options'			=> array(
 							'vertical'			=> array(
-								'placeholder'		=> __('Vertical', 'bb-powerpack'),
-								'tooltip'			=> __('Vertical', 'bb-powerpack'),
-								'icon'				=> 'fa-arrows-v'
-							),
-							'horizontal'		=> array(
 								'placeholder'		=> __('Horizontal', 'bb-powerpack'),
 								'tooltip'			=> __('Horizontal', 'bb-powerpack'),
 								'icon'				=> 'fa-arrows-h'
+							),
+							'horizontal'		=> array(
+								'placeholder'		=> __('Vertical', 'bb-powerpack'),
+								'tooltip'			=> __('Vertical', 'bb-powerpack'),
+								'icon'				=> 'fa-arrows-v'
 							),
 							'blur'				=> array(
 								'placeholder'		=> __('Blur', 'bb-powerpack'),
@@ -635,6 +638,7 @@ FLBuilder::register_module('PPSmartButtonModule', array(
                         'class'                     => 'bb-box-input input-small',
                         'default'                   => 0,
                         'description'               => 'px',
+						'size'						=> 5,
                         'preview'                   => array(
                             'type'                      => 'css',
 							'selector'                  => '.pp-button-wrap a.pp-button .pp-button-text',

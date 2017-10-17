@@ -16,7 +16,8 @@ class PPDualButtonModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Dual Button', 'bb-powerpack'),
             'description'   => __('A module for Dual Button.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-dual-button/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-dual-button/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -48,6 +49,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                     'button_link_1'          => array(
 						'type'          => 'link',
 						'label'         => __('Link', 'bb-powerpack'),
+                        'connections'   => array( 'url' ),
 					),
 					'link_target_1'   => array(
 						'type'          => 'pp-switch',
@@ -85,6 +87,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                     'button_custom_icon_1'     => array(
                         'type'              => 'photo',
                         'label'         => __('Custom Image', 'bb-powerpack'),
+                        'connections'   => array( 'photo' ),
                     ),
                     'button_1_icon_aligment'       => array(
                         'type'          => 'pp-switch',
@@ -157,6 +160,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                     'button_link_2'          => array(
 						'type'          => 'link',
 						'label'         => __('Link', 'bb-powerpack'),
+                        'connections'   => array( 'url' ),
 					),
 					'link_target_2'   => array(
 						'type'          => 'pp-switch',
@@ -194,6 +198,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                     'button_custom_icon_2'     => array(
                         'type'              => 'photo',
                         'label'         => __('Custom Image', 'bb-powerpack'),
+                        'connections'   => array( 'photo' ),
                     ),
                     'button_2_icon_aligment'       => array(
                         'type'          => 'pp-switch',
@@ -519,7 +524,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                         'default'   => '1',
                         'size'          => '5',
                         'maxlength'     => '5',
-						'description'   => _x( 'px', 'Value unit for border width. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'   => array(
                             'type'  => 'css',
                             'selector'  => '.pp-dual-button-content .pp-button',
@@ -533,7 +538,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                         'default'   => '0',
                         'size'          => '5',
                         'maxlength'     => '5',
-						'description'   => _x( 'px', 'Value unit for border width. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'   => array(
                             'type'            => 'css',
                             'rules'     => array(
@@ -566,7 +571,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                         'default'   => '200',
                         'size'          => '5',
                         'maxlength'     => '5',
-						'description'   => _x( 'px', 'Value unit for border width. Such as: "14 px"', 'bb-powerpack' ),
+						'description'   => 'px',
                         'preview'   => array(
                             'type'  => 'css',
                             'selector'  => '.pp-dual-button-content .pp-button',
@@ -580,7 +585,7 @@ FLBuilder::register_module('PPDualButtonModule', array(
                         'default'           => 10,
                         'size'              => 5,
                         'maxlength'         => 5,
-						'description'       => _x( 'px', 'Value unit for spacer width. Such as: "10 px"', 'bb-powerpack' ),
+						'description'       => 'px',
                         'preview'           => array(
                             'type'              => 'css',
                             'selector'          => '.pp-dual-button-content .pp-spacer',

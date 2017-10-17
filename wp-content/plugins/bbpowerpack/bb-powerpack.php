@@ -3,7 +3,7 @@
  * Plugin Name: PowerPack for Beaver Builder
  * Plugin URI: https://wpbeaveraddons.com
  * Description: A set of custom, creative, unique modules for Beaver Builder to speed up your web design and development process.
- * Version: 1.2.1
+ * Version: 1.4.0.2
  * Author: Team IdeaBox - Beaver Addons
  * Author URI: https://wpbeaveraddons.com
  * Copyright: (c) 2016 IdeaBox Creations
@@ -57,7 +57,7 @@ final class BB_PowerPack {
 			}
 		}
 
-		$lite_dirname   = 'bb-powerpack-lite';
+		$lite_dirname   = 'powerpack-addon-for-beaver-builder';
 		$lite_active    = is_plugin_active( $lite_dirname . '/bb-powerpack-lite.php' );
 		$plugin_dirname = basename( dirname( dirname( __FILE__ ) ) );
 
@@ -75,6 +75,7 @@ final class BB_PowerPack {
 
 		/* Classes */
 		require_once 'classes/class-admin-settings.php';
+		require_once 'classes/class-media-fields.php';
 
 		/* Includes */
 		require_once 'includes/helper-functions.php';
@@ -100,7 +101,7 @@ final class BB_PowerPack {
 	 */
 	private function define_constants()
 	{
-		define( 'BB_POWERPACK_VER', '1.2.1' );
+		define( 'BB_POWERPACK_VER', '1.4.0.2' );
 		define( 'BB_POWERPACK_DIR', plugin_dir_path( __FILE__ ) );
 		define( 'BB_POWERPACK_URL', plugins_url( '/', __FILE__ ) );
 		define( 'BB_POWERPACK_PATH', plugin_basename( __FILE__ ) );
@@ -118,7 +119,8 @@ final class BB_PowerPack {
 		add_action( 'init', array( $this, 'load_modules' ) );
 		add_action( 'plugins_loaded', array( $this, 'loader' ) );
 		add_action( 'after_setup_theme', array( $this, 'customizer_presets' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ), 100 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ), 9999 );
+		add_action( 'wp_head', array( $this, 'render_scripts' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'network_admin_notices', array( $this, 'admin_notices' ) );
 		add_filter( 'body_class', array( $this, 'body_class' ) );
@@ -184,7 +186,9 @@ final class BB_PowerPack {
 				foreach ( $row_templates as $template ) {
 					if ( file_exists( self::$upload_dir['path'] . $template . '.dat' ) ) {
 						// Template filename should be the same as the category name.
-						FLBuilder::register_templates( self::$upload_dir['path'] . $template . '.dat' );
+						FLBuilder::register_templates( self::$upload_dir['path'] . $template . '.dat', array(
+							'group'	=> 'PowerPack Templates'
+						) );
 					}
 				}
 			}
@@ -234,6 +238,25 @@ final class BB_PowerPack {
 			wp_enqueue_style( 'pp-panel-style', BB_POWERPACK_URL . 'assets/css/panel.css', array(), rand() );
 	        wp_enqueue_script( 'pp-panel-script', BB_POWERPACK_URL . 'assets/js/panel.js', array( 'jquery' ), rand(), true );
 		}
+	}
+
+	/**
+	 * Custom inline scripts.
+	 *
+	 * @since 1.3
+	 * @return void
+	 */
+	public function render_scripts()
+	{
+		?>
+		<style>
+		form[class*="fl-builder-pp-"] .fl-lightbox-header h1:before {
+			content: "<?php echo pp_get_admin_label(); ?>";
+			position: relative;
+			display: inline-block;
+		}
+		</style>
+		<?php
 	}
 
 	/**

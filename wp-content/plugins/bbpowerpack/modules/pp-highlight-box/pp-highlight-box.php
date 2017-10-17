@@ -16,7 +16,8 @@ class PPHighlightBoxModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Highlight Box', 'bb-powerpack'),
             'description'   => __('A module for Highlight Box.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-highlight-box/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-highlight-box/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -63,6 +64,7 @@ FLBuilder::register_module('PPHighlightBoxModule', array(
 						'type'          => 'editor',
 						'label'         => '',
 						'rows'          => 13,
+                        'connections'   => array( 'string', 'html', 'url' ),
 						'preview'       => array(
 							'type'      => 'text',
 							'selector'  => '.pp-highlight-box-content'
@@ -76,6 +78,7 @@ FLBuilder::register_module('PPHighlightBoxModule', array(
 					'box_link'          => array(
 						'type'          => 'link',
 						'label'         => __('Link', 'bb-powerpack'),
+                        'connections'   => array( 'url' ),
 						'preview'         => array(
 							'type'            => 'none'
 						)
@@ -120,10 +123,11 @@ FLBuilder::register_module('PPHighlightBoxModule', array(
 						'label'         => __('Font Icon', 'bb-powerpack')
 					),
                     'box_custom_icon'     => array(
-                    'type'              => 'photo',
+                        'type'              => 'photo',
                         'label'         => __('Custom Icon', 'bb-powerpack'),
                         'default'       => '',
                         'show_reset'    => true,
+                        'connections'   => array( 'photo' ),
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-highlight-box-content img',
@@ -190,7 +194,6 @@ FLBuilder::register_module('PPHighlightBoxModule', array(
                         'description'   => 'px',
                         'class'         => 'bb-box-input input-small',
                         'default'       => '20',
-                        'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-highlight-box-content',
@@ -204,7 +207,6 @@ FLBuilder::register_module('PPHighlightBoxModule', array(
                         'description'   => 'px',
                         'class'         => 'bb-box-input input-small',
                         'default'       => '20',
-                        'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-highlight-box-content',
@@ -218,7 +220,6 @@ FLBuilder::register_module('PPHighlightBoxModule', array(
                         'description'   => 'px',
                         'class'         => 'bb-box-input input-small',
                         'default'       => '20',
-                        'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-highlight-box-content',
@@ -232,11 +233,24 @@ FLBuilder::register_module('PPHighlightBoxModule', array(
                         'description'   => 'px',
                         'class'         => 'bb-box-input input-small',
                         'default'       => '20',
-                        'show_reset'    => true,
                         'preview'       => array(
                             'type'      => 'css',
                             'selector'  => '.pp-highlight-box-content',
                             'property'  => 'padding-right',
+                            'unit'      => 'px'
+                        )
+                    ),
+					'box_border_radius'   => array(
+                        'type'          => 'text',
+                        'label'         => __('Border Radius', 'bb-powerpack'),
+                        'description'   => 'px',
+                        'class'         => 'bb-box-input input-small',
+                        'default'       => 0,
+                        'show_reset'    => true,
+                        'preview'       => array(
+                            'type'      => 'css',
+                            'selector'  => '.pp-highlight-box-content',
+                            'property'  => 'border-radius',
                             'unit'      => 'px'
                         )
                     ),

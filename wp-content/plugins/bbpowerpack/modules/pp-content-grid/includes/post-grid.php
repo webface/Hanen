@@ -2,30 +2,30 @@
 <?php FLBuilderModel::default_settings($settings, array(
 	'post_type' 		=> 'post',
 	'show_image' 		=> 'yes',
-	'show_author'		=> 'no',
-	'show_date'			=> 'no',
+	'show_author'		=> 'yes',
+	'show_date'			=> 'yes',
 	'show_categories'	=> 'no',
+	'meta_separator'	=> ' | ',
 	'show_content'		=> 'yes',
 	'content_type'		=> 'excerpt',
 	'content_length'	=> 300,
-	'show_more_link'	=> 'no',
 	'more_link_type'	=> 'box',
 	'more_link_text'	=> __('Read More', 'bb-powerpack'),
 	'post_grid_filters_display' => 'no',
 	'post_grid_filters'	=> 'none',
 	'post_taxonomies'	=> 'none',
-	'image_thumb_crop'	=> 'landscape',
+	'image_thumb_crop'	=> '',
 	'product_rating'	=> 'yes',
 	'product_price'		=> 'yes',
 	'product_button'	=> 'yes',
 	'append_more'		=> 'yes'
 
 ));
-$terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
+$terms_list = wp_get_post_terms( get_the_ID(), $settings->post_taxonomies );
  ?>
 <div <?php post_class('pp-content-post pp-content-grid-post '. 'pp-grid-' . $settings->post_grid_style_select); ?> itemscope itemtype="<?php PPContentGridModule::schema_itemtype(); ?>">
 
-	<?php if($settings->more_link_type == 'box' && ('product' != $settings->post_type || 'download' != $settings->post_type )) { ?>
+	<?php if( $settings->more_link_type == 'box' && ('product' != $settings->post_type || 'download' != $settings->post_type )) { ?>
 		<a class="pp-post-link" href="<?php the_permalink(); ?>"></a>
 	<?php } ?>
 
@@ -34,7 +34,13 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 	<?php if( 'style-1' == $settings->post_grid_style_select ) { ?>
 
 		<<?php echo $settings->title_tag; ?> class="pp-content-grid-title pp-post-title" itemprop="headline">
-			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+			<?php if( $settings->more_link_type == 'button' || $settings->more_link_type == 'title' || $settings->more_link_type == 'title_thumb' ) { ?>
+				<a href="<?php the_permalink(); ?>">
+			<?php } ?>
+					<?php the_title(); ?>
+			<?php if( $settings->more_link_type == 'button' || $settings->more_link_type == 'title' || $settings->more_link_type == 'title_thumb' ) { ?>
+				</a>
+			<?php } ?>
 		</<?php echo $settings->title_tag; ?>>
 
 		<div class="pp-content-post-meta pp-post-meta">
@@ -52,7 +58,7 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 			<?php endif; ?>
 			<?php if($settings->show_date == 'yes' && 'style-5' != $settings->post_grid_style_select ) : ?>
 				<?php if($settings->show_author == 'yes' ) : ?>
-					<span> | </span>
+					<span> <?php echo $settings->meta_separator; ?> </span>
 				<?php endif; ?>
 				<span class="pp-content-grid-date">
 					<?php echo get_the_date(); ?>
@@ -92,7 +98,13 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 
 			<?php if( 'style-4' == $settings->post_grid_style_select ) { ?>
 				<<?php echo $settings->title_tag; ?> class="pp-content-grid-title pp-post-title" itemprop="headline">
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+					<?php if( $settings->more_link_type == 'button' || $settings->more_link_type == 'title' || $settings->more_link_type == 'title_thumb' ) { ?>
+						<a href="<?php the_permalink(); ?>">
+					<?php } ?>
+							<?php the_title(); ?>
+					<?php if( $settings->more_link_type == 'button' || $settings->more_link_type == 'title' || $settings->more_link_type == 'title_thumb' ) { ?>
+						</a>
+					<?php } ?>
 				</<?php echo $settings->title_tag; ?>>
 			<?php } ?>
 
@@ -116,7 +128,13 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 		<div class="pp-content-post-data">
 			<?php if( 'style-1' != $settings->post_grid_style_select && 'style-4' != $settings->post_grid_style_select ) { ?>
 				<<?php echo $settings->title_tag; ?> class="pp-content-grid-title pp-post-title" itemprop="headline">
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+					<?php if( $settings->more_link_type == 'button' || $settings->more_link_type == 'title' || $settings->more_link_type == 'title_thumb' ) { ?>
+						<a href="<?php the_permalink(); ?>">
+					<?php } ?>
+							<?php the_title(); ?>
+					<?php if( $settings->more_link_type == 'button' || $settings->more_link_type == 'title' || $settings->more_link_type == 'title_thumb' ) { ?>
+						</a>
+					<?php } ?>
 				</<?php echo $settings->title_tag; ?>>
 				<?php if( 'style-2' == $settings->post_grid_style_select ) { ?>
 					<span class="pp-post-title-divider"></span>
@@ -141,7 +159,7 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 
 				<?php if($settings->show_date == 'yes' && 'style-5' != $settings->post_grid_style_select && 'style-6' != $settings->post_grid_style_select ) : ?>
 					<?php if($settings->show_author == 'yes' ) : ?>
-						<span> | </span>
+						<span> <?php echo $settings->meta_separator; ?> </span>
 					<?php endif; ?>
 					<span class="pp-content-grid-date">
 						<?php echo get_the_date(); ?>
@@ -150,7 +168,7 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 
 				<?php if( 'style-6' == $settings->post_grid_style_select || 'style-5' == $settings->post_grid_style_select ) : ?>
 					<?php if($settings->show_author == 'yes' && $settings->show_categories == 'yes' && taxonomy_exists($settings->post_taxonomies) && !empty($terms_list) ) : ?>
-						<span> | </span>
+						<span> <?php echo $settings->meta_separator; ?> </span>
 					<?php endif; ?>
 					<?php if($settings->show_categories == 'yes') { ?>
 					<span class="pp-content-post-category">
@@ -173,8 +191,13 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 
 			<?php if( $settings->post_type == 'product' && $settings->product_rating == 'yes' && class_exists( 'WooCommerce' ) ) { ?>
 				<div class="pp-product-rating">
-					<?php global $product;
-					echo $product->get_rating_html(); ?>
+					<?php
+					// Updated function woocommerce_get_template to wc_get_template
+					// @since 1.2.7
+					if( function_exists( 'wc_get_template' ) ) {
+						wc_get_template('loop/rating.php');
+					}
+					?>
                 </div>
 			<?php } ?>
 
@@ -187,8 +210,11 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 					the_excerpt();
 				endif;
 				if ( $settings->content_type == 'content' ) :
-					$more = '';
+					$more = '...';
 					echo wp_trim_words( get_the_content(), $settings->content_length, apply_filters( 'pp_cg_content_limit_more', $more ) );
+				endif;
+				if ( $settings->content_type == 'full' ) :
+					the_content();
 				endif;
 				?>
 			</div>
@@ -196,7 +222,7 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 
 			<?php do_action( 'pp_cg_after_post_content', get_the_ID() ); ?>
 
-			<?php if($settings->show_more_link == 'yes' && $settings->more_link_text != '' && $settings->more_link_type != 'box' && 'product' != $settings->post_type && 'download' != $settings->post_type ) : ?>
+			<?php if( $settings->more_link_text != '' && $settings->more_link_type == 'button' && 'product' != $settings->post_type && 'download' != $settings->post_type ) : ?>
 			<div class="pp-content-grid-more-link clearfix">
 				<a class="pp-content-grid-more pp-more-link-button" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php echo $settings->more_link_text; ?></a>
 			</div>
@@ -208,8 +234,10 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 						<?php if( $settings->post_type == 'product' ) { ?>
 	                    	<p>
 								<?php
-								if( function_exists( 'woocommerce_get_template' ) ) {
-									woocommerce_get_template('loop/price.php');
+								// Updated function woocommerce_get_template to wc_get_template
+								// @since 1.2.7
+								if( function_exists( 'wc_get_template' ) ) {
+									wc_get_template('loop/price.php');
 								}
 								?>
 							</p>
@@ -229,11 +257,11 @@ $terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
 				<?php if( $settings->product_button == 'yes' ) { ?>
 					<div class="pp-add-to-cart">
 						<?php if( $settings->post_type == 'product' ) {
-
-							if( function_exists( 'woocommerce_get_template' ) ) {
-		                		woocommerce_get_template('loop/add-to-cart.php');
+							// Updated function woocommerce_get_template to wc_get_template
+							// @since 1.2.7
+							if( function_exists( 'wc_get_template' ) ) {
+		                		wc_get_template('loop/add-to-cart.php');
 							}
-
 						} ?>
 						<?php  if( $settings->post_type == 'download' && class_exists( 'Easy_Digital_Downloads' ) ) {
 							if (!edd_has_variable_prices(get_the_ID())) { ?>

@@ -29,9 +29,7 @@
 }
 .pp-photo-content img {
 	display: inline;
-	height: auto !important;
 	max-width: 100%;
-	width: auto !important;
 }
 .pp-photo-crop-circle img {
 	-webkit-border-radius: 100%;

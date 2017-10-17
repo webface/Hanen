@@ -1,22 +1,15 @@
-/**
- * This file should contain frontend styles that
- * will be applied to individual module instances.
- *
- * $module An instance of your module class.
- * $id The module's ID.
- * $settings The module's settings.
- */
-
-.fl-node-<?php echo $id; ?> {
-
-}
-
 .fl-node-<?php echo $id; ?> .pp-member-wrapper {
     background-color: <?php echo ($settings->box_background['primary']) ? '#' . $settings->box_background['primary'] : 'transparent'; ?>;
 	border-style: <?php echo $settings->box_border; ?>;
 	<?php if( $settings->box_border_width && $settings->box_border != 'none' ) { ?>border-width: <?php echo $settings->box_border_width; ?>px; <?php } ?>
 	<?php if( $settings->box_border_color ) { ?> border-color: #<?php echo $settings->box_border_color; ?>; <?php } ?>
 	<?php if( $settings->box_border_radius >= 0 ) { ?> border-radius: <?php echo $settings->box_border_radius; ?>px; <?php } ?>
+	<?php if ( 'yes' == $settings->box_shadow_display ) { ?>
+	-webkit-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+	-moz-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+	-o-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+	box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+	<?php } ?>
     <?php if( $settings->box_padding['top'] >= 0 ) { ?>
 	padding-top: <?php echo $settings->box_padding['top']; ?>px;
 	<?php } ?>
@@ -59,6 +52,7 @@
 }
 
 .fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-content {
+	background-color: <?php echo ( false === strpos( $settings->content_bg_color, 'rgb' ) ) ? '#' . $settings->content_bg_color : $settings->content_bg_color; ?>;
     <?php if( $settings->box_content_padding['top'] >= 0 ) { ?>
 	padding-top: <?php echo $settings->box_content_padding['top']; ?>px;
 	<?php } ?>
@@ -135,7 +129,7 @@
     margin-right: <?php echo $settings->social_links_space; ?>px;
 }
 
-.fl-node-<?php echo $id; ?> .pp-member-social-icons li a::before {
+.fl-node-<?php echo $id; ?> .pp-member-social-icons li a {
     background-color: <?php echo ($settings->social_links_background['primary']) ? '#' . $settings->social_links_background['primary'] : 'transparent'; ?>;
     color: #<?php echo $settings->social_links_color['primary']; ?>;
     font-size: <?php echo $settings->social_links_font_size; ?>px;
@@ -160,13 +154,104 @@
     text-align: <?php echo $settings->box_content_alignment; ?>;
 }
 
-.fl-node-<?php echo $id; ?> .pp-member-social-icons li:hover a:before {
+.fl-node-<?php echo $id; ?> .pp-member-social-icons li a:hover {
     background-color: <?php echo ($settings->social_links_background['secondary']) ? '#' . $settings->social_links_background['secondary'] : 'transparent'; ?>;
     color: #<?php echo $settings->social_links_color['secondary']; ?>;
     <?php if( $settings->social_links_border_color['secondary'] ) { ?> border-color: #<?php echo $settings->social_links_border_color['secondary']; ?>; <?php } ?>
 }
 
+<?php if( $settings->content_position == 'hover' ) { ?>
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper {
+		position: relative;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-content {
+		position: absolute;
+	    top: 0;
+	    left: 0;
+	    right: 0;
+	    bottom: 0;
+	    opacity: 0;
+	    overflow: hidden;
+	    -webkit-transition: all 0.2s ease-in;
+	    -moz-transition: all 0.2s ease-in;
+	    -o-transition: all 0.2s ease-in;
+	    -ms-transition: all 0.2s ease-in;
+	    transition: all 0.2s ease-in;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper:hover .pp-member-content {
+		opacity: 1;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-content-inner-wrapper {
+		display: table;
+		width: 100%;
+		height: 100%;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-content-inner {
+		display: table-cell;
+		vertical-align: middle;
+	}
+<?php } ?>
+
+<?php if( $settings->content_position == 'over' ) { ?>
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper {
+		position: relative;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-content {
+		position: absolute;
+		height: 20%;
+		bottom: 0;
+	    left: 0;
+	    right: 0;
+	    overflow: hidden;
+		-webkit-transition: height 0.4s ease, top 0.4s ease;
+		-moz-transition: height 0.4s ease, top 0.4s ease;
+		-o-transition: height 0.4s ease, top 0.4s ease;
+		-ms-transition: height 0.4s ease, top 0.4s ease;
+		transition: height 0.4s ease, top 0.4s ease;
+		padding: 20px;
+	}
+
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-description,
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-designation {
+		opacity: 0;
+		-webkit-transition: opacity 0.5s ease-in;
+	    -moz-transition: opacity 0.5s ease-in;
+	    -o-transition: opacity 0.5s ease-in;
+	    -ms-transition: opacity 0.5s ease-in;
+	    transition: opacity 0.5s ease-in;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper:hover .pp-member-description,
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper:hover .pp-member-designation {
+		opacity: 1;
+		-webkit-transition: opacity 0.5s ease-in;
+	    -moz-transition: opacity 0.5s ease-in;
+	    -o-transition: opacity 0.5s ease-in;
+	    -ms-transition: opacity 0.5s ease-in;
+	    transition: opacity 0.5s ease-in;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper:hover .pp-member-content {
+		height: 100%;
+		-webkit-transition: height 0.4s ease, top 0.4s ease;
+	    -moz-transition: height 0.4s ease, top 0.4s ease;
+	    -o-transition: height 0.4s ease, top 0.4s ease;
+	    -ms-transition: height 0.4s ease, top 0.4s ease;
+	    transition: height 0.4s ease, top 0.4s ease;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-content-inner-wrapper {
+		display: table;
+		width: 100%;
+		height: 100%;
+	}
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-content-inner {
+		display: table-cell;
+		vertical-align: middle;
+	}
+<?php } ?>
+
 @media only screen and (max-width: 768px) {
+	.fl-node-<?php echo $id; ?> .pp-member-wrapper {
+		text-align: center;
+	}
     .fl-node-<?php echo $id; ?> .pp-member-wrapper .pp-member-name {
     	<?php if( $settings->title_font_size_toggle == 'custom' && $settings->title_custom_font_size['tablet'] ) { ?>
     		font-size: <?php echo $settings->title_custom_font_size['tablet']; ?>px;

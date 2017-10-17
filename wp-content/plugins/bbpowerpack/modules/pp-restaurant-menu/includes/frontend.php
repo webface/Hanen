@@ -18,7 +18,7 @@
 					<?php } ?>
 					<div class="pp-restaurant-menu-item-left">
 						<?php if ( '' != trim( $menu_item->menu_items_title ) ) { ?>
-							<h2>
+							<h2 class="pp-restaurant-menu-item-header">
 								<?php if ( '' != trim($menu_item->menu_items_link) ) { ?>
 									<a href="<?php echo $menu_item->menu_items_link;?>" target="<?php echo $menu_item->menu_items_link_target;?>" class="pp-restaurant-menu-item-title"><?php echo $menu_item->menu_items_title; ?></a>
 								<?php } else { ?>
@@ -57,7 +57,7 @@
 			   	 		<?php } ?>
 			   	 		<div class="pp-restaurant-menu-item-inline-right-content pp-menu-item-content">
 			   	 			<?php if ( '' != trim( $menu_item->menu_items_title ) ) { ?>
-					   	 		<h2>
+					   	 		<h2 class="pp-restaurant-menu-item-header">
 									<?php if ( '' != trim($menu_item->menu_items_link) ) { ?>
 										<a target="<?php echo $menu_item->menu_items_link_target;?>" href="<?php echo $menu_item->menu_items_link;?>" class="pp-restaurant-menu-item-title"><?php echo $menu_item->menu_items_title; ?></a>
 									<?php } else { ?>

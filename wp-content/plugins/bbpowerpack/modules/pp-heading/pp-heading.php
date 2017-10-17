@@ -16,7 +16,8 @@ class PPHeadingModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Smart Headings', 'bb-powerpack'),
             'description'   => __('A module for Smart Headings.', 'bb-powerpack'),
-            'category'		=> BB_POWERPACK_CAT,
+            'group'         => 'PowerPack Modules',
+            'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-heading/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-heading/',
             'editor_export' => true, // Defaults to true and can be omitted.
@@ -57,6 +58,7 @@ FLBuilder::register_module('PPHeadingModule', array(
                         'label'         => __('Title', 'bb-powerpack'),
                         'class'         => '',
                         'default'       => __('Title', 'bb-powerpack'),
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-heading-content .pp-heading .heading-title span.pp-primary-title',
@@ -67,11 +69,32 @@ FLBuilder::register_module('PPHeadingModule', array(
                         'label'         => __('Secondary Title', 'bb-powerpack'),
                         'class'         => '',
                         'default'       => __('Secondary Title', 'bb-powerpack'),
+                        'connections'   => array( 'string', 'html', 'url' ),
                         'preview'       => array(
                             'type'      => 'text',
                             'selector'  => '.pp-heading-content .pp-heading .heading-title span.pp-secondary-title',
                         )
                     ),
+ 				   'heading_link'          => array(
+ 						'type'          => 'link',
+ 						'label'         => __('Link', 'bb-powerpack'),
+                        'connections'   => array( 'url' ),
+ 						'preview'         => array(
+ 							'type'            => 'none'
+ 						)
+ 					),
+ 					'heading_link_target'   => array(
+ 						'type'          => 'select',
+ 						'label'         => __('Link Target', 'bb-powerpack'),
+ 						'default'       => '_self',
+ 						'options'       => array(
+ 							'_self'         => __('Same Window', 'bb-powerpack'),
+ 							'_blank'        => __('New Window', 'bb-powerpack')
+ 						),
+ 						'preview'         => array(
+ 							'type'            => 'none'
+ 						)
+ 					),
 					'heading_tag'    => array(
                         'type'          => 'select',
                         'label'         => __('Tag', 'bb-powerpack'),
@@ -106,6 +129,7 @@ FLBuilder::register_module('PPHeadingModule', array(
                         'default'               => __('Description', 'bb-powerpack'),
                         'rows'                  => '6',
                         'media_buttons'         => false,
+                        'connections'            => array( 'string', 'html', 'url' ),
                         'preview'               => array(
                             'type'                  => 'text',
                             'selector'              => '.pp-heading-content .pp-sub-heading'
@@ -644,7 +668,7 @@ FLBuilder::register_module('PPHeadingModule', array(
                     'heading_color'    => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '000000',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'         => array(
                             'type'            => 'css',
@@ -859,7 +883,7 @@ FLBuilder::register_module('PPHeadingModule', array(
                     'heading2_color'    => array(
                         'type'          => 'color',
                         'label'         => __('Color', 'bb-powerpack'),
-                        'default'       => '7f7f7f',
+                        'default'       => '',
                         'show_reset'    => true,
                         'preview'         => array(
                             'type'            => 'css',

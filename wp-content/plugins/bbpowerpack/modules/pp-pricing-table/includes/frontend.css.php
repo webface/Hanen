@@ -68,8 +68,37 @@
 <?php } ?>
 
 .fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column {
+	background-color: transparent;
+	border: 0;
+	padding: 0;
+}
+
+.fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column ul {
 	background-color: <?php echo ($settings->matrix_bg) ? '#' . $settings->matrix_bg : 'transparent'; ?>;
-	padding-bottom: 0;
+	<?php if( $settings->box_border != 'none' ) { ?>
+		border-width: <?php echo $settings->box_border_width; ?>px;
+		border-style: <?php echo $settings->box_border; ?>;
+		<?php if( $settings->box_border_color ) { ?> border-color: #<?php echo $settings->box_border_color; ?>; <?php } ?>
+	<?php } ?>
+	<?php if( $settings->box_border_radius >= 0 ) { ?> border-radius: <?php echo $settings->box_border_radius; ?>px; <?php } ?>
+	<?php if ( 'yes' == $settings->box_shadow_display ) { ?>
+    -webkit-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+    -moz-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+    -o-box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+    box-shadow: <?php echo $settings->box_shadow['horizontal']; ?>px <?php echo $settings->box_shadow['vertical']; ?>px <?php echo $settings->box_shadow['blur']; ?>px <?php echo $settings->box_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->box_shadow_color, $settings->box_shadow_opacity / 100 ); ?>;
+    <?php } ?>
+	<?php if( $settings->box_padding['top'] >= 0 ) { ?>
+	padding-top: <?php echo $settings->box_padding['top']; ?>px;
+	<?php } ?>
+	<?php if( $settings->box_padding['right'] >= 0 ) { ?>
+	padding-right: <?php echo $settings->box_padding['right']; ?>px;
+	<?php } ?>
+	<?php if( $settings->box_padding['bottom'] >= 0 ) { ?>
+	padding-bottom: <?php echo $settings->box_padding['bottom']; ?>px;
+	<?php } ?>
+	<?php if( $settings->box_padding['left'] >= 0 ) { ?>
+	padding-left: <?php echo $settings->box_padding['left']; ?>px;
+	<?php } ?>
 }
 
 .fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-column .pp-pricing-featured-title {
@@ -103,13 +132,13 @@
     <?php } ?>
 }
 
-.fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column .pp-pricing-featured-title {
-	background-color: <?php echo ($settings->hl_featured_title_bg_color) ? '#' . $settings->hl_featured_title_bg_color : 'transparent'; ?>;
+.fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-highlight .pp-pricing-table-column .pp-pricing-featured-title {
+	background-color: #<?php echo $settings->hl_featured_title_bg_color; ?>;
 	color: #<?php echo $settings->hl_featured_title_color; ?>;
 }
 
 .fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col:not(.pp-pricing-table-matrix) .pp-pricing-table-column .pp-pricing-table-title {
-	background-color: <?php echo '#' . $settings->title_bg_color; ?>;
+	background-color: #<?php echo $settings->title_bg_color; ?>;
 	color: #<?php echo $settings->title_color; ?>;
 	<?php if( $settings->title_font['family'] != 'Default' ) { ?>
 	   <?php FLBuilderFonts::font_css( $settings->title_font ); ?>
@@ -125,19 +154,22 @@
 	   text-transform: <?php echo $settings->title_text_transform; ?>;
    <?php } ?>
    text-align: <?php echo $settings->title_alignment; ?>;
-   <?php if( $settings->title_padding['top'] >= 0 ) { ?>
-   padding-top: <?php echo $settings->title_padding['top']; ?>px;
-   <?php } ?>
-   <?php if( $settings->title_padding['right'] >= 0 ) { ?>
-   padding-right: <?php echo $settings->title_padding['right']; ?>px;
-   <?php } ?>
-   <?php if( $settings->title_padding['bottom'] >= 0 ) { ?>
-   padding-bottom: <?php echo $settings->title_padding['bottom']; ?>px;
-   <?php } ?>
-   <?php if( $settings->title_padding['left'] >= 0 ) { ?>
-   padding-left: <?php echo $settings->title_padding['left']; ?>px;
-   <?php } ?>
-   margin: 0;
+}
+
+.fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column .pp-pricing-table-title {
+	<?php if( $settings->title_padding['top'] >= 0 ) { ?>
+    padding-top: <?php echo $settings->title_padding['top']; ?>px;
+    <?php } ?>
+    <?php if( $settings->title_padding['right'] >= 0 ) { ?>
+    padding-right: <?php echo $settings->title_padding['right']; ?>px;
+    <?php } ?>
+    <?php if( $settings->title_padding['bottom'] >= 0 ) { ?>
+    padding-bottom: <?php echo $settings->title_padding['bottom']; ?>px;
+    <?php } ?>
+    <?php if( $settings->title_padding['left'] >= 0 ) { ?>
+    padding-left: <?php echo $settings->title_padding['left']; ?>px;
+    <?php } ?>
+	margin: 0;
 }
 
 .fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column .pp-pricing-table-price {
@@ -243,7 +275,6 @@
 	background-color: <?php echo ($settings->even_features_background) ? '#' . $settings->even_features_background : 'transparent'; ?>;
 }
 
-
 <?php if( $settings->highlight == 'package' ) { ?>
 .fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-highlight .pp-pricing-table-column .pp-pricing-table-features li:nth-child(even) {
 	background-color: <?php echo ($settings->hl_even_features_bg_color) ? '#' . $settings->hl_even_features_bg_color : 'transparent'; ?>;
@@ -290,11 +321,12 @@ for($i = 0; $i < count($settings->pricing_columns); $i++) :
 
 ?>
 
-<?php if( $pricing_column->hl_featured_title == '' ) { ?>
 .fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-column-<?php echo $i; ?> {
+<?php if( $pricing_column->hl_featured_title == '' ) { ?>
 	overflow: hidden;
-}
 <?php } ?>
+	margin-top: <?php echo $pricing_column->margin; ?>px;
+}
 
 <?php if( $pricing_column->package_bg_color ) { ?>
 .fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col .pp-pricing-table-column-<?php echo $i; ?> {
@@ -344,13 +376,8 @@ for($i = 0; $i < count($settings->pricing_columns); $i++) :
 <?php endif; ?>
 
 
-/*Button CSS*/
+/* Button CSS */
 .fl-builder-content .fl-node-<?php echo $id; ?> .pp-pricing-table-column-<?php echo $i; ?> a.fl-button {
-
-	<?php if ( empty( $pricing_column->btn_bg_color ) ) : ?>
-
-	<?php endif; ?>
-
 	<?php if ( empty( $pricing_column->btn_width ) ) : ?>
 	 	display:block;
 	 	margin: 0 30px 5px;
@@ -358,7 +385,7 @@ for($i = 0; $i < count($settings->pricing_columns); $i++) :
 }
 
 <?php
-FLBuilder::render_module_css('button', $id . ' .pp-pricing-table-column-' . $i , array(
+FLBuilder::render_module_css('fl-button', $id . ' .pp-pricing-table-column-' . $i , array(
 	'align'             => 'center',
 	'bg_color'          => $pricing_column->btn_bg_color,
 	'bg_hover_color'    => $pricing_column->btn_bg_hover_color,
@@ -383,6 +410,11 @@ FLBuilder::render_module_css('button', $id . ' .pp-pricing-table-column-' . $i ,
 
 
 @media only screen and ( max-width: 768px ) {
+
+	.fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column .pp-pricing-table-title,
+	.fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col.pp-pricing-table-matrix .pp-pricing-table-column .pp-pricing-table-price {
+		display: none;
+	}
 
 	.fl-node-<?php echo $id; ?> .pp-pricing-table .pp-pricing-table-col {
 		margin-right: auto;
