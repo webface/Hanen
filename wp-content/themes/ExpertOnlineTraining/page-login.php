@@ -32,6 +32,11 @@ $args = array(
     'redirect' => $redirect, 
     'id_username' => 'user',
     'id_password' => 'pass',
+    'label_username' => __( 'Username or Email'),
+        'label_password' => __( 'Password' ),
+        'label_remember' => __( 'Remember Me' ),
+        'label_log_in' => __( 'Log In' ),
+        'remember' => true
    ) 
 ;?>
 <?php wp_login_form( $args ); ?>
