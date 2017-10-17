@@ -540,7 +540,7 @@ div#col1 {
     return this;
   };
 */
-  videojs.plugin('playList', playList);
+  videojs.registerPlugin('playList', playList);
 
 
   (function(){
