@@ -3,7 +3,7 @@
 	$login_url = clean_login_get_translated_option_page( 'cl_login_url','');
 	$register_url = clean_login_get_translated_option_page( 'cl_register_url', '');
 	$restore_url = clean_login_get_translated_option_page( 'cl_restore_url', '');
-        echo $restore_url;
+        //echo $restore_url;
 ?>
 <div class="cleanlogin-container">		
 
