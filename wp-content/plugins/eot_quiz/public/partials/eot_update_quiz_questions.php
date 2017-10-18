@@ -40,6 +40,7 @@
             }
             CreateDataTable($answersTableObj); // Print the table in the page"
         }
+        echo "<br><br><span class='bs done-btn'><a href='/dashboard?part=manage_quiz&subscription_id=".$subscription_id."' class='btn btn-success'>I'm done for now&nbsp;&nbsp;<i class='fa fa-exclamation'></i></a></span>";
         echo "<button class='bs btn btn-primary pull-right editBtn' onclick='editQuestion(\"" . $question['quiz_question_type'] . "\")'>Edit</button>";
 ?>
 
@@ -81,7 +82,7 @@
             function editQuestion(type) 
             {
                 //console.log("Editing: " + type);
-                $('.dataTables_wrapper').hide();
+                $('.dataTables_wrapper, .done-btn').hide();
                 $('.editBtn').hide();
                 $('.note').hide();
                 switch (type) 

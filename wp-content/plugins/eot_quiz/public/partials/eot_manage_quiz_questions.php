@@ -398,6 +398,7 @@ $quiz_id = $quiz['ID'];
     echo "<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
     echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>Add Checkbox Question&nbsp;<span class='fa fa-check-square-o'></span></a>";
     echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>Add Text Question&nbsp;<span class='fa fa-file-text-o'></span></a>";
+    echo "<br><br><span class='bs'><a href='/dashboard?part=manage_quiz&subscription_id=".$subscription_id."' class='btn btn-success'>I'm done for now&nbsp;&nbsp;<i class='fa fa-exclamation'></i></a></span>";
     ?>
     <?php
 } else {
