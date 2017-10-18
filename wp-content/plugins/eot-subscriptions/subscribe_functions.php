@@ -3280,12 +3280,11 @@ function refund_camp_callback ()
     global $wpdb, $current_user;
     $trans_id = filter_var($_REQUEST['trans_id'],FILTER_SANITIZE_STRING);
     $part_amount = filter_var($_REQUEST['part_amount'], FILTER_SANITIZE_NUMBER_INT);
-    $amount = filter_var($_REQUEST['amount'], FILTER_SANITIZE_NUMBER_INT);
+    $amount = filter_var($_REQUEST['amount'], FILTER_SANITIZE_NUMBER_INT); // the oroginal amount they paid
     $accounts = filter_var($_REQUEST['accounts'], FILTER_SANITIZE_NUMBER_INT);
     $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
     $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
-     
     if( ! wp_verify_nonce( $_REQUEST['_wpnonce'] ,  'refund-camp_'.$trans_id ) )
     {
 
@@ -3296,14 +3295,18 @@ function refund_camp_callback ()
         exit();
 
     }
+
+    $refund = false; // default value for whether refund occured
+
     if($part_amount == 0)
     {
         $refund = refund_customer($trans_id);
     }
     else 
     {
-        $refund = refund_customer($trans_id, ($part_amount*100));
+        $refund = refund_customer($trans_id, $part_amount * 100); //amount refund needs to be in cents 
     }
+
     if($refund)
     {
         $reduction = array(
@@ -3332,6 +3335,7 @@ function refund_camp_callback ()
     else 
     {
         $result['success'] = false;   
+        $result['message'] = 'refund DID NOT process.';   
     }
 
     echo json_encode($result);
