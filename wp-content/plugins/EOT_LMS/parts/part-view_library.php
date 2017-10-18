@@ -3,7 +3,6 @@
   {
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
     $subscription = getSubscriptions($subscription_id,0,1); // get the current subscription
-
     if($subscription)
     {
       $library_modules = getModulesByLibrary($subscription->library_id); // Get all the modules from the library of the current subscription.
@@ -21,17 +20,12 @@
         </div>
         <h1 class="article_page_title"><?= $library_name ?></h1>
         <span>
-          <strong>Welcome to <?= $library_name ?>!</strong> This is our most popular content library for camp counselors, parks & rec staff, and other youth leaders, including supervisors. 
-          To watch videos, read video synopses, or download some handouts for your staff training manual, just click on one of the six category bars below.
+          <strong><?= $library_name ?></strong> is our most popular content library for youth leaders and supervisors. Click on one of the six category bars below to get started.
           <br><br>
-          <strong>Pre-Made Courses.</strong> Your annual subscription comes with four pre-made courses, called "New Staff," "Returning Staff," "Program Staff," and "Supervisory Staff." 
-          <a href="/choosing-a-topic/">Click here</a> to see a listing of which topics are included in these pre-made courses.
-          <br><br>
-          <strong>Choosing Topics.</strong> To help you choose topics for a custom course or on-site workshop, we have categorized our videos by theme. Simply click on a theme below to view 
-          the videos, quizzes, and handouts created by our amazing faculty. To view a table of recommended videos for different groups of staff, <a href="/choosing-a-topic/">click here</a>.
-          <br><br>
-          <strong>Custom Content.</strong> Looking for the custom content (videos, quizzes, or handouts) that you have uploaded? You can view it by clicking Manage Your Custom Content 
-          in the <a href="/dashboard/?part=administration&subscription_id=<?= $subscription_id?>/" onclick="load('load_dashboard')">Administration page</a> of your Director Dashboard.<br><br>
+          <a href="<?=get_home_url()?>/premade-courses/" onclick="load('load')"><button type="button" class="btn btn-primary">Pre-Made Courses</button></a>
+          <a href="<?=get_home_url()?>/choosing-a-topic/" onclick="load('load')"><button type="button" class="btn btn-primary">Module Choices</button></a>
+          <a href="<?=get_home_url()?>/dashboard/?part=administration&subscription_id=<?=$subscription_id?>" onclick="load('load')"><button type="button" class="btn btn-primary">Custom Content</button></a>
+          <br>
         </span>
       <?php
         $modules = array(); // Array of Module objects
