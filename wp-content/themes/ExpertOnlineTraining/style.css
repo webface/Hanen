@@ -4678,3 +4678,10 @@ span.gfield_required {
 .wrong {
 	color:red;
 }
+
+.gfield_description{
+    font-size:12px !important;
+}
+.gform_body label{
+    font-size: 12px !important;
+}
