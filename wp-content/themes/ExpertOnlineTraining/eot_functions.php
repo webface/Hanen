@@ -9079,7 +9079,7 @@ function deleteStaffOrgId_callback ()
 }
 
 /**
- * Verify quiz
+ * Verify quiz belongs to current user, or current user is sales manager
  * @global type $current_user
  * @param type $quiz_id
  * @return boolean
