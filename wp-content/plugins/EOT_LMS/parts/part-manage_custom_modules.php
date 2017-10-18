@@ -32,8 +32,14 @@
             'org_id' => filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT),
             'user_id' => filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT)
         );
-
+        $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
         $module_added = $wpdb->insert(TABLE_MODULES, $data);
+        $module_id = $wpdb->insert_id;
+        $url ='/dashboard?part=edit_module&module_id=' . $module_id . '&subscription_id=' . $subscription_id; 
+        ob_start();
+        header('Location: '.$url);
+        ob_end_flush();
+        die();
     }
 
     // Check if the subscription ID is valid.
@@ -87,7 +93,7 @@
                                 <input type="text" class="form-control" id="moduleName" name="moduleName" placeholder="Module Name">
                             </div>
                             <div class="bs form-group">
-                                <label for="moduleDescription">Module Description*</label>
+                                <label for="moduleDescription">Module Description</label>
                                 <textarea class="form-control" rows="3" id="moduleDescription" name="moduleDescription"></textarea>
                             </div>
 
@@ -108,10 +114,10 @@
                             {
                                 errors = true;
                             }
-                            if ($.trim($('#moduleDescription').val()) == '') 
-                            {
-                                errors = true;
-                            }
+//                            if ($.trim($('#moduleDescription').val()) == '') 
+//                            {
+//                                errors = true;
+//                            }
                             if (!errors) 
                             {
                                 return true;
