@@ -2,13 +2,15 @@
 /**
   * Functions related to Stripe
 **/
-function refund_customer($charge_id = 0, $part_amount = 0)
+function refund_customer($charge_id = '', $part_amount = 0)
 {
-    if ($charge_id == 0)
+    if ($charge_id == '')
     {
     	return false;
     }
 
+    $success = false; // default value for whether refund was successful or not.
+  
     try
     {
         if($part_amount == 0)
@@ -19,16 +21,15 @@ function refund_customer($charge_id = 0, $part_amount = 0)
         {
         	$refund = \Stripe\Refund::create(array("charge"=> $charge_id , 'amount' => $part_amount));   
         }
-        $success = 1;
+        $success = true;
     } 
     catch (Exception $ex) 
     {
         throw new Exception ("Refund: " . $ex->getMessage());
     }
 
-    if($success == 1)
+    if($success)
     {
-        //error_log(print_r($refund));
         return true;
     }
     else 
