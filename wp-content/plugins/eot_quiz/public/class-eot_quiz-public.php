@@ -149,6 +149,9 @@ class Eot_quiz_Public
             case 'manage_quiz':
                 require_once plugin_dir_path(__FILE__) . 'partials/eot_manage_quiz.php';
                 break;
+            case 'manage_eot_quiz':
+                require_once plugin_dir_path(__FILE__) . 'partials/eot_manage_eot_quiz.php';
+                break;            
             case 'view_quiz':
                 require_once plugin_dir_path(__FILE__) . 'partials/eot_view_quiz.php';
                 break;

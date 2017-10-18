@@ -8962,7 +8962,6 @@ function verifyQuizInCourse($quiz_id = 0 , $course_id = 0)
     }
 }
 
-
 /**
  * get subscription id based on course id
  * @param type $course_id - the course ID
@@ -9077,4 +9076,62 @@ function deleteStaffOrgId_callback ()
     }
     echo json_encode($result);
     wp_die();
+}
+
+/**
+ * Verify quiz
+ * @global type $current_user
+ * @param type $quiz_id
+ * @return boolean
+ * 
+ */
+function verifyQuiz($quiz_id = 0)
+{
+    global $wpdb;
+    $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    
+    if($quiz_id == 0)
+    {
+        return false;
+    }
+    global $current_user;
+    if(current_user_can("is_sales_manager"))
+    {
+        return true;
+    }
+    $quiz_user = $wpdb->get_var("SELECT user_id FROM ". TABLE_QUIZ. " WHERE ID = $quiz_id");
+    if($quiz_user == $current_user->ID)
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+
+/**
+ * Verify if a question is part of a quiz
+ * @param type $quiz_id
+ * @param type $question_id
+ * 
+ */
+function verifyQuizQuestion($quiz_id = 0, $question_id = 0)
+{
+    global $wpdb;
+    $quiz_id = filter_var($quiz_id, FILTER_SANITIZE_NUMBER_INT);
+    $question_id = filter_var($question_id, FILTER_SANITIZE_NUMBER_INT);
+    if($quiz_id == 0 || $question_id == 0)
+    {
+        return false;
+    }
+    $question_quiz_id = $wpdb->get_var("SELECT quiz_id FROM ". TABLE_QUIZ_QUESTION . " WHERE ID = $question_id");
+    if($question_quiz_id == $quiz_id)
+    {
+        return true;
+    }
+    else 
+     {
+        return false;
+    }
 }

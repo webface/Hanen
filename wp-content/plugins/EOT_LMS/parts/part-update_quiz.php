@@ -9,14 +9,17 @@
 </div>
 <h1 class="article_page_title">Update Quiz</h1>
 <?php
+
     $true_subscription = verifyUserAccess();
     // Check if the subscription ID is valid.
-    if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "") 
+    if ((isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")||current_user_can("is_sales_manager")) 
     {
-        if (isset($true_subscription['status']) && $true_subscription['status']) 
+        if ((isset($true_subscription['status']) && $true_subscription['status']) || current_user_can("is_sales_manager")) 
         {
-            if (current_user_can("is_director")) 
+            //d(current_user_can("is_sales_manager"));
+            if (current_user_can("is_director") || current_user_can("is_sales_manager")) 
             {
+                
                 echo do_shortcode('[eot_quiz_admin action="update_quiz"]');
             } 
             else 

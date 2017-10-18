@@ -1,9 +1,9 @@
 <?php
 
     $true_subscription = verifyUserAccess();
-    if (isset($true_subscription['status']) && $true_subscription['status']) 
+    if ((isset($true_subscription['status']) && $true_subscription['status']) || current_user_can("is_sales_manager")) 
     {
-        if (current_user_can("is_director")) 
+        if (current_user_can("is_director") || current_user_can("is_sales_manager")) 
         {
 			$path = WP_PLUGIN_DIR . '/eot_quiz/';
 			require $path . 'public/class-eot_quiz_data.php';
@@ -19,7 +19,14 @@
 			$delete=$eot_quiz->deleteQuiz($quiz_id);
 			if($delete)
 			{
-			    wp_redirect(home_url('/dashboard?part=manage_quiz&subscription_id='.$subscription_id));
+			    if($subscription_id == 0)
+                            {
+                            wp_redirect(home_url('/dashboard?part=manage_quiz_eot&subscription_id='.$subscription_id));
+                            }
+                            else 
+                            {
+                            wp_redirect(home_url('/dashboard?part=manage_quiz&subscription_id='.$subscription_id));
+                            }
 			    exit();
 			}
 			else

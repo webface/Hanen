@@ -12,6 +12,10 @@ $eot_quiz = new EotQuizData();
 $quiz_id = filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT);
 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
 $admin_ajax_url = admin_url('admin-ajax.php');
+if(!verifyQuiz($quiz_id))
+{
+    die("This quiz does not belong to you");
+}
 if (isset($_POST['submit'])) 
 {
     if ($_POST['type'] == 'choice') 
