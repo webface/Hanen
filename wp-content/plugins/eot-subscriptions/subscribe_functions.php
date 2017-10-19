@@ -1674,19 +1674,41 @@ function sales_rep_new_subscription ($user_id = 0) {
                                     disc_amount = (((num_staff - 20) * 10) - subtotal_staff)/(num_staff - 20);
                                 }
 
-                            } else if (topic == "ce") {
+                            } 
+                            else if (topic == "ce") 
+                            {
                                 if (num_staff < 12)
                                     disc_amount = 0;
                                 else
                                     disc_amount = (((num_staff - 12) * 10) - subtotal_staff) / (num_staff - 12);
-                            } else {
-
+                            }
+                            else if(topic == "le" || topic == "le_sp_dc" || topic == "le_sp_oc" || topic == "le_sp_prp")
+                            {
+                                // 250 Staff
+                                if (num_staff >= <?= LE_LVL_2_MAX ?>)
+                                {
+                                    disc_amount = ((num_staff * LE_LVL_3_PRICE) - subtotal_staff)/ num_staff;
+                                }
+                                // 100 - 249 Staff
+                                else if (num_staff > <?= LE_LVL_1_MAX ?>)
+                                {
+                                    disc_amount = ((num_staff * <?= LE_LVL_2_PRICE ?>) - subtotal_staff) / num_staff;
+                                }
+                                // 1-99 Staff
+                                else
+                                {
+                                    disc_amount = ((num_staff * <?= LE_LVL_1_PRICE ?>) - subtotal_staff) / num_staff;
+                                }
+                            }
+                            else 
+                            {
                                 disc_amount = ((num_staff * 12) - subtotal_staff)/num_staff;
                             }
-                        } else {
+                        } 
+                        else 
+                        {
                             disc_amount = 100 * (full_staff_price - subtotal_staff)/(full_staff_price);
                         }
-                        
                         data.libraries[topic].data.staff.disc_type = disc_type;
                         data.libraries[topic].data.staff.disc_amount = parseFloat(disc_amount).toFixed(2);
                         data.libraries[topic].data.staff.subtotal = parseFloat(subtotal_staff).toFixed(2);
