@@ -13,8 +13,8 @@
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
     $quiz_data = $eot_quiz->get_quiz_data($quiz_id,false);
 ?>
-    <h3><?= $quiz_data['quiz']['name']; ?></h3>
-    <p><?= $quiz_data['quiz']['description']; ?><p>
+    <h3><?= esc_attr($quiz_data['quiz']['name']); ?></h3>
+    <p><?= esc_attr($quiz_data['quiz']['description']); ?><p>
     <span><strong>Time Limit: </strong><?= $quiz_data['quiz']['time_limit']; ?> minutes</span><br>
     <span><strong>Passing Score: </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
     
@@ -23,7 +23,7 @@
     { 
 ?>
     <hr>
-    <h4>Question: <?= $question['quiz_question']; ?></h4>
+    <h4>Question: <?= esc_attr($question['quiz_question']); ?></h4>
     <p>Answers</p>
     <ul>
 <?php

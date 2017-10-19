@@ -59,21 +59,21 @@ else
               <h3 class="panel-title"><?= $quiz_question['quiz_question']?></h3>
             </div>
             <div class="panel-body">
-              <form>
+             
                     <div class="form-group">
                       <label for="feedback_correct">Feedback for correct answer</label>
-                      <input type="text" class="form-control" name="feedback_correct" placeholder="Correct Feedback" value='<?= $quiz_question['feedback_correct']?>'>
+                      <input type="text" class="form-control" name="feedback_correct" placeholder="Correct Feedback" value='<?= esc_attr($quiz_question['feedback_correct'])?>'>
                     </div>
                     <div class="form-group">
                       <label for="feedback_incorrect">Feedback for incorrect answer</label>
-                      <input type="text" class="form-control" name="feedback_incorrect" placeholder="Incorrect Feedback" value='<?= $quiz_question['feedback_incorrect']?>'>
+                      <input type="text" class="form-control" name="feedback_incorrect" placeholder="Incorrect Feedback" value='<?= esc_attr($quiz_question['feedback_incorrect'])?>'>
                     </div>
                     <input type='hidden' name='question_id' value="<?= $question_id ?>" />
                     <input type='hidden' name='quiz_id' value="<?= $quiz_id ?>" />
                     <input type='hidden' name='subscription_id' value="<?= $subscription_id ?>" />
                     <input type='hidden' name='feedback' value="true" />
                     <button type="submit" class="btn btn-default">Update Feedback</button>
-                  </form>
+                  
             </div>
             <div class="panel-footer"><a href="/dashboard/?part=update_quiz_questions&question_id=<?= $question_id?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id ?>" class="btn btn-success pull-right">Take me back to the Question</a><div style="clear:both"></div></div>
         </form>

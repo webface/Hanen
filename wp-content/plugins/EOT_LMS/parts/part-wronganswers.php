@@ -93,7 +93,7 @@
                             $chosen_wrong = '';
                             if($answer['ID'] == $wa['answer_id'])
                             {
-                               $chosen_wrong = ' <span class="fa fa-times fa-2x wrong"></span> '; 
+                               $chosen_wrong = ' <span class="fa fa-times fa-2x wrong"></span> '." Comments: ".$question['feedback_incorrect']; 
                             }
                             $html .= "<li>" . $answer['answer_text'] . $chosen_wrong . "</li>";
 

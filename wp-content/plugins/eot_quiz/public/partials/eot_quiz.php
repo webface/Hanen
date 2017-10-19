@@ -69,6 +69,7 @@
         </div>
         <h1 ng-cloak >{{results.quizmanager.quiz_message}}</h1>
         <a ng-cloak href="/dashboard?part=my_library&course_id={{results.quizmanager.course_id}}&enrollment_id={{results.quizmanager.enrollment_id}}" class="exit">Back to Courses</a>
+        <a ng-cloak href="/dashboard?part=wronganswers&course_id={{results.quizmanager.course_id}}&quiz_id={{results.quizmanager.quiz_id}}" class="exit">View Wrong Answers</a>
         <img class="logo" src="{{results.quizmanager.quiz_results_logo}}"/>
     </div>
 </div>
