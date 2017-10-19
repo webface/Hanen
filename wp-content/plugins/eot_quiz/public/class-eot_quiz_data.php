@@ -202,5 +202,18 @@ class EotQuizData
         $lastid = $wpdb->insert_id;
         return $lastid;
     }
-
+    
+    public function updateFeedback($data = array(), $id = 0)
+    {
+        global $wpdb;
+        $result = $wpdb->update(TABLE_QUIZ_QUESTION, $data, array('ID' => $id),array('%s','%s'));
+        if ($result === false) 
+        {
+            return false;
+        } 
+        else 
+        {
+            return true;
+        }
+    }
 }

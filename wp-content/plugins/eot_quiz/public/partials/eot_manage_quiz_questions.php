@@ -214,7 +214,12 @@ if (isset($_POST['submit']))
             'answer_correct' => 1
         );
         $eot_quiz->addAnswer($data);
-    }
+        }
+    $url ='/dashboard?part=quiz_feedback&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&question_id='.$question_id; 
+    ob_start();
+    header('Location: '.$url);
+    ob_end_flush();
+    die();
 }
 ?>
 <script>
@@ -386,6 +391,7 @@ $quiz_id = $quiz['ID'];
         'Type' => 'center',
         'Num Answers' => 'center',
         'Actions' => 'center',
+        'Give Feedback' => 'center',
         'Delete' => 'center',
     );
 
@@ -396,7 +402,9 @@ $quiz_id = $quiz['ID'];
             $question['quiz_question_type'],
             $question['answers'],
             '<a href="/dashboard?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', // The name of the camp,
-            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',);
+            '<a href="/dashboard?part=quiz_feedback&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" data-type="Question"><i class="fa fa-comment-o" aria-hidden="true"></i></a>',
+            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
+            );
     }
     CreateDataTable($questionsTableObj); // Print the table in the page
     echo "<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";

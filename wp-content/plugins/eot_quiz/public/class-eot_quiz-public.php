@@ -167,6 +167,9 @@ class Eot_quiz_Public
             case 'update_quiz_questions':
                 require_once plugin_dir_path(__FILE__) . 'partials/eot_update_quiz_questions.php';
                 break;
+            case 'leave_feedback':
+                require_once plugin_dir_path(__FILE__) . 'partials/eot_leave_feedback.php';    
+                break;
         }
     }
 

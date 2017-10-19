@@ -47,7 +47,11 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
             }
             CreateDataTable($answersTableObj); // Print the table in the page"
         }
-        echo "<button class='bs btn btn-primary pull-right editBtn' onclick='editQuestion(\"" . $question['quiz_question_type'] . "\")'>Edit</button>";
+        echo "<button class='bs btn btn-primary pull-right editBtn' onclick='editQuestion(\"" . $question['quiz_question_type'] . "\")'>Edit Question</button>";
+        if ($answers) 
+        {
+          echo '<span class ="bs pull right"><a href="/dashboard?part=quiz_feedback&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&question_id='.$question_id.'" class="btn btn-success">Edit Feedback&nbsp;&nbsp;<i class="fa fa-comment-o"></i></a></span>';  
+        }
 ?>
 
         <div id="editDiv"></div>
