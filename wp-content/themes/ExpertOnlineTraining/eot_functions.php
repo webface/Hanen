@@ -5576,6 +5576,7 @@ function add_resource_to_module_callback()
         if($update)
         {
             $courses_in = $wpdb->get_results("SELECT * FROM ".TABLE_COURSE_MODULE_RESOURCES. " WHERE module_id = $module_id", ARRAY_A);
+            $course_ids = array();
             if($courses_in)
             {
                 $course_ids = array_unique(array_column($courses_in, 'course_id'));
