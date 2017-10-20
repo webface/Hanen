@@ -33,7 +33,10 @@ if( isset($_REQUEST['type']) &&  (isset($_REQUEST['id']) || isset($_REQUEST['sub
                 $order_info['trans_date'] = $subscription->trans_date; // Trans date.
                 $order_info['price'] = $subscription->price; // Overall Price
                 $order_info['trans_id'] = $subscription->trans_id; // Transaction ID
+                $order_info['library_id'] = $subscription->library_id; // the library ID
             }
+            
+            // check if we were able to retrieve the subscription or upgrade data
             if( $subscription || $upgrade ) 
             {
                 global $current_user;
@@ -56,7 +59,7 @@ if( isset($_REQUEST['type']) &&  (isset($_REQUEST['id']) || isset($_REQUEST['sub
                         <meta charset="utf-8" />
                         <meta http-equiv="X-UA-Compatible" content="IE=edge">
                         <meta name="viewport" content="width=device-width, initial-scale=1">
-                        <title>Expert Online Training - EOT<?= ucfirst($type) ?>#<?= $order_info['id'] ?></title>
+                        <title>Expert Online Training - <?= ucfirst($type) ?> Invoice</title>
                         <link href="<?php echo get_template_directory_uri(); ?>/css/target.css" rel="stylesheet">
                         <link href="<?php echo get_template_directory_uri(); ?>/css/bootstrap.css" rel="stylesheet">
                     </head>
@@ -65,9 +68,8 @@ if( isset($_REQUEST['type']) &&  (isset($_REQUEST['id']) || isset($_REQUEST['sub
                             <div class="row">
                                 <div class="col-xs-7">
                                     <p>
-                                        <img src="<?= get_template_directory_uri() . '/images/EOT_logo_2015_rectangle.png' ?>" height="" width="327" title="FranTech Solutions" id="banner" />
+                                        <img src="<?= get_home_url() . '/wp-content/uploads/2017/08/EOT-Clear.png' ?>" height="" width="327" title="Expert Online Training" id="banner" />
                                     </p>
-                                    <h3>EOT<?= ucfirst($type) ?>#<?=$order_info['id']?></h3>
                                 </div>
                                 <div class="col-xs-5 text-center">
                                     <div class="invoice-status">
@@ -78,13 +80,13 @@ if( isset($_REQUEST['type']) &&  (isset($_REQUEST['id']) || isset($_REQUEST['sub
                             <hr>
                             <div class="row">
                                 <div class="col-xs-6 pull-sm-right text-right-sm">
-                                    <strong>Pay To:</strong>
+                                    <strong>Paid To:</strong>
                                     <address class="small-text">
-                                        Dr. Chris Turber<br />
-                                        3635 Craigmillar Ave.<br />
-                                        Victoria, BC<br />
-                                        V8P 3H2<br />
-                                        Canada
+                                        Expert Online Training<br />
+                                        32 Park Street<br />
+                                        Exeter, NH<br />
+                                        03833<br />
+                                        USA
                                     </address>
                                 </div>
                                 <div class="col-xs-6" id="invoice_to_container" style="text-align: right;">
@@ -102,7 +104,16 @@ if( isset($_REQUEST['type']) &&  (isset($_REQUEST['id']) || isset($_REQUEST['sub
                                     <strong>Payment Method:</strong>
                                     <br>
                                     <span class="small-text">
-                                        <?= ucfirst($order_info['method']) ?>
+<?php                                        
+                                        if (strtolower($order_info['method']) == 'stripe')
+                                        {
+                                            echo "Credit Card";
+                                        }
+                                        else
+                                        {
+                                            echo ucfirst($order_info['method']);
+                                        }
+?>                                        
                                     </span>
                                     <br />
                                     <br />
@@ -129,117 +140,85 @@ if( isset($_REQUEST['type']) &&  (isset($_REQUEST['id']) || isset($_REQUEST['sub
                                                     <td>
                                                         <strong>Description</strong>
                                                     </td>
+                                                    <td width="15%" class="text-center">
+                                                        <strong>Qty</strong>
+                                                    </td>
                                                     <td width="20%" class="text-center">
                                                         <strong>Amount</strong>
                                                     </td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                <?php
-                                                    if($upgrade)
+<?php
+                                                if($upgrade)
+                                                {
+                                                    echo "<tr>";
+                                                    echo "<td>Additional Staff Accounts</td>";
+                                                    echo "<td class='text-center'>" . $order_info['accounts'] . "</td>";
+                                                    echo "<td class='text-center'>$" . $order_info['price'] . " USD</td>";
+                                                    echo "</tr>";
+                                                }
+                                                else if($subscription)
+                                                {
+                                                    $library = getLibrary ($order_info['library_id']); 
+                                                    echo "<tr>";
+                                                    echo "<td>";
+                                                    echo $library->name . " " . substr($subscription->end_date, 0, 4) . " (" . str_replace('-', '/', $subscription->start_date) . " - " . str_replace('-', '/', $subscription->end_date) . ")";
+                                                    echo "</td>";
+                                                    echo "<td class='text-center'>1</td>";
+                                                    echo "<td class='text-center'>";
+                                                    echo "$" . $subscription->dash_price . " USD";
+                                                    echo "</td>";
+                                                    echo "</tr>";
+
+                                                    if( $subscription->staff_credits > 0 )
                                                     {
-                                                        echo "<td>";
-                                                        echo    "Additional staff: " . $order_info['accounts'] . "x";
-                                                        echo "<br />";
-                                                        echo "</td>";
-                                                        echo '<td class="text-center">';
-                                                        echo    "$" . $order_info['price'] . " USD";
-                                                        echo "</td>";
+                                                        echo "<tr>";
+                                                        echo "<td>Staff Accounts</td>";
+                                                        echo "<td class='text-center'>" . $subscription->staff_credits . "</td>";
+                                                        echo "<td class='text-center'>$" . $subscription->staff_price . " USD</td>";
+                                                        echo "</tr>";
                                                     }
-                                                    else if($subscription)
+
+                                                    if( $subscription->data_disk_price > 0)
                                                     {
-                                                        echo "<td>";
-                                                        echo    "Dashboard: (" . str_replace('-', '/', $subscription->start_date) . " - " . str_replace('-', '/', $subscription->end_date) . ")";
-                                                        echo "<br />";
-                                                        if( $subscription->staff_credits > 0 )
-                                                        {
-                                                            echo "Number of staff: " . $subscription->staff_credits . "x";
-                                                            echo "<br />";
-                                                        }
-                                                        if( $subscription->data_disk_price > 0)
-                                                        {
-                                                            echo "Data Disc: Included";
-                                                            echo "<br />";
-                                                        }
-                                                        if( $subscription->dash_discount > 0 )
-                                                        {
-                                                            echo "Dashboard discount";
-                                                            echo "<br />";
-                                                        }
-                                                        if( $subscription->staff_discount > 0)
-                                                        {
-                                                            echo "Staff discount";
-                                                            echo "<br />";
-                                                        }
-                                                        echo "</td>";
-                                                        echo '<td class="text-center">';
-                                                        echo "$" . $subscription->dash_price . " USD";
-                                                        if( $subscription->staff_credits > 0 )
-                                                        {
-                                                            echo "<br />";
-                                                            echo "$" . $subscription->staff_price . " USD";
-                                                        }
-                                                        if( $subscription->data_disk_price > 0 )
-                                                        {
-                                                            echo "<br />";
-                                                            echo "$" . $subscription->data_disk_price . " USD";
-                                                        }
-                                                       if( $subscription->dash_discount > 0 )
-                                                        {
-                                                            echo "<br />";
-                                                            echo "-$" . $subscription->data_disk_price . " USD";
-                                                        }
-                                                        if( $subscription->staff_discount > 0)
-                                                        {
-                                                            echo "<br />";
-                                                            echo "-$" . $subscription->staff_discount . " USD";
-                                                        }
-                                                        echo "</td>";
-                                                    } 
-                                                ?>                                                 
-                                                </tr>
+                                                        echo "<tr>";
+                                                        echo "<td>Data Disk</td>";
+                                                        echo "<td class='text-center'>1</td>";
+                                                        echo "<td class='text-center'>$" . $subscription->data_disk_price . " USD</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                    
+                                                    if( $subscription->dash_discount > 0 )
+                                                    {
+                                                        echo "<tr>";
+                                                        echo "<td>Dashboard discount</td>";
+                                                        echo "<td class='text-center'>&nbsp;</td>";
+                                                        echo "<td class='text-center'>- $" . $subscription->dash_discount . " USD</td>";
+                                                        echo "</tr>";
+                                                    }
+
+                                                    if( $subscription->staff_discount > 0)
+                                                    {
+                                                        echo "<tr>";
+                                                        echo "<td>Staff discount</td>";
+                                                        echo "<td class='text-center'>&nbsp;</td>";
+                                                        echo "<td class='text-center'>- $" . $subscription->staff_discount . " USD</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                } 
+?>                                                 
                                                 <tr>
-                                                    <td class="total-row text-right">
+                                                    <td class="total-row text-right" colspan="2">
                                                         <strong>Total</strong>
                                                     </td>
-                                                    <td class="total-row text-center">$<?= $order_info['price'] ?> USD</td>
+                                                    <td class="total-row text-center"><strong>$<?= $order_info['price'] ?> USD</strong></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>   
-                            <div class="transactions-container small-text">
-                                <div class="table-responsive">
-                                    <table class="table table-condensed">
-                                        <thead>
-                                            <tr>
-                                                <td class="text-center">
-                                                    <strong>Transaction Date</strong>
-                                                </td>
-                                                <td class="text-center">
-                                                    <strong>Gateway</strong>
-                                                </td>
-                                                <td class="text-center">
-                                                    <strong>Transaction ID</strong>
-                                                </td>
-                                                <td class="text-center">
-                                                    <strong>Amount</strong>
-                                                </td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-center"><?=str_replace('-', '/', $order_info['trans_date']) ?></td>
-                                                <td class="text-center"><?= ucfirst($order_info['method']) ?></td>
-                                                <td class="text-center"><?= $order_info['trans_id'] ?></td>
-                                                <td class="text-center">$<?= $order_info['price'] ?> USD</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                             <div class="pull-right btn-group btn-group-sm hidden-print">
                                 <a href="javascript:window.print()" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
                             </div>
@@ -275,7 +254,7 @@ if( isset($_REQUEST['type']) &&  (isset($_REQUEST['id']) || isset($_REQUEST['sub
 else
 {
     // Invalid request. No request for user ID or Course ID 
-    wp_die('ERROR: invalid type and id');
+    wp_die('ERROR: invalid parameters');
 }
 
 ?>

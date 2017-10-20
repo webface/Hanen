@@ -40,7 +40,7 @@
 								if(current_user_can ('is_director'))
 								{
 							?>
-									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=view_invoice">View Invoice</a></li>
+									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=view_invoice">View Invoice(s)</a></li>
 									<!-- <li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=view_statistics">Statistics History</a></li>
 									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=my_account#subscription_settings">Advance Training & Certification</a></li>
 									-->
