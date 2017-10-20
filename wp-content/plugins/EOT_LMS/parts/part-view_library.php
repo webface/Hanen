@@ -22,9 +22,11 @@
         <span>
           <strong><?= $library_name ?></strong> is our most popular content library for youth leaders and supervisors. Click on one of the six category bars below to get started.
           <br><br>
-          <a href="<?=get_home_url()?>/premade-courses/" onclick="load('load')"><button type="button" class="btn btn-primary">Pre-Made Courses</button></a>
-          <a href="<?=get_home_url()?>/choosing-a-topic/" onclick="load('load')"><button type="button" class="btn btn-primary">Module Choices</button></a>
-          <a href="<?=get_home_url()?>/dashboard/?part=administration&subscription_id=<?=$subscription_id?>" onclick="load('load')"><button type="button" class="btn btn-primary">Custom Content</button></a>
+          <div class="center">
+            <a href="<?=get_home_url()?>/premade-courses/" target="_blank"><button type="button" class="btn btn-primary">Pre-Made Courses</button></a>&nbsp;&nbsp;&nbsp;
+            <a href="<?=get_home_url()?>/choosing-a-topic/" target="_blank"><button type="button" class="btn btn-primary">Module Choices</button></a>&nbsp;&nbsp;&nbsp;
+            <a href="<?=get_home_url()?>/dashboard/?part=administration&subscription_id=<?=$subscription_id?>"><button type="button" class="btn btn-primary">Custom Content</button></a>
+          </div>
           <br>
         </span>
       <?php
