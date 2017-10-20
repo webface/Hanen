@@ -3335,7 +3335,7 @@ function refund_camp_callback ()
             'date' => current_time('Y-m-d'),
             'org_id' => $org_id,
             'subscription_id' => $subscription_id,
-            'price' => ($part_amount == 0) ? (-$amount):(-$part_amount),
+            'price' => ($part_amount == 0) ? (-floatval($amount)):(-floatval($part_amount)),
             'accounts' => -$accounts,
             'user_id' => $user_id,
             'method' => 'stripe',
