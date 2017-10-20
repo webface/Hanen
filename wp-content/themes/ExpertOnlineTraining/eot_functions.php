@@ -39,12 +39,12 @@ function getLibrary ($library_id = 0)
  * @param int $library_id - The library ID
  * @param int $org_id - The organization ID
  * @param boolean active - include subscription that are inactive?
- * @param int $org_id - the org ID
+ * @param int $user_id - User ID who purchased the subscription.
  * @param date $start_date - the date to start the search from
  * @param date $end_date - the date to end the search till
  * @return array objects - subscriptions information for this library
  *******************************************************************************************************/
-function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $org_id = 0, $start_date = '0000-00-00', $end_date = '0000-00-00', $year_end_date = '0000') 
+function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $org_id = 0, $start_date = '0000-00-00', $end_date = '0000-00-00', $year_end_date = '0000', $user_id = 0) 
 {
   global $wpdb;
   $sql = "SELECT * from " . TABLE_SUBSCRIPTIONS;
@@ -64,6 +64,10 @@ function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $o
     // looking for all subscriptions for organization ID
     $sql .= " WHERE org_id = " . $org_id; 
   }
+  else if($user_id)
+  {
+    $sql .= " WHERE manager_id = " . $user_id; 
+  }
   else if($start_date != "0000-00-00" && $end_date != "0000-00-00")
   {
     $sql .= "  WHERE trans_date >= '" . $start_date . "' AND trans_date <= '" . $end_date . "'";
@@ -73,7 +77,6 @@ function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $o
 
   $date = current_time('Y-m-d');
   $sql .= ($active) ? " AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'" : "";
-
   $results = ($subscription_id > 0) ? $wpdb->get_row ($sql) : $wpdb->get_results ($sql);
   return $results;
 }
@@ -1953,7 +1956,7 @@ function updateSubscriptionSettings($id = 0, $field = '', $value = 0)
  * Get the upgrades this subscription year based on the subscription id
  * return the upgrade subscription information
  */
-function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_date = '0000-00-00') 
+function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_date = '0000-00-00', $upgrade_id = 0, $user_id = 0) 
 {
     global $wpdb;
     $sql = "SELECT * from " . TABLE_UPGRADE_SUBSCRIPTION;
@@ -1961,8 +1964,16 @@ function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_dat
     {
         $sql .= " WHERE subscription_id = $subscription_id";
     }
+    else if($upgrade_id > 0)
+    {
+      $sql .= " WHERE id = $upgrade_id";
+    }
+    else if($user_id > 0)
+    {
+      $sql .= " WHERE user_id = $user_id";
+    }
 
-    if($subscription_id <= 0 && $start_date != "0000-00-00" && $end_date != "0000-00-00")
+    if($subscription_id <= 0 && $upgrade_id <= 0 && $user_id <= 0 && $start_date != "0000-00-00" && $end_date != "0000-00-00")
     {
       $sql .= " WHERE date >= '$start_date' AND date <= '$end_date'";
     }
@@ -1971,7 +1982,8 @@ function getUpgrades ($subscription_id = 0, $start_date = '0000-00-00', $end_dat
       $sql .= " AND date >= '$start_date' AND date <= '$end_date'";
     }
 
-    $results = $wpdb->get_results ($sql);
+    $results = ($upgrade_id > 0) ? $wpdb->get_row ($sql) : $wpdb->get_results ($sql);
+    
     return $results;
 }
 
@@ -5576,6 +5588,7 @@ function add_resource_to_module_callback()
         if($update)
         {
             $courses_in = $wpdb->get_results("SELECT * FROM ".TABLE_COURSE_MODULE_RESOURCES. " WHERE module_id = $module_id", ARRAY_A);
+            $course_ids = array();
             if($courses_in)
             {
                 $course_ids = array_unique(array_column($courses_in, 'course_id'));
