@@ -18,8 +18,14 @@
     $user_info =  array(
                     'ID' => $user_id,
                     'user_email' => $email,
-                  );    
+                  );
     $result = wp_update_user( $user_info );
+    // Update e-mail address when necessary.
+    if($current_user->user_email !=  $_POST['email']) 
+    {
+      global $wpdb;
+      $wpdb->update( $wpdb->users, array( 'user_login' => $email, 'user_email' => $email ), array( 'ID' => $user_id) );
+    }
     // Check for errors when updating the user in wordpress.
     if( is_wp_error( $result ) )
     {
