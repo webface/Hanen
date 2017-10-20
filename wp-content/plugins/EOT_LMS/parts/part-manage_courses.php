@@ -769,7 +769,6 @@
                         .toggle("slow",
                           function()
                           {
-                          $('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
                            var item = $(this).find('input[item = quiz][ type=checkbox],input[item = resource][ type=checkbox]')
                           // Disable the module exam if the video module is disabled.
                           // Enable the exam, if the video module is enabled
@@ -933,7 +932,8 @@
                           }
                         )
                         }
-                      )
+                      );
+                      $('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
        
                       /*********************************************
                       * Handle Custom Quizzes and Resources
