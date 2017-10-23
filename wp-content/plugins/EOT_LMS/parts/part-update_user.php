@@ -109,7 +109,13 @@
             {
               response = jQuery.parseJSON(data);
               if(response.success == true)
+              {
                 $( "#responseMessage" ).text( response.message);
+                if(response.old_email != "") // Update old email value.
+                {
+                  $( "#old_email" ).val(response.email);
+                }
+              }
               else if ( response.success == false)
                 $( "#responseMessage" ).text (response.errors);
               else
