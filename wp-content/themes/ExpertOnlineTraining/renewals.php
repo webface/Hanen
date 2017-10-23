@@ -115,7 +115,17 @@
 ?>
     <div class="col-md-9 content-area" id="main-column">
         <main id="main" class="site-main" role="main">
-            <h1 class="article-title">Instantly save $100 off your 2018 Leadership Essentials Dashboard Price</h1>
+<?php
+            if ($deadline_passed)
+            {
+                echo '<h1 class="article-title">Renew your Leadership Essentials Subscription</h1>';
+            }
+            else
+            {
+                echo '<h1 class="article-title">Instantly save $100 off your 2018 Leadership Essentials Dashboard Price</h1>';
+            }
+?>
+            
             <h3>2017 <?= $library->name; ?> Subscription Details:</h3>
             <table class="data sm">
                 <tbody>
@@ -246,7 +256,13 @@
             <h3>2018 Subscription Renewal Options</h3>
 
             <p>The regular price of a full-featured Directors’ Dashboard has been $399 per year since we opened shop in 2008. Since then, we have grown the Leadership Essentials library from 12 videos to 120 videos, added greater functionality to our site, and made it mobile-friendly. <strong>And we still charge only $399 for the Directors’ Dashboard.</strong></p>
-            <p>However, if you renew your subscription prior to <?= $deadline; ?> you will receive $100 off of our Directors' Dashboard price.</p>
+<?php
+            if (!$deadline_passed)
+            {
+                echo '<p>However, if you renew your subscription prior to ' . $deadline . ' you will receive $100 off of our Directors\' Dashboard price.</p>';
+            }
+?>
+            
 
             <div class="row bs">
                 <div class="col-md-6">
