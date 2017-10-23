@@ -2069,8 +2069,8 @@ function setCertificateSyllabus( $user_id = 0, $data = array() )
   }
   global $wpdb;
   $sql =  "INSERT INTO " . TABLE_CERTIFICATES_SYLLABUS . " (user_id, course_id, course_name, modules) 
-          VALUES ($user_id, $course_id, '$course_name' , '$module_titles')";
-  $result = $wpdb->query ($sql);
+          VALUES (%d, %d, %s , %s)";
+  $result = $wpdb->query ($wpdb->prepare($sql, $user_id, $course_id, $course_name, $module_titles));
 }
 
 /******************************************
