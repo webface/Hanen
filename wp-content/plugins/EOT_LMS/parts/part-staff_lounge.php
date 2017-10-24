@@ -16,21 +16,29 @@ $user_id = $current_user->ID; // Wordpress user ID
 $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user($user_id); // Organization ID
 $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 
-
 if ((current_user_can("is_director")) || (current_user_can("is_student"))) 
 {
     if (get_post_meta($org_id, 'org_forum_id', true)) 
     {
+
         echo do_shortcode('[bbp-single-forum id=' . get_post_meta($org_id, 'org_forum_id', true) . ']');
     } 
     else 
     {
+
+        if(current_user_can("is_director"))
+        {
         $forum = eot_bbp_create_initial_content();
         $forum_id = $forum['forum_id'];
         update_post_meta($org_id, 'org_forum_id', $forum_id);
         $new_role_forum_role = 'bbp_keymaster';
         bbp_set_user_role($user_id, $new_role_forum_role);
         echo do_shortcode('[bbp-single-forum id=' . $forum_id . ']');
+        }
+        else
+        {
+            echo "Your Staff Lounge has not been set up yet. Please contact your director!";
+        }
     }
 } 
 else 
