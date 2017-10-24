@@ -31,7 +31,9 @@
 								if(current_user_can ('is_student') || current_user_can ('is_director'))
 								{
 ?>
+<!-- HIDE CERTIFICATES UNTIL FIX IMAGEMAGICK
 									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=mycertificates">My Certificates</a></li>
+-->									
 <?php
 								}
 ?>
