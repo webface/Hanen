@@ -30,6 +30,7 @@ wp-content/plugins/all-in-one-wp-migration/storage/*
 commands.php
 heartbeat.php
 readme.*.html
+readme.html
 
 # wpengine specific
 .smushit-status
