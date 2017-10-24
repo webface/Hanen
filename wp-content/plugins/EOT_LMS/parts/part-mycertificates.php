@@ -77,7 +77,7 @@
         $user_id = $complete_enrollment['user_id']; // The enrollment user ID
         $course_id = $complete_enrollment['course_id']; // The enrollment course ID
         $filename = "certificate_" . $user_id . "_" . $course_id . ".jpg"; // Certificate name.
-        $course_name = $courses[$course_id]->course_name; // The course name
+        $course_name = isset($courses[$course_id]) ? $courses[$course_id]->course_name : ''; // The course name
         
         // make sure the director is not setting a start/end date
         if(!isset($_REQUEST['start_date']) && !isset($_REQUEST['end_date']))
