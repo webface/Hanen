@@ -20,6 +20,7 @@
 			// check course status - update in necessary
 			$enrollment_id = isset($_REQUEST['enrollment_id']) ? filter_var($_REQUEST['enrollment_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 			$enrollment_status = getEnrollmentStatus($enrollment_id);
+                        //d($enrollment_status);
 			if($enrollment_status == 'not_started')
 			{
 				// output the javascript to update enrollment status to in_progress
@@ -36,7 +37,6 @@
 <?php
 			}
 			$course_info = getCourse($course_id); // the course info, name, desc, etc...
-	
 			if($course_info)
 			{
 ?>
@@ -52,20 +52,33 @@
 		       	// Get all the modules in this course by the course ID
 				$user_id = get_current_user_id(); // WP User ID
                 $org_id = get_org_from_user($user_id);
-				$modules_in_course = getModulesInCourse($course_id);
+                $subscription = getSubscriptionByCourse($course_id); // get the subscription data
+                $library_id = isset($subscription['library_id']) ? $subscription['library_id'] : 0; // the library ID
+                $continue_learning = get_post_meta($org_id, 'continue_learning', true);
+                
+                if($continue_learning && $enrollment_status == 'completed')//director has set users to continue learning and user has completed their enrollment
+                {
+                    $modules_in_course = getModulesByLibrary($library_id);
+                    $resources_doc = getResourcesInLibrary($library_id, "doc");
+                    $resources_video = getResourcesInLibrary($library_id, "video");
+                    $resources_exam = getResourcesInLibrary($library_id, "exam");
+                }
+                else {
+                    $modules_in_course = getModulesInCourse($course_id);
+                    $resources_doc = getResourcesInCourse($course_id, "doc");
+                    $resources_video = getResourcesInCourse($course_id, "video");
+                    $resources_exam = getResourcesInCourse($course_id, "exam");
+                }
                 $modules_in_portal = getModules($org_id);// all the custom modules in this portal
                 $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
                 $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
                 $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
                 $quizzes_in_custom_modules=getQuizResourcesInModules($modules_in_portal_ids_string);
                 $resources_in_custom_modules =  getHandoutResourcesInModules($modules_in_portal_ids_string);
-				$subscription = getSubscriptionByCourse($course_id); // get the subscription data
-				$library_id = isset($subscription['library_id']) ? $subscription['library_id'] : 0; // the library ID
-				$categories = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
-				$resources_doc = getResourcesInCourse($course_id, "doc");
-				$resources_video = getResourcesInCourse($course_id, "video");
-	            $resources_exam = getResourcesInCourse($course_id, "exam");
-	            $finished_module_quizzes = array();
+
+                $categories = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
+                
+                $finished_module_quizzes = array();
 	            //d($modules_in_portal,$videos_in_custom_modules,$quizzes_in_custom_modules,$resources_in_custom_modules);
 	            
 	            $exams = array();
@@ -103,7 +116,9 @@
 						array_push($modules, $new_module); // Add the new module to the modules array.
 					}
 
-			        // Display library and the modules inside it.
+//			if($enrollment_status != 'completed')
+//                        {
+                                        // Display library and the modules inside it.
                             foreach($categories as $category)
                             {
                                     $category_name = $category->name;
@@ -125,9 +140,24 @@
 				      						</a> 
 				      						<b><?= $module_title ?></b> 
 				      						<span class="small"> - 
-				          						<a href="?part=view&course_id=<?=$course_id?>&module_id=<?=$module_id?>">
+                                                                                    <?php
+                                                                                    if($continue_learning && $enrollment_status == 'completed')
+                                                                                    {
+                                                                                    ?>
+				          						<a href="?part=view_continued&course_id=<?=$course_id?>&module_id=<?=$module_id?>&enrollment_id=<?=$enrollment_id?>">
 				          							Watch Video
-				          						</a> 
+				          						</a>
+                                                                                    <?php
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                     ?>
+                                                                                        <a href="?part=view&course_id=<?=$course_id?>&module_id=<?=$module_id?>&enrollment_id=<?=$enrollment_id?>">
+				          							Watch Video
+				          						</a>
+                                                                                    <?php
+                                                                                    }
+?>
 <?php 
 				          							foreach ($resources_video as $key => $video) 
 				          							{
@@ -142,25 +172,36 @@
 				          							// display link to the quiz if the video has been watched.
 				          							if($isFinished)
 				          							{
-                                                        if(isset($exams[$module_id]))
-                                                        {
-                                                            $exam_data = $exams[$module_id];
-                                                            $quiz_id = $exam_data[0]['ID'];
-															echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';
-															array_push($finished_module_quizzes,$quiz_id); //store that the module for this quiz was completed
-			
-                                                        }
-                                                    }
+                                                                                                    if(isset($exams[$module_id]))
+                                                                                                    {
+                                                                                                        $exam_data = $exams[$module_id];
+                                                                                                        $quiz_id = $exam_data[0]['ID'];
+                                                                                                                                                                    echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';
+                                                                                                                                                                    array_push($finished_module_quizzes,$quiz_id); //store that the module for this quiz was completed
+
+                                                                                                    }
+                                                                                                }
+//                                                                                                elseif($continue_learning && $enrollment_status == 'completed')
+//                                                                                                {
+//                                                                                                    if(isset($exams[$module_id]))
+//                                                                                                    {
+//                                                                                                        $exam_data = $exams[$module_id];
+//                                                                                                        $quiz_id = $exam_data[0]['ID'];
+//                                                                                                                                                                    echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';
+//                                                                                                                                                                    array_push($finished_module_quizzes,$quiz_id); //store that the module for this quiz was completed
+//
+//                                                                                                    }
+//                                                                                                }
 				          							else
 				          							{
-                                                        if(isset($exams[$module_id]))
-                                                        {
-?>                                                                                                  
-				          									/ Take Quiz
-															&nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
-<?php
-                                                        }
-                                                    }
+                                                                                                    if(isset($exams[$module_id]))
+                                                                                                    {
+                                            ?>                                                                                                  
+                                                                                                                                                            / Take Quiz
+                                                                                                                                                                    &nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
+                                            <?php
+                                                                                                    }
+                                                                                                }
 
 				      				echo	'</span>';
 		      						if( isset( $resources_doc ) && count($resources_doc) > 1 )
@@ -187,6 +228,12 @@
 		                	}//end for each
                                     }//end if
 	        		}//end for each
+//                            }
+//                            else // status is completed
+//                            {
+//                                $modules = getModulesByLibrary($library_id);
+//                                d($modules);
+//                            }
 		        }//end if
                         
 		        else
@@ -384,18 +431,23 @@
                                     <?php
                                 
 			}//end if course info
+                        elseif($course_info && $enrollment_status == "completed")
+                        {
+                            
+                        }
 			else
 			{
-				wp_die('Could not find the course. Please report this to the technical support.');
+				die('Could not find the course. Please report this to the technical support.');
 			}
 		}
 		else
 		{
-			wp_die('You do not have privilege to view this page.');
+			die('You do not have privilege to view this page.');
 		}
 	}
 	else
 	{
-		wp_die('Invalid course. Please report this to the technical support.');
+		die('Invalid course. Please report this to the technical support.');
 	}
+        
 ?>
