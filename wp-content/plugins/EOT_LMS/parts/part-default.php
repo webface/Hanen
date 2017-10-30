@@ -76,7 +76,7 @@ if (current_user_can("is_director"))
     {
         ?>
         <div class="dashboard_banner acf-image-image">
-            <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
+            <img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/>
             <br/>
         </div>
         <?php
@@ -302,7 +302,7 @@ else if (current_user_can("is_student"))
         {
 ?>
             <div class="dashboard_banner acf-image-image">
-                <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
+                <img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/>
                 <br/>
             </div>
 <?php
@@ -420,7 +420,7 @@ else
     {
 ?>
         <div class="dashboard_banner acf-image-image">
-            <center><img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/></center>
+            <img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/>
             <br/>
         </div>
 <?php
