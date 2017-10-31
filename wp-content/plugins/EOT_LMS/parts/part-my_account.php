@@ -35,9 +35,20 @@
     {
       unset($user_info['last_name']);
     }
+    if ($last_name != $new_last_name || $first_name != $new_first_name)
+    {
+      // they changed the name so change the sidplay name
+      $user_info['display_name'] = $new_first_name . ' ' . $new_last_name;
+    }
     if($user_email == $new_email)
     {
       unset($user_info['user_email']);
+    }
+    else
+    {
+      // email changed so update user nickname and nicename
+      $user_info['user_nicename'] = $new_email;
+      $user_info['nickname'] = $new_email;
     }
     if($new_user_password == "")
     {
@@ -52,8 +63,12 @@
       {
         global $wpdb;
         $wpdb->update( $wpdb->users, array( 'user_login' => $new_email), array( 'ID' => $user_id) );
+
+        // email address changed. Need to auto login new user
+        wp_set_current_user($user_id);
+        wp_set_auth_cookie($user_id);
       }
-      displaySuccess("Your account has been updated.");
+      displaySuccess("Your account information has been updated."); 
       // Update display in front end.
 
 ?>    <script>
@@ -61,21 +76,23 @@
         {
           $("input#first_name").val("<?= $new_first_name; ?>");
           $("input#last_name").val("<?= $new_last_name; ?>");
+          $('#email').val("<?= $new_email; ?>");
           $('#accountAreaTop h1').html("Hi  <?= $new_first_name; ?> <?= $new_last_name; ?>");
         })
       </script>
-      <?php
+<?php
     }
     else
     {
       // Error in updating user account.
       displayError ($update_user->get_error_message()); // This will also catch errors when the e-mail already exist.
-      ?>
+?>
         <script>
           $(document).ready(function () 
           {
             $("input#first_name").val("<?= $first_name; ?>");
             $("input#last_name").val("<?= $last_name; ?>");
+            $('#email').val("<?= $user_email; ?>");
             $('#accountAreaTop h1').html("Hi  <?= $first_name; ?> <?= $last_name; ?>");
           })
         </script>
@@ -184,12 +201,13 @@ Change your account details here.
   $ = jQuery;
 
   $(document).ready(function() {
-      // On page load. This populates the fields for email, name and last name.
-      $('#email').val("<?= $user_email; ?>");
 <?php 
       if( !isset($_POST['submitted']) )
       {
-?>      $('#first_name').val("<?= $first_name; ?>");
+?>
+        // On page load. This populates the fields for email, name and last name.
+        $('#email').val("<?= $user_email; ?>");
+        $('#first_name').val("<?= $first_name; ?>");
         $('#last_name').val("<?= $last_name; ?>");
         $('#accountAreaTop h1').html("Hi  <?= $first_name; ?> <?= $last_name; ?>");
 <?php
@@ -218,7 +236,7 @@ Change your account details here.
       }
 
       var strengthNumber = passwordStrength(password, [], password);      //this is a wordpress function that will check the strength of the password and will output a number from 0-4
-      if(strengthNumber < 2)                                             //3 means Good which is required for this field
+      if(strengthNumber < 2)                                             //2 means Good which is required for this field
       {
         alert("Password needs to be at least Good.");
         return false;                                                    //method reutrns true when password is Good
