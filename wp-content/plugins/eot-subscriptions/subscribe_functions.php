@@ -700,7 +700,7 @@ function display_subscription_dashboard ($subscription)
     }
 ?>      
     <div class="dashboard_border">
-    <h1><?= $library_title ?> <?= substr($subscription->end_date, 0,4) ?> <span class="bor_tag">Director Account</span>
+    <h1><?= $library_title ?> <?= substr($subscription->end_date, 0,4) ?> <span class="bor_tag"><?php echo __('Director Account','EOT_LMS')?></span>
     </h1>
     <div class="content_right">
         <div class="clear"></div>
@@ -710,9 +710,9 @@ function display_subscription_dashboard ($subscription)
                   <i class="fa fa-youtube-play" alt="Content"></i>
               </div>
               <div class="para">
-                  <h1>View Content</h1>
+                  <h1><?php echo __('View Content','EOT_LMS')?></h1>
                   <br/>
-                  Watch videos, download handouts, and read articles
+                  <?php echo __('Watch videos, download handouts, and read articles', 'EOT_LMS')?>
               </div>
             </a>
         </div>
@@ -722,9 +722,9 @@ function display_subscription_dashboard ($subscription)
                 <i class="fa fa-cogs" alt="Administration"></i>
             </div>
             <div class="para">
-                <h1>Administration</h1>
+                <h1><?php echo __('Administration', 'EOT_LMS')?></h1>
                 <br>
-                Create courses and staff accounts
+                <?php echo __('Create courses and staff accounts', 'EOT_LMS')?>
             </div>
           </a>
         </div>
