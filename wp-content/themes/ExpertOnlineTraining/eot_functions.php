@@ -4393,7 +4393,6 @@ function updateUser_callback()
         $user_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_STRING);
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         $password = isset($_REQUEST['pw']) ? $_REQUEST['pw'] : '';
-        $data = compact("org_id", "first_name", "last_name", "email", "user_id", "password");
         $new_user = array();
         $original_id = $user_id;
 
@@ -4426,20 +4425,19 @@ function updateUser_callback()
         }
         else 
         {
-                // update or insert new user in WP
-                $WP_password = $password ? wp_hash_password($password) : wp_generate_password(); // make sure i have a password for the user
-                $userdata = array (
-                    'user_login' => $email,
-                    'user_pass' => $WP_password,
-                    'role' => $role,
-                    'user_email' => $email,
-                    'first_name' => $first_name,
-                    'last_name' => $last_name,
-                    'display_name' => $first_name . " " . $last_name
-                );
-
                 // check if user exists
                 $user_id = get_user_by( 'email', $old_email ); // The user in WP
+                // update or insert new user in WP
+                $userdata = array (
+                    'user_login' => $email,
+                    'ID' => $user_id->ID,
+                    'user_email' => $email,
+                    'user_pass' => $password,
+                    'role' => $role,
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'display_name' => $first_name . " " . $last_name,
+                );
                 if ($user_id) 
                 {
                     // check if email was updated because if it was, we need to update the user_login field.
@@ -4447,7 +4445,7 @@ function updateUser_callback()
                     {
                         global $wpdb;
                         // cant use wp_insert_user because we need to updtate login as well and that function wont do it.
-                        if ( $wpdb->update( $wpdb->users, array( 'user_login' => $email, 'user_email' => $email ), array( 'ID' => $user_id->ID ) ) )
+                        if ( $wpdb->update( $wpdb->users, array( 'user_login' => $email ), array( 'ID' => $user_id->ID ) ) )
                         {
                             // success
                             $result['success'] = true;
@@ -4467,24 +4465,20 @@ function updateUser_callback()
                             $result['errors'] = 'updateUser_callback Error: Could not update WP user.';
                         }
                     }
-
-                    // set the userID to be updated
-                    $userdata['ID'] = $user_id->ID;
                     // dont change their password unless they added a new password
-                    if (!$password){
+                    if (!$password)
+                    {
                         unset($userdata['user_pass']);
                     }
 
                     // remove the user_login because the update function below cant do it.
                     unset($userdata['user_login']);
-                    unset($userdata['user_email']);
 
                     // update the user into WP
                     $WP_user_id = wp_update_user ($userdata);
-                    
                     // success
                     $result['success'] = true;
-                    $result['message'] = 'User account information has been successfully updated2.';
+                    $result['message'] = 'User account information has been successfully updated.';
                     $result['staff_id'] = $WP_user_id;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
