@@ -101,14 +101,14 @@ function display_register_account_form () {
 						<input type="text" name="org_name" value="" required>
 					</td>
 				</tr>
-				<tr>
+<!--				<tr>
 					<td class="label">
 						Camp Portal Name (eg. supercamp):<span class="asterisk">*</span><br><span style="font-weight: normal;">* Letters Only</span>
 					</td>
 					<td class="field">
 						<input type="text" name="org_subdomain" value="" required>
 					</td>
-				</tr>
+				</tr>-->
 				<tr>
 					<td class="label">
 						Office Phone:<span class="asterisk">*</span>      
@@ -119,10 +119,10 @@ function display_register_account_form () {
 				</tr>
 				<tr>
 					<td class="label">
-						Website:<span class="asterisk">*</span><br><span style="font-weight: normal;">* http:// is required</span>
+						Website:<br><span style="font-weight: normal;">* http:// is required</span>
 					</td>
 					<td class="field">
-						<input type="url" name="org_url" value="http://" required>
+						<input type="url" name="org_url" value="http://">
 					</td>
 				</tr>
 				<tr>

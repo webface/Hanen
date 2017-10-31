@@ -1448,7 +1448,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                             {
                                 // show completed message
                                 show_error ("SUCCESS: created subscription!");
-                                window.location.replace("?part=admin_view_subscriptions&library_id=" + response.library_id + "&status=upgradeSubscription");
+                                window.location.replace("?part=admin_view_subscriptions&library_id=" + response.library_id + "&status=upgradeSubscription&sub_year=<?= SUBSCRIPTION_YEAR ?>");
                             }
 
                             return eot_status;
