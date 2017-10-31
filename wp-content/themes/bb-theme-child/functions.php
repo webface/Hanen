@@ -18,24 +18,23 @@ function wti_loginout_menu_link( $items, $args ) {
 	{
 		
             preg_match_all('/<li[^>]*><a[^>]*>[^<]*<\/a><\/li>/', $items, $matches);
-   		if (is_user_logged_in())
-   		{
-   			//next 3 lines remove the features menu item
-			$features = preg_grep('/<li[^>]*><a[^>]*>Features<\/a><\/li>/', $matches[0]);
-			$features_key = array_search($features, $matches);
-			unset($matches[0][$features_key]);
-			//add dashboard menu item to the beginning
-			array_unshift($matches[0], "<li id='menu-item-730' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-712'><a href='/dashboard'>Dashboard</a></li>");
-			$items = implode($matches[0]);
-			//add logout menu item to the end
-   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout") .'</a></li>';
-   		}
-   		else
-   		{
-   			//add login menu item to the end
-   			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login") .'</a></li>';
-   		}
-                //error_log( "ITEMS 1".$items);
+            if (is_user_logged_in())
+            {
+                //next 3 lines remove the features menu item
+                $features = preg_grep('/<li[^>]*><a[^>]*>Features<\/a><\/li>/', $matches[0]);
+                $features_key = array_search($features, $matches);
+                unset($matches[0][$features_key]);
+                //add dashboard menu item to the beginning
+                array_unshift($matches[0], "<li id='menu-item-730' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-712'><a href='/dashboard'>Dashboard</a></li>");
+                $items = implode($matches[0]);
+                //add logout menu item to the end
+                $items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout") .'</a></li>';
+            }
+            else
+            {
+                //add login menu item to the end
+                $items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login") .'</a></li>';
+            }
 	}
 	else if ($args->menu == 'footer-menu')
 	{
@@ -43,19 +42,19 @@ function wti_loginout_menu_link( $items, $args ) {
 
    		if (is_user_logged_in())
    		{
-   			//next 3 lines remove subscribe menu item
-			$subscribe = preg_grep('/<li[^>]*><a[^>]*>Subscribe<\/a><\/li>/', $matches[0]);
-			$subscribe_key = array_search($subscribe, $matches);
-			unset($matches[0][$subscribe_key]);
-			//add logout menu item to the beginning
-			array_unshift($matches[0], '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout") .'</a></li>');
-			$items = implode($matches[0]);
+                    //next 3 lines remove subscribe menu item
+                    $subscribe = preg_grep('/<li[^>]*><a[^>]*>Subscribe<\/a><\/li>/', $matches[0]);
+                    $subscribe_key = array_search($subscribe, $matches);
+                    unset($matches[0][$subscribe_key]);
+                    //add logout menu item to the beginning
+                    array_unshift($matches[0], '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_logout_url( home_url() ) .'">'. __("Logout") .'</a></li>');
+                    $items = implode($matches[0]);
    		}
    		else
    		{
-   			//add login menu item to the beginning
-   			array_unshift($matches[0], '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login") .'</a></li>');
-			$items = implode($matches[0]);
+                    //add login menu item to the beginning
+                    array_unshift($matches[0], '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login") .'</a></li>');
+                    $items = implode($matches[0]);
    		}
 	}
         
@@ -67,9 +66,9 @@ add_action( 'gform_user_registered', 'gravity_registration_autologin', 10, 4 );
  * Auto login after registration.
  */
 function gravity_registration_autologin( $user_id, $user_config, $entry, $password ) {
-	$user = get_userdata( $user_id );
-	$user_login = $user->user_login;
-	$user_password = $password;
+    $user = get_userdata( $user_id );
+    $user_login = $user->user_login;
+    $user_password = $password;
 
     $terror = wp_signon( array(
 		'user_login' => $user_login,
@@ -93,7 +92,6 @@ function new_nav_menu_items($items,$args)
             $items.= '<li class="menu-item wpml-ls-slot-19 wpml-ls-item"><a href="'.$l['url'].'"><img src="'.$l['country_flag_url'].'" height="12" alt="'.$l['language_code'].'" width="18" /></a></li>';
 
             }
-            //error_log("ITEMS 2:".$items);
         }
     
     }
