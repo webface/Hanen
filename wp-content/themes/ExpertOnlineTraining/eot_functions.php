@@ -4390,10 +4390,9 @@ function updateUser_callback()
         
         $email = sanitize_email( $_REQUEST['email'] );
         $old_email = sanitize_email( $_REQUEST['old_email'] );
-        $user_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_STRING);
+        $user_id = filter_var($_REQUEST['staff_id'], FILTER_SANITIZE_NUMBER_INT);
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         $password = isset($_REQUEST['pw']) ? $_REQUEST['pw'] : '';
-        $data = compact("org_id", "first_name", "last_name", "email", "user_id", "password");
         $new_user = array();
         $original_id = $user_id;
 
@@ -4426,75 +4425,88 @@ function updateUser_callback()
         }
         else 
         {
+                // check if user exists
+                $user = get_user_by( 'email', $old_email ); // The user in WP
                 // update or insert new user in WP
-                $WP_password = $password ? wp_hash_password($password) : wp_generate_password(); // make sure i have a password for the user
                 $userdata = array (
-                    'user_login' => $email,
-                    'user_pass' => $WP_password,
-                    'role' => $role,
+                    'ID' => $user->ID,
                     'user_email' => $email,
+                    'user_pass' => $password,
+                    'role' => $role,
                     'first_name' => $first_name,
                     'last_name' => $last_name,
-                    'display_name' => $first_name . " " . $last_name
+                    'display_name' => $first_name . " " . $last_name,
+                    'nickname' => $email,
+                    'user_nicename' => $email,
                 );
-
-                // check if user exists
-                $user_id = get_user_by( 'email', $old_email ); // The user in WP
-                if ($user_id) 
+                
+                if ($user) 
                 {
-                    // check if email was updated because if it was, we need to update the user_login field.
-                    if ($email != $old_email)
-                    {
-                        global $wpdb;
-                        // cant use wp_insert_user because we need to updtate login as well and that function wont do it.
-                        if ( $wpdb->update( $wpdb->users, array( 'user_login' => $email, 'user_email' => $email ), array( 'ID' => $user_id->ID ) ) )
-                        {
-                            // success
-                            $result['success'] = true;
-                            $result['message'] = __("User account information has been successfully updated.", "EOT_LMS");
-                            $result['staff_id']=$user_id->ID;
-                            $result['staff_email']=$email;
-                            $result['email']=$email;
-                            $result['old_email']= $old_email;
-                            $result['first_name']=$first_name;
-                            $result['last_name']=$last_name;
-                        }
-                        else
-                        {
-                            //failed
-                            $result['display_errors'] = 'failed';
-                            $result['success'] = false;
-                            $result['errors'] = __("updateUser_callback Error: Could not update WP user.", "EOT_LMS");
-                        }
-                    }
-
-                    // set the userID to be updated
-                    $userdata['ID'] = $user_id->ID;
                     // dont change their password unless they added a new password
-                    if (!$password){
+                    if (!$password)
+                    {
                         unset($userdata['user_pass']);
                     }
 
                     // remove the user_login because the update function below cant do it.
                     unset($userdata['user_login']);
-                    unset($userdata['user_email']);
 
                     // update the user into WP
                     $WP_user_id = wp_update_user ($userdata);
-                    
-                    // success
-                    $result['success'] = true;
-                    $result['message'] = __("User account information has been successfully updated.", "EOT_LMS");
-                    $result['staff_id'] = $WP_user_id;
-                    $result['old_email']= $old_email;
-                    $result['staff_email']=$email;
-                    $result['email']=$email;
-                    $result['first_name']=$first_name;
-                    $result['last_name']=$last_name;
+
+                    if( !is_wp_error( $WP_user_id ) )
+                    {
+                      // success
+                      $result['success'] = true;
+                      $result['message'] = __("User account information has been successfully updated.", "EOT_LMS");
+                      $result['staff_id'] = $WP_user_id;
+                      $result['old_email']= $old_email;
+                      $result['staff_email']=$email;
+                      $result['email']=$email;
+                      $result['first_name']=$first_name;
+                      $result['last_name']=$last_name;
+
+                      // check if email was updated because if it was, we need to update the user_login field.
+                      if ($email != $old_email)
+                      {
+                          global $wpdb;
+                          // cant use wp_insert_user because we need to updtate login as well and that function wont do it.
+                          if ( $wpdb->update( $wpdb->users, array( 'user_login' => $email ), array( 'ID' => $user->ID ) ) )
+                          {
+                              // success
+                              $result['success'] = true;
+                              $result['message'] = __('User account information has been successfully updated.', "EOT_LMS");
+                              $result['staff_id']=$user->ID;
+                              $result['staff_email']=$email;
+                              $result['email']=$email;
+                              $result['old_email']= $old_email;
+                              $result['first_name']=$first_name;
+                              $result['last_name']=$last_name;
+                          }
+                          else
+                          {
+                              //failed
+                              $result['display_errors'] = 'failed';
+                              $result['success'] = false;
+                              $result['errors'] = __('updateUser_callback Error: Could not update WP user.', "EOT_LMS");
+                          }
+                      }
+                    }
+                    else
+                    {
+                      // couldnt update the user
+                      $result['display_errors'] = 'failed';
+                      $result['success'] = false;
+                      $result['errors'] = __('updateUser_callback Error: Could not update WP user.', "EOT_LMS");
+                    }
                 }
                 else
                 {
-                    // user doesnt exist to create WP User
+                    // user doesnt exist, dont create a user cause were updating.
+                    $result['display_errors'] = 'failed';
+                    $result['success'] = false;
+                    $result['errors'] = __("updateUser_callback Error: Can't update a user that doesn't exist", "EOT_LMS");
+/*
                     // insert the user into WP
                     $WP_user_id = wp_insert_user ($userdata);
 
@@ -4510,15 +4522,14 @@ function updateUser_callback()
                     $result['staff_email']=$email;
                     $result['name']=$first_name;
                     $result['lastname']=$last_name;
+*/
                 }   
 
                 // check if we need to update the org name
                 if ($org_id && isset($_REQUEST['camp_name']) && $_REQUEST['camp_name'] != "" && isset($_REQUEST['old_camp_name']) && $_REQUEST['camp_name'] != $_REQUEST['old_camp_name'] && isset($_REQUEST['user_id']))
                 {
-                  $this_user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
-
                   // verify the org ID belongs to this user
-                  if ($org_id == get_user_meta($this_user_id, 'org_id', true))
+                  if ($org_id == get_user_meta($user_id, 'org_id', true))
                   {
                     // update the camp name
                     $camp_name = filter_var($_REQUEST['camp_name'], FILTER_SANITIZE_STRING);
