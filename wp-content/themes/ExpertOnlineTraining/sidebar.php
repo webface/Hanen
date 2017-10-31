@@ -26,14 +26,17 @@
 						<div class="clear"></div>
 						<div id="accountAreaBottom">
 							<ul>
-								<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=my_account">Account Settings</a></li>
+								<li>
+									<a href="<?php echo bloginfo('url'); ?>/dashboard/?part=my_account"><?= __("Account Settings", "EOT_LMS") ?>
+									</a>
+								</li>
 <?php
 								if(current_user_can ('is_student') || current_user_can ('is_director'))
 								{
 ?>
 <!-- HIDE CERTIFICATES UNTIL FIX IMAGEMAGICK
-									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=mycertificates">My Certificates</a></li>
--->									
+									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=mycertificates"><?= __("My Certificates", "EOT_LMS") ?></a></li>
+-->
 <?php
 								}
 ?>
@@ -58,7 +61,7 @@
 						?>
 								<div id="helpcenter-menu" href="#helpbar">
 									<a href="#">
-										<span class="orange">Help</span> 24/7
+										<span class="orange"><?= __("Help", "EOT_LMS") ?></span> <?= __("24/7", "EOT_LMS") ?>
 									</a>
 								</div>
 						<?php
@@ -77,7 +80,7 @@
 			<?php } else { ?>
 				<div id="sidebar">
 					<div id="accountArea">
-						<h1 class="guest">Main Menu</h1>
+						<h1 class="guest"><?= __("Main Menu", "EOT_LMS") ?></h1>
 						<hr>
 						<?php wp_nav_menu (array('theme_location' => 'sidebar', 'container' => '', 'menu_class' => 'guest'));?>
 					</div>

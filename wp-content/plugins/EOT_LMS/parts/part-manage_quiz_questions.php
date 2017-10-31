@@ -5,9 +5,9 @@
     <?= CRUMB_SEPARATOR ?>    
     <?=  CRUMB_QUIZ ?>   
     <?= CRUMB_SEPARATOR ?>
-    <span class="current">Manage Quiz Questions</span>     
+    <span class="current"><?= __("Manage Quiz Questions", "EOT_LMS"); ?></span>     
 </div>
-<h1 class="article_page_title">Quiz Questions</h1>
+<h1 class="article_page_title"><?= __("Quiz Questions", "EOT_LMS"); ?></h1>
 <?php
     $true_subscription = verifyUserAccess();
     // Check if the subscription ID is valid.
@@ -22,16 +22,16 @@
             } 
             else 
             {
-                echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+                echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            __("subscription ID does not belong to you", "EOT_LMS");
         }
     }
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID", "EOT_LMS");
     }
 ?>

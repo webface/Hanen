@@ -24,7 +24,7 @@ function display_subscriptions ()
             // only director or individual can purchase subscriptions so only include the link for them. Not students.
 ?>
             <p>
-                You have no subscriptions associated with this organization. Create a new subscription <a href="<?php bloginfo('url'); ?>/new-subscription/">here</a>.
+                <?= __("You have no subscriptions associated with this organization. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
             </p>
 <?php 
         } 
@@ -32,7 +32,7 @@ function display_subscriptions ()
         { 
 ?>
             <p>
-                There are no subscriptions associated with your organization. Please contact your director so they can create a subscription.
+                <?= __("There are no subscriptions associated with your organization. Please contact your director so they can create a subscription.", "EOT_LMS") ?>
             </p>
 <?php 
         }
@@ -94,15 +94,15 @@ function display_subscriptions ()
                 // Its an LE library but hasn't been set up (customized) yet, so display group customization
 
 ?>
-        <h1><?= $library->name; ?> Group Customization</h1>
+        <h1><?= $library->name; ?> <?= __("Group Customization", "EOT_LMS") ?></h1>
         <p>
-            Thank you for your subscription to ExpertOnlineTraining.com. To help you get started quickly, we will now generate four staff groups for you, each with their own default courses. We have named these courses: New Staff, Returning Staff, Supervisory Staff and Program Staff, but you can rename them any time. You can also add or take away courses at any time. Each course will come pre-packaged with a suggested bundle of 14 video training modules, each with their own quiz and handout.
+            <?= __("Thank you for your subscription to ExpertOnlineTraining.com. To help you get started quickly, we will now generate four staff groups for you, each with their own default courses. We have named these courses: New Staff, Returning Staff, Supervisory Staff and Program Staff, but you can rename them any time. You can also add or take away courses at any time. Each course will come pre-packaged with a suggested bundle of 14 video training modules, each with their own quiz and handout.", "EOT_LMS") ?>
         </p>
         <p>
-            Most staff can complete an assignment of 14 modules in about 6 hours. That’s a solid day of training, already complete before your staff arrive on site! In the next step, you will be given a chance to review each group’s suggested bundle, take away modules you don’t need and add modules you’d rather include.
+            <?= __("Most staff can complete an assignment of 14 modules in about 6 hours. That’s a solid day of training, already complete before your staff arrive on site! In the next step, you will be given a chance to review each group’s suggested bundle, take away modules you don’t need and add modules you’d rather include.", "EOT_LMS") ?>
         </p>
         <p>
-            Before we get started, please tell us about your organization, the youth you serve and the learning goals of your staff. Your replies to these questions will help us customize each course.
+            <?= __("Before we get started, please tell us about your organization, the youth you serve and the learning goals of your staff. Your replies to these questions will help us customize each course.", "EOT_LMS") ?>
         </p>
 <?php
                 $questions = getQuestions($library_id);
@@ -151,14 +151,14 @@ function display_subscriptions ()
                     $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
                     if (isset($response['status']) && !$response['status']) 
                     {
-                        echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
+                        echo __("ERROR in display_subscriptions: Couldnt Create Course:", "EOT_LMS") . " $course_name " . $response['message'];
                         error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message']);
                     }
                 }
             }
             else
             {
-                echo "ERROR in display_subscriptions: Couldnt create default courses because no org id found.";
+                echo __("ERROR in display_subscriptions: Couldnt create default courses because no org id found.", "EOT_LMS");
                 error_log("ERROR in display_subscriptions: Couldnt create default courses because no org id found.");
                 return;               
             }
@@ -231,7 +231,7 @@ function display_subscriptions ()
                                         // @TODO check that there are no errors inserting the moudles
                                     }
                                 }
-                                echo "<p>Trying to add $video_name to " . $course_IDs[$course_name] . "</p>";
+                                echo "<p>" . __("Trying to add", "EOT_LMS") . " $video_name " . __("to", "EOT_LMS") . " " . $course_IDs[$course_name] . "</p>";
                             }
                             elseif ($action['action'] == 'Remove')
                             {
@@ -243,9 +243,9 @@ function display_subscriptions ()
                                         'module_id'=>$module_id
                                     )
                                 );
-                                echo "<p>Trying to delete $video_name from " . $course_IDs[$course_name] . "</p>";
+                                echo "<p>" . __("Trying to delete", "EOT_LMS") . " $video_name " . __("from", "EOT_LMS") . " " . $course_IDs[$course_name] . "</p>";
                                 if ($response === false)
-                                    echo "ERROR in display subscription: Couldn't remove module from course: " . $wpdb->last_error . "<br>";
+                                    echo __("ERROR in display subscription: Couldn't remove module from course:", "EOT_LMS") . " " . $wpdb->last_error . "<br>";
                             }
                         }
                     }
@@ -271,7 +271,7 @@ function display_subscriptions ()
 function get_current_subscriptions ($org_id) {
     // Check if there user has an organization id
     if($org_id == null){
-        echo "Something went wrong. Your account does not have an organization ID. Please contact the administrator."; 
+        echo __("Something went wrong. Your account does not have an organization ID. Please contact the administrator.", "EOT_LMS"); 
         return;
     }
 	global $wpdb;
@@ -305,38 +305,38 @@ function new_subscription ($user_id = 0) {
 	$org = get_post ($org_id);
 ?>
 	<form id="new-subscription" data-user_id="" action="#">
-		<h3>Subscribe</h3>
+		<h3><?= __("Subscribe", "EOT_LMS") ?></h3>
 		<fieldset>
 			
-            <legend><h2>Subscribe Online using your Credit Card</h2></legend>
+            <legend><h2><?= __("Subscribe Online using your Credit Card", "EOT_LMS") ?></h2></legend>
 			<ol>
                 <li>
                     <input type="checkbox" name="le" value="<?= LE_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le"><span class="heading"><b>Leadership Essentials - Full Pack</b></span></label>
+                    <label for="chk_le"><span class="heading"><b><?= __("Leadership Essentials - Full Pack", "EOT_LMS") ?></b></span></label>
                     <p class="small" style="margin: 9px 0 9px 21px">
-                        Our complete library of <b><?= NUM_VIDEOS ?></b> videos, quizzes and resources covering a wide array of summer camp-related topics.
+                        <?= __("Our complete library of", "EOT_LMS") ?> <b><?= NUM_VIDEOS ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics.", "EOT_LMS") ?>
                     </p>
                 </li>
                 <li>
                     <input type="checkbox" name="le_sp_dc" value="<?= LE_SP_DC_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le_sp_dc"><span class="heading"><b>Leadership Essentials - Starter Pack - Day Camps</b></span></label>
+                    <label for="chk_le_sp_dc"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></b></span></label>
                     <p class="small" style="margin: 9px 0 9px 21px">
-                        Access to <b><?= NUM_VIDEOS_LE_SP_DC ?></b> videos, quizzes and resources covering a wide array of summer camp-related topics specific to day camps.
+                        <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_DC ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics specific to day camps.", "EOT_LMS") ?>
                     </p>
                 </li>
 
                 <li>
                     <input type="checkbox" name="le_sp_oc" value="<?= LE_SP_OC_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le_sp_oc"><span class="heading"><b>Leadership Essentials - Starter Pack - Overnight Camps</b></span></label>
+                    <label for="chk_le_sp_oc"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Overnight Camps", "EOT_LMS") ?></b></span></label>
                     <p class="small" style="margin: 9px 0 9px 21px">
-                        Access to <b><?= NUM_VIDEOS_LE_SP_OC ?></b> videos, quizzes and resources covering a wide array of summer camp-related topics specific to overnight camps.
+                        <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_OC ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics specific to overnight camps.", "EOT_LMS") ?>
                     </p>
                 </li>
                 <li>
                     <input type="checkbox" name="le_sp_prp" value="<?= LE_SP_PRP_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le_sp_prp"><span class="heading"><b>Leadership Essentials - Starter Pack - Park & Rec Programs</b></span></label>
+                    <label for="chk_le_sp_prp"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Park & Rec Programs", "EOT_LMS") ?></b></span></label>
                     <p class="small" style="margin: 9px 0 9px 21px">
-                        Access to <b><?= NUM_VIDEOS_LE_SP_PRP ?></b> videos, quizzes and resources covering a wide array of staff and leadership related topics specific to park & rec programs.
+                        <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_PRP ?></b> <?= __("videos, quizzes and resources covering a wide array of staff and leadership related topics specific to park & rec programs.", "EOT_LMS") ?>
                     </p>
                 </li>
 <!--
@@ -350,28 +350,28 @@ function new_subscription ($user_id = 0) {
 -->
 				<li>
 					<input type="checkbox" name="se" value="<?= SE_ID ?>" class="library">&nbsp;&nbsp;
-					<label for="chk_se"><span class="heading"><b>Child Welfare & Protection</b></span></label>
+					<label for="chk_se"><span class="heading"><b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b></span></label>
 				</li>            
 			</ol>
-            <h2>Subscribe with a Different Payment Method</h2>
+            <h2><?= __("Subscribe with a Different Payment Method", "EOT_LMS") ?></h2>
             <p>
-                If you prefer to subscribe and pay by check or credit card over the phone, then you can <b>call us Toll-Free at 877-237-3931.</b>
+                <?= __("If you prefer to subscribe and pay by check or credit card over the phone, then you can", "EOT_LMS") ?> <b><?= __("call us Toll-Free at 877-237-3931.", "EOT_LMS") ?> </b>
             </p>
 		</fieldset>
 
-		<h3>Staff Accounts</h3>
+		<h3><?= __("Staff Accounts", "EOT_LMS") ?></h3>
 		<fieldset>
-            <h2>Please indicate how many staff accounts you will need:</h2>
+            <h2><?= __("Please indicate how many staff accounts you will need:", "EOT_LMS") ?></h2>
             <table class="staff_accounts subscription_confirm Tstandard data" id="le_table">
                 <tbody>
                     <tr>
                         <td colspan="2">
-                            <b>Leadership Essentials - Complete</b>
+                            <b><?= __("Leadership Essentials - Complete", "EOT_LMS") ?></b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            No. of staff accounts:
+                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
                         </td>
                         <td>
                             <input type="text" name="le_staff">
@@ -384,12 +384,12 @@ function new_subscription ($user_id = 0) {
                 <tbody>
                     <tr>
                         <td colspan="2">
-                            <b>Leadership Essentials - Starter Pack - Day Camps</b>
+                            <b><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            No. of staff accounts:
+                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
                         </td>
                         <td>
                             <input type="text" name="le_sp_dc_staff">
@@ -401,12 +401,12 @@ function new_subscription ($user_id = 0) {
                 <tbody>
                     <tr>
                         <td colspan="2">
-                            <b>Leadership Essentials - Starter Pack - Overnight Camps</b>
+                            <b><?= __("Leadership Essentials - Starter Pack - Overnight Camps", "EOT_LMS") ?></b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            No. of staff accounts:
+                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
                         </td>
                         <td>
                             <input type="text" name="le_sp_oc_staff">
@@ -418,12 +418,12 @@ function new_subscription ($user_id = 0) {
                 <tbody>
                     <tr>
                         <td colspan="2">
-                            <b>Leadership Essentials - Starter Pack - Parks & Rec Programs</b>
+                            <b><?= __("Leadership Essentials - Starter Pack - Parks & Rec Programs", "EOT_LMS") ?></b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            No. of staff accounts:
+                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
                         </td>
                         <td>
                             <input type="text" name="le_sp_prp_staff">
@@ -456,13 +456,13 @@ function new_subscription ($user_id = 0) {
 				<tbody>
 					<tr>
 						<td colspan="2">
-							<b>Child Welfare & Protection</b>
+							<b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							No. of staff accounts:<br />
-							<span>(first 20 are included)</span>
+							<?= __("No. of staff accounts:", "EOT_LMS") ?><br />
+							<span><?= __("(first 20 are included)", "EOT_LMS") ?></span>
 						</td>
 						<td>
 							<input type="text" name="se_staff">
@@ -488,34 +488,41 @@ function new_subscription ($user_id = 0) {
 
 		<h3>Total</h3>
 		<fieldset>
-            <h2>Please verify the information below is correct:</h2>
+            <h2><?= __("Please verify the information below is correct:", "EOT_LMS") ?></h2>
 
 			<table class="staff_accounts subscription_confirm Tstandard data" id="total_table">
 			</table>
             <input type="hidden" name="total_price" id="total" value="0.00" />
 		</fieldset>
 
-		<h3>Terms of Use</h3>
+		<h3><?= __("Terms of Use", "EOT_LMS") ?></h3>
 		<fieldset>
-			<h2>Terms of Use</h2>
+			<h2><?= __("Terms of Use", "EOT_LMS") ?></h2>
             <ol class="terms">
-                <li>I understand that I am purchasing a license to use copyrighted works (a library of video training modules, online quizzes, and related print materials) owned by CampSpirit, LLC, and Target Directories Corporation.  This license allows only the use described below as respects the works.  These works are intended for educational use only.  Any commercial use by me or my organization, such as charging a fee to someone in exchange for viewing these modules or uploading the videos to any website, is strictly forbidden.</li>
-                <li>I understand that, pursuant to the license, the works may be read or viewed only by me and my employees or volunteers.  No other use is permitted.  During the year of subscription, the works may be viewed an unlimited number of times by me and by each such employee or volunteer.  However, no copies of any kind (other than those required for such viewing on desktops, laptops, portable media players, or other similar devices of mine or those of my employees or volunteers) of any video training modules or quizzes may be made by me or by any of my employees or volunteers.  During the year of subscription, I may duplicate paper copies of print materials (e.g., handouts) for educational use by my employees of volunteers and for no other purpose.  Handouts may be included in staff training manuals during the year of subscription.</li>
-                <li>I understand that my license to use to these works (video training modules, online quizzes, and print materials) and my legal right to view them expires on December 31st of the year of purchase.  If I or my employees or volunteers wish to continue viewing the modules, quizzes, or print materials, or have access to the updated online library, I must renew my subscription to the library on or after January 1st of the subsequent year.</li>
-                <li>I agree to advise my employees and volunteers that these video training modules are intended for their educational use only and that other use, sale, or distribution is strictly forbidden.  If I become aware of an employee or volunteer who may have violated these terms, (e.g., posting a module on a personal website or a commercial site such as YouTube) then I agree: (a) to immediately direct that employee or volunteer to summarily remove the module; and (b) to immediately notify Target Directories and CampSpirit of that wrongful conduct along with the name and address of that employee or volunteer.  I understand that this material is copyrighted and that copyright infringements may be prosecuted to the full extent of the law.</li>
-                <li>I understand that although these modules cover material outlined in certain accreditation standards, such as those provided by the American Camp Association or the Ontario Camp Association, viewing these modules does not constitute compliance with any particular standard.  I understand that these modules, and the quizzes, handouts, and discussion questions that accompany them, are intended to help camps meet their educational goals and that it is a camp director’s sole responsibility to ensure compliance with any and all applicable laws and standards.</li>
-                <li>I understand that although the content of some video training modules may discuss abnormal or problematic thoughts, behaviors, and emotions, as well as some forms of psychopathology, there is no expressed or implied psychotherapeutic or other treatment relationship between my camp and its employees, volunteers, and patrons / campers and the owners, employees, and volunteers of Target Directories Corporation and CampSpirit, LLC.  These relationships are best described as educational.  I understand that medical or psychological questions I may have about my employees, volunteers, or patrons / campers are best answered in consultation with a licensed health care professional.</li>
-                <li>Although the video training modules and associated print materials are designed to maximize the resources and well-being of an organization’s employees, volunteers, and patrons / campers, neither Target Directories Inc. nor CampSpirit, LLC is a guarantor of results.  Neither Target Directories Inc. nor CampSpirit, LLC, or any of its owners, employees, or volunteers, may be held liable for any camper’s or staff member’s illnesses, injuries, accidents, mental health problems, behavior problems, or lapses in judgment that may occur during or after viewing these video training modules and associated quizzes and print materials.</li>
-                <li>I understand that it is my responsibility to preview all of these works (e.g., video training modules, quizzes, and handouts) in order to familiarize myself with the content.  In places where my organization’s policies or procedures differ in important ways from what is recommended in the works, I understand that it is my responsibility to educate my employees and volunteers about these differences and instruct them in my organization’s policies and procedures.</li>
-                <li>Our team is so confident that you’ll love training your staff with EOT that we guarantee your satisfaction. If you have any questions or need customer support after activating your subscription, simply contact our team toll-free (877) 237-3931, M-F during the hours of 9am to 5pm EST. We promise to do everything we can to answer your questions and get you up and running. We will also help you strategize the best ways to get the most out of your subscription.</li>
-                <li>Because activating your subscription instantly gives you full access to our digital content, we cannot refund your subscription fee after activation. However, we are happy to roll over any unused staff accounts when you renew your subscription. For example, if you purchased 100 staff accounts in 2014 but used only 95 staff accounts, we will credit your 2015 account with 5 staff accounts. Note that unused staff accounts can only be rolled over to your own EOT subscription and only when you renew for the following year. Unused staff accounts are not transferable to other organizations.</li>
+                <li><?= __("I understand that I am purchasing a license to use copyrighted works (a library of video training modules, online quizzes, and related print materials) owned by CampSpirit, LLC, and Target Directories Corporation.  This license allows only the use described below as respects the works.  These works are intended for educational use only.  Any commercial use by me or my organization, such as charging a fee to someone in exchange for viewing these modules or uploading the videos to any website, is strictly forbidden.", "EOT_LMS") ?></li>
+                <li><?= __("I understand that, pursuant to the license, the works may be read or viewed only by me and my employees or volunteers.  No other use is permitted.  During the year of subscription, the works may be viewed an unlimited number of times by me and by each such employee or volunteer.  However, no copies of any kind (other than those required for such viewing on desktops, laptops, portable media players, or other similar devices of mine or those of my employees or volunteers) of any video training modules or quizzes may be made by me or by any of my employees or volunteers.  During the year of subscription, I may duplicate paper copies of print materials (e.g., handouts) for educational use by my employees of volunteers and for no other purpose.  Handouts may be included in staff training manuals during the year of subscription.", "EOT_LMS") ?></li>
+                <li><?= __("I understand that my license to use to these works (video training modules, online quizzes, and print materials) and my legal right to view them expires on December 31st of the year of purchase.  If I or my employees or volunteers wish to continue viewing the modules, quizzes, or print materials, or have access to the updated online library, I must renew my subscription to the library on or after January 1st of the subsequent year.", "EOT_LMS") ?></li>
+                <li><?= __("I agree to advise my employees and volunteers that these video training modules are intended for their educational use only and that other use, sale, or distribution is strictly forbidden.  If I become aware of an employee or volunteer who may have violated these terms, (e.g., posting a module on a personal website or a commercial site such as YouTube) then I agree: (a) to immediately direct that employee or volunteer to summarily remove the module; and (b) to immediately notify Target Directories and CampSpirit of that wrongful conduct along with the name and address of that employee or volunteer.  I understand that this material is copyrighted and that copyright infringements may be prosecuted to the full extent of the law.", "EOT_LMS") ?>
+                </li>
+                <li><?= __("I understand that although these modules cover material outlined in certain accreditation standards, such as those provided by the American Camp Association or the Ontario Camp Association, viewing these modules does not constitute compliance with any particular standard.  I understand that these modules, and the quizzes, handouts, and discussion questions that accompany them, are intended to help camps meet their educational goals and that it is a camp director’s sole responsibility to ensure compliance with any and all applicable laws and standards.", "EOT_LMS") ?>
+                </li>
+                <li><?= __("I understand that although the content of some video training modules may discuss abnormal or problematic thoughts, behaviors, and emotions, as well as some forms of psychopathology, there is no expressed or implied psychotherapeutic or other treatment relationship between my camp and its employees, volunteers, and patrons / campers and the owners, employees, and volunteers of Target Directories Corporation and CampSpirit, LLC.  These relationships are best described as educational.  I understand that medical or psychological questions I may have about my employees, volunteers, or patrons / campers are best answered in consultation with a licensed health care professional.", "EOT_LMS") ?>
+                </li>
+                <li><?= __("Although the video training modules and associated print materials are designed to maximize the resources and well-being of an organization’s employees, volunteers, and patrons / campers, neither Target Directories Inc. nor CampSpirit, LLC is a guarantor of results.  Neither Target Directories Inc. nor CampSpirit, LLC, or any of its owners, employees, or volunteers, may be held liable for any camper’s or staff member’s illnesses, injuries, accidents, mental health problems, behavior problems, or lapses in judgment that may occur during or after viewing these video training modules and associated quizzes and print materials.", "EOT_LMS") ?>
+                </li>
+                <li><?= __("I understand that it is my responsibility to preview all of these works (e.g., video training modules, quizzes, and handouts) in order to familiarize myself with the content.  In places where my organization’s policies or procedures differ in important ways from what is recommended in the works, I understand that it is my responsibility to educate my employees and volunteers about these differences and instruct them in my organization’s policies and procedures.", "EOT_LMS") ?>                
+                </li>
+                <li><?= __("Our team is so confident that you’ll love training your staff with EOT that we guarantee your satisfaction. If you have any questions or need customer support after activating your subscription, simply contact our team toll-free (877) 237-3931, M-F during the hours of 9am to 5pm EST. We promise to do everything we can to answer your questions and get you up and running. We will also help you strategize the best ways to get the most out of your subscription.", "EOT_LMS") ?>
+                </li>
+                <li><?= __("Because activating your subscription instantly gives you full access to our digital content, we cannot refund your subscription fee after activation. However, we are happy to roll over any unused staff accounts when you renew your subscription. For example, if you purchased 100 staff accounts in 2014 but used only 95 staff accounts, we will credit your 2015 account with 5 staff accounts. Note that unused staff accounts can only be rolled over to your own EOT subscription and only when you renew for the following year. Unused staff accounts are not transferable to other organizations.", "EOT_LMS") ?>           
+                </li>
                 <p class="accept_terms">
-                    <input type="checkbox" value="accept" name="terms_of_use" required/> <label><b>I accept the terms of use</b></label>
+                    <input type="checkbox" value="accept" name="terms_of_use" required/> <label><b><?= __("I accept the terms of use", "EOT_LMS") ?></b></label>
                 </p>
             </ol>
 		</fieldset>
 
-		<h3>Payment</h3>
+		<h3><?= __("Payment", "EOT_LMS") ?></h3>
 	<fieldset id="new-subscription-p-3" role="tabpanel" aria-labelledby="new-subscription-h-3" class="body current" aria-hidden="false" style="display: block; left: 0px;">
     <?php
             $org_name = apply_filters ('the_title', $org->post_title);
@@ -527,43 +534,43 @@ function new_subscription ($user_id = 0) {
             $zip = get_post_meta ($org_id, 'org_zip', true);
             $phone = get_post_meta ($org_id, 'org_phone', true);
         ?>
-            <h2>Please complete your payment details:</h2>
+            <h2><?= __("Please complete your payment details:", "EOT_LMS") ?></h2>
             <table class="staff_accounts subscription_confirm Tstandard data" id="total_table_payment">
             </table>
-            <h2>Billing Address</h2>
+            <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
             <div class="form-row">
-                <label>Organization Name</label>
+                <label><?= __("Organization Name", "EOT_LMS") ?></label>
                 <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
             </div>
             <div class="form-row">
-                <label>Cardholder Name</label>
+                <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
                 <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
             </div>
             <div class="form-row">
-                <label>Address</label>
+                <label><?= __("Address", "EOT_LMS") ?></label>
                 <input type="text" name="address" value="<?php echo $address; ?>" required/>
             </div>
             <div class="form-row">
-                <label>City</label>
+                <label><?= __("City", "EOT_LMS") ?></label>
                 <input type="text" name="city" value="<?php echo $city; ?>" required/>
             </div>
             <div class="form-row">
-                <label>State/Province</label>
+                <label><?= __("State/Province", "EOT_LMS") ?></label>
                 <input type="text" name="state" value="<?php echo $state; ?>" required/>
             </div>
             <div class="form-row">
-                <label>Country</label>
+                <label><?= __("Country", "EOT_LMS") ?></label>
                 <input type="text" name="country" value="<?php echo $country; ?>" required/>
             </div>
             <div class="form-row">
-                <label>Zip/Postal Code</label>
+                <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
                 <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
             </div>
             <div class="form-row">
-                <label>Phone Number</label>
+                <label><?= __("Phone Number", "EOT_LMS") ?></label>
                 <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
             </div>
-            <h2>Credit Card</h2>
+            <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
             <?php 
                 $cus_id = get_post_meta($org_id, 'stripe_id', true);
                 $cards = get_customer_cards ($cus_id);
@@ -573,10 +580,10 @@ function new_subscription ($user_id = 0) {
                 <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
                     <tr>
                         <td>&nbsp;</td>
-                        <td>Type</td>
-                        <td>Number</td>
-                        <td>Expiration</td>
-                        <td>CVC</td>
+                        <td><?= __("Type", "EOT_LMS") ?></td>
+                        <td><?= __("Number", "EOT_LMS") ?></td>
+                        <td><?= __("Expiration", "EOT_LMS") ?></td>
+                        <td><?= __("CVC", "EOT_LMS") ?></td>
                     </tr>
                     <?php foreach ($cards as $card) { ?>
                         <tr>
@@ -588,19 +595,19 @@ function new_subscription ($user_id = 0) {
                         </tr>
                     <?php } ?>
                 </table>
-                <a href="#" id="new_card">Add new Card</a>
+                <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
             <?php } ?>
                 <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
                     <div class="form-row">
-                        <label>Card Number</label>
+                        <label><?= __("Card Number", "EOT_LMS") ?></label>
                         <input type="text" size="20" autocomplete="off" name="cc_num" value="" required/>
                     </div>
                     <div class="form-row">
-                        <label>CVC</label>
+                        <label><?= __("CVC", "EOT_LMS") ?></label>
                         <input type="text" size="4" autocomplete="off" name="cc_cvc" value="" required/>
                     </div>
                     <div class="form-row">
-                        <label>Expiration</label>
+                        <label><?= __("Expiration", "EOT_LMS") ?></label>
                         <select name="cc_mon" required>
                             <option value="" selected="selected">MM</option>
                             <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
@@ -623,7 +630,7 @@ function new_subscription ($user_id = 0) {
             <input type="hidden" name="method" value="Stripe" />
 
             <p>
-                <i class="fa fa-lock"></i> This site uses 256-bit encryption to safeguard your credit card information.
+                <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
             </p>
         
         </fieldset>
@@ -669,7 +676,7 @@ function display_subscription_dashboard ($subscription)
     // get the library title
     $sql = "SELECT name from ".TABLE_LIBRARY." WHERE ID = ".$subscription->library_id;
     $results = $wpdb->get_results ($sql);
-    $library_title = (!empty($results)) ? $results[0]->name : "Unknown Library";
+    $library_title = (!empty($results)) ? $results[0]->name : __("Unknown Library", "EOT_LMS");
     $staff_credits = $subscription->staff_credits; // Maximum # Staff
     $upgrades = getUpgrades ($subscription->ID, SUBSCRIPTION_START, SUBSCRIPTION_END); // get upgrades from
 
@@ -700,7 +707,7 @@ function display_subscription_dashboard ($subscription)
     }
 ?>      
     <div class="dashboard_border">
-    <h1><?= $library_title ?> <?= substr($subscription->end_date, 0,4) ?> <span class="bor_tag">Director Account</span>
+    <h1><?= $library_title ?> <?= substr($subscription->end_date, 0,4) ?> <span class="bor_tag"><?= __("Director Account", "EOT_LMS") ?></span>
     </h1>
     <div class="content_right">
         <div class="clear"></div>
@@ -710,9 +717,9 @@ function display_subscription_dashboard ($subscription)
                   <i class="fa fa-youtube-play" alt="Content"></i>
               </div>
               <div class="para">
-                  <h1>View Content</h1>
+                  <h1><?= __("View Content", "EOT_LMS") ?></h1>
                   <br/>
-                  Watch videos, download handouts, and read articles
+                  <?= __("Watch videos, download handouts, and read articles", "EOT_LMS") ?>
               </div>
             </a>
         </div>
@@ -722,9 +729,9 @@ function display_subscription_dashboard ($subscription)
                 <i class="fa fa-cogs" alt="Administration"></i>
             </div>
             <div class="para">
-                <h1>Administration</h1>
+                <h1><?= __("Administration", "EOT_LMS") ?></h1>
                 <br>
-                Create courses and staff accounts
+                <?= __("Create courses and staff accounts", "EOT_LMS") ?>
             </div>
           </a>
         </div>
@@ -735,9 +742,9 @@ function display_subscription_dashboard ($subscription)
                 <i class="fa fa-rocket" alt="Blast Off"></i>
             </div>
             <div class="para">
-                <h1>Blast Off</h1>
+                <h1><?= __("Blast Off", "EOT_LMS") ?></h1>
                 <br>
-                Quick tips to harness the power of EOT
+                <?= __("Quick tips to harness the power of EOT", "EOT_LMS") ?>
             </div>
           </a>
         </div>
@@ -747,9 +754,9 @@ function display_subscription_dashboard ($subscription)
                 <i class="fa fa-bar-chart-o" alt="Statistics"></i> 
             </div>
             <div class="para">
-                <h1>Statistics</h1>
+                <h1><?= __("Statistics", "EOT_LMS") ?></h1>
                 <br>
-                Track your staff's progress
+                <?= __("Track your staff's progress", "EOT_LMS") ?>
             </div>
           </a>
         </div>
@@ -759,7 +766,7 @@ function display_subscription_dashboard ($subscription)
         <tbody>
           <tr>
             <td>
-              Max. Staff <br>(<a href="?part=upgradesubscription&subscription_id=<?= $subscription->ID ?>">Add More Staff</a>)
+              <?= __("Max. Staff", "EOT_LMS") ?> <br>(<a href="?part=upgradesubscription&subscription_id=<?= $subscription->ID ?>"><?= __("Add More Staff", "EOT_LMS") ?></a>)
             </td>
             <td>
                 <?= $staff_credits; ?>
@@ -767,7 +774,7 @@ function display_subscription_dashboard ($subscription)
           </tr>
           <tr>
             <td class="s1">
-                Active Staff
+                <?= __("Active Staff", "EOT_LMS") ?>
             </td>
             <td class="s2">
                 <?= count($learners); ?>                
@@ -775,7 +782,7 @@ function display_subscription_dashboard ($subscription)
         </tr>
           <tr>
             <td>
-              Active Courses
+              <?= __("Active Courses", "EOT_LMS") ?>
             </td>
             <td>
                 <?= count($courses); ?>
@@ -788,8 +795,8 @@ function display_subscription_dashboard ($subscription)
         <div class="dashboard_button">
           <a href="?part=staff_lounge&subscription_id=<?= $subscription->ID ?>" onclick="load('load_staff_lounge')">
             <div class="title" style="padding-top: 5px;">
-              <b>Virtual Staff Lounge</b>
-              <br>Manage your Forum
+              <b><?= __("Virtual Staff Lounge", "EOT_LMS") ?></b>
+              <br><?= __("Manage your Forum", "EOT_LMS") ?>
             </div>
           </a>
         </div>
@@ -797,8 +804,8 @@ function display_subscription_dashboard ($subscription)
         <div class="dashboard_button" style="margin-top:5px; padding-top:5px;">
           <a href="?part=directors_corner&subscription_id=<?= $subscription->ID ?>">
             <div class="title">
-              <b>Director's Corner</b>
-              <br>Tips and Guides
+              <b><?= __("Director's Corner", "EOT_LMS") ?></b>
+              <br><?= __("Tips and Guides", "EOT_LMS") ?>
             </div>
           </a>
         </div>   
@@ -829,20 +836,20 @@ function update_subscription ($subscription_id) {
                 $library_name = $library->name; // Name of the Library.
 ?>
                 <form id="new-subscription" action="#" >
-                    <h3>Staff Accounts</h3>
+                    <h3><?= __("Staff Accounts", "EOT_LMS") ?></h3>
                     <fieldset>
-                        <h2>Please indicate how many staff accounts you will need:</h2>
+                        <h2><?= __("Please indicate how many staff accounts you will need:", "EOT_LMS") ?></h2>
                         <table class="staff_accounts subscription_confirm Tstandard data" id="<?= strtolower($library->tag); ?>_table">
                             <tbody>
                                     <tr>
                                         <td colspan="2">
 
-                                            <b><?= $library_name?> - Complete</b>
+                                            <b><?= $library_name?> - <?= __("Complete", "EOT_LMS") ?></b>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Current No. of staff Accounts
+                                            <?= __("Current No. of staff Accounts", "EOT_LMS") ?>
                                         </td>
                                         <td>
                                             <?= $subscription->staff_credits ?>
@@ -850,7 +857,7 @@ function update_subscription ($subscription_id) {
                                     </tr>
                                     <tr>
                                         <td>
-                                            No. of staff accounts to be added:
+                                            <?= __("No. of staff accounts to be added:", "EOT_LMS") ?>
                                         </td>
                                         <td>
                                             <input type="text" name="<?= strtolower($library->tag); ?>_staff">
@@ -862,7 +869,7 @@ function update_subscription ($subscription_id) {
                         </table>
                         </fieldset>
 
-                        <h3>Payment</h3>
+                        <h3><?= __("Payment", "EOT_LMS") ?></h3>
                         <fieldset>
                     <?php
                         $org_name = apply_filters ('the_title', $org->post_title);
@@ -874,42 +881,42 @@ function update_subscription ($subscription_id) {
                         $zip = get_post_meta ($org_id, 'org_zip', true);
                         $phone = get_post_meta ($org_id, 'org_phone', true);
                     ?>
-                   <h2>Please complete your payment details:</h2>
+                   <h2><?= __("Please complete your payment details:", "EOT_LMS") ?></h2>
                         <table id="total_table" class="staff_accounts subscription_confirm Tstandard data">
                         </table>
                         <div class="form-row">
-                            <label>Organization Name</label>
+                            <label><?= __("Organization Name", "EOT_LMS") ?></label>
                             <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
                         </div>
                         <div class="form-row">
-                            <label>Cardholder Name</label>
+                            <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
                             <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
                         </div>
                         <div class="form-row">
-                            <label>Address</label>
+                            <label><?= __("Address", "EOT_LMS") ?></label>
                             <input type="text" name="address" value="<?php echo $address; ?>" required/>
                         </div>
                         <div class="form-row">
-                            <label>City</label>
+                            <label><?= __("City", "EOT_LMS") ?></label>
                             <input type="text" name="city" value="<?php echo $city; ?>" required/>
                         </div>
                         <div class="form-row">
-                            <label>State/Province</label>
+                            <label><?= __("State/Province", "EOT_LMS") ?></label>
                             <input type="text" name="state" value="<?php echo $state; ?>" required/>
                         </div>
                         <div class="form-row">
-                            <label>Country</label>
+                            <label><?= __("Country", "EOT_LMS") ?></label>
                             <input type="text" name="country" value="<?php echo $country; ?>" required/>
                         </div>
                         <div class="form-row">
-                            <label>Zip/Postal Code</label>
+                            <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
                             <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
                         </div>
                         <div class="form-row">
-                            <label>Phone Number</label>
+                            <label><?= __("Phone Number", "EOT_LMS") ?></label>
                             <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
                         </div>
-                        <h2>Credit Card</h2>
+                        <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
                         <?php 
                             $cus_id = get_post_meta($org_id, 'stripe_id', true);
                             $cards = get_customer_cards ($cus_id);
@@ -919,10 +926,10 @@ function update_subscription ($subscription_id) {
                             <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
                                 <tr>
                                     <td>&nbsp;</td>
-                                    <td>Type</td>
-                                    <td>Number</td>
-                                    <td>Expiration</td>
-                                    <td>CVC</td>
+                                    <td><?= __("Type", "EOT_LMS") ?></td>
+                                    <td><?= __("Number", "EOT_LMS") ?></td>
+                                    <td><?= __("Expiration", "EOT_LMS") ?></td>
+                                    <td><?= __("CVC", "EOT_LMS") ?></td>
                                 </tr>
                                 <?php foreach ($cards as $card) { ?>
                                     <tr>
@@ -934,19 +941,19 @@ function update_subscription ($subscription_id) {
                                     </tr>
                                 <?php } ?>
                             </table>
-                            <a href="#" id="new_card">Add new Card</a>
+                            <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
                         <?php } ?>
                             <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
                                 <div class="form-row">
-                                    <label>Card Number</label>
+                                    <label><?= __("Card Number", "EOT_LMS") ?></label>
                                     <input type="text" size="20" autocomplete="off" name="cc_num" value="" required/>
                                 </div>
                                 <div class="form-row">
-                                    <label>CVC</label>
+                                    <label><?= __("CVC", "EOT_LMS") ?></label>
                                     <input type="text" size="4" autocomplete="off" name="cc_cvc" value="" required/>
                                 </div>
                                 <div class="form-row">
-                                    <label>Expiration</label>
+                                    <label><?= __("Expiration", "EOT_LMS") ?></label>
                                     <select name="cc_mon" required>
                                         <option value="" selected="selected">MM</option>
                                         <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
@@ -964,9 +971,9 @@ function update_subscription ($subscription_id) {
                         </div>
                         <?php if ($cus_id) { ?>
                             <p>
-                                <i class="fa fa-lock"></i> This site uses 256-bit encryption to safeguard your credit card information.
+                                <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
                             </p>
-                            <h2>Others:</h2>
+                            <h2><?= __("Others:", "EOT_LMS") ?></h2>
                             <textarea id="discount_notes" name="discount_notes" rows="4" cols="30" style="resize: none;" onclick="this.focus();this.select();"><?= DEFAULT_MESSAGE_FOR_DISCOUNT_NOTES ?></textarea> 
                             <textarea id="other_notes" name="other_notes" rows="4" cols="30" style="resize: none;" onclick="this.focus();this.select();"><?= DEFAULT_MESSAGE_FOR_OTHER_NOTES ?></textarea>
                             <input type="hidden" name="customer_id" value="<?php echo $cus_id; ?>" />
@@ -984,17 +991,17 @@ function update_subscription ($subscription_id) {
             }
             else
             {
-                echo "Unable to find the library for the subscription. Please contact the administrator.";
+                echo __("Unable to find the library for the subscription. Please contact the administrator.", "EOT_LMS");
             }
         }
         else
         {
-            echo "Could not find the Organization ID or Manager ID. Please update them first. ";
+            echo __("Could not find the Organization ID or Manager ID. Please update them first.", "EOT_LMS");
         }
     }
     else
     {
-        echo "Unable to find this subscription ID. Please contact the administrator.";
+        echo __("Unable to find this subscription ID. Please contact the administrator.", "EOT_LMS");
     }
 }
 
@@ -1335,7 +1342,7 @@ function sales_rep_new_subscription ($user_id = 0) {
         // Setting the initial prices to zero is important because parseFloat doesn't work on "" values
         var data = {
         "libraries"     :   {   "le"        :   {  "id"         :   <?= LE_ID ?>, 
-                                                   "name"       :   "Leadership Essentials", 
+                                                   "name"       :   "<?= __("Leadership Essentials", "EOT_LMS") ?>", 
                                                    "status"     :   false,
                                                    "data"       :   { "dashboard"   : { "disc_type"         :   "",
                                                                                         "disc_amount"       :   0,
@@ -1350,7 +1357,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                                                 },
                                 "le_sp_dc"       :   {  "id"         :   <?= LE_SP_DC_ID ?>, 
 
-                                                   "name"       :   "Leadership Essentials - Starter Pack - Day Camps", 
+                                                   "name"       :   "<?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?>", 
                                                    "status"     :   false, 
                                                    "data"       :   { "dashboard"   : { "disc_type"         :   "",
                                                                                         "disc_amount"       :   0,
@@ -1365,7 +1372,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                                                 },
                                 "le_sp_oc"       :   {  "id"         :   <?= LE_SP_OC_ID ?>, 
 
-                                                   "name"       :   "Leadership Essentials - Starter Pack - Overnight Camps", 
+                                                   "name"       :   "<?= __("Leadership Essentials - Starter Pack - Overnight Camps", "EOT_LMS") ?>", 
                                                    "status"     :   false, 
                                                    "data"       :   { "dashboard"   : { "disc_type"         :   "",
                                                                                         "disc_amount"       :   0,
@@ -1380,7 +1387,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                                                 },
                                 "le_sp_prp"       :   {  "id"         :   <?= LE_SP_PRP_ID ?>, 
 
-                                                   "name"       :   "Leadership Essentials - Starter Pack - Parks & Rec Programs", 
+                                                   "name"       :   "<?= __("Leadership Essentials - Starter Pack - Parks & Rec Programs", "EOT_LMS") ?>", 
                                                    "status"     :   false, 
                                                    "data"       :   { "dashboard"   : { "disc_type"         :   "",
                                                                                         "disc_amount"       :   0,
@@ -1523,8 +1530,8 @@ function sales_rep_new_subscription ($user_id = 0) {
                         update_total();
                     } else {
                         // Do they already have a subscription?
-                        if ($(this).attr('already-purchased')==='true' && !confirm('This manager already has an active subscription to this library, please confirm you want to continue')) return;
-                        if ($(this).attr('has-fla')==='true') alert('The manager has an existing FLA account. Ask if the manager if they would like to upgrade their FLA in order to preserve their current staff groupings. If that is the case, continue with sale but alert the IT dept. to do the update. If they don\'t want to preserve their staff groups, delete their FLA after the sale.');
+                        if ($(this).attr('already-purchased')==='true' && !confirm('<?= __("This manager already has an active subscription to this library, please confirm you want to continue", "EOT_LMS") ?>')) return;
+                        if ($(this).attr('has-fla')==='true') alert("<?= __("The manager has an existing FLA account. Ask if the manager if they would like to upgrade their FLA in order to preserve their current staff groupings. If that is the case, continue with sale but alert the IT dept. to do the update. If they don't want to preserve their staff groups, delete their FLA after the sale.", "EOT_LMS") ?>");
                         // We check if this is the first time the topic is added and if so, we populate the JSON object with default price values
                         data.libraries[topic].status = true;
                         if (data.libraries[topic].data.dashboard.subtotal == '') {
@@ -1980,32 +1987,32 @@ function sales_rep_new_subscription ($user_id = 0) {
                             count++;
                             
                             if (data.libraries.le.data.dashboard.disc_type == 1 && data.libraries.le.data.dashboard.disc_amount > 0) {
-                                le_disc_dash = "$" + data.libraries.le.data.dashboard.disc_amount;
+                                le_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le.data.dashboard.disc_amount;
                             } else if (data.libraries.le.data.dashboard.disc_type == 0  && data.libraries.le.data.dashboard.disc_amount > 0) {
-                                le_disc_dash = data.libraries.le.data.dashboard.disc_amount + "%";
+                                le_disc_dash = data.libraries.le.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
                             } else {
                                 le_disc_dash = '';
                             }
                             
                             if (data.libraries.le.data.staff.disc_type == 1 && data.libraries.le.data.staff.disc_amount > 0) {
-                                le_disc_staff = "$" + data.libraries.le.data.staff.disc_amount + " per account";
+                                le_disc_staff = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le.data.staff.disc_amount + " <?= __("per account", "EOT_LMS") ?>";
                             } else if (data.libraries.le.data.staff.disc_type == 0  && data.libraries.le.data.staff.disc_amount > 0) {
-                                le_disc_staff = data.libraries.le.data.staff.disc_amount + "% of total price";
+                                le_disc_staff = data.libraries.le.data.staff.disc_amount + " <?= __("% of total price", "EOT_LMS") ?>";
                             } else {
                                 le_disc_staff = '';
                             }
                             
                             $('.billing_items').append(
                             '<div class="billing_item">' + 
-                                '<li class="bill_item library"><strong>Leadership Essentials</strong></li>' + 
+                                '<li class="bill_item library"><strong><?= __("Leadership Essentials", "EOT_LMS") ?></strong></li>' + 
                                 '<li class="bill_item amount border_left">' + 
                                     '<div class="expanded_top">' + 
-                                        '<span class="amount_left">Director Dashboard</span>' + 
+                                        '<span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>' + 
                                         '<span class="amount_x">X</span>' + 
                                         '<span class="amount_right">1</span>' + 
                                     '</div>' + 
                                         '<div class="expanded_bot">' + 
-                                            '<span class="amount_left">Number of Staff</span>' + 
+                                            '<span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>' + 
                                             '<span class="amount_x">X</span>' + 
                                             '<span class="amount_right">' + data.libraries.le.data.staff.number + '</span>' + 
                                         '</div>' + 
@@ -2100,32 +2107,32 @@ function sales_rep_new_subscription ($user_id = 0) {
                             count++;
                             
                             if (data.libraries.le_sp_dc.data.dashboard.disc_type == 1 && data.libraries.le_sp_dc.data.dashboard.disc_amount > 0) {
-                                le_sp_dc_disc_dash = "$" + data.libraries.le_sp_dc.data.dashboard.disc_amount;
+                                le_sp_dc_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_dc.data.dashboard.disc_amount;
                             } else if (data.libraries.le_sp_dc.data.dashboard.disc_type == 0  && data.libraries.le_sp_dc.data.dashboard.disc_amount > 0) {
-                                le_sp_dc_disc_dash = data.libraries.le_sp_dc.data.dashboard.disc_amount + "%";
+                                le_sp_dc_disc_dash = data.libraries.le_sp_dc.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
                             } else {
                                 le_sp_dc_disc_dash = '';
                             }
                             
                             if (data.libraries.le_sp_dc.data.staff.disc_type == 1 && data.libraries.le_sp_dc.data.staff.disc_amount > 0) {
-                                le_sp_dc_disc_staff = "$" + data.libraries.le_sp_dc.data.staff.disc_amount + " per account";
+                                le_sp_dc_disc_staff = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_dc.data.staff.disc_amount + " <?= __("per account", "EOT_LMS") ?>";
                             } else if (data.libraries.le_sp_dc.data.staff.disc_type == 0  && data.libraries.le_sp_dc.data.staff.disc_amount > 0) {
-                                le_sp_dc_disc_staff = data.libraries.le_sp_dc.data.staff.disc_amount + "% of total price";
+                                le_sp_dc_disc_staff = data.libraries.le_sp_dc.data.staff.disc_amount + "<?= __("% of total price", "EOT_LMS") ?>";
                             } else {
                                 le_sp_dc_disc_staff = '';
                             }
                             
                             $('.billing_items').append(
                             '<div class="billing_item">' + 
-                                '<li class="bill_item library"><strong>Leadership Essentials - Starter Pack - Day Camps</strong></li>' + 
+                                '<li class="bill_item library"><strong><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></strong></li>' + 
                                 '<li class="bill_item amount border_left">' + 
                                     '<div class="expanded_top">' + 
-                                        '<span class="amount_left">Director Dashboard</span>' + 
+                                        '<span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>' + 
                                         '<span class="amount_x">X</span>' + 
                                         '<span class="amount_right">1</span>' + 
                                     '</div>' + 
                                         '<div class="expanded_bot">' + 
-                                            '<span class="amount_left">Number of Staff</span>' + 
+                                            '<span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>' + 
                                             '<span class="amount_x">X</span>' + 
                                             '<span class="amount_right">' + data.libraries.le_sp_dc.data.staff.number + '</span>' + 
                                         '</div>' + 
@@ -2140,10 +2147,10 @@ function sales_rep_new_subscription ($user_id = 0) {
                                 '</li>' + 
                                 '<li class="bill_item subtotal border_left">' +
                                     '<div class="expanded_top">' + 
-                                        '$' + data.libraries.le_sp_dc.data.dashboard.subtotal + 
+                                        '<?= __("$", "EOT_LMS") ?>' + data.libraries.le_sp_dc.data.dashboard.subtotal + 
                                     '</div>' + 
                                     '<div class="expanded_bot">' + 
-                                        '$' + data.libraries.le_sp_dc.data.staff.subtotal + 
+                                        '<?= __("$", "EOT_LMS") ?>' + data.libraries.le_sp_dc.data.staff.subtotal + 
                                     '</div>' +
                                 '</li>' + 
                             '</div>'+
@@ -2160,32 +2167,32 @@ function sales_rep_new_subscription ($user_id = 0) {
                             count++;
                             
                             if (data.libraries.le_sp_oc.data.dashboard.disc_type == 1 && data.libraries.le_sp_oc.data.dashboard.disc_amount > 0) {
-                                le_sp_oc_disc_dash = "$" + data.libraries.le_sp_oc.data.dashboard.disc_amount;
+                                le_sp_oc_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_oc.data.dashboard.disc_amount;
                             } else if (data.libraries.le_sp_oc.data.dashboard.disc_type == 0  && data.libraries.le_sp_oc.data.dashboard.disc_amount > 0) {
-                                le_sp_oc_disc_dash = data.libraries.le_sp_oc.data.dashboard.disc_amount + "%";
+                                le_sp_oc_disc_dash = data.libraries.le_sp_oc.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
                             } else {
                                 le_sp_oc_disc_dash = '';
                             }
                             
                             if (data.libraries.le_sp_oc.data.staff.disc_type == 1 && data.libraries.le_sp_oc.data.staff.disc_amount > 0) {
-                                le_sp_oc_disc_staff = "$" + data.libraries.le_sp_oc.data.staff.disc_amount + " per account";
+                                le_sp_oc_disc_staff = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_oc.data.staff.disc_amount + " <?= __("per account", "EOT_LMS") ?>";
                             } else if (data.libraries.le_sp_oc.data.staff.disc_type == 0  && data.libraries.le_sp_oc.data.staff.disc_amount > 0) {
-                                le_sp_oc_disc_staff = data.libraries.le_sp_oc.data.staff.disc_amount + "% of total price";
+                                le_sp_oc_disc_staff = data.libraries.le_sp_oc.data.staff.disc_amount + "<?= __("% of total price", "EOT_LMS") ?>";
                             } else {
                                 le_sp_oc_disc_staff = '';
                             }
                             
                             $('.billing_items').append(
                             '<div class="billing_item">' + 
-                                '<li class="bill_item library"><strong>Leadership Essentials - Starter Pack - Day Camps</strong></li>' + 
+                                '<li class="bill_item library"><strong><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></strong></li>' + 
                                 '<li class="bill_item amount border_left">' + 
                                     '<div class="expanded_top">' + 
-                                        '<span class="amount_left">Director Dashboard</span>' + 
+                                        '<span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>' + 
                                         '<span class="amount_x">X</span>' + 
                                         '<span class="amount_right">1</span>' + 
                                     '</div>' + 
                                         '<div class="expanded_bot">' + 
-                                            '<span class="amount_left">Number of Staff</span>' + 
+                                            '<span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>' + 
                                             '<span class="amount_x">X</span>' + 
                                             '<span class="amount_right">' + data.libraries.le_sp_oc.data.staff.number + '</span>' + 
                                         '</div>' + 
@@ -2220,32 +2227,32 @@ function sales_rep_new_subscription ($user_id = 0) {
                             count++;
                             
                             if (data.libraries.le_sp_prp.data.dashboard.disc_type == 1 && data.libraries.le_sp_prp.data.dashboard.disc_amount > 0) {
-                                le_sp_prp_disc_dash = "$" + data.libraries.le_sp_prp.data.dashboard.disc_amount;
+                                le_sp_prp_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_prp.data.dashboard.disc_amount;
                             } else if (data.libraries.le_sp_prp.data.dashboard.disc_type == 0  && data.libraries.le_sp_prp.data.dashboard.disc_amount > 0) {
-                                le_sp_prp_disc_dash = data.libraries.le_sp_prp.data.dashboard.disc_amount + "%";
+                                le_sp_prp_disc_dash = data.libraries.le_sp_prp.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
                             } else {
                                 le_sp_prp_disc_dash = '';
                             }
                             
                             if (data.libraries.le_sp_prp.data.staff.disc_type == 1 && data.libraries.le_sp_prp.data.staff.disc_amount > 0) {
-                                le_sp_prp_disc_staff = "$" + data.libraries.le_sp_prp.data.staff.disc_amount + " per account";
+                                le_sp_prp_disc_staff = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_prp.data.staff.disc_amount + " <?= __("per account", "EOT_LMS") ?>";
                             } else if (data.libraries.le_sp_prp.data.staff.disc_type == 0  && data.libraries.le_sp_prp.data.staff.disc_amount > 0) {
-                                le_sp_prp_disc_staff = data.libraries.le_sp_prp.data.staff.disc_amount + "% of total price";
+                                le_sp_prp_disc_staff = data.libraries.le_sp_prp.data.staff.disc_amount + "<?= __("% of total price", "EOT_LMS") ?>";
                             } else {
                                 le_sp_prp_disc_staff = '';
                             }
                             
                             $('.billing_items').append(
                             '<div class="billing_item">' + 
-                                '<li class="bill_item library"><strong>Leadership Essentials - Starter Pack - Day Camps</strong></li>' + 
+                                '<li class="bill_item library"><strong><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></strong></li>' + 
                                 '<li class="bill_item amount border_left">' + 
                                     '<div class="expanded_top">' + 
-                                        '<span class="amount_left">Director Dashboard</span>' + 
+                                        '<span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>' + 
                                         '<span class="amount_x">X</span>' + 
                                         '<span class="amount_right">1</span>' + 
                                     '</div>' + 
                                         '<div class="expanded_bot">' + 
-                                            '<span class="amount_left">Number of Staff</span>' + 
+                                            '<span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>' + 
                                             '<span class="amount_x">X</span>' + 
                                             '<span class="amount_right">' + data.libraries.le_sp_prp.data.staff.number + '</span>' + 
                                         '</div>' + 
@@ -2281,7 +2288,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                             
                             $('.billing_items').append(
                             '<div class="billing_item">' + 
-                                '<li class="bill_item library"><strong>Data Disk</strong></li>' + 
+                                '<li class="bill_item library"><strong><?= __("Data Disk", "EOT_LMS") ?></strong></li>' + 
                                 '<li class="bill_item amount border_left">' + 
                                     '<div class="expanded_top">' + 
                                         '<span class="amount_left"></span>' + 
@@ -2301,9 +2308,9 @@ function sales_rep_new_subscription ($user_id = 0) {
                         }
                         
                         if (count == 0) {
-                            alert('You must select at least one library to subscribe to.');
+                            alert('<?= __("You must select at least one library to subscribe to.", "EOT_LMS") ?>');
                         } else {
-                            $('#bill_sum_total').append('<strong>$' + data.total + '</strong>');
+                            $('#bill_sum_total').append('<strong><?= __("$", "EOT_LMS") ?>' + data.total + '</strong>');
                             $('.expanded_top').css('height','22px');
                             $('#calc').fadeOut('slow', function() {
                                 $('#billing').fadeIn('slow');
@@ -2311,7 +2318,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                             $('#total').val (data.total);
                         }
                     } else {
-                        alert('Negative total. Please fix your discounts.');
+                        alert('<?= __("Negative total. Please fix your discounts.", "EOT_LMS") ?>');
                     }
                 });
     
@@ -2326,24 +2333,24 @@ function sales_rep_new_subscription ($user_id = 0) {
 <form id="sales-rep-new-subscription" name="sales-rep-new-subscription" action="#" data-user_id="" method="post">
 
         <div id="calc">
-            <h3>Subscription</h3>
+            <h3><?= __("Subscription", "EOT_LMS") ?></h3>
             <div class="table_header">
-                <li class="table_header_list library">Library</li>
-                <li class="table_header_list amount">Amount</li>
-                <li class="table_header_list discount">Discount</li>
-                <li class="table_header_list subtotal">Subtotal</li>
+                <li class="table_header_list library"><?= __("Library", "EOT_LMS") ?></li>
+                <li class="table_header_list amount"><?= __("Amount", "EOT_LMS") ?></li>
+                <li class="table_header_list discount"><?= __("Discount", "EOT_LMS") ?></li>
+                <li class="table_header_list subtotal"><?= __("Subtotal", "EOT_LMS") ?></li>
             </div>
             <div id="calc_body">
                 <div class="calc_topics le">
-                    <li class="calc_le library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" />Leadership Essentials</li>
+                    <li class="calc_le library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" /><?= __("Leadership Essentials", "EOT_LMS") ?></li>
                     <li class="calc_le amount">
                         <div class="expanded_top">
-                            <span class="amount_left">Director Dashboard</span>
+                            <span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right">1</span>
                         </div>
                         <div class="expanded_bot">
-                            <span class="amount_left">Number of Staff</span>
+                            <span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right"><input type="text" name="num_staff_le" class="num_staff small_box" value="0" maxlength="4" /></span>
                         </div>
@@ -2351,35 +2358,35 @@ function sales_rep_new_subscription ($user_id = 0) {
                     <li class="calc_le discount">
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le" class="dash_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_dash_radio_le" class="dash_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_dash_radio_le" class="dash_disc" />%
+                            <input type="radio" value="1" name="disc_dash_radio_le" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le" class="staff_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_staff_radio_le" class="staff_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_staff_radio_le" class="staff_disc" />%
+                            <input type="radio" value="1" name="disc_staff_radio_le" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                     </li>
                     <li class="calc_le subtotal">
                         <div class="expanded_top">
-                            $ <input type="text" name="subtotal_dash_num_le" class="dash_subtotal large_box" value="399.00" data-full_price="399.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_dash_num_le" class="dash_subtotal large_box" value="399.00" data-full_price="399.00" />
                         </div>
                         <div class="expanded_bot">
-                            $ <input type="text" name="subtotal_staff_num_le" class="staff_subtotal large_box" value="0.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_staff_num_le" class="staff_subtotal large_box" value="0.00" />
                         </div>
                     </li>
                 </div>
 
                 <div class="calc_topics le_sp_dc">
-                    <li class="calc_le_sp_dc library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" />LE - SP - Day Camps</li>
+                    <li class="calc_le_sp_dc library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" /><?= __("LE - SP - Day Camps", "EOT_LMS") ?></li>
                     <li class="calc_le_sp_dc amount">
                         <div class="expanded_top">
-                            <span class="amount_left">Director Dashboard</span>
+                            <span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right">1</span>
                         </div>
                         <div class="expanded_bot">
-                            <span class="amount_left">Number of Staff</span>
+                            <span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right"><input type="text" name="num_staff_le_sp_dc" class="num_staff small_box" value="0" maxlength="4" /></span>
                         </div>
@@ -2387,35 +2394,35 @@ function sales_rep_new_subscription ($user_id = 0) {
                     <li class="calc_le_sp_dc discount">
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le_sp_dc" class="dash_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_dash_radio_le_sp_dc" class="dash_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_dash_radio_le_sp_dc" class="dash_disc" />%
+                            <input type="radio" value="1" name="disc_dash_radio_le_sp_dc" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le_sp_dc" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le_sp_dc" class="staff_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_staff_radio_le_sp_dc" class="staff_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_staff_radio_le_sp_dc" class="staff_disc" />%
+                            <input type="radio" value="1" name="disc_staff_radio_le_sp_dc" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le_sp_dc" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                     </li>
                     <li class="calc_le_sp_dc subtotal">
                         <div class="expanded_top">
-                            $ <input type="text" name="subtotal_dash_num_le_sp_dc" class="dash_subtotal large_box" value="199.00" data-full_price="199.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_dash_num_le_sp_dc" class="dash_subtotal large_box" value="199.00" data-full_price="199.00" />
                         </div>
                         <div class="expanded_bot">
-                            $ <input type="text" name="subtotal_staff_num_le_sp_dc" class="staff_subtotal large_box" value="0.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_staff_num_le_sp_dc" class="staff_subtotal large_box" value="0.00" />
                         </div>
                     </li>
                 </div>
 
                 <div class="calc_topics le_sp_oc">
-                    <li class="calc_le_sp_oc library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" />LE -SP - Overnight Camps</li>
+                    <li class="calc_le_sp_oc library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" /><?= __("LE -SP - Overnight Camps", "EOT_LMS") ?></li>
                     <li class="calc_le_sp_oc amount">
                         <div class="expanded_top">
-                            <span class="amount_left">Director Dashboard</span>
+                            <span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right">1</span>
                         </div>
                         <div class="expanded_bot">
-                            <span class="amount_left">Number of Staff</span>
+                            <span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right"><input type="text" name="num_staff_le_sp_oc" class="num_staff small_box" value="0" maxlength="4" /></span>
                         </div>
@@ -2423,35 +2430,35 @@ function sales_rep_new_subscription ($user_id = 0) {
                     <li class="calc_le_sp_oc discount">
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le_sp_oc" class="dash_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_dash_radio_le_sp_oc" class="dash_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_dash_radio_le_sp_oc" class="dash_disc" />%
+                            <input type="radio" value="1" name="disc_dash_radio_le_sp_oc" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le_sp_oc" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le_sp_oc" class="staff_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_staff_radio_le_sp_oc" class="staff_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_staff_radio_le_sp_oc" class="staff_disc" />%
+                            <input type="radio" value="1" name="disc_staff_radio_le_sp_oc" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le_sp_oc" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                     </li>
                     <li class="calc_le_sp_oc subtotal">
                         <div class="expanded_top">
-                            $ <input type="text" name="subtotal_dash_num_le_sp_oc" class="dash_subtotal large_box" value="199.00" data-full_price="199.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_dash_num_le_sp_oc" class="dash_subtotal large_box" value="199.00" data-full_price="199.00" />
                         </div>
                         <div class="expanded_bot">
-                            $ <input type="text" name="subtotal_staff_num_le_sp_oc" class="staff_subtotal large_box" value="0.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_staff_num_le_sp_oc" class="staff_subtotal large_box" value="0.00" />
                         </div>
                     </li>
                 </div>
 
                 <div class="calc_topics le_sp_prp">
-                    <li class="calc_le_sp_prp library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" />LE -SP - Parks & Rec Programs</li>
+                    <li class="calc_le_sp_prp library"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" already-purchased="false" has-fla="false" /><?= __("LE -SP - Parks & Rec Programs", "EOT_LMS") ?></li>
                     <li class="calc_le_sp_prp amount">
                         <div class="expanded_top">
-                            <span class="amount_left">Director Dashboard</span>
+                            <span class="amount_left"><?= __("Director Dashboard", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right">1</span>
                         </div>
                         <div class="expanded_bot">
-                            <span class="amount_left">Number of Staff</span>
+                            <span class="amount_left"><?= __("Number of Staff", "EOT_LMS") ?></span>
                             <span class="amount_x">X</span>
                             <span class="amount_right"><input type="text" name="num_staff_le_sp_prp" class="num_staff small_box" value="0" maxlength="4" /></span>
                         </div>
@@ -2459,21 +2466,21 @@ function sales_rep_new_subscription ($user_id = 0) {
                     <li class="calc_le_sp_prp discount">
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le_sp_prp" class="dash_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_dash_radio_le_sp_prp" class="dash_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_dash_radio_le_sp_prp" class="dash_disc" />%
+                            <input type="radio" value="1" name="disc_dash_radio_le_sp_prp" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le_sp_prp" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le_sp_prp" class="staff_discount medium_box" value="0.00" />
-                            <input type="radio" value="1" name="disc_staff_radio_le_sp_prp" class="staff_disc" checked="checked" />$
-                            <input type="radio" value="0" name="disc_staff_radio_le_sp_prp" class="staff_disc" />%
+                            <input type="radio" value="1" name="disc_staff_radio_le_sp_prp" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le_sp_prp" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
                         </div>
                     </li>
                     <li class="calc_le_sp_prp subtotal">
                         <div class="expanded_top">
-                            $ <input type="text" name="subtotal_dash_num_le_sp_prp" class="dash_subtotal large_box" value="199.00" data-full_price="199.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_dash_num_le_sp_prp" class="dash_subtotal large_box" value="199.00" data-full_price="199.00" />
                         </div>
                         <div class="expanded_bot">
-                            $ <input type="text" name="subtotal_staff_num_le_sp_prp" class="staff_subtotal large_box" value="0.00" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_staff_num_le_sp_prp" class="staff_subtotal large_box" value="0.00" />
                         </div>
                     </li>
                 </div>
@@ -2513,10 +2520,10 @@ function sales_rep_new_subscription ($user_id = 0) {
                     </li>
                 </div>
                 <div class="calc_topics dd" >
-                    <li class="calc_dd datadisk"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" />Data Disk</li>
+                    <li class="calc_dd datadisk"><img src="<?= get_template_directory_uri() . '/images/checkbox.png'?>" /><?= __("Data Disk", "EOT_LMS") ?></li>
                     <li class="calc_dd subtotal">
                         <div class="expanded_top">
-                            $ <input type="text" name="subtotal_dd" class="datadisk_subtotal large_box" value="0" data-full_price="<?= DATA_DRIVE ?>" />
+                            <?= __("$", "EOT_LMS") ?> <input type="text" name="subtotal_dd" class="datadisk_subtotal large_box" value="0" data-full_price="<?= DATA_DRIVE ?>" />
                         </div>
                     </li>
                 </div>
@@ -2524,10 +2531,10 @@ function sales_rep_new_subscription ($user_id = 0) {
             </div>
             <div id="calc_total">
                 <div id="text_total">
-                    <strong>TOTAL</strong>
+                    <strong><?= __("TOTAL", "EOT_LMS") ?></strong>
                 </div>
                 <div id="sum_total">
-                    $ <input type="text" name="total_num" class="total_num large_box" value="0.00" readonly="readonly" />
+                    <?= __("$", "EOT_LMS") ?> <input type="text" name="total_num" class="total_num large_box" value="0.00" readonly="readonly" />
                 </div>
             </div>
             <div id="calc_footer">
@@ -2536,29 +2543,29 @@ function sales_rep_new_subscription ($user_id = 0) {
         </div>
                 
         <div id="billing">
-            <h3>Billing Information</h3>
+            <h3><?= __("Billing Information", "EOT_LMS") ?></h3>
             <div class="table_header">
-                <li class="table_header_list library">Library</li>
-                <li class="table_header_list amount">Amount</li>
-                <li class="table_header_list discount">Discount</li>
-                <li class="table_header_list subtotal">Subtotal</li>
+                <li class="table_header_list library"><?= __("Library", "EOT_LMS") ?></li>
+                <li class="table_header_list amount"><?= __("Amount", "EOT_LMS") ?></li>
+                <li class="table_header_list discount"><?= __("Discount", "EOT_LMS") ?></li>
+                <li class="table_header_list subtotal"><?= __("Subtotal", "EOT_LMS") ?></li>
             </div>
             <div class="billing_items">
                 
             </div>  
             <div id="bill_total">
                 <div id="text_total">
-                    <strong>TOTAL</strong>
+                    <strong><?= __("TOTAL", "EOT_LMS") ?></strong>
                 </div>
                 <div id="bill_sum_total">
                 </div>
             </div>
             
             <div id="error_box">
-                <h2>Errors found</h2>
+                <h2><?= __("Errors found", "EOT_LMS") ?></h2>
                 <p id="error_msgs">
-                    Name not specified <br />
-                    Phone number not given
+                    <?= __("Name not specified", "EOT_LMS") ?> <br />
+                    <?= __("Phone number not given", "EOT_LMS") ?>
                 </p>
             </div>
             
@@ -2574,56 +2581,56 @@ function sales_rep_new_subscription ($user_id = 0) {
     ?>
             <div id="bill_form">
 
-                <p class="small"><b>All fields required.</b> *</p>
+                <p class="small"><b><?= __("All fields required.", "EOT_LMS") ?></b> *</p>
 
 <!--                <form id="sales-rep-new-subscription" name="sales-rep-new-subscription" action="#" data-user_id="" method="post"> -->
                 
                     <table class="staff_accounts subscription_confirm Tstandard data" id="total_table_payment">
                     </table>
-                    <h2>Billing Address</h2>
+                    <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
                     <div class="form-row">
-                        <label>Organization Name</label>
+                        <label><?= __("Organization Name", "EOT_LMS") ?></label>
                         <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
                     </div>
                     <div class="form-row">
-                        <label>Cardholder Name</label>
+                        <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
                         <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
                     </div>
                     <div class="form-row">
-                        <label>Address</label>
+                        <label><?= __("Address", "EOT_LMS") ?></label>
                         <input type="text" name="address" value="<?php echo $address; ?>" required/>
                     </div>
                     <div class="form-row">
-                        <label>City</label>
+                        <label><?= __("City", "EOT_LMS") ?></label>
                         <input type="text" name="city" value="<?php echo $city; ?>" required/>
                     </div>
                     <div class="form-row">
-                        <label>State/Province</label>
+                        <label><?= __("State/Province", "EOT_LMS") ?></label>
                         <input type="text" name="state" value="<?php echo $state; ?>" required/>
                     </div>
                     <div class="form-row">
-                        <label>Country</label>
+                        <label><?= __("Country", "EOT_LMS") ?></label>
                         <input type="text" name="country" value="<?php echo $country; ?>" required/>
                     </div>
                     <div class="form-row">
-                        <label>Zip/Postal Code</label>
+                        <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
                         <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
                     </div>
                     <div class="form-row">
-                        <label>Phone Number</label>
+                        <label><?= __("Phone Number", "EOT_LMS") ?></label>
                         <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
                     </div>
 
                     <div class="form-row">
-                        <label>Send Data disc:</label>
+                        <label><?= __("Send Data disc:", "EOT_LMS") ?></label>
                         <input type="radio" name="send_disc" value="1">Yes &nbsp;&nbsp;
                         <input type="radio" name="send_disc" value="0" checked="checked">No<br />
                     </div>
 
                     <div class="form-row">
-                        <label>Umbrella Group:</label>
+                        <label><?= __("Umbrella Group:", "EOT_LMS") ?></label>
                         <select name="ugroup_id" id="ugroup_id">
-                            <option value="0" selected="selected">Select Group</option>
+                            <option value="0" selected="selected"><?= __("Select Group", "EOT_LMS") ?></option>
 <?php
                             $umbrellaGroups = getUmbrellaGroups();
 
@@ -2637,48 +2644,48 @@ function sales_rep_new_subscription ($user_id = 0) {
                    </div>
 
                     <div class="form-row">
-                        <label>How did you hear about us?</label><br />
+                        <label><?= __("How did you hear about us?", "EOT_LMS") ?></label><br />
                         <select id="freferred_by" name="referred_by">
-                                <option value="google">Google or another search engine</option>
-                                <option value="friend">Friend or colleague</option>
-                                <option value="presenters">Presenters</option>
-                                <option value="conference_workshop">Conference workshop</option>
-                                <option value="conference_booth">Conference booth</option>
-                                <option value="promotional_video">Promotional video</option>
-                                <option value="promotional_postcard">Promotional postcard</option>
-                                <option value="eot_facebook_page">EOT’s Facebook page</option>
-                                <option value="eot_twitter_page">EOT’s Twitter page</option>
-                                <option value="eot_blog">EOT’s Blog on this site</option>
-                                <option value="camp_business_magazine">Camp Business magazine</option>
-                                <option value="aca_camping_magazine">ACA’s Camping magazine</option>
-                                <option value="aca_twitter_feed">ACA’s Twitter feed</option>
-                                <option value="aca_email_blast">ACA’s e-mail blasts</option>
-                                <option value="aca_facebook_page">ACA’s Facebook page</option>
-                                <option value="aca_now_publication">ACA’s Now publication</option>
-                                <option value="aca_website_einstitute">ACA’s website or e-institute</option>
-                                <option value="aca_conference_promotion">ACA’s conference promotion (code EEP_767)</option>
-                                <option value="wecontacted">We contacted you</option>
-                                <option value="other">Other</option>
+                                <option value="google"><?= __("Google or another search engine", "EOT_LMS") ?></option>
+                                <option value="friend"><?= __("Friend or colleague", "EOT_LMS") ?></option>
+                                <option value="presenters"><?= __("Presenters", "EOT_LMS") ?></option>
+                                <option value="conference_workshop"><?= __("Conference workshop", "EOT_LMS") ?></option>
+                                <option value="conference_booth"><?= __("Conference booth", "EOT_LMS") ?></option>
+                                <option value="promotional_video"><?= __("Promotional video", "EOT_LMS") ?></option>
+                                <option value="promotional_postcard"><?= __("Promotional postcard", "EOT_LMS") ?></option>
+                                <option value="eot_facebook_page"><?= __("EOT’s Facebook page", "EOT_LMS") ?></option>
+                                <option value="eot_twitter_page"><?= __("EOT’s Twitter page", "EOT_LMS") ?></option>
+                                <option value="eot_blog"><?= __("EOT’s Blog on this site", "EOT_LMS") ?></option>
+                                <option value="camp_business_magazine"><?= __("Camp Business magazine", "EOT_LMS") ?></option>
+                                <option value="aca_camping_magazine"><?= __("ACA’s Camping magazine", "EOT_LMS") ?></option>
+                                <option value="aca_twitter_feed"><?= __("ACA’s Twitter feed", "EOT_LMS") ?></option>
+                                <option value="aca_email_blast"><?= __("ACA’s e-mail blasts", "EOT_LMS") ?></option>
+                                <option value="aca_facebook_page"><?= __("ACA’s Facebook page", "EOT_LMS") ?></option>
+                                <option value="aca_now_publication"><?= __("ACA’s Now publication", "EOT_LMS") ?></option>
+                                <option value="aca_website_einstitute"><?= __("ACA’s website or e-institute", "EOT_LMS") ?></option>
+                                <option value="aca_conference_promotion"><?= __("ACA’s conference promotion (code EEP_767)", "EOT_LMS") ?></option>
+                                <option value="wecontacted"><?= __("We contacted you", "EOT_LMS") ?></option>
+                                <option value="other"><?= __("Other", "EOT_LMS") ?></option>
                         </select>
                         <div id="referred_other">
                             <input id="fother" type="text" name="referred_other" size="25" value="" />
                         </div>
                     </div>
                     <div class="form-row">
-                        <label>Notes:</label>
+                        <label><?= __("Notes:", "EOT_LMS") ?></label>
                         <textarea name="notes" id="notes"></textarea>
                    </div>
                     <div class="form-row">
-                        <label>Payment Method:</label>
+                        <label><?= __("Payment Method:", "EOT_LMS") ?></label>
                         <select name="method" id ="method">
-                            <option value="Stripe">Credit Card</option>
-                            <option value="check">Check</option>
-                            <option value="free">Free</option>
+                            <option value="Stripe"><?= __("Credit Card", "EOT_LMS") ?></option>
+                            <option value="check"><?= __("Check", "EOT_LMS") ?></option>
+                            <option value="free"><?= __("Free", "EOT_LMS") ?></option>
                         </select><br /><br />
                     </div>
 
                <div id="creditcard_opts">
-                    <h2>Credit Card</h2>
+                    <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
                     <?php 
                         $cus_id = get_post_meta($org_id, 'stripe_id', true);
                         $cards = get_customer_cards ($cus_id);
@@ -2688,10 +2695,10 @@ function sales_rep_new_subscription ($user_id = 0) {
                         <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
                             <tr>
                                 <td>&nbsp;</td>
-                                <td>Type</td>
-                                <td>Number</td>
-                                <td>Expiration</td>
-                                <td>CVC</td>
+                                <td><?= __("Type", "EOT_LMS") ?></td>
+                                <td><?= __("Number", "EOT_LMS") ?></td>
+                                <td><?= __("Expiration", "EOT_LMS") ?></td>
+                                <td><?= __("CVC", "EOT_LMS") ?></td>
                             </tr>
                             <?php foreach ($cards as $card) { ?>
                                 <tr>
@@ -2703,19 +2710,19 @@ function sales_rep_new_subscription ($user_id = 0) {
                                 </tr>
                             <?php } ?>
                         </table>
-                        <a href="#" id="new_card">Add new Card</a>
+                        <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
                     <?php } ?>
                         <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
                             <div class="form-row">
-                                <label>Card Number</label>
+                                <label><?= __("Card Number", "EOT_LMS") ?></label>
                                 <input type="text" size="20" autocomplete="off" name="cc_num" value=""/>
                             </div>
                             <div class="form-row">
-                                <label>CVC</label>
+                                <label><?= __("CVC", "EOT_LMS") ?></label>
                                 <input type="text" size="4" autocomplete="off" name="cc_cvc" value=""/>
                             </div>
                             <div class="form-row">
-                                <label>Expiration</label>
+                                <label><?= __("Expiration", "EOT_LMS") ?></label>
                                 <select name="cc_mon">
                                     <option value="" selected="selected">MM</option>
                                     <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
@@ -2750,7 +2757,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                     ?>
 
                     <p>
-                        <i class="fa fa-lock"></i> This site uses 256-bit encryption to safeguard your credit card information.
+                        <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
                     </p>
 
                 </div>
@@ -2761,9 +2768,9 @@ function sales_rep_new_subscription ($user_id = 0) {
         </div>        
 
     <div class="processing_payment round_msgbox">
-        Attempting to charge Credit card and create the subscription... <br />
+        <?= __("Attempting to charge Credit card and create the subscription...", "EOT_LMS") ?> <br />
         <img src="<?= get_template_directory_uri() . '/images/loading.gif'?>" />                         <br />
-        If you see this message for more than 15 seconds, please call 877-237-3931 for assistance.  
+        <?= __("If you see this message for more than 15 seconds, please call 877-237-3931 for assistance. ", "EOT_LMS") ?> 
     </div>
  </div>
     
@@ -2807,7 +2814,7 @@ function upgradeSubscription_callback ()
     if( !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') && !current_user_can('is_director') )
     {
         $result['status'] = false;
-        $result['message'] = 'upgradeSubscription_callback Error: Sorry, you do not have permisison to view this page.';
+        $result['message'] = __("upgradeSubscription_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         echo json_encode($result);
         wp_die();   
     }
@@ -2860,7 +2867,7 @@ function upgradeSubscription_callback ()
                 if (!isset($_REQUEST['cc_card']) && ($_REQUEST['cc_num'] == '' || $_REQUEST['cc_cvc'] == '')) 
                 {
                     $result['status'] = false;
-                    $result['message'] = 'You must choose a credit card or add a new credit card.'; 
+                    $result['message'] = __("You must choose a credit card or add a new credit card.", "EOT_LMS"); 
                     echo json_encode($result);
                     wp_die();   
                 }
@@ -2926,7 +2933,7 @@ function upgradeSubscription_callback ()
                 else
                 {
                     $result['status'] = false;
-                    $result['message'] = 'upgradeSubscription_callback Error: There was an error adding the upgrade row in WP. ' . $response['errors'];
+                    $result['message'] = __("upgradeSubscription_callback Error: There was an error adding the upgrade row in WP.", "EOT_LMS") . ' ' . $response['errors'];
                 }
             }
             else
@@ -2937,13 +2944,13 @@ function upgradeSubscription_callback ()
         else
         {
             $result['status'] = false;
-            $result['message'] = 'upgradeSubscription_callback ERROR: Unable to find this subscription ID. Please contact the administrator.'; 
+            $result['message'] = __("upgradeSubscription_callback ERROR: Unable to find this subscription ID. Please contact the administrator.", "EOT_LMS"); 
         }
     }
     else
     {
         $result['status'] = false;
-        $result['message'] = 'upgradeSubscription_callback ERROR: Missing some parameters.'; 
+        $result['message'] = __("upgradeSubscription_callback ERROR: Missing some parameters.", "EOT_LMS"); 
     }
     echo json_encode($result);
     wp_die();   
@@ -3140,10 +3147,10 @@ function accepted_terms($library = NULL)
     {
         // output the terms
        echo current_user_can('is_student') ? $library->terms_staff : $library->terms_manager;
-       echo "<input type='button' class='terms' onclick='acceptTerms()' value='Yes, I accept the terms and conditions'>
+       echo "<input type='button' class='terms' onclick='acceptTerms()' value='" . __("Yes, I accept the terms and conditions", "EOT_LMS") . "'>
             <div id='term_loading'>
                 <i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>
-                <span class='sr-only'>Loading...</span>
+                <span class='sr-only'>" . __("Loading...", "EOT_LMS") . "</span>
             </div>
             <script>
            $ = jQuery;

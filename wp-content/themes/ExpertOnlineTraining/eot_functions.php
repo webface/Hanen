@@ -23,7 +23,7 @@ function getLibrary ($library_id = 0)
     // Check if the library id is valid
     if ($library_id <= 0)
     {
-        echo "Invalid library ID";
+        echo __("Invalid library ID", "EOT_LMS");
         return;
     }
     global $wpdb;
@@ -91,7 +91,7 @@ function getVideo($video_name = "")
   // Check if the library id is valid
   if ($video_name == "")
   {
-      echo "Invalid video name";
+      echo __("Invalid video name", "EOT_LMS");
       return;
   }
   global $wpdb;
@@ -269,19 +269,19 @@ function formatStatus($status = '')
     switch ($status)
     {
         case "in_progress":
-            return "In Progress";
+            return __("In Progress", "EOT_LMS");
         case "not_started":
-            return "Not Started";
+            return __("Not Started", "EOT_LMS");
         case "completed":
-            return "Completed";
+            return __("Completed", "EOT_LMS");
         case "passed":
-            return "Passed";
+            return __("Passed", "EOT_LMS");
         case "failed":
-            return "Failed";
+            return __("Failed", "EOT_LMS");
         case "pending_review":
-            return "Pending Review";
+            return __("Pending Review", "EOT_LMS");
         default:
-            return "N/A";
+            return __("N/A", "EOT_LMS");
     }
 }
 
@@ -311,8 +311,8 @@ function displayHelp_callback()
         <video id="help_video_<?= $video->ID; ?>" class="video-js vjs-default-skin" preload="auto" width="640" height="480" data-setup='{"controls": true}'>
           <source src="https://eot-output.s3.amazonaws.com/<?= $video->video_filename; ?>" type='video/mp4'>
           <p class="vjs-no-js">
-            To view this video please enable JavaScript, and consider upgrading to a web browser that
-            <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS") ?>
+            <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS") ?></a>
           </p>        
         </video>       
       </div>
@@ -434,25 +434,25 @@ function getStatus( $status )
   switch($status)
   {
     case "not_started":
-      return "Not Started";
+      return __("Not Started", "EOT_LMS");
       break;
     case "in_progress":
-      return "In Progress";
+      return __("In Progress", "EOT_LMS");
       break;
     case "completed":
-      return "Completed";
+      return __("Completed", "EOT_LMS");
       break;
     case "passed":
-      return "Passed";
+      return __("Passed", "EOT_LMS");
       break;
      case "failed":
-      return "Failed";
+      return __("Failed", "EOT_LMS");
       break;
     case "pending_review":
-      return "Pending Review"; 
+      return __("Pending Review", "EOT_LMS");
       break;     
     default:
-      echo "Could not determine your status.";
+      echo __("Could not determine your status.", "EOT_LMS");
   }
 }
 
@@ -1075,7 +1075,7 @@ function uploadResource($video_name = '', $name = '', $order = 10, $url = '')
 
   if(!$video_id)
   {
-    return "ERROR: couldn't get the video ID.";
+    return __("ERROR: couldn't get the video ID.", "EOT_LMS");
   }
 
   $sql = "INSERT INTO " . TABLE_RESOURCES . " (video_id, name, `order`, `date`, url) VALUES (" . $video_id . ", '" . $name . "', " . $order . ", NOW(), '" . $url . "')";
@@ -1083,10 +1083,10 @@ function uploadResource($video_name = '', $name = '', $order = 10, $url = '')
 
   if(!$result)
   {
-    return "ERROR: couldn't insert resource into DB (query).";
+    return __("ERROR: couldn't insert resource into DB (query).", "EOT_LMS");
   }
 
-  return "Successfully uploaded!";
+  return __("Successfully uploaded!", "EOT_LMS");
 }
 
 //This function grabs the resources previously uploaded for a ceratin video. Video Id is from the wp_videos table
@@ -1158,7 +1158,7 @@ function updateCreateSalesRep_callback()
     else
     {
       $result['status'] = 0;
-      $result['message'] = "updateCreateSalesRep ERROR: No user id provided.";
+      $result['message'] = __("updateCreateSalesRep ERROR: No user id provided.", "EOT_LMS");
     }
   }
 
@@ -1222,9 +1222,9 @@ function display_uber_manager_dashboard()
   $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
   $data = compact ('org_id');
 
-  echo '<h1>Uber Manager Administration</h1>';
+  echo '<h1>' . __("Uber Manager Administration", "EOT_LMS") . '</h1>';
 
-  echo "<p>The Uber Administration panel is where you'll manage your organization's content & staff.</p>"
+  echo "<p>" . __("The Uber Administration panel is where you'll manage your organization's content & staff.", "EOT_LMS") . "</p>"
 ?>
   <div class="row">
     <div class="col">
@@ -1233,9 +1233,9 @@ function display_uber_manager_dashboard()
       </a>
     </div>
     <div class="col">
-      <a href="?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')">Copy Courses</a>
+      <a href="?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')"><?= __("Copy Courses", "EOT_LMS") ?></a>
       <br>
-      Copy your custom courses into any of your organization's camps
+      <?= __("Copy your custom courses into any of your organization's camps", "EOT_LMS") ?>
     </div>
   </div>
   <br>
@@ -1252,9 +1252,9 @@ function display_uber_manager_dashboard()
     $userTableObj = new stdClass(); 
     $userTableObj->rows = array();
     $userTableObj->headers = array(
-      'Camp Name' => 'left',
-      'Director'=> 'left',
-      'Actions'=> 'center'
+      __("Camp Name", "EOT_LMS") => 'left',
+      __("Director", "EOT_LMS") => 'left',
+      __("Actions", "EOT_LMS") => 'center'
     );
 
     // Get all umbrella camps, and add them into camps array.
@@ -1278,7 +1278,7 @@ function display_uber_manager_dashboard()
       }
 
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>Admin</a>');
+      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
 
     }
 
@@ -1304,9 +1304,9 @@ function display_umbrella_manager_dashboard()
   $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
   $data = compact ('org_id');
 
-  echo '<h1>Umbrella Manager Administration</h1>';
+  echo '<h1>' . __("Umbrella Manager Administration", "EOT_LMS") . '</h1>';
 
-  echo "<p>The Umbrella Administration panel is where you'll manage your organization's content & staff.</p>"
+  echo "<p>" . __("The Umbrella Administration panel is where you'll manage your organization's content & staff.", "EOT_LMS") . "</p>";
 ?>
   <div class="row">
     <div class="col">
@@ -1315,9 +1315,9 @@ function display_umbrella_manager_dashboard()
       </a>
     </div>
     <div class="col">
-      <a href="?part=copy_courses" onclick="load('load_courses')">Copy Courses</a>
+      <a href="?part=copy_courses" onclick="load('load_courses')"><?= __("Copy Courses", "EOT_LMS") ?></a>
       <br>
-      Copy your custom courses into any of your organization's camps
+      <?= __("Copy your custom courses into any of your organization's camps", "EOT_LMS") ?>
     </div>
   </div>
   <br>
@@ -1334,9 +1334,9 @@ function display_umbrella_manager_dashboard()
     $userTableObj = new stdClass(); 
     $userTableObj->rows = array();
     $userTableObj->headers = array(
-      'Camp Name' => 'left',
-      'Director'=> 'left',
-      'Actions'=> 'center'
+      __("Camp Name", "EOT_LMS") => 'left',
+      __("Director", "EOT_LMS") => 'left',
+      __("Actions", "EOT_LMS") => 'center'
     );
 
     // Get all umbrella camps, and add them into camps array.
@@ -1360,7 +1360,7 @@ function display_umbrella_manager_dashboard()
       }
 
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>Admin</a>');
+      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
 
     }
 
@@ -1453,7 +1453,7 @@ function verifyUserAccess ()
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'couldn\'t find the subscription' );
+        return array( 'status' => 0, 'message' => __("couldn't find the subscription", "EOT_LMS") );
       }
 
     }
@@ -1468,7 +1468,7 @@ function verifyUserAccess ()
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'we didn\'t get an org_id and user_id' );
+        return array( 'status' => 0, 'message' => __("we didn't get an org_id and user_id", "EOT_LMS") );
       }
     }
 
@@ -1485,7 +1485,7 @@ function verifyUserAccess ()
     }
     else
     {
-      return array( 'status' => 0, 'message' => 'couldn\'t get the uber admin\'s org_id' );
+      return array( 'status' => 0, 'message' => __("couldn't get the uber admin's org_id", "EOT_LMS") );
     }
 
     // get the user meta for the manager so we can compare the umbrella_group_id
@@ -1510,17 +1510,17 @@ function verifyUserAccess ()
         }
         else
         {
-          return array( 'status' => 0, 'message' => 'couldn\'t get the subscription ID' );
+          return array( 'status' => 0, 'message' => __("couldn't get the subscription ID", "EOT_LMS") );
         }
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'couldn\'t confirm this uber user is this user\'s uber admin.' );
+        return array( 'status' => 0, 'message' => __("couldn't confirm this uber user is this user's uber admin.", "EOT_LMS") );
       }
     }
     else
     {
-      return array( 'status' => 0, 'message' => 'couldn\'t get the manager\'s meta info' );
+      return array( 'status' => 0, 'message' => __("couldn't get the manager's meta info", "EOT_LMS") );
     }
 
 
@@ -1547,7 +1547,7 @@ function verifyUserAccess ()
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'couldn\'t find the subscription' );
+        return array( 'status' => 0, 'message' => __("couldn't find the subscription", "EOT_LMS") );
       }
 
     }
@@ -1562,7 +1562,7 @@ function verifyUserAccess ()
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'we didn\'t get an org_id and user_id' );
+        return array( 'status' => 0, 'message' => __("we didn't get an org_id and user_id", "EOT_LMS") );
       }
     }
 
@@ -1579,7 +1579,7 @@ function verifyUserAccess ()
     }
     else
     {
-      return array( 'status' => 0, 'message' => 'couldn\'t get the uber admin\'s org_id' );
+      return array( 'status' => 0, 'message' => __("couldn't get the uber admin's org_id", "EOT_LMS") );
     }
 
     // get the user meta for the manager so we can compare the regional_umbrella_group_id
@@ -1604,17 +1604,17 @@ function verifyUserAccess ()
         }
         else
         {
-          return array( 'status' => 0, 'message' => 'couldn\'t get the subscription ID' );
+          return array( 'status' => 0, 'message' => __("couldn't get the subscription ID", "EOT_LMS") );
         }
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'couldn\'t confirm this uber user is this user\'s uber admin.' );
+        return array( 'status' => 0, 'message' => __("couldn't confirm this uber user is this user's uber admin.", "EOT_LMS") );
       }
     }
     else
     {
-      return array( 'status' => 0, 'message' => 'couldn\'t get the manager\'s meta info' );
+      return array( 'status' => 0, 'message' => __("couldn't get the manager's meta info", "EOT_LMS") );
     }
   }
   else if (current_user_can("is_director"))
@@ -1635,17 +1635,17 @@ function verifyUserAccess ()
         }
         else
         {
-          return array( 'status' => 0, 'message' => 'not the same user' );
+          return array( 'status' => 0, 'message' => __("not the same user", "EOT_LMS") );
         }
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'something went wrong and we couldn\'t find this subscription' );
+        return array( 'status' => 0, 'message' => __("something went wrong and we couldn't find this subscription", "EOT_LMS") );
       }
     }
     else
     {
-      return array( 'status' => 0, 'message' => 'a camp director without a subscription ID' );
+      return array( 'status' => 0, 'message' => __("a camp director without a subscription ID", "EOT_LMS") );
     }
   }
   else if (current_user_can("is_student"))
@@ -1662,16 +1662,16 @@ function verifyUserAccess ()
       }
       else
       {
-        return array( 'status' => 0, 'message' => 'User not in this subscription.' );
+        return array( 'status' => 0, 'message' => __("User not in this subscription.", "EOT_LMS") );
       }
     }
     else
     {
-      return array( 'status' => 0, 'message' => 'ERROR: student without a subscription ID' );
+      return array( 'status' => 0, 'message' => __("ERROR: student without a subscription ID", "EOT_LMS") );
     }
   }
 
-  return array( 'status' => 0, 'message' => 'You do not have the authority to modify this page.' ); // if got here then they have no authority to modify
+  return array( 'status' => 0, 'message' => __("You do not have the authority to modify this page.", "EOT_LMS") ); // if got here then they have no authority to modify
 }
 
 /********************************************************************************************************
@@ -1701,7 +1701,7 @@ function assignCampUmbrellaManager_callback()
     }
     else
     {
-      echo json_encode(array('status' => 0, 'message' => 'Failed to assign camp to umbrella manager...'));
+      echo json_encode(array('status' => 0, 'message' => __("Failed to assign camp to umbrella manager...", "EOT_LMS")));
     }
   wp_die();
 }
@@ -1786,9 +1786,9 @@ error_log("users_info: " . json_encode($users));
         // Generate a link to set a new password
         $user_data = get_user_by( 'email',  $email ); 
         $key = get_password_reset_key( $user_data );
-        $set_new_password_link = '<a href="'.network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($email), 'login').'">Reset your password</a>';
+        $set_new_password_link = '<a href="'.network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($email), 'login').'">' . __("Reset your password", "EOT_LMS") . '</a>';
         $vars['password'] = $set_new_password_link;
-        $vars['logininfo'] = "Username: $email<br>Password: $set_new_password_link";
+        $vars['logininfo'] = __("Username:", "EOT_LMS") . " $email<br>" . __("Password:", "EOT_LMS") . " $set_new_password_link";
       }
 
       // Need to add extra breakspace, cause on the ACF Wysiwyg Editor uses <p></p> without <br> when adding a line break or <enter>
@@ -1904,7 +1904,7 @@ function addSubscriptionUpgrade ($subscription_id = 0, $data = array())
   if ($subscription_id <= 0 || $price < 0 || $ordered_accounts <= 0 || $user_id <= 0 || empty($method))
   {
     $result['success'] = false;
-    $result['errors'] = 'addSubscriptionUpgrade error: Couldn\'t add row to WP upgrades because of missing parameters';
+    $result['errors'] = __("addSubscriptionUpgrade error: Couldn't add row to WP upgrades because of missing parameters", "EOT_LMS");
   }
   $rep_id =  ( $rep_id ? $rep_id : 0);
   global $wpdb;
@@ -1922,7 +1922,7 @@ function addSubscriptionUpgrade ($subscription_id = 0, $data = array())
   else
   {
     $result['success'] = false;
-    $result['errors'] = 'addSubscriptionUpgrade error: ' . $wpdb->print_error();
+    $result['errors'] = __("addSubscriptionUpgrade error:", "EOT_LMS") . ' ' . $wpdb->print_error();
   }
   return $result;
 }
@@ -2366,12 +2366,12 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
             $has_error = true;
             $has_user_error = true;
 //              echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-            $import_status .= "$email - ERROR: User exists in WP. But couldnt enroll into course: ".$result2['message']."<br>";
+            $import_status .= "$email - " . __("ERROR: User exists in WP. But couldnt enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
           }
           else
           {
             // success
-            $import_status .= "$email - SUCCESS: enrolled in course<br>";
+            $import_status .= "$email - " . __("SUCCESS: enrolled in course", "EOT_LMS") . "<br>";
           }
         }
         else
@@ -2380,7 +2380,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
           $has_error = true;
           $has_user_error = true;
 //            echo "<p>ERROR: Could not create user: $email ".$result['message']."</p>";
-          $import_status .= "$email - ERROR: Could not create user: ".$result['message']."<br>";
+          $import_status .= "$email - " . __("ERROR: Could not create user:", "EOT_LMS") . " ".$result['message']."<br>";
         }
       }
       else
@@ -2389,7 +2389,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
         $has_error = true;
         $has_user_error = true;
 //        echo "<p>ERROR: This user, $email, already exists but is assigned to a different organization.</p>";
-        $import_status .= "$email - ERROR: This user, already exists but is assigned to a different camp.<br>";
+        $import_status .= "$email - " . __("ERROR: This user, already exists but is assigned to a different camp.", "EOT_LMS") . "<br>";
       }
     }
     else
@@ -2407,12 +2407,12 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
           $has_error = true;
           $has_user_error = true;
 //          echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-          $import_status .= "$email - ERROR: Cerated user in WPLU but couldnt enroll into course: ".$result2['message']."<br>";
+          $import_status .= "$email - " . __("ERROR: Cerated user in WPLU but couldnt enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
         }
         else
         {
           // it succeeded
-          $import_status .= "$email - SUCCESS: enrolled in course<br>";
+          $import_status .= "$email - " . __("SUCCESS: enrolled in course", "EOT_LMS") . "<br>";
         }
       }
       else
@@ -2421,7 +2421,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
         $has_error = true;
         $has_user_error = true;
 //        echo "<p>ERROR: Could not create user: $email ".$result['message']."</p>";
-        $import_status .= "$email - ERROR: User didnt exist but could not create user: ".$result['message']."<br>";
+        $import_status .= "$email - " . __("ERROR: User didnt exist but could not create user:", "EOT_LMS") . " ".$result['message']."<br>";
       }
     }
     
@@ -2431,8 +2431,8 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
     *************************************************************/
     if($isEmail != 0 && !$has_user_error) 
     {
-      $loginInfo = 'Username: ' . $email . '<br/>'; // Login Information
-      $loginInfo .= 'Password: ' . $password;
+      $loginInfo = __("Username:", "EOT_LMS") . ' ' . $email . '<br/>'; // Login Information
+      $loginInfo .= __("Password:", "EOT_LMS") . ' ' . $password;
       $name = $first_name . ' ' . $last_name;
       $campname = get_the_title($org_id); // the camp name
       $vars = array(
@@ -2471,7 +2471,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
     // Check for error.
     if(isset($response['status']) && $response['status'] == 0)
     {
-      $emailError .= "Error: " . $response['message'];
+      $emailError .= __("Error:", "EOT_LMS") . " " . $response['message'];
       $sent = 0;
     }
   }
@@ -2482,7 +2482,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
   if( isset($emailError) && !empty($emailError) )
   {
 //    echo "<p>$emailError</p>";
-    $import_status .= "Email " . $emailError . "<br>";
+    $import_status .= __("Email", "EOT_LMS") . " " . $emailError . "<br>";
     // continue with the rest of the user creation.
     $final_result['status'] = true;
     $final_result['org_id'] = $org_id;
@@ -2502,7 +2502,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
   else
   {
 //    echo "<p><strong>There were a few errors while processing your request. All errors have been displayed above. Users without errors have been created. Users with errors have not and you will need to create them manually.</strong></p>";
-    $import_status .= "Email Error: Users without errors have been created. Users with errors have not and you will need to create them manually.<br>";
+    $import_status .= __("Email Error: Users without errors have been created. Users with errors have not and you will need to create them manually.", "EOT_LMS") . "<br>";
     // continue with the rest of the user creation.
     $final_result['status'] = true;
     $final_result['org_id'] = $org_id;
@@ -2538,7 +2538,7 @@ function eot_bbp_create_initial_content( $args = array() )
 //Customize bbpress breadcrumbs
 function mycustom_bb_breadcrumb_options() 
 {
-  $args['before']  = '<div class="bbp-breadcrumb"><p><span class="bbp-breadcrumb-text"><a href="/dashboard">My Dashboard</a></span><span class="bbp-breadcrumb-sep"> › </span>';
+  $args['before']  = '<div class="bbp-breadcrumb"><p><span class="bbp-breadcrumb-text"><a href="/dashboard">' . __("My Dashboard", "EOT_LMS") . '</a></span><span class="bbp-breadcrumb-sep"> › </span>';
 	// Home - default = true
 	$args['include_home']    = false;
 	// Forum root - default = true
@@ -2660,16 +2660,16 @@ function enrollUserInCourse($email = '', $data = array())
     * subscription_id - the subscription id
     */
     if($email == "")
-        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: invalid user email address.");
+        return array('status' => 0, 'message' => __("ERROR in enrollUserInCourse: invalid user email address.", "EOT_LMS") );
 
     if($course_id == null)
-        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: no course id supplied.");
+        return array('status' => 0, 'message' => __("ERROR in enrollUserInCourse: no course id supplied.", "EOT_LMS") );
 
     if($org_id == null)
-        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: no organization id supplied.");
+        return array('status' => 0, 'message' => __("ERROR in enrollUserInCourse: no organization id supplied.", "EOT_LMS") );
 
     if($subscription_id == null)
-        return array('status' => 0, 'message' => "ERROR in enrollUserInCourse: no subscription id supplied.");
+        return array('status' => 0, 'message' => __("ERROR in enrollUserInCourse: no subscription id supplied.", "EOT_LMS") );
 
     $user = get_user_by('email', $email);
     global $wpdb;
@@ -2697,7 +2697,7 @@ function enrollUserInCourse($email = '', $data = array())
     //checks for errors when creating enrollment
     if($insert===FALSE) 
     {
-        return array('status' => 0, 'message' => "Error in enrollUserInCourse");
+        return array('status' => 0, 'message' => __("Error in enrollUserInCourse", "EOT_LMS"));
     }    
     else
     {
@@ -2711,7 +2711,7 @@ function getEotUsers($org_id = 0, $role = 'student')
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     if (!$org_id)
     {
-      return array ('status' => 0, 'message' => 'No org id specified');
+      return array ('status' => 0, 'message' => __("No org id specified", "EOT_LMS"));
     }
 
     $users_info = get_users( 
@@ -2761,19 +2761,19 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     global $wpdb;
     if($course_name == "") 
     {
-      return array('status' => 0, 'message' => "createCourse error: The course name cannot be blank.");
+      return array('status' => 0, 'message' => __("createCourse error: The course name cannot be blank.", "EOT_LMS") );
     }
     else if (!isset($org_id) || $org_id <= 0 || empty($org_id))
     {
-      return array('status' => 0, 'message' => "createCourse error: The organization ID cannot be blank.");
+      return array('status' => 0, 'message' => __("createCourse error: The organization ID cannot be blank.", "EOT_LMS") );
     }
     else if (!isset($user_id) || $user_id <= 0 || empty($user_id))
     {
-      return array('status' => 0, 'message' => "createCourse error: The Owner ID cannot be blank.");
+      return array('status' => 0, 'message' => __("createCourse error: The Owner ID cannot be blank.", "EOT_LMS") );
     }
     else if (!isset($subscription_id) || $subscription_id <= 0 || empty($subscription_id))
     {
-      return array('status' => 0, 'message' => "createCourse error: The Subscription ID cannot be blank.");
+      return array('status' => 0, 'message' => __("createCourse error: The Subscription ID cannot be blank.", "EOT_LMS") );
     }
 
     
@@ -2817,7 +2817,7 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     //checks for errors when create the course
     if( !$insert ) 
     {
-      return array('status' => 0, 'message' => "createCourse error:" . $wpdb->last_error);
+      return array('status' => 0, 'message' => __("createCourse error:", "EOT_LMS") . $wpdb->last_error);
     }    
     else if( $wpdb->insert_id ) // no errors when inserting
     {
@@ -2835,13 +2835,13 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
         }
         else // error
         {
-          return array('status' => 0, 'message' => "copyCourse error:" . $wpdb->last_error);
+          return array('status' => 0, 'message' => __("copyCourse error:", "EOT_LMS") . $wpdb->last_error);
         }
       }
     }
     else
     {
-      return array('status' => 0, 'message' => "createCourse error: Something went wrong!");
+      return array('status' => 0, 'message' => __("createCourse error: Something went wrong!", "EOT_LMS") );
     }
 }
 
@@ -2882,7 +2882,7 @@ function getModules_callback()
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can ('is_sales_manager') )
         {
             $result['data'] = 'failed';
-            $result['message'] = 'Error: Sorry, you do not have permisison to view this page. ';
+            $result['message'] = __("Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         }
         else
         {
@@ -2922,20 +2922,20 @@ function getModules_callback()
                 $result['video_count'] = 0; // No videos.
                 $result['group_id'] = $course_id; // course ID. This is still required on the template so that the user will be able to click the "Manage Courses" button.
                 $result['data'] = 'failed';
-                $result['message'] = '<p>There are no modules available in this course.</p>';
+                $result['message'] = '<p>' . __("There are no modules available in this course.", "EOT_LMS") . '</p>';
                 $result['course_status'] = $course_status; // The course status, to determine if the user is allowed to use manage module button.
             }
             else 
             {
                 $result['data'] = 'failed';
-                $result['message'] = 'Error in getting modules for course id: ('. $course_id .')';
+                $result['message'] = __("Error in getting modules for course id:", "EOT_LMS") . ' ('. $course_id .')';
             }
         }
     }
     else
     {
         $result['data'] = 'failed';
-        $result['message'] = '<p>Unable to process your request</p>';
+        $result['message'] = '<p>' . __("Unable to process your request", "EOT_LMS") . '</p>';
     }
 
     echo json_encode($result);
@@ -2971,7 +2971,7 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
   }
   else
   {
-    return array('status' => 0, 'message' => "ERROR in getCourses: Invalid parameters");
+    return array('status' => 0, 'message' => __("ERROR in getCourses: Invalid parameters", "EOT_LMS") );
   }
   return $courses;
 }
@@ -3650,7 +3650,7 @@ function createCourse_callback ( )
         {
             $result['display_errors'] = 'failed';
             $result['success'] = false;
-            $result['errors'] = 'createCourse_callback error: Sorry, your nonce did not verify.';
+            $result['errors'] = __("createCourse_callback error: Sorry, your nonce did not verify.", "EOT_LMS");
             echo json_encode($result);
             wp_die();
         }
@@ -3658,7 +3658,7 @@ function createCourse_callback ( )
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'createCourse_callback error: Please Enter the <b>Name</b> of the course.';
+            $result['errors'] = __("createCourse_callback error: Please Enter the", "EOT_LMS") . ' <b>' . __("Name", "EOT_LMS") . '</b> ' . __("of the course.", "EOT_LMS");
             echo json_encode($result);
             wp_die();
         }
@@ -3666,7 +3666,7 @@ function createCourse_callback ( )
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
         {
             $result['display_errors'] = 'success';
-            $result['errors'] = 'createCourse_callback error: Sorry, you do not have permisison to view this page. ';
+            $result['errors'] = __("createCourse_callback error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         }
         else 
         {
@@ -3679,14 +3679,14 @@ function createCourse_callback ( )
                 // Build the response if create course failed to execute.
                 $result['display_errors'] = true;
                 $result['data'] = 'failed';
-                $result['errors'] = "Response Message: " . $response['message'];
+                $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $response['message'];
             }
             elseif ($response['status'] == 1) 
             {
                 // Build the response if successful
                 $result['data'] = 'success';
                 $result['org_id'] = $org_id;
-                $result['message'] = 'Course has been created';
+                $result['message'] = __("Course has been created", "EOT_LMS");
                 $result['success'] = true;
                 $result['group_name'] = $course_name;
                 $result['group_id'] = $response['id'];
@@ -3698,7 +3698,7 @@ function createCourse_callback ( )
                 // return an error message
                 $result['display_errors'] = true;
                 $result['success'] = false;
-                $result['errors'] = "ERROR: Could not create the course name.";
+                $result['errors'] = __("ERROR: Could not create the course name.", "EOT_LMS");
             }
         }
     }
@@ -3706,7 +3706,7 @@ function createCourse_callback ( )
     {
         $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = 'createCourse_callback Error: Missing some parameters.';
+        $result['errors'] = __("createCourse_callback Error: Missing some parameters.", "EOT_LMS");
     }
     echo json_encode($result);
     wp_die();
@@ -3732,20 +3732,20 @@ function updateCourse_callback ( )
                 // return an error message
                 $result['display_errors'] = true;
                 $result['success'] = false;
-                $result['errors'] = "Course name cannot be blank";
+                $result['errors'] = __("Course name cannot be blank", "EOT_LMS");
         }
         // Check permissions
         else if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'edit-course_' . $org_id ) ) 
         {
             $result['display_errors'] = 'Failed';
             $result['success'] = false;
-            $result['errors'] = 'edit course error: Sorry, your nonce did not verify.';
+            $result['errors'] = __("edit course error: Sorry, your nonce did not verify.", "EOT_LMS");
         }
         else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
         {
             $result['display_errors'] = 'Failed';
             $result['success'] = false;
-            $result['errors'] = 'edit course error: Sorry, you do not have permisison to view this page. ';
+            $result['errors'] = __("edit course error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         }
         else 
         {
@@ -3758,14 +3758,14 @@ function updateCourse_callback ( )
                 // return an error message
                 $result['display_errors'] = true;
                 $result['success'] = false;
-                $result['errors'] = "Response Message: " . $wpdb->last_error;
+                $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $wpdb->last_error;
             }
             else 
             {
                 // Build the response if successful
                 $result['data'] = 'success';
                 $result['org_id'] = $org_id;
-                $result['message'] = 'Course has been updated';
+                $result['message'] = __("Course has been updated", "EOT_LMS");
                 $result['success'] = true;
                 $result['group_name'] = $course_name;
                 $result['group_id'] = $course_id;
@@ -3777,7 +3777,7 @@ function updateCourse_callback ( )
     {
         $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = 'updateCourse_callback Error: Missing some parameters.';
+        $result['errors'] = __("updateCourse_callback Error: Missing some parameters.", "EOT_LMS");
     }
     echo json_encode($result);
     wp_die();
@@ -3804,13 +3804,13 @@ function deleteCourse_callback()
       {
           $result['display_errors'] = 'failed';
           $result['success'] = false;
-          $result['errors'] = 'deleteCourse_callback error: Sorry, your nonce did not verify.';
+          $result['errors'] = __("deleteCourse_callback error: Sorry, your nonce did not verify.", "EOT_LMS");
       }
       else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
       {
           $result['display_errors'] = 'failed';
           $result['success'] = false;
-          $result['errors'] = 'deleteCourse_callback Error: Sorry, you do not have permisison to view this page.';
+          $result['errors'] = __("deleteCourse_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
       }
       else 
       {
@@ -3821,13 +3821,13 @@ function deleteCourse_callback()
             // return an error message
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = "Response Message: " . $wpdb->last_error;
+            $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $wpdb->last_error;
         }
         else 
         {
             // Build the response if successful
             $result['data'] = 'success';
-            $result['message'] = 'Course has been deleted';
+            $result['message'] = __("Course has been deleted", "EOT_LMS");
             $result['group_id'] = $course_id;
             $result['success'] = true;
         }
@@ -3854,7 +3854,7 @@ function getUsersInCourse_callback()
         if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
         {
             $result['data'] = 'failed';
-            $result['message'] = 'Error: Sorry, you do not have permisison to view this page. ';
+            $result['message'] = __("Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         }
         else
         {
@@ -3911,19 +3911,19 @@ function getUsersInCourse_callback()
             {
                 $result['staff_count'] = 0;
                 $result['data'] = 'failed';
-                $result['message'] = '<p>There are no users enrolled in this course.</p>';
+                $result['message'] = '<p>' . __("There are no users enrolled in this course.", "EOT_LMS") . '</p>';
             }
             else 
             {
                 $result['data'] = 'failed';
-                $result['message'] = 'Error in getting enrolled users for course id: ('. $course_id .')';
+                $result['message'] = __("Error in getting enrolled users for course id:", "EOT_LMS") . ' (' . $course_id . ')';
             }
         }
     }
     else
     {
         $result['data'] = 'failed';
-        $result['message'] = '<p>Unable to process your request</p>';
+        $result['message'] = '<p>' . __("Unable to process your request", "EOT_LMS") . '</p>';
     }
     echo json_encode($result);
     wp_die();
@@ -3961,21 +3961,21 @@ function createUser_callback()
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'create staff account error: Sorry, your nonce did not verify.';
+            $result['errors'] = __("create staff account error: Sorry, your nonce did not verify.", "EOT_LMS");
             echo json_encode( $result );
             wp_die();
         }
         if($first_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'create staff account error: Please Enter a first name';
+            $result['errors'] = __("create staff account error: Please Enter a first name", "EOT_LMS");
             echo json_encode( $result );
             wp_die();           
         }
         if($last_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'create staff account error: Please Enter a last name';
+            $result['errors'] = __("create staff account error: Please Enter a last name", "EOT_LMS");
             echo json_encode( $result );
             wp_die();           
         }        
@@ -3984,7 +3984,7 @@ function createUser_callback()
         {
             $result['display_errors'] = 'Failed';
             $result['success'] = false;
-            $result['errors'] = 'create staff account error: Sorry, you do not have permisison to view this page. ';
+            $result['errors'] = __("create staff account error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         }
         else 
         {
@@ -4031,14 +4031,14 @@ function createUser_callback()
                           {
                               $result['success'] = false;
                               $result['display_errors'] = true;
-                              $result['errors'] = "CreateUser_callback Error: " . $response['message'];
+                              $result['errors'] = __("CreateUser_callback Error:", "EOT_LMS") . " " . $response['message'];
                           }
                       }
                       else // user created successfully, but no course ID so can't enroll
                       {
                           $result['success'] = false;
                           $result['display_errors'] = true;
-                          $result['errors'] = "createUser_callback Error: Created user but could not enroll in course because couldn't find the course name.";
+                          $result['errors'] = __("createUser_callback Error: Created user but could not enroll in course because couldn't find the course name.", "EOT_LMS");
                       }   
                     }
                     else
@@ -4046,14 +4046,14 @@ function createUser_callback()
                       // error, couldnt insert the user
                       $result['display_errors'] = 'Failed';
                       $result['success'] = false;
-                      $result['errors'] = 'create staff account error: Sorry, we couldnt create the user. ';
+                      $result['errors'] = __("create staff account error: Sorry, we couldnt create the user.", "EOT_LMS");
                     }
             }
             else 
             {
                 $result['success'] = false;
                 $result['display_errors'] = true;
-                $result['errors'] = 'Wordpress error: User already exsists.';
+                $result['errors'] = __("Wordpress error: User already exsists.", "EOT_LMS");
             } 
         }
         // This variable will return to part-manage_staff_accounts.php $(document).bind('success.create_staff_account). Line 865
@@ -4127,15 +4127,15 @@ function createWpUser($data = array(), $role = 'student')
         // error, couldnt insert the user
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
-        $result['errors'] = 'createWpUser error: Sorry, we couldnt create the user. ';
-        $result['message'] = 'createWpUser error: Sorry, we couldnt create the user. ';
+        $result['errors'] = __("createWpUser error: Sorry, we couldnt create the user.", "EOT_LMS");
+        $result['message'] = __("createWpUser error: Sorry, we couldnt create the user.", "EOT_LMS");
       }
     }
     else
     {
       // email already exists  
       $result['success'] = false;
-      $result['message']='User already exists';
+      $result['message']= __("User already exists", "EOT_LMS");
     }
 
   }
@@ -4157,7 +4157,7 @@ function enrollUserInCourses($courses = array(), $org_id = 0, $email = '', $subs
   // make sure we have the data we need.
   if ($email == '' || !$org_id)
   {
-    return array('status' => 0, 'message' => 'Error: Invalid arguments supplied to enrollUserInCourses');
+    return array('status' => 0, 'message' => __("Error: Invalid arguments supplied to enrollUserInCourses", "EOT_LMS") );
   }
   $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
   $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
@@ -4184,7 +4184,7 @@ function enrollUserInCourses($courses = array(), $org_id = 0, $email = '', $subs
       if(user_is_enrolled($email, $course_id))
       {
         $result['status'] = 0;
-        $result['message'] .= "enrollUserInCourses Error: $email is already enrolled in " . $course_name . "<br>\n";
+        $result['message'] .= __("enrollUserInCourses Error: $email is already enrolled in", "EOT_LMS") . " " . $course_name . "<br>\n";
         return $result;
       }
       else
@@ -4193,14 +4193,14 @@ function enrollUserInCourses($courses = array(), $org_id = 0, $email = '', $subs
         if(isset($response['status']) && !$response['status']) // failed to enroll staff in course
         {
           $result['status'] = 0;
-          $result['message'] .= "enrollUserInCourses Error: Couldn't enroll $email in $course_name : " . $response['message'] . "<br>\n";
+          $result['message'] .= __("enrollUserInCourses Error: Couldn't enroll", "EOT_LMS") . " $email " . __("in", "EOT_LMS") . " $course_name : " . $response['message'] . "<br>\n";
         }
       }
     }
     else
     {
       $result['status'] = 0;
-      $result['message'] .= "enrollUserInCourses ERROR: couldn't find the course: $course_name <br>\n";
+      $result['message'] .= __("enrollUserInCourses ERROR: couldn't find the course:", "EOT_LMS") . " $course_name <br>\n";
     }
   }
   return $result;
@@ -4220,7 +4220,7 @@ function sendMail_callback()
     {
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
-        $result['errors'] = 'wp_ajax_sendMail error: Sorry, you do not have permisison to view this page. ';
+        $result['errors'] = __("wp_ajax_sendMail error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
     }
     else if( $target == "create_account" )
     {
@@ -4248,7 +4248,7 @@ function sendMail_callback()
             // return an error message
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = "Error in sendMail_callback: " . $response['message'];
+            $result['errors'] = __("Error in sendMail_callback:", "EOT_LMS") . " " . $response['message'];
         }
         else if($response['status'] == "1")
         {
@@ -4259,7 +4259,7 @@ function sendMail_callback()
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = "ERROR in sendMail_callback: Could not email the user";
+            $result['errors'] = __("ERROR in sendMail_callback: Could not email the user", "EOT_LMS");
         }
     }
 
@@ -4314,13 +4314,13 @@ function sendMail ( $target = '', $recipients = '', $data = array())
         else
         {
             // no receipients
-            return array('status' => 0, 'message' => "sendMail error: no recipients.");
+            return array('status' => 0, 'message' => __("sendMail error: no recipients.", "EOT_LMS"));
         }
     }
     else 
     {
         // No target defined. Return error.
-        return array('status' => 0, 'message' => "sendMail error: invalid target.");
+        return array('status' => 0, 'message' => __("sendMail error: invalid target.", "EOT_LMS") );
     }
 }
 
@@ -4358,18 +4358,18 @@ function massMail ( $sender_email = '', $sender_name = '', $recipients = array()
     }
     else
     {
-        return array('status' => 0, 'message' => "massMail error: invalid sender name/email.");
+        return array('status' => 0, 'message' => __("massMail error: invalid sender name/email.", "EOT_LMS"));
     }
 
 
     // Check if the mesage sends.
     if ( $status )
     {
-        return array('status' => 1, 'message' => 'Your message was sent succesfully.');
+        return array('status' => 1, 'message' => __("Your message was sent succesfully.", "EOT_LMS"));
     } 
     else 
     {
-        return array('status' => 0, 'message' => 'massMail error: Your messsage failed to send.');
+        return array('status' => 0, 'message' => __("massMail error: Your messsage failed to send.", "EOT_LMS"));
     }
 }
 
@@ -4406,23 +4406,23 @@ function updateUser_callback()
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'updateUser_callback error: Sorry, your nonce did not verify.';
+            $result['errors'] = __("updateUser_callback error: Sorry, your nonce did not verify.", "EOT_LMS");
         }
         else if($first_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'updateuser_callback Error: Please Enter a first name';
+            $result['errors'] = __("updateuser_callback Error: Please Enter a first name", "EOT_LMS");
         }
         else if($last_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'updateuser_callback Error: Please Enter a last name';
+            $result['errors'] = __("updateuser_callback Error: Please Enter a last name", "EOT_LMS");
         }
         else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
         {
             $result['display_errors'] = 'failed';
             $result['success'] = false;
-            $result['errors'] = 'updateuser_callback Error: Sorry, you do not have permisison to view this page.';
+            $result['errors'] = __("updateuser_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         }
         else 
         {
@@ -4451,7 +4451,7 @@ function updateUser_callback()
                         {
                             // success
                             $result['success'] = true;
-                            $result['message'] = 'User account information has been successfully updated.';
+                            $result['message'] = __("User account information has been successfully updated.", "EOT_LMS");
                             $result['staff_id']=$user_id->ID;
                             $result['staff_email']=$email;
                             $result['email']=$email;
@@ -4464,7 +4464,7 @@ function updateUser_callback()
                             //failed
                             $result['display_errors'] = 'failed';
                             $result['success'] = false;
-                            $result['errors'] = 'updateUser_callback Error: Could not update WP user.';
+                            $result['errors'] = __("updateUser_callback Error: Could not update WP user.", "EOT_LMS");
                         }
                     }
 
@@ -4484,7 +4484,7 @@ function updateUser_callback()
                     
                     // success
                     $result['success'] = true;
-                    $result['message'] = 'User account information has been successfully updated2.';
+                    $result['message'] = __("User account information has been successfully updated.", "EOT_LMS");
                     $result['staff_id'] = $WP_user_id;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
@@ -4504,7 +4504,7 @@ function updateUser_callback()
 
                     // assume we are successful for now... check later.
                     $result['success'] = true;
-                    $result['message'] = 'User account information has been successfully updated3.';
+                    $result['message'] = __("User account information has been successfully updated.", "EOT_LMS");
                     $result['staff_id']=$WP_user_id;
                     $result['old_email']= $old_email;
                     $result['staff_email']=$email;
@@ -4574,7 +4574,7 @@ function updateUser_callback()
     {
         $result['display_errors'] = 'failed';
         $result['success'] = false;
-        $result['errors'] = 'updateUser_callback Error: Missing some parameters.';
+        $result['errors'] = __("updateUser_callback Error: Missing some parameters.", "EOT_LMS");
     }
 
     echo json_encode( $result );
@@ -4602,13 +4602,13 @@ function deleteStaffAccount_callback ()
         {
             $result['display_errors'] = 'failed';
             $result['success'] = false;
-            $result['errors'] = 'deleteStaffAccount_callback error: Sorry, your nonce did not verify.';
+            $result['errors'] = __("deleteStaffAccount_callback error: Sorry, your nonce did not verify.", "EOT_LMS");
         }
         else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') )
         {
             $result['display_errors'] = 'failed';
             $result['success'] = false;
-            $result['errors'] = 'deleteStaffAccount_callback Error: Sorry, you do not have permisison to view this page.';
+            $result['errors'] = __("deleteStaffAccount_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
         }
         else
         {
@@ -4621,7 +4621,7 @@ function deleteStaffAccount_callback ()
                 {
                     $result['display_errors'] = 'failed';
                     $result['success'] = false;
-                    $result['errors'] = 'deleteStaffAccount_callback Error: Sorry, this user has already started the course.';
+                    $result['errors'] = __("deleteStaffAccount_callback Error: Sorry, this user has already started the course.", "EOT_LMS");
                     echo json_encode($result);
                     wp_die();
                 }
@@ -4643,14 +4643,14 @@ function deleteStaffAccount_callback ()
                     {
                         $result['display_errors'] = 'failed';
                         $result['success'] = false;
-                        $result['errors'] = 'deleteStaffAccount_callback ERROR: Could not delete the WP user account.';
+                        $result['errors'] = __("deleteStaffAccount_callback ERROR: Could not delete the WP user account.", "EOT_LMS");
                     }
                 }
                 else
                 {   
                     $result['display_errors'] = 'failed';
                     $result['success'] = false;
-                    $result['errors'] = 'deleteStaffAccount_callback ERROR: Could not find the user account.';
+                    $result['errors'] = __("deleteStaffAccount_callback ERROR: Could not find the user account.", "EOT_LMS");
                 }
         }
     }
@@ -4658,7 +4658,7 @@ function deleteStaffAccount_callback ()
     {
         $result['display_errors'] = 'failed';
         $result['success'] = false;
-        $result['errors'] = 'deleteStaffAccount_callback ERROR: Missing some parameters.';
+        $result['errors'] = __("deleteStaffAccount_callback ERROR: Missing some parameters.", "EOT_LMS");
     }
     echo json_encode($result);
     wp_die();
@@ -4707,13 +4707,13 @@ function enrollUserInCourse_callback ()
     {
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
-        $result['errors'] = 'enrollUserInCourse_callback error: Sorry, your nonce did not verify.';
+        $result['errors'] = __("enrollUserInCourse_callback error: Sorry, your nonce did not verify.", "EOT_LMS");
     }
     else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
     {
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
-        $result['errors'] = 'enrollUserInCourse_callback error: Sorry, you do not have permisison to view this page.';
+        $result['errors'] = __("enrollUserInCourse_callback error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
     }
     else 
     {
@@ -4743,12 +4743,12 @@ function enrollUserInCourse_callback ()
             // return an error message
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = "Response Message: " . $wpdb->last_error;
+            $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $wpdb->last_error;
         }
         else
         {
           // Build the response if successful
-          $result['message'] = 'User has been enrolled.';
+          $result['message'] = __("User has been enrolled.", "EOT_LMS");
           $result['success'] = true;
           $result['enrollment_id'] = $wpdb->insert_id;
         }
@@ -4777,13 +4777,13 @@ function deleteEnrolledUser_callback ()
     {
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
-        $result['errors'] = 'deleteEnrolledUser_callback Error: Sorry, your nonce did not verify.';
+        $result['errors'] = __("deleteEnrolledUser_callback Error: Sorry, your nonce did not verify.", "EOT_LMS");
     }
     else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
     {
         $result['display_errors'] = 'Failed';
         $result['success'] = false;
-        $result['errors'] = 'deleteEnrolledUser_callback Error: Sorry, you do not have permisison to view this page.';
+        $result['errors'] = __("deleteEnrolledUser_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
     }
     else 
     {
@@ -4798,13 +4798,13 @@ function deleteEnrolledUser_callback ()
             // return an error message
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = "Response Message: " . $wpdb->last_error;
+            $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $wpdb->last_error;
       }
       else 
       {
           // Build the response if successful
           $result['data'] = 'success';
-          $result['message'] = 'the enrollment has been deleted';
+          $result['message'] = __("the enrollment has been deleted", "EOT_LMS");
           $result['group_id'] = $course_id;
           $result['success'] = true;
       }
@@ -4832,7 +4832,7 @@ function updateDueDate_callback()
             {
                 $result['display_errors'] = 'Failed';
                 $result['success'] = false;
-                $result['errors'] = 'updateDueDate_callback Error: Sorry, you do not have permisison to view this page.';
+                $result['errors'] = __("updateDueDate_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
             }
             else
             {
@@ -4855,7 +4855,7 @@ function updateDueDate_callback()
                 {
                     $result['display_errors'] = true;
                     $result['success'] = false;
-                    $result['errors'] = "updateDueDate_callback ERROR: ". $response['message'];
+                    $result['errors'] = __("updateDueDate_callback ERROR:", "EOT_LMS") . " " . $response['message'];
 
                 }
                 else
@@ -4870,14 +4870,14 @@ function updateDueDate_callback()
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = "updateDueDate_callback ERROR: invalid task.";
+            $result['errors'] = __("updateDueDate_callback ERROR: invalid task.", "EOT_LMS");
         }
     }
     else
     {
         $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = "updateDueDate_callback ERROR: Missing parameters";
+        $result['errors'] = __("updateDueDate_callback ERROR: Missing parameters", "EOT_LMS");
     }
     echo json_encode($result);
     wp_die();
@@ -4976,7 +4976,7 @@ function update_file_title_callback()
     {
         $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = "Your title is invalid";
+        $result['errors'] = __("Your title is invalid", "EOT_LMS");
     }
     else
     {
@@ -5081,7 +5081,7 @@ function aws_delete_file_callback()
         {
           $result['display_errors'] = true;
           $result['success'] = false;
-          $result['errors'] = "Your file cannot be deleted";
+          $result['errors'] = __("Your file cannot be deleted", "EOT_LMS");
         } 
         else 
         {
@@ -5093,7 +5093,7 @@ function aws_delete_file_callback()
     {
       $result['display_errors'] = true;
       $result['success'] = false;
-      $result['errors'] = "Your file cannot be deleted";
+      $result['errors'] = __("Your file cannot be deleted", "EOT_LMS");
     }
     echo json_encode($result);
     wp_die();
@@ -5113,7 +5113,7 @@ function get_upload_form_callback()
         ob_start();
 ?>
         <div class="title" style="width:320px">
-            <div class="title_h2">Type in or update your title</div>
+            <div class="title_h2"><?= __("Type in or update your title", "EOT_LMS") ?></div>
         </div>
         <div class="middle">
             <span class="errorbox"></span>
@@ -5130,10 +5130,10 @@ function get_upload_form_callback()
           <div class="buttons">
             <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="update_file_title" style="display:none"></i>
             <a onclick="jQuery(document).trigger('close.facebox');" >
-              <div style="height:15px;padding-top:2px;"> Cancel</div>
+              <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS") ?></div>
             </a>
             <a active = '0' acton = "update_file_title" rel = "submit_button" onclick="jQuery('#update_file_title').show();">
-              <div style="height:15px;padding-top:2px;"> Submit</div>
+              <div style="height:15px;padding-top:2px;"> <?= __("Submit", "EOT_LMS") ?></div>
             </a>
           </div>
       </div>
@@ -5149,14 +5149,14 @@ function get_upload_form_callback()
         ob_start();
 ?>
         <div class="title">
-            <div class="title_h2">Delete This File?</div>
+            <div class="title_h2"><?= __("Delete This File?", "EOT_LMS") ?></div>
         </div>
         <div class="middle">
             <form id= "delete_quiz" frm_name="aws_delete_file" frm_action="aws_delete_file" rel="submit_form" hasError=0> 
                 <table padding=0 class="form"> 
                     <tr>
                         <td class="value">
-                            <p>Are you sure you want to delete this file?</p>
+                            <p><?= __("Are you sure you want to delete this file?", "EOT_LMS") ?></p>
                             <input type="hidden" name="key" value="<?= $key ?>" /> 
                             <input type="hidden" name="id" value="<?= $id ?>" />
                             <?php wp_nonce_field('aws-delete-file_' . $key); ?>
@@ -5169,10 +5169,10 @@ function get_upload_form_callback()
             <div class="buttons">
               <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="aws_delete_file" style="display:none"></i>
               <a onclick="jQuery(document).trigger('close.facebox');" >
-                <div style="height:15px;padding-top:2px;"> Cancel</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS") ?></div>
               </a>
               <a active = '0' acton = "aws_delete_file" rel = "submit_button" onclick="jQuery('#aws_delete_file').show();">
-                <div style="height:15px;padding-top:2px;"> Yes</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Yes", "EOT_LMS") ?></div>
               </a>
             </div>
         </div>
@@ -5201,7 +5201,7 @@ function get_module_form_callback()
         ob_start();
 ?>
         <div class="title" style="width:320px">
-            <div class="title_h2">Type in or update your title</div>
+            <div class="title_h2"><?= __("Type in or update your title", "EOT_LMS") ?></div>
         </div>
         <div class="middle">
             <span class="errorbox"></span>
@@ -5219,10 +5219,10 @@ function get_module_form_callback()
             <div class="buttons">
               <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="update_module_title" style="display:none"></i>
               <a onclick="jQuery(document).trigger('close.facebox');" >
-                <div style="height:15px;padding-top:2px;"> Cancel</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS") ?></div>
               </a>
               <a active = '0' acton = "update_module_title" rel = "submit_button" onclick="jQuery('#update_module_title').show();">
-                <div style="height:15px;padding-top:2px;"> Submit</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Submit", "EOT_LMS") ?></div>
               </a>
             </div>
         </div>
@@ -5238,14 +5238,14 @@ function get_module_form_callback()
         ob_start();
 ?>
         <div class="title">
-            <div class="title_h2">Delete This Module?</div>
+            <div class="title_h2"><?= __("Delete This Module?", "EOT_LMS") ?></div>
         </div>
         <div class="middle">
             <form id= "delete_quiz" frm_name="delete_module" frm_action="delete_module" rel="submit_form" hasError=0> 
                 <table padding=0 class="form"> 
                     <tr>
                         <td class="value">
-                            <p>If there are users assigned to this module, all records of the results will be lost</p>
+                            <p><?= __("If there are users assigned to this module, all records of the results will be lost", "EOT_LMS") ?></p>
                             <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
                             <input type="hidden" name="module_id" value="<?= $module_id ?>" /> 
                             <?php wp_nonce_field('delete-module_' . $module_id); ?>
@@ -5258,10 +5258,10 @@ function get_module_form_callback()
             <div class="buttons">
               <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="delete_module" style="display:none"></i>
               <a onclick="jQuery(document).trigger('close.facebox');" >
-                <div style="height:15px;padding-top:2px;"> Cancel</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS") ?></div>
               </a>
               <a active = '0' acton = "delete_module" rel = "submit_button" onclick="jQuery('#delete_module').show();">
-                <div style="height:15px;padding-top:2px;"> Yes</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Yes", "EOT_LMS") ?></div>
               </a>
             </div>
         </div>
@@ -5278,14 +5278,14 @@ function get_module_form_callback()
         ob_start();
 ?>
         <div class="title">
-            <div class="title_h2">Delete This Module Resource?</div>
+            <div class="title_h2"><?= __("Delete This Module Resource?", "EOT_LMS") ?></div>
         </div>
         <div class="middle">
             <form id= "delete_quiz" frm_name="delete_resource" frm_action="delete_resource" rel="submit_form" hasError=0> 
                 <table padding=0 class="form"> 
                     <tr>
                         <td class="value">
-                            <p>If there are users assigned to this module resource, all records of the results will be lost</p>
+                            <p><?= __("If there are users assigned to this module resource, all records of the results will be lost", "EOT_LMS") ?></p>
                             <input type="hidden" name="module_id" value="<?= $module_id ?>" /> 
                             <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
                             <input type="hidden" name="resource_id" value="<?= $resource_id ?>" /> 
@@ -5299,10 +5299,10 @@ function get_module_form_callback()
             <div class="buttons">
               <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="delete_resource" style="display:none"></i>
               <a onclick="jQuery(document).trigger('close.facebox');" >
-                <div style="height:15px;padding-top:2px;"> Cancel</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS") ?></div>
               </a>
               <a active = '0' acton = "delete_resource" rel = "submit_button" onclick="jQuery('#delete_resource').show();">
-                <div style="height:15px;padding-top:2px;"> Yes</div>
+                <div style="height:15px;padding-top:2px;"> <?= __("Yes", "EOT_LMS") ?></div>
               </a>
             </div>
         </div>
@@ -5330,7 +5330,7 @@ function delete_module_callback()
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'delete module error: Sorry, your nonce did not verify.';
+            $result['errors'] = __("delete module error: Sorry, your nonce did not verify.", "EOT_LMS");
             echo json_encode( $result );
             wp_die();
         }
@@ -5366,7 +5366,7 @@ function delete_resource_callback()
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = 'delete resource error: Sorry, your nonce did not verify.';
+            $result['errors'] = __("delete resource error: Sorry, your nonce did not verify.", "EOT_LMS");
             echo json_encode( $result );
             wp_die();
         }
@@ -5391,12 +5391,12 @@ function delete_resource_callback()
           }
           else
           {
-             echo json_encode(array('success' => 'false', "errors" => "There was an error deleting the resource.")); 
+             echo json_encode(array('success' => 'false', "errors" => __("There was an error deleting the resource.", "EOT_LMS"))); 
           }
         }
         else
         {
-          echo json_encode(array('success' => 'false', "errors" => "There was an error deleting the resource, you do not appear to own this resource."));
+          echo json_encode(array('success' => 'false', "errors" => __("There was an error deleting the resource, you do not appear to own this resource.", "EOT_LMS")));
         }
         wp_die();
 }
@@ -5417,7 +5417,7 @@ function update_module_title_callback()
     {
         $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = 'update module title error: Sorry, your nonce did not verify.';
+        $result['errors'] = __("update module title error: Sorry, your nonce did not verify.", "EOT_LMS");
         echo json_encode( $result );
         wp_die();
     }
@@ -5426,7 +5426,7 @@ function update_module_title_callback()
     {
         $result['display_errors'] = true;
         $result['success'] = false;
-        $result['errors'] = "Your module title is invalid";
+        $result['errors'] = __("Your module title is invalid", "EOT_LMS");
     } 
     else 
     {
@@ -5435,7 +5435,7 @@ function update_module_title_callback()
         {
             $result['display_errors'] = true;
             $result['success'] = false;
-            $result['errors'] = "There was an error changing your title";
+            $result['errors'] = __("There was an error changing your title", "EOT_LMS");
         }
         else
         {
@@ -5564,7 +5564,7 @@ function add_resource_to_module_callback()
     // make sure we got a resource type.
     if($thetype == '')
     {
-      echo json_encode(array('message' => 'Error in add_resource_to_module: coulnt find the resource type'));
+      echo json_encode(array('message' => __("Error in add_resource_to_module: coulnt find the resource type", "EOT_LMS")));
       wp_die();
     }
 
@@ -5580,7 +5580,7 @@ function add_resource_to_module_callback()
     $existing = $wpdb->get_row("SELECT * FROM " . TABLE_MODULE_RESOURCES . " WHERE module_id = " . $module_id . " AND resource_id = " . $resource_id . " AND type = '" . $thetype . "'",ARRAY_A);
     if($existing)
     {
-        echo json_encode(array('message'=>'You have already added this resource to this module.'));
+        echo json_encode(array('message'=>__("You have already added this resource to this module.", "EOT_LMS")));
     }
     else
     {
@@ -5640,14 +5640,14 @@ function getCourseForm_callback ( )
             ob_start();
         ?>
             <div class="title">
-                <div class="title_h2">Create a Course</div>
+                <div class="title_h2"><?= __("Create a Course", "EOT_LMS") ?></div>
             </div>
             <div class="middle">
                 <form id= "create_staff_group" frm_name="create_staff_group" frm_action="createCourse" rel="submit_form" hasError=0> 
                     <table padding=0 class="form"> 
                         <tr> 
                             <td class="label"> 
-                                <label for="field_name">Name:</label> 
+                                <label for="field_name"><?= __("Name:", "EOT_LMS") ?></label> 
                             <td class="value"> 
                                 <input  type="text" name="name" id="field_name" size="35" /><span class="asterisk">*</span> 
                             </td>
@@ -5655,13 +5655,13 @@ function getCourseForm_callback ( )
                         <tr >
                             <TD></TD>
                             <td class="value">
-                                <span class="fyi">eg. First-Year Staff, Returning Staff, etc.</span>
+                                <span class="fyi"><?= __("eg. First-Year Staff, Returning Staff, etc.", "EOT_LMS") ?></span>
                             </td>
                         </tr> 
                         
                         <tr> 
                             <td class="label"> 
-                                <label for="field_desc">Description:</label> 
+                                <label for="field_desc"><?= __("Description:", "EOT_LMS") ?></label> 
                             </td> 
                             <td class="value"> 
                                 <input type="text" name="desc" id="field_desc" size="35" />  
@@ -5670,7 +5670,7 @@ function getCourseForm_callback ( )
                         <tr >
                         <TD></TD>
                             <td class="value">
-                                <span class="fyi">(for your own information)</span>
+                                <span class="fyi"><?= __("(for your own information)", "EOT_LMS") ?></span>
                             </td>
                         </tr>              
                         <tr> 
@@ -5691,11 +5691,11 @@ function getCourseForm_callback ( )
                 <div class="buttons">
                     <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                         <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt="Close"/>
-                        Cancel
+                        <?= __("Cancel", "EOT_LMS") ?>
                     </a>
                         <a active = '0' acton = "create_staff_group" rel = "submit_button" class="positive">
                         <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt="Save"/> 
-                        Save
+                        <?= __("Save", "EOT_LMS") ?>
                     </a>
                 </div>
             </div>
@@ -5711,42 +5711,42 @@ function getCourseForm_callback ( )
             ob_start();
         ?>
             <div class="title">
-                <div class="title_h2">Add a Camp Director</div>
+                <div class="title_h2"><?= __("Add a Camp Director", "EOT_LMS") ?></div>
             </div>
             <div class="middle">
                 <form id= "edit_staff_group" frm_name="create_uber_camp_director" frm_action="createUberCampDirector" rel="submit_form" hasError=0> 
                     <table style="border-spacing: 10px; border-collapse: separate;">   
                         <tr> 
                           <td class="label"> 
-                            <label for="field_camp_name">Camp Name:</label> 
+                            <label for="field_camp_name"><?= __("Camp Name:", "EOT_LMS") ?></label> 
                           <td class="value"> 
                             <input  type="text" name="camp_name" id="field_camp_name" size="20" value=""/>
                           </td>
                         </tr>  
                         <tr> 
                           <td class="label"> 
-                            <label for="field_first_name">First Name:</label> 
+                            <label for="field_first_name"><?= __("First Name:", "EOT_LMS") ?></label> 
                           <td class="value"> 
                             <input  type="text" name="first_name" id="field_first_name" size="20" value=""/>
                           </td>
                         </tr>
                         <tr> 
                           <td class="label"> 
-                            <label for="field_last_name">Last Name:</label> 
+                            <label for="field_last_name"><?= __("Last Name:", "EOT_LMS") ?></label> 
                           <td class="value"> 
                             <input  type="text" name="last_name" id="field_last_name" size="20" value=""/>
                           </td>
                         </tr>  
                         <tr> 
                           <td class="label"> 
-                            <label for="field_password">Email:</label> 
+                            <label for="field_password"><?= __("Email:", "EOT_LMS") ?></label> 
                           <td class="value"> 
                             <input  type="email" name="email" id="field_email" size="20" value=""/>
                           </td>
                         </tr>  
                         <tr> 
                           <td class="label"> 
-                            <label for="field_password">Password:</label> 
+                            <label for="field_password"><?= __("Password:", "EOT_LMS") ?></label> 
                           <td class="value"> 
                             <input  type="password" name="password" id="field_password" size="20" value=""/>
                           </td>
@@ -5766,11 +5766,11 @@ function getCourseForm_callback ( )
                 <div class="buttons">
                   <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
-                      Cancel
+                      <?= __("Cancel", "EOT_LMS") ?>
                   </a>
                   <a active = '0' acton = "create_uber_camp_director" rel = "submit_button" class="positive">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
-                    Save
+                    <?= __("Save", "EOT_LMS") ?>
                   </a>
                 </div>
             </div>
@@ -5788,14 +5788,14 @@ function getCourseForm_callback ( )
             ob_start();
         ?>
             <div class="title">
-                <div class="title_h2">Edit Course</div>
+                <div class="title_h2"><?= __("Edit Course", "EOT_LMS") ?></div>
             </div>
             <div class="middle">
                 <form id= "edit_staff_group" frm_name="edit_staff_group" frm_action="updateCourse" rel="submit_form" hasError=0> 
                     <table padding=0 class="form"> 
                         <tr> 
                           <td class="label"> 
-                            <label for="field_name">Name:</label> 
+                            <label for="field_name"><?= __("Name:", "EOT_LMS") ?></label> 
                           <td class="value"> 
                             <input  type="text" name="name" id="field_name" size="35" value="<?= $course_data['course_name'] ?>"/><span class="asterisk">*</span> 
                           </td>
@@ -5803,13 +5803,13 @@ function getCourseForm_callback ( )
                         <tr >
                             <TD></TD>
                             <td class="value">
-                            <span class="fyi">eg. First-Year Staff, Returning Staff, etc.</span>
+                            <span class="fyi"><?= __("eg. First-Year Staff, Returning Staff, etc.", "EOT_LMS") ?></span>
                             </td>
                         </tr> 
                         <tr> 
                         
                           <td class="label"> 
-                            <label for="field_desc">Description:</label> 
+                            <label for="field_desc"><?= __("Description:", "EOT_LMS") ?></label> 
                           </td>
                           <td class="value"> 
                             <input type="text" name="desc" id="field_desc" size="35" value="<?= $course_data['course_description'] ?>"/>  
@@ -5818,7 +5818,7 @@ function getCourseForm_callback ( )
                         <tr >
                             <TD></TD>
                             <td class="value">
-                                <span class="fyi">(for your own information)</span>
+                                <span class="fyi"><?= __("(for your own information)", "EOT_LMS") ?></span>
                             </td>
                         </tr>   
                                    
@@ -5839,11 +5839,11 @@ function getCourseForm_callback ( )
                 <div class="buttons">
                   <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
-                      Cancel
+                      <?= __("Cancel", "EOT_LMS") ?>
                   </a>
                   <a active = '0' acton = "edit_staff_group" rel = "submit_button" class="positive">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
-                    Save
+                    <?= __("Save", "EOT_LMS") ?>
                   </a>
                 </div>
             </div>
@@ -5859,7 +5859,7 @@ function getCourseForm_callback ( )
             ob_start();
         ?>
             <div class="title">
-                <div class="title_h2">Delete <?=$course_name?> Course</div>
+                <div class="title_h2"><?= __("Delete", "EOT_LMS") ?> <?=$course_name?> <?= __("Course", "EOT_LMS") ?></div>
             </div>
             <div class="middle">
                 <form id= "delete_staff_group" frm_name="delete_staff_group" frm_action="deleteCourse" rel="submit_form" hasError=0> 
@@ -5867,7 +5867,7 @@ function getCourseForm_callback ( )
                         <tr >
                             <TD></TD>
                             <td class="value">
-                            <span class="fyi">Staff accounts enrolled in this course will NOT be deleted, but staff will no longer be able to access this course or its contents and any progress they made so far will be lost.</span>
+                            <span class="fyi"><?= __("Staff accounts enrolled in this course will NOT be deleted, but staff will no longer be able to access this course or its contents and any progress they made so far will be lost.", "EOT_LMS") ?></span>
                             </td>
                         </tr> 
                         <tr> 
@@ -5888,11 +5888,11 @@ function getCourseForm_callback ( )
                   <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="deleting_course" style="display:none"></i>
                   <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
-                      Cancel
+                      <?= __("Cancel", "EOT_LMS") ?>
                   </a>
                   <a active = '0' acton = "delete_staff_group" rel = "submit_button" class="positive" onclick="jQuery('#deleting_course').show();">
                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
-                    Delete
+                    <?= __("Delete", "EOT_LMS") ?>
                   </a>
                 </div>
             </div>
@@ -5938,11 +5938,11 @@ function getCourseForm_callback ( )
                           <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
                             <tr  class="head">
                               <td style ="padding:5px;" colspan="2">
-                                Publish Option
+                                <?= __("Publish Option", "EOT_LMS") ?>
                               </td>
                             </tr>
                             <tr>
-                              <td style ="padding:2px 5px 2px 5px;">Do you want to Publish this course after the copy?<br>(Published courses can not be modified by the individual camp. Draft courses will need to be published by each individual camp.)</td>
+                              <td style ="padding:2px 5px 2px 5px;"><?= __("Do you want to Publish this course after the copy?", "EOT_LMS") ?><br><?= __("(Published courses can not be modified by the individual camp. Draft courses will need to be published by each individual camp.)", "EOT_LMS") ?></td>
                               <td style="padding:2px 5px 2px 5px;font-size:16px;font-weight:bold;text-align:center;"  id="timeToComplete" >
                                 <input type="checkbox" name="chkbox_is_publish_course_after_copy" id="chkbox_is_publish_course_after_copy" value='' /> 
                               </td>
@@ -5969,7 +5969,7 @@ function getCourseForm_callback ( )
                 <div id="video_listing_pane" class="scroll-pane" style="padding:0px 0px 0px 10px;width: 600px">
                   <form name="add_video_group" id="add_video_group">
                     <ul class="tree organizeassignment">
-                      <h3 class="library_topic">Select which camps to copy this course into:</h3>
+                      <h3 class="library_topic"><?= __("Select which camps to copy this course into:", "EOT_LMS") ?></h3>
               <?php
                       // Display all uber camps and a clone checkbox beside it for cloning functionality.
                       foreach($camps as $camp)
@@ -5998,7 +5998,7 @@ function getCourseForm_callback ( )
             <div class="popup_footer" style="background-color:#FFF; padding:15px 15px 5px 15px;">
               <div class="buttons" >
                 <a active='0' acton="add_video_group" rel="done_button" >
-                  Done
+                  <?= __("Done", "EOT_LMS") ?>
                 </a>
       <!--
                 <a active='0' acton="add_video_group" collection="add_remove_from_group" rel="unselect_all_button" >
@@ -6110,20 +6110,21 @@ function getCourseForm_callback ( )
                     <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
                       <tr  class="head">
                         <td style ="padding:5px;" colspan="2">
-                          Assignment Summary
+                          <?= __("Assignment Summary", "EOT_LMS") ?>
                         </td>
                       </tr>
                       <tr>
-                        <td style ="padding:2px 5px 2px 5px;">Videos</td>
+                        <td style ="padding:2px 5px 2px 5px;"><?= __("Videos", "EOT_LMS") ?>
+</td>
                         <td style ="text-align:center;padding:2px 5px 2px 5px;" id="videoCount"><?= $videoCount ?></td>
                       </tr>
                       <tr>
-                        <td style ="padding:2px 5px 2px 5px;">Quizzes</td>
+                        <td style ="padding:2px 5px 2px 5px;"><?= __("Quizzes", "EOT_LMS") ?></td>
                         <td style ="text-align:center;padding:2px 5px 2px 5px;" id="quizCount"><?= $quizCount ?></td>
                       </tr>
                       <tr>
-                        <td style ="padding:2px 5px 2px 5px;">Estimated time to complete&nbsp;</td>
-                        <td style="padding:2px 5px 2px 5px;font-size:16px;font-weight:bold;text-align:center;"  id="timeToComplete" ><?= round((MINUTES_PER_VIDEO*$videoCount + MINUTES_PER_QUIZ*$quizCount)/60,1) ?> hours</td>
+                        <td style ="padding:2px 5px 2px 5px;"><?= __("Estimated time to complete", "EOT_LMS") ?>&nbsp;</td>
+                        <td style="padding:2px 5px 2px 5px;font-size:16px;font-weight:bold;text-align:center;"  id="timeToComplete" ><?= round((MINUTES_PER_VIDEO*$videoCount + MINUTES_PER_QUIZ*$quizCount)/60,1) ?> <?= __("hours", "EOT_LMS") ?></td>
                       </tr>
  
                     </table>         
@@ -6154,7 +6155,7 @@ function getCourseForm_callback ( )
                     <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
                       <tr  class="head">
                         <td style ="padding:5px;" colspan="2">
-                          Assignment Due Date
+                          <?= __("Assignment Due Date", "EOT_LMS") ?>
                         </td>
                       </tr>
                       <tr>
@@ -6163,25 +6164,25 @@ function getCourseForm_callback ( )
 <?php
                               if ($due_date === NULL) {
 ?>
-                                <p class='curr_duedate'><strong>Due Date:</strong> No due date set.</p>
+                                <p class='curr_duedate'><strong><?= __("Due Date:", "EOT_LMS") ?></strong> <?= __("No due date set.", "EOT_LMS") ?></p>
                                 <div id="datepicker"></div>
                                 <div id="remove_date" class="buttons" style="display:none;padding-top:10px;">
                                   <a class="negative" style="margin-right:50px;">
                                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
-                                      Remove Due Date
+                                      <?= __("Remove Due Date", "EOT_LMS") ?>
                                   </a>
                                 </div>
 <?php
                               } 
                               else 
                               {
-                                echo "<p class='curr_duedate'><strong>Due Date:</strong> " . date('j F, Y', strtotime($due_date));
+                                echo "<p class='curr_duedate'><strong>" . __("Due Date:", "EOT_LMS") . "</strong> " . date('j F, Y', strtotime($due_date));
 ?>
                                 <div id="datepicker"></div>
                                 <div id="remove_date" class="buttons" style="padding-top:10px;">
                                   <a class="negative" style="margin-right:50px;">
                                     <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
-                                    Remove Due Date
+                                    <?= __("Remove Due Date", "EOT_LMS") ?>
                                   </a>
                                 </div>
 <?php
@@ -6268,7 +6269,7 @@ function getCourseForm_callback ( )
                                     <input collection="add_remove_from_group" video_length="<?= $module_time ?>" org_id="<?= $org_id ?>" item_id="<?= $vid_id ?>" group_id="<?= $course_id ?>" assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" id="chk_video_<?= $module_id ?>" name="chk_video_<?= $module_id ?>" type="checkbox" value="1" <?=($video_active)?' checked="checked"':'';?> /> 
                                     <label for="chk_video_<?= $module_id ?>">
                                         <span name="video_title" class="<?=$video_class?> video_title">
-                                          <b>Video</b> - <span class="vtitle"><?= $module->title ?></span>
+                                          <b><?= __("Video", "EOT_LMS") ?></b> - <span class="vtitle"><?= $module->title ?></span>
                                         </span>
                                     </label>
 <?php
@@ -6293,7 +6294,7 @@ function getCourseForm_callback ( )
 ?>
                                             <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" video_id="<?= $module_id ?>" assignment_id="<?= $module_id ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   group_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> 
                                             <label for="chk_defaultquiz_<?= $module_id ?>">
-                                              <i>Exam</i> (<?= $exam['name'] ?>) 
+                                              <i><?= __("Exam", "EOT_LMS") ?></i> (<?= $exam['name'] ?>) 
                                             </label><br>
 <?php
                                          }
@@ -6311,7 +6312,7 @@ function getCourseForm_callback ( )
 ?>
                                             <input item="resource" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" assignment_id="<?= $module_id ?>" video_id="<?= $module_id ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($handout['ID'], $course_handouts_ids) ? ' checked="checked"':''; $handout_id = 0; // Reset Exam ID?> /> 
                                             <label for="chk_defaultresource_<?= $handout_id ?>">
-                                              <i>Resource</i> (<?= $handout['name'] ?>) 
+                                              <i><?= __("Resource", "EOT_LMS") ?></i> (<?= $handout['name'] ?>) 
                                             </label><br>
 <?php
                                             }
@@ -6331,13 +6332,13 @@ function getCourseForm_callback ( )
                     else
                     {
                         // Error in getting the library for this subscription ID
-                        echo "Invalid library ID.";
+                        echo __("Invalid library ID.", "EOT_LMS");
                     }
 ?>
               </ul>
 
               <div id="custom_quizzes_and_resources">
-                <h2 class="library_topic">Your Custom Modules</h2>
+                <h2 class="library_topic"><?= __("Your Custom Modules", "EOT_LMS") ?></h2>
                 <ul class="tree organizeassignment">
 <?php
                     foreach($modules_in_portal as $key => $module) // go thourh all the modules in our portal
@@ -6380,7 +6381,7 @@ function getCourseForm_callback ( )
 ?>
 <!--                                                    <input item="quiz" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" group_id="<?= $course_id ?>" <?= $exam_id ? ' item_id="' . $exam_id . '" name="chk_defaultquiz_'.$exam_id.'" id="chk_defaultquiz_' .$exam_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($exam['name'], $course_quizzes_titles) ? ' checked="checked"':''; $exam_id = 0; // Reset Exam ID?> /> -->
                                                     <label for="chk_defaultquiz_<?= $module_id ?>">
-                                                      <i>Exam</i> (<?= $exam['name'] ?>) 
+                                                      <i><?= __("Exam", "EOT_LMS") ?></i> (<?= $exam['name'] ?>) 
                                                     </label><br>
 <?php
                                                     }
@@ -6399,7 +6400,7 @@ function getCourseForm_callback ( )
 ?>
 <!--                                            <input item="resource" quiz_length="<?= DEFAULT_QUIZ_LENGTH ?>" assignment_id="<?= $module['ID'] ?>" video_id="<?= $module['ID'] ?>" group_id="<?= $course_id ?>" <?= $handout_id ? ' item_id="' . $handout_id . '" name="chk_defaultresource_'.$handout_id.'" id="chk_defaultresource_' .$handout_id . ' "':'';?> type="checkbox"   assignment_id="<?= $course_id ?>" value="1" owner="" org_id="<?= $org_id ?>" <?= in_array($handout_id, $course_handouts_ids) ? ' checked="checked"':''; //$handout_id = 0; // Reset Exam ID?> /> -->
                                             <label for="chk_defaultresource_<?= $handout_id ?>">
-                                              <i>Resource</i> (<?=$handout['name'] ?>) 
+                                              <i><?= __("Resource", "EOT_LMS") ?></i> (<?=$handout['name'] ?>) 
                                             </label><br>
 <?php
                                             }
@@ -6421,7 +6422,7 @@ function getCourseForm_callback ( )
       <div class="popup_footer" style="background-color:#FFF; padding:15px 15px 5px 15px;">
         <div class="buttons" >
           <a active='0' acton="add_video_group" rel="done_button" >
-            Done
+            <?= __("Done", "EOT_LMS") ?>
           </a>
           <!--
           <a active='0' acton="add_video_group" collection="add_remove_from_group" rel="unselect_all_button" >
@@ -6466,17 +6467,17 @@ function getCourseForm_callback ( )
             ob_start();
         ?>
             <div class="title">
-                <div class="title_h2">Edit Staff Account</div>
+                <div class="title_h2"><?= __("Edit Staff Account", "EOT_LMS") ?></div>
             </div>
             <div class="middle">
                 <form id= "edit_staff_account" frm_name="edit_staff_account" frm_action="updateUser" rel="submit_form" hasError=0> 
-                Change your Staffs user details. Once they log in, you will not be able <br /> to edit nor delete their accounts.<br />
-                <span class="asterisk">*</span> Required fields        
+                <?= __("Change your Staffs user details. Once they log in, you will not be able <br /> to edit nor delete their accounts.", "EOT_LMS") ?><br />
+                <span class="asterisk">*</span> <?= __("Required fields", "EOT_LMS") ?>        
                 <br /><br />
                 <table class="Tstandard">
                   <tr>
                     <td class="label">
-                      First Name:<span class="asterisk">*</span>     
+                      <?= __("First Name:", "EOT_LMS") ?><span class="asterisk">*</span>     
                     </td>
                     <td class="field">
                       <input type="text" name="name" value="<?= $user['first_name'] ?>" size="30" />
@@ -6484,7 +6485,7 @@ function getCourseForm_callback ( )
                   </tr>
                   <tr>
                     <td class="label">
-                      Last Name:<span class="asterisk">*</span>     
+                      <?= __("Last Name:", "EOT_LMS") ?><span class="asterisk">*</span>     
                     </td>
                     <td class="field">
                       <input type="text" name="lastname" value="<?= $user['last_name'] ?>" size="30" />
@@ -6492,7 +6493,7 @@ function getCourseForm_callback ( )
                   </tr>
                   <tr>
                     <td class="label">
-                      E-mail:<span class="asterisk">*</span>        
+                      <?= __("E-mail:", "EOT_LMS") ?><span class="asterisk">*</span>        
                     </td>
                     <td class="field">
                       <input type="text" name="email" value="<?= $user['email'] ?>" size="35" />
@@ -6502,10 +6503,10 @@ function getCourseForm_callback ( )
                   </tr>
                   <tr>
                     <td class="label">
-                      Change Password:<span class="asterisk"></span>      
+                      <?= __("Change Password:", "EOT_LMS") ?><span class="asterisk"></span>      
                     </td>
                     <td class="field">
-                      <input type="text" name="pw" value="" size="18" /> <span class="small">(not hidden)</span>
+                      <input type="text" name="pw" value="" size="18" /> <span class="small"><?= __("(not hidden)", "EOT_LMS") ?></span>
                     </td>
                   </tr>
                   <tr class="spacer">
@@ -6528,11 +6529,11 @@ function getCourseForm_callback ( )
               <div class="buttons">
                 <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                   <img src="<?php bloginfo('template_directory'); ?>/images/cross.png" alt=""/>
-                    Cancel
+                    <?= __("Cancel", "EOT_LMS") ?>
                 </a>
                 <a active = "0" acton = "edit_staff_account" rel = "submit_button" class="positive">
                   <img src="<?php bloginfo('template_directory'); ?>/images/tick.png" alt=""/> 
-                  Update
+                  <?= __("Update", "EOT_LMS") ?>
                 </a>        
               </div>
             </div>
@@ -6554,7 +6555,7 @@ function getCourseForm_callback ( )
                                     ob_start();
         ?>
                     <div class="title">
-                        <div class="title_h2">Unable to Create Staff</div>
+                        <div class="title_h2"><?= __("Unable to Create Staff", "EOT_LMS") ?></div>
                     </div>
                     <div class="middle" style ="font-size:11px;clear:both;">
                         <div class="fixed_fb_width">
@@ -6564,7 +6565,7 @@ function getCourseForm_callback ( )
                                         <div class="msg-bl">
                                         <div class="msg-br">
                                             <div class="msgbox">
-                                                <p>You have reached the maximum number of staff you can have. To add more staff, you need first to upgrade your subscription</p>
+                                                <p><?= __("You have reached the maximum number of staff you can have. To add more staff, you need first to upgrade your subscription", "EOT_LMS") ?></p>
                                             </div>
                                         </div>
                                         </div>
@@ -6577,7 +6578,8 @@ function getCourseForm_callback ( )
                     <div class="popup_footer" style = "background-color:#FFF; padding:15px 15px 5px 15px;">
                         <div class="buttons" >        
                                 <a onclick="jQuery(document).trigger('close.facebox');">
-                                  <div style="height:15px;padding-top:2px;"> Cancel</div>
+                                  <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS") ?>
+                                  </div>
                                 </a>
                                       
                             <div style="clear:both">
@@ -6590,20 +6592,20 @@ function getCourseForm_callback ( )
             ob_start();
         ?>
             <div class="title">
-              <div class="title_h2">Create Staff Account</div>
+              <div class="title_h2"><?= __("Create Staff Account", "EOT_LMS") ?></div>
             </div>
             <div class="middle">
               <div class="fixed_fb_width">
                 <form id="create_staff_account" frm_name="create_staff_account" frm_action="createUser" rel="submit_form" hasError=0> 
                   <br />
                   <br />
-                  <span class="asterisk">*</span> Required fields            
+                  <span class="asterisk">*</span> <?= __("Required fields", "EOT_LMS") ?>            
                   <br />
                   <br />
                   <table id="create_staff_table" class="Tstandard" style="font-size:12px;">
                     <tr>
                       <td class="label">
-                        Camp, School or Youth Program:
+                        <?= __("Camp, School or Youth Program:", "EOT_LMS") ?>
                       </td>
                       <td class="field">
                         <?= get_the_title($org_id); ?>                
@@ -6611,7 +6613,7 @@ function getCourseForm_callback ( )
                     </tr>
                     <tr>
                       <td class="label">
-                        Enroll in course:
+                        <?= __("Enroll in course:", "EOT_LMS") ?>
                       </td>
                       <td class="field">
                         <select name="course_id">                          
@@ -6638,14 +6640,14 @@ function getCourseForm_callback ( )
                             }
                           ?>
                         </select>
-                        <img src="<?= get_template_directory_uri() . "/images/info.gif" ?>" title="You must enroll a user directly into a <b>course</b>. All users must be in enrolled in at least 1 course to gain access to the content.<br /><br />To create or edit courses, go to:<br><i>Administration &gt; Manage Courses</i>" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('You must enroll a user directly into a <b>course</b>. All users must be in enrolled in at least 1 course to gain access to the content.<br /><br />To create or edit courses, go to:<br><i>Administration &gt; Manage Courses</i>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" />                
+                        <img src="<?= get_template_directory_uri() . "/images/info.gif" ?>" title="<?= __("You must enroll a user directly into a", "EOT_LMS") ?> <b><?= __("course", "EOT_LMS") ?></b>. <?= __("All users must be in enrolled in at least 1 course to gain access to the content.", "EOT_LMS") ?><br /><br /><?= __("To create or edit courses, go to:", "EOT_LMS") ?><br><i><?= __("Administration", "EOT_LMS") ?> &gt; <?= __("Manage Courses", "EOT_LMS") ?></i>" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<?= __("You must enroll a user directly into a", "EOT_LMS") ?> <b><?= __("course", "EOT_LMS") ?></b>. <?= __("All users must be in enrolled in at least 1 course to gain access to the content.", "EOT_LMS") ?><br /><br /><?= __("To create or edit courses, go to:", "EOT_LMS") ?><br><i><?= __("Administration", "EOT_LMS") ?> &gt; <?= __("Manage Courses", "EOT_LMS") ?></i>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()" />                
                       </td>
                     </tr>
                     <tr class="spacer">
                     </tr>
                     <tr>
                       <td class="label">
-                        First Name: <span class="asterisk">*</span>                
+                        <?= __("First Name:", "EOT_LMS") ?> <span class="asterisk">*</span>                
                       </td>
                       <td class="field">
                             <div id="autofill_suggest">
@@ -6655,7 +6657,7 @@ function getCourseForm_callback ( )
                     </tr>
                     <tr>
                       <td class="label">
-                        Last Name:<span class="asterisk">*</span>                
+                        <?= __("Last Name:", "EOT_LMS") ?><span class="asterisk">*</span>                
                       </td>
                       <td class="field">
                         <div id="autofill_suggest">
@@ -6665,7 +6667,7 @@ function getCourseForm_callback ( )
                     </tr>
                     <tr>
                       <td class="label">
-                        E-mail:<span class="asterisk">*</span>                
+                        <?= __("E-mail:", "EOT_LMS") ?><span class="asterisk">*</span>                
                       </td>
                       <td class="field">
                           <div id="autofill_suggest">
@@ -6675,7 +6677,7 @@ function getCourseForm_callback ( )
                     </tr>
                     <tr>
                       <td class="label">
-                        Password:<span class="asterisk">*</span>                
+                        <?= __("Password:", "EOT_LMS") ?><span class="asterisk">*</span>                
                       </td>
                       <td class="field">
                         <input type="text" name="pw" value="" size="18" />
@@ -6688,7 +6690,7 @@ function getCourseForm_callback ( )
                       <td>
                             <span class="asterisk">*</span> 
                             <input id="send" type="checkbox" name="send_mail" value="1" checked="checked" /> 
-                            <label for="send">Yes, send an e-mail with their login password.</label>
+                            <label for="send"><?= __("Yes, send an e-mail with their login password.", "EOT_LMS") ?></label>
                       </td>
                     </tr>
                     <tr>
@@ -6708,11 +6710,11 @@ function getCourseForm_callback ( )
               <div class="buttons">
                 <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
                   <img src="<?php bloginfo('template_directory'); ?>/images/cross.png" alt=""/>
-                    Cancel
+                    <?= __("Cancel", "EOT_LMS") ?>
                 </a>
                 <a active="0" acton="create_staff_account" rel="submit_button" class="positive">
                   <img src="<?php bloginfo('template_directory'); ?>/images/tick.png" alt=""/> 
-                  Create
+                  <?= __("Create", "EOT_LMS") ?>
                 </a>        
               </div>
             </div>
@@ -6732,7 +6734,7 @@ function getCourseForm_callback ( )
         ?>
             <div class="title">
               <div class="title_h2">
-                Edit Email Message
+                <?= __("Edit Email Message", "EOT_LMS") ?>
               </div>
             </div>
             <div class="middle" style ="font-size:12px;width:600px;margin:10px;padding:0px;clear:both;">
@@ -6740,7 +6742,7 @@ function getCourseForm_callback ( )
                     <table>
                       <tr>
                         <td class="label" width="100px">
-                          From
+                          <?= __("From", "EOT_LMS") ?>
                         </td>
                         <td class="value">
                           <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?><span class="small">(<?= $current_user->user_email ?>)</span>
@@ -6748,42 +6750,39 @@ function getCourseForm_callback ( )
                       </tr>
                       <tr>
                         <td class="label">
-                          Subject
+                          <?= __("Subject", "EOT_LMS") ?>
                         </td>
                         <td class="value">
-                          <input type="text" name="subject" value="Your account on ExpertOnlineTraining.com (Leadership Training)" size="60" />
+                          <input type="text" name="subject" value="<?= __("Your account on ExpertOnlineTraining.com (Leadership Training)", "EOT_LMS") ?>" size="60" />
                         </td>
                       </tr>
                       <tr>
-                        <td class="label vtop">Message</td>
+                        <td class="label vtop"><?= __("Message", "EOT_LMS") ?></td>
                         <td class="value">
                           <textarea class="tinymce" id="composed_message" name="message" style="margin-left:1px;width: 525px; height: 300px">
-                            <b>Welcome</b>, <?= $name ?>!<br><br>
-                            <b>Congratulations!</b> You are now a member of Expert Online Training (EOT), the world’s best virtual classroom for youth development professionals. 
-                            By using EOT now, before your job starts at <?= get_the_title($org_id); ?>, you will turbocharge your leadership skills, boost your self-confidence, 
-                            and get even more out of <?= get_the_title($org_id); ?>’s on-site training.<br><br>
+                            <b><?= __("Welcome", "EOT_LMS") ?></b>, <?= $name ?>!<br><br>
+                            <b><?= __("Congratulations", "EOT_LMS") ?>!</b> <?= __("You are now a member of Expert Online Training (EOT), the world’s best virtual classroom for youth development professionals. By using EOT now, before your job starts at", "EOT_LMS")?> <?= get_the_title($org_id); ?>, <?= __("you will turbocharge your leadership skills, boost your self-confidence, and get even more out of", "EOT_LMS")?> <?= get_the_title($org_id); ?>’s <?= __("on-site training.", "EOT_LMS")?><br><br>
 
                             <p><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" alt="EOT Logo" style="width: 125px; height: 94px; float: left;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" data-mce-style="width: 150px; height: 113px; float: left;"> 
-                            <br><b>Take EOT with you.</b> We know you are busy, so our new website is mobile-friendly. You can now watch EOT videos and take your quizzes on any smartphone, tablet, or laptop with a WiFi connection. 
-                            Imagine learning more about behavior management, leadership, supervision, games, and safety while you sit in a café, library, or student lounge!</p><br><br>
+                            <br><b><?= __("Take EOT with you.", "EOT_LMS")?></b> <?= __("We know you are busy, so our new website is mobile-friendly. You can now watch EOT videos and take your quizzes on any smartphone, tablet, or laptop with a WiFi connection. Imagine learning more about behavior management, leadership, supervision, games, and safety while you sit in a café, library, or student lounge!", "EOT_LMS")?>
+                            </p><br><br>
 
-                            <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> just created an account for you with these login credentials:<br><br>
+                            <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("just created an account for you with these login credentials:", "EOT_LMS")?><br><br>
 
-                            E-mail / username: <?= $email ?><br>
-                            Password: <?= $password ?><br><br>
+                            <?= __("E-mail / username:", "EOT_LMS")?> <?= $email ?><br>
+                            <?= __("Password:", "EOT_LMS")?> <?= $password ?><br><br>
 
-                            To watch EOT’s intro video and log in, <a href="https://www.expertonlinetraining.com" target="_blank" data-mce-href="https://www.expertonlinetraining.com">click here</a>.<br><br>
+                            <?= __("To watch EOT’s intro video and log in,", "EOT_LMS")?> <a href="https://www.expertonlinetraining.com" target="_blank" data-mce-href="https://www.expertonlinetraining.com"><?= __("click here", "EOT_LMS")?></a>.<br><br>
 
-                            <b>When is it due?</b> Directors usually require staff to complete their online learning assignment before arriving on-site. 
-                            If you have not yet received a due-date for your assignment, check with <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> to get one. 
-                            As you move through your course, <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> will have access to an electronic dashboard that allows them to track your progress and quiz scores.<br><br>
+                            <b><?= __("When is it due?", "EOT_LMS")?></b> <?= __("Directors usually require staff to complete their online learning assignment before arriving on-site. ", "EOT_LMS")?>
+                            <?= __("If you have not yet received a due-date for your assignment, check with", "EOT_LMS")?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("to get one. As you move through your course,", "EOT_LMS")?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("will have access to an electronic dashboard that allows them to track your progress and quiz scores.", "EOT_LMS")?><br><br>
 
-                            <b>Got Questions?</b> If you get stuck, watch our online help videos or call us at <b>877-237-3931</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.<br><br>
+                            <b><?= __("Got Questions?", "EOT_LMS")?></b> <?= __("If you get stuck, watch our online help videos or call us at", "EOT_LMS")?> <b><?= __("877-237-3931", "EOT_LMS")?></b>! <?= __("The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.", "EOT_LMS")?><br><br>
 
-                            Enjoy your training!<br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
+                            <?= __("Enjoy your training!", "EOT_LMS")?><br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
                             Dr. Chris Thurber<br> 
-                            EOT Co-Founder &amp;<br> 
-                            Director of Content
+                            <?= __("EOT Co-Founder", "EOT_LMS")?> &amp;<br> 
+                            <?= __("Director of Content", "EOT_LMS")?>
                           </textarea>
                           <br /><br />
                             <input type="hidden" name="email" value="<?= $email ?>" />
@@ -6798,10 +6797,10 @@ function getCourseForm_callback ( )
             <div class="popup_footer">
               <div class="buttons">
                 <a onclick="jQuery(document).trigger('close.facebox');">
-                  <div style="height:15px;padding-top:2px;"> Cancel</div>
+                  <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS")?></div>
                 </a>
                 <a active='0' acton="send_message" rel="submit_button" >
-                  <div style="height:15px;padding-top:2px;"> Send Message</div>
+                  <div style="height:15px;padding-top:2px;"> <?= __("Send Message", "EOT_LMS")?></div>
                 </a>
               </div>
             </div>      

@@ -3,7 +3,7 @@
     <?= CRUMB_SEPARATOR ?>
     <?= CRUMB_STATISTICS ?>          
     <?= CRUMB_SEPARATOR ?>  
-    <span class="current">Course Stats</span>     
+    <span class="current"><?= __("Course Stats", "EOT_LMS"); ?></span>     
 </div>
 <?php
 
@@ -17,7 +17,7 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
 
 global $current_user;
 $user_id = $current_user->ID;
-$page_title = "Stats";
+$page_title = __("Stats", "EOT_LMS");
 
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
@@ -38,7 +38,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 if (isset($course_data['status']) && $course_data['status'] == 0) 
                 {
                     // error received from getCourse
-                    wp_die($course_data['message'], 'Error');
+                    wp_die($course_data['message']);
                 } 
                 else 
                 {
@@ -94,12 +94,12 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 }
 ?>
                 <div class="smoothness">
-                    <h1 class="article_page_title">Course Statistics for "<?= $course_name ?>"</h1>
-                    Here are statistics on the <b><?= $course_name ?></b> Modules.
-                    <h2>Summary</h2>
+                    <h1 class="article_page_title"><?= __("Course Statistics for", "EOT_LMS"); ?> "<?= $course_name ?>"</h1>
+                    <?= __("Here are statistics on the", "EOT_LMS"); ?> <b><?= $course_name ?></b> <?= __("Modules", "EOT_LMS"); ?>.
+                    <h2><?= __("Summary", "EOT_LMS"); ?></h2>
                     <div class="cell-row middle-row">
                         <div class="cell-caption">
-                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="The total number of staff (in Staff Groups) who have been assigned this Course." class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('The total number of staff (in Staff Groups) who have been assigned this Course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff given this <b>Course</b>
+                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="<?= __("The total number of staff (in Staff Groups) who have been assigned this Course.", "EOT_LMS"); ?>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __('The total number of staff (in Staff Groups) who have been assigned this Course.', 'EOT_LMS'); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff given this <b>Course</b>
                         </div>
                         <div class="cell-field number">
                             <b><?= $total_number_of_staff ?></b>
@@ -107,15 +107,15 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     </div>
                     <div class="cell-row">
                         <div class="cell-caption">
-                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('The total number of staff who have passed all the required modules in this Course.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff who have <b>Completed</b> this Course
+                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __('The total number of staff who have passed all the required modules in this Course.', 'EOT_LMS'); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff who have <b>Completed</b> this Course
                         </div>
                         <div class="cell-field number">
                             <b><?= $calculated_num_completed ?></b>
                         </div>
                 <?= eotprogressbar('12em', $calculated_percentage_completed, true); ?>
                     </div>
-                    <h2>Quiz Success Rate</h2>
-                    <p>For quizzes with a low success rate, you may want to go over these topics in greater depth during your on-site training.</p>
+                    <h2><?= __("Quiz Success Rate", "EOT_LMS"); ?></h2>
+                    <p><?= __("For quizzes with a low success rate, you may want to go over these topics in greater depth during your on-site training.", "EOT_LMS"); ?></p>
 <?php
                 $quizzes = getQuizzesInCourse($course_id);
                 $track_quizzes = array();
@@ -144,9 +144,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     $quizTableObj = new stdClass();
                     $quizTableObj->rows = array();
                     $quizTableObj->headers = array(
-                        'Quiz Name' => 'left',
-                        'Success Rate' => 'center',
-                        'Percentage' => 'center'
+                        __('Quiz Name', 'EOT_LMS') => 'left',
+                        __('Success Rate', 'EOT_LMS') => 'center',
+                        __('Percentage', 'EOT_LMS') => 'center'
                     );
 
                     // Creating rows for the table
@@ -167,7 +167,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     CreateDataTable($quizTableObj, "100%", 10, true, "Stats"); // Print the table in the page
                 //}
 ?>
-                    <h2>Video Views</h2>
+                    <h2><?= __("Video Views", "EOT_LMS"); ?></h2>
 <?php
                     $videos = getResourcesInCourse($course_id, 'video');
                     $custom_videos = getResourcesInCourse($course_id, 'custom_video');
@@ -195,8 +195,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     $videosTableObj = new stdClass();
                     $videosTableObj->rows = array();
                     $videosTableObj->headers = array(
-                        'Video Title' => 'left',
-                        'Views' => 'center'
+                        __('Video Title', 'EOT_LMS') => 'left',
+                        __('Views', 'EOT_LMS') => 'center'
                     );
                     // Creating rows for the table
                     foreach ($all_videos as $video) {
@@ -219,7 +219,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     }
                     CreateDataTable($videosTableObj, "100%", 10, true, "Stats"); // Print the table in the page
 ?>
-                    <h2>Resource Views</h2>
+                    <h2><?= __("Resource Views", "EOT_LMS"); ?></h2>
 <?php
                     $resources = getResourcesInCourse($course_id, 'doc');
                     //d($resources);
@@ -236,8 +236,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     $resourceTableObj = new stdClass();
                     $resourceTableObj->rows = array();
                     $resourceTableObj->headers = array(
-                        'Name' => 'left',
-                        'Downloads' => 'center'
+                        __('Name', 'EOT_LMS') => 'left',
+                        __('Downloads', 'EOT_LMS') => 'center'
                     );
                     // Creating rows for the table
                     foreach ($resources as $resource) {
@@ -258,22 +258,22 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 } 
                 else 
                 {
-                    echo "You dont have a valid course ID";
+                    echo __("You dont have a valid course ID", "EOT_LMS");
                 }
             } 
             else 
             {
-                echo "Unauthorized!";
+                echo __("Unauthorized!", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", "EOT_LMS");
         }
     }
 // Could not find the subscription ID
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID", "EOT_LMS");
 }
 ?>

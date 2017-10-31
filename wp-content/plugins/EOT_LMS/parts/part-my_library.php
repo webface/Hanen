@@ -14,7 +14,7 @@
 	    	$has_access = verify_student_access($course_id);
 			if (!$has_access)
 			{
-				wp_die("You do not have access to this course");
+				wp_die(__("You do not have access to this course", "EOT_LMS"));
 			}
 
 			// check course status - update in necessary
@@ -46,8 +46,8 @@
 				  	<span class="current"><?= $course_info['course_name'] ?></span> 
 				</div>
 		      	<h1 class="article_page_title"></h1>
-				<h2>Course "<u><?= $course_info['course_name'] ?></u>"</h2> 	
-				<p>Here are the videos, exams and downloadable handouts available to you in this module.</p>
+				<h2><?= __("Course", "EOT_LMS"); ?> "<u><?= $course_info['course_name'] ?></u>"</h2> 	
+				<p><?= __("Here are the videos, exams and downloadable handouts available to you in this module.", "EOT_LMS"); ?></p>
 <?php
 		       	// Get all the modules in this course by the course ID
 				$user_id = get_current_user_id(); // WP User ID
@@ -126,7 +126,7 @@
 				      						<b><?= $module_title ?></b> 
 				      						<span class="small"> - 
 				          						<a href="?part=view&course_id=<?=$course_id?>&module_id=<?=$module_id?>">
-				          							Watch Video
+				          							<?= __("Watch Video", "EOT_LMS"); ?>
 				          						</a> 
 <?php 
 				          							foreach ($resources_video as $key => $video) 
@@ -146,7 +146,7 @@
                                                         {
                                                             $exam_data = $exams[$module_id];
                                                             $quiz_id = $exam_data[0]['ID'];
-															echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';
+															echo '/ <a href="?part=quiz&module_id='.$module_id .'&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">' . __("Take Quiz", "EOT_LMS") . '</a>';
 															array_push($finished_module_quizzes,$quiz_id); //store that the module for this quiz was completed
 			
                                                         }
@@ -157,7 +157,7 @@
                                                         {
 ?>                                                                                                  
 				          									/ Take Quiz
-															&nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>You must watch the video first (all the way through) before attempting the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>You must watch the video first (all the way through) before attempting the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
+															&nbsp; <img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()">
 <?php
                                                         }
                                                     }
@@ -172,7 +172,7 @@
 			      								$video_id = $resource['video_id'];
 ?>								
 			              						<ul class="inner nobullet">
-	                                                <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>">Download Handout (PDF)</a></span></li>
+	                                                <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>"><?= __("Download Handout (PDF)", "EOT_LMS"); ?></a></span></li>
 		                                      	</ul>
 <?php 
 		      								}
@@ -191,10 +191,10 @@
                         
 		        else
 		        {
-		        	echo 'There are no modules in this course. Please contact your camp director.';
+		        	echo __("There are no modules in this course. Please contact your camp director.", "EOT_LMS");
 		        }
 
-                echo '<h3 class="library_topic">Custom Modules</h3>';
+                echo '<h3 class="library_topic">' . __("Custom Modules", "EOT_LMS") . '</h3>';
                 $rcm = array();
                 if(count($resources_in_custom_modules) > 0)
                 {
@@ -248,17 +248,17 @@
                                 case 'link':
                                     $icon = "fa-link";
                                     $url = $resource['url'];
-                                    $action = 'Visit Url';
+                                    $action = __("Visit Url", "EOT_LMS");
                                     break;
                                 case 'doc':
                                     $icon = "fa-sticky-note-o";
                                     $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
-                                    $action = 'Download File';
+                                    $action = __("Download File", "EOT_LMS");
                                     break;
                                 case 'custom_video':
                                     $icon = "fa-play";
                                     $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
-                                    $action = 'Watch Video';
+                                    $action = __("Watch Video", "EOT_LMS");
                                     break;
                                 default:
                                     $icon = "fa-sticky-note-o";
@@ -283,7 +283,7 @@
                             $url = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id&enrollment_id=$enrollment_id";
 ?>
 		                    <ul class="inner nobullet">
-		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>">Take Quiz</a></span></li>
+		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>"><?= __("Take Quiz", "EOT_LMS"); ?></a></span></li>
 		                    </ul>
 <?php
                         }
@@ -330,13 +330,13 @@
                                     $passed_users = array_count_values($track_passed);
                                     $attempt_count = array_count_values($track_quiz_attempts);
 ?>
-                                    <h1 class="article_page_title">Quiz Summary</h1>
+                                    <h1 class="article_page_title"><?= __("Quiz Summary", "EOT_LMS"); ?></h1>
                                     <div class="bss">
                                     <table class="table table-striped table-bordered" border="1">
                                         <thead>
-                                        <th><b>Quiz Title</b></th>
-                                        <th align="center"><b>Attempts</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>This shows the number of times you attempted the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>This shows the number of times you attempted the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
-                                        <th><b>Status</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b>Whether you passed or failed the quiz.</b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b>Whether you passed or failed the quiz.</b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                                        <th><b><?= __("Quiz Title", "EOT_LMS"); ?></b></th>
+                                        <th align="center"><b><?= __("Attempts", "EOT_LMS"); ?></b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b><?= __("This shows the number of times you attempted the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("This shows the number of times you attempted the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                                        <th><b>Status</b>&nbsp;<img src="<?= get_template_directory_uri() . "/images/info-sm.gif"?>" title="<b><?= __("Whether you passed or failed the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("Whether you passed or failed the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
                                         <th><b>Quiz</b></th>
                                         </thead>
                                         <tbody>
@@ -351,22 +351,22 @@
                                                 }
                                             ?>
                                             <tr>
-                                                <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="/dashboard?part=wronganswers&quiz_id='.$quiz['ID'].'&course_id='.$course_id.'">See Wrong Answers</a>':'')?></td>
+                                                <td><?= $quiz['name'].($passed != 'Incomplete'?'<br> <a href="/dashboard?part=wronganswers&quiz_id='.$quiz['ID'].'&course_id='.$course_id.'">' . __("See Wrong Answers", "EOT_LMS") . '</a>':'')?></td>
                                                 <td align="center"><?= $attempts ?></td>
                                                 <td><?= $passed ?></td>
                                                 <td>
                                                     <?php
-                                                    $action = 'Take Quiz&nbsp;<img src="'.get_template_directory_uri() . '/images/info-sm.gif" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip(\'<b>You must watch the video first (all the way through) before attempting the quiz.</b>\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()">';
+                                                    $action =  __("Take Quiz", "EOT_LMS") . ' &nbsp;<img src="'.get_template_directory_uri() . '/images/info-sm.gif" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip(\'<b>' . __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS") . '</b>\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()">';
                                                     if(in_array($quiz['ID'], $finished_module_quizzes) && $quiz['org_id']==0)
                                                     {
                                                        $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';
                                                     }
                                                     elseif($quiz['org_id']!=0)
                                                     {
-                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">Take Quiz</a>';  
+                                                       $action = '<a href="?part=quiz&quiz_id='.$quiz['ID'].'&subscription_id='.$subscription_id.'&course_id='.$course_id.'&enrollment_id='.$enrollment_id.'">' . __("Take Quiz", "EOT_LMS") . '</a>';  
                                                     }
                                                     echo $action;
-                                                            ?>
+                                            	?>
                                                 </td>
                                             </tr>
                                             <?php
@@ -374,7 +374,7 @@
                                             $percentage = (count($passed_users)/count($quizzes_in_course))*100;
                                             ?>
                                             <tr>
-                                                <td><b>Completed Quizzes</b></td>
+                                                <td><b><?= __("Completed Quizzes", "EOT_LMS"); ?></b></td>
                                             	<td align="center"><b><?= count($passed_users)?></b></td>
                                             <td colspan="2"><?= eotprogressbar('12em', $percentage, true)?></td>
                                             </tr>
@@ -386,16 +386,16 @@
 			}//end if course info
 			else
 			{
-				wp_die('Could not find the course. Please report this to the technical support.');
+				wp_die(__("Could not find the course. Please report this to the technical support.", "EOT_LMS"));
 			}
 		}
 		else
 		{
-			wp_die('You do not have privilege to view this page.');
+			wp_die(__("You do not have privilege to view this page.", "EOT_LMS"));
 		}
 	}
 	else
 	{
-		wp_die('Invalid course. Please report this to the technical support.');
+		wp_die(__("Invalid course. Please report this to the technical support.", "EOT_LMS"));
 	}
 ?>

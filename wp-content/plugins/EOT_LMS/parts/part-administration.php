@@ -1,7 +1,7 @@
 <div class="breadcrumb">
   <?= CRUMB_DASHBOARD ?>    
   <?= CRUMB_SEPARATOR ?>  
-  <span class="current">Administration</span>     
+  <span class="current"><?= __("Administration", "EOT_LMS"); ?></span>     
 </div>
 <?php
   // verify this user has access to this portal/subscription/page/view
@@ -9,7 +9,7 @@
 
   // Variable declaration
   global $current_user;
-  $page_title = 'Administration';
+  $page_title = __("Administration", "EOT_LMS");
 
   // Check if the subscription ID is valid.
   if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
@@ -33,7 +33,7 @@
         echo '<h1 class="article_page_title">'.$page_title.'</h1>';       
 
 ?>
-        <p>Choose an option below to harness the power of online learning for all your staff.</p>
+        <p><?= __("Choose an option below to harness the power of online learning for all your staff.", "EOT_LMS"); ?></p>
 
         <div class="row">
           <div class="col">
@@ -42,9 +42,9 @@
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_courses')">Manage Courses</a>
+            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_courses')"><?= __("Manage Courses", "EOT_LMS"); ?></a>
             <br>
-            Select, create, and publish courses, then assign staff to a course.
+            <?= __("Select, create, and publish courses, then assign staff to a course.", "EOT_LMS"); ?>
           </div>
         </div>
         <div class="row">
@@ -54,9 +54,9 @@
               </a>
             </div>
             <div class="col">
-              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_staff_accounts')">Manage Staff Accounts</a>
+              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_staff_accounts')"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></a>
               <br>
-              Enter or upload staff names, email addresses, and passwords.
+              <?= __("Enter or upload staff names, email addresses, and passwords.", "EOT_LMS"); ?>
             </div>
           </div>
           <div class="row">
@@ -66,9 +66,9 @@
             </a>
           </div>
           <div class="col">
-            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')">Manage Your Custom Content</a>
+            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Content", "EOT_LMS"); ?></a>
             <br>
-            Upload your home-made videos, documents, links, and quizzes.
+            <?= __("Upload your home-made videos, documents, links, and quizzes.", "EOT_LMS"); ?>
           </div>
         </div>
 
@@ -79,9 +79,9 @@
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_quiz')">Manage Your Custom Quizzes</a>
+            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_quiz')"><?= __("Manage Your Custom Quizzes", "EOT_LMS"); ?></a>
             <br>
-            Create custom quizzes for your staff.
+            <?= __("Create custom quizzes for your staff.", "EOT_LMS"); ?>
           </div>
         </div>
           <div class="row">
@@ -91,9 +91,9 @@
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')">Manage Your Custom Modules</a>
+            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Modules", "EOT_LMS"); ?></a>
             <br>
-            Create and manage your own modules with your videos and quizzes.
+            <?= __("Create and manage your own modules with your videos and quizzes.", "EOT_LMS"); ?>
           </div>
         </div>
         <div class="row">
@@ -103,9 +103,9 @@
             </a>
           </div>
           <div class="col">
-            <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')">Send Staff Mass Mail</a>
+            <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')"><?= __("Send Staff Mass Mail", "EOT_LMS"); ?></a>
             <br>
-            Select staff by several options and send them customized emails.
+            <?= __("Select staff by several options and send them customized emails.", "EOT_LMS"); ?>
           </div>
         </div>
 
@@ -116,9 +116,9 @@
             </a>
           </div>
           <div class="col">
-            <a href="?part=staff_lounge&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">Virtual Staff Lounge</a>
+            <a href="?part=staff_lounge&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')"><?= __("Virtual Staff Lounge", "EOT_LMS"); ?></a>
             <br>
-            Manage your forum.
+            <?= __("Manage your forum.", "EOT_LMS"); ?>
           </div>
         </div>
 <!--
@@ -142,25 +142,25 @@
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_logo&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>">Customize Dashboard Logo</a>
+            <a href="?part=manage_logo&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>"><?= __("Customize Dashboard Logo", "EOT_LMS"); ?></a>
             <br>
-            Personalize what your staff see by uploading your own logo.
+            <?= __("Personalize what your staff see by uploading your own logo.", "EOT_LMS"); ?>
           </div>
         </div>
       <?php
       }
       else
       {
-        echo "Unauthorized!";
+        echo __("Unauthorized", "EOT_LMS");
       }
     }
     else
     {
-      echo "subscription ID does not belong to you";
+      echo __("subscription ID does not belong to you", "EOT_LMS");
     }
   }
   else
   {
-    echo "Invalid subscription ID.";
+    echo __("Invalid subscription ID.", "EOT_LMS");
   }
 ?>
