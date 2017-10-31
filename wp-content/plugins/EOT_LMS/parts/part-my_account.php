@@ -5,7 +5,7 @@
   * User Info
   */
   $user_id    = $current_user->ID;                                // Wordpress account user id
-  $email      = $current_user->user_email;                        // Wordpress account email address
+  $user_email = $current_user->user_email;                        // Wordpress account email address
   $first_name = get_user_meta($user_id, "first_name", true);      // First name
   $last_name  = get_user_meta($user_id, "last_name", true);       // Last name
 ?>
@@ -14,56 +14,99 @@
   // Process when user update the profile.
   if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submitted'] == true)
   {
-    $email = $_POST['email'];
+    $new_email = $_POST['email']; // New E-mail
+    // Update first and last name.
+    $new_first_name = isset( $_REQUEST['first_name'] ) ? filter_var($_REQUEST['first_name'],FILTER_SANITIZE_STRING) : "";
+    $new_last_name = isset( $_REQUEST['last_name'] ) ? filter_var($_REQUEST['last_name'],FILTER_SANITIZE_STRING) : "";
+    $new_user_password = isset( $_POST['pw1'] ) ? $_POST['pw1'] : "";
     $user_info =  array(
                     'ID' => $user_id,
-                    'user_email' => $email,
-                  );    
-    $result = wp_update_user( $user_info );
-    // Check for errors when updating the user in wordpress.
-    if( is_wp_error( $result ) )
+                    'user_email' => $new_email,
+                    'first_name' => $new_first_name,
+                    'last_name' => $new_last_name,
+                    'user_pass' => $new_user_password
+                  );
+    // Disregard not used data in the array.
+    if($first_name == $new_first_name)
     {
-      displayError ($result->get_error_message());
+      unset($user_info['first_name']);
+    }
+    if($last_name == $new_last_name)
+    {
+      unset($user_info['last_name']);
+    }
+    if($user_email == $new_email)
+    {
+      unset($user_info['user_email']);
+    }
+    if($new_user_password == "")
+    {
+      unset($user_info["user_pass"]);
+    }
+    // Update user info. This does the check if the e-mail already exist.
+    $update_user = wp_update_user( $user_info );
+    if( !is_wp_error( $update_user ) )
+    {
+      // Update user login manually, as it won't update using wp_update_user
+      if( $user_email != $new_email )
+      {
+        global $wpdb;
+        $wpdb->update( $wpdb->users, array( 'user_login' => $new_email), array( 'ID' => $user_id) );
+      }
+      displaySuccess("Your account has been updated.");
+      // Update display in front end.
+
+?>    <script>
+        $(document).ready(function () 
+        {
+          $("input#first_name").val("<?= $new_first_name; ?>");
+          $("input#last_name").val("<?= $new_last_name; ?>");
+          $('#accountAreaTop h1').html("Hi  <?= $new_first_name; ?> <?= $new_last_name; ?>");
+        })
+      </script>
+      <?php
     }
     else
     {
-      $first_name = filter_var($_REQUEST['first_name'],FILTER_SANITIZE_STRING);
-      $last_name = filter_var($_REQUEST['last_name'],FILTER_SANITIZE_STRING);
-      $password = $_POST['pw1'];
-
-      // Change to new password.
-      if( !empty($password) )
-      {
-        wp_set_password( $password, $user_id );
-      }
-      // Update user meta in wordpress.
-      update_user_meta( $user_id, 'first_name', $first_name);
-      update_user_meta( $user_id, 'last_name', $last_name);
-
-      echo "Your account has been updated.<br><br>";
-    }
+      // Error in updating user account.
+      displayError ($update_user->get_error_message()); // This will also catch errors when the e-mail already exist.
+      ?>
+        <script>
+          $(document).ready(function () 
+          {
+            $("input#first_name").val("<?= $first_name; ?>");
+            $("input#last_name").val("<?= $last_name; ?>");
+            $('#accountAreaTop h1').html("Hi  <?= $first_name; ?> <?= $last_name; ?>");
+          })
+        </script>
+      <?php
+    } 
   }
 
   // Function to display the error message on top of the form.
   function displayError( $message ) 
   {
 ?>
-    <div class="errorboxcontainer_no_width">
-      <div class="error-tl">
-        <div class="error-tr">
-          <div class="error-bl">
-            <div class="error-br">
-              <div class="errorbox">
-                Error: <?= $message ?>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="bs">
+      <div class="alert alert-danger">
+        <strong>Error:</strong> <?= $message ?>
+      </div>
+    </div>
+<?php
+  }
+  // Function to display the error message on top of the form.
+  function displaySuccess( $message ) 
+  {
+?>
+    <div class="bs">
+      <div class="alert alert-success">
+        <strong>Success!</strong> <?= $message ?>
       </div>
     </div>
 <?php
   }
 ?>
+
 
 Change your account details here.
 <span class="asterisk">*</span> Required fields<br /><br />
@@ -142,10 +185,17 @@ Change your account details here.
 
   $(document).ready(function() {
       // On page load. This populates the fields for email, name and last name.
-      $('#email').val("<?= $email; ?>");
-      $('#first_name').val("<?= $first_name; ?>");
-      $('#last_name').val("<?= $last_name; ?>");
-      $('#accountAreaTop h1').html("Hi  <?= $first_name; ?> <?= $last_name; ?>");
+      $('#email').val("<?= $user_email; ?>");
+<?php 
+      if( !isset($_POST['submitted']) )
+      {
+?>      $('#first_name').val("<?= $first_name; ?>");
+        $('#last_name').val("<?= $last_name; ?>");
+        $('#accountAreaTop h1').html("Hi  <?= $first_name; ?> <?= $last_name; ?>");
+<?php
+      }
+?>
+      
      
   });
 
@@ -154,24 +204,26 @@ Change your account details here.
   {
     var password = $("#pw1").val();
     var confirmPassword = $("#pw2").val();
-    if (password != "" && confirmPassword == "")
+    if(password)
     {
-      $("#passwordConfirmation").html("You can't leave this empty");
-      return false;
-    }
-    if (password != confirmPassword)
-    {
-      alert("Passwords need to match.");
-      return false;
-    }
+      if (password != "" && confirmPassword == "")
+      {
+        $("#passwordConfirmation").html("You can't leave this empty");
+        return false;
+      }
+      if (password != confirmPassword)
+      {
+        alert("Passwords need to match.");
+        return false;
+      }
 
-    var strengthNumber = passwordStrength(password, [], password);      //this is a wordpress function that will check the strength of the password and will output a number from 0-4
-    if(strengthNumber < 2)                                             //3 means Good which is required for this field
-    {
-      alert("Password needs to be at least Good.");
-      return false;                                                    //method reutrns true when password is Good
+      var strengthNumber = passwordStrength(password, [], password);      //this is a wordpress function that will check the strength of the password and will output a number from 0-4
+      if(strengthNumber < 2)                                             //3 means Good which is required for this field
+      {
+        alert("Password needs to be at least Good.");
+        return false;                                                    //method reutrns true when password is Good
+      }
     }
-
   });
 
    /* 
