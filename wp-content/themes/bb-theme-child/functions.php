@@ -11,12 +11,13 @@ require_once 'classes/class-fl-child-theme.php';
 add_action( 'fl_head', 'FLChildTheme::stylesheet' );
 
 //add and remove menu items
-add_filter( 'wp_nav_menu_items', 'wti_loginout_menu_link', 10, 2 );
+add_filter( 'wp_nav_menu_items', 'wti_loginout_menu_link', 500, 2 );
 
 function wti_loginout_menu_link( $items, $args ) {
 	if ($args->menu == 'main-menu-for-beaver-builder' || is_object($args->menu) && $args->menu->slug == 'main-menu-for-beaver-builder')
 	{
-		preg_match_all('/<li[^>]*><a[^>]*>[^<]*<\/a><\/li>/', $items, $matches);
+		
+            preg_match_all('/<li[^>]*><a[^>]*>[^<]*<\/a><\/li>/', $items, $matches);
    		if (is_user_logged_in())
    		{
    			//next 3 lines remove the features menu item
@@ -34,6 +35,7 @@ function wti_loginout_menu_link( $items, $args ) {
    			//add login menu item to the end
    			$items .= '<li id="menu-item-712" class="menu-item menu-item-type=post_type menu-item-object-page menu-item-712"><a href="'. wp_login_url (get_bloginfo ('url') . "/dashboard") .'">'. __("Login") .'</a></li>';
    		}
+                //error_log( "ITEMS 1".$items);
 	}
 	else if ($args->menu == 'footer-menu')
 	{
@@ -56,6 +58,7 @@ function wti_loginout_menu_link( $items, $args ) {
 			$items = implode($matches[0]);
    		}
 	}
+        
 	return $items;
 }
 
@@ -74,3 +77,29 @@ function gravity_registration_autologin( $user_id, $user_config, $entry, $passwo
 		'remember' => false
     ) );
 }
+
+// Filter wp_nav_menu() to add additional links and other output
+function new_nav_menu_items($items,$args)
+{
+    //check if its the frigging main beaver builder menu
+    if ($args->menu == 'main-menu-for-beaver-builder' || is_object($args->menu) && $args->menu->slug == 'main-menu-for-beaver-builder')
+    {
+        
+        $languages = icl_get_languages('skip_missing=1');
+        if(1 < count($languages))
+        {
+            foreach($languages as $l)
+            {
+            $items.= '<li class="menu-item wpml-ls-slot-19 wpml-ls-item"><a href="'.$l['url'].'"><img src="'.$l['country_flag_url'].'" height="12" alt="'.$l['language_code'].'" width="18" /></a></li>';
+
+            }
+            //error_log("ITEMS 2:".$items);
+        }
+    
+    }
+    
+    return $items;
+}
+add_filter( 'wp_list_pages', 'new_nav_menu_items' , 600, 2);
+add_filter( 'wp_nav_menu_items', 'new_nav_menu_items', 600, 2);
+ 
