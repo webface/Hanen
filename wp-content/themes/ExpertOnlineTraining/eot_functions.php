@@ -296,6 +296,12 @@ function displayHelp_callback()
       $video = getHelpVideoById(filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT));
       ob_start();
 ?>
+      <style>
+        .video-js {
+          width: 665px;
+          height: 388px;
+        }
+      </style>
       <div>
         <div class="title">
           <div class="title_h2"><?= $video->title; ?></div>
@@ -307,9 +313,8 @@ function displayHelp_callback()
         </div>
       </div>
       <div style="padding: 20px;">
-        <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-        <video id="help_video_<?= $video->ID; ?>" class="video-js vjs-default-skin" preload="auto" width="640" height="480" data-setup='{"controls": true}'>
-          <source src="https://eot-output.s3.amazonaws.com/<?= $video->video_filename; ?>" type='video/mp4'>
+        <video id="help_video_<?= $video->ID; ?>" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
+          <source src="https://eot-videos.s3.amazonaws.com/<?= $video->video_filename; ?>" type='video/mp4'>
           <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading to a web browser that
             <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
