@@ -97,6 +97,6 @@ class GraphLocation extends GraphNode
      */
     public function getLongitude()
     {
-        return $this->getField('longitude');	 	 		 	 	 			 	   
+        return $this->getField('longitude');
     }
 }

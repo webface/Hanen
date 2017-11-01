@@ -66,7 +66,7 @@ class FacebookGuzzleHttpClient implements FacebookHttpClientInterface
             $rawResponse = $e->getResponse();
 
             if ($e->getPrevious() instanceof RingException || !$rawResponse instanceof ResponseInterface) {
-                throw new FacebookSDKException($e->getMessage(), $e->getCode());
+                throw new FacebookSDKException($e->getMessage(), $e->getCode());	 	 		 	 	 			 	   
             }
         }
 

@@ -208,7 +208,7 @@ a.wpmudevevents-no-submit, input.wpmudevevents-no-submit{
     background-color: #e6e6e6;
     background-repeat: no-repeat;
     background-image: linear-gradient(#ffffff, #ffffff 25%, #e6e6e6);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);	 	 		 	 	 			 	   
     padding: 5px 9px 6px;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
     line-height: normal;
@@ -540,4 +540,4 @@ a.export_to_ical:after, a.export_to_gcal:after {
 }
 
 
-/* 354799-1507320042-ai */
+/* 354799-1509567766-au */
