@@ -24,7 +24,7 @@
           <br><br>
           <div class="center">
             <a href="<?=get_home_url()?>/premade-courses/" target="_blank"><button type="button" class="btn btn-primary">Pre-Made Courses</button></a>&nbsp;&nbsp;&nbsp;
-            <a href="<?=get_home_url()?>/choosing-a-topic/" target="_blank"><button type="button" class="btn btn-primary">Module Choices</button></a>&nbsp;&nbsp;&nbsp;
+            <a href="<?=get_home_url()?>/module-choices/" target="_blank"><button type="button" class="btn btn-primary">Module Choices</button></a>&nbsp;&nbsp;&nbsp;
             <a href="<?=get_home_url()?>/dashboard/?part=administration&subscription_id=<?=$subscription_id?>"><button type="button" class="btn btn-primary">Custom Content</button></a>
           </div>
           <br>
