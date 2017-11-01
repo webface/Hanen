@@ -4,7 +4,7 @@ Tags: logout, inactive user, idle, idle logout, idle user, auto logout, autologo
 Donate link: https://deepenbajracharya.com.np/say-hello/
 Requires at least: 4.5.2
 Tested up to: 4.8
-Stable tag: 1.6.3
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,7 @@ Please refer to FAQ section if you have trouble activating plugin from version 1
 9. Simple to use
 10. Multi browser tab support: Means that logout will not happen even if the user has multiple browser tabs opened and is active in certain browser tab.
 11. Logs out the session even after the browser tab is closed.
+12. Multisite Support: Override all sites with one setting.
 
 In order to style dialog boxes you can use css classes. Also, works in **frontend view as well**.
 
@@ -53,6 +54,10 @@ Upload the plugin to your blog, Activate it, Load...and You're done!
 = Stable version of 1.5.1 =
 
 If you are getting activation errors when activating the plugin from 1.6.0. Then temporarily you can use the stable 1.5.1 version. Download it from [here](https://deepenbajracharya.com.np/plugins/inactive-logout.1.5.1.zip "Plugin version 1.5.").
+
+= Stable version of 1.6.3 =
+
+If you get any errors for version > 1.7.0 then you can temporarily use previous stable version. Download it from [here](https://deepenbajracharya.com.np/plugins/inactive-logout-1.6.3.zip "Plugin version 1.6.0").
 
 = Plugin Conflicts =
 
@@ -75,6 +80,16 @@ Users might face logout after activating or deactivating the plugin. Try to logi
 4. Multi User Role Screen
 
 == Changelog ==
+
+= 1.7.1 =
+* Fixed a minor bug when saving settings in WP multisite network admin page.
+* Inactive setting menu hides when override option is checked for WP multisite network.
+
+= 1.7.0 =
+* Major Bug Fixes
+* Added Full Support for Multisite: Users can override one setting for all sites
+* Added Finnish Translation. Thanks to daniel
+* Changed Translation text domain
 
 = 1.6.3 =
 * Changes: Code Optimization
@@ -175,6 +190,10 @@ Users might face logout after activating or deactivating the plugin. Try to logi
 
 == Upgrade Notice ==
 
+= 1.7.1 =
+Upgrade to get latest stable version.
+= 1.7.0 =
+Upgrade to get latest stable version.
 = 1.6.1 - 1.6.2 =
 * Fixed activation error, upgrade to get latest stable version.
 = 1.6.0 =
