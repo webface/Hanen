@@ -2685,7 +2685,6 @@ function enrollUserInCourse($email = '', $data = array())
       array( 
         'course_id' => $course_id, 
         'subscription_id' => $subscription_id,
-        'email' => $email,
         'user_id' => $user->ID,
         'org_id' => $org_id,
         'status' => 'not_started'
@@ -4693,7 +4692,10 @@ function user_is_enrolled($email = '', $course_id = 0)
     global $wpdb;
     $email = filter_var($email , FILTER_SANITIZE_EMAIL);
     $course_id = filter_var($course_id , FILTER_SANITIZE_NUMBER_INT);
-    $enrollment = $wpdb->get_row("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE email = '$email' AND course_id = $course_id", ARRAY_N);
+    $sql = "SELECT e.*, u.user_email AS email FROM " . TABLE_ENROLLMENTS . " e ";
+    $sql .= "LEFT JOIN " . TABLE_USERS . " u ON e.user_id = u.ID ";
+    $sql .= "WHERE u.user_email = '$email' AND e.course_id = $course_id";
+    $enrollment = $wpdb->get_row( $sql, ARRAY_N);
     if ( null !== $enrollment ) {
         // do something with the link 
         return true;
