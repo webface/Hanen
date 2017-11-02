@@ -31,14 +31,18 @@
         {
             // disply the search term in the search box.
             $search_string = esc_attr( $search );
-            $users = new WP_User_Query( array(
+            $users = new WP_User_Query( array(//search columns
                 'search'         => "*{$search_string}*",
                 'search_columns' => array(
                     'user_login',
                     'user_nicename',
                     'user_email',
                     'user_url',
-                ),
+                )
+            ) );
+            $users_found1 = $users->get_results();
+            $users = new WP_User_Query( array(//search meta fields
+                'search'         => "*{$search_string}*",
                 'meta_query' => array(
                     'relation' => 'OR',
                     array(
@@ -53,7 +57,8 @@
                     )
                 )
             ) );
-            $users_found = $users->get_results();
+            $users_found2 = $users->get_results();
+            $users_found = array_unique( array_merge( $users_found1, $users_found2 ) );
             //d($users_found);
             /*
              * Create table heading for users
