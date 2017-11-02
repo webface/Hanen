@@ -3,7 +3,7 @@ Contributors: yani.iliev, bangelov, pimjitsawang
 Tags: move, transfer, copy, migrate, backup, clone, restore, db migration, wordpress migration, website migration, database export, database import, apoyo, sauvegarde, di riserva, バックアップ
 Requires at least: 3.3
 Tested up to: 4.8
-Stable tag: 6.58
+Stable tag: 6.59
 License: GPLv2 or later
 
 Move, transfer, copy, migrate, and backup a site with 1-click. Quick, easy, and reliable.
@@ -93,6 +93,13 @@ Alternatively you can download the plugin using the download button on this page
 3. Plugin Menu
 
 == Changelog ==
+= 6.59 =
+**Added**
+
+* Disable wordpress-https plugin if current site is not SSL based on import
+* Support for Azure db on import
+* New button icons for cloud extensions
+
 = 6.58 =
 **Fixed**
 

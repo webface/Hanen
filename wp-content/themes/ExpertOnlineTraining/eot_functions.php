@@ -296,6 +296,12 @@ function displayHelp_callback()
       $video = getHelpVideoById(filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT));
       ob_start();
 ?>
+      <style>
+        .video-js {
+          width: 665px;
+          height: 388px;
+        }
+      </style>
       <div>
         <div class="title">
           <div class="title_h2"><?= $video->title; ?></div>
@@ -307,9 +313,8 @@ function displayHelp_callback()
         </div>
       </div>
       <div style="padding: 20px;">
-        <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js"></script>
-        <video id="help_video_<?= $video->ID; ?>" class="video-js vjs-default-skin" preload="auto" width="640" height="480" data-setup='{"controls": true}'>
-          <source src="https://eot-output.s3.amazonaws.com/<?= $video->video_filename; ?>" type='video/mp4'>
+        <video id="help_video_<?= $video->ID; ?>" class="video-js vjs-default-skin" controls preload="auto" width="665" height="388" poster="<?php echo bloginfo('template_directory'); ?>/images/eot_logo.png" data-setup='{"controls": true}'>
+          <source src="https://eot-videos.s3.amazonaws.com/<?= $video->video_filename; ?>" type='video/mp4'>
           <p class="vjs-no-js">
             <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS") ?>
             <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS") ?></a>
@@ -2680,7 +2685,6 @@ function enrollUserInCourse($email = '', $data = array())
       array( 
         'course_id' => $course_id, 
         'subscription_id' => $subscription_id,
-        'email' => $email,
         'user_id' => $user->ID,
         'org_id' => $org_id,
         'status' => 'not_started'
@@ -2688,7 +2692,6 @@ function enrollUserInCourse($email = '', $data = array())
       array( 
         '%d', 
         '%d', 
-        '%s', 
         '%d',
         '%d',
         '%s'
@@ -4688,7 +4691,10 @@ function user_is_enrolled($email = '', $course_id = 0)
     global $wpdb;
     $email = filter_var($email , FILTER_SANITIZE_EMAIL);
     $course_id = filter_var($course_id , FILTER_SANITIZE_NUMBER_INT);
-    $enrollment = $wpdb->get_row("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE email = '$email' AND course_id = $course_id", ARRAY_N);
+    $sql = "SELECT e.*, u.user_email AS email FROM " . TABLE_ENROLLMENTS . " e ";
+    $sql .= "LEFT JOIN " . TABLE_USERS . " u ON e.user_id = u.ID ";
+    $sql .= "WHERE u.user_email = '$email' AND e.course_id = $course_id";
+    $enrollment = $wpdb->get_row( $sql, ARRAY_N);
     if ( null !== $enrollment ) {
         // do something with the link 
         return true;
@@ -4736,7 +4742,6 @@ function enrollUserInCourse_callback ()
           array( 
             'course_id' => $course_id, 
             'subscription_id' => $subscription_id,
-            'email' => $email,
             'user_id' => $user_id,
             'org_id' => $org_id
           ), 
@@ -8431,10 +8436,11 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
   }
 
   // build the SQL statement
-  $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " e ";
+  $sql = "SELECT e.*, u.user_email AS email FROM " . TABLE_ENROLLMENTS . " e ";
 
   // make sure were only looking for student user types
   $sql .= "LEFT JOIN " . TABLE_USERMETA . " um ON e.user_id = um.user_id ";
+  $sql .= "LEFT JOIN " . TABLE_USERS . " u ON e.user_id = u.ID ";
   $sql .= "WHERE um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%student%' ";
 
   if ($course_id > 0)

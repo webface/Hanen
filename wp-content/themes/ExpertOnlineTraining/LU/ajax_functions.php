@@ -534,7 +534,6 @@ function ajax_processStats()
                                                 'user_id'=> $user_id,
                                                 'org_id' => get_new_id( 'ORG', $org_id ),
                                                 'subscription_id' => $subscription['ID'],
-                                                'email' => $user['email'],
                                                 'date_enrolled' =>$user['date_enrolled'],
                                                 'status' =>$user['status']
 

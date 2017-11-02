@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.8.x - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-10-09 20:13:14+0000\n"
+"PO-Revision-Date: 2017-10-30 15:56:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4807,9 +4807,9 @@ msgstr[2] "%d stele"
 #: wp-admin/includes/plugin-install.php:621
 msgid "Reviews with %1$d star: %2$s. Opens in a new window."
 msgid_plural "Reviews with %1$d stars: %2$s. Opens in a new window."
-msgstr[0] "Recenzii cu %1$d stea: %2$d. Se deschide într-o fereastră nouă."
-msgstr[1] "Recenzii cu %1$d stele: %2$d. Se deschid într-o fereastră nouă."
-msgstr[2] "Recenzii cu %1$d de stele: %2$d. Se deschid într-o fereastră nouă."
+msgstr[0] "Recenzii cu %1$d stea: %2$s. Se deschid într-o fereastră nouă."
+msgstr[1] "Recenzii cu %1$d stele: %2$s. Se deschid într-o fereastră nouă."
+msgstr[2] "Recenzii cu %1$d de stele: %2$s. Se deschid într-o fereastră nouă."
 
 #: wp-admin/includes/plugin-install.php:615
 msgid "Read all reviews on WordPress.org or write your own!"
@@ -4822,9 +4822,9 @@ msgstr "Recenzii"
 #: wp-admin/includes/plugin-install.php:610
 msgid "(based on %s rating)"
 msgid_plural "(based on %s ratings)"
-msgstr[0] "(bazat pe %s vot)"
-msgstr[1] "(bazat pe %s voturi)"
-msgstr[2] "(bazat pe %s de voturi)"
+msgstr[0] "(bazate pe %s vot)"
+msgstr[1] "(bazate pe %s voturi)"
+msgstr[2] "(bazate pe %s de voturi)"
 
 #: wp-admin/includes/plugin-install.php:608
 msgid "Average Rating"
@@ -4854,7 +4854,7 @@ msgstr "Compatibil până la:"
 #. translators: %s: WordPress version
 #: wp-admin/includes/plugin-install.php:584
 msgid "%s or higher"
-msgstr "%s sau mai recentă"
+msgstr "%s sau superioară"
 
 #: wp-admin/includes/plugin-install.php:581
 msgid "Requires WordPress Version:"
@@ -10980,7 +10980,7 @@ msgstr "Drepturi"
 #: wp-admin/about.php:42 wp-admin/credits.php:13 wp-admin/credits.php:29
 #: wp-admin/freedoms.php:28
 msgid "Credits"
-msgstr "Recunoaștere"
+msgstr "Recunoștințe"
 
 #: wp-admin/about.php:41 wp-admin/credits.php:28 wp-admin/freedoms.php:27
 msgid "What&#8217;s New"

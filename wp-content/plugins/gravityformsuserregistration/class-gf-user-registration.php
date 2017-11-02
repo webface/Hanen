@@ -1058,10 +1058,10 @@ class GF_User_Registration extends GFFeedAddOn {
 					// handle complex fields
 					$inputs = $field->get_entry_inputs();
 					if ( is_array( $inputs ) ) {
-						foreach ( $inputs as &$input ) {
+						foreach ( $inputs as $key => $input ) {
 							$filter_name              = self::prepopulate_input( $input['id'], rgar( $mapped_fields, (string) $input['id'] ) );
 							$field->allowsPrepopulate = true;
-							$input['name']            = $filter_name;
+							$inputs[ $key ]['name']   = $filter_name;
 						}
 						$field->inputs = $inputs;
 					} else {
@@ -1120,9 +1120,9 @@ class GF_User_Registration extends GFFeedAddOn {
 		// refreshing $user variable because it might have changed during add_user_meta
 		$user_obj  = new WP_User( $user_id );
 		$user      = get_object_vars( $user_obj->data );
-		$user_data = $this->get_user_data( $entry, $form, $feed, true );
+		$user_data = $this->get_user_data( $entry, $form, $feed, $user_id );
 
-		$user['user_email']   = $user_data['user_email'];
+		$user['user_email'] = $user_data['user_email'];
 	
 		// If a display name option is provided and it is not the preserve option, update the display name. */
 		if ( rgar( $meta, 'displayname' ) && rgar( $meta, 'displayname' ) !== 'gfur_preserve_display_name' ) {	
@@ -1887,7 +1887,7 @@ class GF_User_Registration extends GFFeedAddOn {
 		}
 		
 		/* Open Gravity Form wrapper and form tag. */
-		$html  = "<div class='{$wrapper_css_class}' id='gform_wrapper_{$form['id']}'>";
+		$html  = "<div class='{$wrapper_css_class} gf_login_form' id='gform_wrapper_{$form['id']}'>";
 		$html .= "<form method='post' id='gform_{$form['id']}'>";
 		$html .= "<input type='hidden' name='login_redirect' value='" . esc_attr( sanitize_text_field( $login_redirect ) ) . "' />";
 		
@@ -1930,7 +1930,7 @@ class GF_User_Registration extends GFFeedAddOn {
 				$register_url = wp_registration_url();
 			}
 
-			$html .= '<nav>';
+			$html .= '<nav class="gf_login_links">';
 			
 			foreach ( $logged_out_links as $link ) {
 				
@@ -1958,7 +1958,14 @@ class GF_User_Registration extends GFFeedAddOn {
 		
 		/* Initalize existing form object. */
 		if ( ! empty( $this->login_form ) ) {
-			return $this->login_form;
+			/**
+			 * Filter the login form object.
+			 *
+			 * @since 3.7.9
+			 *
+			 * @param array $form The login form object.
+			 */
+			return apply_filters( 'gform_userregistration_login_form', $this->login_form );
 		}
 		
 		/* Create form object. */
@@ -2009,8 +2016,15 @@ class GF_User_Registration extends GFFeedAddOn {
 		$form['fields'][] = $password_field;
 		$form['fields'][] = $remember_field;
 
-		$this->login_form = $form;
-		
+		/**
+		 * Filter the login form object.
+		 *
+		 * @since 3.7.9
+		 *
+		 * @param array $form The login form object.
+		 */
+		$this->login_form = apply_filters( 'gform_userregistration_login_form', $form );
+
 		return $this->login_form;	
 		
 	}
@@ -3401,12 +3415,12 @@ class GF_User_Registration extends GFFeedAddOn {
 		return false;
 	}
 
-	public function get_user_data( $entry, $form, $feed ) {
+	public function get_user_data( $entry, $form, $feed, $user_id = false ) {
 
 		$user_email = $this->get_meta_value( 'email', $feed, $form, $entry );
 
 		if ( $this->is_update_feed( $feed ) ) {
-			$user       = new WP_User( $entry['created_by'] );
+			$user       = new WP_User( $user_id ? $user_id : $entry['created_by'] );
 			$user_login = $user->get( 'user_login' );
 			$user_email = $user_email ? $user_email : $user->get( 'user_email' );
 		} else {
