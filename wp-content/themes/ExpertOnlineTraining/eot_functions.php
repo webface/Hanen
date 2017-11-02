@@ -2692,7 +2692,6 @@ function enrollUserInCourse($email = '', $data = array())
       array( 
         '%d', 
         '%d', 
-        '%s', 
         '%d',
         '%d',
         '%s'
@@ -4743,7 +4742,6 @@ function enrollUserInCourse_callback ()
           array( 
             'course_id' => $course_id, 
             'subscription_id' => $subscription_id,
-            'email' => $email,
             'user_id' => $user_id,
             'org_id' => $org_id
           ), 
