@@ -8437,10 +8437,11 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
   }
 
   // build the SQL statement
-  $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " e ";
+  $sql = "SELECT e.*, u.user_email AS email FROM " . TABLE_ENROLLMENTS . " e ";
 
   // make sure were only looking for student user types
   $sql .= "LEFT JOIN " . TABLE_USERMETA . " um ON e.user_id = um.user_id ";
+  $sql .= "LEFT JOIN " . TABLE_USERS . " u ON e.user_id = u.ID ";
   $sql .= "WHERE um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%student%' ";
 
   if ($course_id > 0)
