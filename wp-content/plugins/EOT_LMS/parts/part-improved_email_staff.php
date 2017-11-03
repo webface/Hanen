@@ -25,15 +25,15 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 			// Message is sent. It is processed in my_pre_save_post_sendMassMail function in eot_functions.php
 			if( isset($_REQUEST['sent']) )
 			{
-				echo '<h1 class="article_page_title">Message Sent</h1>';
-				echo '<p>Your message has been succesfully sent. The subject and body template has been saved for the next time you want to email your staff.</p>';
+				echo '<h1 class="article_page_title">' . __("Message Sent", "EOT_LMS") . '</h1>';
+				echo '<p>' . __("Your message has been succesfully sent. The subject and body template has been saved for the next time you want to email your staff.", "EOT_LMS") . '</p>';
 			}
 			else
 			{
 				// Display the ACF form.
 				global $current_user;
 				$user_id = $current_user->ID; // Wordpress user ID
-                                $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
+                $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
 			  	$portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
 			  	$first_name = get_user_meta($user_id, "first_name", true);	// First name
 			  	$last_name  = get_user_meta($user_id, "last_name", true);	// Last name
@@ -180,13 +180,13 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 					else if($courses == null)
 				    {
 				   		// No course.
-				      	echo 'You do not have any published courses. You must publish a course in order to be able to enroll staff into said course.';
+				      	echo __("You do not have any published courses. You must publish a course in order to be able to enroll staff into said course.", "EOT_LMS");
 				    }
 				    else
 				    {
 				    	// Could not find the fault
-				     	$error_message =  (isset($courses['message'])) ? $courses['message'] : "Could not find the fault.";
-				      	$error_message .= "<br/> Please contact the administrator.";
+				     	$error_message =  (isset($courses['message'])) ? $courses['message'] : __("Could not find the fault.", "EOT_LMS");
+				      	$error_message .= "<br/> " . __("Please contact the administrator.", "EOT_LMS");
 				   		echo "<br/>There is an error in getting the courses: <br/>" . $error_message;
 				   	}
 			    }
@@ -347,38 +347,38 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 		</script>
 		    <!--hidden field containing the tag example-->
 		  	<section class="hidden" id="tag-example">
-			    When an email is sent, the message is sent to each recipient one at a time, and the following phrases are changed to the individual recipient's information one at a time:
+			    <?= __("When an email is sent, the message is sent to each recipient one at a time, and the following phrases are changed to the individual recipient's information one at a time:", "EOT_LMS"); ?>
 			    <ul>
-					<li>%%name%% is replaced by each staff's name</li>        
-					<li>%%email%% is replaced with each staff's email (what they use to login with)</li>
-					<li>%%password%% is replaced by each staff's new password link</li>
-					<li>%%your_name%% is replaced by your name</li>
-					<li>%%logininfo%% is replaced by the login info(username/password) of the staff member who the email is sent to.</li>
-					<li>%%directorname%% is replaced with your name.</li>
-					<li>%%campname%% - is replaced with your camp's name.</li>
-					<li>%%numvideos%% - is replaced with the number of videos in our library.</li>
+					<li>%%name%% <?= __("is replaced by each staff's name", "EOT_LMS"); ?></li>        
+					<li>%%email%% <?= __("is replaced with each staff's email (what they use to login with)", "EOT_LMS"); ?></li>
+					<li>%%password%% <?= __("is replaced by each staff's new password link", "EOT_LMS"); ?></li>
+					<li>%%your_name%% <?= __("is replaced by your name", "EOT_LMS"); ?></li>
+					<li>%%logininfo%% <?= __("is replaced by the login info(username/password) of the staff member who the email is sent to.", "EOT_LMS"); ?></li>
+					<li>%%directorname%% <?= __("is replaced with your name.", "EOT_LMS"); ?></li>
+					<li>%%campname%% - <?= __("is replaced with your camp's name.", "EOT_LMS"); ?></li>
+					<li>%%numvideos%% - <?= __("is replaced with the number of videos in our library.", "EOT_LMS"); ?></li>
 			    </ul>
-			    <strong>For example,</strong><br />
-			    If you were sending an email to Joe and Sally which you wanted to turn out like this:<br><br>
-			    Message to Joe
+			    <strong><?= __("For example,", "EOT_LMS"); ?></strong><br />
+			    <?= __("If you were sending an email to Joe and Sally which you wanted to turn out like this:", "EOT_LMS"); ?><br><br>
+			    <?= __("Message to Joe", "EOT_LMS"); ?>
 			    <div style="width:120px;border-width:2px;border-style:dashed;border-color:grey;padding:7px;background-color:#99FFDD;">
-			      Dear Joe,<br>
-			      Have a fun summer!
+			      <?= __("Dear Joe,", "EOT_LMS"); ?><br>
+			      <?= __("Have a fun summer!", "EOT_LMS"); ?>
 			    </div><br>      
-			    Message to Sally
+			    <?= __("Message to Sally", "EOT_LMS"); ?>
 			    <div style="width:120px;border-width:2px;border-style:dashed;border-color:grey;padding:7px;background-color:#99FFDD;">
-			      Dear Sally,<br>
-			      Have a fun summer!
+			      <?= __("Dear Sally,", "EOT_LMS"); ?><br>
+			      <?= __("Have a fun summer!", "EOT_LMS"); ?>
 			    </div><br>  
-			    You would <strong>enter it like this:</strong>
+			    <?= __("You would", "EOT_LMS"); ?> <strong><?= __("enter it like this:", "EOT_LMS"); ?></strong>
 			    <div style="width:120px;border-width:2px;border-style:dashed;border-color:grey;padding:7px;background-color:#99FFDD;">
-			      Dear %%name%%,<br>
-			      Have a fun summer!
+			      <?= __("Dear", "EOT_LMS"); ?> %%name%%,<br>
+			      <?= __("Have a fun summer!", "EOT_LMS"); ?>
 		    	</div>
 		  	</section>
 			<!--first step of email process: selecting recipients-->
 			<div class="email-select-users">
-			<h1 class="article_page_title">Mail Staff</h1>          
+			<h1 class="article_page_title"><?= __("Mail Staff", "EOT_LMS"); ?></h1>          
 			<div class="msgboxcontainer">
 			    <div class="msg-tl">
 			      <div class="msg-tr"> 
@@ -397,19 +397,19 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 									switch ($target)
 									{
 										case 'all-course':
-											echo 'ERROR: It appears that you do not have any users enrolled in published courses. Please publish your course first, then enroll your staff in this course to be able to email them.';
+											echo __("ERROR: It appears that you do not have any users enrolled in published courses. Please publish your course first, then enroll your staff in this course to be able to email them.", "EOT_LMS");
 											break;
 										case 'course-passwords':
-											echo 'ERROR: It appears that you do not have any users enrolled in published courses. Please publish your course first, then enroll your staff in this course to be able to email them.';
+											echo __("ERROR: It appears that you do not have any users enrolled in published courses. Please publish your course first, then enroll your staff in this course to be able to email them.", "EOT_LMS");
 											break;
 										default:
-											echo 'ERROR: there was a problem with your request. Please go back and try again: '.CRUMB_EMAIL_YOUR_STAFF;
+											echo __("ERROR: there was a problem with your request. Please go back and try again: ", "EOT_LMS") . CRUMB_EMAIL_YOUR_STAFF;
 									}	
 									return;						
 								}
 								else
 								{
-				            		echo 'You have selected to send this email to <b> All Staff</b> of the following Course(s):';
+				            		echo __("You have selected to send this email to <b> All Staff</b> of the following Course(s): ", "EOT_LMS");
 								}
 							}
 							else
@@ -420,31 +420,31 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 									switch ($target)
 									{
 										case 'all':
-											echo 'ERROR: It appears that you do not have any staff. Please add staff members first before you can email them.';
+											echo __("ERROR: It appears that you do not have any staff. Please add staff members first before you can email them.", "EOT_LMS");
 											break;
 										case 'select-staff':
-											echo 'ERROR: It appears that you do not have any staff. Please add staff members first before you can email them.';
+											echo __("ERROR: It appears that you do not have any staff. Please add staff members first before you can email them.", "EOT_LMS");
 											break;
 										case 'incomplete':
-											echo 'ERROR: None of your staff have incomplete courses.';
+											echo __("ERROR: None of your staff have incomplete courses.", "EOT_LMS");
 											break;
 										case 'completed':
-											echo 'ERROR: None of your staff have completed all of their courses.';
+											echo __("ERROR: None of your staff have completed all of their courses.", "EOT_LMS");
 											break;
 										case 'nologin':
-											echo 'ERROR: All of your staff have logged in previously.';
+											echo __("ERROR: All of your staff have logged in previously.", "EOT_LMS");
 											break;
 										case 'staff-passwords':
-											echo 'ERROR: It appears that you do not have any staff. Please add staff members first before you can email them.';
+											echo __("ERROR: It appears that you do not have any staff. Please add staff members first before you can email them.", "EOT_LMS");
 											break;
 										default:
-											echo 'ERROR: there was a problem with your request. Please go back and try again: '.CRUMB_EMAIL_YOUR_STAFF;
+											echo __("ERROR: there was a problem with your request. Please go back and try again: ", "EOT_LMS") .CRUMB_EMAIL_YOUR_STAFF;
 									}
 									return;
 								}
 								else
 								{
-				            		echo 'Select the <b>staff members</b> that you would like this message to go to.';
+				            		echo __("Select the", "EOT_LMS") . ' <b>' . __("staff members", "EOT_LMS") . '</b> ' . __("that you would like this message to go to.", "EOT_LMS");
 								}
 							}
 		?>
@@ -461,23 +461,23 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 				      <div class="error-tr"> 
 				        <div class="error-bl">
 				          <div class="error-br">
-				            <div class='errorbox'>Please select staff to mail to</div>              </div>
+				            <div class='errorbox'><?= __("Please select staff to mail to", "EOT_LMS"); ?></div>              </div>
 				        </div>
 				      </div>
 				    </div>
 			  	</div>
 			  </div>
 			<a id="select_all_btn" class="btn" style="margin-left: 33px;">
-				Select All
+				<?= __("Select All", "EOT_LMS"); ?>
 			</a>
 			<a id="diselect_all_btn" class="btn" style="margin-left: 10px">
-				Diselect All
+				<?= __("Diselect All", "EOT_LMS"); ?>
 			</a>
 			<br>
 			<form action="" onsubmit="return false" >
 			  <div style="display:block;padding:3px;overflow:auto;">
 			    <div class="staff" style="display:none;width:40%;float:left;">
-			      <div style="font-weight:bold;border-style:solid;border-bottom:1px solid gray;width:175px;margin-left:15px;padding-left:20px; display:none">Staff</div>
+			      <div style="font-weight:bold;border-style:solid;border-bottom:1px solid gray;width:175px;margin-left:15px;padding-left:20px; display:none"><?= __("Staff", "EOT_LMS"); ?></div>
 			      <ol>
 		<?php
 					if($target == "select-staff" || $target == "all" || $target == "staff-passwords" || $target == "nologin" || $target == "completed" || $target == "incomplete")
@@ -508,7 +508,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 		  			</ol>
 			    </div>
 			    <div class="groups" style="display:none;width:60%;float:right;">
-			      <div style="font-weight:bold;border-style:solid;border-bottom:1px solid gray;width:175px;margin-left:15px;padding-left:20px; display:none">Staff Groups</div>
+			      <div style="font-weight:bold;border-style:solid;border-bottom:1px solid gray;width:175px;margin-left:15px;padding-left:20px; display:none"><?= __("Staff Groups", "EOT_LMS"); ?></div>
 		      		<ol>
 <?php
 					if($target == "all-course" || $target == "course-passwords")
@@ -551,18 +551,19 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 			</div>
 			<!--second step of email process: composing the email-->   
 			<div class="email-form" style="display:none">
-				<h1 class="article_page_title">Compose Message</h1>    <p>
-				  Compose your e-mail message to your staff.
+				<h1 class="article_page_title"><?= __("Compose Message", "EOT_LMS"); ?></h1>    <p>
+				  <?= __("Compose your e-mail message to your staff.", "EOT_LMS"); ?>
 				</p>
 
 				<table class="">
 					<tr>
-					        <div class="msgboxcontainer " >
+		        <div class="msgboxcontainer " >
 					<div class="msg-tl">
 					  <div class="msg-tr"> 
 					    <div class="msg-bl">
-					      <div class="msg-br">
-					        <div class='msgbox'>To personalize emails to your staff by including their name, email, or password or a combination of those, place the phrases %%name%%, %%email%%, %%password%%, %%campname%%, %%directorname%%, and %%your_name%% where you would like that information to appear in the body.<br /><br /><span id="view-example" style="text-decoration:underline;color:gray">Click Here to Get More Info</span></div>              </div>
+					      	<div class="msg-br">
+					        	<div class='msgbox'><?= __("To personalize emails to your staff by including their name, email, or password or a combination of those, place the phrases %%name%%, %%email%%, %%password%%, %%campname%%, %%directorname%%, and %%your_name%% where you would like that information to appear in the body.", "EOT_LMS"); ?><br /><br /><span id="view-example" style="text-decoration:underline;color:gray"><?= __("Click Here to Get More Info", "EOT_LMS"); ?></span></div>              
+				        	</div>
 					    </div>
 					  </div>
 					</div>
@@ -570,7 +571,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 					      </tr>
 					<tr>
 					  <td class="label">
-					    From
+					    <?= __("From", "EOT_LMS"); ?>
 					  </td>
 					  <td class="value">
 					    <?= $full_name ?> <span class="small"><?= $email_address ?></span>
@@ -590,8 +591,8 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_STAFF_MEMBERS), // The post id for ACF compose message staff members
 								'post_id' => 'user_' . $user_id,
 								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
-								'updated_message' => __("We are sending your message.", 'acf'),
-								'submit_value' => __("Send Message", 'acf'),
+								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
+								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
 				echo '</div>';
 				echo '<div id="message_incomplete_complete" style="display:none">';
@@ -600,8 +601,8 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE), // The post id for ACF compose message Incomplete and complete
 								'post_id' => 'user_' . $user_id,
 								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
-								'updated_message' => __("We are sending your message.", 'acf'),
-								'submit_value' => __("Send Message", 'acf'),
+								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
+								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
 				echo '</div>';
 				echo '<div id="message_yet_to_login" style="display:none">';
@@ -610,8 +611,8 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_YET_TO_LOGIN), // The post id for ACF compose yet to login
 								'post_id' => 'user_' . $user_id,
 								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
-								'updated_message' => __("We are sending your message.", 'acf'),
-								'submit_value' => __("Send Message", 'acf'),
+								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
+								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
 				echo '</div>';
 				echo '<div id="message_staff_password" style="display:none">';
@@ -620,8 +621,8 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_STAFF_PASSWORD), // The post id for ACF compose message staff members
 								'post_id' => 'user_' . $user_id,
 								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
-								'updated_message' => __("We are sending your message.", 'acf'),
-								'submit_value' => __("Send Message", 'acf'),
+								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
+								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
 				echo '</div>';
 				echo '<div id="message_group_password" style="display:none">';
@@ -630,8 +631,8 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_COURSE_PASSWORD), // The post id for ACF compose messagegroups password
 								'post_id' => 'user_' . $user_id,
 								'return' => '?part=improved_email_staff&sent=true&type=individual&target=improved_email_staff&subscription_id=' . $subscription_id,
-								'updated_message' => __("We are sending your message.", 'acf'),
-								'submit_value' => __("Send Message", 'acf'),
+								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
+								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
 				echo '</div>';
 			?>

@@ -1,5 +1,4 @@
 <?php
-
     $true_subscription = verifyUserAccess();
     if ((isset($true_subscription['status']) && $true_subscription['status']) || current_user_can("is_sales_manager")) 
     {
@@ -15,7 +14,7 @@
 
 			// make sure we got a question ID, quiz ID, and subscription ID
 			if (!$question_id || !$quiz_id || !$subscription_id)
-				wp_die("ERROR: missing parameters");
+				wp_die(__("ERROR: missing parameters", "EOT_LMS"));
 
 			$delete = $eot_quiz->deleteQuestion($question_id);
 			if($delete)
@@ -26,16 +25,16 @@
 			}
 			else
 			{
-			    wp_die("ERROR: Couldn't delete the question");
+			    wp_die(__("ERROR: Couldn't delete the question", "EOT_LMS"));
 			}
 		}
         else 
         {
-            echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+            echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.", "EOT_LMS");
         }
     } 
     else 
     {
-        echo "subscription ID does not belong to you";
+        echo __("subscription ID does not belong to you", "EOT_LMS");
     }
 ?>

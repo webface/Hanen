@@ -7,7 +7,7 @@ $org_id = get_org_from_user($user_id); // Organization ID
 $org_name = get_the_title($org_id);
 $portal_subdomain = ''; // Subdomain of the user REMOVE THIS LATER
 $image = get_field('dashboard_logo', 'user_' . $org_id); // Advance custom fields. Field for the dashboard_logo
-$page_title = "Dashboard";
+$page_title = __("Dashboard", "EOT_LMS");
 
 // Camp Director
 if (current_user_can("is_director")) 
@@ -35,11 +35,11 @@ if (current_user_can("is_director"))
     
     if (current_user_can("is_uber_manager")) 
     {
-        $page_title = "Uber Manager Dashboard";
+        $page_title = __("Uber Manager Dashboard", "EOT_LMS");
     } 
     else if (current_user_can("is_umbrella_manager")) 
     {
-        $page_title = "Umbrella Manager Dashboard";
+        $page_title = __("Umbrella Manager Dashboard", "EOT_LMS");
     }
 ?>
 
@@ -62,13 +62,13 @@ if (current_user_can("is_director"))
     // Display errors if variable exsist
     if (isset($error_message)) 
     {
-        echo "<div class='round_msgbox'>$error_message</div>";
+        echo "<div class='round_msgbox'>" . __("$error_message", "EOT_LMS") . "</div>";
     }
 
     // Display successful updgrade message.
     if (isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'upgradeSubscription') 
     {
-        echo "<div class='round_msgbox'><h2>Subscription Upgraded Successfully!</h2>You have succesfully upgraded your account.</div>";
+        echo "<div class='round_msgbox'><h2>" . __("Subscription Upgraded Successfully!", "EOT_LMS") . "</h2>" . __("You have succesfully upgraded your account.", "EOT_LMS") . "</div>";
     }
 
     // Display the dashboard banner
@@ -285,13 +285,13 @@ else if (current_user_can("is_student"))
             <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
                 <source src="https://eot-output.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
                 <p class="vjs-no-js">
-                    To view this video please enable JavaScript, and consider upgrading to a web browser that
-                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
+                    <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
                 </p>        
             </video>
         </div>
         <br><br><br><br>
-        <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton">View Dashboard</a>
+        <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton"><?= __("View Dashboard", "EOT_LMS"); ?></a>
 <?php
     }
     else
@@ -317,7 +317,7 @@ else if (current_user_can("is_student"))
                 $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
                 // Get all the modules in this course
                 $modules = getModulesInCourse($course_id);
-                $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : "could not find the course name"; // Check if the that course id is in $courses.
+                $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : __("could not find the course name", "EOT_LMS"); // Check if the that course id is in $courses.
                 $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
                 if ($modules) 
                 {
@@ -325,7 +325,7 @@ else if (current_user_can("is_student"))
                     $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
                     if ($status == "Failed") 
                     {
-                        $status = 'In Progress';
+                        $status = __("In Progress", "EOT_LMS");
                     } 
                     else if ($status == "Completed" || $status == "Passed") 
                     {
@@ -343,9 +343,9 @@ else if (current_user_can("is_student"))
                                         <i class="fa fa-youtube-play" alt="Content"></i>
                                     </div>
                                     <div class="para">
-                                        <h1>Start Course</h1>
+                                        <h1><?= __("Start Course", "EOT_LMS"); ?></h1>
                                         <br/>
-                                        Watch the videos, take quizzes, see resources
+                                        <?= __("Watch the videos, take quizzes, see resources", "EOT_LMS"); ?>
                                     </div>
                                 </a>
                             </div> 
@@ -355,7 +355,7 @@ else if (current_user_can("is_student"))
                                 <tbody>
                                     <tr>
                                         <td class="s1 darklabel">
-                                            Modules
+                                            <?= __("Modules", "EOT_LMS"); ?>
                                         </td>
                                         <td class="s2">
                                             <?= count($modules) ?>            
@@ -363,7 +363,7 @@ else if (current_user_can("is_student"))
                                     </tr>
                                     <tr>
                                         <td class="s1 darklabel">
-                                            Status
+                                            <?= __("Status", "EOT_LMS"); ?>
                                         </td>
                                         <td class="s2">
                                             <?= $status ?>
@@ -377,15 +377,15 @@ else if (current_user_can("is_student"))
                         <div class="dashboard_button">
                             <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
                                 <div class="title" style="padding-top: 5px;">
-                                    <b>Virtual Staff Lounge</b>
-                                    <br>Manage your Forum
+                                    <b><?= __("Virtual Staff Lounge", "EOT_LMS"); ?></b>
+                                    <br><?= __("Manage your Forum", "EOT_LMS"); ?>
                                 </div>
                             </a>
                         </div>
                         <div>
-                            <b>Technical Support</b>
+                            <b><?= __("Technical Support", "EOT_LMS"); ?></b>
                             <br>
-                            Toll-free 877-390-2267
+                            <?= __("Toll-free", "EOT_LMS"); ?> 877-390-2267
                         </div>
                     </div>
                     <script>
@@ -403,14 +403,14 @@ else if (current_user_can("is_student"))
                 else 
                 { 
                     // User has no modules
-                    echo '<b>' . $course_name . '</b>: There are no modules in this course. Please contact your camp director.';
+                    echo '<b>' . $course_name . '</b>: ' . __("There are no modules in this course. Please contact your camp director.", "EOT_LMS");
                 } 
             }
         } 
         else 
         { 
             // Display message if the user has no enrollments.
-            echo "<p>You do not have any enrollments.</p>";
+            echo "<p>" . __("You do not have any enrollments", "EOT_LMS") . ".</p>";
         }
     }
 } 
@@ -425,6 +425,6 @@ else
         </div>
 <?php
     }
-    wp_die("Please contact the administrator. I could not find your role.");
+    wp_die(__("Please contact the administrator. I could not find your role.", "EOT_LMS"));
 }
 ?>

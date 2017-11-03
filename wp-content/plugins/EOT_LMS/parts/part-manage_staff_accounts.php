@@ -3,7 +3,7 @@
   <?= CRUMB_SEPARATOR ?>     
   <?= CRUMB_ADMINISTRATOR ?>    
   <?= CRUMB_SEPARATOR ?>    
-    <span class="current">Manage Staff Accounts</span>     
+    <span class="current"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></span>     
 </div>
 
 <?php
@@ -30,7 +30,7 @@
     {
       if(current_user_can( "is_director" ))
       {
-        echo '<h1 class="article_page_title">Manage Staff Accounts</h1>';
+        echo '<h1 class="article_page_title">' . __("Manage Staff Accounts", "EOT_LMS") . '</h1>';
 
         if( isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'uploadedspreadsheet' )
         {
@@ -40,20 +40,20 @@
               <div class="msg-tr"> 
                 <div class="msg-bl">
                   <div class="msg-br">
-                    <div class="msgbox"><h2>Spreadsheet Uploaded Successfully!</h2>Staff accounts have been created.
+                    <div class="msgbox"><h2><?= __("Spreadsheet Uploaded Successfully!", "EOT_LMS"); ?></h2><?= __("Staff accounts have been created.", "EOT_LMS"); ?>
                     <?php
                       if( isset($_REQUEST['sent']) && $_REQUEST['sent'] == 1 )
                       {
-                        echo '<br><b>Note:</b> Each user has been sent an e-mail containing their login credentials.';
+                        echo '<br><b>' . __("Note:", "EOT_LMS") . '</b> '. __("Each user has been sent an e-mail containing their login credentials.", "EOT_LMS");
                       }
                       else
                       {
-                        echo '<br><b>Note:</b> Some staff were NOT sent their login credentials. You can use the <a href="/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">mass mail</a> function to send staff their password.';
+                        echo '<br><b>' . __("Note:", "EOT_LMS") . '</b> ' . __("Some staff were NOT sent their login credentials. You can use the", "EOT_LMS") . ' <a href="/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">' . __("mass mail", "EOT_LMS") . '</a> ' . __("function to send staff their password.", "EOT_LMS");
                       }
 
                       if (isset($_REQUEST['import_status']) && !empty($_REQUEST['import_status']))
                       {
-                        echo "<p> Error Report:<br><br>" . $_REQUEST['import_status'] . "<p>";
+                        echo "<p> " . __("Error Report:", "EOT_LMS") . "<br><br>" . $_REQUEST['import_status'] . "<p>";
                       }
                     ?>
                     </div>
@@ -72,9 +72,9 @@
           $staffTableObj = new stdClass();
           $staffTableObj->rows = array();
           $staffTableObj->headers = array(
-            'Name' => 'name',
-            'E-mail Address' => 'e-mail',
-            'Action' => 'center'
+            __("Name", "EOT_LMS") => 'name',
+            __("E-mail Address", "EOT_LMS") => 'e-mail',
+            __("Action", "EOT_LMS") => 'center'
           );
           /*
            *  Check if there are any learners registered in this organization. 
@@ -91,23 +91,24 @@
                 $staff_name, // First and last name
                 $email, // The email address
                   '<a href="'. $admin_ajax_url .'?action=getCourseForm&form_name=edit_staff_account&amp;org_id='. $org_id .'&amp;staff_id='.$staff_id.'" rel="facebox">
-                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Edit the staff account details.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>&nbsp;&nbsp;&nbsp;
+                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\''. __("Edit the staff account details.", "EOT_LMS") . 
+'\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>&nbsp;&nbsp;&nbsp;
                   <a href="'.$admin_ajax_url.'?action=getCourseForm&form_name=delete_staff_account&amp;org_id='.$org_id.'&amp;staff_id='.$staff_id.'&amp;email='.$email.'&amp;subscription_id='.$subscription_id.'" rel="facebox">
-                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'Delete the staff account.\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>' // User options
+                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green" onmouseover="Tip(\'' . __("Delete the staff account.", "EOT_LMS") . '\', FIX, [this, 30, -60], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>' // User options
               );
             }
           }
           else
           {
             // No staff. Display message to create a staff account.
-            echo '<div id="noStaffAccount" style="width:100%;text-align:center;font-size:140%;">Create a Staff Account...</div>';
+            echo '<div id="noStaffAccount" style="width:100%;text-align:center;font-size:140%;">' . __("Create a Staff Account...", "EOT_LMS") . '</div>';
           }
 ?>
 <div style="width:625px;" class="tableheadboxcontainer">
   <div class="tablehead-tr">
     <div class="tablehead-tl">
       <div style="padding:7px;margin-left:5px;height:20px">
-        <h3 style="float:left;" class="tablehead-title"> <?= $library_name . " " . SUBSCRIPTION_YEAR ?> Staff Listing</h3><div style="clear:both;"></div>
+        <h3 style="float:left;" class="tablehead-title"> <?= $library_name . " " . SUBSCRIPTION_YEAR ?> <?= __("Staff Listing", "EOT_LMS"); ?></h3><div style="clear:both;"></div>
       </div>  
     </div>
   </div>
@@ -165,14 +166,14 @@ static $i = 0;
   </script>
 <div class="bottom_buttons">
   <a class="btn" name="create_staff_account" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_staff_account&amp;org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>" rel="facebox">
-    Create Staff Account
+    <?= __("Create Staff Account", "EOT_LMS"); ?>
   </a>
 
   <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=uploadspreadsheet&subscription_id=<?= $subscription_id ?>">
-    Upload A Spreadsheet
+    <?= __("Upload A Spreadsheet", "EOT_LMS"); ?>
   </a>
   <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=invite_users&subscription_id=<?= $subscription_id ?>&org_id=<?= $org_id ?>">
-    Invite Users To Register
+    <?= __("Invite Users To Register", "EOT_LMS"); ?>
   </a>
   <!-- 
   <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=add_previous_staff_to_subscription&amp;year=<?= SUBSCRIPTION_YEAR ?>&amp;org_id=<?= $org_id ?>" rel="facebox">
@@ -393,17 +394,17 @@ outline: none;
       }
       else
       {
-        echo "Unauthorized!";
+        echo __("Unauthorized!", "EOT_LMS");
       }
     }
     else
     {
-      echo "subscription ID does not belong to you";
+      echo __("subscription ID does not belong to you", "EOT_LMS");
     }
   }
   // Could not find the subscription ID
   else
   {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID", "EOT_LMS");
   }
 ?>

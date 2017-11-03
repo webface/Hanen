@@ -3,7 +3,7 @@
     <?= CRUMB_SEPARATOR ?>
     <?= CRUMB_STATISTICS ?>          
     <?= CRUMB_SEPARATOR ?>  
-    <span class="current">Course Stats</span>     
+    <span class="current"><?= __("Course Stats", "EOT_LMS"); ?></span>     
 </div>
 <?php
 // enqueue required javascripts
@@ -33,10 +33,10 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
               
 ?>
                 <div class="smoothness">
-                    <h1 class="article_page_title">Login Record for <?= $fullname ?></h1>
+                    <h1 class="article_page_title"><?= __("Login Record for", "EOT_LMS"); ?> <?= $fullname ?></h1>
                     <p>
-                        Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
-                        It is currently <b><?=date('g:ia', time())?></b> on <b><?=date('F j, Y', time())?></b>.
+                        <?= __("Times are shown in", "EOT_LMS"); ?> <b><?= __("Pacific Standard Time (PST)", "EOT_LMS"); ?></b> <span class="small"><?= __("(GMT - 8).", "EOT_LMS"); ?></span><br />
+                        <?= __("It is currently", "EOT_LMS"); ?> <b><?=date('g:ia', time())?></b> <?= __("on", "EOT_LMS"); ?> <b><?=date('F j, Y', time())?></b>.
                     </p>
                 </div>                        
                
@@ -45,8 +45,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $loginsTableObj = new stdClass();
                 $loginsTableObj->rows = array();
                 $loginsTableObj->headers = array(
-                    '<div>No</div>' => 'left',
-                    '<center><div>Date and Time</div></center>' => 'left'
+                    '<div>' . __("No", "EOT_LMS") . '</div>' => 'left',
+                    '<center><div>' . __("Date and Time", "EOT_LMS") . '</div></center>' => 'left'
                 );
                 $counter = 0;
                 foreach ($track_login as $login) {
@@ -60,22 +60,22 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
             }
             else 
             {
-                echo "You dont have a valid course ID";
+                echo __("You dont have a valid course ID", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "Unauthorized!";
+            echo __("Unauthorized!", "EOT_LMS");
         }
     } 
     else 
     {
-        echo "subscription ID does not belong to you";
+        echo __("subscription ID does not belong to you", "EOT_LMS");
     }
 }
 // Could not find the subscription ID
 else
 {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID", "EOT_LMS");
 }
 ?>

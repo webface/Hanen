@@ -3,7 +3,7 @@
     <?= CRUMB_SEPARATOR ?>
     <?= CRUMB_ADMINISTRATOR ?>
     <?= CRUMB_SEPARATOR ?>
-    <span class="current">Upload File</span>     
+    <span class="current"><?= __("Upload File", "EOT_LMS") ?></span>     
 </div>
 
 <?php
@@ -49,13 +49,13 @@
                     {
                         if (Files[i].file_key ==<?= $org_id; ?> + "_" + file.name) 
                         {
-                            alert('You have already uploaded this file!');
+                            alert('<?= __("You have already uploaded this file!", "EOT_LMS") ?>');
                             return false;
                         }
                     }
                     if ($('input[name="title"]').val() == "") 
                     {
-                        alert('Please give a title to your file. It is what your users will see.');
+                        alert('<?= __("Please give a title to your file. It is what your users will see.", "EOT_LMS") ?>');
                         return false;
                     }
 
@@ -91,12 +91,12 @@
             e.preventDefault();
             if ($('input[name="title2"]').val() == "") 
             {
-                alert('Please give a title to your file. It is what your users will see.');
+                alert('<?= __("Please give a title to your file. It is what your users will see.", "EOT_LMS") ?>');
                 return false;
             }
             if ($('input[name="url"]').val() == "") 
             {
-                alert('Please provide the url to download your file.');
+                alert('<?= __("Please provide the url to download your file.", "EOT_LMS") ?>');
                 return false;
             }
             var data = {
@@ -122,11 +122,11 @@
                     } 
                     else 
                     {
-                        alert("There was an error saving your data");
+                        alert("<?= __("There was an error saving your data", "EOT_LMS") ?>");
                     }
                 },
                 error: function (errorThrown) {
-                    alert("There was an error saving your data");
+                    alert("<?= __("There was an error saving your data", "EOT_LMS") ?>");
                 }
             });
             return false;
@@ -158,11 +158,11 @@
                 } 
                 else 
                 {
-                    alert("There was an error saving your data");
+                    alert("<?= __("There was an error saving your data", "EOT_LMS") ?>");
                 }
             },
             error: function (errorThrown) {
-                alert("There was an error saving your data");
+                alert("<?= __("There was an error saving your data", "EOT_LMS") ?>");
             }
         });
 
@@ -183,7 +183,7 @@
             $.ajax({
                 data: {'title': title, 'id': id},
                 error: function () {
-                    $.facebox('There was an error loading the title. Please try again shortly.');
+                    $.facebox('<?= __("There was an error loading the title. Please try again shortly.", "EOT_LMS") ?>');
                 },
                 success: function (data) {
                     $.facebox(data);
@@ -211,7 +211,7 @@
             $.ajax({
                 data: {'id': id, 'key': key},
                 error: function () {
-                    $.facebox('There was an error deleting the file. Please try again shortly.');
+                    $.facebox('<?= __("There was an error deleting the file. Please try again shortly.", "EOT_LMS") ?>');
                 },
                 success: function (data) {
                     $.facebox(data);
@@ -230,16 +230,16 @@
 //d($files);
 ?>
 <script>var Files =<?= json_encode($files); ?></script>
-<h1 class="article_page_title">Manage Your Uploaded Resources</h1>
-<h3 class="article_page_title">My Files</h3>
+<h1 class="article_page_title"><?= __("Manage Your Uploaded Resources", "EOT_LMS") ?></h1>
+<h3 class="article_page_title"><?= __("My Files", "EOT_LMS") ?></h3>
 <div class="bs">
     <table class="table table-hover table-bordered table-striped files">
         <thead>
             <tr>
-                <td>Title</td>
-                <td>File/URL</td>
-                <td>Type</td>
-                <td>Actions</td>
+                <td><?= __("Title", "EOT_LMS") ?></td>
+                <td><?= __("File/URL", "EOT_LMS") ?></td>
+                <td><?= __("Type", "EOT_LMS") ?></td>
+                <td><?= __("Actions", "EOT_LMS") ?></td>
             </tr>
         <tbody>
             <?php
@@ -282,18 +282,18 @@
             } 
             else 
             {
-                echo '<tr><td>No Resources</td></tr>';
+                echo '<tr><td>' . __("No Resources", "EOT_LMS") . '</td></tr>';
             }
             ?>
         </tbody>
         </thead>
     </table>
 </div>
-<h3 class="article_page_title">Upload Files</h3>
+<h3 class="article_page_title"><?= __("Upload Files", "EOT_LMS") ?></h3>
 <div class="bs">
 <form id="fileUploadForm" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="title">Title</label>
+        <label for="title"><?= __("Title", "EOT_LMS") ?></label>
         <input type="text" class="bs form-control" name="title" />
     </div>
     <input type="file" name="file" id="file" value="dataFile" required="" class="bs pull-left">
@@ -307,14 +307,14 @@
         </div>
     </div>
 
-<h3 class="article_page_title">Create Link as a Resource</h3>
+<h3 class="article_page_title"><?= __("Create Link as a Resource", "EOT_LMS") ?></h3>
 <form id="urlSaveForm" method="post">
     <div class="form-group">
-        <label for="title2">Title</label>
+        <label for="title2"><?= __("Title", "EOT_LMS") ?></label>
         <input type="text" class=" form-control" name="title2" />
     </div>
     <div class=" form-group">
-        <label for="url">URL</label>
+        <label for="url"><?= __("URL", "EOT_LMS") ?></label>
         <input type="url" class=" form-control" name="url" value="http://" />
     </div>
     <input type="submit"  class=" pull-left" value="Submit">
@@ -353,18 +353,18 @@
         }
         else 
         {
-                echo "Unauthorized!";
+                echo __("Unauthorized!", "EOT_LMS");
         }
     } 
     else 
     {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", "EOT_LMS");
         }
     }
 // Could not find the subscription ID
 else 
 {
-   echo "Could not find the subscription ID";
+   echo __("Could not find the subscription ID", "EOT_LMS");
 }
 
 ?>

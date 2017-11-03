@@ -11,9 +11,9 @@
         		<?= CRUMB_SEPARATOR ?> 
                 <?= CRUMB_CORNER ?>    
                 <?= CRUMB_SEPARATOR ?>    
-            	<span class="current">Bloopers</span>     
+            	<span class="current"><?= __("Bloopers", "EOT_LMS"); ?></span>     
         	</div>
-            <h1 class="article_page_title">Bloopers</h1>
+            <h1 class="article_page_title"><?= __("Bloopers", "EOT_LMS"); ?></h1>
             <p>
                 <style type="text/css">
                     iframe.bloopers
@@ -30,11 +30,11 @@
         }
         else
         {
-            echo "subscription id not provided!";
+            echo __("subscription id not provided!", "EOT_LMS");
         }
     }
     else
     {
-        echo "You do not have the privilege to view this page.";
+        echo __("You do not have the privilege to view this page.", "EOT_LMS");
     }
 ?>

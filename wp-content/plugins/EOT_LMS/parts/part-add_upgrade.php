@@ -1,7 +1,7 @@
 <div class="breadcrumb">
   <?= CRUMB_DASHBOARD ?>    
   <?= CRUMB_SEPARATOR ?>    
-    <span class="current">Add Staff Upgrade</span>     
+    <span class="current"><?= __("Add Staff Upgrade", "EOT_LMS") ?></span>     
 </div>
 <?php
 	if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
@@ -16,14 +16,14 @@
          		$subscription = getSubscriptions($subscription_id);
 	         	if(!$subscription)
 	         	{
-	         		echo 'ERROR: I could not retrieve the subscription you are trying to upgrade.';
+	         		echo __("ERROR: I could not retrieve the subscription you are trying to upgrade.", "EOT_LMS");
 	         		return;
 	         	}
 		        $staff_credits = $subscription->staff_credits; // The staff Credits for the subscription
 		        $camp_director = get_userdata( $subscription->manager_id ); // The camp directer user information
 		        if(!$camp_director)
 		        {
-		        	echo 'ERROR: I could not get the camp director\'s information.';
+		        	echo __("ERROR: I could not get the camp director's information.", "EOT_LMS");
 		        	return;
 		        }
 
@@ -341,63 +341,63 @@
 		            display: none;
 		        }
 		        </style>
-			<h1 class="article_page_title">Add Staff Upgrade</h1>
+			<h1 class="article_page_title"><?= __("Add Staff Upgrade", "EOT_LMS") ?></h1>
 			<div id="bill_form">
 				<form id="addUpgrade">
-		        	<h2>Add Staff Information</h2>
+		        	<h2><?= __("Add Staff Information", "EOT_LMS") ?></h2>
 		            <div class="form-row">
-		                <label style="width:200px;"># of Additional Staff Accounts:</label>
+		                <label style="width:200px;"><?= __("# of Additional Staff Accounts:", "EOT_LMS") ?></label>
 		                <input type="text" name="accounts" value="" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Price:</label>
+		                <label><?= __("Price:", "EOT_LMS") ?></label>
 		                <input type="text" name="price" value="" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Discount Notes:</label>
+		                <label><?= __("Discount Notes:", "EOT_LMS") ?></label>
 		                <input type="text" name="discount_note" value="" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Other Notes:</label>
+		                <label><?= __("Other Notes:", "EOT_LMS") ?></label>
 		                <input type="text" name="other_note" value="" required/>
 		            </div>
-		            <h2>Billing Address</h2>
+		            <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
 		            <div class="form-row">
-		                <label>Organization Name</label>
+		                <label><?= __("Organization Name", "EOT_LMS") ?></label>
 		                <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Cardholder Name</label>
+		                <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
 		                <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Address</label>
+		                <label><?= __("Address", "EOT_LMS") ?></label>
 		                <input type="text" name="address" value="<?php echo $address; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>City</label>
+		                <label><?= __("City", "EOT_LMS") ?></label>
 		                <input type="text" name="city" value="<?php echo $city; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>State/Province</label>
+		                <label><?= __("State/Province", "EOT_LMS") ?></label>
 		                <input type="text" name="state" value="<?php echo $state; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Country</label>
+		                <label><?= __("Country", "EOT_LMS") ?></label>
 		                <input type="text" name="country" value="<?php echo $country; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Zip/Postal Code</label>
+		                <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
 		                <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Phone Number</label>
+		                <label><?= __("Phone Number", "EOT_LMS") ?></label>
 		                <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
 		            </div>
 		            <div class="form-row">
-		                <label>Sales Rep</label>
+		                <label><?= __("Sales Rep", "EOT_LMS") ?></label>
 						<select name="rep_id">
-							<option value="0" >None</option>
+							<option value="0" ><?= __("None", "EOT_LMS") ?></option>
 	<?php
 							// Goes to each sales rep, prints their name and select the current rep for this subscription 
 							foreach ($salesreps as $rep) 
@@ -410,15 +410,15 @@
 						</select>
 		            </div>
                    	<div class="form-row">
-                        <label>Payment Method:</label>
+                        <label><?= __("Payment Method:", "EOT_LMS") ?></label>
                         <select name="method" id ="method">
-                            <option value="Stripe">Credit Card</option>
-                            <option value="check">Check</option>
-                            <option value="free">Free</option>
+                            <option value="Stripe"><?= __("Credit Card", "EOT_LMS") ?></option>
+                            <option value="check"><?= __("Check", "EOT_LMS") ?></option>
+                            <option value="free"><?= __("Free", "EOT_LMS") ?></option>
                         </select><br />
                     </div>
                     <div id="creditcard_opts">
-			            <h2>Credit Card</h2>
+			            <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
 <?php 
 			                $cus_id = get_post_meta($org_id, 'stripe_id', true);
 			                $cards = get_customer_cards ($cus_id);
@@ -428,10 +428,10 @@
 		                <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
 		                    <tr>
 		                        <td>&nbsp;</td>
-		                        <td>Type</td>
-		                        <td>Number</td>
-		                        <td>Expiration</td>
-		                        <td>CVC</td>
+		                        <td><?= __("Type", "EOT_LMS") ?></td>
+		                        <td><?= __("Number", "EOT_LMS") ?></td>
+		                        <td><?= __("Expiration", "EOT_LMS") ?></td>
+		                        <td><?= __("CVC", "EOT_LMS") ?></td>
 		                    </tr>
 		                    <?php foreach ($cards as $card) { ?>
 		                        <tr>
@@ -443,19 +443,19 @@
 		                        </tr>
 		                    <?php } ?>
 		                </table>
-		                <a href="#" id="new_card">Add new Card</a>
+		                <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
 <?php } ?>
 		                <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
 		                    <div class="form-row">
-		                        <label>Card Number</label>
+		                        <label><?= __("Card Number", "EOT_LMS") ?></label>
 		                        <input type="text" size="20" autocomplete="off" name="cc_num" value="" required/>
 		                    </div>
 		                    <div class="form-row">
-		                        <label>CVC</label>
+		                        <label><?= __("CVC", "EOT_LMS") ?></label>
 		                        <input type="text" size="4" autocomplete="off" name="cc_cvc" value="" required/>
 		                    </div>
 		                    <div class="form-row">
-		                        <label>Expiration</label>
+		                        <label><?= __("Expiration", "EOT_LMS") ?></label>
 		                        <select name="cc_mon" required>
 		                            <option value="" selected="selected">MM</option>
 		                            <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
@@ -478,15 +478,15 @@
 					<input type="hidden" name="subscription_id" value="<?= $subscription_id ?>">
 
 		            <p>
-		                <i class="fa fa-lock"></i> This site uses 256-bit encryption to safeguard your credit card information.
+		                <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
 		            </p>
-		            <input value="Make Payment" id="submit_bill" type="button">
+		            <input value="<?= __("Make Payment", "EOT_LMS") ?>" id="submit_bill" type="button">
 		        </form>
 			</div>	
 		    <div class="processing_payment round_msgbox">
-		        Attempting to charge Credit card and create the subscription... <br />
+		        <?= __("Attempting to charge Credit card and create the subscription...", "EOT_LMS") ?> <br />
 		        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>                          <br />
-		        If you see this message for more than 15 seconds, please call 877-390-2267 for assistance.  
+		        <?= __("If you see this message for more than 15 seconds, please call 877-390-2267 for assistance.", "EOT_LMS") ?>  
 		    </div>
 
 			<script>
@@ -522,7 +522,7 @@
 						{
 	                        $('.processing_payment').slideUp();
 	                        $(button_ref).removeAttr('disabled');
-							show_error( "ERROR: Unable to upgrade staff accounts: " + textStatus + " " + errorThrown + "<br>Please contact the site administrator!");
+							show_error( "<?= __("ERROR: Unable to upgrade staff accounts:", "EOT_LMS") ?> " + textStatus + " " + errorThrown + "<br><?= __("Please contact the site administrator!", "EOT_LMS") ?>");
 						}
 	                });
 	            });
@@ -564,16 +564,16 @@
 			}
 			else
 			{
-				wp_die('You do not have privilege to view this page.');
+				wp_die(__("You do not have privilege to view this page.", "EOT_LMS"));
 			}
 		}
 		else
 		{
-			wp_die('Invalid library id.');
+			wp_die(__("Invalid library id.", "EOT_LMS"));
 		}
 	}
 	else
 	{
-		wp_die('Invalid subscription id');
+		wp_die(__("Invalid subscription id", "EOT_LMS"));
 	}
 ?>

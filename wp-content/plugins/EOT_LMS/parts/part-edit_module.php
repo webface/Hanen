@@ -5,7 +5,7 @@
     <?= CRUMB_SEPARATOR ?>    
     <?= CRUMB_MODULES ?>
     <?= CRUMB_SEPARATOR ?>
-    <span class="current">Edit Module</span>
+    <span class="current"><?= __("Edit Module", "EOT_LMS"); ?></span>
 </div>
 <?php
     // verify this user has access to this portal/subscription/page/view
@@ -55,17 +55,17 @@
                 //d($module_resources);
 ?>              
             <h1 class="article_page_title" id="moduleTitle"><?= $module['title'] ?></h1>
-            <a class="btn btn-primary float-l" href="#" onclick="rename_module();">Rename Module</a>
-            <h3>Your Modules Content</h3>
+            <a class="btn btn-primary float-l" href="#" onclick="rename_module();"><?= __("Rename Module", "EOT_LMS"); ?></a>
+            <h3><?= __("Your Modules Content", "EOT_LMS"); ?></h3>
             <div class="bs">
                 <form method="POST" action="/dashboard?part=edit_module&subscription_id=<?= $subscription_id ?>&module_id=<?= $module_id ?>">
                     <table class="table table-hover table-bordered table-striped files">
                         <thead>
                             <tr>
-                                <td>Order</td>
-                                <td>Title</td>
-                                <td>Type</td>
-                                <td>Actions</td>
+                                <td><?= __("Order", "EOT_LMS"); ?></td>
+                                <td><?= __("Title", "EOT_LMS"); ?></td>
+                                <td><?= __("Type", "EOT_LMS"); ?></td>
+                                <td><?= __("Actions", "EOT_LMS"); ?></td>
                             </tr>
                         <tbody>
                             <?php
@@ -82,23 +82,23 @@
                         </tbody>
                         </thead>
                     </table>
-                    <input type="submit" class="btn btn-primary" name="submit" value="Update Order"/>
+                    <input type="submit" class="btn btn-primary" name="submit" value="<?= __("Update Order", "EOT_LMS"); ?>"/>
                 </form>
                 <div class="bs">
-                    <h3>Add Resources To This Module</h3>
-                    <h4>Select the type of resource to add to this module:</h4>
+                    <h3><?= __("Add Resources To This Module", "EOT_LMS"); ?></h3>
+                    <h4><?= __("Select the type of resource to add to this module", "EOT_LMS"); ?>:</h4>
 
 
                     <label class="radio-inline">
-                        <input type="radio" name="radioGroup" id="quizr" value="quiz"> Quiz
+                        <input type="radio" name="radioGroup" id="quizr" value="quiz"> <?= __("Quiz", "EOT_LMS"); ?>
                     </label><br>
                     <label class="radio-inline">
-                        <input type="radio" name="radioGroup" id="resourcer" value="resource"> Resource
+                        <input type="radio" name="radioGroup" id="resourcer" value="resource"> <?= __("Resource", "EOT_LMS"); ?>
                     </label>
 
                     <br>&nbsp;<br>
                     <select class="form-control" name="" id="quiz" style="display:none">
-                        <option value="">Select Quiz</option>
+                        <option value=""><?= __("Select Quiz", "EOT_LMS"); ?></option>
                         <?php
                         foreach ($quizzes as $quiz) {
                             echo "<option value=" . $quiz['ID'] . ">" . $quiz['name'] . "</option>";
@@ -106,7 +106,7 @@
                         ?>
                     </select>
                     <select class="form-control" name="" id="resource" style="display:none">
-                        <option value="">Select Resource</option>
+                        <option value=""><?= __("Select Resource", "EOT_LMS"); ?></option>
                         <?php
                         foreach ($resources as $resource) {
                             echo "<option value=" . $resource['ID'] . ">" . $resource['name'] . " ---> " . $resource['type'] . "</option>";
@@ -115,7 +115,7 @@
                     </select>
                     <div class="btns" style="display:none">
                         <label for="order">Order
-                            <input id="order" name="order" value="50" class="form-control form-group-sm" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/><br>(50 is the default, if you want a resource to appear first, set it to a value less than 50)
+                            <input id="order" name="order" value="50" class="form-control form-group-sm" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/><br><?= __("(50 is the default, if you want a resource to appear first, set it to a value less than 50)", "EOT_LMS"); ?>
                         </label>
                         <a href="#" class="btn btn-primary addBtn">Add</a>
                     </div>
@@ -147,12 +147,12 @@
                             //alert($('input[type=radio][name=radioGroup]:checked').val());
                             if ($("select[name='add']").val() === "") 
                             {
-                                alert('Please select from the drop down');
+                                alert('<?= __("Please select from the drop down", "EOT_LMS"); ?>');
                                 return false;
                             }
                             if ($.trim($("#order").val()) === "") 
                             {
-                                alert('Please specify the order');
+                                alert('<?= __("Please specify the order", "EOT_LMS"); ?>');
                                 return false;
                             }
                             var type = $('input[type=radio][name=radioGroup]:checked').val();
@@ -183,12 +183,12 @@
                                     } 
                                     else 
                                     {
-                                        alert("There was an error saving your data: " + data.message);
+                                        alert("<?= __("There was an error saving your data", "EOT_LMS"); ?>: " + data.message);
                                     }
                                 },
                                 error: function (errorThrown) {
                                     console.log(errorThrown);
-                                    alert("There was an error saving your data");
+                                    alert("<?= __("There was an error saving your data", "EOT_LMS"); ?>");
                                 }
                             });
                         });
@@ -222,7 +222,7 @@
                             $.ajax({
                                 data: {'title': $('#moduleTitle').html(), 'module_id':<?= $module_id; ?>, 'org_id':<?= $org_id; ?>},
                                 error: function () {
-                                    $.facebox('There was an error loading the title. Please try again shortly.');
+                                    $.facebox('<?= __("There was an error loading the title. Please try again shortly.", "EOT_LMS"); ?>');
                                 },
                                 success: function (data) {
                                     $.facebox(data);
@@ -238,17 +238,17 @@
             } 
             else 
             {
-                echo "Unauthorized!";
+                echo __("Unauthorized!", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", "EOT_LMS");
         }
     }
     // Could not find the subscription ID
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID", "EOT_LMS");
     }
     ?>

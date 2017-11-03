@@ -12,25 +12,25 @@
         		<?= CRUMB_SEPARATOR ?> 
                 <?= CRUMB_CORNER ?>    
                 <?= CRUMB_SEPARATOR ?>    
-            	<span class="current">Press Play Workshop Outlines</span>     
+            	<span class="current"><?= __("Press Play Workshop Outlines", "EOT_LMS"); ?></span>     
         	</div>
-            <h1 class="article_page_title">Press Play Workshop Outlines</h1>
+            <h1 class="article_page_title"><?= __("Press Play Workshop Outlines", "EOT_LMS"); ?></h1>
             <p>
-                Eager to train your staff, but pressed for time? Look no further. We've started producing workshop outlines that combine your style, and our content with the professional flair of our awesome videos. EOT's own David Malter has debuted an exciting pair of ready-to-use outlines for your on-site staff training. Each Press Play outline contains exercises, timelines, discussion topics, and-of course-EOT videos. Simply follow the outline and you'll have a stellar 75 or 90 minute workshop. Download them by clicking below.
+                <?= __("Eager to train your staff, but pressed for time? Look no further. We've started producing workshop outlines that combine your style, and our content with the professional flair of our awesome videos. EOT's own David Malter has debuted an exciting pair of ready-to-use outlines for your on-site staff training. Each Press Play outline contains exercises, timelines, discussion topics, and-of course-EOT videos. Simply follow the outline and you'll have a stellar 75 or 90 minute workshop. Download them by clicking below.", "EOT_LMS"); ?>
             </p>
             <ul>
-                <li><a href="/wp-content/uploads/2017/03/PressPlay_Skillful_Discipline_5.30.15.pdf" target="_blank">Skillful Discipline</a></li>
-                <li><a href="/wp-content/uploads/2017/03/PressPlay_Helping_Awkward_Children_5.30.15.pdf" target="_blank">Helping Awkward Children Fit In</a></li>
+                <li><a href="/wp-content/uploads/2017/03/PressPlay_Skillful_Discipline_5.30.15.pdf" target="_blank"><?= __("Skillful Discipline", "EOT_LMS"); ?></a></li>
+                <li><a href="/wp-content/uploads/2017/03/PressPlay_Helping_Awkward_Children_5.30.15.pdf" target="_blank"><?= __("Helping Awkward Children Fit In", "EOT_LMS"); ?></a></li>
             </ul>
         <?php
         }
         else
         {
-            echo "subscription id not provided!";
+            echo __("subscription id not provided!", "EOT_LMS");
         }
     }
     else
     {
-        echo "You do not have the privilege to view this page.";
+        echo __("You do not have the privilege to view this page.", "EOT_LMS");
     }
 ?>

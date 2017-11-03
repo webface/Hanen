@@ -3,7 +3,7 @@
     <?= CRUMB_SEPARATOR ?>         
     <?= CRUMB_STATISTICS ?>    
     <?= CRUMB_SEPARATOR ?>
-    <span class="current">View Quiz Statistics</span>     
+    <span class="current"><?= __("View Quiz Statistics", "EOT_LMS"); ?></span>     
 </div>
 
 <?php
@@ -52,26 +52,26 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
                 $correct_questions = array_unique($correct_questions);
                 $selected_answers = array_unique($selected_answers);
             ?>
-                <h1 class="article_page_title">View Quiz Stats for <?=$fullname;?></h1>                
+                <h1 class="article_page_title"><?= __("View Quiz Stats for", "EOT_LMS"); ?> <?=$fullname;?></h1>                
                 <h3><?= $quiz_data['quiz']['name']; ?></h3>
                 <p><?= $quiz_data['quiz']['description']; ?><p>
-                <span><strong>Time Limit: </strong><?= $quiz_data['quiz']['time_limit']; ?> minutes</span><br>
-                <span><strong>Passing Score: </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
+                <span><strong><?= __("Time Limit:", "EOT_LMS"); ?> </strong><?= $quiz_data['quiz']['time_limit']; ?> <?= __("minutes", "EOT_LMS"); ?></span><br>
+                <span><strong><?= __("Passing Score:", "EOT_LMS"); ?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
             <?php 
                 foreach ($quiz_data['questions'] as $question) 
                 {
-                    $correct = in_array($question['ID'], $correct_questions)? "<span style='color:green'>Correct</span>":"<span style='color:red'>Incorrect</span>";
+                    $correct = in_array($question['ID'], $correct_questions)? "<span style='color:green'>" . __("Correct", "EOT_LMS") . "</span>":"<span style='color:red'>" . __("Incorrect", "EOT_LMS") . "</span>";
             ?>
                 <hr>
-                <h4>Question: <?= $question['quiz_question']; ?></h4>
+                <h4><?= __("Question:", "EOT_LMS"); ?> <?= $question['quiz_question']; ?></h4>
                 <?= $correct; ?>
-                <p>Answers</p>
+                <p><?= __("Answers", "EOT_LMS"); ?></p>
                 <ul>
             <?php
                     foreach ($question['possibilities'] as $answer) 
                     {
                         $correct = '';
-                        $user_selected = in_array($answer['ID'], $selected_answers)? '<span style="font-style:italic;color:orange;padding:2px;background:black">Chosen</span>' :'';
+                        $user_selected = in_array($answer['ID'], $selected_answers)? '<span style="font-style:italic;color:orange;padding:2px;background:black">' . __("Chosen", "EOT_LMS") . '</span>' :'';
                         if ($answer['answer_correct'] == 1) 
                         {
                             $correct = '<span class="fa fa-check"></span>';
@@ -87,16 +87,16 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
             } 
             else 
             {
-                echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+                echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", "EOT_LMS");
         }
     } 
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID", "EOT_LMS");
     }
 ?>
