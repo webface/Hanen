@@ -2858,7 +2858,7 @@ function getModulesInCourse($course_id = 0){
     $sql = "SELECT DISTINCT m.*, c.name AS category "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.module_id = m.id "
-                . "LEFT JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
+                . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
                 . "WHERE cmr.course_id = $course_id";
 
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
@@ -3255,7 +3255,7 @@ function getResourcesInCourse($course_id = 0, $type = '')
 /**
  * Get Modules in Org
  * @global type $wpdb
- * @param type $org_id - the org ID
+ * @param type $org_id - the org ID. org_id = 0 is reserved for EOT modules
  * @return array of modules in org
  * 
  */
@@ -3263,9 +3263,12 @@ function getModules($org_id = 0)
 {
     global $wpdb;
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE org_id = $org_id" , ARRAY_A);
+    $modules=$wpdb->get_results("SELECT m.*, c.name as category FROM " . TABLE_MODULES. " m "
+            . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " c ON m.category_id = c.id "
+            . "WHERE m.org_id = $org_id" , ARRAY_A);
     return $modules;
 }
+
 
 /**
  * Get the category by ID, or by library id
