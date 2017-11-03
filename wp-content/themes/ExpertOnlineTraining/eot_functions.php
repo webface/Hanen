@@ -2412,7 +2412,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
           $has_error = true;
           $has_user_error = true;
 //          echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-          $import_status .= "$email - " . __("ERROR: Cerated user in WPLU but couldnt enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
+          $import_status .= "$email - " . __("ERROR: Created user in WPLU but couldnt enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
         }
         else
         {
@@ -6793,7 +6793,7 @@ function getCourseForm_callback ( )
                             <b><?= __("When is it due?", "EOT_LMS")?></b> <?= __("Directors usually require staff to complete their online learning assignment before arriving on-site. ", "EOT_LMS")?>
                             <?= __("If you have not yet received a due-date for your assignment, check with", "EOT_LMS")?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("to get one. As you move through your course,", "EOT_LMS")?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("will have access to an electronic dashboard that allows them to track your progress and quiz scores.", "EOT_LMS")?><br><br>
 
-                            <b><?= __("Got Questions?", "EOT_LMS")?></b> <?= __("If you get stuck, watch our online help videos or call us at", "EOT_LMS")?> <b><?= __("877-237-3931", "EOT_LMS")?></b>! <?= __("The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.", "EOT_LMS")?><br><br>
+                            <b><?= __("Got Questions?", "EOT_LMS")?></b> <?= __("If you get stuck, watch our online help videos or call us at", "EOT_LMS")?> <b><?= __("877-390-2267", "EOT_LMS")?></b>! <?= __("The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.", "EOT_LMS")?><br><br>
 
                             <?= __("Enjoy your training!", "EOT_LMS")?><br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
                             Dr. Chris Thurber<br> 
@@ -7883,7 +7883,7 @@ jane@email.com
                             <strong><?= wp_hash($user_email);?></strong>
 
                             <br><br>
-                            <b>Got Questions?</b> If you get stuck, call us at <b>877-237-3931</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.<br><br>
+                            <b>Got Questions?</b> If you get stuck, call us at <b>877-390-2267</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.<br><br>
 
                             Enjoy your training!<br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
                             Dr. Chris Thurber<br> 
@@ -7965,7 +7965,7 @@ jane@email.com
                             <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> has invited you to join the camp with this code:<br><br>
 
                             
-                            <b>Got Questions?</b> If you get stuck, call us at <b>877-237-3931</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.<br><br>
+                            <b>Got Questions?</b> If you get stuck, call us at <b>877-390-2267</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.<br><br>
 
                             Enjoy your training!<br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
                             Dr. Chris Thurber<br> 

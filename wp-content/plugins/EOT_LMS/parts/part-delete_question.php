@@ -1,6 +1,4 @@
 <?php
-	global $current_user;
-	var_dump($current_user->ID);
     $true_subscription = verifyUserAccess();
     if ((isset($true_subscription['status']) && $true_subscription['status']) || current_user_can("is_sales_manager")) 
     {

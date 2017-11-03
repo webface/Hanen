@@ -355,7 +355,7 @@ function new_subscription ($user_id = 0) {
 			</ol>
             <h2><?= __("Subscribe with a Different Payment Method", "EOT_LMS") ?></h2>
             <p>
-                <?= __("If you prefer to subscribe and pay by check or credit card over the phone, then you can", "EOT_LMS") ?> <b><?= __("call us Toll-Free at 877-237-3931.", "EOT_LMS") ?> </b>
+                <?= __("If you prefer to subscribe and pay by check or credit card over the phone, then you can", "EOT_LMS") ?> <b><?= __("call us Toll-Free at 877-390-2267.", "EOT_LMS") ?> </b>
             </p>
 		</fieldset>
 
@@ -512,7 +512,7 @@ function new_subscription ($user_id = 0) {
                 </li>
                 <li><?= __("I understand that it is my responsibility to preview all of these works (e.g., video training modules, quizzes, and handouts) in order to familiarize myself with the content.  In places where my organization’s policies or procedures differ in important ways from what is recommended in the works, I understand that it is my responsibility to educate my employees and volunteers about these differences and instruct them in my organization’s policies and procedures.", "EOT_LMS") ?>                
                 </li>
-                <li><?= __("Our team is so confident that you’ll love training your staff with EOT that we guarantee your satisfaction. If you have any questions or need customer support after activating your subscription, simply contact our team toll-free (877) 237-3931, M-F during the hours of 9am to 5pm EST. We promise to do everything we can to answer your questions and get you up and running. We will also help you strategize the best ways to get the most out of your subscription.", "EOT_LMS") ?>
+                <li><?= __("Our team is so confident that you’ll love training your staff with EOT that we guarantee your satisfaction. If you have any questions or need customer support after activating your subscription, simply contact our team toll-free (877) 390-2267, M-F during the hours of 9am to 5pm EST. We promise to do everything we can to answer your questions and get you up and running. We will also help you strategize the best ways to get the most out of your subscription.", "EOT_LMS") ?>
                 </li>
                 <li><?= __("Because activating your subscription instantly gives you full access to our digital content, we cannot refund your subscription fee after activation. However, we are happy to roll over any unused staff accounts when you renew your subscription. For example, if you purchased 100 staff accounts in 2014 but used only 95 staff accounts, we will credit your 2015 account with 5 staff accounts. Note that unused staff accounts can only be rolled over to your own EOT subscription and only when you renew for the following year. Unused staff accounts are not transferable to other organizations.", "EOT_LMS") ?>           
                 </li>
@@ -1989,7 +1989,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                             if (data.libraries.le.data.dashboard.disc_type == 1 && data.libraries.le.data.dashboard.disc_amount > 0) {
                                 le_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le.data.dashboard.disc_amount;
                             } else if (data.libraries.le.data.dashboard.disc_type == 0  && data.libraries.le.data.dashboard.disc_amount > 0) {
-                                le_disc_dash = data.libraries.le.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
+                                le_disc_dash = data.libraries.le.data.dashboard.disc_amount + "%";
                             } else {
                                 le_disc_dash = '';
                             }
@@ -2109,7 +2109,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                             if (data.libraries.le_sp_dc.data.dashboard.disc_type == 1 && data.libraries.le_sp_dc.data.dashboard.disc_amount > 0) {
                                 le_sp_dc_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_dc.data.dashboard.disc_amount;
                             } else if (data.libraries.le_sp_dc.data.dashboard.disc_type == 0  && data.libraries.le_sp_dc.data.dashboard.disc_amount > 0) {
-                                le_sp_dc_disc_dash = data.libraries.le_sp_dc.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
+                                le_sp_dc_disc_dash = data.libraries.le_sp_dc.data.dashboard.disc_amount + "%";
                             } else {
                                 le_sp_dc_disc_dash = '';
                             }
@@ -2169,7 +2169,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                             if (data.libraries.le_sp_oc.data.dashboard.disc_type == 1 && data.libraries.le_sp_oc.data.dashboard.disc_amount > 0) {
                                 le_sp_oc_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_oc.data.dashboard.disc_amount;
                             } else if (data.libraries.le_sp_oc.data.dashboard.disc_type == 0  && data.libraries.le_sp_oc.data.dashboard.disc_amount > 0) {
-                                le_sp_oc_disc_dash = data.libraries.le_sp_oc.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
+                                le_sp_oc_disc_dash = data.libraries.le_sp_oc.data.dashboard.disc_amount + "%";
                             } else {
                                 le_sp_oc_disc_dash = '';
                             }
@@ -2229,7 +2229,7 @@ function sales_rep_new_subscription ($user_id = 0) {
                             if (data.libraries.le_sp_prp.data.dashboard.disc_type == 1 && data.libraries.le_sp_prp.data.dashboard.disc_amount > 0) {
                                 le_sp_prp_disc_dash = "<?= __("$", "EOT_LMS") ?>" + data.libraries.le_sp_prp.data.dashboard.disc_amount;
                             } else if (data.libraries.le_sp_prp.data.dashboard.disc_type == 0  && data.libraries.le_sp_prp.data.dashboard.disc_amount > 0) {
-                                le_sp_prp_disc_dash = data.libraries.le_sp_prp.data.dashboard.disc_amount + "<?= __("%", "EOT_LMS") ?>";
+                                le_sp_prp_disc_dash = data.libraries.le_sp_prp.data.dashboard.disc_amount + "%";
                             } else {
                                 le_sp_prp_disc_dash = '';
                             }
@@ -2359,12 +2359,12 @@ function sales_rep_new_subscription ($user_id = 0) {
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le" class="dash_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_dash_radio_le" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_dash_radio_le" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le" class="dash_disc" />%
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le" class="staff_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_staff_radio_le" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_staff_radio_le" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le" class="staff_disc" />%
                         </div>
                     </li>
                     <li class="calc_le subtotal">
@@ -2395,12 +2395,12 @@ function sales_rep_new_subscription ($user_id = 0) {
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le_sp_dc" class="dash_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_dash_radio_le_sp_dc" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_dash_radio_le_sp_dc" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le_sp_dc" class="dash_disc" />%
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le_sp_dc" class="staff_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_staff_radio_le_sp_dc" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_staff_radio_le_sp_dc" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le_sp_dc" class="staff_disc" />%
                         </div>
                     </li>
                     <li class="calc_le_sp_dc subtotal">
@@ -2431,12 +2431,12 @@ function sales_rep_new_subscription ($user_id = 0) {
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le_sp_oc" class="dash_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_dash_radio_le_sp_oc" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_dash_radio_le_sp_oc" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le_sp_oc" class="dash_disc" />%
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le_sp_oc" class="staff_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_staff_radio_le_sp_oc" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_staff_radio_le_sp_oc" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le_sp_oc" class="staff_disc" />%
                         </div>
                     </li>
                     <li class="calc_le_sp_oc subtotal">
@@ -2467,12 +2467,12 @@ function sales_rep_new_subscription ($user_id = 0) {
                         <div class="expanded_top">
                             <input type="text" name="disc_dash_num_le_sp_prp" class="dash_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_dash_radio_le_sp_prp" class="dash_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_dash_radio_le_sp_prp" class="dash_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_dash_radio_le_sp_prp" class="dash_disc" />%
                         </div>
                         <div class="expanded_bot">
                             <input type="text" name="disc_staff_num_le_sp_prp" class="staff_discount medium_box" value="0.00" />
                             <input type="radio" value="1" name="disc_staff_radio_le_sp_prp" class="staff_disc" checked="checked" /><?= __("$", "EOT_LMS") ?>
-                            <input type="radio" value="0" name="disc_staff_radio_le_sp_prp" class="staff_disc" /><?= __("%", "EOT_LMS") ?>
+                            <input type="radio" value="0" name="disc_staff_radio_le_sp_prp" class="staff_disc" />%
                         </div>
                     </li>
                     <li class="calc_le_sp_prp subtotal">
@@ -2770,7 +2770,7 @@ function sales_rep_new_subscription ($user_id = 0) {
     <div class="processing_payment round_msgbox">
         <?= __("Attempting to charge Credit card and create the subscription...", "EOT_LMS") ?> <br />
         <img src="<?= get_template_directory_uri() . '/images/loading.gif'?>" />                         <br />
-        <?= __("If you see this message for more than 15 seconds, please call 877-237-3931 for assistance. ", "EOT_LMS") ?> 
+        <?= __("If you see this message for more than 15 seconds, please call 877-390-2267 for assistance. ", "EOT_LMS") ?> 
     </div>
  </div>
     
