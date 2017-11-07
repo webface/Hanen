@@ -9164,3 +9164,30 @@ function verifyQuizQuestion($quiz_id = 0, $question_id = 0)
         return false;
     }
 }
+
+/**
+ * Verify if the subscription is renewal.
+ * @param array $subscription - from getSubscriptions() function
+ * @return boolean
+ *
+ */
+function isRenewal($subscription = array())
+{
+  if( count($subscription) > 0 )
+  {
+    $previous_year_end_date = intval(substr($subscription->end_date, 0, 4)) - 1;
+    $previous_subscription = getSubscriptions(0, 0, 0, $subscription->org_id, 0, 0, $previous_year_end_date, 0);
+    if(count($previous_subscription) > 0) // Check for renewals
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else
+  {
+    return false;
+  }
+}
