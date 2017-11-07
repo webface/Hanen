@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-10-31 14:00:44+0000\n"
+"PO-Revision-Date: 2017-11-05 23:32:17+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,10 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: ko_KR\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
+
+#: includes/api/class-wc-rest-products-controller.php:1518
+msgid "End date of sale price, as GMT."
+msgstr "가격 할인 종료 날짜(GMT 기준)."
 
 #: includes/widgets/class-wc-widget-recently-viewed.php:25
 msgid "Recent Viewed Products"
@@ -99,8 +103,8 @@ msgstr "배송 요금을 확인하기 위해 전체 주소를 입력해 주세�
 msgid "There are no shipping methods available. Please ensure that your address has been entered correctly, or contact us if you need any help."
 msgstr "가능한 배송 방법이 없습니다. 정확한 주소가 입력되었는지 다시 확인하시고, 도움이 필요하면 관리자에게 문의해 주세요."
 
-#: includes/class-wc-discounts.php:651 includes/class-wc-discounts.php:689
-#: includes/class-wc-discounts.php:743
+#: includes/class-wc-discounts.php:663 includes/class-wc-discounts.php:701
+#: includes/class-wc-discounts.php:755
 msgid "Sorry, this coupon is not applicable to selected products."
 msgstr "죄송합니다. 선택된 상품에는 해당 쿠폰을 적용할 수 없습니다."
 
@@ -161,7 +165,7 @@ msgstr "인기 상품 목록 필터 출력."
 msgid "Display the customer shopping cart."
 msgstr "고객의 장바구기 출력."
 
-#: includes/wc-template-functions.php:851
+#: includes/wc-template-functions.php:849
 msgid "Relevance"
 msgstr "관련성"
 
@@ -200,6 +204,10 @@ msgstr "상품 속성 필터 적용"
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:25
 msgid "Active Product Filters"
 msgstr "인기 상품 필터"
+
+#: includes/class-wc-form-handler.php:390
+msgid "Invalid payment gateway."
+msgstr "유효하지 않은 PG 서비스입니다."
 
 #: includes/class-wc-ajax.php:844
 msgid "%s fee"
@@ -321,6 +329,19 @@ msgstr "이 도구는 아직 인덱스가 없는 주문 데이터에 주소 인�
 msgid "WooCommerce transients"
 msgstr "우커머스 임시 데이터"
 
+#: includes/admin/plugin-updates/views/html-notice-untested-extensions-modal.php:11
+msgid "This is a major update, are you sure you're ready?"
+msgstr "업데이트에 포함된 변경 사항이 많습니다. 정말로 진행할까요?"
+
+#: includes/admin/plugin-updates/views/html-notice-untested-extensions-modal.php:40
+msgid "As this is a major update, we strongly recommend creating a backup of your site before updating."
+msgstr "변경 사항이 많은 업데이트입니다. 업데이트 적용 전에 사이트의 백업을 권장합니다."
+
+#: includes/admin/plugin-updates/views/html-notice-untested-extensions-inline.php:16
+#: includes/admin/plugin-updates/views/html-notice-untested-extensions-modal.php:26
+msgid "Tested up to WooCommerce version"
+msgstr "다음 버전까지 테스트 완료: 우커머스 버전"
+
 #: includes/admin/meta-boxes/class-wc-meta-box-order-actions.php:47
 msgid "Choose an action..."
 msgstr "동작 선택..."
@@ -354,6 +375,11 @@ msgstr "주문 상세 내역이 고객에게 전송되었습니다."
 #: includes/export/class-wc-product-csv-exporter.php:117
 msgid "Position"
 msgstr "위치"
+
+#. translators: 1: refund id 2: refund date 3: username
+#: includes/admin/meta-boxes/views/html-order-refund.php:19
+msgid "Refund #%1$s - %2$s by %3$s"
+msgstr "환불 #%1$s - %2$s (%3$s)"
 
 #: includes/admin/helper/class-wc-helper.php:336
 msgid "Expired"
@@ -395,6 +421,10 @@ msgstr "네!"
 #: includes/admin/class-wc-admin-setup-wizard.php:1609
 msgid "You're ready to start selling!"
 msgstr "상품 판매를 위한 준비가 완료됐습니다!"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:1535
+msgid "Sorry! We tried, but we couldn't connect Jetpack just now 😭. Please go to the Plugins tab to connect Jetpack, so that you can finish setting up your store."
+msgstr "죄송합니다. 젯팩과의 연동에 실패했습니다. 😭 플러그인 탭으로 이동하여 젯팩 연동을 하시면 상점 설정을 마무리 할 수 있습니다."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:1522
 msgid "Product promotion"
@@ -453,6 +483,22 @@ msgstr "자동 세율"
 msgid "Stripe payments and automated taxes"
 msgstr "Stripe 결제 및 자동 세율"
 
+#: includes/admin/class-wc-admin-setup-wizard.php:1422
+msgid "Stripe payments, automated taxes, live rates and discounted shipping labels"
+msgstr "Stripe 결제, 세액 자동 계산, 실시간 요금, 할인된 배송 라벨"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:1426
+msgid "Stripe payments, live rates and discounted shipping labels"
+msgstr "Stripe 결제, 실시간 요금, 할인된 배송 라벨"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:1430
+msgid "automated taxes, live rates and discounted shipping labels"
+msgstr "자동 세액 계산, 실시간 요금, 할인된 배송 라벨"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:1434
+msgid "live rates and discounted shipping labels"
+msgstr "실시간 요금, 할인된 배송 라벨"
+
 #: includes/admin/class-wc-admin-setup-wizard.php:1316
 msgid "Learn more about Storefront"
 msgstr "Storefront에 대해 더 알아보기"
@@ -476,6 +522,22 @@ msgstr "Stripe 이메일 주소:"
 #: includes/admin/class-wc-admin-setup-wizard.php:1012
 msgid "Create a new Stripe account for me"
 msgstr "Stripe 계정 생성하기"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:1304
+msgid "Recommended Extras"
+msgstr "기타 추천"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:811
+msgid "<strong>Dimension unit</strong>—helps for accurate package selection."
+msgstr "<strong>크기 단위</strong>는 정확한 포장 선택에 도움이 됩니다."
+
+#: includes/admin/class-wc-admin-setup-wizard.php:1214
+msgid "WooCommerce can accept both online and offline payments. <a href=\"%1$s\" target=\"_blank\">Additional payment methods</a> can be installed later."
+msgstr "우커머스에서는 온라인, 오프라인 결제가 모두 가능합니다. 이후에 <a href=\"%1$s\" target=\"_blank\">다른 결제 방법</a>들도 추가할 수 있습니다."
+
+#: includes/admin/class-wc-admin-setup-wizard.php:1312
+msgid "Your theme is not compatible with WooCommerce. We recommend you switch to Storefront, a free WordPress theme built and maintained by the makers of WooCommerce. If toggled on, Storefront will be installed and activated for you."
+msgstr "테마가 우커머스와 호환되지 않습니다. Storefront 테마로 변경해 보세요. Storefront는 우커머스의 제작진에 의해 개발되고 있는 무료 테마입니다. 체크를 하면 Storefront가 설치 및 활성화됩니다."
 
 #: includes/admin/class-wc-admin-post-types.php:2009
 msgid "Checkout Page"
@@ -535,10 +597,6 @@ msgstr "어떤 종류의 상품을 판매할 계획인가요?"
 msgid "Please choose one&hellip;"
 msgstr "하나를 선택하세요&hellip;"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:620
-msgid "Live Rates"
-msgstr "변동 요율"
-
 #: includes/admin/class-wc-admin-setup-wizard.php:410
 msgid "I plan to sell physical products"
 msgstr "실물 상품을 판매할 예정입니다."
@@ -571,8 +629,12 @@ msgstr "기타"
 msgid "Shipping Method"
 msgstr "배송 방법"
 
+#: includes/admin/class-wc-admin-setup-wizard.php:620
+msgid "Live Rates"
+msgstr "실시간 요금"
+
 #: includes/abstracts/abstract-wc-order.php:914
-#: includes/class-wc-discounts.php:216
+#: includes/class-wc-discounts.php:228
 msgid "Invalid coupon"
 msgstr "잘못된 쿠폰"
 
@@ -832,7 +894,7 @@ msgid "Search results only"
 msgstr "검색 결과만"
 
 #. translators: 1: rating 2: rating count
-#: includes/wc-template-functions.php:2671
+#: includes/wc-template-functions.php:2669
 msgid "Rated %1$s out of 5 based on %2$s customer rating"
 msgid_plural "Rated %1$s out of 5 based on %2$s customer ratings"
 msgstr[0] "%1$s개의 고객 평가를 기준으로 5점 만점에 %2$s점으로 평가됨"
@@ -2532,7 +2594,7 @@ msgstr "아파트, 동 호수, 기타. (선택 사항)"
 
 #. translators: %s: product name
 #: includes/class-wc-cart.php:1089 includes/class-wc-frontend-scripts.php:539
-#: includes/wc-cart-functions.php:117 includes/wc-template-functions.php:1505
+#: includes/wc-cart-functions.php:117 includes/wc-template-functions.php:1503
 msgid "View cart"
 msgstr "장바구니 보기"
 
@@ -3012,6 +3074,11 @@ msgstr "수호신(SUHOSIN)이 설치되어 있습니까?"
 msgid "Shipping method customer facing title."
 msgstr "고객이 볼 배송 방법 명."
 
+#: includes/api/class-wc-rest-shipping-zone-methods-controller.php:434
+#: includes/api/class-wc-rest-shipping-zone-methods-controller.php:440
+msgid "Shipping method instance ID."
+msgstr "배송 방법 인스턴스 ID."
+
 #: includes/api/class-wc-rest-payment-gateways-controller.php:420
 #: includes/api/class-wc-rest-setting-options-controller.php:521
 #: includes/api/class-wc-rest-shipping-zone-methods-controller.php:510
@@ -3063,22 +3130,6 @@ msgstr "인터페이스에 사용된 설정에 대해 사람이 읽을 수 있�
 #: includes/api/class-wc-rest-shipping-zone-methods-controller.php:491
 msgid "A human readable label for the setting used in interfaces."
 msgstr "인터페이스에 사용된 설정에 대해 사람이 읽을 수 있는 레이블입니다."
-
-#: includes/api/class-wc-rest-product-variations-controller.php:674
-#: includes/api/class-wc-rest-product-variations-controller.php:679
-#: includes/api/class-wc-rest-products-controller.php:1513
-msgid "End date of sale price, in the site's timezone."
-msgstr "판매 가격의 종료 날짜(사이트 시간대)입니다."
-
-#: includes/api/class-wc-rest-product-variations-controller.php:669
-#: includes/api/class-wc-rest-products-controller.php:1508
-msgid "Start date of sale price, as GMT."
-msgstr "판매 가격의 시작 날짜(GMT)입니다."
-
-#: includes/api/class-wc-rest-product-variations-controller.php:664
-#: includes/api/class-wc-rest-products-controller.php:1503
-msgid "Start date of sale price, in the site's timezone."
-msgstr "판매 가격의 시작 날짜(사이트 시간대)입니다."
 
 #: includes/api/class-wc-rest-orders-controller.php:1095
 msgid "The date the order was completed, as GMT."
@@ -3168,6 +3219,22 @@ msgstr "상품이 생성된 날짜(GMT 기준)."
 #: includes/api/class-wc-rest-products-controller.php:1439
 msgid "The date the product was last modified, as GMT."
 msgstr "상품이 마지막으로 수정된 날짜(GMT 기준)."
+
+#: includes/api/class-wc-rest-product-variations-controller.php:669
+#: includes/api/class-wc-rest-products-controller.php:1508
+msgid "Start date of sale price, as GMT."
+msgstr "가격 할인 시작 날짜(GMT 기준)."
+
+#: includes/api/class-wc-rest-product-variations-controller.php:674
+#: includes/api/class-wc-rest-product-variations-controller.php:679
+#: includes/api/class-wc-rest-products-controller.php:1513
+msgid "End date of sale price, in the site's timezone."
+msgstr "가격 할인 종료 날짜(사이트 시간대)."
+
+#: includes/api/class-wc-rest-product-variations-controller.php:664
+#: includes/api/class-wc-rest-products-controller.php:1503
+msgid "Start date of sale price, in the site's timezone."
+msgstr "가격 할인 시작 날짜(사이트 시간대)."
 
 #: includes/api/class-wc-rest-coupons-controller.php:498
 #: includes/api/class-wc-rest-customers-controller.php:345
@@ -3610,10 +3677,6 @@ msgstr "정상 가격 (%s)"
 msgid "Add file"
 msgstr "파일 추가하기"
 
-#: includes/admin/meta-boxes/views/html-product-data-shipping.php:24
-msgid "Dimensions (%s)"
-msgstr "크기(%s)"
-
 #: includes/admin/meta-boxes/views/html-order-items.php:270
 msgid "Refund %s manually"
 msgstr "직접 %s 환불하기"
@@ -3667,6 +3730,10 @@ msgstr "그룹에 포함될 상품을 선택할 수 있도록 합니다."
 #: includes/admin/meta-boxes/views/html-variation-admin.php:311
 msgid "Enter an optional description for this variation."
 msgstr "상품 옵션에 대한 설명을 입력하세요. (선택)"
+
+#: includes/admin/meta-boxes/views/html-product-data-shipping.php:24
+msgid "Dimensions (%s)"
+msgstr "크기(%s)"
 
 #. translators: %s: variation id
 #: includes/admin/meta-boxes/views/html-order-item.php:33
@@ -5486,6 +5553,10 @@ msgstr "인기 판매 상품 목록."
 msgid "Whether or not this tax rate also gets applied to shipping."
 msgstr "이 세율을 배송에도 적용되는지 여부를 나타냅니다."
 
+#: includes/class-wc-post-types.php:281
+msgid "Insert into product"
+msgstr "상품에 삽입"
+
 #: includes/api/class-wc-rest-orders-controller.php:1581
 #: includes/api/v1/class-wc-rest-orders-controller.php:1549
 msgid "List of refunds."
@@ -5610,6 +5681,11 @@ msgstr "다운로드 가능 파일 목록."
 #: includes/api/v1/class-wc-rest-products-controller.php:1855
 msgid "Amount of sales."
 msgstr "매출액."
+
+#: includes/api/v1/class-wc-rest-products-controller.php:1832
+#: includes/api/v1/class-wc-rest-products-controller.php:2317
+msgid "End date of sale price."
+msgstr "가격 할인 종료 날짜."
 
 #: includes/api/v1/class-wc-rest-products-controller.php:1827
 #: includes/api/v1/class-wc-rest-products-controller.php:2312
@@ -6112,11 +6188,6 @@ msgstr "상품 옵션 높이(%s)."
 msgid "Variation ID."
 msgstr "상품 옵션 ID."
 
-#: includes/api/class-wc-rest-product-variations-controller.php:806
-#: includes/api/v1/class-wc-rest-products-controller.php:2443
-msgid "Variation dimensions."
-msgstr "상품 옵션 치수."
-
 #: includes/api/class-wc-rest-product-variations-controller.php:659
 #: includes/api/v1/class-wc-rest-products-controller.php:2307
 msgid "Variation sale price."
@@ -6240,11 +6311,6 @@ msgstr "상품의 세금 클래스."
 #: includes/api/v1/class-wc-rest-orders-controller.php:1246
 msgid "Product price."
 msgstr "상품 가격."
-
-#: includes/api/class-wc-rest-products-controller.php:1668
-#: includes/api/v1/class-wc-rest-products-controller.php:1989
-msgid "Product dimensions."
-msgstr "상품 치수."
 
 #. translators: %s: weight unit
 #: includes/api/class-wc-rest-products-controller.php:1663
@@ -6517,6 +6583,16 @@ msgstr "선택된 속성 용어 명."
 #: includes/api/v1/class-wc-rest-products-controller.php:2085
 msgid "Optional note to send the customer after purchase."
 msgstr "구매 후 고객에 보낼 메모(선택)."
+
+#: includes/api/class-wc-rest-products-controller.php:1668
+#: includes/api/v1/class-wc-rest-products-controller.php:1989
+msgid "Product dimensions."
+msgstr "상품 크기."
+
+#: includes/api/class-wc-rest-product-variations-controller.php:806
+#: includes/api/v1/class-wc-rest-products-controller.php:2443
+msgid "Variation dimensions."
+msgstr "상품 옵션 크기."
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:274
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:291
@@ -8685,46 +8761,46 @@ msgstr "검색 결과: &ldquo;%s&rdquo;"
 msgid "&nbsp;&ndash; Page %s"
 msgstr "&nbsp;&ndash; 페이지 %s"
 
-#: includes/wc-template-functions.php:842
+#: includes/wc-template-functions.php:840
 msgid "Default sorting"
 msgstr "기본순"
 
-#: includes/wc-template-functions.php:843
+#: includes/wc-template-functions.php:841
 msgid "Sort by popularity"
 msgstr "인기순"
 
-#: includes/wc-template-functions.php:844
+#: includes/wc-template-functions.php:842
 msgid "Sort by average rating"
 msgstr "평점순"
 
-#: includes/wc-template-functions.php:845
+#: includes/wc-template-functions.php:843
 msgid "Sort by newness"
 msgstr "최신순"
 
-#: includes/wc-template-functions.php:846
+#: includes/wc-template-functions.php:844
 msgid "Sort by price: low to high"
 msgstr "낮은가격순"
 
-#: includes/wc-template-functions.php:847
+#: includes/wc-template-functions.php:845
 msgid "Sort by price: high to low"
 msgstr "높은가격순"
 
-#: includes/wc-template-functions.php:1646
+#: includes/wc-template-functions.php:1644
 msgid "Place order"
 msgstr "주문 확정"
 
-#: includes/wc-template-functions.php:2054
+#: includes/wc-template-functions.php:2052
 msgid "Update country"
 msgstr "국가 업데이트"
 
-#: includes/wc-template-functions.php:2073
+#: includes/wc-template-functions.php:2071
 #: templates/cart/shipping-calculator.php:64
 msgid "Select a state&hellip;"
 msgstr "주 선택하기&hellip;"
 
-#: includes/wc-template-functions.php:2118
-#: includes/wc-template-functions.php:2270
-#: includes/wc-template-functions.php:2280
+#: includes/wc-template-functions.php:2116
+#: includes/wc-template-functions.php:2268
+#: includes/wc-template-functions.php:2278
 msgid "Choose an option"
 msgstr "옵션을 선택하세요"
 
@@ -8892,7 +8968,7 @@ msgstr "사용자명 또는 이메일 주소"
 msgid "Password"
 msgstr "비밀번호"
 
-#: includes/wc-template-functions.php:2718
+#: includes/wc-template-functions.php:2716
 msgid "Your cart is currently empty."
 msgstr "고객님의 장바구니가 현재 비어있습니다."
 
@@ -8915,7 +8991,7 @@ msgstr "고객님의 관심 아이템&hellip;"
 msgid "No products in the cart."
 msgstr "장바구니에 상품이 없습니다."
 
-#: includes/wc-template-functions.php:1517
+#: includes/wc-template-functions.php:1515
 msgid "Checkout"
 msgstr "결제"
 
@@ -9105,7 +9181,7 @@ msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr "%b %d, %Y @ %I:%M %p"
 
-#: includes/wc-template-functions.php:1592
+#: includes/wc-template-functions.php:1590
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr "홈"
@@ -9278,7 +9354,7 @@ msgstr "칠레 페소"
 msgid "Order fully refunded"
 msgstr "주문이 전액 환불됨"
 
-#: includes/wc-template-functions.php:1197
+#: includes/wc-template-functions.php:1195
 #: templates/checkout/form-shipping.php:63
 #: templates/single-product/tabs/additional-information.php:25
 msgid "Additional information"
@@ -9480,7 +9556,7 @@ msgstr "고객님의 이메일 주소로 등록된 계정이 있습니다. 로�
 msgid "South African rand"
 msgstr "남아프리카 공화국 랜드"
 
-#: includes/wc-template-functions.php:1206
+#: includes/wc-template-functions.php:1204
 msgid "Reviews (%d)"
 msgstr "상품평 (%d)"
 
@@ -10797,7 +10873,7 @@ msgstr "쿠폰 코드가 성공적으로 적용됐습니다."
 msgid "Coupon code removed successfully."
 msgstr "쿠폰 코드가 성공적으로 제거됐습니다."
 
-#: includes/class-wc-coupon.php:898 includes/class-wc-discounts.php:876
+#: includes/class-wc-coupon.php:898 includes/class-wc-discounts.php:888
 msgid "Coupon is not valid."
 msgstr "쿠폰이 유효하지 않습니다."
 
@@ -10821,22 +10897,22 @@ msgstr "쿠폰 코드가 이미 적용됐습니다!"
 msgid "Sorry, coupon \"%s\" has already been applied and cannot be used in conjunction with other coupons."
 msgstr "죄송합니다. 쿠폰 \"%s\"는 이미 적용됐으며 다른 쿠폰과 같이 사용할 수 없습니다."
 
-#: includes/class-wc-coupon.php:920 includes/class-wc-discounts.php:543
-#: includes/class-wc-discounts.php:570
+#: includes/class-wc-coupon.php:920 includes/class-wc-discounts.php:555
+#: includes/class-wc-discounts.php:582
 msgid "Coupon usage limit has been reached."
 msgstr "쿠폰 사용 한도가 초과됐습니다."
 
-#: includes/class-wc-coupon.php:923 includes/class-wc-discounts.php:587
+#: includes/class-wc-coupon.php:923 includes/class-wc-discounts.php:599
 msgid "This coupon has expired."
 msgstr "이 쿠폰은 만료됐습니다."
 
 #. translators: %s: coupon minimum amount
-#: includes/class-wc-coupon.php:927 includes/class-wc-discounts.php:606
+#: includes/class-wc-coupon.php:927 includes/class-wc-discounts.php:618
 msgid "The minimum spend for this coupon is %s."
 msgstr "이 쿠폰의 최소 사용 한도는 %s입니다."
 
 #. translators: %s: coupon maximum amount
-#: includes/class-wc-coupon.php:931 includes/class-wc-discounts.php:625
+#: includes/class-wc-coupon.php:931 includes/class-wc-discounts.php:637
 msgid "The maximum spend for this coupon is %s."
 msgstr "이 쿠폰의 최대 소비는 %s입니다."
 
@@ -10845,16 +10921,16 @@ msgid "Sorry, this coupon is not applicable to your cart contents."
 msgstr "죄송합니다. 이 쿠폰은 고객님의 장바구니 상품에 적용할 수 없습니다."
 
 #. translators: %s: products list
-#: includes/class-wc-coupon.php:948 includes/class-wc-discounts.php:788
+#: includes/class-wc-coupon.php:948 includes/class-wc-discounts.php:800
 msgid "Sorry, this coupon is not applicable to the products: %s."
 msgstr "죄송합니다. 이 쿠폰은 상품에 적용할 수 없습니다: %s."
 
 #. translators: %s: categories list
-#: includes/class-wc-coupon.php:968 includes/class-wc-discounts.php:829
+#: includes/class-wc-coupon.php:968 includes/class-wc-discounts.php:841
 msgid "Sorry, this coupon is not applicable to the categories: %s."
 msgstr "죄송합니다. 이 쿠폰은 카테고리에 적용할 수 없습니다: %s."
 
-#: includes/class-wc-coupon.php:971 includes/class-wc-discounts.php:716
+#: includes/class-wc-coupon.php:971 includes/class-wc-discounts.php:728
 msgid "Sorry, this coupon is not valid for sale items."
 msgstr "죄송합니다. 이 쿠폰은 세일 아이템에 유효하지 않습니다."
 
@@ -11009,7 +11085,7 @@ msgid "Please select a rating"
 msgstr "평가를 선택해주세요"
 
 #: includes/class-wc-frontend-scripts.php:516
-#: includes/wc-template-functions.php:1987
+#: includes/wc-template-functions.php:1985
 msgid "required"
 msgstr "필수"
 
@@ -11157,7 +11233,7 @@ msgid "Failed"
 msgstr "실패함"
 
 #. translators: %s: coupon code
-#: includes/class-wc-coupon.php:902 includes/class-wc-discounts.php:527
+#: includes/class-wc-coupon.php:902 includes/class-wc-discounts.php:539
 msgid "Coupon \"%s\" does not exist!"
 msgstr "\"%s\" 쿠폰은 유효하지 않습니다!"
 
@@ -13582,10 +13658,6 @@ msgstr "위치 자동 검출"
 msgid "Geolocate (with page caching support)"
 msgstr "위치 자동 검출 (페이지 캐싱 지원 포함)"
 
-#: includes/admin/settings/class-wc-settings-products.php:442
-msgid "Dimensions unit"
-msgstr "치수 단위"
-
 #: includes/admin/settings/class-wc-settings-products.php:41
 msgid "Display"
 msgstr "상품 진열"
@@ -13727,6 +13799,10 @@ msgstr "컨슈머 암호"
 msgid "Secret"
 msgstr "암호"
 
+#: includes/admin/settings/class-wc-settings-products.php:442
+msgid "Dimensions unit"
+msgstr "크기 단위"
+
 #: includes/admin/meta-boxes/views/html-product-data-inventory.php:57
 #: includes/admin/meta-boxes/views/html-variation-admin.php:182
 msgid "If managing stock, this controls whether or not backorders are allowed. If enabled, stock quantity can go below 0."
@@ -13761,11 +13837,6 @@ msgstr "무게"
 #: includes/admin/meta-boxes/views/html-variation-admin.php:227
 msgid "Weight in decimal form"
 msgstr "십진법에 의한 무게"
-
-#: includes/admin/importers/class-wc-product-csv-importer-controller.php:567
-#: templates/single-product/product-attributes.php:35
-msgid "Dimensions"
-msgstr "규격"
 
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:26
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:70
@@ -14745,11 +14816,6 @@ msgstr "세금 클래스."
 msgid "Revoke access"
 msgstr "접근 제거하기"
 
-#. translators: %s: dimension unit
-#: includes/admin/meta-boxes/views/html-variation-admin.php:239
-msgid "Dimensions (L&times;W&times;H) (%s)"
-msgstr "치수 (L&times;W&times;H) (%s)"
-
 #: includes/admin/meta-boxes/views/html-product-data-linked-products.php:40
 msgid "Upsells are products which you recommend instead of the currently viewed product, for example, products that are more profitable or better quality or more expensive."
 msgstr "상향 판매 상품은 현재 보고 있는 상품 대신 추천하는 고수익, 고품질 또는 고가의 상품을 말합니다."
@@ -14932,6 +14998,16 @@ msgstr "%s 쿠폰 사용됨"
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:61
 msgid "Set scheduled sale dates"
 msgstr "할인 기간 일정 설정"
+
+#. translators: %s: dimension unit
+#: includes/admin/meta-boxes/views/html-variation-admin.php:239
+msgid "Dimensions (L&times;W&times;H) (%s)"
+msgstr "크기 (L&times;W&times;H) (%s)"
+
+#: includes/admin/importers/class-wc-product-csv-importer-controller.php:567
+#: templates/single-product/product-attributes.php:35
+msgid "Dimensions"
+msgstr "크기"
 
 #: includes/admin/views/html-notice-tracking.php:13
 #: includes/wc-product-functions.php:797
@@ -16269,7 +16345,7 @@ msgstr "국가"
 #: includes/admin/class-wc-admin-profile.php:136
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:75
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:124
-#: includes/wc-template-functions.php:2046
+#: includes/wc-template-functions.php:2044
 #: templates/cart/shipping-calculator.php:39
 msgid "Select a country&hellip;"
 msgstr "국가를 선택하세요&hellip;"
@@ -16749,7 +16825,7 @@ msgstr "사용자 정의 필드 삭제됨."
 #: includes/gateways/cod/class-wc-gateway-cod.php:83
 #: includes/gateways/paypal/includes/settings-paypal.php:25
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:204
-#: includes/wc-template-functions.php:1188
+#: includes/wc-template-functions.php:1186
 #: templates/single-product/tabs/description.php:25
 msgid "Description"
 msgstr "설명"
@@ -16778,7 +16854,7 @@ msgstr "쓰기"
 msgid "Read/Write"
 msgstr "읽기/쓰기"
 
-#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.2.2)  #-#-#-#-#
+#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.2.3)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/admin/class-wc-admin-assets.php:89
 #: includes/admin/class-wc-admin-menus.php:60
@@ -17382,7 +17458,7 @@ msgstr "총계:"
 
 #. translators: 1: current item count
 #: includes/legacy/abstract-wc-legacy-order.php:507
-#: includes/wc-template-functions.php:2560
+#: includes/wc-template-functions.php:2558
 msgid "Download %d"
 msgstr "%d 다운로드"
 
@@ -17391,7 +17467,7 @@ msgstr "%d 다운로드"
 #: includes/class-wc-emails.php:364
 #: includes/legacy/abstract-wc-legacy-order.php:507
 #: includes/wc-account-functions.php:205
-#: includes/wc-template-functions.php:2560
+#: includes/wc-template-functions.php:2558
 msgid "Download"
 msgstr "내려받기"
 
@@ -17429,7 +17505,7 @@ msgstr "더 보기"
 
 #. translators: %s: average rating
 #. translators: %s: rating
-#: includes/class-wc-embed.php:130 includes/wc-template-functions.php:2674
+#: includes/class-wc-embed.php:130 includes/wc-template-functions.php:2672
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:166
 msgid "Rated %s out of 5"
 msgstr "5 중에서 %s로 평가됨"
@@ -17444,7 +17520,7 @@ msgstr "5 중에서 %s로 평가됨"
 msgid "Cheatin&#8217; huh?"
 msgstr "누굴 속이시려고?"
 
-#: includes/wc-template-functions.php:2689
+#: includes/wc-template-functions.php:2687
 msgctxt "min_price"
 msgid "From:"
 msgstr "상품중 낮은 가격:"
