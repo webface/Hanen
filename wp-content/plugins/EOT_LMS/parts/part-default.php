@@ -322,14 +322,20 @@ else if (current_user_can("is_student"))
                 if ($modules) 
                 {
                     $status = formatStatus($enrollment['status']);
+                    
                     $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
+                    //d($status, $percentage_complete);
                     if ($status == "Failed") 
                     {
                         $status = 'In Progress';
                     } 
-                    else if ($status == "Completed" || $status == "Passed") 
+                    if ($percentage_complete < 100) 
                     {
-                        $percentage_complete = 100;
+                        $status = 'In Progress';
+                    }
+                    else
+                    {
+                        $status = 'Completed';
                     }
 ?>
                     <div class="dashboard_border student">

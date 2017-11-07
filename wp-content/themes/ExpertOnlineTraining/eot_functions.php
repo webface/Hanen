@@ -8082,7 +8082,6 @@ function getTrack($user_id = 0, $video_id = 0, $type = "all")
   $type = filter_var($type, FILTER_SANITIZE_STRING); // Type of track
   $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
   $video_id = filter_var($video_id, FILTER_SANITIZE_NUMBER_INT);
-
   
   global $wpdb;
   $sql = "SELECT * FROM " . TABLE_TRACK . " WHERE user_id = $user_id";
@@ -8100,8 +8099,12 @@ function getTrack($user_id = 0, $video_id = 0, $type = "all")
   // Watch video needed a key value pair array. It has its own sql statement.
   if( $type == "watch_video" || $type == "video_started" )
   {
-    $sql = "SELECT video_id, t.* FROM " . TABLE_TRACK . " as t WHERE user_id = $user_id and type = '$type'";
-    $results = ($video_id > 0) ? (array) $wpdb->get_row($sql, OBJECT) : $wpdb->get_results($sql, OBJECT_K);
+    $sql = "SELECT * FROM " . TABLE_TRACK . " WHERE user_id = $user_id and type = '$type'";
+    if($video_id > 0)
+    {
+      $sql .= " AND video_id = $video_id";
+    }
+    $results = ($video_id > 0) ?  (array) $wpdb->get_row($sql, OBJECT) : $wpdb->get_results($sql, OBJECT_K);
   }
   else
   {
@@ -8227,8 +8230,15 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   // get quizzes in course
   $quizzes = getQuizzesInCourse($course_id);
   $num_quizzes = count($quizzes);
-  if ($num_quizzes == 0)
+  
+  $modules_in_course = getModulesInCourse($course_id);
+  $videos_in_course_ids = array_column($modules_in_course, 'video_id');
+
+  $num_modules = 0;
+  
+  if ($num_quizzes == 0 && count($modules_in_course) == 0)
     return 0; // cant divide by 0
+  
 
   $quiz_ids = implode(',', array_column($quizzes, 'ID')); // a comma seperated list of quiz ids in this course
 
@@ -8239,11 +8249,29 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   $quizzes_passed = array_column($amount_passed,'quiz_id');
   $uniques= array_count_values($quizzes_passed);
   $num_passed = count($uniques);
+    foreach($videos_in_course_ids as $video_id)
+    {
+        if($video_id != 0)
+        {
+            error_log("Video ID: ". $video_id);
+            $num_modules ++;
+            $track = getTrack($user_id, $video_id, 'watch_video');
+            error_log(json_encode($track));
+            if(!empty($track))
+            {
+                if($track['result'] == 1)
+                {
+                    //error_log(json_encode($track));
+                    $num_passed++;
+                }
+            }
+        }
+    }
   // calculate %
   if ($num_passed == 0)
     return 0; 
-
-  $percentage_complete = intval($num_passed/$num_quizzes*100);
+  $total = $num_quizzes + $num_modules;
+  $percentage_complete = intval($num_passed/($total)*100);
   return $percentage_complete;
 }
 
@@ -8942,7 +8970,8 @@ function getQuizAttempts($quiz_id = 0, $user_id = 0)
 /**
  * 
  * @param type $user_id - the user ID
- * 
+ * @param course_id - the course ID
+ * ** this function is unused **
  */
 function calculate_progress($user_id = 0, $course_id = 0)
 {
@@ -8954,7 +8983,8 @@ function calculate_progress($user_id = 0, $course_id = 0)
         return 0;
     }
     $quizzes_in_course = getQuizzesInCourse($course_id);
-
+    $modules_in_course = getModulesInCourse($course_id);
+    $videos_in_course_ids = array_column($modules_in_course, 'video_id');
     $passed = 0;
     foreach ($quizzes_in_course as $required) 
     {
@@ -8964,7 +8994,19 @@ function calculate_progress($user_id = 0, $course_id = 0)
             $passed++;
         }
     }
-    $percentage = $passed/count($quizzes_in_course)*100;
+    foreach($videos_in_course_ids as $video_id)
+    {
+        $track = getTrack($user_id, $video_id, 'watch_video');
+        if(!empty($track))
+        {
+            if($track['result'] == 1)
+            {
+                $passed++;
+            }
+        }
+    }
+    
+    $percentage = $passed/(count($quizzes_in_course)+count($modules_in_course))*100;
     return $percentage;
 }
 
