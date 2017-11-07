@@ -8226,6 +8226,7 @@ function calc_course_completion($user_id = 0, $course_id = 0)
 
   $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $org_id = get_org_from_user($user_id);
 
   // get quizzes in course
   $quizzes = getQuizzesInCourse($course_id);
@@ -8239,7 +8240,17 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   if ($num_quizzes == 0 && count($modules_in_course) == 0)
     return 0; // cant divide by 0
   
-
+  $modules_in_portal = getModules($org_id);// all the custom modules in this portal
+  $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
+  foreach($modules_in_portal as $key => $module)
+  {
+    if(!in_array($module, $modules_in_course))
+    {
+        unset($modules_in_portal[$key]);
+    }
+  }
+  $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
+  $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
   $quiz_ids = implode(',', array_column($quizzes, 'ID')); // a comma seperated list of quiz ids in this course
 
   // check how many quizzes the user passed
@@ -8253,19 +8264,30 @@ function calc_course_completion($user_id = 0, $course_id = 0)
     {
         if($video_id != 0)
         {
-            error_log("Video ID: ". $video_id);
             $num_modules ++;
             $track = getTrack($user_id, $video_id, 'watch_video');
-            error_log(json_encode($track));
             if(!empty($track))
             {
                 if($track['result'] == 1)
                 {
-                    //error_log(json_encode($track));
                     $num_passed++;
                 }
             }
         }
+    }
+    foreach($videos_in_custom_modules as $video)
+    {
+
+            $num_modules ++;
+            $track = getTrack($user_id, $video['ID'], 'watch_video');
+            if(!empty($track))
+            {
+                if($track['result'] == 1)
+                {
+                    $num_passed++;
+                }
+            }
+
     }
   // calculate %
   if ($num_passed == 0)
