@@ -13,7 +13,7 @@ class PPSocialIconsModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Social Icons', 'bb-powerpack'),
 			'description'   	=> __('Display a group of linked social icons.', 'bb-powerpack'),
-			'group'         	=> 'PowerPack Modules',
+			'group'         	=> pp_get_modules_group(),
             'category'			=> pp_get_modules_cat( 'content' ),
             'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-social-icons/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-social-icons/',

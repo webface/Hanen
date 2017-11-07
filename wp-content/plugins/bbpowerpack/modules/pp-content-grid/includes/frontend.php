@@ -51,6 +51,8 @@ $query = FLBuilderLoop::query( $settings );
 
 				ob_start();
 
+				$terms_list = wp_get_post_terms( get_the_id(), $settings->post_taxonomies );
+
 				include apply_filters( 'pp_cg_module_layout_path', $module->dir . 'includes/post-' . $settings->layout . '.php', $settings->layout, $settings );
 
 				// Do shortcodes here so they are parsed in context of the current post.

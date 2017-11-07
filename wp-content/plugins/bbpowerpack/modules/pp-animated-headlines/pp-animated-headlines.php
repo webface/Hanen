@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @class PPAnimatedHeadlinesModule
+ * @class PPAnimatedHeadlines2Module
  */
 class PPAnimatedHeadlinesModule extends FLBuilderModule {
 
@@ -13,31 +13,14 @@ class PPAnimatedHeadlinesModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          => __('Animated Headlines', 'bb-powerpack'),
 			'description'   => __('Awesome Animated Headlines module.', 'bb-powerpack'),
-			'group'         => 'PowerPack Modules',
+			'group'         => pp_get_modules_group(),
 			'category'      => pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-animated-headlines/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-animated-headlines/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
 		));
-
-		$this->add_js('jquery-waypoints');
     }
-
-	public function enqueue_scripts()
-	{
-		if( class_exists('FLBuilderModel') && FLBuilderModel::is_builder_active() ){
-        	$this->add_js('typed', $this->url . 'js/typed.js', array(), '', true);
-        	$this->add_js('vticker', $this->url . 'js/rvticker.js', array(), '', true);
-		}else{
-			if( $this->settings && $this->settings->effect_type == 'type' ) {
-	        	$this->add_js('typed', $this->url . 'js/typed.js', array(), '', true);
-		    }
-		    if ( $this->settings && $this->settings->effect_type == 'slide_up' ) {
-	        	$this->add_js('vticker', $this->url . 'js/rvticker.js', array(), '', true);
-		    }
-		}
-	}
 }
 
 /**
@@ -50,171 +33,76 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 			'general'       => array(
 				'title'         => '',
 				'fields'        => array(
-					'prefix'        => array(
-						'type'            => 'text',
-						'label'           => __('Prefix', 'bb-powerpack'),
-						'default'         => '',
-						'help'			=> __('String placed before animated text.', 'bb-powerpack')
-					),
-					'animated_text'        => array(
-						'type'          => 'textarea',
-						'label'           => __('Animated Text', 'bb-powerpack'),
-						'default'         => '',
-						'rows'          => '5',
-						'help'			=> __('String with animated effects. You can add multiple strings by adding each string on a new line.', 'bb-powerpack')
-					),
-					'suffix'        => array(
-						'type'            => 'text',
-						'label'           => __('Suffix', 'bb-powerpack'),
-						'default'         => '',
-						'help'			=> __('String placed at the end of animated text.', 'bb-powerpack')
-					)
-				)
-			),
-			'effect'          => array(
-				'title'         => __('Effect', 'bb-powerpack'),
-				'fields'        => array(
-					'effect_type'     => array(
-						'type'          => 'pp-switch',
-						'label'         => __('Effect', 'bb-powerpack'),
-						'default'       => 'type',
-						'options'       => array(
-							'type'      	=>  __('Type', 'bb-powerpack'),
-							'slide_up'    	=>  __('Slide', 'bb-powerpack'),
-							'fade'    		=>  __('Fade', 'bb-powerpack'),
+					'headline_style'	=> array(
+						'type'			=> 'select',
+						'label'			=> __('Style', 'bb-powerpack'),
+						'default'		=> 'highlight',
+						'options'		=> array(
+							'highlight'		=> __('Highlighted', 'bb-powerpack'),
+							'rotate'		=> __('Rotating', 'bb-powerpack')
 						),
-						'toggle'        => array(
-							'type'        => array(
-								'fields'        => array('typing_speed', 'back_speed', 'start_delay', 'back_delay', 'enable_loop', 'show_cursor', 'cursor_text', 'cursor_blink', 'min_height')
+						'toggle'		=> array(
+							'highlight'		=> array(
+								'tabs'			=> array('style'),
+								'fields'		=> array('headline_shape', 'highlighted_text')
 							),
-							'slide_up'		=> array(
-								'fields'        => array('animation_speed', 'pause_time', 'show_items', 'pause_hover')
-							),
-							'fade'			=> array(
-								'fields'		=> array('animation_speed')
+							'rotate'		=> array(
+								'fields'		=> array('rotating_text', 'animation_type')
 							)
-						),
-						'help'			=> __('Select the effect for animated text.', 'bb-powerpack')
-
+						)
 					),
-					'typing_speed' => array(
+					'headline_shape'	=> array(
+						'type'				=> 'select',
+						'label'				=> __('Shape', 'bb-powerpack'),
+						'default'			=> 'circle',
+						'options'			=> array(
+							'circle'			=> __('Circle', 'bb-powerpack'),
+							'curly'				=> __('Curly', 'bb-powerpack'),
+							'strikethrough'		=> __('Strikethrough', 'bb-powerpack'),
+							'underline'			=> __('Underline', 'bb-powerpack'),
+							'underline_zigzag'	=> __('Underline Zigzag', 'bb-powerpack'),
+						)
+					),
+					'animation_type'	=> array(
+						'type'				=> 'select',
+						'label'				=> __('Animation', 'bb-powerpack'),
+						'default'			=> 'typing',
+						'options'			=> array(
+							'typing' 			=> __('Typing', 'bb-powerpack'),
+							'clip' 				=> __('Clip', 'bb-powerpack'),
+							'flip' 				=> __('Flip', 'bb-powerpack'),
+							'swirl' 			=> __('Swirl', 'bb-powerpack'),
+							'blinds' 			=> __('Blinds', 'bb-powerpack'),
+							'drop-in' 			=> __('Drop-in', 'bb-powerpack'),
+							'wave' 				=> __('Wave', 'bb-powerpack'),
+							'slide' 			=> __('Slide', 'bb-powerpack'),
+							'slide-down' 		=> __('Slide Down', 'bb-powerpack'),
+						)
+					),
+					'before_text'  	=> array(
 						'type'          => 'text',
-						'label'         => __('Typing Speed', 'bb-powerpack'),
-						'default'       => '80',
-						'maxlength'     => '6',
-						'size'          => '8',
-						'description'   => 'ms',
-						'help'   => __('Speed of typing effect. The time to appear single character of word.','bb-powerpack'),
+						'label'         => __('Before Text', 'bb-powerpack'),
+						'default'       => __('This is', 'bb-powerpack'),
+						'help'			=> __('Text placed before animated text.', 'bb-powerpack')
 					),
-					'back_speed' => array(
-						'type'          => 'text',
-						'label'         => __('Backspeed', 'bb-powerpack'),
-						'default'       => '50',
-						'maxlength'     => '6',
-						'description'   => 'ms',
-						'size'          => '8',
-						'help'   		=> __('Speed of backspace effect. The time to disappear single character of word.','bb-powerpack'),
+					'highlighted_text'	=> array(
+						'type'				=> 'text',
+						'label'				=> __('Highlighted Text', 'bb-powerpack'),
+						'default'			=> __('Awesome', 'bb-powerpack')
 					),
-					'start_delay' => array(
-						'type'          => 'text',
-						'label'         => __('Start Delay', 'bb-powerpack'),
-						'default'       => '0',
-						'maxlength'     => '6',
-						'size'          => '8',
-						'description'   => 'ms',
-						'help'   		=> __('Delay for the start of type effect. If set to 5000, the first string will appear after 5 seconds.','bb-powerpack'),
+					'rotating_text'	=> array(
+						'type'          => 'textarea',
+						'label'         => __('Rotating Text', 'bb-powerpack'),
+						'default'       => __("Awesome\nCreative\nRotating", 'bb-powerpack'),
+						'rows'          => '5',
+						'help'			=> __('Text with animated effects. You can add multiple text by adding each on a new line.', 'bb-powerpack')
 					),
-					'back_delay' => array(
-						'type'          => 'text',
-						'label'         => __('Back Delay', 'bb-powerpack'),
-						'default'       => '2000',
-						'maxlength'     => '6',
-						'size'          => '8',
-						'description'   => 'ms',
-						'help'   		=> __('Delay for the start of backspace effect. If set to 5000, the string will remain visible for 5 seconds before backspace effect.','bb-powerpack'),
+					'after_text'	=> array(
+						'type'           => 'text',
+						'label'          => __('After Text', 'bb-powerpack'),
+						'default'        => __('Headline!', 'bb-powerpack'),
+						'help'			 => __('Text placed at the end of animated text.', 'bb-powerpack')
 					),
-					'enable_loop'     => array(
-						'type'          => 'pp-switch',
-						'label'         => __('Enable Loop', 'bb-powerpack'),
-						'default'       => 'yes',
-						'options'       => array(
-							'yes'      =>  __('Yes', 'bb-powerpack'),
-							'no'    =>  __('No', 'bb-powerpack'),
-						),
-						'help'			=> __("Select 'Yes' if type effect should be played continuously.", 'bb-powerpack' )
-					),
-					'show_cursor'     => array(
-						'type'          => 'pp-switch',
-						'label'         => __('Show Cursor', 'bb-powerpack'),
-						'default'       => 'yes',
-						'options'       => array(
-							'yes'      =>  __('Yes', 'bb-powerpack'),
-							'no'    =>  __('No', 'bb-powerpack'),
-						),
-						'toggle'        => array(
-							'yes'        => array(
-								'fields'        => array('cursor_text', 'cursor_blink'),
-							),
-						),
-						'help'			=> __( "Select 'Yes' if you want to display cursor at the end of animated text & before suffix.", 'bb-powerpack' )
-					),
-					'cursor_text' => array(
-						'type'          => 'text',
-						'label'         => __('Cursor Text', 'bb-powerpack'),
-						'default'       => '|',
-						'maxlength'     => '2',
-						'size'          => '8',
-						'help'			=> __('Enter the text / symbol for your cursor. e.g. Vertical Pipe Symbol ( | )', 'bb-powerpack')
-					),
-					'cursor_blink' => array(
-						'type'          => 'pp-switch',
-						'label'         => __('Cursor Blink Effect', 'bb-powerpack'),
-						'default'       => 'yes',
-						'options'       => array(
-							'yes'      =>  __('Yes', 'bb-powerpack'),
-							'no'    =>  __('No', 'bb-powerpack'),
-						),
-					),
-
-
-					'animation_speed' => array(
-						'type'          => 'text',
-						'label'         => __('Animation Speed', 'bb-powerpack'),
-						'default'       => '500',
-						'maxlength'     => '6',
-						'size'          => '8',
-						'description'   => 'ms',
-						'help'			=> __('Speed of animated text transition.', 'bb-powerpack')
-					),
-					'pause_time' => array(
-						'type'          => 'text',
-						'label'         => __('Pause Time', 'bb-powerpack'),
-						'default'       => '2000',
-						'maxlength'     => '6',
-						'size'          => '8',
-						'description'   => 'ms',
-						'help'			=> __('Delay before scrolling to next animated text.', 'bb-powerpack')
-					),
-					'pause_hover'     => array(
-						'type'          => 'pp-switch',
-						'label'         => __('Pause on Hover', 'bb-powerpack'),
-						'default'       => 'yes',
-						'options'       => array(
-							'yes'      =>  __('Yes', 'bb-powerpack'),
-							'no'    =>  __('No', 'bb-powerpack'),
-						),
-						'help'   		=> __('When mouse is over animated text, it should pause slide effect.','bb-powerpack'),
-					),
-				)
-			)
-		)
-	),
-	'style'         => array(
-		'title'         => __('Style', 'bb-powerpack'),
-		'sections'      => array(
-			'structure'     => array(
-				'title'         => __('Structure', 'bb-powerpack'),
-				'fields'        => array(
 					'alignment'     => array(
 						'type'          => 'pp-switch',
 						'label'         => __('Alignment', 'bb-powerpack'),
@@ -226,52 +114,45 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 						),
 						'preview'         => array(
 							'type'            => 'css',
-							'selector'        => '.pp-animated-text-wrap',
+							'selector'        => '.pp-headline',
 							'property'        => 'text-align'
 						),
-						'help'			=> __('Select alignment for complete element.', 'bb-powerpack')
-					),
-					'space_prefix' => array(
-						'type'          => 'text',
-						'label'         => __('Space After Prefix', 'bb-powerpack'),
-						'default'       => '5',
-						'maxlength'     => '6',
-						'size'          => '8',
-						'description'   => 'px',
-						'preview'         => array(
-							'type'            => 'css',
-							'selector'        => '.pp-animated-text-prefix',
-							'property'        => 'margin-right',
-							'unit'			  => 'px'
-						),
-						'help'			=> __('Space between Prefix and animated Text.', 'bb-powerpack')
-					),
-					'space_suffix' => array(
-						'type'          => 'text',
-						'label'         => __('Space Before Suffix', 'bb-powerpack'),
-						'default'       => '5',
-						'maxlength'     => '6',
-						'size'          => '8',
-						'description'   => 'px',
-						'preview'         => array(
-							'type'            => 'css',
-							'selector'        => '.pp-animated-text-suffix',
-							'property'        => 'margin-left',
-							'unit'			  => 'px'
-						),
-						'help'			=> __('Space between animated Text and Suffix.', 'bb-powerpack')
-					),
-					'min_height'          => array(
-						'type'          => 'text',
-		                'label'         => __('Minimum Height', 'bb-powerpack'),
-		                'description'   => 'px',
-		                'maxlength'     => '4',
-		                'size'          => '5',
-		                'placeholder'   => 'auto',
-		                'help'          => __('If your text is long and dropping down to next line then apply minimum height to prevent page to jump. Keep it empty for default', 'bb-powerpack'),
 					),
 				)
 			),
+		)
+	),
+	'style'		=> array(
+		'title'		=> __('Style', 'bb-powerpack'),
+		'sections'	=> array(
+			'shape_style'	=> array(
+				'title'			=> __('Shape', 'bb-powerpack'),
+				'fields'		=> array(
+					'shape_color'	=> array(
+						'type'			=> 'color',
+						'label'			=> __('Color', 'bb-powerpack'),
+						'default'		=> '',
+						'show_reset'	=> true,
+						'preview'       => array(
+							'type'            => 'css',
+							'selector'        => '.pp-headline-dynamic-wrapper path',
+							'property'        => 'stroke'
+						),
+					),
+					'shape_width'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Width', 'bb-powerpack'),
+						'default'		=> '',
+						'size'			=> 5,
+						'description'	=> 'px',
+						'preview'       => array(
+							'type'            => 'css',
+							'selector'        => '.pp-headline-dynamic-wrapper path',
+							'property'        => 'stroke-width'
+						),
+					)
+				)
+			)
 		)
 	),
 	'typography'	=> array(
@@ -280,10 +161,10 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 			'text_tag'	=> array(
 				'title'		=> '',
 				'fields'	=> array(
-					'text_tag_selection'   => array(
+					'headline_tag'   => array(
 		                'type'          => 'select',
 		                'label'         => __('Title Tag', 'bb-powerpack'),
-		                'default'       => 'h2',
+		                'default'       => 'h3',
 		                'options'       => array(
 		                	'h1'	  => __('H1', 'bb-powerpack'),
 		                    'h2'      => __('H2', 'bb-powerpack'),
@@ -295,9 +176,9 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 		            ),
 				)
 			),
-			'static_text_typography' => array(
-				'title' 	=> __('Prefix / Suffix Text', 'bb-powerpack' ),
-                'fields'    => array(
+			'headline_typography' => array(
+				'title' 			=> __('Prefix / Suffix Text', 'bb-powerpack' ),
+                'fields'   			=> array(
                     'font_family'       => array(
                         'type'          => 'font',
                         'label'         => __('Font Family', 'bb-powerpack'),
@@ -307,7 +188,7 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
                         ),
                         'preview'	=> array(
                             'type'		=> 'font',
-                            'selector'	=> '.pp-animated-text-prefix, .pp-animated-text-suffix'
+                            'selector'	=> '.pp-headline'
                     	),
                     ),
 					'font_size'     => array(
@@ -325,34 +206,21 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 						)
                     ),
                     'font_size_custom'  => array(
-                        'type'              => 'pp-multitext',
+                        'type'              => 'unit',
 						'label'             => __('Custom Font Size', 'bb-powerpack'),
-						'default'	        => array(
-							'desktop'	        => 30,
-							'tablet'	        => '',
-							'mobile'	        => '',
+						'description' 		=> 'px',
+						'responsive' 		=> array(
+							'placeholder' 		=> array(
+								'default' 			=> '',
+								'medium' 			=> '',
+								'responsive' 		=> '',
+							),
 						),
-						'options' 		    => array(
-							'desktop'           => array(
-								'icon'		        => 'fa-desktop',
-								'placeholder'	    => __('Desktop', 'bb-powerpack'),
-								'tooltip'	        => __('Desktop', 'bb-powerpack'),
-								'preview'           => array(
-									'selector'          => '.pp-animated-heading-title',
-									'property'          => 'font-size',
-									'unit'			    => 'px'
-								),
-							),
-							'tablet'             => array(
-								'icon'		         => 'fa-tablet',
-								'placeholder'	     => __('Tablet', 'bb-powerpack'),
-								'tooltip'	         => __('Tablet', 'bb-powerpack'),
-							),
-							'mobile'             => array(
-								'icon'		         => 'fa-mobile',
-								'placeholder'	     => __('Mobile', 'bb-powerpack'),
-								'tooltip'	         => __('Mobile', 'bb-powerpack'),
-							),
+						'preview'			=> array(
+							'type' 				=> 'css',
+							'selector'			=> '.pp-headline',
+							'property'      	=> 'font-size',
+							'unit'				=> 'px',
 						),
                     ),
 					'line_height'   => array(
@@ -370,44 +238,30 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 						)
                     ),
                     'line_height_custom' => array(
-                        'type'                => 'pp-multitext',
-						'label'               => __('Custom Line Height', 'bb-powerpack'),
-						'default'	        => array(
-							'desktop'	        => 1.4,
-							'tablet'	        => '',
-							'mobile'	        => '',
+						'type'              => 'unit',
+						'label'             => __('Line Height Custom', 'bb-powerpack'),
+						'responsive' 		=> array(
+							'placeholder' 		=> array(
+								'default' 			=> '',
+								'medium' 			=> '',
+								'responsive' 		=> '',
+							),
 						),
-						'options' 		    => array(
-							'desktop'           => array(
-								'icon'		        => 'fa-desktop',
-								'placeholder'	    => __('Desktop', 'bb-powerpack'),
-								'tooltip'	        => __('Desktop', 'bb-powerpack'),
-								'preview'           => array(
-									'selector'          => '.pp-animated-heading-title',
-									'property'          => 'line-height',
-								),
-							),
-							'tablet'             => array(
-								'icon'		         => 'fa-tablet',
-								'placeholder'	     => __('Tablet', 'bb-powerpack'),
-								'tooltip'	         => __('Tablet', 'bb-powerpack'),
-							),
-							'mobile'             => array(
-								'icon'		         => 'fa-mobile',
-								'placeholder'	     => __('Mobile', 'bb-powerpack'),
-								'tooltip'	         => __('Mobile', 'bb-powerpack'),
-							),
+						'preview'			=> array(
+							'type' 				=> 'css',
+							'selector'			=> '.pp-headline',
+							'property'      	=> 'line-height',
 						),
                     ),
-                    'color'        => array(
-                        'type'       => 'color',
-                        'label'      => __('Color', 'bb-powerpack'),
-                        'default'    => '',
-                        'show_reset' => true,
-                    	'preview'	=> array(
-                            'type'		=> 'css',
-                            'selector'	=> '.pp-animated-text-prefix, .pp-animated-text-suffix',
-                            'property'	=> 'color'
+                    'color'        	=> array(
+                        'type'       	=> 'color',
+                        'label'      	=> __('Color', 'bb-powerpack'),
+                        'default'    	=> '',
+                        'show_reset' 	=> true,
+                    	'preview'		=> array(
+                            'type'			=> 'css',
+                            'selector'		=> '.pp-headline',
+                            'property'		=> 'color'
                     	),
                     ),
                 )
@@ -424,7 +278,7 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
                         ),
                         'preview'	=> array(
                             'type'		=> 'font',
-                            'selector'	=> '.pp-animated-text-main'
+                            'selector'	=> '.pp-headline-dynamic-wrapper'
                     	),
                     ),
 					'animated_font_size'     => array(
@@ -441,35 +295,22 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 							)
 						)
                     ),
-                    'animated_font_size_custom'  => array(
-                        'type'              => 'pp-multitext',
+					'animated_font_size_custom'  => array(
+                        'type'              => 'unit',
 						'label'             => __('Custom Font Size', 'bb-powerpack'),
-						'default'	        => array(
-							'desktop'	        => 30,
-							'tablet'	        => '',
-							'mobile'	        => '',
+						'description' 		=> 'px',
+						'responsive' 		=> array(
+							'placeholder' 		=> array(
+								'default' 			=> '',
+								'medium' 			=> '',
+								'responsive' 		=> '',
+							),
 						),
-						'options' 		    => array(
-							'desktop'           => array(
-								'icon'		        => 'fa-desktop',
-								'placeholder'	    => __('Desktop', 'bb-powerpack'),
-								'tooltip'	        => __('Desktop', 'bb-powerpack'),
-								'preview'           => array(
-									'selector'          => '.pp-animated-text-main',
-									'property'          => 'font-size',
-									'unit'			    => 'px'
-								),
-							),
-							'tablet'             => array(
-								'icon'		         => 'fa-tablet',
-								'placeholder'	     => __('Tablet', 'bb-powerpack'),
-								'tooltip'	         => __('Tablet', 'bb-powerpack'),
-							),
-							'mobile'             => array(
-								'icon'		         => 'fa-mobile',
-								'placeholder'	     => __('Mobile', 'bb-powerpack'),
-								'tooltip'	         => __('Mobile', 'bb-powerpack'),
-							),
+						'preview'			=> array(
+							'type' 				=> 'css',
+							'selector'			=> '.pp-headline-dynamic-wrapper',
+							'property'      	=> 'font-size',
+							'unit'				=> 'px',
 						),
                     ),
 					'animated_line_height'   => array(
@@ -486,34 +327,22 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 							)
 						)
                     ),
-                    'animated_line_height_custom' => array(
-                        'type'                => 'pp-multitext',
-						'label'               => __('Custom Line Height', 'bb-powerpack'),
-						'default'	        => array(
-							'desktop'	        => 1.4,
-							'tablet'	        => '',
-							'mobile'	        => '',
+					'animated_line_height_custom'  => array(
+                        'type'              => 'unit',
+						'label'             => __('Line Height Custom', 'bb-powerpack'),
+						'description' 		=> 'px',
+						'responsive' 		=> array(
+							'placeholder' 		=> array(
+								'default' 			=> '',
+								'medium' 			=> '',
+								'responsive' 		=> '',
+							),
 						),
-						'options' 		    => array(
-							'desktop'           => array(
-								'icon'		        => 'fa-desktop',
-								'placeholder'	    => __('Desktop', 'bb-powerpack'),
-								'tooltip'	        => __('Desktop', 'bb-powerpack'),
-								'preview'           => array(
-									'selector'          => '.pp-animated-text-main',
-									'property'          => 'line-height',
-								),
-							),
-							'tablet'             => array(
-								'icon'		         => 'fa-tablet',
-								'placeholder'	     => __('Tablet', 'bb-powerpack'),
-								'tooltip'	         => __('Tablet', 'bb-powerpack'),
-							),
-							'mobile'             => array(
-								'icon'		         => 'fa-mobile',
-								'placeholder'	     => __('Mobile', 'bb-powerpack'),
-								'tooltip'	         => __('Mobile', 'bb-powerpack'),
-							),
+						'preview'			=> array(
+							'type' 				=> 'css',
+							'selector'			=> '.pp-headline-dynamic-wrapper',
+							'property'      	=> 'font-size',
+							'unit'				=> 'px',
 						),
                     ),
                     'animated_color'        => array(
@@ -523,7 +352,7 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
                         'show_reset' => true,
                     	'preview'	=> array(
                             'type'		=> 'css',
-                            'selector'	=> '.pp-animated-text-main',
+                            'selector'	=> '.pp-headline-dynamic-wrapper',
                             'property'	=> 'color'
                     	),
                     ),

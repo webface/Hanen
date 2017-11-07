@@ -13,7 +13,7 @@ class PPSmartButtonModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Smart Button', 'bb-powerpack'),
 			'description'   	=> __('A simple call to action button.', 'bb-powerpack'),
-			'group'         => 'PowerPack Modules',
+			'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-smart-button/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-smart-button/',

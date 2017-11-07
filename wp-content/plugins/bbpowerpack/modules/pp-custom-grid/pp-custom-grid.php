@@ -13,7 +13,7 @@ class PPCustomGridModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Custom Grid', 'bb-powerpack'),
 			'description'   	=> __('Display a grid of your WordPress posts.', 'bb-powerpack'),
-			'group'         	=> 'PowerPack Modules',
+			'group'         	=> pp_get_modules_group(),
 			'category'			=> pp_get_modules_cat( 'content' ),
             'dir'               => BB_POWERPACK_DIR . 'modules/pp-custom-grid/',
             'url'               => BB_POWERPACK_URL . 'modules/pp-custom-grid/',
@@ -32,12 +32,12 @@ class PPCustomGridModule extends FLBuilderModule {
 	 */
 	public function enqueue_scripts()
 	{
+		$this->add_js('jquery-imagesloaded');
+
 		if(FLBuilderModel::is_builder_active()) {
 			$this->add_css('font-awesome');
-	        $this->add_js('jquery-imagesloaded');
 		}
 		if(FLBuilderModel::is_builder_active() || ! $this->settings->match_height) {
-			$this->add_js('jquery-imagesloaded');
 			$this->add_js('jquery-masonry');
 		}
 		if(FLBuilderModel::is_builder_active() || $this->settings->pagination == 'scroll') {

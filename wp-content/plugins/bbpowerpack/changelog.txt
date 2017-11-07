@@ -1,3 +1,30 @@
+== 1.5.0 ==
+Release date: November 7, 2017
+* New: WPML integration
+* Enhancement: Added default state option in row expandable settings
+* Enhancement: Added content Type (content, photo, video, saved templates) option in Advanced Accordion module
+* Enhancement: Added content Type (content, photo, video, saved templates) option in Advanced Tabs module
+* Enhancement: Added pp_advanced_menu_icon filter hook to change hamburger icon in Advanced Menu module
+* Enhancement: Added option to enable or disable background image hover zoom effect in Smart Banner module
+* Enhancement: Added inline and stacked style option for dual heading in Smart Heading module
+* Enhancement: Added custom height option in FlipBox module
+* Enhancement: Added alpha option for background color in FlipBox module
+* Enhancement: Added alpha option for text and background color in Smart Headings module
+* Enhancement: Added custom button option for WooCommerce and EDD products in Content Grid module
+* Enhancement: Added padding options for description in Smart Banner module
+* Fix: Filter class was not rendering properly in Filterable Gallery module
+* Fix: JS error in Custom Grid module
+* Fix: Spacing issues in Icon / Number List module
+* Fix: Subscribe Form was not working when type is set to Fixed at Bottom
+* Fix: Icon alignment and default background color in Announcement Bar module
+* Fix: Input height preview was not working in Gravity Forms module
+* Fix: PHP notice in Hover Cards 2 module
+* Fix: Transitions in Smart Button module
+* Fix: Changed Between Heading & Sub-Heading separator position label to Below Heading in Smart Headings module
+* Fix: Changed Below Sub-Heading separator position label to Below Description in Smart Headings module
+* Fix: White Label settings were not working for module group label
+* Fix: Equal Height issue when using post filters in Content Grid module
+
 == 1.4.0.2 ==
 Release date: October 5, 2017
 * Enhancement: Added lightbox overlay color option in Photo Gallery module

@@ -16,7 +16,7 @@ class PPAnnouncementBarModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Announcement Bar', 'bb-powerpack'),
             'description'   => __('Addon to add announement bar to the page.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'lead_gen' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-announcement-bar/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-announcement-bar/',

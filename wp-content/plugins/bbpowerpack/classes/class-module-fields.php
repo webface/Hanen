@@ -255,18 +255,18 @@ if ( ! class_exists( 'PP_Module_Fields' ) ) {
             ?>
             <div class="pp-color-picker fl-color-picker<?php if( isset( $field['class'] ) ) echo ' ' . $field['class']; ?>">
             	<div class="fl-color-picker-color<?php echo ( ! isset( $value['primary'] ) || '' == $value['primary'] ) ? ' fl-color-picker-empty' : '' ?>"></div>
+                <div class="pp-color-text"><?php echo $primary; ?></div>
             	<?php if(isset($field['show_reset']) && $field['show_reset']) : ?>
             		<div class="fl-color-picker-clear"><div class="fl-color-picker-icon-remove"></div></div>
             	<?php endif; ?>
-                <div class="pp-color-text"><?php echo $primary; ?></div>
             	<input name="<?php echo $name . '[][primary]'; ?>" type="hidden" value="<?php echo isset( $value['primary'] ) ? $value['primary'] : ''; ?>" class="fl-color-picker-value pp-field-color pp-color-primary" />
             </div>
             <div class="pp-color-picker fl-color-picker<?php if(isset($field['class'])) echo ' ' . $field['class']; ?>">
             	<div class="fl-color-picker-color<?php echo (!isset( $value['secondary'] ) || '' == $value['secondary']) ? ' fl-color-picker-empty' : '' ?>"></div>
+                <div class="pp-color-text"><?php echo $secondary; ?></div>
             	<?php if(isset($field['show_reset']) && $field['show_reset']) : ?>
             		<div class="fl-color-picker-clear"><div class="fl-color-picker-icon-remove"></div></div>
             	<?php endif; ?>
-                <div class="pp-color-text"><?php echo $secondary; ?></div>
             	<input name="<?php echo $name . '[][secondary]'; ?>" type="hidden" value="<?php echo isset( $value['secondary'] ) ? $value['secondary'] : ''; ?>" class="fl-color-picker-value pp-field-color pp-color-secondary" />
             </div>
             <?php

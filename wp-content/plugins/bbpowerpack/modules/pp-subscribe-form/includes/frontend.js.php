@@ -15,7 +15,7 @@
 	<?php } ?>
 
 	<?php if ( ! FLBuilderModel::is_builder_active() && 'fixed_bottom' == $settings->box_type ) { ?>
-		$('.fl-module.fl-node-<?php echo $id; ?>').wrap('<div class="fl-builder-content pp-wrap-<?php echo $id; ?>"></div>');
+		$('.fl-module.fl-node-<?php echo $id; ?>').wrap('<div class="fl-builder-content fl-builder-content-<?php echo get_the_ID(); ?> pp-wrap-<?php echo $id; ?>" data-post-id="<?php echo get_the_ID(); ?>"></div>');
 		$('.fl-builder-content.pp-wrap-<?php echo $id; ?>').appendTo('body');
 	<?php } ?>
 

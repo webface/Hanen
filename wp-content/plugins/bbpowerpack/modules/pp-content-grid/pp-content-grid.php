@@ -13,7 +13,7 @@ class PPContentGridModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Content Grid', 'bb-powerpack'),
 			'description'   	=> __('Display posts and pages in grid or carousel format.', 'bb-powerpack'),
-			'group'         	=> 'PowerPack Modules',
+			'group'         	=> pp_get_modules_group(),
             'category'			=> pp_get_modules_cat( 'content' ),
             'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-content-grid/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-content-grid/',

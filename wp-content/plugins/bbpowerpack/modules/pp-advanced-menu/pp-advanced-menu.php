@@ -15,7 +15,7 @@ class PPAdvancedMenu extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Advanced Menu', 'bb-powerpack'),
             'description'   => __('A module for advanced menu.', 'bb-powerpack'),
-			'group'         => 'PowerPack Modules',
+			'group'         => pp_get_modules_group(),
 			'category'      => pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-advanced-menu/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-advanced-menu/',
@@ -58,15 +58,17 @@ class PPAdvancedMenu extends FLBuilderModule {
 
 		$toggle = $this->settings->mobile_toggle;
 		$menu_text = $this->settings->custom_menu_text;
-		//echo 'hello';
 
 		if( isset( $toggle ) && $toggle != 'expanded' ) {
 
 			if( in_array( $toggle, array( 'hamburger', 'hamburger-label' ) ) ) {
 
-				echo '<div class="pp-advanced-menu-mobile-toggle '. $toggle .'"><div class="pp-svg-container">';
-				include FL_BUILDER_DIR .'img/svg/hamburger-menu.svg';
-				echo '</div>';
+				echo '<div class="pp-advanced-menu-mobile-toggle '. $toggle .'">';
+                    echo '<div class="pp-svg-container">';
+                    ob_start();
+				    include BB_POWERPACK_DIR . 'assets/images/hamburger-menu.svg';
+                    echo apply_filters( 'pp_advanced_menu_icon', ob_get_clean(), $this->settings );
+				    echo '</div>';
 
 				if( $toggle == 'hamburger-label' ) {
 					if( $menu_text ) {
@@ -151,8 +153,6 @@ class PPAdvancedMenu extends FLBuilderModule {
 		return $media_width;
 	}
 }
-
-
 
 /**
  * Register the module and its form settings.

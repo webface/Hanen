@@ -392,6 +392,21 @@ function pp_hex2rgba( $hex, $opacity )
 }
 
 /**
+ * Get color value hex or rgba
+ */
+function pp_get_color_value( $color )
+{
+    if ( $color == '' || ! $color ) {
+        return;
+    }
+    if ( false === strpos( $color, 'rgb' ) ) {
+        return '#' . $color;
+    } else {
+        return $color;
+    }
+}
+
+/**
  * Returns long day format.
  *
  * @since 1.2.2
@@ -509,4 +524,18 @@ function pp_get_admin_label()
 	$admin_label = trim( $admin_label ) !== '' ? trim( $admin_label ) : 'PowerPack';
 
 	return $admin_label;
+}
+
+/**
+ * Returns group name for BB 2.x.
+ *
+ * @since 1.5
+ * @return string
+ */
+function pp_get_modules_group()
+{
+	$group_name = BB_PowerPack_Admin_Settings::get_option( 'ppwl_builder_label' );
+	$group_name = trim( $group_name ) !== '' ? trim( $group_name ) : 'PowerPack ' . __('Modules', 'bb-powerpack');
+
+	return $group_name;
 }

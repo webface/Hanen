@@ -201,9 +201,6 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 		<?php if( $settings->hover_card_description_font_size['mobile'] ) { ?>font-size: <?php echo $settings->hover_card_description_font_size['mobile']; ?>px;<?php } ?>
 		<?php if( $settings->hover_card_description_line_height['mobile'] ) { ?>line-height: <?php echo $settings->hover_card_description_line_height['mobile']; ?>;<?php } ?>
 	}
-	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-inner .pp-more-link {
-		<?php if( $settings->button_font_size_f['hover_card_button_font_size_mobile'] ) { ?>font-size: <?php echo $settings->button_font_size_f['hover_card_button_font_size_mobile']; ?>px;<?php } ?>
-	}
     .fl-node-<?php echo $id; ?> .pp-hover-card:nth-of-type(<?php echo $settings->hover_card_column_width['tablet']; ?>n+1) {
             clear: none;
     }

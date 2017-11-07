@@ -16,7 +16,7 @@ class PPTeamModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Team', 'bb-powerpack'),
             'description'   => __('Team module.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-team/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-team/',

@@ -1,5 +1,5 @@
 .fl-node-<?php echo $id; ?> .pp-announcement-bar-wrap {
-    background: <?php echo ($settings->announcement_bar_background) ? '#'.$settings->announcement_bar_background : 'transparent'; ?>;
+    background: <?php echo ($settings->announcement_bar_background) ? '#'.$settings->announcement_bar_background : '#ffffff'; ?>;
     <?php if( $settings->announcement_bar_position == 'top' ) { ?>
         top: 0;
         border-bottom-color: <?php echo ($settings->announcement_bar_border_color) ? '#'.$settings->announcement_bar_border_color : '#000'; ?>;
@@ -61,6 +61,9 @@
     height: <?php echo $settings->announcement_bar_height; ?>px;
     text-align: <?php echo $settings->announcement_text_align; ?>;
 }
+.fl-node-<?php echo $id; ?> .pp-announcement-bar-wrap .pp-announcement-bar-icon {
+    vertical-align: middle;
+}
 .fl-node-<?php echo $id; ?> .pp-announcement-bar-wrap .pp-announcement-bar-icon .pp-icon {
     color: <?php echo ($settings->announcement_icon_color) ? '#'.$settings->announcement_icon_color : '#000'; ?>;
     font-size: <?php echo ($settings->announcement_icon_size) ? $settings->announcement_icon_size.'px' : '20px'; ?>;
@@ -86,6 +89,7 @@
     color: <?php echo ($settings->announcement_link_color['primary']) ? '#'.$settings->announcement_link_color['primary'] : '#000'; ?>;
     <?php if( $settings->announcement_link_font['family'] != 'Default' ) { ?><?php FLBuilderFonts::font_css( $settings->announcement_link_font ); ?><?php } ?>
     font-size: <?php echo ($settings->announcement_link_font_size >= 0) ? $settings->announcement_link_font_size.'px' : '16px'; ?>;
+    text-decoration: none !important;
 }
 .fl-node-<?php echo $id; ?> .pp-announcement-bar-wrap .pp-announcement-bar-link a:hover {
     <?php if( $settings->announcement_link_type == 'button' ) { ?>

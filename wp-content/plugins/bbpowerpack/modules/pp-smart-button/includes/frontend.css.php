@@ -59,14 +59,16 @@ if ( isset( $settings->three_d ) && $settings->three_d ) {
 }
 
 <?php if ( ! empty( $settings->text_color['primary'] ) ) : ?>
-.fl-node-<?php echo $id; ?> a.pp-button,
-.fl-node-<?php echo $id; ?> a.pp-button span {
+.fl-node-<?php echo $id; ?> a.pp-button {
 	color: #<?php echo $settings->text_color['primary']; ?>;
 	-webkit-transition: all .3s ease 0s;
     -moz-transition: all .3s ease 0s;
     -o-transition: all .3s ease 0s;
     -ms-transition: all .3s ease 0s;
     transition: all .3s ease 0s;
+}
+.fl-node-<?php echo $id; ?> a.pp-button span {
+	color: #<?php echo $settings->text_color['primary']; ?>;
 }
 <?php endif; ?>
 
@@ -130,9 +132,7 @@ if( $settings->style == 'flat' ) {
 	switch( $btn_effect ) {
 	    case 'fade': ?>
 	    .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-		.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-		.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-		.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+		.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 			<?php if($settings->button_effect_duration) { ?>
 				transition-duration: <?php echo $settings->button_effect_duration; ?>ms;
 			<?php } ?>
@@ -142,9 +142,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'sweep_right': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -176,9 +174,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'sweep_left': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -210,9 +206,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'sweep_bottom': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -244,9 +238,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'sweep_top': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -278,9 +270,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'bounce_right': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -313,9 +303,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'bounce_left': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -348,9 +336,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'bounce_bottom': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -383,9 +369,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'bounce_top': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
 	        .fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:before {
@@ -418,9 +402,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'radial_out': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -449,9 +431,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'radial_in': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -480,9 +460,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'rectangle_out': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -513,9 +491,7 @@ if( $settings->style == 'flat' ) {
 				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
 			}
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 	            overflow: hidden;
 	            <?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 	        }
@@ -546,9 +522,7 @@ if( $settings->style == 'flat' ) {
 				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
 			}
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 				overflow: hidden;
 				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 			}
@@ -581,9 +555,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'shutter_out_horizontal': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 				overflow: hidden;
 				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 			}
@@ -619,9 +591,7 @@ if( $settings->style == 'flat' ) {
 				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
 			}
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 				overflow: hidden;
 				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 			}
@@ -654,9 +624,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'shutter_out_vertical': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 				overflow: hidden;
 				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 			}
@@ -689,9 +657,7 @@ if( $settings->style == 'flat' ) {
 
 	    case 'shutter_out_diagonal': ?>
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 				overflow: hidden;
 				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 			}
@@ -725,9 +691,7 @@ if( $settings->style == 'flat' ) {
 				<?php if( $settings->bg_color['secondary']) { ?>background: #<?php echo $settings->bg_color['secondary']; ?>;<?php } ?>
 			}
 			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button span,
-			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited span {
+			.fl-node-<?php echo $id; ?> .pp-button-wrap a.pp-button:visited {
 				overflow: hidden;
 				<?php if($settings->button_effect_duration >= 0) { ?>transition-duration: <?php echo $settings->button_effect_duration; ?>ms;<?php } ?>
 			}

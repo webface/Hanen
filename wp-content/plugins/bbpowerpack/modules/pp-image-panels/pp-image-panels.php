@@ -16,7 +16,7 @@ class PPImagePanelsModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Image Panels', 'bb-powerpack'),
             'description'   => __('Create beautiful images panels.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-image-panels/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-image-panels/',

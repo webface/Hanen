@@ -16,7 +16,7 @@ class PPNinjaFormModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Ninja Form', 'bb-powerpack'),
             'description'   => __('A module for Ninja Form.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-ninja-form/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-ninja-form/',

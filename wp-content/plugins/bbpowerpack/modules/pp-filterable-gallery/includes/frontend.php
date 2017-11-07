@@ -37,7 +37,7 @@
 		foreach($module->get_photos() as $photo) :
 
 			$photo_filter_label = $filter_labels[$photo->id];
-			$final_photo_filter_label = preg_replace('/[^A-Za-z0-9\-\']/', '-', $photo_filter_label); ?>
+			$final_photo_filter_label = preg_replace('/[^\sA-Za-z0-9]/', '-', $photo_filter_label); ?>
 
 		<div class="pp-gallery-grid-item pp-gallery-item pp-photo-gallery-item <?php echo $final_photo_filter_label; ?> <?php echo ( ( $settings->click_action != 'none' ) && !empty( $photo->link ) ) ? 'pp-photo-gallery-link' : ''; ?>">
 			<div class="pp-photo-gallery-content">

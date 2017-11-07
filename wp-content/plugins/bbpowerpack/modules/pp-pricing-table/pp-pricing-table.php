@@ -13,7 +13,7 @@ class PPPricingTableModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Pricing Table', 'bb-powerpack'),
 			'description'   => __('Addon to display pricing table.', 'bb-powerpack'),
-			'group'         => 'PowerPack Modules',
+			'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-pricing-table/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-pricing-table/',

@@ -16,7 +16,7 @@ class PPModalBoxModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Modal Box', 'bb-powerpack'),
             'description'   => __('Custom modal boxes with animation.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'lead_gen' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-modal-box/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-modal-box/',

@@ -16,7 +16,7 @@ class PPHighlightBoxModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Highlight Box', 'bb-powerpack'),
             'description'   => __('A module for Highlight Box.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-highlight-box/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-highlight-box/',

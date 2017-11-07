@@ -3,7 +3,7 @@
  * Plugin Name: PowerPack for Beaver Builder
  * Plugin URI: https://wpbeaveraddons.com
  * Description: A set of custom, creative, unique modules for Beaver Builder to speed up your web design and development process.
- * Version: 1.4.0.2
+ * Version: 1.5.0
  * Author: Team IdeaBox - Beaver Addons
  * Author URI: https://wpbeaveraddons.com
  * Copyright: (c) 2016 IdeaBox Creations
@@ -76,6 +76,7 @@ final class BB_PowerPack {
 		/* Classes */
 		require_once 'classes/class-admin-settings.php';
 		require_once 'classes/class-media-fields.php';
+		require_once 'classes/class-wpml-compatibility.php';
 
 		/* Includes */
 		require_once 'includes/helper-functions.php';
@@ -101,7 +102,7 @@ final class BB_PowerPack {
 	 */
 	private function define_constants()
 	{
-		define( 'BB_POWERPACK_VER', '1.4.0.2' );
+		define( 'BB_POWERPACK_VER', '1.5.0' );
 		define( 'BB_POWERPACK_DIR', plugin_dir_path( __FILE__ ) );
 		define( 'BB_POWERPACK_URL', plugins_url( '/', __FILE__ ) );
 		define( 'BB_POWERPACK_PATH', plugin_basename( __FILE__ ) );
@@ -251,9 +252,10 @@ final class BB_PowerPack {
 		?>
 		<style>
 		form[class*="fl-builder-pp-"] .fl-lightbox-header h1:before {
-			content: "<?php echo pp_get_admin_label(); ?>";
+			content: "<?php echo pp_get_admin_label(); ?> ";
 			position: relative;
 			display: inline-block;
+			margin-right: 5px;
 		}
 		</style>
 		<?php
@@ -312,6 +314,9 @@ final class BB_PowerPack {
 			$classes[] = 'bb-powerpack';
 			if ( pp_panel_search() == 1 ) {
 				$classes[] = 'bb-powerpack-search-enabled';
+			}
+			if ( class_exists( 'FLBuilderUIContentPanel' ) ) {
+				$classes[] = 'bb-powerpack-ui';
 			}
 		}
 

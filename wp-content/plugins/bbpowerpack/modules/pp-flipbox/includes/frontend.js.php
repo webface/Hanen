@@ -11,12 +11,16 @@
             $(this).removeClass('pp-hover');
         });
 
+        <?php if ( $settings->box_height != 'custom' ) : ?>
+
         if( $('.fl-node-<?php echo $id; ?> .pp-flipbox-front').outerHeight() > $('.fl-node-<?php echo $id; ?> .pp-flipbox-back').outerHeight() ) {
             $('.fl-node-<?php echo $id; ?> .pp-flipbox-back').css( 'height', $('.fl-node-<?php echo $id; ?> .pp-flipbox-front').outerHeight() + 'px' );
         }
         else {
             $('.fl-node-<?php echo $id; ?> .pp-flipbox-front').css( 'height', $('.fl-node-<?php echo $id; ?> .pp-flipbox-back').outerHeight() + 'px' );
         }
+
+        <?php endif; ?>
     });
 
 })(jQuery);

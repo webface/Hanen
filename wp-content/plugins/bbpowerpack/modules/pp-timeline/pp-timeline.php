@@ -16,7 +16,7 @@ class PPTimelineModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Timeline', 'bb-powerpack'),
             'description'   => __('Addon to display content in timeline format.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-timeline/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-timeline/',

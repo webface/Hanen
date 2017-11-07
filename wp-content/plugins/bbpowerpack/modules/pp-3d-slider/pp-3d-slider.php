@@ -16,7 +16,7 @@ class PP3dSliderModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('3D Slider', 'bb-powerpack'),
             'description'   => __('3D Slider.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-3d-slider/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-3d-slider/',

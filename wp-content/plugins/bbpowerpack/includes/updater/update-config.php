@@ -6,9 +6,9 @@ define( 'BEAVER_ADDONS_URL', 'https://wpbeaveraddons.com' ); // you should use y
 // the name of your product. This should match the download name in EDD exactly
 define( 'BEAVER_ADDONS_ITEM_NAME', 'PowerPack for Beaver Builder' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
 
-if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+if( !class_exists( 'PP_Plugin_Updater' ) ) {
 	// load our custom updater
-	include('EDD_SL_Plugin_Updater.php' );
+	include('class-plugin-updater.php' );
 }
 
 function bb_powerpack_get( $key ) {
@@ -41,7 +41,7 @@ function bb_powerpack_plugin_updater() {
 	$license_key = trim( bb_powerpack_get( 'bb_powerpack_license_key' ) );
 
 	// setup the updater
-	$edd_updater = new EDD_SL_Plugin_Updater( BEAVER_ADDONS_URL, BB_POWERPACK_DIR . '/bb-powerpack.php', array(
+	$edd_updater = new PP_Plugin_Updater( BEAVER_ADDONS_URL, BB_POWERPACK_DIR . '/bb-powerpack.php', array(
 			'version' 	=> BB_POWERPACK_VER, 					// current version number
 			'license' 	=> $license_key, 						// license key (used bb_powerpack_get above to retrieve from DB)
 			'item_name' => BEAVER_ADDONS_ITEM_NAME, 			// name of this plugin

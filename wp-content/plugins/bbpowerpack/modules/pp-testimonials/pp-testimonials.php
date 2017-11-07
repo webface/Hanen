@@ -16,7 +16,7 @@ class PPTestimonialsModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Testimonials', 'bb-powerpack'),
             'description'   => __('Addon to display testimonials.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-testimonials/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-testimonials/',

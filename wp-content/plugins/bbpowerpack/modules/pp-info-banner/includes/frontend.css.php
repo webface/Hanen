@@ -40,6 +40,7 @@
 	    will-change: transform;
 	}
 	.fl-node-<?php echo $id; ?> .pp-info-banner-content:hover .pp-info-banner-bg {
+        <?php if ( isset( $settings->banner_bg_hover_zoom ) && $settings->banner_bg_hover_zoom == 'enable' ) { ?>
 		-webkit-transform: scale(1.1);
 	    -moz-transform: scale(1.1);
 	    -o-transform: scale(1.1);
@@ -47,6 +48,7 @@
 	    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=1.1, M12=0, M21=0, M22=1.1, SizingMethod='auto expand')";
 	    filter: progid:DXImageTransform.Microsoft.Matrix(M11=1.1, M12=0, M21=0, M22=1.1, SizingMethod='auto expand');
 	    transform: scale(1.1);
+        <?php } ?>
 	}
 <?php } ?>
 
@@ -153,6 +155,18 @@
     <?php } ?>
     <?php if( $settings->banner_desc_margin >= 0 ) { ?>
 	margin-bottom: <?php echo $settings->banner_desc_margin; ?>px;
+    <?php } ?>
+    <?php if( $settings->banner_desc_padding_top >= 0 ) { ?>
+    padding-top: <?php echo $settings->banner_desc_padding_top; ?>px;
+    <?php } ?>
+    <?php if( $settings->banner_desc_padding_bottom >= 0 ) { ?>
+    padding-bottom: <?php echo $settings->banner_desc_padding_bottom; ?>px;
+    <?php } ?>
+    <?php if( $settings->banner_desc_padding_left >= 0 ) { ?>
+    padding-left: <?php echo $settings->banner_desc_padding_left; ?>px;
+    <?php } ?>
+    <?php if( $settings->banner_desc_padding_right >= 0 ) { ?>
+    padding-right: <?php echo $settings->banner_desc_padding_right; ?>px;
     <?php } ?>
 }
 

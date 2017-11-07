@@ -4,11 +4,14 @@
 	border-width: <?php echo $settings->box_border_width; ?>px;
 	<?php } ?>
 	<?php if( $settings->top_padding ) { ?>padding: <?php echo $settings->top_padding; ?>px <?php echo $settings->side_padding; ?>px;<?php } ?>
+	<?php if ( $settings->box_height == 'custom' ) { ?>
+		height: <?php echo $settings->box_height_custom; ?>px;
+	<?php } ?>
 }
 
 /* Front */
 .fl-node-<?php echo $id; ?> .pp-flipbox-front {
-	<?php if( $settings->front_background ) { ?>background: #<?php echo $settings->front_background; ?>;<?php } ?>
+	<?php if( $settings->front_background ) { ?>background: <?php echo pp_get_color_value($settings->front_background); ?>;<?php } ?>
 	<?php if( $settings->front_border_color ) { ?>border-color: #<?php echo $settings->front_border_color; ?>;<?php } ?>
 }
 .fl-node-<?php echo $id; ?> .pp-flipbox-front .pp-flipbox-title .pp-flipbox-front-title {
@@ -28,7 +31,7 @@
 
 /* Back */
 .fl-node-<?php echo $id; ?> .pp-flipbox-back {
-	<?php if( $settings->back_background ) { ?>background: #<?php echo $settings->back_background; ?>;<?php } ?>
+	<?php if( $settings->back_background ) { ?>background: <?php echo pp_get_color_value($settings->back_background); ?>;<?php } ?>
 	<?php if( $settings->back_border_color ) { ?>border-color: #<?php echo $settings->back_border_color; ?>;<?php } ?>
 }
 .fl-node-<?php echo $id; ?> .pp-flipbox-back .pp-flipbox-title .pp-flipbox-back-title {

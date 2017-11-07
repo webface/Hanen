@@ -16,7 +16,7 @@ class PPFilterableGalleryModule extends FLBuilderModule {
         parent::__construct(array(
 			'name'          => __('Filterable Gallery', 'bb-powerpack'),
             'description'   => __('A module for filterable gallery.', 'bb-powerpack'),
-			'group'			=> 'PowerPack Modules',
+			'group'			=> pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'content' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-filterable-gallery/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-filterable-gallery/',

@@ -430,7 +430,9 @@ function pp_row_expandable_css( $css, $nodes, $global_settings ) {
         <?php if ( $row->settings->enable_expandable == 'yes' ) { ?>
             <?php if ( ! FLBuilderModel::is_builder_active() ) { ?>
             .fl-node-<?php echo $row->node; ?> .fl-row-content-wrap {
+                <?php if ( 'collapsed' == $row->settings->er_default_state ) { ?>
                 display: none;
+                <?php } ?>
             }
             <?php } ?>
             .fl-node-<?php echo $row->node; ?> .pp-er {

@@ -16,7 +16,7 @@ class PPGravityFormModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Gravity Form', 'bb-powerpack'),
             'description'   => __('A module for Gravity Form.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-gravity-form/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-gravity-form/',
@@ -596,7 +596,7 @@ FLBuilder::register_module('PPGravityFormModule', array(
                         'preview'                   => array(
                             'type'                      => 'css',
                             'selector'                  => '.gform_wrapper .gfield input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]), .gform_wrapper .gfield select',
-                            'property'                  => 'border-radius',
+                            'property'                  => 'height',
                             'unit'                      => 'px'
                         )
                     ),

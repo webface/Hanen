@@ -13,7 +13,7 @@ class PPContentTilesModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __('Content Tiles', 'bb-powerpack'),
 			'description'   	=> __('Display posts in various tile layouts.', 'bb-powerpack'),
-			'group'         	=> 'PowerPack Modules',
+			'group'         	=> pp_get_modules_group(),
             'category'			=> pp_get_modules_cat( 'content' ),
             'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-content-tiles/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-content-tiles/',

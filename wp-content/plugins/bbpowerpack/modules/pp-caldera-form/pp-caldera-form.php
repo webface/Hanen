@@ -16,7 +16,7 @@ class PPCalderaFormModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Caldera Form', 'bb-powerpack'),
             'description'   => __('A module for Caldera Form.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'form_style' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-caldera-form/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-caldera-form/',

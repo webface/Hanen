@@ -16,7 +16,7 @@ class PPFlipBoxModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Flip Box', 'bb-powerpack'),
             'description'   => __('Addon to display flip box.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-flipbox/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-flipbox/',
@@ -218,6 +218,27 @@ FLBuilder::register_module('PPFlipBoxModule', array(
                             ),
                         ),
                     ),
+                    'box_height'    => array(
+                        'type'          => 'pp-switch',
+                        'label'         => __('Box Height', 'bb-powerpack'),
+                        'default'       => 'auto',
+                        'options'       => array(
+                            'auto'          => __('Auto', 'bb-powerpack'),
+                            'custom'        => __('Custom', 'bb-powerpack')
+                        ),
+                        'toggle'        => array(
+                            'custom'        => array(
+                                'fields'        => array('box_height_custom')
+                            )
+                        )
+                    ),
+                    'box_height_custom' => array(
+                        'type'              => 'text',
+                        'label'             => __('Box Height Custom', 'bb-powerpack'),
+                        'default'           => '',
+                        'description'       => 'px',
+                        'size'              => '5'
+                    )
                 ),
             ),
 		)
@@ -257,6 +278,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
 						'type'          => 'color',
 						'label'         => __('Background Color', 'bb-powerpack'),
 						'show_reset'    => true,
+                        'show_alpha'    => true,
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-flipbox-front',
@@ -617,6 +639,7 @@ FLBuilder::register_module('PPFlipBoxModule', array(
 						'type'          => 'color',
 						'label'         => __('Background Color', 'bb-powerpack'),
 						'show_reset'    => true,
+                        'show_alpha'    => true,
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-flipbox-back',

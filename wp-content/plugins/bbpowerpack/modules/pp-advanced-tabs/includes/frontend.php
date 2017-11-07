@@ -63,7 +63,7 @@ $css_id = '';
 				</div>
 			</div>
 			<div class="pp-tabs-panel-content pp-clearfix<?php if($i == $activeTabIndex) echo ' pp-tab-active'; ?>" data-index="<?php echo $i; ?>">
-				<?php echo $settings->items[$i]->content; ?>
+				<?php echo $module->render_content( $settings->items[ $i ] ); ?>
 			</div>
 		</div>
 		<?php endfor; ?>

@@ -16,7 +16,7 @@ class PPDotNavModule extends FLBuilderModule {
         parent::__construct(array(
             'name'          => __('Dot / One Page Navigation', 'bb-powerpack'),
             'description'   => __('A beautiful one page dot navigation.', 'bb-powerpack'),
-            'group'         => 'PowerPack Modules',
+            'group'         => pp_get_modules_group(),
             'category'		=> pp_get_modules_cat( 'creative' ),
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-dotnav/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-dotnav/',

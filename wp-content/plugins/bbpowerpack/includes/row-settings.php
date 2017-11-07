@@ -474,8 +474,18 @@ function pp_row_expandable( $form, $id ) {
                         'label'                 => __('Transition Speed', 'bb-powerpack'),
                         'default'               => 500,
                         'description'           => 'ms',
-                        'class'                 => 'input-small'
+                        'class'                 => 'input-small',
+                        'size'                  => 5
                     ),
+                    'er_default_state'  => array(
+                        'type'              => 'pp-switch',
+                        'label'             => __('Default State', 'bb-powerpack'),
+                        'default'           => 'collapsed',
+                        'options'           => array(
+                            'collapsed'         => __('Collapsed', 'bb-powerpack'),
+                            'expanded'          => __('Expaded', 'bb-powerpack')
+                        )
+                    )
                 )
             ),
             'er_title_style'    => array(
@@ -499,6 +509,7 @@ function pp_row_expandable( $form, $id ) {
                         'default'               => 18,
                         'description'           => 'px',
                         'class'                 => 'input-small',
+                        'size'                  => 5,
                         'preview'               => array(
                             'type'                  => 'css',
                             'selector'              => '.pp-er-title',
@@ -583,6 +594,7 @@ function pp_row_expandable( $form, $id ) {
                         'default'       => 12,
                         'description'   => 'px',
                         'class'         => 'input-small',
+                        'size'          => 5,
                         'preview'       => array(
                             'type'          => 'css',
                             'selector'      => '.pp-er-arrow',
@@ -633,6 +645,7 @@ function pp_row_expandable( $form, $id ) {
                         'default'           => 0,
                         'description'       => 'px',
                         'class'             => 'input-small',
+                        'size'              => 5,
                         'preview'           => array(
                             'type'              => 'css',
                             'selector'          => '.pp-er-arrow:before',
@@ -713,6 +726,7 @@ function pp_row_expandable( $form, $id ) {
                         'default'           => 0,
                         'description'       => 'px',
                         'class'             => 'input-small',
+                        'size'              => 5,
                         'preview'           => array(
                             'type'              => 'css',
                             'selector'          => '.pp-er-arrow:before',
@@ -740,7 +754,8 @@ function pp_row_expandable( $form, $id ) {
                         'label'         => __('Opacity', 'bb-powerpack'),
                         'default'       => 1,
                         'description'   => __('between 0 to 1', 'bb-powerpack'),
-                        'class'         => 'input-small'
+                        'class'         => 'input-small',
+                        'size'          => 5
                     ),
                     'er_title_padding'   => array(
                         'type'              => 'pp-multitext',

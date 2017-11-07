@@ -21,7 +21,7 @@
 
 		</div>
 		<div class="pp-accordion-content fl-clearfix">
-			<div itemprop="text"><?php echo $settings->items[ $i ]->content; ?></div>
+			<?php echo $module->render_content( $settings->items[ $i ] ); ?>
 		</div>
 	</div>
 	<?php endfor; ?>
