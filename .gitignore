@@ -31,6 +31,7 @@ commands.php
 heartbeat.php
 readme.*.html
 readme.html
+wp-content/w3tc-config/
 
 # wpengine specific
 .smushit-status
