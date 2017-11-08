@@ -166,7 +166,7 @@
                                     break;
                                 case 'doc':
                                     $icon = "fa-sticky-note-o";
-                                    $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
+                                    $url = "/download-file?module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
                                     $action = 'Download File';
                                     break;
                                 case 'custom_video':
