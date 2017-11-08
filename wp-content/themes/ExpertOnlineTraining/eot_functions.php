@@ -3264,7 +3264,7 @@ function getModules($org_id = 0)
     global $wpdb;
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     $modules=$wpdb->get_results("SELECT m.*, c.name as category FROM " . TABLE_MODULES. " m "
-            . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " c ON m.category_id = c.id "
+            . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " c ON m.category_id = c.ID "
             . "WHERE m.org_id = $org_id" , ARRAY_A);
     return $modules;
 }
@@ -8259,38 +8259,38 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   $quizzes_passed = array_column($amount_passed,'quiz_id');
   $uniques= array_count_values($quizzes_passed);
   $num_passed = count($uniques);
-    foreach($videos_in_course_ids as $video_id)
+  foreach($videos_in_course_ids as $video_id)
+  {
+    if($video_id != 0)
     {
-        if($video_id != 0)
+      $num_modules ++;
+      $track = getTrack($user_id, $video_id, 'watch_video');
+      if(!empty($track))
+      {
+        if($track['result'] == 1)
         {
-            $num_modules ++;
-            $track = getTrack($user_id, $video_id, 'watch_video');
-            if(!empty($track))
-            {
-                if($track['result'] == 1)
-                {
-                    $num_passed++;
-                }
-            }
+          $num_passed++;
         }
+      }
     }
-    foreach($videos_in_custom_modules as $video)
+}
+  foreach($videos_in_custom_modules as $video)
+  {
+    $num_modules ++;
+    $track = getTrack($user_id, $video['ID'], 'watch_video');
+    if(!empty($track))
     {
-
-            $num_modules ++;
-            $track = getTrack($user_id, $video['ID'], 'watch_video');
-            if(!empty($track))
-            {
-                if($track['result'] == 1)
-                {
-                    $num_passed++;
-                }
-            }
-
+      if($track['result'] == 1)
+      {
+        $num_passed++;
+      }
     }
+  }
+
   // calculate %
   if ($num_passed == 0)
     return 0; 
+  
   $total = $num_quizzes + $num_modules;
   $percentage_complete = intval($num_passed/($total)*100);
   return $percentage_complete;
@@ -9001,7 +9001,7 @@ function calculate_progress($user_id = 0, $course_id = 0)
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     if($user_id == 0 || $course_id == 0)
     {
-        return 0;
+      return 0;
     }
     $quizzes_in_course = getQuizzesInCourse($course_id);
     $modules_in_course = getModulesInCourse($course_id);
@@ -9009,22 +9009,22 @@ function calculate_progress($user_id = 0, $course_id = 0)
     $passed = 0;
     foreach ($quizzes_in_course as $required) 
     {
-        $iPassed = $wpdb->get_row("SELECT passed FROM ".TABLE_QUIZ_ATTEMPTS. " WHERE quiz_id = ".$required['ID']." AND user_id = $user_id AND passed = 1", ARRAY_A);
-        if($iPassed)
-        {
-            $passed++;
-        }
+      $iPassed = $wpdb->get_row("SELECT passed FROM ".TABLE_QUIZ_ATTEMPTS. " WHERE quiz_id = ".$required['ID']." AND user_id = $user_id AND passed = 1", ARRAY_A);
+      if($iPassed)
+      {
+        $passed++;
+      }
     }
     foreach($videos_in_course_ids as $video_id)
     {
-        $track = getTrack($user_id, $video_id, 'watch_video');
-        if(!empty($track))
+      $track = getTrack($user_id, $video_id, 'watch_video');
+      if(!empty($track))
+      {
+        if($track['result'] == 1)
         {
-            if($track['result'] == 1)
-            {
-                $passed++;
-            }
+          $passed++;
         }
+      }
     }
     
     $percentage = $passed/(count($quizzes_in_course)+count($modules_in_course))*100;

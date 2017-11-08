@@ -331,11 +331,11 @@ else if (current_user_can("is_student"))
                     } 
                     if ($percentage_complete < 100) 
                     {
-                        $status = 'In Progress';
+                        $status = __("In Progress", "EOT_LMS");
                     }
                     else
                     {
-                        $status = 'Completed';
+                        $status = __("Completed", "EOT_LMS");
                     }
 ?>
                     <div class="dashboard_border student">
