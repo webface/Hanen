@@ -379,7 +379,7 @@
                                             </tr>
                                             <?php
                                             }
-                                            $percentage = (count($passed_users)/count($quizzes_in_course))*100;
+                                            $percentage =(count($quizzes_in_course)>0)? (count($passed_users)/count($quizzes_in_course))*100:0;
                                             ?>
                                             <tr>
                                                 <td><b><?= __("Completed Quizzes", "EOT_LMS"); ?></b></td>
