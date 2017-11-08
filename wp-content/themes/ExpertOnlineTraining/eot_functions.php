@@ -9191,7 +9191,7 @@ function aws_retrieve_s3_file_list_callback()
     } 
     catch (S3Exception $e) 
     {
-        error_log(__('Transcoding Error Listing Objects in bucket','EOT_LMS').$e->getMessage() . "<br>");
+        error_log('Transcoding Error Listing Objects in bucket'.$e->getMessage());
     }
     
     $bucketList = array();
@@ -9269,7 +9269,7 @@ error_log("set to start transcode");
       $result = $et->createJob($input, array($output), $pipeline);
       error_log(json_encode($result));
       if ($result) { 
-        $s3->deleteObject($output_bucket,$output["Key"]);
+        $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
         $job_id = $result["Job"]["Id"];
         $log .= "Successfully created job with ID: {$job_id}<br />";
         
@@ -9282,7 +9282,7 @@ error_log("set to start transcode");
       $output = array("Key" => "{$video_name}-medium.mp4", "PresetId" => $presetMed);
       $result = $et->createJob($input, array($output), $pipeline);
       if ($result) { 
-        $s3->deleteObject($output_bucket,$output["Key"]);
+        $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
         $job_id = $result["Job"]["Id"];
         $log .= "Successfully created job with ID: {$job_id}<br />";
         
@@ -9295,7 +9295,7 @@ error_log("set to start transcode");
       $output = array("Key" => "{$video_name}-low.mp4", "PresetId" => $presetLow);
       $result = $et->createJob($input, array($output), $pipeline);
       if ($result) { 
-        $s3->deleteObject($output_bucket,$output["Key"]);
+        $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
         $job_id = $result["Job"]["Id"];
         $log .= "Successfully created job with ID: {$job_id}<br />";
         
