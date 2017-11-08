@@ -1,16 +1,16 @@
 <?php
 	if( isset($_REQUEST['module_id']) && isset($_REQUEST['course_id'])&& isset($_REQUEST['video_id']))
 	{
-    	$module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // The module ID
-    	$course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
-        $video_id = filter_var($_REQUEST['video_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
-        $video = get_custom_video($video_id);
-        $user_id = get_current_user_id(); // WP User ID
-        $video_record = getTrack($user_id, $video_id);
-		$track_id = ( count($video_record) > 0) ? $video_record['ID'] : 0;
-        $subscription = getSubscriptionByCourse($course_id);
-        $subscription_id = $subscription['ID'];
-    	// make sure the user has access to this course
+            $module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // The module ID
+            $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+            $video_id = filter_var($_REQUEST['video_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+            $video = get_custom_video($video_id);
+            $user_id = get_current_user_id(); // WP User ID
+            $video_record = getTrack($user_id, $video_id);
+            $track_id = ( count($video_record) > 0) ? $video_record['ID'] : 0;
+            $subscription = getSubscriptionByCourse($course_id);
+            $subscription_id = $subscription['ID'];
+            // make sure the user has access to this course
 		$has_access = verify_student_access($course_id);
 		if($has_access) 
 		{
@@ -129,7 +129,7 @@
                                     break;
                                 case 'doc':
                                     $icon = "fa-sticky-note-o";
-                                    $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
+                                    $url = "/download-file?module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
                                     $action = 'Download File';
                                     break;
                                 case 'custom_video':

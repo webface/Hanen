@@ -2858,7 +2858,7 @@ function getModulesInCourse($course_id = 0){
     $sql = "SELECT DISTINCT m.*, c.name AS category "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.module_id = m.id "
-                . "LEFT JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
+                . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
                 . "WHERE cmr.course_id = $course_id";
 
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
@@ -3255,7 +3255,7 @@ function getResourcesInCourse($course_id = 0, $type = '')
 /**
  * Get Modules in Org
  * @global type $wpdb
- * @param type $org_id - the org ID
+ * @param type $org_id - the org ID. org_id = 0 is reserved for EOT modules
  * @return array of modules in org
  * 
  */
@@ -3263,9 +3263,12 @@ function getModules($org_id = 0)
 {
     global $wpdb;
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    $modules=$wpdb->get_results("SELECT * FROM " . TABLE_MODULES. " WHERE org_id = $org_id" , ARRAY_A);
+    $modules=$wpdb->get_results("SELECT m.*, c.name as category FROM " . TABLE_MODULES. " m "
+            . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " c ON m.category_id = c.id "
+            . "WHERE m.org_id = $org_id" , ARRAY_A);
     return $modules;
 }
+
 
 /**
  * Get the category by ID, or by library id
@@ -8078,7 +8081,6 @@ function getTrack($user_id = 0, $video_id = 0, $type = "all")
   $type = filter_var($type, FILTER_SANITIZE_STRING); // Type of track
   $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
   $video_id = filter_var($video_id, FILTER_SANITIZE_NUMBER_INT);
-
   
   global $wpdb;
   $sql = "SELECT * FROM " . TABLE_TRACK . " WHERE user_id = $user_id";
@@ -8096,8 +8098,12 @@ function getTrack($user_id = 0, $video_id = 0, $type = "all")
   // Watch video needed a key value pair array. It has its own sql statement.
   if( $type == "watch_video" || $type == "video_started" )
   {
-    $sql = "SELECT video_id, t.* FROM " . TABLE_TRACK . " as t WHERE user_id = $user_id and type = '$type'";
-    $results = ($video_id > 0) ? (array) $wpdb->get_row($sql, OBJECT) : $wpdb->get_results($sql, OBJECT_K);
+    $sql = "SELECT * FROM " . TABLE_TRACK . " WHERE user_id = $user_id and type = '$type'";
+    if($video_id > 0)
+    {
+      $sql .= " AND video_id = $video_id";
+    }
+    $results = ($video_id > 0) ?  (array) $wpdb->get_row($sql, OBJECT) : $wpdb->get_results($sql, OBJECT_K);
   }
   else
   {
@@ -8219,13 +8225,31 @@ function calc_course_completion($user_id = 0, $course_id = 0)
 
   $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $org_id = get_org_from_user($user_id);
 
   // get quizzes in course
   $quizzes = getQuizzesInCourse($course_id);
   $num_quizzes = count($quizzes);
-  if ($num_quizzes == 0)
-    return 0; // cant divide by 0
+  
+  $modules_in_course = getModulesInCourse($course_id);
+  $videos_in_course_ids = array_column($modules_in_course, 'video_id');
 
+  $num_modules = 0;
+  
+  if ($num_quizzes == 0 && count($modules_in_course) == 0)
+    return 0; // cant divide by 0
+  
+  $modules_in_portal = getModules($org_id);// all the custom modules in this portal
+  $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
+  foreach($modules_in_portal as $key => $module)
+  {
+    if(!in_array($module, $modules_in_course))
+    {
+        unset($modules_in_portal[$key]);
+    }
+  }
+  $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
+  $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
   $quiz_ids = implode(',', array_column($quizzes, 'ID')); // a comma seperated list of quiz ids in this course
 
   // check how many quizzes the user passed
@@ -8235,11 +8259,40 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   $quizzes_passed = array_column($amount_passed,'quiz_id');
   $uniques= array_count_values($quizzes_passed);
   $num_passed = count($uniques);
+    foreach($videos_in_course_ids as $video_id)
+    {
+        if($video_id != 0)
+        {
+            $num_modules ++;
+            $track = getTrack($user_id, $video_id, 'watch_video');
+            if(!empty($track))
+            {
+                if($track['result'] == 1)
+                {
+                    $num_passed++;
+                }
+            }
+        }
+    }
+    foreach($videos_in_custom_modules as $video)
+    {
+
+            $num_modules ++;
+            $track = getTrack($user_id, $video['ID'], 'watch_video');
+            if(!empty($track))
+            {
+                if($track['result'] == 1)
+                {
+                    $num_passed++;
+                }
+            }
+
+    }
   // calculate %
   if ($num_passed == 0)
     return 0; 
-
-  $percentage_complete = intval($num_passed/$num_quizzes*100);
+  $total = $num_quizzes + $num_modules;
+  $percentage_complete = intval($num_passed/($total)*100);
   return $percentage_complete;
 }
 
@@ -8938,7 +8991,8 @@ function getQuizAttempts($quiz_id = 0, $user_id = 0)
 /**
  * 
  * @param type $user_id - the user ID
- * 
+ * @param course_id - the course ID
+ * ** this function is unused **
  */
 function calculate_progress($user_id = 0, $course_id = 0)
 {
@@ -8950,7 +9004,8 @@ function calculate_progress($user_id = 0, $course_id = 0)
         return 0;
     }
     $quizzes_in_course = getQuizzesInCourse($course_id);
-
+    $modules_in_course = getModulesInCourse($course_id);
+    $videos_in_course_ids = array_column($modules_in_course, 'video_id');
     $passed = 0;
     foreach ($quizzes_in_course as $required) 
     {
@@ -8960,7 +9015,19 @@ function calculate_progress($user_id = 0, $course_id = 0)
             $passed++;
         }
     }
-    $percentage = $passed/count($quizzes_in_course)*100;
+    foreach($videos_in_course_ids as $video_id)
+    {
+        $track = getTrack($user_id, $video_id, 'watch_video');
+        if(!empty($track))
+        {
+            if($track['result'] == 1)
+            {
+                $passed++;
+            }
+        }
+    }
+    
+    $percentage = $passed/(count($quizzes_in_course)+count($modules_in_course))*100;
     return $percentage;
 }
 

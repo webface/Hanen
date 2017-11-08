@@ -1,4 +1,9 @@
 <?php
+
+/* 
+ * Template Name: Download File
+ */
+
   global $current_user;
   $user_id = $current_user->ID; // WP User ID
   $module_id = isset($_REQUEST['module_id']) ? filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Module ID
@@ -23,7 +28,7 @@
     $insert = $wpdb->insert(TABLE_TRACK,$data);
   }
   
-  $resource = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES . " WHERE ID = $resource_id",ARRAY_A);
+  $resource = $wpdb->get_row("SELECT * FROM ". TABLE_RESOURCES . " WHERE ID = $resource_id ", ARRAY_A);
   
   $file_path = $resource['url'];
 
@@ -40,25 +45,25 @@
 	switch(strtolower(substr(strrchr($file_path, '.'), 1))) {
 		case 'pdf': $mime = 'application/pdf'; break;
 		case 'zip': $mime = 'application/zip'; break;
-    case 'doc': $mime = 'application/msword'; break;
-    case 'docx': $mime = 'application/msword'; break;
-    case 'csv': $mime = 'text/csv'; break;
-    case 'txt': $mime = 'application/txt'; break;
+                case 'doc': $mime = 'application/msword'; break;
+                case 'docx': $mime = 'application/msword'; break;
+                case 'csv': $mime = 'text/csv'; break;
+                case 'txt': $mime = 'application/txt'; break;
 		case 'jpeg': $mime = 'image/jpg'; break;
 		case 'jpg': $mime = 'image/jpg'; break;
-    case 'xls': $mime = 'application/vnd.ms-excel'; break;
-    case 'xlsx': $mime = 'application/vnd.ms-excel'; break;
-    case 'ppt': $mime = 'application/vnd.ms-powerpoint'; break;
-    case 'pptx': $mime = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'; break;
-    case 'rtf': $mime = 'application/txt'; break;
-    case 'exe': $mime = 'application/octet-stream'; break;
-    case 'gif': $mime = 'image/gif'; break;
-    case 'png': $mime = 'image/png'; break;
-    case 'bmp': $mime = 'image/bmp'; break;
+                case 'xls': $mime = 'application/vnd.ms-excel'; break;
+                case 'xlsx': $mime = 'application/vnd.ms-excel'; break;
+                case 'ppt': $mime = 'application/vnd.ms-powerpoint'; break;
+                case 'pptx': $mime = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'; break;
+                case 'rtf': $mime = 'application/txt'; break;
+                case 'exe': $mime = 'application/octet-stream'; break;
+                case 'gif': $mime = 'image/gif'; break;
+                case 'png': $mime = 'image/png'; break;
+                case 'bmp': $mime = 'image/bmp'; break;
 		default: $mime = 'application/force-download';
 	}
         
-  $file_name = str_replace(array('"',"'",'\\','/'), '', basename($file_path));
+   $file_name = str_replace(array('"',"'",'\\','/'), '', basename($file_path));
 
 	header('Pragma: public'); 	// required
 	header('Expires: 0');		// no cache
@@ -67,7 +72,7 @@
 	header('Content-Type: '.$mime);
 	header('Content-Disposition: attachment; filename="'.$file_name.'"');
 	header('Content-Transfer-Encoding: binary');
-	header('Content-Length: '.filesize($file_path));	// provide file size
+	//header('Content-Length: '.filesize($file_path));	// provide file size
 	header('Connection: close');
 	readfile($file_path);		// push it out
 	exit();

@@ -50,20 +50,28 @@
 				<p><?= __("Here are the videos, exams and downloadable handouts available to you in this module.", "EOT_LMS"); ?></p>
 <?php
 		       	// Get all the modules in this course by the course ID
-				$user_id = get_current_user_id(); // WP User ID
+                $user_id = get_current_user_id(); // WP User ID
                 $org_id = get_org_from_user($user_id);
-				$modules_in_course = getModulesInCourse($course_id);
+                $modules_in_course = getModulesInCourse($course_id);
                 $modules_in_portal = getModules($org_id);// all the custom modules in this portal
+                //$modules_in_course_ids = array_column($modules_in_course, 'ID');
                 $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
+                foreach($modules_in_portal as $key => $module)
+                {
+                    if(!in_array($module, $modules_in_course))
+                    {
+                        unset($modules_in_portal[$key]);
+                    }
+                }
                 $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
                 $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
                 $quizzes_in_custom_modules=getQuizResourcesInModules($modules_in_portal_ids_string);
                 $resources_in_custom_modules =  getHandoutResourcesInModules($modules_in_portal_ids_string);
-				$subscription = getSubscriptionByCourse($course_id); // get the subscription data
-				$library_id = isset($subscription['library_id']) ? $subscription['library_id'] : 0; // the library ID
-				$categories = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
-				$resources_doc = getResourcesInCourse($course_id, "doc");
-				$resources_video = getResourcesInCourse($course_id, "video");
+                $subscription = getSubscriptionByCourse($course_id); // get the subscription data
+                $library_id = isset($subscription['library_id']) ? $subscription['library_id'] : 0; // the library ID
+                $categories = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
+                $resources_doc = getResourcesInCourse($course_id, "doc");
+                $resources_video = getResourcesInCourse($course_id, "video");
 	            $resources_exam = getResourcesInCourse($course_id, "exam");
 	            $finished_module_quizzes = array();
 	            //d($modules_in_portal,$videos_in_custom_modules,$quizzes_in_custom_modules,$resources_in_custom_modules);
@@ -172,7 +180,7 @@
 			      								$video_id = $resource['video_id'];
 ?>								
 			              						<ul class="inner nobullet">
-	                                                <li><a href="/dashboard?part=download&module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/dashboard?part=download&module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>"><?= __("Download Handout (PDF)", "EOT_LMS"); ?></a></span></li>
+	                                                <li><a href="/download-file?module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/download-file?module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>"><?= __("Download Handout (PDF)", "EOT_LMS"); ?></a></span></li>
 		                                      	</ul>
 <?php 
 		      								}
@@ -252,7 +260,7 @@
                                     break;
                                 case 'doc':
                                     $icon = "fa-sticky-note-o";
-                                    $url = "/dashboard?part=download&module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
+                                    $url = "/download-file?module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
                                     $action = __("Download File", "EOT_LMS");
                                     break;
                                 case 'custom_video':
