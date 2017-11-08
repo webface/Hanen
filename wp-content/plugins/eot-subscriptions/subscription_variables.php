@@ -207,3 +207,11 @@ define ('PENDING_EMAILS_LIMIT', 1); // the number of pending emails to send via 
 define ('PENDING_EMAILS_CRON_LIMIT', 100); // The number of pending users to process via cron job
 define ('PENDING_EMAILS_CRON_TIME_LIMIT', 1); // The number of hours to wait before processing orphaned users
 
+
+define ('AWS_PIPELINE','1509985159167-m5ro0u');
+define ('AWS_PRESET_HD_HIGH','1351620000001-000001');
+define ('AWS_PRESET_HD_MED','1351620000001-000010');
+define ('AWS_PRESET_HD_LOW','1351620000001-000020');
+define ('AWS_PRESET_SD_HIGH','1351620000001-000030');
+define ('AWS_PRESET_SD_MED','1351620000001-000050');
+define ('AWS_PRESET_SD_LOW','1351620000001-000061');
