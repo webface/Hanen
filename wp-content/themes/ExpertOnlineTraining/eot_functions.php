@@ -1222,10 +1222,6 @@ function display_uber_manager_dashboard()
   wp_get_current_user ();
   $user_id = $current_user->ID;
   $org_id = get_org_from_user ($user_id);
-  $org = get_post ($org_id);
-  $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-  $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
-  $data = compact ('org_id');
 
   echo '<h1>' . __("Uber Manager Administration", "EOT_LMS") . '</h1>';
 
@@ -1247,8 +1243,7 @@ function display_uber_manager_dashboard()
 <?php
   // Display a table of current Camps/managers/stats
   $umbrellaCamps = getUmbrellaCamps($org_id); // Lists of umbrella camps
-
-  if ($umbrellaCamps->have_posts())
+  if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts() )
   { 
 
     /*
@@ -1304,10 +1299,6 @@ function display_umbrella_manager_dashboard()
   wp_get_current_user ();
   $user_id = $current_user->ID;
   $org_id = get_org_from_user ($user_id);
-  $org = get_post ($org_id);
-  $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-  $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
-  $data = compact ('org_id');
 
   echo '<h1>' . __("Umbrella Manager Administration", "EOT_LMS") . '</h1>';
 
@@ -1330,7 +1321,7 @@ function display_umbrella_manager_dashboard()
   // Display a table of current Camps/managers/stats
   $umbrellaCamps = getUmbrellaCamps($org_id, 'regional_umbrella_group_id'); // Lists of regional umbrella camps
 
-  if ($umbrellaCamps->have_posts())
+  if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts())
   { 
 
     /*
@@ -1386,7 +1377,6 @@ function getUmbrellaCamps($org_id = 0, $key = 'umbrella_group_id')
   {
     return;
   }
-
   // verify that $key is only umbrella_group_id or regional_umbrella_group_id
   $valid_keys = array (
     'umbrella_group_id',
@@ -1410,7 +1400,6 @@ function getUmbrellaCamps($org_id = 0, $key = 'umbrella_group_id')
     )
   );
   $query = new WP_Query($args);
-
 //  echo $query->request; // this shows the query if you ever need to see the SQL.
 
   return $query;
@@ -1433,8 +1422,6 @@ function verifyUserAccess ()
   {
     $subscription_id = 0; // no subscription ID provided
   }
-
-
   // check if were dealing with an uber admin or a director
   if (current_user_can("is_uber_manager"))
   {
@@ -1448,7 +1435,6 @@ function verifyUserAccess ()
       {
         $manager_id = $results->manager_id;
         $org_id = $results->org_id;  
-
         // if its our own subscription, then we can modify, otherwise we need to check umbrella org below
         if ($current_user->ID == $manager_id)
         {
@@ -5922,88 +5908,58 @@ function getCourseForm_callback ( )
         {
           $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The course ID
           $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); // The organization ID
-          $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
           $umbrellaCamps = (current_user_can('is_umbrella_manager')) ? getUmbrellaCamps($org_id, 'regional_umbrella_group_id') : getUmbrellaCamps($org_id); // Lists of umbrella camps
           $camps = array(); // Lists of camps
-          $data = compact("org_id");
           $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING); // the name of the course
-          
           if ($umbrellaCamps->have_posts())
           { 
+            $course_library_id = 0;
+            $course_subscription = getSubscriptionByCourseId($course_id); // Course subscription
+            // Check if the course subscription exist.
+            if( $course_subscription )
+            {
+              $course_library_id = $course_subscription->library_id; // Course library ID
+            }
             // Get all umbrella camps, and add them into camps array.
             while ( $umbrellaCamps->have_posts() ) 
             {
               $umbrellaCamps->the_post(); 
-              $camp['id'] = get_the_ID(); // The org ID
+              $camp['id'] = get_the_ID(); // The ORG ID
               $camp['name'] = get_the_title(); // The camp name
+              $subscriptions = getSubscriptions(0, 0, 1, $camp['id']); // Subscription
+              $camp_library_ids = array_column($subscriptions, 'library_id');
+              $camp['allow_copy'] = (in_array($course_library_id, $camp_library_ids)) ? true : false;// boolean indicator if the camp has the right subscription to copy the course.
               array_push($camps, $camp);
             }
           }
-
-
         ?>
-
-             <div style="position:absolute;right:-290px;top:0px;">
-              <div class="popup"> 
-                <table> 
-                  <tbody>
-                    <tr> 
-                      <td class="tl"/><td class="b"/><td class="tr"/> 
-                    </tr>
-                    <tr> 
-                      <td class="b"/> 
-                      <td class="body"> 
-                        <div class="content">  
-                          <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
-                            <tr  class="head">
-                              <td style ="padding:5px;" colspan="2">
-                                <?= __("Publish Option", "EOT_LMS") ?>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style ="padding:2px 5px 2px 5px;"><?= __("Do you want to Publish this course after the copy?", "EOT_LMS") ?><br><?= __("(Published courses can not be modified by the individual camp. Draft courses will need to be published by each individual camp.)", "EOT_LMS") ?></td>
-                              <td style="padding:2px 5px 2px 5px;font-size:16px;font-weight:bold;text-align:center;"  id="timeToComplete" >
-                                <input type="checkbox" name="chkbox_is_publish_course_after_copy" id="chkbox_is_publish_course_after_copy" value='' /> 
-                              </td>
-                            </tr>
-                          </table>         
-                        </div> 
-                      </td> 
-                      <td class="b"/> 
-                    </tr>
-                    <tr> 
-                      <td class="bl"/>
-                      <td class="b"/>
-                      <td class="br"/>
-                    </tr>
-                  </tbody> 
-                </table> 
-              </div> 
-            </div>
             <div class="title">
               <div class="title_h2"><?= $course_name; ?></div>
             </div>
             <div class="middle" style ="padding:0px;clear:both;">  
               <div id="video_listing" display="video_list" group_id="null" class="holder osX">
                 <div id="video_listing_pane" class="scroll-pane" style="padding:0px 0px 0px 10px;width: 600px">
-                  <form name="add_video_group" id="add_video_group">
-                    <ul class="tree organizeassignment">
+
+                  <form name = "add_video_group" id = "add_video_group" course_name="<?= $course_name; ?>"
+                   <ul class="tree organizeassignment">
                       <h3 class="library_topic"><?= __("Select which camps to copy this course into:", "EOT_LMS") ?></h3>
               <?php
                       // Display all uber camps and a clone checkbox beside it for cloning functionality.
                       foreach($camps as $camp)
                       {
+                        $camp_name = $camp['name']; // The camp name.
               ?>
                         <li class="video_item" camp_id="<?= $camp['id']?>">
-                          <input collection="add_remove_from_group" org_id="<?= $org_id ?>" portal_subdomain="<?= DEFAULT_SUBDOMAIN ?>" id="chk_video_<?= $camp['id']?>" name="chk_video_<?= $camp['id']?>" type="checkbox" value="1" camp_id="<?= $camp['id']?>" course_id="<?= $course_id ?>" "/> 
+                          <input collection="add_remove_from_group" org_id="<?= $org_id ?>" portal_subdomain="<?= DEFAULT_SUBDOMAIN ?>" id="chk_video_<?= $camp['id']?>" name="chk_video_<?= $camp['id']?>" type="checkbox" value="1" camp_id="<?= $camp['id']?>" course_id="<?= $course_id ?>" " <?= ($camp['allow_copy']) ? "" : "disabled"  ?>/> 
                           <label for="<?= $camp['id'] ?>">
                               <span name="video_title">
-                                <b>Camp</b> - <span class="vtitle"><?= $camp['name'] ?></span>
+                                <b>Camp</b> - <span class="vtitle"><?= $camp_name ?></span>
                               </span>
                           </label>
                           <img style="margin-right: 0; display:none" class="loader" id="img_loading" src="<?= get_template_directory_uri() . "/images/loading.gif"?>">
                           <img style="margin-right: 0; display:none" class="loader" id="img_check" src="<?= get_template_directory_uri() . "/images/checkmark.gif"?>">
                           <img style="margin-right: 0; display:none" class="loader" id="img_delete" src="<?= get_template_directory_uri() . "/images/delete.gif"?>">
+                          <?= ($camp['allow_copy']) ? "" : "($camp_name requires to upgrade its subscription to before we can copy the $course_name course.)" ?>
                           <span id="clone_error_message" style="margin-right: 0; display:none"></span>
                         </li> 
               <?php
@@ -8594,6 +8550,7 @@ function verifyCertificate($student_user_id = 0, $director_org_id = 0)
   return $results;
 }
 
+
 add_action('wp_ajax_acceptTerms', 'acceptTerms_callback');
 // Updates the user field "accepted_terms" and gives a redirect location to view tutorial
 function acceptTerms_callback()
@@ -9179,11 +9136,79 @@ function deleteStaffOrgId_callback ()
         $result['success'] = false;
         $result['errors'] = 'deleteStaffOrgId_callback ERROR: Missing some parameters.';
     }
+    return json_encode($result);
+    exit();
+}
+/********************************************************************************************************
+ * Clone a course to umbrella camps.
+ *******************************************************************************************************/
+add_action('wp_ajax_cloneCourse', 'cloneCourse_callback'); 
+function cloneCourse_callback() 
+{
+
+    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['camp_id'] ) && isset ( $_REQUEST['course_name'] ) )
+    {
+        $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID to clone
+        $org_id = filter_var($_REQUEST['camp_id'],FILTER_SANITIZE_NUMBER_INT); // The WP camp (POST) id
+        $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING); // The course name.
+        
+        $org_subscriptions = getSubscriptions(0, 0, 0, $org_id); // Org subscriptions
+        
+        $course_library_id = 0;
+        $course_subscription = getSubscriptionByCourseId($course_id); // Course subscription
+        // Check if the course subscription exist.
+        if( $course_subscription )
+        {
+          $course_library_id = $course_subscription->library_id; // Course library ID
+        }
+        // Find where to locate the clone course base on the subscription library ID.
+        if(isset($org_subscriptions) && !empty($org_subscriptions))
+        {
+          foreach($org_subscriptions as $org_subscription)
+          {
+            if($org_subscription->library_id == $course_library_id)
+            {
+              $subscription_id = $org_subscription->ID;
+              break;
+            }
+          }
+        }
+        $data = compact("subscription_id", "org_id", "course_name");
+        $response = cloneCourse($course_id, $data);
+
+        // Check for error message.
+        if (isset($response['message'])) 
+        {
+          $result['success'] = false;
+          $result['data'] = 'failed';
+          $result['message'] = "LUERROR in cloneCourse_callback: " . $response['message'] . " " . $course_id . " " . $org_id;
+        }
+        else if (isset($response['status']) && $response['status']) 
+        {
+          $result['success'] = true;
+          $result['data'] = 'success';
+        }
+        else 
+        {
+          $result['success'] = false;
+          $result['data'] = 'failed';
+          $result['message'] = "LUERROR in cloneCourse_callback: There was a problem. Please try again later.\n";
+        }
+
+    }
+    else // Invalid request.
+    {
+        $result['success'] = false;
+        $result['data'] = 'failed';
+        $result['message'] = 'cloneCourse_callback: missing parameters.';
+    }
+
+
     echo json_encode($result);
     wp_die();
 }
 
-/**
+/*
  * Verify quiz belongs to current user, or current user is sales manager
  * @global type $current_user
  * @param type $quiz_id
@@ -9266,3 +9291,51 @@ function verify_module_in_resource($module_id = 0, $resource_id = 0, $course_id 
   }
   return false;
 }
+/**
+ * Deals with Cloning/Copying each course from one org to another org or within the current
+ * @param array $course_id - The course ID to clone
+ * @param array $data - an array of field value to create the clone course.
+ **/
+function cloneCourse($course_id = 0, $data = array()) {
+  extract($data);
+  /**  REQUIRED VARIABLES IN $data
+   * $subscription_id - The subscription ID
+   * $org_id - the ORG ID
+   * $course_name - The new course name
+   */
+  if( !$course_id || !$org_id || !$subscription_id || !$course_name )
+  {
+    $response = array('status' => 0, 'message' => "Invalid course_id, org_id, or subscription_id");
+  }
+  global $current_user;
+  $user_id = $current_user->ID; // The user ID
+  $data = compact( "org_id", "user_id", "subscription_id");
+  $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+  if (isset($response['status']) && !$response['status']) 
+  {
+      $response = array('status' => 0, 'message' => "ERROR in cloneCourse: Couldnt Create Course: $course_name " . $response['message']);
+      error_log("ERROR in cloneCourse: Couldnt Create Course: $course_name " . $response['message']);
+  }
+  return $response;
+}
+
+/**
+ * Get the library ID of the specificed course ID
+ * @param array $course_id - The course ID
+ * returns the library ID or NULL when nothing found.
+ **/
+function getSubscriptionByCourseId($course_id = 0) {
+  if( $course_id <= 0)
+  {
+    return false;
+  }
+  global $wpdb;
+  $sql = "SELECT subscription.*
+          FROM " . TABLE_COURSES . " as course 
+          INNER JOIN " . TABLE_SUBSCRIPTIONS . " subscription 
+          ON course.subscription_id = subscription.ID 
+          AND course.ID = $course_id";
+  $results = $wpdb->get_row ($sql);
+  return $results;
+}
+
