@@ -9167,7 +9167,7 @@ function verifyQuizQuestion($quiz_id = 0, $question_id = 0)
 
 /**
  * 
- * 
+ * AWS retrieve s3 files from input bucket
  */
 add_action('wp_ajax_retrieve_s3_file_list','aws_retrieve_s3_file_list_callback');
 function aws_retrieve_s3_file_list_callback()
@@ -9183,7 +9183,8 @@ function aws_retrieve_s3_file_list_callback()
             'secret' => AWS_SECRET_ACCESS_KEY,
         )
     ));
-    try {
+    try 
+    {
         $objects = $s3Client->getIterator('ListObjects', array(
             'Bucket' => AWS_S3_VIDEO_INPUT,
             'region' => AWS_REGION
@@ -9195,10 +9196,10 @@ function aws_retrieve_s3_file_list_callback()
     }
     
     $bucketList = array();
-    foreach ($objects as $object) {
+    foreach ($objects as $object) 
+    {
         $bucketList[] = array("name" => $object['Key'], "size" => $object['Size']);
-            error_log($object['Key']." ".$object['Size']);
-        }
+    }
     echo json_encode(array(
             "data" => $bucketList
             ));
@@ -9207,7 +9208,7 @@ function aws_retrieve_s3_file_list_callback()
 
 /**
  * 
- * 
+ * AWS transcode video
  */
 add_action('wp_ajax_process_s3_video','aws_process_s3_video_callback');
 function aws_process_s3_video_callback() 
@@ -9237,16 +9238,19 @@ function aws_process_s3_video_callback()
     $video_name = explode('_', $freed_basename);
     $video_name = $video_name[0];
     $query = ("SELECT `hd` FROM `".TABLE_VIDEOS."` WHERE `video_name`='$video_name'");
-    $new = $wpdb->get_row($query);
+    $new = $wpdb->get_var($query);
 
     $pipeline = AWS_PIPELINE;
 
-    if ($new === "0") {
+    if ($new === "0") 
+    {
       $presetHigh = AWS_PRESET_SD_HIGH;
       $presetMed = AWS_PRESET_SD_MED;
       $presetLow = AWS_PRESET_SD_LOW;
       $log .= "<em>$name</em> identified as SD Quality video. Converting to SD presets...<br />";
-    } else {
+    } 
+    else 
+    {
       $presetHigh = AWS_PRESET_HD_HIGH;
       $presetMed = AWS_PRESET_HD_MED;
       $presetLow = AWS_PRESET_HD_LOW;
@@ -9263,12 +9267,15 @@ function aws_process_s3_video_callback()
       $log .= "Creating high quality video...<br />";
       $output = array("Key" => "{$video_name}-high.mp4", "PresetId" => $presetHigh);
       $result = $et->createJob($input, array($output), $pipeline);
-      if ($result) { 
+      if ($result) 
+      { 
         $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
         $job_id = $result["Job"]["Id"];
         $log .= "Successfully created job with ID: {$job_id}<br />";
         
-      } else {
+      } 
+      else 
+      {
         $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
       }
 
@@ -9276,12 +9283,15 @@ function aws_process_s3_video_callback()
       $log .= "Creating medium quality video...<br />";
       $output = array("Key" => "{$video_name}-medium.mp4", "PresetId" => $presetMed);
       $result = $et->createJob($input, array($output), $pipeline);
-      if ($result) { 
+      if ($result) 
+      { 
         $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
         $job_id = $result["Job"]["Id"];
         $log .= "Successfully created job with ID: {$job_id}<br />";
         
-      } else {
+      } 
+      else 
+      {
         $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
       }
 
@@ -9289,12 +9299,15 @@ function aws_process_s3_video_callback()
       $log .= "Creating low quality video...<br />";
       $output = array("Key" => "{$video_name}-low.mp4", "PresetId" => $presetLow);
       $result = $et->createJob($input, array($output), $pipeline);
-      if ($result) { 
+      if ($result) 
+      { 
         $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
         $job_id = $result["Job"]["Id"];
         $log .= "Successfully created job with ID: {$job_id}<br />";
         
-      } else {
+      } 
+      else 
+      {
         $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
       }
 
