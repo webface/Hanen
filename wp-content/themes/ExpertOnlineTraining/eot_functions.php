@@ -9185,7 +9185,7 @@ function aws_retrieve_s3_file_list_callback()
     ));
     try {
         $objects = $s3Client->getIterator('ListObjects', array(
-            'Bucket' => 'eot-video-input',
+            'Bucket' => AWS_S3_VIDEO_INPUT,
             'region' => AWS_REGION
         ));
     } 
@@ -9237,7 +9237,6 @@ function aws_process_s3_video_callback()
     $video_name = explode('_', $freed_basename);
     $video_name = $video_name[0];
     $query = ("SELECT `hd` FROM `".TABLE_VIDEOS."` WHERE `video_name`='$video_name'");
-    error_log($query);
     $new = $wpdb->get_row($query);
 
     $pipeline = AWS_PIPELINE;
@@ -9259,15 +9258,11 @@ function aws_process_s3_video_callback()
 
     $input = array("Key" => $name);
 
-//    if (preg_match("/^([a-z0-9]+)_([0-9]{4}\.(?:0?[1-9]|1[012])\.(?:[012]?[0-9]|3[01]))\.[a-z0-9]+$/i", $name, $matches)) {
-//      $video_name = mysql_real_escape_string($matches[1]);
-//      $video_version = mysql_real_escape_string($matches[2]);
-error_log("set to start transcode");
+
       // High Quality
       $log .= "Creating high quality video...<br />";
       $output = array("Key" => "{$video_name}-high.mp4", "PresetId" => $presetHigh);
       $result = $et->createJob($input, array($output), $pipeline);
-      error_log(json_encode($result));
       if ($result) { 
         $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
         $job_id = $result["Job"]["Id"];
@@ -9302,10 +9297,7 @@ error_log("set to start transcode");
       } else {
         $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
       }
- //   } 
-//    else {
-//      $log .= "<strong>Cannot convert <em>$name</em>: Incorrect naming convention</strong>";
-//    }
+
 
     echo json_encode(array(
       "log" => $log
