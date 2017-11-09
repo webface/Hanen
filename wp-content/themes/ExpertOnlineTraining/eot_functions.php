@@ -8235,12 +8235,10 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   $videos_in_course_ids = array_column($modules_in_course, 'video_id');
 
   $num_modules = 0;
-  
   if ($num_quizzes == 0 && count($modules_in_course) == 0)
     return 0; // cant divide by 0
   
   $modules_in_portal = getModules($org_id);// all the custom modules in this portal
-  $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
   foreach($modules_in_portal as $key => $module)
   {
     if(!in_array($module, $modules_in_course))
@@ -8248,10 +8246,10 @@ function calc_course_completion($user_id = 0, $course_id = 0)
         unset($modules_in_portal[$key]);
     }
   }
+  $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
   $modules_in_portal_ids_string = implode(',',$modules_in_portal_ids);
   $videos_in_custom_modules = getVideoResourcesInModules($modules_in_portal_ids_string);
   $quiz_ids = implode(',', array_column($quizzes, 'ID')); // a comma seperated list of quiz ids in this course
-
   // check how many quizzes the user passed
   global $wpdb;
   $num_passed = 0;
@@ -8259,13 +8257,13 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   {
     $query = "SELECT * FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
     $amount_passed = $wpdb->get_results($query, ARRAY_A);
-    $quizzes_passed = array_column($amount_passed,'quiz_id');
-    $uniques= array_count_values($quizzes_passed);
+    $quizzes_passed = array_column($amount_passed, 'quiz_id');
+    $uniques = array_count_values($quizzes_passed);
     $num_passed = count($uniques);
   }
-  foreach($videos_in_course_ids as $video_id)//count and check watched for regular eot videos
+  foreach($videos_in_course_ids as $video_id) //count and check watched for regular eot videos
   {
-    if($video_id != 0)//this is a custom video, we cant get the ID here so dont count or track
+    if($video_id != 0) //this is a custom video, we cant get the ID here so dont count or track
     {
       $num_modules ++;
       $track = getTrack($user_id, $video_id, 'watch_video');
@@ -8278,15 +8276,18 @@ function calc_course_completion($user_id = 0, $course_id = 0)
       }
     }
 }
-  foreach($videos_in_custom_modules as $video)//count and check watched for custom module videos
+  if ($videos_in_custom_modules)
   {
-    $num_modules ++;
-    $track = getTrack($user_id, $video['ID'], 'watch_video');
-    if(!empty($track))
+    foreach($videos_in_custom_modules as $video)//count and check watched for custom module videos
     {
-      if($track['result'] == 1)
+      $num_modules ++;
+      $track = getTrack($user_id, $video['ID'], 'watch_video');
+      if(!empty($track))
       {
-        $num_passed++;
+        if($track['result'] == 1)
+        {
+          $num_passed++;
+        }
       }
     }
   }
