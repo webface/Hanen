@@ -90,8 +90,6 @@
 	            }
 
 				$video_track = getTrack($user_id, 0, "watch_video");
-                                
-                                d($video_track);
 				$modules = array(); // Array of Module objects
 				$available_categories = array_unique(array_column($modules_in_course, 'category'));
 
@@ -145,11 +143,9 @@
 				          								if($video['module_id'] == $module_id)
 				          								{
 				          									$video_id = $video['ID'];
-                                                                                                                $track_key = myKey($video_track,'video_id',$video_id);
-                                                                                                                
+                                                            $track_key = myKey($video_track, 'video_id', $video_id);
 				          									$isFinished = ($track_key && $video_track[$track_key]->result == 1 && $video_track[$track_key]->repeat == 0) ? true : false;
-				          									
-                                                                                                                unset($resources_video[$key]); // Unset the key.
+                                                            unset($resources_video[$key]); // Unset the key.
 				          								}
 				          							}
 				          							// display link to the quiz if the video has been watched.
@@ -411,14 +407,20 @@
 	{
 		wp_die(__("Invalid course. Please report this to the technical support.", "EOT_LMS"));
 	}
-  
+
+/**
+ * check the track results for the ID of the video
+ * @param $array - the track result
+ * @param $field - the field you're looking for. ie. video_id
+ * @param $value - the video ID
+ */  
 function myKey($array, $field, $value)
 {
-   foreach($array as $key => $item)
-   {
-      if ( $item->$field === $value )
-         return $key;
-   }
-   return false;
+	foreach($array as $key => $item)
+	{
+    	if ( $item->$field == $value )
+      		return $key;
+    }
+    return false;
 }     
 ?>
