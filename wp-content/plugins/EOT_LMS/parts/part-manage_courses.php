@@ -769,25 +769,31 @@
                         .toggle("slow",
                           function()
                           {
-                           var item = $(this).find('input[item = quiz][ type=checkbox],input[item = resource][ type=checkbox]')
-                          // Disable the module exam if the video module is disabled.
-                          // Enable the exam, if the video module is enabled
-                          if( obj.is(':checked') )
-                          {
-                            if(item.is(':not(:checked)'))
+                            var quiz_input = $(this).find('input[item = quiz][ type=checkbox]');
+                            var resource_input = $(this).find('input[item = resource][ type=checkbox]');
+                            // Disable/enable quiz and resources according to the video.
+                            if( obj.is(':checked') )
                             {
-                              item
-                              .trigger("click")
+                              if(quiz_input.is(':not(:checked)'))
+                              {
+                                quiz_input.trigger("click");
+                              }
+                              if(resource_input.is(':not(:checked)'))
+                              {
+                                resource_input.trigger("click");
+                              }
                             }
-
-                          }
-                          else
-                          {
-                            if(item.is(':checked'))
+                            else
                             {
-                              item.trigger("click")
-                            }
-                          } 
+                              if(quiz_input.is(':checked'))
+                              {
+                                quiz_input.trigger("click")
+                              }
+                              if(resource_input.is(':checked'))
+                              {
+                                resource_input.trigger("click")
+                              }
+                            } 
                           $(document).trigger('updated.assignment_list');
                           updateCertificateProgress();
                           }
