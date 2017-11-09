@@ -8254,14 +8254,18 @@ function calc_course_completion($user_id = 0, $course_id = 0)
 
   // check how many quizzes the user passed
   global $wpdb;
-  $query = "SELECT * FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
-  $amount_passed = $wpdb->get_results($query, ARRAY_A);
-  $quizzes_passed = array_column($amount_passed,'quiz_id');
-  $uniques= array_count_values($quizzes_passed);
-  $num_passed = count($uniques);
-  foreach($videos_in_course_ids as $video_id)
+  $num_passed = 0;
+  if($quizzes)
   {
-    if($video_id != 0)
+    $query = "SELECT * FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
+    $amount_passed = $wpdb->get_results($query, ARRAY_A);
+    $quizzes_passed = array_column($amount_passed,'quiz_id');
+    $uniques= array_count_values($quizzes_passed);
+    $num_passed = count($uniques);
+  }
+  foreach($videos_in_course_ids as $video_id)//count and check watched for regular eot videos
+  {
+    if($video_id != 0)//this is a custom video, we cant get the ID here so dont count or track
     {
       $num_modules ++;
       $track = getTrack($user_id, $video_id, 'watch_video');
@@ -8274,7 +8278,7 @@ function calc_course_completion($user_id = 0, $course_id = 0)
       }
     }
 }
-  foreach($videos_in_custom_modules as $video)
+  foreach($videos_in_custom_modules as $video)//count and check watched for custom module videos
   {
     $num_modules ++;
     $track = getTrack($user_id, $video['ID'], 'watch_video');
@@ -8959,8 +8963,12 @@ function get_video_form_callback()
  * @param type $quiz_ids_string - the quiz IDs
  * 
  */
-function getPassedQuizzes($quiz_ids_string,$user_id = 0)
+function getPassedQuizzes($quiz_ids_string = '',$user_id = 0)
 {
+    if($quiz_ids_string == '' || $user_id == 0)
+    {
+        return array();
+    }
     global $wpdb;
     $sql = "SELECT * FROM ".TABLE_QUIZ_ATTEMPTS. " WHERE quiz_id IN($quiz_ids_string) AND user_id = $user_id ";
     $sql.= "AND date_attempted BETWEEN '". SUBSCRIPTION_START ."' AND '". SUBSCRIPTION_END ."' AND passed = 1";
@@ -9230,4 +9238,32 @@ function verifyQuizQuestion($quiz_id = 0, $question_id = 0)
      {
         return false;
     }
+}
+/**
+ * verify a module is in a resource
+ * @param type $module_id
+ * @param type $resource_id
+ * 
+ */
+function verify_module_in_resource($module_id = 0, $resource_id =0)
+{
+    global $wpdb;
+    
+    $module_id = filter_var($module_id, FILTER_SANITIZE_NUMBER_INT);
+    $resource_id = filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+    
+    if(!$module_id || !$resource_id)
+    {
+        return false;
+    }
+    
+    $cmr = $wpdb->get_results("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE resource_id = $resource_id", ARRAY_A);
+    foreach($cmr as $item)
+    {
+        if($item['module_id'] == $module_id)
+        {
+            return true;
+        }
+    }
+    return false;
 }

@@ -6,8 +6,24 @@
 
   global $current_user;
   $user_id = $current_user->ID; // WP User ID
+  if(!$user_id)
+  {
+      
+      die(__("You dont have access to this download", "EOT_LMS"));
+  }
   $module_id = isset($_REQUEST['module_id']) ? filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Module ID
   $resource_id = isset($_REQUEST['resource_id']) ? filter_var($_REQUEST['resource_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Video ID
+  $course_id = isset($_REQUEST['course_id']) ? filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Video ID
+  
+  if(!verify_student_access($course_id))
+  {
+      die(__("You dont have access to this download or to this course", "EOT_LMS"));
+  }
+
+  if(!verify_module_in_resource($module_id, $resource_id))
+  {
+      die(__("You dont have access to this download", "EOT_LMS"));  
+  }
   $org_id = get_org_from_user($user_id);
   
   global $wpdb;
