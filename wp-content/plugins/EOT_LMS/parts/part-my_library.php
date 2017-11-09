@@ -180,7 +180,7 @@
 			      								$video_id = $resource['video_id'];
 ?>								
 			              						<ul class="inner nobullet">
-	                                                <li><a href="/download-file?module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/download-file?module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>"><?= __("Download Handout (PDF)", "EOT_LMS"); ?></a></span></li>
+	                                                <li><a href="/download-file?module_id=<?=$module_id?>&course_id=<?=$course_id?>&resource_id=<?=$resource['ID']?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/download-file?module_id=<?=$module_id?>&resource_id=<?=$resource['ID']?>&course_id=<?=$course_id?>"><?= __("Download Handout (PDF)", "EOT_LMS"); ?></a></span></li>
 		                                      	</ul>
 <?php 
 		      								}

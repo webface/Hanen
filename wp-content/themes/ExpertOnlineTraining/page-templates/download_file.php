@@ -17,9 +17,9 @@
   
   if(!verify_student_access($course_id))
   {
-      die(__("You dont have access to this download", "EOT_LMS"));
+      die(__("You dont have access to this download or to this course", "EOT_LMS"));
   }
-  
+
   if(!verify_module_in_resource($module_id, $resource_id))
   {
       die(__("You dont have access to this download", "EOT_LMS"));  
