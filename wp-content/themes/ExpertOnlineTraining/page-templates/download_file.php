@@ -8,19 +8,18 @@
   $user_id = $current_user->ID; // WP User ID
   if(!$user_id)
   {
-      
       die(__("You dont have access to this download", "EOT_LMS"));
   }
   $module_id = isset($_REQUEST['module_id']) ? filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Module ID
   $resource_id = isset($_REQUEST['resource_id']) ? filter_var($_REQUEST['resource_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Video ID
-  $course_id = isset($_REQUEST['course_id']) ? filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // Video ID
+  $course_id = isset($_REQUEST['course_id']) ? filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT) : 0; // course ID
   
   if(!verify_student_access($course_id))
   {
       die(__("You dont have access to this download or to this course", "EOT_LMS"));
   }
 
-  if(!verify_module_in_resource($module_id, $resource_id))
+  if(!verify_module_in_resource($module_id, $resource_id, $course_id))
   {
       die(__("You dont have access to this download", "EOT_LMS"));  
   }
@@ -52,8 +51,6 @@
   // Make sure program execution doesn't time out
   set_time_limit(0);
 
-
-
 	// required for IE
 	if(ini_get('zlib.output_compression')) { ini_set('zlib.output_compression', 'Off');	}
 
@@ -61,21 +58,21 @@
 	switch(strtolower(substr(strrchr($file_path, '.'), 1))) {
 		case 'pdf': $mime = 'application/pdf'; break;
 		case 'zip': $mime = 'application/zip'; break;
-                case 'doc': $mime = 'application/msword'; break;
-                case 'docx': $mime = 'application/msword'; break;
-                case 'csv': $mime = 'text/csv'; break;
-                case 'txt': $mime = 'application/txt'; break;
+    case 'doc': $mime = 'application/msword'; break;
+    case 'docx': $mime = 'application/msword'; break;
+    case 'csv': $mime = 'text/csv'; break;
+    case 'txt': $mime = 'application/txt'; break;
 		case 'jpeg': $mime = 'image/jpg'; break;
 		case 'jpg': $mime = 'image/jpg'; break;
-                case 'xls': $mime = 'application/vnd.ms-excel'; break;
-                case 'xlsx': $mime = 'application/vnd.ms-excel'; break;
-                case 'ppt': $mime = 'application/vnd.ms-powerpoint'; break;
-                case 'pptx': $mime = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'; break;
-                case 'rtf': $mime = 'application/txt'; break;
-                case 'exe': $mime = 'application/octet-stream'; break;
-                case 'gif': $mime = 'image/gif'; break;
-                case 'png': $mime = 'image/png'; break;
-                case 'bmp': $mime = 'image/bmp'; break;
+    case 'xls': $mime = 'application/vnd.ms-excel'; break;
+    case 'xlsx': $mime = 'application/vnd.ms-excel'; break;
+    case 'ppt': $mime = 'application/vnd.ms-powerpoint'; break;
+    case 'pptx': $mime = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'; break;
+    case 'rtf': $mime = 'application/txt'; break;
+    case 'exe': $mime = 'application/octet-stream'; break;
+    case 'gif': $mime = 'image/gif'; break;
+    case 'png': $mime = 'image/png'; break;
+    case 'bmp': $mime = 'image/bmp'; break;
 		default: $mime = 'application/force-download';
 	}
         
@@ -92,6 +89,4 @@
 	header('Connection: close');
 	readfile($file_path);		// push it out
 	exit();
-
-
 ?>

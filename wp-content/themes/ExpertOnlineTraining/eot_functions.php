@@ -9246,25 +9246,23 @@ function verifyQuizQuestion($quiz_id = 0, $question_id = 0)
  * @param type $resource_id
  * 
  */
-function verify_module_in_resource($module_id = 0, $resource_id =0)
+function verify_module_in_resource($module_id = 0, $resource_id = 0, $course_id = 0)
 {
-    global $wpdb;
-    
-    $module_id = filter_var($module_id, FILTER_SANITIZE_NUMBER_INT);
-    $resource_id = filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
-    
-    if(!$module_id || !$resource_id)
-    {
-        return false;
-    }
-    
-    $cmr = $wpdb->get_results("SELECT * FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE resource_id = $resource_id", ARRAY_A);
-    foreach($cmr as $item)
-    {
-        if($item['module_id'] == $module_id)
-        {
-            return true;
-        }
-    }
+  global $wpdb;
+  
+  $module_id = filter_var($module_id, FILTER_SANITIZE_NUMBER_INT);
+  $resource_id = filter_var($resource_id, FILTER_SANITIZE_NUMBER_INT);
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  
+  if($module_id == 0 || $resource_id == 0 || $course_id == 0)
+  {
     return false;
+  }
+  
+  $cmr = $wpdb->get_results("SELECT ID FROM ". TABLE_COURSE_MODULE_RESOURCES ." WHERE course_id = $course_id AND resource_id = $resource_id AND module_id = $module_id", ARRAY_A);
+  if ($cmr)
+  {
+    return true;
+  }
+  return false;
 }
