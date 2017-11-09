@@ -1119,7 +1119,7 @@
                     $("#staff_and_assignment_list").attr("group_id",obj.group_id);
                     $("#staff_and_assignment_list").attr("course-status",obj.course_status);
                     menu_active_course.find('#loading_course_subscription_info').hide(); // Hide the loading icon.
-                    menu_active_course.find('span.video_count').text(obj.video_count + " Videos Assigned"); //Update the video count.
+                    menu_active_course.find('span.video_count').text(obj.video_count + " Modules Assigned"); //Update the video count.
                   }
                 },
                 // If it fails on the other hand.
@@ -1163,7 +1163,7 @@
                     <p class = \"group_description\" style=\"display:none;\"><i>'+data.group_desc+'</i></p> \
                     <p class = \"group_description\" style=\"display:none;\"> \
                       <span class="staff_count"> 0 </span> <?= __("Staff Members", "EOT_LMS") ?><br> \
-                      <span class="video_count"> 0 </span> <?= __("Videos Assigned", "EOT_LMS") ?> \
+                      <span class="video_count"> 0 </span> <?= __("Modules Assigned", "EOT_LMS") ?> \
                     </p> \
                     <div class=\"group_list_edit_row\" style=\"left: 215px;\"> \
                       <a href=\"<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_course_group&amp;course_name='+data.group_name+'&amp;org_id='+data.org_id+'&amp;course_id='+data.group_id+'\" class=\"dasdfdasfelete_group\" rel=\"facebox\"> \
@@ -1446,12 +1446,12 @@
                   {
                     var num_videos = (typeof obj.video_count != 'undefined') ? obj.video_count : 0;
                     menu_active_course.find('#loading_course_subscription_info').hide(); // Hide the loading icon.
-                    menu_active_course.find('span.video_count').text(num_videos + " <?= __("Videos Assigned", "EOT_LMS"); ?>"); //Update the video count.
+                    menu_active_course.find('span.video_count').text(num_videos + " <?= __("Modules Assigned", "EOT_LMS"); ?>"); //Update the video count.
                   }
                   else
                   {
                     menu_active_course.find('#loading_course_subscription_info').hide();
-                    $('.group_list_table_row.active').find("span.staff_count").text(obj.staff_count + " Staff Members").show();
+                    $('.group_list_table_row.active').find("span.staff_count").text(obj.staff_count + " <?= __("Staff Members", "EOT_LMS") ?>").show();
                   }
                   $('#staff_and_assignment_list').attr("refresh",0);
                 }
