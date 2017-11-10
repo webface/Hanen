@@ -1494,7 +1494,7 @@ function verifyUserAccess ()
         if ($results)
         {
           // set the subscription ID and org ID
-          $_REQUEST['subscription_id'] = $results->id;
+          $_REQUEST['subscription_id'] = $results->ID;
           $_REQUEST['org_id'] = $org_id;
 
           return array ( 'status' => 1 );
@@ -2948,11 +2948,25 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
 
   if($course_id > 0)
   {
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE ID = $course_id", OBJECT_K); 
+    $sql = "SELECT * FROM " . TABLE_COURSES . " WHERE ID = $course_id "; 
+    if($org_id > -1)
+    {
+        $sql.= "AND org_id = $org_id ";
+    }
+    if($subscription_id > 0)
+    {
+        $sql.= "AND subscription_id = $subscription_id ";
+    }
+    $courses = $wpdb->get_results($sql, OBJECT_K); 
   }
   else if($org_id > -1) // org_id == 0 belongs to EOT
   {
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id", OBJECT_K); 
+    $sql = "SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id ";
+    if($subscription_id > 0)
+    {
+        $sql.= "AND subscription_id = $subscription_id ";
+    }
+    $courses = $wpdb->get_results($sql, OBJECT_K); 
   }
   else if($subscription_id > 0)
   {
@@ -5927,8 +5941,26 @@ function getCourseForm_callback ( )
               $camp['id'] = get_the_ID(); // The ORG ID
               $camp['name'] = get_the_title(); // The camp name
               $subscriptions = getSubscriptions(0, 0, 1, $camp['id']); // Subscription
+              
+              $camp_course_names = array();
+              foreach($subscriptions as $subscription)
+              {
+                  if($subscription->library_id == $course_library_id)
+                  {
+                      $camp_subscription = $subscription;
+                      break;
+                  }
+              }
+              if(isset($camp_subscription))
+              {
+                   $camp_courses = getCourses(0, -1, $camp_subscription->ID);
+                   $camp_course_names = array_column($camp_courses, 'course_name');
+              }
+              
               $camp_library_ids = array_column($subscriptions, 'library_id');
-              $camp['allow_copy'] = (in_array($course_library_id, $camp_library_ids)) ? true : false;// boolean indicator if the camp has the right subscription to copy the course.
+              $camp['allow_copy'] = (in_array($course_library_id, $camp_library_ids) && !in_array($course_name, $camp_course_names)) ? true : false;// boolean indicator if the camp has the right subscription to copy the course.
+              $camp['needs_upgrade'] = (in_array($course_library_id, $camp_library_ids)) ? true : false;
+              $camp['check'] = (!in_array($course_name, $camp_course_names)) ? true : false;// boolean indicator if the camp already has the course.
               array_push($camps, $camp);
             }
           }
@@ -5957,9 +5989,9 @@ function getCourseForm_callback ( )
                               </span>
                           </label>
                           <img style="margin-right: 0; display:none" class="loader" id="img_loading" src="<?= get_template_directory_uri() . "/images/loading.gif"?>">
-                          <img style="margin-right: 0; display:none" class="loader" id="img_check" src="<?= get_template_directory_uri() . "/images/checkmark.gif"?>">
+                          <img style="margin-right: 0; <?=(!$camp['check'])? '':'display:none' ?>" class="loader" id="img_check" src="<?= get_template_directory_uri() . "/images/checkmark.gif"?>">
                           <img style="margin-right: 0; display:none" class="loader" id="img_delete" src="<?= get_template_directory_uri() . "/images/delete.gif"?>">
-                          <?= ($camp['allow_copy']) ? "" : "($camp_name requires to upgrade its subscription to before we can copy the $course_name course.)" ?>
+                          <?= ($camp['needs_upgrade']) ? "" : "($camp_name requires to upgrade its subscription to before we can copy the $course_name course.)" ?>
                           <span id="clone_error_message" style="margin-right: 0; display:none"></span>
                         </li> 
               <?php

@@ -24,7 +24,7 @@
         break;
       }
     }
-    // verify this user has access to this portal/subscription/page/view
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
     $true_subscription = verifyUserAccess(); 
     // set the umbrella group ID. Uber manager's org id, or umbrella manager's umbrella_group_id
     $umbrella_group_id = $org_id;
@@ -69,7 +69,7 @@
           			 * Display the name of all courses.
           			 * If there's no course, it will display an error.
           			 */
-                $courses = getCourses(0, $org_id, 0); // get the courses from their org.
+                $courses = getCourses(0, $org_id, $subscription_id); // get the courses from their org.
                 $numCourses = count($courses);
                	// Check if there are any courses.
                	if($courses)

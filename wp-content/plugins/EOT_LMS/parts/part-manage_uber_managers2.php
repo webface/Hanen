@@ -28,6 +28,7 @@
       );
       
       $umbrella_managers = new WP_User_Query($args);
+      d($umbrella_managers);
       if (!empty($umbrella_managers->results))
       {
 
