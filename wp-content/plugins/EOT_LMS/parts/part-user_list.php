@@ -40,9 +40,15 @@
                     'user_url',
                 )
             ) );
-            $users_found1 = $users->get_results();
-            $users = new WP_User_Query( array(//search meta fields
+
+            $users2 = new WP_User_Query( array(//search meta fields
                 'search'         => "*{$search_string}*",
+                'search_columns' => array(
+                'user_login',
+                'user_nicename',
+                'user_email',
+                'user_url',
+                ),
                 'meta_query' => array(
                     'relation' => 'OR',
                     array(
@@ -57,9 +63,9 @@
                     )
                 )
             ) );
-            $users_found2 = $users->get_results();
-            $users_found = array_unique( array_merge( $users_found1, $users_found2 ) );
-            //d($users_found);
+
+            $users_found =  array_merge(  $users->get_results(),  $users2->get_results() ) ;
+            $users_found = array_unique($users_found, SORT_REGULAR);
             /*
              * Create table heading for users
              */
