@@ -154,6 +154,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
             <li><a href="?part=list_course_resources"><b>Manage Course Resources</b></a></li>
             <li><a href="?part=view_users_org"><b>View Users Organization</b></a></li>
             <li><a href="?part=manage_quiz_eot"><b>Manage Quizzes</b></a></li>
+            <li><a href="?part=transcode_videos"><b>Transcode Videos</b></a></li>
 <?php
         }
 ?>
