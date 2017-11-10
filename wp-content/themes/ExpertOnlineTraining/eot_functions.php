@@ -9269,7 +9269,6 @@ function verify_module_in_resource($module_id = 0, $resource_id = 0, $course_id 
 }
 
 /**
- * 
  * AWS retrieve s3 files from input bucket
  */
 add_action('wp_ajax_retrieve_s3_file_list','aws_retrieve_s3_file_list_callback');
@@ -9296,21 +9295,23 @@ function aws_retrieve_s3_file_list_callback()
     catch (S3Exception $e) 
     {
         error_log('Transcoding Error Listing Objects in bucket'.$e->getMessage());
+        wp_die();
     }
     
     $bucketList = array();
-    foreach ($objects as $object) 
+    // make sure there are objects in the list
+    if ($objects)
     {
-        $bucketList[] = array("name" => $object['Key'], "size" => $object['Size']);
+      foreach ($objects as $object) 
+      {
+          $bucketList[] = array("name" => $object['Key'], "size" => $object['Size']);
+      }
+      echo json_encode(array("data" => $bucketList));
     }
-    echo json_encode(array(
-            "data" => $bucketList
-            ));
-    exit();
+    wp_die();
 }
 
 /**
- * 
  * AWS transcode video
  */
 add_action('wp_ajax_process_s3_video','aws_process_s3_video_callback');
@@ -9321,13 +9322,12 @@ function aws_process_s3_video_callback()
     require $path . 'includes/aws/aws-autoloader.php';
     require $path . 'includes/ElasticTranscoder.php';
     
-
     $s3 = new Aws\S3\S3Client(array(
         'version' => 'latest',
         'region' => AWS_REGION,
         'credentials' => array(
-            'key' => AWS_ACCESS_KEY_ID,
-            'secret' => AWS_SECRET_ACCESS_KEY,
+           'key' => AWS_ACCESS_KEY_ID,
+           'secret' => AWS_SECRET_ACCESS_KEY,
         )
     ));
     $et = new AWS_ET(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION);
@@ -9340,12 +9340,12 @@ function aws_process_s3_video_callback()
     $freed_basename = $pathinfo["filename"];
     $video_name = explode('_', $freed_basename);
     $video_name = $video_name[0];
-    $query = ("SELECT `hd` FROM `".TABLE_VIDEOS."` WHERE `video_name`='$video_name'");
-    $new = $wpdb->get_var($query);
+    $query = ("SELECT hd FROM " . TABLE_VIDEOS . " WHERE video_name = '$video_name'");
+    $is_HD = $wpdb->get_var($query);
 
     $pipeline = AWS_PIPELINE;
 
-    if ($new === "0") 
+    if ($is_HD == "0") 
     {
       $presetHigh = AWS_PRESET_SD_HIGH;
       $presetMed = AWS_PRESET_SD_MED;
@@ -9365,58 +9365,51 @@ function aws_process_s3_video_callback()
 
     $input = array("Key" => $name);
 
+    // High Quality
+    $log .= "Creating high quality video...<br />";
+    $output = array("Key" => "{$video_name}-high.mp4", "PresetId" => $presetHigh);
+    $result = $et->createJob($input, array($output), $pipeline);
+    if ($result) 
+    { 
+      $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
+      $job_id = $result["Job"]["Id"];
+      $log .= "Successfully created job with ID: {$job_id}<br />";
+    } 
+    else 
+    {
+      $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
+    }
 
-      // High Quality
-      $log .= "Creating high quality video...<br />";
-      $output = array("Key" => "{$video_name}-high.mp4", "PresetId" => $presetHigh);
-      $result = $et->createJob($input, array($output), $pipeline);
-      if ($result) 
-      { 
-        $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
-        $job_id = $result["Job"]["Id"];
-        $log .= "Successfully created job with ID: {$job_id}<br />";
-        
-      } 
-      else 
-      {
-        $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
-      }
+    // Medium Quality
+    $log .= "Creating medium quality video...<br />";
+    $output = array("Key" => "{$video_name}-medium.mp4", "PresetId" => $presetMed);
+    $result = $et->createJob($input, array($output), $pipeline);
+    if ($result) 
+    { 
+      $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
+      $job_id = $result["Job"]["Id"];
+      $log .= "Successfully created job with ID: {$job_id}<br />";
+    } 
+    else 
+    {
+      $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
+    }
 
-      // Medium Quality
-      $log .= "Creating medium quality video...<br />";
-      $output = array("Key" => "{$video_name}-medium.mp4", "PresetId" => $presetMed);
-      $result = $et->createJob($input, array($output), $pipeline);
-      if ($result) 
-      { 
-        $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
-        $job_id = $result["Job"]["Id"];
-        $log .= "Successfully created job with ID: {$job_id}<br />";
-        
-      } 
-      else 
-      {
-        $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
-      }
+    // Low Quality
+    $log .= "Creating low quality video...<br />";
+    $output = array("Key" => "{$video_name}-low.mp4", "PresetId" => $presetLow);
+    $result = $et->createJob($input, array($output), $pipeline);
+    if ($result) 
+    { 
+      $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
+      $job_id = $result["Job"]["Id"];
+      $log .= "Successfully created job with ID: {$job_id}<br />";
+    } 
+    else 
+    {
+      $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
+    }
 
-      // Low Quality
-      $log .= "Creating low quality video...<br />";
-      $output = array("Key" => "{$video_name}-low.mp4", "PresetId" => $presetLow);
-      $result = $et->createJob($input, array($output), $pipeline);
-      if ($result) 
-      { 
-        $s3->deleteObject(array('Bucket'=>$output_bucket, 'Key' => $output["Key"]));
-        $job_id = $result["Job"]["Id"];
-        $log .= "Successfully created job with ID: {$job_id}<br />";
-        
-      } 
-      else 
-      {
-        $log .= "<strong>Error:</strong> ".$et->getErrorMsg()."<br />";
-      }
-
-
-    echo json_encode(array(
-      "log" => $log
-    ));
-    exit();
+    echo json_encode(array("log" => $log));
+    wp_die();
 }
