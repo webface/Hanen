@@ -76,15 +76,6 @@ switch ($_REQUEST['part'])
             if($quiz_passed == 0) // if failed, force user to rewatch video
             {
                 $res = $wpdb->update(TABLE_TRACK, array('repeat' => 1, 'video_time' => 0), array('type' => 'watch_video', 'user_id' => $user_id, 'module_id' => $module_id, 'video_id' => $video_id));
-                // Update the enrollments to fail.
-                $wpdb->update(TABLE_ENROLLMENTS, 
-                        array(
-                            'status' => 'failed'
-                        ),
-                        array(
-                            'course_id' => $course_id,
-                            'user_id' => $user_id
-                        ));
             }
             else 
             {

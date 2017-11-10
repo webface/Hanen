@@ -338,16 +338,17 @@ else if (current_user_can("is_student"))
                     {
                         $status = __("Completed", "EOT_LMS");
                         // Update the enrollment status if necessary.
-                        if($enrollment['status'] != "Completed")
+                        if($enrollment['status'] != "completed" && $enrollment['status'] != "passed")
                         {
                             $update_status = $wpdb->update(
                                 TABLE_ENROLLMENTS,
                                 array (
-                                 'status' => "Completed"
+                                    'status' => "completed"
                                 ),
                                 array (
-                                'ID' => $enrollment['ID']
-                            ));
+                                    'ID' => $enrollment['ID']
+                                )
+                            );
                         }
                     }
 ?>
