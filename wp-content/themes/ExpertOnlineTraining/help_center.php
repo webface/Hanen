@@ -95,7 +95,7 @@
           <div id="help_center">
             <div id="grayArea">
               <h1 id="helpTitle">
-                <span class="orange">Help</span> 24/7
+                <span class="orange"><?= __("Help", "EOT_LMS") ?></span> <?= __("24/7", "EOT_LMS") ?> 
               </h1>
               <ul>
                 <div class="separator"></div>
@@ -107,11 +107,11 @@
 					<li>
 						<a href="#" alt="<?= $video['title'] ?>" class="topic"><?= $video['title'] ?> <img src="<?= get_template_directory_uri() . "/images/down_arrow.png"?>" class="downArrow" /></a>
 						<a href="#" alt="Summary" class="summary" style="display: none;">
-		                    <?= $video['summary'] ?>
+		                    <?= __($video['summary'], "EOT_LMS") ?>
 		                    <br />
 		                    <br />
 		                    <span class="link" video_id="<?= $video['topic_id'] ?>" rel="facebox">
-		                    	Watch Tutorial
+		                    	<?= __("Watch Tutorial", "EOT_LMS") ?>
 		                    </span>
 	                  	</a>
 	                </li>

@@ -16,7 +16,7 @@
         <div class="breadcrumb">
           <?= CRUMB_DASHBOARD ?>    
           <?= CRUMB_SEPARATOR ?>    
-            <span class="current"><?= $library_name ?> (Library)</span> 
+            <span class="current"><?= $library_name ?> <?= __("(Library)", "EOT_LMS") ?></span> 
         </div>
         <h1 class="article_page_title"><?= $library_name ?></h1>
         <span>

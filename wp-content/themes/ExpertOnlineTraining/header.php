@@ -41,8 +41,8 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<meta name="robots" content="index, follow" />
-		<meta name="keywords" content="camp, staff, training, summer, online, courses, learning, lessons, videos, expert" />
-		<meta name="description" content="Summer Camp Staff Training from Expert Online Training provides a summer camp staff training solution with online videos, auto-marked quizzes, activity tracking and expert content to prepare your staff to meet any challenges. These are great summer camp training ideas for counselors." />
+		<meta name="keywords" content="<?= __("camp, staff, training, summer, online, courses, learning, lessons, videos, expert", "EOT_LMS") ?>" />
+		<meta name="description" content="<?= __("Summer Camp Staff Training from Expert Online Training provides a summer camp staff training solution with online videos, auto-marked quizzes, activity tracking and expert content to prepare your staff to meet any challenges. These are great summer camp training ideas for counselors.", "EOT_LMS") ?>" />
 		<meta name="generator" content="ExpertOnlineTraining" />
 		<title><?php wp_title('|', true, 'right'); ?></title>
 		<!--<base href="https://www.expertonlinetraining.com/" />-->
