@@ -147,7 +147,7 @@
 					<div class="msg-tr"> 
 						<div class="msg-bl">
 							<div class="msg-br">
-								<div class="msgbox"><?= __("Here is a summary of your entire staff’s progress, as well as a listing of the courses you have published.", "EOT_LMS") ?> <br><br><?= __("To see individual staff members’ progress in a course, click the “View Course Stats” link next to the course title. And to see details of every learner’s performance in all courses, or to download an Excel spreadsheet of course history, click on the green “Detailed Stats” button below.", "EOT_LMS") ?>
+								<div class="msgbox"><?= __("Here is a summary of your entire staff’s progress, as well as a listing of the courses you have published.", "EOT_LMS") ?> <br><br><?= __("To see individual staff members’ progress in a course, click the “Course Stats” link next to the course title. And to see details of every learner’s performance in all courses, or to download an Excel spreadsheet of course history, click on the green “Detailed Stats” button below.", "EOT_LMS") ?>
 								</div>              
 							</div>
 						</div>
@@ -242,8 +242,8 @@
 ?>
 						<tr>
 							<td><?= $course_name ?></td>
-							<td><a href="?part=coursestats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>"><?= __("View Course Stats", "EOT_LMS") ?></a></td>
-                            <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>"><?= __("View Staff Stats", "EOT_LMS") ?></a></td>
+							<td><a href="?part=coursestats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>"><?= __("Course Stats", "EOT_LMS") ?></a></td>
+                            <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>"><?= __("Individual Stats", "EOT_LMS") ?></a></td>
 							<!--<td><a href="#">Download Excel Report</a></td>-->
                         </tr>
 <?php
