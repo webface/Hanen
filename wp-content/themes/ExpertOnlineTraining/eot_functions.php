@@ -9413,3 +9413,22 @@ function aws_process_s3_video_callback()
     echo json_encode(array("log" => $log));
     wp_die();
 }
+
+// Display User IP in WordPress
+function get_the_user_ip() 
+{
+  if (!empty($_SERVER['HTTP_CLIENT_IP'])) 
+  {
+      $ip = $_SERVER['HTTP_CLIENT_IP'];
+  } 
+  elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) 
+  {
+      $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+  } else 
+  {
+      $ip = $_SERVER['REMOTE_ADDR'];
+  }
+  return apply_filters( 'wpb_get_ip', $ip );
+}
+ 
+add_shortcode('show_ip', 'get_the_user_ip');
