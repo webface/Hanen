@@ -1219,13 +1219,15 @@ div.testimonial_quote {
 .osX .jspDragTop {
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_drag_top.gif) no-repeat;
 	height: 6px;
+    width: 15px;
 }
 .osX .jspDragBottom {
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_drag_bottom.gif) no-repeat;
-	height: 7px;
+	height: 20px;
+	width: 15px;
 }
 .osX a.jspArrowUp {
-	height: 24px;
+	height: 17px;
 	background: url(https://www.expertonlinetraining.com/wp-content/themes/ExpertOnlineTraining/images/osx_arrow_up.png) no-repeat 0 -30px;
 }
 .osX a.jspArrowUp:hover {
