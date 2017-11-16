@@ -51,7 +51,7 @@
               $user_id = $user->ID; // Wordpress user ID
               $name = get_user_meta ($user_id, 'first_name', true) . " " . get_user_meta ($user_id, 'last_name', true); // User's First and Last name in wordpress
               $email = $user->user_email; // User's Wordpress Email
-              $type = 'Direcor';
+              $type = 'Director';
 
               // create a director's row
               $directorTableObj->rows[] = array($name, $email, $type, '<i class="fa fa-user-plus upgrade_uber_manager" aria-hidden="true" '. hover_text_attr('Upgrade to Uber Manager',true) .' user-id="'. $user_id .'"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-umbrella upgrade_umbrella_manager" aria-hidden="true" ' . hover_text_attr('Upgrade to Umbrella Manager',true) . ' user-id="'. $user_id .'"></i></a>');
