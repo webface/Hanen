@@ -50,23 +50,41 @@ function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $o
   $sql = "SELECT * from " . TABLE_SUBSCRIPTIONS;
 
   if($subscription_id) 
-  {	
-  	// looking for a specific subscription
+  { 
+    // looking for a specific subscription
     $sql .=  " WHERE `ID` = " . $subscription_id;
   }
   else if($library_id)
   {
-  	// looking for all subscriptions for a specific library
-      $sql .= " WHERE library_id = " . $library_id;
+    // looking for all subscriptions for a specific library
+    $sql .= " WHERE library_id = " . $library_id;
+
+    // check if we were also provided an org_id
+    $sql .= $org_id ? " AND org_id = $org_id" : "";
+
+    // check if we are looking for a specific date range
+    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND trans_date >= '$start_date' AND trans_date <= '$end_date'" : "";
+
+    // check if we are looking for a specific manager
+    $sql .= $user_id ? " AND manager_id = $user_id" : "";
   }
   else if($org_id)
   {
     // looking for all subscriptions for organization ID
     $sql .= " WHERE org_id = " . $org_id; 
+
+    // check if we are looking for a specific date range
+    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND trans_date >= '$start_date' AND trans_date <= '$end_date'" : "";
+
+    // check if we are looking for a specific manager
+    $sql .= $user_id ? " AND manager_id = $user_id" : "";
   }
   else if($user_id)
   {
     $sql .= " WHERE manager_id = " . $user_id; 
+
+    // check if we are looking for a specific date range
+    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND trans_date >= '$start_date' AND trans_date <= '$end_date'" : "";
   }
   else if($start_date != "0000-00-00" && $end_date != "0000-00-00")
   {
@@ -9414,9 +9432,10 @@ function aws_process_s3_video_callback()
     wp_die();
 }
 
+/**
  * Verify if the subscription is renewal.
- * @param array $subscription - from getSubscriptions() function
- * @return boolean
+ * @param array $subscription - an array of objects from getSubscriptions() function
+ * @return boolean - whether the subscription is a renewal or not
  *
  */
 function isRenewal($subscription = array())
@@ -9424,7 +9443,7 @@ function isRenewal($subscription = array())
   if( count($subscription) > 0 )
   {
     $previous_year_end_date = intval(substr($subscription->end_date, 0, 4)) - 1;
-    $previous_subscription = getSubscriptions(0, 0, 0, $subscription->org_id, 0, 0, $previous_year_end_date, 0);
+    $previous_subscription = getSubscriptions(0, $subscription->library_id, 0, $subscription->org_id, '0000-00-00', '0000-00-00', $previous_year_end_date, 0);
     if(count($previous_subscription) > 0) // Check for renewals
     {
       return true;
@@ -9434,8 +9453,6 @@ function isRenewal($subscription = array())
       return false;
     }
   }
-  else
-  {
-    return false;
-  }
+
+  return false;
 }

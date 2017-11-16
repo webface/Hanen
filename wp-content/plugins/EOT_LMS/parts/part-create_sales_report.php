@@ -117,21 +117,32 @@
 	  	{
 	  		$stripe_charge = ($subscription->method == "stripe") ? '$' . number_format($subscription->price * 0.029 + 0.3, 2, ".", "") : "";
 	  		$customer_info = get_userdata($subscription->manager_id); // Camp owner Info from WP
-	  		$customer_name = ($customer_info) ? $customer_info->first_name . " " . $customer_info->last_name: 'Could not find the manager.'; // REP first and last name
-	  		$customer_email = ( $customer_info ) ? str_replace("@", "\@", $customer_info->user_email) : 'Could not find the e-mail';
+	  		$customer_name = ($customer_info) ? $customer_info->first_name . " " . $customer_info->last_name : 'Could not find the manager.'; // REP first and last name
+	  		$customer_email = ( $customer_info ) ? $customer_info->user_email : 'Could not find the e-mail';
 	  		$rep_info = get_userdata($subscription->rep_id); // Rep Info from WP
 	  		$rep_name = ($rep_info) ? $rep_info->first_name . " " . $rep_info->last_name : ''; // REP first and last name
 	  		$customer_phone = get_post_meta( $subscription->org_id, 'phone', true );
 	  		$customer_camp_name = get_the_title($subscription->org_id);
-	  		// Populate subscription table
-	  		$commision_percent = (isRenewal($subscription)) ? COMMISION_PERCENT_RENEWAL : COMMISION_PERCENT_NEW;
+	  		
+	  		// check if its a renewal or sale
+	  		if (isRenewal($subscription))
+	  		{
+		  		$commision_percent = COMMISION_PERCENT_RENEWAL;
+		  		$sale_type = "Subscription Renewal";
+	  		}
+	  		else
+	  		{
+		  		$commision_percent = COMMISION_PERCENT_NEW;
+		  		$sale_type = "Subscription Sale";
+	  		}
+
 		 	$subscriptionsTableObj->rows[] = array(
 				$subscription->trans_date, // Transaction Date
 				$customer_camp_name, // The name of the camp,
 				'$' . $subscription->price, // Transaction price.
 				$rep_name, // REP first and last name
 				($rep_info && $subscription->method != "free") ? '$' . ($subscription->price * $commision_percent) : "",
-				'Subscription'
+				$sale_type
 			);
 
 			// Populate subscription download table
@@ -152,7 +163,7 @@
 			    $library_names[$subscription->library_id],
 			    $rep_name,
 		     	($rep_info && $subscription->method != "free") ? '$' . ($subscription->price * $commision_percent) : "",
-			    'Subscription Sale',
+			    $sale_type,
 			    $subscription->method,
 			);	
 		}
@@ -174,7 +185,19 @@
 	            $upgrade->org_phone = get_post_meta( $upgrade->org_id, 'phone', true );
 				$stripe_charge = ($upgrade->method == "stripe" && $upgrade->other_note != "refund") ? '$' . number_format($upgrade->price * 0.029 + 0.3, 2, '.', '') : "";
 				$subscription = getSubscriptions($upgrade->subscription_id);
-		  		$commision_percent = (isRenewal($subscription)) ? COMMISION_PERCENT_RENEWAL : COMMISION_PERCENT_NEW ;
+
+		  		// check if its a renewal or sale
+		  		if (isRenewal($subscription))
+		  		{
+			  		$commision_percent = COMMISION_PERCENT_RENEWAL;
+			  		$upgrade_type = "Upgrade Renewal";
+		  		}
+		  		else
+		  		{
+			  		$commision_percent = COMMISION_PERCENT_NEW;
+			  		$upgrade_type = "Upgrade Sale";
+		  		}
+
 				// Populate subscription download table for upgrades
 			 	$subscriptionsTableDownloadObj->rows[] = array(
 			    	$upgrade->date,
@@ -193,7 +216,7 @@
 				    $library_names[$upgrade_library_id],
 				    $upgrade_rep_name,
 				    ($upgrade_rep_info && $upgrade->method != "free" && $upgrade->other_note != "refund") ? '$' . ($upgrade->price * $commision_percent)  : "",
-				    'Upgrade Sale',
+				    $upgrade->other_note == "refund" ? "Refund" : $upgrade_type,
 				    $upgrade->method,
 				);	
 
@@ -203,8 +226,8 @@
 					$upgrade_camp_name, // The name of the camp,
 					'$' . number_format($upgrade->price, 2, '.', ''), // Transaction price.
 					$upgrade_rep_name, // REP first and last name
-					($upgrade_rep_info && $upgrade->other_note != "refund") ? '$' . number_format(($upgrade->price * $commision_percent), 2, '.', '') : '', // Commision for the upgrade.
-					'Upgrade'
+					($upgrade_rep_info && $upgrade->method != "free" && $upgrade->other_note != "refund") ? '$' . number_format(($upgrade->price * $commision_percent), 2, '.', '') : '', // Commision for the upgrade.
+					$upgrade->other_note == "refund" ? "Refund" : $upgrade_type
 				);
 	        }
 	    }
