@@ -739,7 +739,7 @@
                     }, 'json');
                   });
                   
-                  $('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
+                  $('#video_listing_pane').css({'height':'550px'}).jScrollPane()
                       $('li.video_item')
                       .find("[name*=chk_video_]")
                       .click(
@@ -769,6 +769,10 @@
                         .toggle("slow",
                           function()
                           {
+                            $('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+                            /* stops the facebox container to go wider.  */
+                            $('#video_listing_pane, .jspContainer').width(620);
+                            $('.jspPane').width(590);
                             var quiz_input = $(this).find('input[item = quiz][ type=checkbox]');
                             var resource_input = $(this).find('input[item = resource][ type=checkbox]');
                             // Disable/enable quiz and resources according to the video.
