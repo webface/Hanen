@@ -174,7 +174,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
             $library_name = $library->name; // The library name
             $revenue = 0; // The revenue for the this library
             $num_inactive = 0; // Nummber of inactive subscriptions.
-            $subscriptions = getSubscriptions(0, $library->ID, 0, 1, 0, 0, $year);
+            $subscriptions = getSubscriptions(0, $library->ID, 0, 0, 0, 0, $year);
             /**
              * This calculates the total amount of all subscriptions in this library.
              * also counts the subscriptions that are not active.
