@@ -774,7 +774,7 @@ function display_subscription_dashboard ($subscription)
           </tr>
           <tr>
             <td class="s1">
-                <?= __("Active Staff", "EOT_LMS") ?>
+                <?= __("Enrolled Staff", "EOT_LMS") ?>
             </td>
             <td class="s2">
                 <?= count($learners); ?>                
@@ -782,7 +782,7 @@ function display_subscription_dashboard ($subscription)
         </tr>
           <tr>
             <td>
-              <?= __("Active Courses", "EOT_LMS") ?>
+              <?= __("# Courses", "EOT_LMS") ?>
             </td>
             <td>
                 <?= count($courses); ?>
