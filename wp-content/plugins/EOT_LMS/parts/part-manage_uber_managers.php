@@ -2,7 +2,6 @@
     if(current_user_can("is_sales_rep") || current_user_can("is_sales_manager"))
     {
         $admin_ajax_url = admin_url('admin-ajax.php');
-
         // Variable declaration
         $users = get_users( ); // Users in wordpress
 
@@ -44,17 +43,18 @@
               $org_id = get_user_meta( $user_id, 'org_id', true); // Get the user's org ID
               
               // Create a table row.
-          		$userTableObj->rows[] = array($name, $email, $type, '<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=create_uber_camp_director&amp;org_id=' . $org_id. '" rel="facebox"><i class="fa fa-user-plus add_camp_director" aria-hidden="true" '. hover_text_attr('Adding camp director',true) .' user-id="'. $user_id .'"></i></a>');
+          		$userTableObj->rows[] = array($name, $email, $type, '<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=create_uber_camp_director&org_id=' . $org_id. '&type='.$type.'" rel="facebox"><i class="fa fa-user-plus add_camp_director" aria-hidden="true" '. hover_text_attr('Adding camp director',true) .' user-id="'. $user_id .'"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=view_uber_stats&org_id=' . $org_id. '&type='.$type.'&user_id='.$user_id.'" rel="facebox"><i class="fa fa-group" aria-hidden="true" '. hover_text_attr('View Stats',true) .' user-id="'. $user_id .'"></i></a>');
             }
             else if(user_can($user, 'is_director')) 
             {
               $user_id = $user->ID; // Wordpress user ID
+              $org_id = get_org_from_user($user_id);
               $name = get_user_meta ($user_id, 'first_name', true) . " " . get_user_meta ($user_id, 'last_name', true); // User's First and Last name in wordpress
               $email = $user->user_email; // User's Wordpress Email
               $type = 'Director';
 
               // create a director's row
-              $directorTableObj->rows[] = array($name, $email, $type, '<i class="fa fa-user-plus upgrade_uber_manager" aria-hidden="true" '. hover_text_attr('Upgrade to Uber Manager',true) .' user-id="'. $user_id .'"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-umbrella upgrade_umbrella_manager" aria-hidden="true" ' . hover_text_attr('Upgrade to Umbrella Manager',true) . ' user-id="'. $user_id .'"></i></a>');
+              $directorTableObj->rows[] = array($name, $email, $type, '<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=upgrade_uber_manager&user_id=' . $user_id. '&type='.$type.'&org_id='.$org_id.'" rel="facebox"><i class="fa fa-user-plus " aria-hidden="true" '. hover_text_attr('Upgrade to Uber Manager',true) .' user-id="'. $user_id .'"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=upgrade_umbrella_manager&user_id=' . $user_id. '&type='.$type.'&org_id='.$org_id.'" rel="facebox"><i class="fa fa-umbrella " aria-hidden="true" ' . hover_text_attr('Upgrade to Umbrella Manager',true) . ' user-id="'. $user_id .'"></i></a>');
             }
         }
     ?>
@@ -101,7 +101,7 @@
             $('a[rel*=facebox]').facebox();
             
             // upgrade the user to an uber manager
-            $(".upgrade_uber_manager").click(function(e) {
+            $(".upgrade_uber_manager").bind('click',function(e) {
               $("#loading_upgrade").show();
               $("img#loading").show();
               $("span#message").text("");
@@ -144,10 +144,27 @@
             $(document).bind('success.create_uber_camp_director',
               function(event,data)
               {
+                console.log(data);
                 //close facebox and restart the page
                 $('div.msgboxcontainer').show();
                 $('div.msgbox').text('You have succesfully created the account. This page will restart in couple seconds...');
                 $(document).trigger('close.facebox');
+                location.reload();
+              }
+            ); 
+          });
+          /******************************************************************************************
+              * Handles adding upgrade to uber manager on success
+              *******************************************************************************************/        
+            $(document).bind('success.upgrade_uber_manager',
+              function(event,data)
+              {
+                console.log(data);
+                //close facebox and restart the page
+                $('div.msgboxcontainer').show();
+                $('div.msgbox').text('You have succesfully created the account. This page will restart in couple seconds...');
+                $(document).trigger('close.facebox');
+                location.reload();
               }
             ); 
           });
