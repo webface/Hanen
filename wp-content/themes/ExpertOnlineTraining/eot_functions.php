@@ -6461,14 +6461,12 @@ function getCourseForm_callback ( )
           <a active='0' acton="add_video_group" rel="done_button" >
             <?= __("Done", "EOT_LMS") ?>
           </a>
-          <!--
-          <a active='0' acton="add_video_group" collection="add_remove_from_group" rel="unselect_all_button" >
+          <a active='0' id="removeAllCourseModuleResources" course_id="<?=$course_id?>" subscription_id="<?=$subscription_id?>" >
             Remove All
           </a> 
-          <a active='0' acton="add_video_group" collection="add_remove_from_group" rel="select_all_button" >
+          <a active='0' id="addAllCourseModuleResources" course_id="<?=$course_id?>" subscription_id="<?=$subscription_id?>" >
             Add All
           </a>
-          -->
 <!--
           <a href="my-dashboard.html?view=managedocuments&" active='0' acton="add_video_group" rel="loading" >
             Upload Resource
@@ -9456,3 +9454,91 @@ function isRenewal($subscription = array())
 
   return false;
 }
+
+/**
+ * Delete all the modules resources in a course.
+ * @param type $course_id
+ * return boolean
+ */
+function removeAllCourseModuleResources($course_id = 0)
+{
+
+  if (!$course_id)
+  {
+    return false;
+  }
+
+  global $wpdb;
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $result = $wpdb->delete( TABLE_COURSE_MODULE_RESOURCES, array("course_id" => $course_id) ); // Delete all resouces
+  if ($result === false) 
+  {
+    return false;
+  } 
+
+  return true;
+}
+
+add_action('wp_ajax_addAllCourseModuleResources', 'addAllCourseModuleResources_callback');
+// This function add all modules resources in a course. Used in part-manage_courses.php
+function addAllCourseModuleResources_callback()
+{
+  $true_subscription = verifyUserAccess();
+  if(isset($true_subscription['status']) && $true_subscription['status'])
+  {
+    $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+    if($course_id > 0 && $subscription_id > 0)
+    {
+      $library_id = getLibraryFromSubscription($subscription_id);
+      $master_modules = getModulesByLibrary($library_id);// Get all the modules from the current library.
+      $module_ids = implode(", ", array_column($master_modules, "ID"));
+      global $wpdb;
+      removeAllCourseModuleResources($course_id); // Remove all resoureces
+      $wpdb->query ("INSERT INTO `" . TABLE_COURSE_MODULE_RESOURCES . "` 
+                                  (course_id, module_id, resource_id, type) 
+                                  SELECT $course_id, module_id, resource_id, type 
+                                  FROM `" . TABLE_MODULE_RESOURCES . "`
+                                  WHERE module_id in ($module_ids)");
+      $result['data'] = 'success';
+      $result['success'] = true;
+    }
+    else
+    {
+      $result['display_errors'] = 'failed';
+      $result['success'] = false;
+      $result['errors'] = 'addAllCourseModuleResources_callback Error: Invalid parameters.';
+    }
+  }
+  else
+  {    
+    $result['display_errors'] = 'failed';
+    $result['success'] = false;
+    $result['errors'] = 'addAllCourseModuleResources_callback Error: subscription ID does not belong to you';
+  }
+  echo json_encode($result);
+  wp_die();
+}
+add_action('wp_ajax_removeAllCourseModuleResources', 'removeAllCourseModuleResources_callback');
+
+// This function removes all modules resources in a course. Used in part-manage_courses.php
+function removeAllCourseModuleResources_callback()
+{
+  $true_subscription = verifyUserAccess();
+  if(isset($true_subscription['status']) && $true_subscription['status'])
+  {
+    $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+    removeAllCourseModuleResources($course_id);
+    $result['data'] = 'success';
+    $result['success'] = true;
+  }
+  else
+  {
+    $result['display_errors'] = 'failed';
+    $result['success'] = false;
+    $result['errors'] = 'removeAllCourseModuleResources_callback Error: subscription ID does not belong to you';
+  }
+  echo json_encode($result);
+  wp_die();
+}
+
