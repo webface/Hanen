@@ -100,43 +100,44 @@
           $(document).ready(function() {
             $('a[rel*=facebox]').facebox();
             
-            // upgrade the user to an uber manager
-            $(".upgrade_uber_manager").bind('click',function(e) {
-              $("#loading_upgrade").show();
-              $("img#loading").show();
-              $("span#message").text("");
+//            // upgrade the user to an uber manager
+//            $(".upgrade_uber_manager").bind('click',function(e) {
+//              $("#loading_upgrade").show();
+//              $("img#loading").show();
+//              $("span#message").text("");
+//
+//              var user_id = $(this).attr('user-id');
+//              var data = "action=upgradeUberUmbrellaManager&user_id=" + user_id + "&type=uber";
+//              //ajax call to update the user
+//              $.ajax({
+//                type: "POST",
+//                url: eot.ajax_url,
+//                dataType: 'json',
+//                data: data,
+//                success: function(data)
+//                {
+//                    console.log(data);
+//                    if (!data['status'])
+//                    {
+//                      $("img#loading").hide();
+//                      $("span#message").text(data['message']);
+//                    } 
+//                    else
+//                    {
+//                      alert("SUCCESS!");
+//                    }
+//                }
+//              });
+//
+//          });
 
-              var user_id = $(this).attr('user-id');
-              var data = "action=upgradeUberUmbrellaManager&user_id=" + user_id + "&type=uber";
-              //ajax call to update the user
-              $.ajax({
-                type: "POST",
-                url: eot.ajax_url,
-                dataType: 'json',
-                data: data,
-                success: function(data)
-                {
-                    if (!data['status'])
-                    {
-                      $("img#loading").hide();
-                      $("span#message").text(data['message']);
-                    } 
-                    else
-                    {
-                      alert("SUCCESS!");
-                    }
-                }
-              });
 
-          });
-
-
-            $(".upgrade_umbrella_manager").click(function(e) {
-
-              alert("umbrella user ID: " + $(this).attr('user-id'));
-
-              $("#loading_upgrade").show();
-            });
+//            $(".upgrade_umbrella_manager").click(function(e) {
+//
+//              alert("umbrella user ID: " + $(this).attr('user-id'));
+//
+//              $("#loading_upgrade").show();
+//            });
 
             /******************************************************************************************
               * Handles adding camp director on success
@@ -152,8 +153,7 @@
                 location.reload();
               }
             ); 
-          });
-          /******************************************************************************************
+                    /******************************************************************************************
               * Handles adding upgrade to uber manager on success
               *******************************************************************************************/        
             $(document).bind('success.upgrade_uber_manager',
@@ -162,11 +162,25 @@
                 console.log(data);
                 //close facebox and restart the page
                 $('div.msgboxcontainer').show();
-                $('div.msgbox').text('You have succesfully created the account. This page will restart in couple seconds...');
+                $('div.msgbox').text('You have succesfully upgraded the account. This page will restart in couple seconds...');
                 $(document).trigger('close.facebox');
                 location.reload();
               }
-            ); 
+            );
+                     /******************************************************************************************
+              * Handles adding upgrade to umbrellar manager on success
+              *******************************************************************************************/        
+            $(document).bind('success.upgrade_umbrella_manager',
+              function(event,data)
+              {
+                console.log(data);
+                //close facebox and restart the page
+                $('div.msgboxcontainer').show();
+                $('div.msgbox').text('You have succesfully upgraded the account. This page will restart in couple seconds...');
+                $(document).trigger('close.facebox');
+                location.reload();
+              }
+            );
           });
 
 /*
