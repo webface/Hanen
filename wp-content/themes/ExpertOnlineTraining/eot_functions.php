@@ -4298,6 +4298,19 @@ function sendMail ( $target = '', $recipients = '', $data = array())
         // check for at least 1 receipient
         if (count( $recipients ) > 0)
         {
+            $unsubscribe = getUnsubsribe();
+            /* Remove unsubscribers*/
+            if ( $unsubscribe )
+            {
+              $unsubsribe_email_lists = array_column($unsubscribe, "email"); // Lists of e-mail in unsubsribe table.
+              foreach ($recipients as $key => $recipient) 
+              {
+                if( in_array($recipient['email'], $unsubsribe_email_lists) ) 
+                {
+                  unset($recipients[$key]);
+                }
+              }
+            }
             // we have at least 1 receipient. Check what to do next.
             if( $target == "create_account" )
             {  
@@ -9432,3 +9445,22 @@ function get_the_user_ip()
 }
  
 add_shortcode('show_ip', 'get_the_user_ip');
+
+
+/********************************************************************************************************
+* Get Unsubsribe
+* @param string $email - Email Address
+* @return array - Unsubsribe lists 
+*******************************************************************************************************/
+function getUnsubsribe($email = "") 
+{
+  global $wpdb;
+  $sql = "SELECT * from " . TABLE_UNSUBSCRIBE;
+  if($email)
+  {
+    $sql .= "WHERE email = '$email'";
+  }
+  $results = ( $email ) ? $wpdb->get_row ($sql) : $wpdb->get_results ($sql);
+  return $results;
+}
+

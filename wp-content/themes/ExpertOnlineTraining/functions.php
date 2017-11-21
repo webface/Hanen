@@ -405,7 +405,8 @@ function unsubscribe_wp_mail_filter( $args ) {
 		$user = get_user_by( 'email', $user_email );
 		$hash_key = wp_hash( $user->ID . $user_email );
 		$message = $args['message'] . "<br><br>";
-		$message .= '<a rel="nofollow" target="_blank" href="'.get_site_url().'/unsubscribe/?email='.$user_email.'&sec='.$hash_key.'" title="Unsubscribe" style="color:#006AC3;text-decoration:underline;">Unsubscribe</a>';
+		$message .= '<span style="font-size:10px;">' . __("You are receiving this email because ", "EOT_LMS") . $user_email . __(" is signed up to receive Expert Online Training communications. To unsubscribe,", "EOT_LMS").' <a rel="nofollow" target="_blank" href="'.get_site_url().'/unsubscribe/?email='.$user_email.'&sec='.$hash_key.'" title="Unsubscribe" style="color:#006AC3;text-decoration:underline;">'.__("click here.", "EOT_LMS").'</span>';
+
 		$new_wp_mail = array(
 			'to'          => $args['to'],
 			'subject'     => $args['subject'],
