@@ -574,8 +574,132 @@
           *******************************************************************************************/ 
           $(document).bind('success.send_message', function (event,data) {
             redirect_to_main();
+          });    
+          $(document).on('click','#removeAllCourseModuleResources',function(){
+            var course_name = $("div.title_h2").last().text();
+            var confirmation = confirm("<?= __('Are you sure you want to remove all of the modules from this course?', 'EOT_LMS') ?>");
+            if(confirmation == true)
+            {
+              $(document).find('#addRemoveAllCoursesLoading').show("slow"); // Show loading icon
+              var subscription_id = $(this).attr('subscription_id');
+              var course_id = $(this).attr('course_id');
+              var url =  ajax_object.ajax_url + "?action=removeAllCourseModuleResources&subscription_id="+subscription_id+"&course_id="+course_id;
+              $.ajax({
+                url:url,
+                success:
+                function(data)
+                {
+                  data = jQuery.parseJSON(data);
+                  if(data.success)
+                  {
+                    // Remove the checkmarks to all videos.
+                    $('li.video_item').find("[name*=chk_video_]").each(function () 
+                    {
+                      $( this ).prop( "checked", false );
+                    });
+                    // Remove the checkmarks to all quizzes.
+                    $("input[name*=chk_defaultquiz_]").each(function () 
+                    {
+                      $( this ).prop( "checked", false );
+                    });
+                      // Remove the checkmarks to all resources.
+                    $("input[name*=chk_defaultresource_]").each(function () 
+                    {
+                      $( this ).prop( "checked", false );
+                    });
+                    /* Unbold the Video Title */
+                    $("span[name='video_title']").each(function() 
+                    {
+                      $( this ).removeClass("enabled").addClass("disabled");
+                    });
+                    /* Hides the Exam and Resources */
+                    $('div[video_id]').each(function() 
+                    {
+                      if( $(this).hasClass("enabled") ) 
+                      {
+                        $( this ).removeClass("enabled").addClass("disabled");
+                        $( this ).hide();
+                      }
+                    });
+                    updateTimeToComplete();
+                    $('#staff_and_assignment_list').attr("refresh",1);
+                  }
+                  else if(data.errors)
+                  {
+                    alert(data.errors)
+                  }
+                  else
+                  {
+                    alert("Could not find the error. Please contact the administrator.");
+                  }
+                  $(document).find('#addRemoveAllCoursesLoading').hide("slow"); // Show loading icon
+                }
+              })
+            }
           });
-          
+          $(document).on('click','#addAllCourseModuleResources',function(){
+            var course_name = $("div.title_h2").last().text();
+            var confirmation = confirm("<?= __('Are you sure you want to add all of the modules to this course?', 'EOT_LMS') ?>");
+            if(confirmation == true)
+            {
+              $(document).find('#addRemoveAllCoursesLoading').show("slow"); // Show loading icon
+              var subscription_id = $(this).attr('subscription_id');
+              var course_id = $(this).attr('course_id');
+              var url =  ajax_object.ajax_url + "?action=addAllCourseModuleResources&subscription_id="+subscription_id+"&course_id="+course_id;
+              $.ajax({
+                url:url,
+                success:
+                function(data)
+                {
+                  data = jQuery.parseJSON(data);
+                  if(data.success)
+                  { 
+                    // Add checkmarks to all videos.
+                    $('li.video_item').find("[name*=chk_video_]").each(function () 
+                    {
+                      $( this ).prop( "checked", true );
+                    });
+                    // Add checkmarks to all quizzes.
+                    $("input[name*=chk_defaultquiz_]").each(function () 
+                    {
+                      $( this ).prop( "checked", true );
+                    });
+                      // Add checkmarks to all resources.
+                    $("input[name*=chk_defaultresource_]").each(function () 
+                    {
+                      $( this ).prop( "checked", true );
+                    });
+                    /* Bold Video Title */
+                    $("span[name='video_title']").each(function() 
+                    {
+                      $( this ).removeClass("disabled").addClass("enabled");
+                    });
+                    /* Show Exam and Resources */
+                    $('div[video_id]').each(function() 
+                    {
+                      if( $(this).hasClass("disabled") ) 
+                      {
+                        $( this ).removeClass("disabled").addClass("enabled");
+                        $( this ).show();
+                      }
+                    });
+                    updateTimeToComplete(); 
+                    $('#staff_and_assignment_list').attr("refresh",1);
+                  }
+                  else if(data.errors)
+                  {
+                    alert(data.errors)
+                  }
+                  else
+                  {
+                    alert("Could not find the error. Please contact the administrator.");
+                  }
+                  $(document).find('#addRemoveAllCoursesLoading').hide("slow"); // Show loading icon
+                }
+              })
+            }
+          });
+
           /***************************************************************
           * The click event handler for the "Add/Remove Staff" button
           ****************************************************************/

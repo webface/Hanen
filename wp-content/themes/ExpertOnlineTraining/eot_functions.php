@@ -6457,18 +6457,18 @@ function getCourseForm_callback ( )
         </div>
       </div>      
       <div class="popup_footer" style="background-color:#FFF; padding:15px 15px 5px 15px;">
+
         <div class="buttons" >
           <a active='0' acton="add_video_group" rel="done_button" >
             <?= __("Done", "EOT_LMS") ?>
           </a>
-          <!--
-          <a active='0' acton="add_video_group" collection="add_remove_from_group" rel="unselect_all_button" >
-            Remove All
+          <a active='0' id="removeAllCourseModuleResources" course_id="<?=$course_id?>" subscription_id="<?=$subscription_id?>" >
+            <?= __("Remove All", "EOT_LMS") ?>
           </a> 
-          <a active='0' acton="add_video_group" collection="add_remove_from_group" rel="select_all_button" >
-            Add All
+          <a active='0' id="addAllCourseModuleResources" course_id="<?=$course_id?>" subscription_id="<?=$subscription_id?>" >
+            <?= __("Add All", "EOT_LMS") ?>
           </a>
-          -->
+          <i class="fa fa-spinner fa-pulse fa-2x fa-fw" id="addRemoveAllCoursesLoading" style="display: none;"></i>
 <!--
           <a href="my-dashboard.html?view=managedocuments&" active='0' acton="add_video_group" rel="loading" >
             Upload Resource
@@ -9456,3 +9456,140 @@ function isRenewal($subscription = array())
 
   return false;
 }
+
+add_action('wp_ajax_addAllCourseModuleResources', 'addAllCourseModuleResources_callback');
+// This function add all modules resources in a course. Used in part-manage_courses.php
+function addAllCourseModuleResources_callback()
+{
+  $true_subscription = verifyUserAccess();
+  if(isset($true_subscription['status']) && $true_subscription['status'])
+  {
+    $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+    if($course_id > 0 && $subscription_id > 0)
+    {
+      // check that the current user is the owner fo the course
+      $course_data = getCourse($course_id);
+      global $current_user;
+      $user_id = $current_user->ID;
+      if ($course_data['owner_id'] == $user_id)
+      {
+
+        $library_id = getLibraryFromSubscription($subscription_id);
+        $master_modules = getModulesByLibrary($library_id);// Get all the modules from the current library.
+        $module_ids = implode(", ", array_column($master_modules, "ID"));
+        global $wpdb;
+        $removed = removeAllCourseModuleResources($course_id); // Remove all resoureces
+        
+        if ($removed)
+        {
+          $wpdb->query ("INSERT INTO `" . TABLE_COURSE_MODULE_RESOURCES . "` 
+                                      (course_id, module_id, resource_id, type) 
+                                      SELECT $course_id, module_id, resource_id, type 
+                                      FROM `" . TABLE_MODULE_RESOURCES . "`
+                                      WHERE module_id in ($module_ids)");
+          $result['data'] = 'success';
+          $result['success'] = true;
+        }
+        else
+        {
+          $result['display_errors'] = 'failed';
+          $result['success'] = false;
+          $result['errors'] = 'addAllCourseModuleResources_callback Error: something really bad happened. Contact the admin immediatly at 1-877-390-2267';
+         
+        }
+      }
+      else
+      {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'addAllCourseModuleResources_callback Error: this course does not belong to you';
+      }
+    }
+    else
+    {
+      $result['display_errors'] = 'failed';
+      $result['success'] = false;
+      $result['errors'] = 'addAllCourseModuleResources_callback Error: Invalid parameters.';
+    }
+  }
+  else
+  {    
+    $result['display_errors'] = 'failed';
+    $result['success'] = false;
+    $result['errors'] = 'addAllCourseModuleResources_callback Error: subscription does not belong to you';
+  }
+  echo json_encode($result);
+  wp_die();
+}
+
+
+/**
+ * Delete all the modules resources in a course.
+ * @param type $course_id
+ * return boolean
+ */
+function removeAllCourseModuleResources($course_id = 0)
+{
+
+  if (!$course_id)
+  {
+    return false;
+  }
+
+  global $wpdb;
+  $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
+  $result = $wpdb->delete( TABLE_COURSE_MODULE_RESOURCES, array("course_id" => $course_id) ); // Delete all resouces
+  if ($result === false) 
+  {
+    return false;
+  } 
+
+  return true;
+}
+
+add_action('wp_ajax_removeAllCourseModuleResources', 'removeAllCourseModuleResources_callback');
+// This function removes all modules resources in a course. Used in part-manage_courses.php
+function removeAllCourseModuleResources_callback()
+{
+  $true_subscription = verifyUserAccess();
+  if(isset($true_subscription['status']) && $true_subscription['status'])
+  {
+    $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+    // verify that the user is the owner of this course
+    if (!$course_id)
+    {
+      $result['display_errors'] = 'failed';
+      $result['success'] = false;
+      $result['errors'] = 'removeAllCourseModuleResources_callback Error: no course provided';
+    }
+    else
+    {
+      // check that the current user is the owner fo the course
+      $course_data = getCourse($course_id);
+      global $current_user;
+      $user_id = $current_user->ID;
+      if ($course_data['owner_id'] == $user_id)
+      {
+        removeAllCourseModuleResources($course_id);
+        $result['data'] = 'success';
+        $result['success'] = true;
+      }
+      else
+      {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = 'removeAllCourseModuleResources_callback Error: this course does not belong to you';
+      }
+    }
+  }
+  else
+  {
+    $result['display_errors'] = 'failed';
+    $result['success'] = false;
+    $result['errors'] = 'removeAllCourseModuleResources_callback Error: subscription does not belong to you';
+  }
+  echo json_encode($result);
+  wp_die();
+}
+
