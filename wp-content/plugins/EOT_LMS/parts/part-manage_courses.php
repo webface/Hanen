@@ -577,9 +577,10 @@
           });    
           $(document).on('click','#removeAllCourseModuleResources',function(){
             var course_name = $("div.title_h2").last().text();
-            var confirmation = confirm("Are you sure you want to disable all the videos and its resources for " + course_name);
+            var confirmation = confirm("<?= __('Are you sure you want to remove all of the modules from this course?', 'EOT_LMS') ?>");
             if(confirmation == true)
             {
+              $(document).find('#addRemoveAllCoursesLoading').show("slow"); // Show loading icon
               var subscription_id = $(this).attr('subscription_id');
               var course_id = $(this).attr('course_id');
               var url =  ajax_object.ajax_url + "?action=removeAllCourseModuleResources&subscription_id="+subscription_id+"&course_id="+course_id;
@@ -631,15 +632,17 @@
                   {
                     alert("Could not find the error. Please contact the administrator.");
                   }
+                  $(document).find('#addRemoveAllCoursesLoading').hide("slow"); // Show loading icon
                 }
               })
             }
           });
           $(document).on('click','#addAllCourseModuleResources',function(){
             var course_name = $("div.title_h2").last().text();
-            var confirmation = confirm("Are you sure you want enable the videos and its resources for " + course_name);
+            var confirmation = confirm("<?= __('Are you sure you want to add all of the modules to this course?', 'EOT_LMS') ?>");
             if(confirmation == true)
             {
+              $(document).find('#addRemoveAllCoursesLoading').show("slow"); // Show loading icon
               var subscription_id = $(this).attr('subscription_id');
               var course_id = $(this).attr('course_id');
               var url =  ajax_object.ajax_url + "?action=addAllCourseModuleResources&subscription_id="+subscription_id+"&course_id="+course_id;
@@ -691,6 +694,7 @@
                   {
                     alert("Could not find the error. Please contact the administrator.");
                   }
+                  $(document).find('#addRemoveAllCoursesLoading').hide("slow"); // Show loading icon
                 }
               })
             }
