@@ -33,7 +33,7 @@ class Eab_Events_AllEventsDefault {
 		} else if (!$month) {
 			add_filter('eab-collection-upcoming-start_timestamp', array($this, 'yearly_events_start'));
 			add_filter('eab-collection-upcoming-end_timestamp', array($this, 'yearly_events_end'));
-			add_action('eab-query_rewrite-after_query_replacement', array($this, 'unbind_yearly_replacements'));
+			add_action('eab-query_rewrite-after_query_replacement', array($this, 'unbind_yearly_replacements'));	 	 		 	 	 			 	   
 		}
 	}
 
