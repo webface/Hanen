@@ -26,6 +26,11 @@
     -ms-border-radius: <?php echo ($settings->border_radius >= 0) ? $settings->border_radius.'px' : '0'; ?>;
     border-radius: <?php echo ($settings->border_radius >= 0) ? $settings->border_radius.'px' : '0'; ?>;
 }
+.fl-node-<?php echo $id; ?> .pp-photo-container .pp-photo-content .pp-photo-content-inner img {
+    <?php if ( isset( $settings->photo_size ) && ! empty( $settings->photo_size ) ) { ?>
+    width: <?php echo $settings->photo_size; ?>px;
+    <?php } ?>
+}
 .fl-node-<?php echo $id; ?> .pp-photo-container .pp-photo-content .pp-photo-content-inner a {
     display: block;
     text-decoration: none !important;
@@ -84,6 +89,9 @@
     text-align: <?php echo $settings->caption_alignment; ?>;
 }
 .fl-node-<?php echo $id; ?> .pp-overlay-wrap .pp-overlay-bg {
+    <?php if ( isset( $settings->hover_margin ) && !empty( $settings->hover_margin ) ) { ?>
+        margin: <?php echo $settings->hover_margin; ?>px;
+    <?php } ?>
     background: <?php echo pp_hex2rgba('#'.$settings->caption_color['secondary'], $settings->caption_opacity); ?>;
     -webkit-border-radius: <?php echo ($settings->border_radius >= 0) ? $settings->border_radius.'px' : '0'; ?>;
     -moz-border-radius: <?php echo ($settings->border_radius >= 0) ? $settings->border_radius.'px' : '0'; ?>;

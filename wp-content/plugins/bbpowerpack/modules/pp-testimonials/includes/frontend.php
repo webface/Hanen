@@ -47,7 +47,7 @@ if($settings->heading == '') {
 				<div class="pp-testimonial layout-1 <?php echo $classes; ?>">
 					<?php if( $testimonials->photo ) { ?>
 						<div class="pp-testimonials-image">
-							<img src="<?php echo $testimonials->photo_src; ?>">
+							<img src="<?php echo $testimonials->photo_src; ?>" alt="<?php echo $module->get_alt($testimonials); ?>" />
 						</div>
 					<?php } ?>
 					<div class="pp-content-wrapper">
@@ -90,7 +90,7 @@ if($settings->heading == '') {
 					<div class="pp-vertical-align">
 						<?php if( $testimonials->photo ) { ?>
 							<div class="pp-testimonials-image">
-								<img src="<?php echo $testimonials->photo_src; ?>">
+								<img src="<?php echo $testimonials->photo_src; ?>" alt="<?php echo $module->get_alt($testimonials); ?>" />
 							</div>
 						<?php } ?>
 						<?php if( $testimonials->title || $testimonials->subtitle ) { ?>
@@ -121,7 +121,7 @@ if($settings->heading == '') {
 				<div class="pp-testimonial layout-3 <?php echo $classes; ?> clearfix">
 					<?php if( $testimonials->photo ) { ?>
 						<div class="pp-testimonials-image">
-							<img src="<?php echo $testimonials->photo_src; ?>">
+							<img src="<?php echo $testimonials->photo_src; ?>" alt="<?php echo $module->get_alt($testimonials); ?>" />
 						</div>
 					<?php } ?>
 					<div class="layout-3-content pp-content-wrapper">
@@ -157,7 +157,7 @@ if($settings->heading == '') {
 				<div class="pp-testimonial layout-4 <?php echo $classes; ?> <?php echo (!$testimonials->photo) ? 'no-image-inner' : ''; ?>">
 					<?php if( $testimonials->photo ) { ?>
 						<div class="pp-testimonials-image">
-							<img src="<?php echo $testimonials->photo_src; ?>">
+							<img src="<?php echo $testimonials->photo_src; ?>" alt="<?php echo $module->get_alt($testimonials); ?>" />
 						</div>
 					<?php } ?>
 					<div class="layout-4-content">
@@ -225,7 +225,7 @@ if($settings->heading == '') {
 				<div class="pp-testimonial layout-1 <?php echo $classes; ?>">
 					<?php if( $testimonials->photo ) { ?>
 						<div class="pp-testimonials-image">
-							<img src="<?php echo $testimonials->photo_src; ?>">
+							<img src="<?php echo $testimonials->photo_src; ?>" alt="<?php echo $module->get_alt($testimonials); ?>" />
 						</div>
 					<?php } ?>
 					<?php if( $testimonials->testimonial ) { ?>

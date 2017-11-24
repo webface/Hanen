@@ -35,3 +35,41 @@
 		stroke: #<?php echo $settings->shape_color; ?>;
 	<?php } ?>
 }
+
+@media only screen and (max-width: <?php echo $global_settings->medium_breakpoint; ?>px) {
+	.fl-node-<?php echo $id; ?> .pp-headline {
+		<?php if ( $settings->font_size == 'custom' ) { ?>
+			font-size: <?php echo $settings->font_size_custom_medium; ?>px;
+		<?php } ?>
+		<?php if ( $settings->line_height == 'custom' ) { ?>
+			line-height: <?php echo $settings->line_height_custom_medium; ?>;
+		<?php } ?>
+	}
+	.fl-node-<?php echo $id; ?> .pp-headline-dynamic-wrapper {
+		<?php if ( $settings->animated_font_size == 'custom' ) { ?>
+			font-size: <?php echo $settings->animated_font_size_custom_medium; ?>px;
+		<?php } ?>
+		<?php if ( $settings->animated_line_height == 'custom' ) { ?>
+			line-height: <?php echo $settings->animated_line_height_custom_medium; ?>;
+		<?php } ?>
+	}
+}
+
+@media only screen and (max-width: <?php echo $global_settings->responsive_breakpoint; ?>px) {
+	.fl-node-<?php echo $id; ?> .pp-headline {
+		<?php if ( $settings->font_size == 'custom' ) { ?>
+			font-size: <?php echo $settings->font_size_custom_responsive; ?>px;
+		<?php } ?>
+		<?php if ( $settings->line_height == 'custom' ) { ?>
+			line-height: <?php echo $settings->line_height_custom_responsive; ?>;
+		<?php } ?>
+	}
+	.fl-node-<?php echo $id; ?> .pp-headline-dynamic-wrapper {
+		<?php if ( $settings->animated_font_size == 'custom' ) { ?>
+			font-size: <?php echo $settings->animated_font_size_custom_responsive; ?>px;
+		<?php } ?>
+		<?php if ( $settings->animated_line_height == 'custom' ) { ?>
+			line-height: <?php echo $settings->animated_line_height_custom_responsive; ?>;
+		<?php } ?>
+	}
+}

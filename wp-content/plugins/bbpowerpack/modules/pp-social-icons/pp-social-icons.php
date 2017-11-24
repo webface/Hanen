@@ -196,10 +196,10 @@ FLBuilder::register_settings_form('social_icon_form', array(
 					'fields'        => array( // Section Fields
 						'icon'          => array(
 							'type'          => 'select',
-							'label'         => __('Select Icon', 'bb-powerpack'),
+							'label'         => __('Icon', 'bb-powerpack'),
 							'default'		=> '',
 							'options'		=> array(
-								''				=> __('None', 'bb-powerpack'),
+								'custom'		=> __('Custom Icon', 'bb-powerpack'),
 								'fa-envelope'	=> __('Email', 'bb-powerpack'),
 								'fa-facebook'	=> __('Facebook', 'bb-powerpack'),
 								'fa-twitter'	=> __('Twitter', 'bb-powerpack'),
@@ -213,7 +213,16 @@ FLBuilder::register_settings_form('social_icon_form', array(
 								'fa-github-alt'	=> __('GitHub', 'bb-powerpack'),
 								'fa-rss'		=> __('RSS', 'bb-powerpack'),
 								'fa-vimeo'		=> __('Vimeo', 'bb-powerpack'),
+							),
+							'toggle'		=> array(
+								'custom'		=> array(
+									'fields'		=> array('icon_custom')
+								)
 							)
+						),
+						'icon_custom'	=> array(
+							'type'			=> 'icon',
+							'label'         => __('Custom Icon', 'bb-powerpack'),
 						),
 						'link'          => array(
 							'type'          => 'link',

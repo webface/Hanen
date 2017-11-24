@@ -66,14 +66,32 @@
                 var base = this;
 
 
-                var postFilters = $(this.nodeClass).find('.pp-photo-gallery').isotope(postFilterData);
+				var postFilters = $(this.nodeClass).find('.pp-photo-gallery').isotope(postFilterData);
+				var filtersWrap = node.find('.pp-gallery-filters');
+				var filterToggle = node.find('.pp-gallery-filters-toggle');
 
-                $(this.nodeClass).find('.pp-gallery-filters').on('click', '.pp-gallery-filter-label', function() {
+				filterToggle.on('click', function () {
+					filtersWrap.slideToggle(function () {
+						if ($(this).is(':visible')) {
+							$(this).addClass('pp-gallery-filters-open');
+						}
+						if (!$(this).is(':visible')) {
+							$(this).removeClass('pp-gallery-filters-open');
+						}
+					});
+				});
+
+				filtersWrap.on('click', '.pp-gallery-filter-label', function() {
                     var filterVal = $(this).attr('data-filter');
                     postFilters.isotope({ filter: filterVal });
 
-                    node.find('.pp-gallery-filters .pp-gallery-filter-label').removeClass('pp-filter-active');
-                    $(this).addClass('pp-filter-active');
+					filtersWrap.find('.pp-gallery-filter-label').removeClass('pp-filter-active');
+					$(this).addClass('pp-filter-active');
+					
+					filterToggle.find('span.toggle-text').html($(this).text());
+					if (filtersWrap.hasClass('pp-gallery-filters-open')) {
+						filtersWrap.slideUp();
+					}
                 });
 
                 setTimeout( function() {
@@ -109,14 +127,32 @@
 				var node = $(this.nodeClass);
                 var base = this;
 
-                var postFilters = $(this.nodeClass).find('.pp-masonry-content').isotope(postFilterData);
+				var postFilters = node.find('.pp-masonry-content').isotope(postFilterData);
+				var filtersWrap = node.find('.pp-gallery-filters');
+				var filterToggle = node.find('.pp-gallery-filters-toggle');
 
-                $(this.nodeClass).find('.pp-gallery-filters').on('click', '.pp-gallery-filter-label', function() {
+				filterToggle.on('click', function () {
+					filtersWrap.slideToggle(function () {
+						if ($(this).is(':visible')) {
+							$(this).addClass('pp-gallery-filters-open');
+						}
+						if (!$(this).is(':visible')) {
+							$(this).removeClass('pp-gallery-filters-open');
+						}
+					});
+				});
+
+				filtersWrap.on('click', '.pp-gallery-filter-label', function() {
                     var filterVal = $(this).attr('data-filter');
                     postFilters.isotope({ filter: filterVal });
 
-                    node.find('.pp-gallery-filters .pp-gallery-filter-label').removeClass('pp-filter-active');
-                    $(this).addClass('pp-filter-active');
+					filtersWrap.find('.pp-gallery-filter-label').removeClass('pp-filter-active');
+					$(this).addClass('pp-filter-active');
+					
+					filterToggle.find('span.toggle-text').html($(this).text());
+					if (filterWrap.hasClass('pp-gallery-filters-open')) {
+						filterWrap.slideUp();
+					}
                 });
 
                 setTimeout( function() {

@@ -6,6 +6,6 @@ var field = data.field,
 
 #>
 <span class="pp-field-css-class"></span>
-<script>
+<#
     jQuery('.pp-field-css-class').text(value + jQuery('.pp-field-css-class').parents('form.fl-builder-settings').data('node'));
-</script>
+#>

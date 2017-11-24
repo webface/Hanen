@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PowerPack for Beaver Builder\n"
-"POT-Creation-Date: 2017-11-07 16:17+0530\n"
-"PO-Revision-Date: 2017-11-07 16:17+0530\n"
+"POT-Creation-Date: 2017-11-09 16:28+0530\n"
+"PO-Revision-Date: 2017-11-09 16:28+0530\n"
 "Last-Translator: Puneet Sahalot <hello@ideaboxcreations.com>\n"
 "Language-Team: Puneet Sahalot <hello@ideaboxcreations.com>\n"
 "Language: en\n"
@@ -10130,7 +10130,7 @@ msgid ""
 "background if fill is selected in the scale setting."
 msgstr ""
 
-#: modules/pp-filterable-gallery/includes/frontend.php:164
+#: modules/pp-filterable-gallery/includes/frontend.php:160
 msgid "Please add photos to the gallery."
 msgstr ""
 

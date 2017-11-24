@@ -53,14 +53,6 @@ $post_columns_mobile = ( 100 - $space_mobile ) / $settings->post_grid_count['mob
 
 <?php } ?>
 
-<?php /* Equal Height */ ?>
-.fl-node-<?php echo $id; ?> .pp-content-post-grid.pp-equal-height {
-    display: flex;
-    flex: 1 1 auto;
-    flex-flow: row wrap;
-    flex-shrink: 1;
-}
-
 .fl-node-<?php echo $id; ?> .pp-content-grid-pagination.fl-builder-pagination {
     padding-top: <?php echo $settings->pagination_spacing_v; ?>px;
     padding-bottom: <?php echo $settings->pagination_spacing_v; ?>px;

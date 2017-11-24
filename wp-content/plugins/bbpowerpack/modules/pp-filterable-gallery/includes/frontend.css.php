@@ -81,6 +81,11 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $settings->photo_grid_count['m
 	<?php if( $settings->photo_border_radius >= 0 ) { ?> border-radius: <?php echo $settings->photo_border_radius; ?>px; <?php } ?>
 }
 
+.fl-node-<?php echo $id; ?> .pp-photo-gallery-item .pp-photo-gallery-content > a {
+	display: block;
+	line-height: 0;
+}
+
 .fl-node-<?php echo $id; ?> .pp-photo-space {
 	width: <?php echo $settings->photo_spacing; ?>%;
 }
@@ -371,8 +376,18 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $settings->photo_grid_count['m
 	 	  font-size: <?php echo $settings->caption_custom_font_size['tablet']; ?>px;
 	    <?php } ?>
 	}
+	.fl-node-<?php echo $id; ?> .pp-gallery-filters-toggle {
+		display: block;
+	}
+	.fl-node-<?php echo $id; ?> .pp-gallery-filters {
+		display: none;
+	}
 	.fl-node-<?php echo $id; ?> .pp-gallery-filters li {
-	   font-size: <?php echo $settings->filter_font_size['tablet']; ?>px;
+		display: block;
+		float: none;
+		margin: 0 !important;
+		text-align: left;
+	   	font-size: <?php echo $settings->filter_font_size['tablet']; ?>px;
 	}
 }
 

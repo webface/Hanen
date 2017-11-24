@@ -34,6 +34,32 @@ class PPTestimonialsModule extends FLBuilderModule {
 		$this->add_css('pp-testimonials-form', BB_POWERPACK_URL . 'modules/pp-testimonials/css/fields.css');
 		$this->add_js('jquery-bxslider');
     }
+
+    public function get_alt( $settings )
+    {
+        if(is_object($settings->photo)) {
+            $photo = $settings->photo;
+        }
+        else {
+            $photo = FLBuilderPhoto::get_attachment_data($settings->photo);
+        }
+
+        if(!empty($photo->alt)) {
+			return htmlspecialchars($photo->alt);
+		}
+		else if(!empty($photo->description)) {
+			return htmlspecialchars($photo->description);
+		}
+		else if(!empty($photo->caption)) {
+			return htmlspecialchars($photo->caption);
+		}
+		else if(!empty($photo->title)) {
+			return htmlspecialchars($photo->title);
+        }
+        else if(!empty($settings->title)) {
+            return htmlspecialchars($settings->title);
+        }
+    }
 }
 
 /**

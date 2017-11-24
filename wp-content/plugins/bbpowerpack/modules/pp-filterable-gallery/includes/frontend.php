@@ -1,38 +1,41 @@
 <?php
 
 	$filter_labels = $module->get_gallery_filter_ids($settings->gallery_filter, true);
+	$all_text = ( $settings->show_custom_all_text == 'yes' && $settings->custom_all_text != '' ) ? $settings->custom_all_text : esc_html__('All', 'bb-powerpack');
 
 	if ( count( $filter_labels ) ) :
 
-		echo '<div class="pp-gallery-filters-wrapper">';
-		echo '<ul class="pp-gallery-filters">';
-		if( $settings->show_custom_all_text == 'yes' && $settings->custom_all_text != '' ) {
-			echo '<li class="pp-gallery-filter-label pp-filter-active all" data-filter="*">'.$settings->custom_all_text.'</li>';
-		} else {
-			echo '<li class="pp-gallery-filter-label pp-filter-active all" data-filter="*">'.esc_html__('All', 'bb-powerpack').'</li>';
-		}
-			for ( $i=0; $i < count($settings->gallery_filter); $i++ ) :
+		?>
 
-				if ( !is_object($settings->gallery_filter[$i])) continue;
+		<div class="pp-gallery-filters-wrapper">
+			<div class="pp-gallery-filters-toggle">
+				<span class="toggle-text"><?php echo $all_text; ?></span>
+			</div>
+			<ul class="pp-gallery-filters">
+				<li class="pp-gallery-filter-label pp-filter-active all" data-filter="*"><?php echo $all_text; ?></li>
+			<?php
+				for ( $i=0; $i < count($settings->gallery_filter); $i++ ) :
 
-					$filter = $settings->gallery_filter[$i];
-					$filter_label = $filter->filter_label;
-					$label_lower = strtolower($filter_label);
-					$label_str = str_replace( " ", "-", $label_lower );
+					if ( !is_object($settings->gallery_filter[$i])) continue;
 
-					$final_label_str = preg_replace('/[^A-Za-z0-9\-\']/', '-', $label_str);
+						$filter = $settings->gallery_filter[$i];
+						$filter_label = $filter->filter_label;
+						$label_lower = strtolower($filter_label);
+						$label_str = str_replace( " ", "-", $label_lower );
 
-					if ( !empty( $filter_label ) ) {
-						echo '<li class="pp-gallery-filter-label" data-filter=".' . $final_label_str . '">' . $filter_label . '</li>';
-					}
+						$final_label_str = preg_replace('/[^A-Za-z0-9\-\']/', '-', $label_str);
 
-			endfor;
-		echo '</ul>';
-		echo '</div>';
-?>
+						if ( !empty( $filter_label ) ) {
+							echo '<li class="pp-gallery-filter-label" data-filter=".pp-group-' . ($i+1) . '">' . $filter_label . '</li>';
+						}
+
+				endfor;
+			?>
+			</ul>
+		</div>
 
 	<?php if($settings->gallery_layout == 'grid' ) :  ?>
-	<div class="pp-gallery-grid pp-photo-gallery pp-gallery-grid<?php echo $settings->photo_grid_count['desktop']; ?> <?php echo ( $settings->hover_effects != 'none' ) ? $settings->hover_effects : ''; ?>"><?php
+	<div class="pp-gallery-grid pp-photo-gallery pp-gallery-grid-<?php echo $settings->photo_grid_count['desktop']; ?> <?php echo ( $settings->hover_effects != 'none' ) ? $settings->hover_effects : ''; ?>"><?php
 
 		foreach($module->get_photos() as $photo) :
 
@@ -85,10 +88,6 @@
 
 				<?php if( $settings->click_action != 'none' ) : ?>
 				</a>
-				<?php endif; ?>
-
-				<?php if ( $photo && ! empty( $photo->caption ) && 'hover' == $settings->show_captions && $settings->hover_effects == 'none' ) : ?>
-				<div class="pp-photo-gallery-caption pp-photo-gallery-caption-hover" itemprop="caption"><?php echo $photo->caption; ?></div>
 				<?php endif; ?>
 			</div>
 			<?php if($photo && !empty($photo->caption) && 'below' == $settings->show_captions) : ?>

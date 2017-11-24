@@ -10,14 +10,31 @@ $tablet 				= ( 100 - $space_tablet ) / $cards_tablet;
 $mobile 				= ( 100 - $space_mobile ) / $cards_mobile;
 $hover_card_column_w 	= $settings->hover_card_column_width;
 $hover_card_column_w 	= (array) $hover_card_column_w;
+$max_height_desktop		= (isset( $settings->hover_card_max_height ) && $settings->hover_card_max_height['desktop'] > 0) ? $settings->hover_card_max_height['desktop'] : $settings->hover_card_height['desktop'];
+$max_height_tablet		= (isset( $settings->hover_card_max_height ) && $settings->hover_card_max_height['tablet'] > 0) ? $settings->hover_card_max_height['tablet'] : $settings->hover_card_height['tablet'];
+$max_height_mobile		= (isset( $settings->hover_card_max_height ) && $settings->hover_card_max_height['mobile'] > 0) ? $settings->hover_card_max_height['mobile'] : $settings->hover_card_height['mobile'];
 ?>
 
 .fl-node-<?php echo $id; ?> .pp-hover-card {
+	min-height: <?php echo $settings->hover_card_height['desktop']; ?>px;
+	<?php if ( $max_height_desktop ) { ?>
+	max-height: <?php echo $max_height_desktop; ?>px;
+	<?php } ?>
 	width: <?php echo $desktop; ?>%;
-	height: <?php echo $settings->hover_card_height['desktop']; ?>px;
+	<?php if ( isset( $settings->hover_card_max_width ) && $settings->hover_card_max_width['desktop'] > 0 ) { ?>
+	max-width: <?php echo $settings->hover_card_max_width['desktop']; ?>px;
+	<?php } ?>
     margin-right: <?php echo $settings->hover_card_spacing; ?>%;
-    margin-bottom: <?php echo $settings->hover_card_spacing; ?>%;
+	margin-bottom: <?php echo $settings->hover_card_spacing; ?>%;
 	float: left;
+}
+.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-inner {
+	min-height: <?php echo $settings->hover_card_height['desktop']; ?>px;
+}
+.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-image {
+	<?php if ( $settings->hover_card_img_width == '100' ) { ?>
+	max-width: 100% !important;
+	<?php } ?>
 }
 
 .fl-node-<?php echo $id; ?> .pp-hover-card.powerpack-style .pp-hover-card-inner {
@@ -108,11 +125,23 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 
 .fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?> img {
 	border-radius: <?php echo $card->hover_card_box_border_radius; ?>px;
+	transition: opacity 0.3s linear;
+}
+.fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?>:hover img {
+	<?php if ( $card->hover_card_bg_type != 'color' ) { ?>
+	opacity: <?php echo $card->hover_card_overlay_opacity; ?>;
+	<?php } ?>
 }
 
+<?php if ( $card->hover_card_bg_type == 'color' ) { ?>
 .fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?>:before {
     background: <?php echo $card->hover_card_overlay != '' ? pp_hex2rgba('#'.$card->hover_card_overlay, $card->hover_card_overlay_opacity) : 'none'; ?>;
 }
+<?php } else { ?>
+.fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?> {
+    background: <?php echo $card->hover_card_overlay != '' ? '#'.$card->hover_card_overlay : 'none'; ?>;
+}
+<?php } ?>
 
 <?php if ( $settings->style_type == 'powerpack-style' ) { ?>
 .fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?> .pp-hover-card-icon {
@@ -150,14 +179,29 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 }
 
 @media only screen and (max-width: <?php echo $global_settings->medium_breakpoint; ?>px) {
+	.fl-node-<?php echo $id; ?> {
+		text-align: center;
+	}
+	.fl-node-<?php echo $id; ?> .pp-hover-card-wrap {
+		display: inline-block;
+	}
     .fl-node-<?php echo $id; ?> .pp-hover-card {
+		<?php if( $settings->hover_card_height['tablet'] >= 0 ) { ?>
+		min-height: <?php echo $settings->hover_card_height['tablet']; ?>px;
+		<?php } ?>
+		<?php if( $max_height_tablet ) { ?>
+		max-height: <?php echo $max_height_tablet; ?>px;
+		<?php } ?>
         <?php if( $settings->hover_card_column_width['tablet'] >= 0 ) { ?>
         width: <?php echo $tablet; ?>%;
-        <?php } ?>
-		<?php if( $settings->hover_card_height['tablet'] >= 0 ) { ?>
-		height: <?php echo $settings->hover_card_height['tablet']; ?>px;
+		<?php } ?>
+		<?php if ( isset( $settings->hover_card_max_width ) && $settings->hover_card_max_width['tablet'] > 0 ) { ?>
+		max-width: <?php echo $settings->hover_card_max_width['tablet']; ?>px;
 		<?php } ?>
     }
+	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-inner {
+		min-height: <?php echo $settings->hover_card_height['tablet']; ?>px;
+	}
 	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-image {
 		width: 100%;
 		height: auto;
@@ -186,13 +230,22 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 
 @media only screen and (max-width: <?php echo $global_settings->responsive_breakpoint; ?>px) {
     .fl-node-<?php echo $id; ?> .pp-hover-card {
+        <?php if( $settings->hover_card_height['mobile'] >= 0 ) { ?>
+		min-height: <?php echo $settings->hover_card_height['mobile']; ?>px;
+		<?php } ?>
+		<?php if( $max_height_mobile ) { ?>
+		max-height: <?php echo $max_height_mobile; ?>px;
+		<?php } ?>
         <?php if( $settings->hover_card_column_width['mobile'] >= 0 ) { ?>
         width: <?php echo $mobile; ?>%;
-        <?php } ?>
-		<?php if( $settings->hover_card_height['mobile'] >= 0 ) { ?>
-		height: <?php echo $settings->hover_card_height['mobile']; ?>px;
+		<?php } ?>
+		<?php if ( isset( $settings->hover_card_max_width ) && $settings->hover_card_max_width['mobile'] > 0 ) { ?>
+		max-width: <?php echo $settings->hover_card_max_width['mobile']; ?>px;
 		<?php } ?>
     }
+	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-inner {
+		min-height: <?php echo $settings->hover_card_height['mobile']; ?>px;
+	}
 	.fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-title h3 {
 		<?php if( $settings->hover_card_title_font_size['mobile'] ) { ?>font-size: <?php echo $settings->hover_card_title_font_size['mobile']; ?>px;<?php } ?>
 		<?php if( $settings->hover_card_title_line_height['mobile'] ) { ?>line-height: <?php echo $settings->hover_card_title_line_height['mobile']; ?>;<?php } ?>

@@ -61,7 +61,7 @@ class PPFilterableGalleryModule extends FLBuilderModule {
 			return $array_big;
 		}
 
-		foreach ( $filters_data as $filter ) {
+		foreach ( $filters_data as $filter_key => $filter ) {
 
 			if ( !is_object( $filter ) ) {
 				continue;
@@ -74,7 +74,8 @@ class PPFilterableGalleryModule extends FLBuilderModule {
 				foreach ( $gphotos as $gphoto ) {
 					$array_big[] = $gphoto;
 				}
-				$filter_labels[$filter->filter_label] = $gphotos;
+				$filter_group_label = 'pp-group-' . ($filter_key+1);
+				$filter_labels[$filter_group_label] = $gphotos;
 			}
 		}
 

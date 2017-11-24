@@ -63,7 +63,7 @@
 	position: relative;
 	display: block;
 	min-height: 100%;
-	max-width: 100%;
+	max-width: none !important;
 }
 
 .pp-hover-card:hover .pp-hover-card-image {

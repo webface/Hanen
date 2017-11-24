@@ -245,7 +245,7 @@ function pp_row_separators_css( $css, $nodes, $global_settings ) {
                 bottom: auto;
             }
 			.fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom {
-				margin-bottom: -1px;
+                margin-bottom: -1px;
 			}
             .fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom,
             .fl-node-<?php echo $row->node; ?> .pp-row-separator-bottom svg {

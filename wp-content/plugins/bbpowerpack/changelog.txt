@@ -1,3 +1,32 @@
+== 1.6.1 ==
+Release date: November 17, 2017
+* Enhancement: Added Image Maximum Width field in Hover Cards 2 module to adjust image size manually
+* Fix: Font Size and Line Height were not working for responsive devices in Animated Headlines module
+* Fix: PHP error in panel functions that was breaking BB 2.0 settings
+* Fix: Fix Hover Cards 2 images were resized after updating to 1.6.0
+
+== 1.6.0 ==
+Release date: November 15, 2017
+* New: Animated Headlines module
+* Enhancement: Added alt tag for images in Testimonial module
+* Enhancement: Added responsive toggle for filters in Filterable Gallery module
+* Enhancement: Added Custom Icon option to icon dropdown field in Social Icons module
+* Enhancement: Added Custom Photo Size option in Image module
+* Enhancement: Added Hover Overlay Margin option in Image module
+* Enhancement: Added Minimum and Maximum height/width options in Hover Cards 2 module
+* Fix: Filterable Gallery filter issues due to special characters in labels
+
+== 1.5.1.1 ==
+Release date: November 10, 2017
+* Enhancement: Custom Labels will also work for placeholders in Contact Form module
+* Fix: Fatal error with Beaver Builder 2.0 on some servers
+
+== 1.5.1 ==
+Release date: November 9, 2017
+* Fix: Content Grid equal height issue in Safari
+* Fix: Caption was appearing twice in Filterable Gallery module
+* Fix: Subscribe Form settings were not loading in Beaver Builder 2.0
+
 == 1.5.0 ==
 Release date: November 7, 2017
 * New: WPML integration

@@ -177,7 +177,7 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 				)
 			),
 			'headline_typography' => array(
-				'title' 			=> __('Prefix / Suffix Text', 'bb-powerpack' ),
+				'title' 			=> __('Headline Text', 'bb-powerpack' ),
                 'fields'   			=> array(
                     'font_family'       => array(
                         'type'          => 'font',

@@ -452,6 +452,19 @@ FLBuilder::register_module('PPImageModule', array(
 						'label'         => __('Photo', 'bb-powerpack'),
 						'connections'   => array( 'photo' ),
 					),
+					'photo_size'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Custom Photo Size', 'bb-powerpack'),
+						'default'		=> '',
+						'description'	=> 'px',
+						'size'			=> '5',
+						'preview'		=> array(
+							'type'			=> 'css',
+							'selector'		=> '.pp-photo-container .pp-photo-content .pp-photo-content-inner img',
+							'property'		=> 'width',
+							'unit'			=> 'px'
+						)
+					),
 					'photo_url'     => array(
 						'type'          => 'text',
 						'label'         => __('Photo URL', 'bb-powerpack'),
@@ -490,14 +503,14 @@ FLBuilder::register_module('PPImageModule', array(
 						'label'         => __('Show Caption', 'bb-powerpack'),
 						'default'       => 'never',
 						'options'       => array(
-							'never'             => __('Never', 'bb-powerpack'),
+							'never'         => __('Never', 'bb-powerpack'),
 							'hover'         => __('On Hover', 'bb-powerpack'),
 							'below'         => __('Below Photo', 'bb-powerpack'),
-							'overlay'         => __('Overlay', 'bb-powerpack')
+							'overlay'       => __('Overlay', 'bb-powerpack')
 						),
 						'toggle'		=> array(
 							'hover'		=> array(
-								'fields'	=> array('caption')
+								'fields'	=> array('caption', 'hover_margin')
 							),
 							'below'		=> array(
 								'fields'	=> array('caption')
@@ -971,6 +984,13 @@ FLBuilder::register_module('PPImageModule', array(
 							),
 						),
 					),
+					'hover_margin'	=> array(
+						'type'			=> 'text',
+						'label'			=> __('Hover Overlay Margin', 'bb-powerpack'),
+						'default'		=> '0',
+						'description'	=> 'px',
+						'size'			=> '5'
+					)
 				),
 			),
 			'typography'	=> array(

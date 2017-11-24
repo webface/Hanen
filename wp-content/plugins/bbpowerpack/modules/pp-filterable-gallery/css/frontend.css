@@ -69,10 +69,24 @@ div.mfp-wrap .mfp-bottom-bar {
 	-ms-transition: all 0.5s ease-out;
 	transition: all 0.5s ease-out;
 	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
 	will-change: transform;
 }
 
 /* Gallery Filters */
+.pp-gallery-filters-toggle {
+	display: none;
+	padding: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    background: #fafafa;
+}
+.pp-gallery-filters-toggle:after {
+    content: "+";
+    float: right;
+    font-weight: bold;
+}
+
 .pp-gallery-filters {
 	padding-left: 0;
 	margin-bottom: 30px;

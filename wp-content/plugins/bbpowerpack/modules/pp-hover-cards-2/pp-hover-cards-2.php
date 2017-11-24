@@ -82,7 +82,8 @@ FLBuilder::register_module('PPHoverCardsModuleNew', array(
                     ),
                     'hover_card_height' => array(
                     	'type'              => 'pp-multitext',
-                    	'label' 		    => __('Height', 'bb-powerpack'),
+                        'label' 		    => __('Minimum Height', 'bb-powerpack'),
+                        'description'       => 'px',
                         'default'           => array(
                             'desktop'           => 300,
                             'tablet'            => '',
@@ -96,7 +97,7 @@ FLBuilder::register_module('PPHoverCardsModuleNew', array(
                                 'tooltip'       => __('Desktop', 'bb-powerpack'),
                                 'preview'       => array(
                                     'selector'      => '.pp-hover-card',
-                                    'property'      => 'height',
+                                    'property'      => 'min-height',
                                     'unit'          => 'px'
                                 )
                     		),
@@ -114,6 +115,85 @@ FLBuilder::register_module('PPHoverCardsModuleNew', array(
                     		),
                     	)
                     ),
+                    'hover_card_max_height' => array(
+                    	'type'              => 'pp-multitext',
+                        'label' 		    => __('Maximum Height (optional)', 'bb-powerpack'),
+                        'description'       => 'px',
+                        'default'           => array(
+                            'desktop'           => '',
+                            'tablet'            => '',
+                            'mobile'            => ''
+                        ),
+                    	'options'  => array(
+                    		'desktop' => array(
+                                'maxlength'     => 3,
+                    			'icon'		    => 'fa-desktop',
+                                'placeholder'   => __('Desktop', 'bb-powerpack'),
+                                'tooltip'       => __('Desktop', 'bb-powerpack'),
+                                'preview'       => array(
+                                    'selector'      => '.pp-hover-card',
+                                    'property'      => 'max-height',
+                                    'unit'          => 'px'
+                                )
+                    		),
+                            'tablet' => array(
+                                'maxlength' => 3,
+                    			'icon'		=> 'fa-tablet',
+                                'placeholder'   => __('Tablet', 'bb-powerpack'),
+                                'tooltip'       => __('Tablet', 'bb-powerpack'),
+                    		),
+                            'mobile' => array(
+                                'maxlength' => 3,
+                    			'icon'		=> 'fa-mobile',
+                                'placeholder'   => __('Mobile', 'bb-powerpack'),
+                                'tooltip'       => __('Mobile', 'bb-powerpack'),
+                    		),
+                    	)
+                    ),
+                    'hover_card_max_width' => array(
+                    	'type'              => 'pp-multitext',
+                        'label' 		    => __('Maximum Width (optional)', 'bb-powerpack'),
+                        'description'       => 'px',
+                        'default'           => array(
+                            'desktop'           => '',
+                            'tablet'            => '',
+                            'mobile'            => ''
+                        ),
+                    	'options'  => array(
+                    		'desktop' => array(
+                                'maxlength'     => 3,
+                    			'icon'		    => 'fa-desktop',
+                                'placeholder'   => __('Desktop', 'bb-powerpack'),
+                                'tooltip'       => __('Desktop', 'bb-powerpack'),
+                                'preview'       => array(
+                                    'selector'      => '.pp-hover-card',
+                                    'property'      => 'max-width',
+                                    'unit'          => 'px'
+                                )
+                    		),
+                            'tablet' => array(
+                                'maxlength' => 3,
+                    			'icon'		=> 'fa-tablet',
+                                'placeholder'   => __('Tablet', 'bb-powerpack'),
+                                'tooltip'       => __('Tablet', 'bb-powerpack'),
+                    		),
+                            'mobile' => array(
+                                'maxlength' => 3,
+                    			'icon'		=> 'fa-mobile',
+                                'placeholder'   => __('Mobile', 'bb-powerpack'),
+                                'tooltip'       => __('Mobile', 'bb-powerpack'),
+                    		),
+                    	)
+                    ),
+                    'hover_card_img_width'  => array(
+                        'type'                  => 'pp-switch',
+                        'label'                 => __('Image Maximum Width', 'bb-powerpack'),
+                        'default'               => '100',
+                        'options'               => array(
+                            '100'                   => __('100%', 'bb-powerpack'),
+                            'none'                  => __('None', 'bb-powerpack')
+                        )
+                    )
                 ),
             ),
             'hover_card_count'       => array( // Section

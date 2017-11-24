@@ -9,7 +9,11 @@ foreach($settings->icons as $icon) {
 	?>
 	<span class="pp-social-icon">
 		<a href="<?php echo $icon->link; ?>" target="<?php echo isset($icon->link_target) ? $icon->link_target : '_blank'; ?>">
+			<?php if ( $icon->icon == 'custom' ) { ?>
+			<i class="<?php echo $icon->icon_custom; ?>"></i>
+			<?php } else { ?>
 			<i class="fa <?php echo $icon->icon; ?>"></i>
+			<?php } ?>
 		</a>
 	</span>
 	<?php
