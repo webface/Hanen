@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-10-26 18:17:32+0000\n"
+"PO-Revision-Date: 2017-11-26 05:45:46+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,39 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: zh_CN\n"
 "Project-Id-Version: Plugins - WooCommerce - Stable (latest release)\n"
+
+#: includes/admin/class-wc-admin-setup-wizard.php:627
+msgctxt "Short label for entering the cost of an item"
+msgid "Cost"
+msgstr "成本"
+
+#: includes/wc-core-functions.php:318
+msgid "Belarusian ruble (old)"
+msgstr "白俄罗斯卢布(旧)"
+
+#: templates/myaccount/form-add-payment-method.php:59
+msgid "New payment methods can only be added during checkout. Please contact us if you require assistance."
+msgstr "只能在结算时添加新的支付方法。如果您需要帮助，请与我们联系。"
+
+#: includes/shortcodes/class-wc-shortcode-my-account.php:317
+msgid "This key is invalid or has already been used. Please reset your password again if needed."
+msgstr "这个key无效或已被使用，如有必要请重置您的密码。"
+
+#: includes/emails/class-wc-email-customer-invoice.php:28
+msgid "Customer invoice / Order details"
+msgstr "顾客的收据/订单详情"
+
+#: includes/api/class-wc-rest-products-controller.php:1518
+msgid "End date of sale price, as GMT."
+msgstr "促销价的截止日期，按 GMT 时间。"
+
+#: includes/api/class-wc-rest-product-variations-controller.php:690
+msgid "Define if the variation is visible on the product's page."
+msgstr "定义该变量在产品页面是否可见。"
+
+#: includes/admin/meta-boxes/class-wc-meta-box-order-actions.php:36
+msgid "Email invoice / order details to customer"
+msgstr "发给客户的邮件收据/订单详情"
 
 #: includes/widgets/class-wc-widget-recently-viewed.php:25
 msgid "Recent Viewed Products"
@@ -23,25 +56,25 @@ msgstr "您的订单详情"
 msgid "Resend new order notification"
 msgstr "重新发送新订单通知"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1336
+#: includes/admin/class-wc-admin-setup-wizard.php:1334
 msgid "Automatically calculate and charge the correct rate of tax for each time a customer checks out. If toggled on, WooCommerce Services and Jetpack will be installed and activated for you."
 msgstr "每次客户结账时自动计算并收取相应比例的税费。如果打开，系统将自动为您安装 WooCommerce 服务和 Jetpack 并激活。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1334
+#: includes/admin/class-wc-admin-setup-wizard.php:1332
 msgid "Automated Taxes (powered by WooCommerce Services)"
 msgstr "自动收税（由 WooCommerce 服务提供技术支持）"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1023
+#: includes/admin/class-wc-admin-setup-wizard.php:1021
 msgid "Enter your email address and we'll handle account creation. WooCommerce Services and Jetpack will be installed and activated for you."
 msgstr "输入您的电子邮件地址，我们会为您创建帐户。系统将自动为您安装 WooCommerce 服务和 Jetpack 并激活。"
 
 #. translators: %1$s: country name including the 'the' prefix, %2$s: shipping
 #. carrier name
-#: includes/admin/class-wc-admin-setup-wizard.php:730
+#: includes/admin/class-wc-admin-setup-wizard.php:728
 msgid "You're all set up to ship anywhere in %1$s, and outside of it. We recommend using <strong>live rates</strong> (which are powered by our WooCommerce Services plugin and Jetpack) to get accurate %2$s shipping prices to cover the cost of order fulfillment."
 msgstr "您可以向 %1$s 境内和境外的任何地方送货。我们建议您使用<strong>实时费率</strong>（由我们的 WooCommerce 服务插件和 Jetpack 提供技术支持），获取准确的 %2$s 运费价格，以便涵盖履行订单的费用。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:621
+#: includes/admin/class-wc-admin-setup-wizard.php:619
 msgid "WooCommerce Services and Jetpack will be installed and activated for you."
 msgstr "系统将自动为您安装 WooCommerce 服务和 Jetpack 并激活。"
 
@@ -49,7 +82,7 @@ msgstr "系统将自动为您安装 WooCommerce 服务和 Jetpack 并激活。"
 msgid "Order updated and sent."
 msgstr "订单已更新且已发送。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1340
+#: includes/admin/class-wc-admin-setup-wizard.php:1338
 msgid "Learn more about WooCommerce Services"
 msgstr "详细了解 WooCommerce 服务"
 
@@ -113,7 +146,7 @@ msgstr "显示属性的列表过滤产品在你的商店。"
 msgid "Display the customer shopping cart."
 msgstr "显示客户购物车。"
 
-#: includes/wc-template-functions.php:851
+#: includes/wc-template-functions.php:850
 msgid "Relevance"
 msgstr "关联"
 
@@ -161,8 +194,8 @@ msgstr "付款方式已添加成功。"
 msgid "Invalid payment gateway."
 msgstr "无效的付款方式"
 
-#: includes/class-wc-discounts.php:651 includes/class-wc-discounts.php:689
-#: includes/class-wc-discounts.php:743
+#: includes/class-wc-discounts.php:661 includes/class-wc-discounts.php:699
+#: includes/class-wc-discounts.php:753
 msgid "Sorry, this coupon is not applicable to selected products."
 msgstr "抱歉，此优惠券不适用于所选产品。"
 
@@ -212,7 +245,7 @@ msgstr "提供的处理程序 %1$s 没有实现 %2$s。"
 
 #. translators: 1: class name 2: woocommerce_logging_class 3:
 #. WC_Logger_Interface
-#: includes/wc-core-functions.php:1542
+#: includes/wc-core-functions.php:1572
 msgid "The class %1$s provided by %2$s filter must implement %3$s."
 msgstr "过滤器 %2$s 提供的类 %1$s  必须实现 %3$s."
 
@@ -442,7 +475,7 @@ msgstr "退款＃%1$s  -  %2$s 由 %3$s"
 msgid "The stock has not been updated because the value has changed since editing. Product %1$d has %2$d units in stock."
 msgstr "库存尚未更新，因为编辑后值已更改，产品%1$d 有 %2$d 个库存单位。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1655
+#: includes/admin/class-wc-admin-setup-wizard.php:1653
 msgid "Transfer existing products to your new store — just import a CSV file."
 msgstr "转移已存在的产品到您的新店铺 — 仅需导入一个 CSV 文件。"
 
@@ -463,215 +496,215 @@ msgstr "有更新可用"
 msgid "If you like %1$s please leave us a %2$s rating. A huge thanks in advance!"
 msgstr "如果你喜欢%1$s 请留下我们 %2$s评分。先表示十分的谢意哦！"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1654
-#: includes/admin/class-wc-admin-setup-wizard.php:1660
+#: includes/admin/class-wc-admin-setup-wizard.php:1652
+#: includes/admin/class-wc-admin-setup-wizard.php:1658
 msgid "Import products"
 msgstr "导入产品"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1653
+#: includes/admin/class-wc-admin-setup-wizard.php:1651
 msgid "Have an existing store?"
 msgstr "有一个已存在的店铺?"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1641
+#: includes/admin/class-wc-admin-setup-wizard.php:1639
 msgid "You're ready to add your first product."
 msgstr "已准备为您添加第一件产品了。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1640
+#: includes/admin/class-wc-admin-setup-wizard.php:1638
 msgid "Create your first product"
 msgstr "创建您的第一件产品"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1646
+#: includes/admin/class-wc-admin-setup-wizard.php:1644
 msgid "Create a product"
 msgstr "创建一个产品"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1626
+#: includes/admin/class-wc-admin-setup-wizard.php:1624
 msgid "Yes please!"
 msgstr "是的！"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1612
+#: includes/admin/class-wc-admin-setup-wizard.php:1610
 msgid "We're here for you — get tips, product updates, and inspiration straight to your mailbox."
 msgstr "我们可以为您提供帮助 - 直接通过邮箱获得提示、产品更新和启发。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1609
+#: includes/admin/class-wc-admin-setup-wizard.php:1607
 msgid "You're ready to start selling!"
 msgstr "您已准备好开始营业了！"
 
 #. translators: %1$s: link to videos, %2$s: link to docs
-#: includes/admin/class-wc-admin-setup-wizard.php:1604
+#: includes/admin/class-wc-admin-setup-wizard.php:1602
 msgid "Watch our <a href=\"%1$s\" target=\"_blank\">guided tour videos</a> to learn more about WooCommerce, and visit WooCommerce.com to learn more about <a href=\"%2$s\" target=\"_blank\">getting started</a>."
 msgstr "观看我们的<a href=\"%1$s\" target=\"_blank\">导览视频</a>详细了解 WooCommerce，并访问 WooCommerce.com 详细了解<a href=\"%2$s\" target=\"_blank\">入门指南</a>。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1538
+#: includes/admin/class-wc-admin-setup-wizard.php:1536
 msgid "Your site might be on a private network. Jetpack can only connect to public sites. Please make sure your site is visible over the internet, and then try connecting again 🙏."
 msgstr "您的站点可能位于私人网络上。Jetpack 只能连接到公共站点。请确保您的站点在互联网上可见，然后尝试重新连接 🙏。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1537
+#: includes/admin/class-wc-admin-setup-wizard.php:1535
 msgid "Sorry! We couldn't contact Jetpack just now 😭. Please make sure that your site is visible over the internet, and that it accepts incoming and outgoing requests via curl. You can also try to connect to Jetpack again, and if you run into any more issues, please contact support."
 msgstr "抱歉！我们现在无法连接 Jetpack 😭。请确保您的站点在互联网上可见，并能通过 curl 接收传入和传出的请求。您也可以尝试重新连接 Jetpack，如果遇到其他问题，请联系支持人员。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1536
+#: includes/admin/class-wc-admin-setup-wizard.php:1534
 msgid "Sorry! We tried, but we couldn't install Jetpack for you 😭. Please go to the Plugins tab to install it, and finish setting up your store."
 msgstr "抱歉！我们已尽力，但无法为您安装 Jetpack 😭。请转到“插件”选项卡进行安装，并完成您的店铺设置。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1535
+#: includes/admin/class-wc-admin-setup-wizard.php:1533
 msgid "Sorry! We tried, but we couldn't connect Jetpack just now 😭. Please go to the Plugins tab to connect Jetpack, so that you can finish setting up your store."
 msgstr "抱歉！我们已尽力，但现在无法连接 Jetpack 😭。请转到“插件”选项卡连接 Jetpack，以便完成您的店铺设置。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1522
+#: includes/admin/class-wc-admin-setup-wizard.php:1520
 msgid "Product promotion"
 msgstr "产品优惠"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1514
+#: includes/admin/class-wc-admin-setup-wizard.php:1512
 msgid "Store monitoring"
 msgstr "店铺监控"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1525
+#: includes/admin/class-wc-admin-setup-wizard.php:1523
 msgid "Share new items on social media the moment they're live in your store."
 msgstr "一旦您的店铺中有新品上线，就在社交媒体上进行分享。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1517
+#: includes/admin/class-wc-admin-setup-wizard.php:1515
 msgid "Get an alert if your store is down for even a few minutes."
 msgstr "即使您的店铺只关闭几分钟，也会收到提醒。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1509
+#: includes/admin/class-wc-admin-setup-wizard.php:1507
 msgid "Get insights on how your store is doing, including total sales, top products, and more."
 msgstr "了解您店铺的运营情况，包括总销售额、最畅销的产品等等。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1498
+#: includes/admin/class-wc-admin-setup-wizard.php:1496
 msgid "Better security"
 msgstr "更安全"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1506
+#: includes/admin/class-wc-admin-setup-wizard.php:1504
 msgid "Store stats"
 msgstr "店铺统计"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1428
+#: includes/admin/class-wc-admin-setup-wizard.php:1426
 msgid "Stripe payments"
 msgstr "Stripe 支付"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1489
+#: includes/admin/class-wc-admin-setup-wizard.php:1487
 msgid "Connect with Jetpack"
 msgstr "连接  Jetpack"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1457
+#: includes/admin/class-wc-admin-setup-wizard.php:1455
 msgid "Connect your store to Jetpack"
 msgstr "连接你的店铺到 Jetpack"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1474
+#: includes/admin/class-wc-admin-setup-wizard.php:1472
 msgid "Finish setting up your store"
 msgstr "完成店铺设置"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1450
+#: includes/admin/class-wc-admin-setup-wizard.php:1448
 msgid "Sorry, We couldn't connect your store to Jetpack"
 msgstr "抱歉，我们无法将您的店铺与 Jetpack 相连"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1501
+#: includes/admin/class-wc-admin-setup-wizard.php:1499
 msgid "Protect your store from unauthorized access."
 msgstr "保护您的店铺免遭未经授权的访问。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1494
+#: includes/admin/class-wc-admin-setup-wizard.php:1492
 msgid "Bonus reasons you'll love Jetpack"
 msgstr "您会爱上 Jetpack 的原因"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1481
+#: includes/admin/class-wc-admin-setup-wizard.php:1479
 msgid "By connecting your site you agree to our fascinating <a href=\"%1$s\" target=\"_blank\">Terms of Service</a> and to <a href=\"%2$s\" target=\"_blank\">share details</a> with WordPress.com"
 msgstr "连接您的站点即表示，您同意我们清晰易懂的<a href=\"%1$s\" target=\"_blank\">服务条款</a>，并同意与 WordPress.com <a href=\"%2$s\" target=\"_blank\">共享详细信息</a>"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1458
+#: includes/admin/class-wc-admin-setup-wizard.php:1456
 msgid "Connect your store to Jetpack to enable extra features"
 msgstr "将您的店铺连接到 Jetpack 以启用额外的功能"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1434
+#: includes/admin/class-wc-admin-setup-wizard.php:1432
 msgid "live rates and discounted shipping labels"
 msgstr "实时费率和折扣配送标签"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1432
+#: includes/admin/class-wc-admin-setup-wizard.php:1430
 msgid "automated taxes"
 msgstr "自动收取税费"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1430
+#: includes/admin/class-wc-admin-setup-wizard.php:1428
 msgid "automated taxes, live rates and discounted shipping labels"
 msgstr "自动收取税费、实时费率和折扣配送标签"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1426
+#: includes/admin/class-wc-admin-setup-wizard.php:1424
 msgid "Stripe payments, live rates and discounted shipping labels"
 msgstr "拆分付款、实时费率和折扣配送标签"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1424
+#: includes/admin/class-wc-admin-setup-wizard.php:1422
 msgid "Stripe payments and automated taxes"
 msgstr "拆分付款和自动收取税费"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1422
+#: includes/admin/class-wc-admin-setup-wizard.php:1420
 msgid "Stripe payments, automated taxes, live rates and discounted shipping labels"
 msgstr "拆分付款、自动收取税费、实时费率和折扣配送标签"
 
 #. translators: %s: list of features, potentially comma separated
-#: includes/admin/class-wc-admin-setup-wizard.php:1419
+#: includes/admin/class-wc-admin-setup-wizard.php:1417
 msgid "Your store is almost ready! To activate services like %s, just connect with Jetpack."
 msgstr "您的店铺马上准备就绪！要激活 %s 等服务，只需连接 Jetpack。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1310
+#: includes/admin/class-wc-admin-setup-wizard.php:1308
 msgid "Storefront Theme"
 msgstr "Storefront 主题"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1048
+#: includes/admin/class-wc-admin-setup-wizard.php:1046
 msgid "PayPal email address:"
 msgstr "PayPal 电邮地址:"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1316
+#: includes/admin/class-wc-admin-setup-wizard.php:1314
 msgid "Learn more about Storefront"
 msgstr "了解 Storefront"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1022
+#: includes/admin/class-wc-admin-setup-wizard.php:1020
 msgid "Stripe email address"
 msgstr "拆分电子邮件地址"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1019
+#: includes/admin/class-wc-admin-setup-wizard.php:1017
 msgid "Stripe email address:"
 msgstr "拆分电子邮件地址："
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1312
+#: includes/admin/class-wc-admin-setup-wizard.php:1310
 msgid "Your theme is not compatible with WooCommerce. We recommend you switch to Storefront, a free WordPress theme built and maintained by the makers of WooCommerce. If toggled on, Storefront will be installed and activated for you."
 msgstr "您的主题与 WooCommerce 不兼容。我们建议您切换到 Storefront，这是一个由 WooCommerce 的创建者构建和维护的免费 WordPress 主题。切换后，我们将为您安装和激活 Storefront。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1304
+#: includes/admin/class-wc-admin-setup-wizard.php:1302
 msgid "Recommended Extras"
 msgstr "其他推荐"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1239
+#: includes/admin/class-wc-admin-setup-wizard.php:1237
 msgid "Collect payments from customers offline."
 msgstr "离线收取客户付款。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1214
+#: includes/admin/class-wc-admin-setup-wizard.php:1212
 msgid "WooCommerce can accept both online and offline payments. <a href=\"%1$s\" target=\"_blank\">Additional payment methods</a> can be installed later."
 msgstr "WooCommerce 可接受在线和离线付款。以后可设置<a href=\"%1$s\" target=\"_blank\">更多付款方式</a>。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:811
+#: includes/admin/class-wc-admin-setup-wizard.php:809
 msgid "<strong>Dimension unit</strong>—helps for accurate package selection."
 msgstr "<strong>尺寸单位</strong> - 有助于准确选择包装。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1012
+#: includes/admin/class-wc-admin-setup-wizard.php:1010
 msgid "Create a new Stripe account for me"
 msgstr "为我创建新的 Stripe 帐户"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:991
+#: includes/admin/class-wc-admin-setup-wizard.php:989
 msgid "Accept all major debit &amp; credit cards from customers in 135+ countries on your site. <a href=\"%s\" target=\"_blank\">Learn more</a>."
 msgstr "在您的网站上接受来自超过 135 个国家或地区的客户使用的主流借记卡和信用卡。<a href=\"%s\" target=\"_blank\">了解详情</a>。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:793
+#: includes/admin/class-wc-admin-setup-wizard.php:791
 msgid "<strong>Weight unit</strong>—used to calculate shipping rates, and more."
 msgstr "<strong>重量单位</strong> - 用于计算运费以及其他费用。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:753
+#: includes/admin/class-wc-admin-setup-wizard.php:751
 msgid "Shipping Method"
 msgstr "配送方式"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:750
+#: includes/admin/class-wc-admin-setup-wizard.php:748
 msgid "Shipping Zone"
 msgstr "配送区域"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:573
-#: includes/admin/class-wc-admin-setup-wizard.php:1560
+#: includes/admin/class-wc-admin-setup-wizard.php:571
+#: includes/admin/class-wc-admin-setup-wizard.php:1558
 msgid "Jetpack"
 msgstr "Jetpack"
 
@@ -707,11 +740,11 @@ msgstr "我的账户页"
 msgid "Activate"
 msgstr "启用"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:726
+#: includes/admin/class-wc-admin-setup-wizard.php:724
 msgid "How would you like units on your store displayed?"
 msgstr "您希望在店铺中如何显示单位？"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:412
+#: includes/admin/class-wc-admin-setup-wizard.php:408
 msgid "I plan to sell both physical and digital products"
 msgstr "我打算出售实物和虚拟产品"
 
@@ -720,46 +753,41 @@ msgid "The following wizard will help you configure your store and get you start
 msgstr "以下向导将帮助您配置店铺并快速上手。"
 
 #. translators: %s: country name including the 'the' prefix if needed
-#: includes/admin/class-wc-admin-setup-wizard.php:737
+#: includes/admin/class-wc-admin-setup-wizard.php:735
 msgid "You can choose which countries you'll be shipping to and with which methods. To get started, we've set you up with shipping inside and outside of %s."
 msgstr "您可以选择收货国家/地区以及配送方式。为了帮助您上手，我们已经为您安排好 %s 内外部的配送事宜。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:637
+#: includes/admin/class-wc-admin-setup-wizard.php:635
 msgid "Don't charge for shipping."
 msgstr "不要收取运费。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:630
+#: includes/admin/class-wc-admin-setup-wizard.php:628
 msgid "What would you like to charge for flat rate shipping?"
 msgstr "您想收取多少固定运费？"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:625
+#: includes/admin/class-wc-admin-setup-wizard.php:623
 msgid "Set a fixed price to cover shipping costs."
 msgstr "设置一个固定的价格来支付运费。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:624
+#: includes/admin/class-wc-admin-setup-wizard.php:622
 msgid "Flat Rate"
 msgstr "固定费率"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:620
+#: includes/admin/class-wc-admin-setup-wizard.php:618
 msgid "Live Rates"
 msgstr "实时费率"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:417
+#: includes/admin/class-wc-admin-setup-wizard.php:415
 msgid "Allow WooCommerce to collect non-sensitive diagnostic data and usage information."
 msgstr "允许 WooCommerce 收集非敏感诊断数据和使用信息。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:411
+#: includes/admin/class-wc-admin-setup-wizard.php:410
 msgid "I plan to sell digital products"
 msgstr "我打算出售虚拟产品"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:410
+#: includes/admin/class-wc-admin-setup-wizard.php:409
 msgid "I plan to sell physical products"
 msgstr "我打算出售实物产品"
-
-#: includes/admin/class-wc-admin-setup-wizard.php:406
-#: includes/admin/class-wc-admin-setup-wizard.php:409
-msgid "Please choose one&hellip;"
-msgstr "请选择一个…"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:400
 msgid "What type of product do you plan to sell?"
@@ -844,7 +872,7 @@ msgid "Yucat&aacute;n"
 msgstr "尤卡坦"
 
 #: includes/abstracts/abstract-wc-order.php:914
-#: includes/class-wc-discounts.php:216
+#: includes/class-wc-discounts.php:228
 msgid "Invalid coupon"
 msgstr "无效的优惠券"
 
@@ -1034,7 +1062,7 @@ msgid "Search results only"
 msgstr "仅搜索结果页"
 
 #. translators: 1: rating 2: rating count
-#: includes/wc-template-functions.php:2671
+#: includes/wc-template-functions.php:2670
 msgid "Rated %1$s out of 5 based on %2$s customer rating"
 msgid_plural "Rated %1$s out of 5 based on %2$s customer ratings"
 msgstr[0] "评分 %1$s / 5 , 已有 %2$s 位顾客进行评价"
@@ -1214,7 +1242,7 @@ msgstr "优惠券已恢复"
 msgid "Manage shipping methods"
 msgstr "管理配送方式"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:772
+#: includes/admin/class-wc-admin-setup-wizard.php:770
 #: includes/admin/settings/views/html-admin-page-shipping-zones.php:26
 #: includes/data-stores/class-wc-shipping-zone-data-store.php:67
 msgid "Locations not covered by your other zones"
@@ -1858,7 +1886,7 @@ msgstr "免费 - 立即安装"
 
 #: includes/admin/class-wc-admin-addons.php:336
 #: includes/admin/class-wc-admin-addons.php:500
-#: includes/admin/class-wc-admin-setup-wizard.php:585
+#: includes/admin/class-wc-admin-setup-wizard.php:583
 msgid "WooCommerce Services"
 msgstr "WooCommerce 服务"
 
@@ -2319,7 +2347,7 @@ msgstr "没找到该订单的支付网关。"
 msgid "Invalid refund amount."
 msgstr "无效的退款金额。"
 
-#: includes/wc-core-functions.php:361
+#: includes/wc-core-functions.php:362
 msgid "Iranian toman"
 msgstr "伊朗土曼"
 
@@ -2334,7 +2362,7 @@ msgstr[0] "配送 %d"
 msgid "%1$s stock reduced from %2$s to %3$s."
 msgstr "%1$s 的库存从 %2$s 降低为 %3$s."
 
-#: includes/wc-formatting-functions.php:1089
+#: includes/wc-formatting-functions.php:1092
 msgctxt "Price range: from-to"
 msgid "%1$s &ndash; %2$s"
 msgstr "%1$s &ndash; %2$s"
@@ -2484,8 +2512,8 @@ msgstr "支付token无效或丢失。"
 msgid "Invalid download."
 msgstr "无效的下载。"
 
-#: includes/data-stores/class-wc-customer-data-store.php:136
-#: includes/data-stores/class-wc-customer-data-store.php:141
+#: includes/data-stores/class-wc-customer-data-store.php:137
+#: includes/data-stores/class-wc-customer-data-store.php:142
 msgid "Invalid customer."
 msgstr "无效的顾客。"
 
@@ -2678,7 +2706,7 @@ msgid "%d item from your previous order is currently unavailable and could not b
 msgid_plural "%d items from your previous order are currently unavailable and could not be added to your cart."
 msgstr[0] "您上一订单中的 %d 件物品当前已下架。"
 
-#: includes/class-wc-form-handler.php:896
+#: includes/class-wc-form-handler.php:900
 msgid "Invalid value posted for %s"
 msgstr "收到了无效的post的值 %s"
 
@@ -2725,10 +2753,10 @@ msgstr "小区, 楼号, 单元等(选填)"
 msgid "Street address"
 msgstr "街道地址"
 
-#: includes/class-wc-form-handler.php:940
 #: includes/class-wc-form-handler.php:944
-#: includes/class-wc-form-handler.php:957
-#: includes/class-wc-form-handler.php:1101 includes/wc-user-functions.php:111
+#: includes/class-wc-form-handler.php:948
+#: includes/class-wc-form-handler.php:961
+#: includes/class-wc-form-handler.php:1105 includes/wc-user-functions.php:111
 msgid "Error:"
 msgstr "错误:"
 
@@ -2743,7 +2771,7 @@ msgstr "您不能添加另一个\"%s\" 到您的购物车。"
 
 #. translators: %s: product name
 #: includes/class-wc-cart.php:1089 includes/class-wc-frontend-scripts.php:539
-#: includes/wc-cart-functions.php:117 includes/wc-template-functions.php:1505
+#: includes/wc-cart-functions.php:117 includes/wc-template-functions.php:1504
 msgid "View cart"
 msgstr "查看购物车"
 
@@ -2751,7 +2779,7 @@ msgstr "查看购物车"
 msgid "Invalid order"
 msgstr "无效的订单"
 
-#: includes/class-wc-cache-helper.php:196
+#: includes/class-wc-cache-helper.php:199
 msgid "In order for <strong>database caching</strong> to work with WooCommerce you must add %1$s to the \"Ignored Query Strings\" option in <a href=\"%2$s\">W3 Total Cache settings</a>."
 msgstr "为使 WooCommerce 的<strong>数据库缓存</strong> 生效，您必需添加%1$s 到 <a href=\"%2$s\">W3 Total Cache settings</a> 的 \"Ignored Query Strings\" 选项。"
 
@@ -3155,23 +3183,23 @@ msgstr "一个唯一的标识符可用于将设置连接到一起."
 msgid "No setting groups have been registered."
 msgstr "未找到已注册的设置组."
 
-#: includes/api/class-wc-rest-products-controller.php:2103
+#: includes/api/class-wc-rest-products-controller.php:2106
 msgid "Limit result set to products based on a maximum price."
 msgstr "限定结果为基于一个最大价格的产品."
 
-#: includes/api/class-wc-rest-products-controller.php:2097
+#: includes/api/class-wc-rest-products-controller.php:2100
 msgid "Limit result set to products based on a minimum price."
 msgstr "限定结果为基于一个最小价格的产品."
 
-#: includes/api/class-wc-rest-products-controller.php:2091
+#: includes/api/class-wc-rest-products-controller.php:2094
 msgid "Limit result set to products on sale."
 msgstr "限定结果为促销的产品."
 
-#: includes/api/class-wc-rest-products-controller.php:2085
+#: includes/api/class-wc-rest-products-controller.php:2088
 msgid "Limit result set to products in stock or out of stock."
 msgstr "限定结果为有货或售罄的产品."
 
-#: includes/api/class-wc-rest-products-controller.php:2076
+#: includes/api/class-wc-rest-products-controller.php:2079
 msgid "Limit result set to products with a specific tax class."
 msgstr "限定结果为有特定税类型的产品."
 
@@ -3259,11 +3287,11 @@ msgstr "Start date of sale price, as GMT."
 msgid "Start date of sale price, in the site's timezone."
 msgstr "Start date of sale price, in the site's timezone."
 
-#: includes/api/class-wc-rest-orders-controller.php:1095
+#: includes/api/class-wc-rest-orders-controller.php:1090
 msgid "The date the order was completed, as GMT."
 msgstr "The date the order was completed, as GMT."
 
-#: includes/api/class-wc-rest-products-controller.php:1950
+#: includes/api/class-wc-rest-products-controller.php:1953
 msgid "List of variations IDs."
 msgstr "变量ID列表。"
 
@@ -3291,7 +3319,7 @@ msgstr "设置值."
 msgid "A unique identifier for the setting."
 msgstr "该设置的一个唯一标识符."
 
-#: includes/api/class-wc-rest-products-controller.php:2038
+#: includes/api/class-wc-rest-products-controller.php:2041
 msgid "Limit result set to featured products."
 msgstr "限定结果为特色产品."
 
@@ -3376,7 +3404,7 @@ msgstr "界面上可见的，关于该设置的容易被人理解的描述。"
 msgid "A human readable label for the setting used in interfaces."
 msgstr "界面上可见的，关于该设置的容易被人理解的描述。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1083
+#: includes/api/class-wc-rest-orders-controller.php:1078
 msgid "The date the order was paid, as GMT."
 msgstr "订单支付日期，时区是GMT。"
 
@@ -3384,7 +3412,7 @@ msgstr "订单支付日期，时区是GMT。"
 msgid "The date the order refund was created, as GMT."
 msgstr "The date the order refund was created, as GMT."
 
-#: includes/api/class-wc-rest-orders-controller.php:870
+#: includes/api/class-wc-rest-orders-controller.php:865
 #: includes/api/v1/class-wc-rest-orders-controller.php:969
 msgid "The date the order was last modified, as GMT."
 msgstr "The date the order was last modified, as GMT."
@@ -3393,14 +3421,14 @@ msgstr "The date the order was last modified, as GMT."
 #: includes/api/class-wc-rest-customers-controller.php:338
 #: includes/api/class-wc-rest-order-refunds-controller.php:384
 #: includes/api/class-wc-rest-order-refunds-controller.php:496
-#: includes/api/class-wc-rest-orders-controller.php:1107
-#: includes/api/class-wc-rest-orders-controller.php:1219
-#: includes/api/class-wc-rest-orders-controller.php:1310
-#: includes/api/class-wc-rest-orders-controller.php:1396
-#: includes/api/class-wc-rest-orders-controller.php:1494
-#: includes/api/class-wc-rest-orders-controller.php:1552
+#: includes/api/class-wc-rest-orders-controller.php:1102
+#: includes/api/class-wc-rest-orders-controller.php:1214
+#: includes/api/class-wc-rest-orders-controller.php:1305
+#: includes/api/class-wc-rest-orders-controller.php:1391
+#: includes/api/class-wc-rest-orders-controller.php:1489
+#: includes/api/class-wc-rest-orders-controller.php:1547
 #: includes/api/class-wc-rest-product-variations-controller.php:929
-#: includes/api/class-wc-rest-products-controller.php:1972
+#: includes/api/class-wc-rest-products-controller.php:1975
 msgid "Meta data."
 msgstr "元数据。"
 
@@ -3412,18 +3440,18 @@ msgstr "创建退款的用户的用户ID."
 #: includes/api/class-wc-rest-customers-controller.php:345
 #: includes/api/class-wc-rest-order-refunds-controller.php:391
 #: includes/api/class-wc-rest-order-refunds-controller.php:503
-#: includes/api/class-wc-rest-orders-controller.php:1114
-#: includes/api/class-wc-rest-orders-controller.php:1226
-#: includes/api/class-wc-rest-orders-controller.php:1317
-#: includes/api/class-wc-rest-orders-controller.php:1403
-#: includes/api/class-wc-rest-orders-controller.php:1501
-#: includes/api/class-wc-rest-orders-controller.php:1559
+#: includes/api/class-wc-rest-orders-controller.php:1109
+#: includes/api/class-wc-rest-orders-controller.php:1221
+#: includes/api/class-wc-rest-orders-controller.php:1312
+#: includes/api/class-wc-rest-orders-controller.php:1398
+#: includes/api/class-wc-rest-orders-controller.php:1496
+#: includes/api/class-wc-rest-orders-controller.php:1554
 #: includes/api/class-wc-rest-product-variations-controller.php:936
-#: includes/api/class-wc-rest-products-controller.php:1979
+#: includes/api/class-wc-rest-products-controller.php:1982
 msgid "Meta ID."
 msgstr "元数据ID."
 
-#: includes/api/class-wc-rest-orders-controller.php:832
+#: includes/api/class-wc-rest-orders-controller.php:827
 #: includes/api/v1/class-wc-rest-orders-controller.php:951
 msgid "Version of WooCommerce which last updated the order."
 msgstr "最后更新该订单的 WooCommerce 版本。"
@@ -3470,7 +3498,7 @@ msgid "The date the customer was last modified, as GMT."
 msgstr "顾客上次修改的日期，时区为GMT。"
 
 #: includes/api/class-wc-rest-customers-controller.php:140
-#: includes/api/class-wc-rest-orders-controller.php:858
+#: includes/api/class-wc-rest-orders-controller.php:853
 #: includes/api/v1/class-wc-rest-orders-controller.php:963
 msgid "The date the order was created, as GMT."
 msgstr "创建订单的日期，时区为GMT。"
@@ -3828,15 +3856,15 @@ msgstr "在 %2$s有  %1$s 个售出"
 msgid "Dimensions (%s)"
 msgstr "Dimensions (%s)"
 
-#: includes/admin/meta-boxes/views/html-variation-admin.php:348
+#: includes/admin/meta-boxes/views/html-variation-admin.php:352
 msgid "Add file"
 msgstr "添加文件"
 
-#: includes/admin/meta-boxes/views/html-variation-admin.php:311
+#: includes/admin/meta-boxes/views/html-variation-admin.php:315
 msgid "Enter an optional description for this variation."
 msgstr "为此变量输入一个可选的描述."
 
-#: includes/admin/meta-boxes/views/html-variation-admin.php:243
+#: includes/admin/meta-boxes/views/html-variation-admin.php:247
 msgid "Length x width x height in decimal form"
 msgstr "以十进制形式的 长 x 宽 x 高"
 
@@ -3961,8 +3989,8 @@ msgstr "%1$s &ndash; 页面 %2$d /%3$d"
 msgid "Tool does not exist."
 msgstr "工具不存在."
 
-#: includes/admin/class-wc-admin-setup-wizard.php:995
-#: includes/admin/class-wc-admin-setup-wizard.php:999
+#: includes/admin/class-wc-admin-setup-wizard.php:993
+#: includes/admin/class-wc-admin-setup-wizard.php:997
 msgid "Safe and secure payments using credit cards or your customer's PayPal account. <a href=\"%s\" target=\"_blank\">Learn more</a>."
 msgstr "让顾客安全的通过PayPal 账户进行支付，<a href=\"%s\" target=\"_blank\">了解更多</a>."
 
@@ -4006,8 +4034,8 @@ msgstr "%1$s / %2$s"
 #: includes/admin/settings/class-wc-settings-general.php:64
 #: includes/api/class-wc-rest-customers-controller.php:224
 #: includes/api/class-wc-rest-customers-controller.php:287
-#: includes/api/class-wc-rest-orders-controller.php:972
-#: includes/api/class-wc-rest-orders-controller.php:1035
+#: includes/api/class-wc-rest-orders-controller.php:967
+#: includes/api/class-wc-rest-orders-controller.php:1030
 msgid "Address line 2"
 msgstr "地址行2"
 
@@ -4018,8 +4046,8 @@ msgstr "地址行2"
 #: includes/admin/settings/class-wc-settings-general.php:55
 #: includes/api/class-wc-rest-customers-controller.php:219
 #: includes/api/class-wc-rest-customers-controller.php:282
-#: includes/api/class-wc-rest-orders-controller.php:967
-#: includes/api/class-wc-rest-orders-controller.php:1030
+#: includes/api/class-wc-rest-orders-controller.php:962
+#: includes/api/class-wc-rest-orders-controller.php:1025
 msgid "Address line 1"
 msgstr "地址行1"
 
@@ -4671,7 +4699,7 @@ msgstr "选定您想添加的物流方式。仅列出了支持该区域的物流
 msgid "Enable shipping debug mode to show matching shipping zones and to bypass shipping rate cache."
 msgstr "启用物流调试模式以显示物流区域并忽略掉缓存的运费设置。"
 
-#: includes/wc-core-functions.php:371
+#: includes/wc-core-functions.php:372
 msgid "North Korean won"
 msgstr "朝鲜圆"
 
@@ -4777,15 +4805,15 @@ msgstr "%s 个产品"
 msgid "Your order is on-hold until we confirm payment has been received. Your order details are shown below for your reference:"
 msgstr "您的订单当前为保留状态，我们需要时间确认您的付款。 您的订单详情如下，以供参考："
 
-#: includes/wc-core-functions.php:417
+#: includes/wc-core-functions.php:418
 msgid "Solomon Islands dollar"
 msgstr "所罗门群岛元"
 
-#: includes/wc-core-functions.php:418
+#: includes/wc-core-functions.php:419
 msgid "Seychellois rupee"
 msgstr "塞席尔卢比"
 
-#: includes/wc-core-functions.php:419
+#: includes/wc-core-functions.php:420
 msgid "Sudanese pound"
 msgstr "苏丹镑"
 
@@ -4793,403 +4821,403 @@ msgstr "苏丹镑"
 msgid "Checkout is not available whilst your cart is empty."
 msgstr "购物车为空时无法结算。"
 
-#: includes/wc-core-functions.php:1246
+#: includes/wc-core-functions.php:1248
 msgid "American Express"
 msgstr "美国运通卡"
 
-#: includes/wc-core-functions.php:1247
+#: includes/wc-core-functions.php:1249
 msgid "Diners"
 msgstr "大莱卡"
 
-#: includes/wc-core-functions.php:1248
+#: includes/wc-core-functions.php:1250
 msgid "JCB"
 msgstr "日本JCB"
 
-#: includes/wc-core-functions.php:422
+#: includes/wc-core-functions.php:423
 msgid "Saint Helena pound"
 msgstr "圣赫勒拿镑"
 
-#: includes/wc-core-functions.php:423
+#: includes/wc-core-functions.php:424
 msgid "Sierra Leonean leone"
 msgstr "塞拉利昂利昂"
 
-#: includes/wc-core-functions.php:424
+#: includes/wc-core-functions.php:425
 msgid "Somali shilling"
 msgstr "索马里先令"
 
-#: includes/wc-core-functions.php:425
+#: includes/wc-core-functions.php:426
 msgid "Surinamese dollar"
 msgstr "苏里南元"
 
-#: includes/wc-core-functions.php:426
+#: includes/wc-core-functions.php:427
 msgid "South Sudanese pound"
 msgstr "南苏丹镑"
 
-#: includes/wc-core-functions.php:427
+#: includes/wc-core-functions.php:428
 msgid "S&atilde;o Tom&eacute; and Pr&iacute;ncipe dobra"
 msgstr "圣多美和普林西比多布拉"
 
-#: includes/wc-core-functions.php:428
+#: includes/wc-core-functions.php:429
 msgid "Syrian pound"
 msgstr "叙利亚镑"
 
-#: includes/wc-core-functions.php:429
+#: includes/wc-core-functions.php:430
 msgid "Swazi lilangeni"
 msgstr "史瓦济兰里兰吉尼"
 
-#: includes/wc-core-functions.php:431
+#: includes/wc-core-functions.php:432
 msgid "Tajikistani somoni"
 msgstr "塔吉克索莫尼"
 
-#: includes/wc-core-functions.php:432
+#: includes/wc-core-functions.php:433
 msgid "Turkmenistan manat"
 msgstr "土库曼马纳特"
 
-#: includes/wc-core-functions.php:433
+#: includes/wc-core-functions.php:434
 msgid "Tunisian dinar"
 msgstr "突尼斯第纳尔"
 
-#: includes/wc-core-functions.php:434
+#: includes/wc-core-functions.php:435
 msgid "Tongan pa&#x2bb;anga"
 msgstr "汤加潘加"
 
-#: includes/wc-core-functions.php:436
+#: includes/wc-core-functions.php:437
 msgid "Trinidad and Tobago dollar"
 msgstr "特立尼达和多巴哥元"
 
-#: includes/wc-core-functions.php:437
+#: includes/wc-core-functions.php:438
 msgid "New Taiwan dollar"
 msgstr "新台币"
 
-#: includes/wc-core-functions.php:438
+#: includes/wc-core-functions.php:439
 msgid "Tanzanian shilling"
 msgstr "坦桑尼亚先令"
 
-#: includes/wc-core-functions.php:440
+#: includes/wc-core-functions.php:441
 msgid "Ugandan shilling"
 msgstr "乌干达先令"
 
-#: includes/wc-core-functions.php:442
+#: includes/wc-core-functions.php:443
 msgid "Uruguayan peso"
 msgstr "乌拉圭比索"
 
-#: includes/wc-core-functions.php:441
+#: includes/wc-core-functions.php:442
 msgid "United States dollar"
 msgstr "美元"
 
-#: includes/wc-core-functions.php:443
+#: includes/wc-core-functions.php:444
 msgid "Uzbekistani som"
 msgstr "乌兹别克索姆"
 
-#: includes/wc-core-functions.php:444
+#: includes/wc-core-functions.php:445
 msgid "Venezuelan bol&iacute;var"
 msgstr "委内瑞拉玻利瓦尔"
 
-#: includes/wc-core-functions.php:445
+#: includes/wc-core-functions.php:446
 msgid "Vietnamese &#x111;&#x1ed3;ng"
 msgstr "越南盾"
 
-#: includes/wc-core-functions.php:446
+#: includes/wc-core-functions.php:447
 msgid "Vanuatu vatu"
 msgstr "瓦努阿图瓦图"
 
-#: includes/wc-core-functions.php:447
+#: includes/wc-core-functions.php:448
 msgid "Samoan t&#x101;l&#x101;"
 msgstr "萨摩亚塔拉"
 
-#: includes/wc-core-functions.php:448
+#: includes/wc-core-functions.php:449
 msgid "Central African CFA franc"
 msgstr "中非法郎"
 
-#: includes/wc-core-functions.php:449
+#: includes/wc-core-functions.php:450
 msgid "East Caribbean dollar"
 msgstr "东加勒比元"
 
-#: includes/wc-core-functions.php:450
+#: includes/wc-core-functions.php:451
 msgid "West African CFA franc"
 msgstr "西非法郎"
 
-#: includes/wc-core-functions.php:451
+#: includes/wc-core-functions.php:452
 msgid "CFP franc"
 msgstr "太平洋金融共同体法郎"
 
-#: includes/wc-core-functions.php:452
+#: includes/wc-core-functions.php:453
 msgid "Yemeni rial"
 msgstr "也门里亚尔"
 
-#: includes/wc-core-functions.php:454
+#: includes/wc-core-functions.php:455
 msgid "Zambian kwacha"
 msgstr "赞比亚克瓦查"
 
-#: includes/wc-core-functions.php:1243
+#: includes/wc-core-functions.php:1245
 msgid "MasterCard"
 msgstr "万事达卡"
 
-#: includes/wc-core-functions.php:1245
+#: includes/wc-core-functions.php:1247
 msgid "Discover"
 msgstr "Discover"
 
-#: includes/wc-core-functions.php:1244
+#: includes/wc-core-functions.php:1246
 msgid "Visa"
 msgstr "Visa"
 
-#: includes/wc-core-functions.php:395
+#: includes/wc-core-functions.php:396
 msgid "Mozambican metical"
 msgstr "莫桑比克梅蒂卡尔"
 
-#: includes/wc-core-functions.php:396
+#: includes/wc-core-functions.php:397
 msgid "Namibian dollar"
 msgstr "纳米比亚元"
 
-#: includes/wc-core-functions.php:398
+#: includes/wc-core-functions.php:399
 msgid "Nicaraguan c&oacute;rdoba"
 msgstr "尼加拉瓜科多巴"
 
-#: includes/wc-core-functions.php:400
+#: includes/wc-core-functions.php:401
 msgid "Nepalese rupee"
 msgstr "尼泊尔卢比"
 
-#: includes/wc-core-functions.php:402
+#: includes/wc-core-functions.php:403
 msgid "Omani rial"
 msgstr "阿曼里亚尔"
 
-#: includes/wc-core-functions.php:403
+#: includes/wc-core-functions.php:404
 msgid "Panamanian balboa"
 msgstr "巴拿马巴波亚"
 
-#: includes/wc-core-functions.php:404
+#: includes/wc-core-functions.php:405
 msgid "Peruvian nuevo sol"
 msgstr "秘鲁索尔"
 
-#: includes/wc-core-functions.php:405
+#: includes/wc-core-functions.php:406
 msgid "Papua New Guinean kina"
 msgstr "巴布亚新几内亚基那"
 
-#: includes/wc-core-functions.php:408
+#: includes/wc-core-functions.php:409
 msgid "Polish z&#x142;oty"
 msgstr "波兰兹罗提"
 
-#: includes/wc-core-functions.php:409
+#: includes/wc-core-functions.php:410
 msgid "Transnistrian ruble"
 msgstr "德涅斯特河沿岸卢布"
 
-#: includes/wc-core-functions.php:410
+#: includes/wc-core-functions.php:411
 msgid "Paraguayan guaran&iacute;"
 msgstr "巴拉圭瓜拉尼"
 
-#: includes/wc-core-functions.php:411
+#: includes/wc-core-functions.php:412
 msgid "Qatari riyal"
 msgstr "卡塔尔里亚尔"
 
-#: includes/wc-core-functions.php:413
+#: includes/wc-core-functions.php:414
 msgid "Serbian dinar"
 msgstr "塞尔维亚第纳尔"
 
-#: includes/wc-core-functions.php:415
+#: includes/wc-core-functions.php:416
 msgid "Rwandan franc"
 msgstr "卢旺达法郎"
 
-#: includes/wc-core-functions.php:353
+#: includes/wc-core-functions.php:354
 msgid "Haitian gourde"
 msgstr "海地古德"
 
-#: includes/wc-core-functions.php:356
+#: includes/wc-core-functions.php:357
 msgid "Israeli new shekel"
 msgstr "以色列新谢克尔"
 
-#: includes/wc-core-functions.php:357
+#: includes/wc-core-functions.php:358
 msgid "Manx pound"
 msgstr "马恩岛镑"
 
-#: includes/wc-core-functions.php:359
+#: includes/wc-core-functions.php:360
 msgid "Iraqi dinar"
 msgstr "伊拉克第纳尔"
 
-#: includes/wc-core-functions.php:360
+#: includes/wc-core-functions.php:361
 msgid "Iranian rial"
 msgstr "伊朗里亚尔"
 
-#: includes/wc-core-functions.php:362
+#: includes/wc-core-functions.php:363
 msgid "Icelandic kr&oacute;na"
 msgstr "冰岛克朗"
 
-#: includes/wc-core-functions.php:363
+#: includes/wc-core-functions.php:364
 msgid "Jersey pound"
 msgstr "泽西镑"
 
-#: includes/wc-core-functions.php:364
+#: includes/wc-core-functions.php:365
 msgid "Jamaican dollar"
 msgstr "牙买加元"
 
-#: includes/wc-core-functions.php:365
+#: includes/wc-core-functions.php:366
 msgid "Jordanian dinar"
 msgstr "约旦第纳尔"
 
-#: includes/wc-core-functions.php:368
+#: includes/wc-core-functions.php:369
 msgid "Kyrgyzstani som"
 msgstr "吉尔吉斯斯坦索姆"
 
-#: includes/wc-core-functions.php:369
+#: includes/wc-core-functions.php:370
 msgid "Cambodian riel"
 msgstr "柬埔寨瑞尔"
 
-#: includes/wc-core-functions.php:370
+#: includes/wc-core-functions.php:371
 msgid "Comorian franc"
 msgstr "葛摩法郎"
 
-#: includes/wc-core-functions.php:373
+#: includes/wc-core-functions.php:374
 msgid "Kuwaiti dinar"
 msgstr "科威特第纳尔"
 
-#: includes/wc-core-functions.php:374
+#: includes/wc-core-functions.php:375
 msgid "Cayman Islands dollar"
 msgstr "开曼群岛元"
 
-#: includes/wc-core-functions.php:375
+#: includes/wc-core-functions.php:376
 msgid "Kazakhstani tenge"
 msgstr "哈萨克斯坦坚戈"
 
-#: includes/wc-core-functions.php:377
+#: includes/wc-core-functions.php:378
 msgid "Lebanese pound"
 msgstr "黎巴嫩镑"
 
-#: includes/wc-core-functions.php:378
+#: includes/wc-core-functions.php:379
 msgid "Sri Lankan rupee"
 msgstr "斯里兰卡卢比"
 
-#: includes/wc-core-functions.php:379
+#: includes/wc-core-functions.php:380
 msgid "Liberian dollar"
 msgstr "利比里亚元"
 
-#: includes/wc-core-functions.php:380
+#: includes/wc-core-functions.php:381
 msgid "Lesotho loti"
 msgstr "莱索托洛蒂"
 
-#: includes/wc-core-functions.php:381
+#: includes/wc-core-functions.php:382
 msgid "Libyan dinar"
 msgstr "利比亚第纳尔"
 
-#: includes/wc-core-functions.php:382
+#: includes/wc-core-functions.php:383
 msgid "Moroccan dirham"
 msgstr "摩洛哥迪拉姆"
 
-#: includes/wc-core-functions.php:383
+#: includes/wc-core-functions.php:384
 msgid "Moldovan leu"
 msgstr "摩尔多瓦列伊"
 
-#: includes/wc-core-functions.php:384
+#: includes/wc-core-functions.php:385
 msgid "Malagasy ariary"
 msgstr "马达加斯加阿里亚里"
 
-#: includes/wc-core-functions.php:385
+#: includes/wc-core-functions.php:386
 msgid "Macedonian denar"
 msgstr "马其顿第纳尔"
 
-#: includes/wc-core-functions.php:386
+#: includes/wc-core-functions.php:387
 msgid "Burmese kyat"
 msgstr "缅元"
 
-#: includes/wc-core-functions.php:387
+#: includes/wc-core-functions.php:388
 msgid "Mongolian t&ouml;gr&ouml;g"
 msgstr "蒙古国图格里克"
 
-#: includes/wc-core-functions.php:388
+#: includes/wc-core-functions.php:389
 msgid "Macanese pataca"
 msgstr "澳门元"
 
-#: includes/wc-core-functions.php:389
+#: includes/wc-core-functions.php:390
 msgid "Mauritanian ouguiya"
 msgstr "毛里塔尼亚乌吉亚"
 
-#: includes/wc-core-functions.php:390
+#: includes/wc-core-functions.php:391
 msgid "Mauritian rupee"
 msgstr "毛里求斯 卢比"
 
-#: includes/wc-core-functions.php:391
+#: includes/wc-core-functions.php:392
 msgid "Maldivian rufiyaa"
 msgstr "马尔地夫 拉菲亚"
 
-#: includes/wc-core-functions.php:392
+#: includes/wc-core-functions.php:393
 msgid "Malawian kwacha"
 msgstr "马拉维克 瓦查"
 
-#: includes/wc-core-functions.php:326
+#: includes/wc-core-functions.php:327
 msgid "Costa Rican col&oacute;n"
 msgstr "哥斯达黎加 科朗"
 
-#: includes/wc-core-functions.php:327
+#: includes/wc-core-functions.php:328
 msgid "Cuban convertible peso"
 msgstr "古巴可兑换比索"
 
-#: includes/wc-core-functions.php:328
+#: includes/wc-core-functions.php:329
 msgid "Cuban peso"
 msgstr "古巴比索"
 
-#: includes/wc-core-functions.php:329
+#: includes/wc-core-functions.php:330
 msgid "Cape Verdean escudo"
 msgstr "佛得角 埃斯库多"
 
-#: includes/wc-core-functions.php:331
+#: includes/wc-core-functions.php:332
 msgid "Djiboutian franc"
 msgstr "吉布提 法郎"
 
-#: includes/wc-core-functions.php:334
+#: includes/wc-core-functions.php:335
 msgid "Algerian dinar"
 msgstr "阿尔及利亚 第纳尔"
 
-#: includes/wc-core-functions.php:336
+#: includes/wc-core-functions.php:337
 msgid "Eritrean nakfa"
 msgstr "厄立特里亚 纳克法"
 
-#: includes/wc-core-functions.php:337
+#: includes/wc-core-functions.php:338
 msgid "Ethiopian birr"
 msgstr "埃塞俄比亚 比尔"
 
-#: includes/wc-core-functions.php:338
+#: includes/wc-core-functions.php:339
 msgid "Euro"
 msgstr "欧元"
 
-#: includes/wc-core-functions.php:339
+#: includes/wc-core-functions.php:340
 msgid "Fijian dollar"
 msgstr "斐济 元"
 
-#: includes/wc-core-functions.php:340
+#: includes/wc-core-functions.php:341
 msgid "Falkland Islands pound"
 msgstr "福克兰群岛 镑"
 
-#: includes/wc-core-functions.php:342
+#: includes/wc-core-functions.php:343
 msgid "Georgian lari"
 msgstr "格鲁吉亚 拉里"
 
-#: includes/wc-core-functions.php:343
+#: includes/wc-core-functions.php:344
 msgid "Guernsey pound"
 msgstr "根西岛 镑"
 
-#: includes/wc-core-functions.php:344
+#: includes/wc-core-functions.php:345
 msgid "Ghana cedi"
 msgstr "加纳 塞地"
 
-#: includes/wc-core-functions.php:345
+#: includes/wc-core-functions.php:346
 msgid "Gibraltar pound"
 msgstr "直布罗陀 镑"
 
-#: includes/wc-core-functions.php:346
+#: includes/wc-core-functions.php:347
 msgid "Gambian dalasi"
 msgstr "冈比亚 达拉西"
 
-#: includes/wc-core-functions.php:347
+#: includes/wc-core-functions.php:348
 msgid "Guinean franc"
 msgstr "几内亚 法郎"
 
-#: includes/wc-core-functions.php:348
+#: includes/wc-core-functions.php:349
 msgid "Guatemalan quetzal"
 msgstr "危地马拉 格查尔"
 
-#: includes/wc-core-functions.php:349
+#: includes/wc-core-functions.php:350
 msgid "Guyanese dollar"
 msgstr "圭亚那 元"
 
-#: includes/wc-core-functions.php:351
+#: includes/wc-core-functions.php:352
 msgid "Honduran lempira"
 msgstr "洪都拉斯 伦皮拉"
 
@@ -5229,15 +5257,15 @@ msgstr "不丹 努尔特鲁姆"
 msgid "Botswana pula"
 msgstr "博茨瓦纳 普拉"
 
-#: includes/wc-core-functions.php:318
+#: includes/wc-core-functions.php:319
 msgid "Belarusian ruble"
 msgstr "白俄罗斯 卢布"
 
-#: includes/wc-core-functions.php:319
+#: includes/wc-core-functions.php:320
 msgid "Belize dollar"
 msgstr "伯利兹 元"
 
-#: includes/wc-core-functions.php:321
+#: includes/wc-core-functions.php:322
 msgid "Congolese franc"
 msgstr "刚果 法郎"
 
@@ -5755,51 +5783,51 @@ msgid "This is an order notification sent to customers containing order details 
 msgstr "当订单状态为保留时发给顾客的订单状态提醒。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:433
-#: includes/api/class-wc-rest-orders-controller.php:1156
+#: includes/api/class-wc-rest-orders-controller.php:1151
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:397
 #: includes/api/v1/class-wc-rest-orders-controller.php:1230
 msgid "Variation ID, if applicable."
 msgstr "可变ID，若适用。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:438
-#: includes/api/class-wc-rest-orders-controller.php:1161
+#: includes/api/class-wc-rest-orders-controller.php:1156
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:402
 #: includes/api/v1/class-wc-rest-orders-controller.php:1235
 msgid "Quantity ordered."
 msgstr "订购数量。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:443
-#: includes/api/class-wc-rest-orders-controller.php:1166
+#: includes/api/class-wc-rest-orders-controller.php:1161
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:407
 #: includes/api/v1/class-wc-rest-orders-controller.php:1240
 msgid "Tax class of product."
 msgstr "产品的税种。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:528
-#: includes/api/class-wc-rest-orders-controller.php:1251
+#: includes/api/class-wc-rest-orders-controller.php:1246
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:413
 #: includes/api/v1/class-wc-rest-orders-controller.php:1246
 msgid "Product price."
 msgstr "产品价格。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:448
-#: includes/api/class-wc-rest-orders-controller.php:1171
+#: includes/api/class-wc-rest-orders-controller.php:1166
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:419
 #: includes/api/v1/class-wc-rest-orders-controller.php:1252
 msgid "Line subtotal (before discounts)."
 msgstr "行间小计 （折扣前）。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:453
-#: includes/api/class-wc-rest-orders-controller.php:1176
+#: includes/api/class-wc-rest-orders-controller.php:1171
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:424
 #: includes/api/v1/class-wc-rest-orders-controller.php:1257
 msgid "Line subtotal tax (before discounts)."
 msgstr "行间税小计 （折扣前）。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:459
-#: includes/api/class-wc-rest-orders-controller.php:1182
-#: includes/api/class-wc-rest-orders-controller.php:1362
-#: includes/api/class-wc-rest-orders-controller.php:1454
+#: includes/api/class-wc-rest-orders-controller.php:1177
+#: includes/api/class-wc-rest-orders-controller.php:1357
+#: includes/api/class-wc-rest-orders-controller.php:1449
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:429
 #: includes/api/v1/class-wc-rest-orders-controller.php:1262
 #: includes/api/v1/class-wc-rest-orders-controller.php:1409
@@ -5808,9 +5836,9 @@ msgid "Line total (after discounts)."
 msgstr "行间总计 （折扣后）。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:464
-#: includes/api/class-wc-rest-orders-controller.php:1187
-#: includes/api/class-wc-rest-orders-controller.php:1367
-#: includes/api/class-wc-rest-orders-controller.php:1459
+#: includes/api/class-wc-rest-orders-controller.php:1182
+#: includes/api/class-wc-rest-orders-controller.php:1362
+#: includes/api/class-wc-rest-orders-controller.php:1454
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:434
 #: includes/api/v1/class-wc-rest-orders-controller.php:1267
 #: includes/api/v1/class-wc-rest-orders-controller.php:1414
@@ -5819,9 +5847,9 @@ msgid "Line total tax (after discounts)."
 msgstr "行间税总计 （折扣后）。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:470
-#: includes/api/class-wc-rest-orders-controller.php:1193
-#: includes/api/class-wc-rest-orders-controller.php:1373
-#: includes/api/class-wc-rest-orders-controller.php:1465
+#: includes/api/class-wc-rest-orders-controller.php:1188
+#: includes/api/class-wc-rest-orders-controller.php:1368
+#: includes/api/class-wc-rest-orders-controller.php:1460
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:439
 #: includes/api/v1/class-wc-rest-orders-controller.php:1272
 #: includes/api/v1/class-wc-rest-orders-controller.php:1420
@@ -5830,8 +5858,8 @@ msgid "Line taxes."
 msgstr "行间税。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:488
-#: includes/api/class-wc-rest-orders-controller.php:1211
-#: includes/api/class-wc-rest-orders-controller.php:1485
+#: includes/api/class-wc-rest-orders-controller.php:1206
+#: includes/api/class-wc-rest-orders-controller.php:1480
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:459
 #: includes/api/v1/class-wc-rest-orders-controller.php:1292
 #: includes/api/v1/class-wc-rest-orders-controller.php:1505
@@ -5848,7 +5876,7 @@ msgstr "产品无效。"
 msgid "Product quantity must be a positive float."
 msgstr "产品数量必须为正浮点数。"
 
-#: includes/api/class-wc-rest-orders-controller.php:838
+#: includes/api/class-wc-rest-orders-controller.php:833
 #: includes/api/v1/class-wc-rest-orders-controller.php:925
 msgid "Order status."
 msgstr "订单状态。"
@@ -5876,9 +5904,9 @@ msgid "Shows if the reviewer bought the product or not."
 msgstr "显示评价人是否购买了该产品。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:483
-#: includes/api/class-wc-rest-orders-controller.php:1206
-#: includes/api/class-wc-rest-orders-controller.php:1387
-#: includes/api/class-wc-rest-orders-controller.php:1479
+#: includes/api/class-wc-rest-orders-controller.php:1201
+#: includes/api/class-wc-rest-orders-controller.php:1382
+#: includes/api/class-wc-rest-orders-controller.php:1474
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:453
 #: includes/api/v1/class-wc-rest-orders-controller.php:1286
 #: includes/api/v1/class-wc-rest-orders-controller.php:1434
@@ -5890,14 +5918,14 @@ msgstr "税金总计。"
 #: includes/api/class-wc-rest-customers-controller.php:351
 #: includes/api/class-wc-rest-order-refunds-controller.php:397
 #: includes/api/class-wc-rest-order-refunds-controller.php:509
-#: includes/api/class-wc-rest-orders-controller.php:1120
-#: includes/api/class-wc-rest-orders-controller.php:1232
-#: includes/api/class-wc-rest-orders-controller.php:1323
-#: includes/api/class-wc-rest-orders-controller.php:1409
-#: includes/api/class-wc-rest-orders-controller.php:1507
-#: includes/api/class-wc-rest-orders-controller.php:1565
+#: includes/api/class-wc-rest-orders-controller.php:1115
+#: includes/api/class-wc-rest-orders-controller.php:1227
+#: includes/api/class-wc-rest-orders-controller.php:1318
+#: includes/api/class-wc-rest-orders-controller.php:1404
+#: includes/api/class-wc-rest-orders-controller.php:1502
+#: includes/api/class-wc-rest-orders-controller.php:1560
 #: includes/api/class-wc-rest-product-variations-controller.php:942
-#: includes/api/class-wc-rest-products-controller.php:1985
+#: includes/api/class-wc-rest-products-controller.php:1988
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:476
 #: includes/api/v1/class-wc-rest-orders-controller.php:1309
 msgid "Meta key."
@@ -5912,20 +5940,20 @@ msgstr "元数据的显示标签。"
 #: includes/api/class-wc-rest-customers-controller.php:356
 #: includes/api/class-wc-rest-order-refunds-controller.php:402
 #: includes/api/class-wc-rest-order-refunds-controller.php:514
-#: includes/api/class-wc-rest-orders-controller.php:1125
-#: includes/api/class-wc-rest-orders-controller.php:1237
-#: includes/api/class-wc-rest-orders-controller.php:1328
-#: includes/api/class-wc-rest-orders-controller.php:1414
-#: includes/api/class-wc-rest-orders-controller.php:1512
-#: includes/api/class-wc-rest-orders-controller.php:1570
+#: includes/api/class-wc-rest-orders-controller.php:1120
+#: includes/api/class-wc-rest-orders-controller.php:1232
+#: includes/api/class-wc-rest-orders-controller.php:1323
+#: includes/api/class-wc-rest-orders-controller.php:1409
+#: includes/api/class-wc-rest-orders-controller.php:1507
+#: includes/api/class-wc-rest-orders-controller.php:1565
 #: includes/api/class-wc-rest-product-variations-controller.php:947
-#: includes/api/class-wc-rest-products-controller.php:1990
+#: includes/api/class-wc-rest-products-controller.php:1993
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:488
 #: includes/api/v1/class-wc-rest-orders-controller.php:1321
 msgid "Meta value."
 msgstr "元数据的值。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1651
+#: includes/api/class-wc-rest-orders-controller.php:1646
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:515
 #: includes/api/v1/class-wc-rest-orders-controller.php:1613
 msgid "Number of decimal points to use in each resource."
@@ -5957,7 +5985,7 @@ msgstr "评价人的邮件。"
 msgid "Menu order, used to custom sort the resource."
 msgstr "目录顺序，用于自定义资源的排序"
 
-#: includes/api/class-wc-rest-orders-controller.php:650
+#: includes/api/class-wc-rest-orders-controller.php:651
 #: includes/api/legacy/v2/class-wc-api-orders.php:1043
 #: includes/api/legacy/v3/class-wc-api-orders.php:1090
 #: includes/api/v1/class-wc-rest-orders-controller.php:688
@@ -5969,65 +5997,65 @@ msgstr "配送方式ID是必需的。"
 msgid "Shipping total must be a positive amount."
 msgstr "配送费用总额应该是一个正数。"
 
-#: includes/api/class-wc-rest-orders-controller.php:698
+#: includes/api/class-wc-rest-orders-controller.php:699
 #: includes/api/legacy/v2/class-wc-api-orders.php:1166
 #: includes/api/legacy/v3/class-wc-api-orders.php:1213
 #: includes/api/v1/class-wc-rest-orders-controller.php:734
 msgid "Coupon code is required."
 msgstr "优惠码是必需的。"
 
-#: includes/api/class-wc-rest-orders-controller.php:852
+#: includes/api/class-wc-rest-orders-controller.php:847
 msgid "The date the order was created, in the site's timezone."
 msgstr "订单的创建日期,以网站的时区表示。"
 
-#: includes/api/class-wc-rest-orders-controller.php:864
+#: includes/api/class-wc-rest-orders-controller.php:859
 msgid "The date the order was last modified, in the site's timezone."
 msgstr "订单的最后修改日期，以网站的时区表示。"
 
-#: includes/api/class-wc-rest-orders-controller.php:924
+#: includes/api/class-wc-rest-orders-controller.php:919
 #: includes/api/v1/class-wc-rest-orders-controller.php:975
 msgid "User ID who owns the order. 0 for guests."
 msgstr "此订单的用户ID，0表示是访客。"
 
-#: includes/api/class-wc-rest-orders-controller.php:876
+#: includes/api/class-wc-rest-orders-controller.php:871
 #: includes/api/v1/class-wc-rest-orders-controller.php:981
 msgid "Total discount amount for the order."
 msgstr "此订单的折扣总金额。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1010
+#: includes/api/class-wc-rest-orders-controller.php:1005
 #: includes/api/v1/class-wc-rest-orders-controller.php:1086
 msgid "Shipping address."
 msgstr "配送地址。"
 
-#: includes/api/class-wc-rest-orders-controller.php:992
-#: includes/api/class-wc-rest-orders-controller.php:1055
+#: includes/api/class-wc-rest-orders-controller.php:987
+#: includes/api/class-wc-rest-orders-controller.php:1050
 #: includes/api/v1/class-wc-rest-orders-controller.php:1068
 #: includes/api/v1/class-wc-rest-orders-controller.php:1131
 msgid "Country code in ISO 3166-1 alpha-2 format."
 msgstr "ISO 3166-1 两字母格式的国家代码。"
 
-#: includes/api/class-wc-rest-orders-controller.php:947
+#: includes/api/class-wc-rest-orders-controller.php:942
 #: includes/api/v1/class-wc-rest-orders-controller.php:1023
 msgid "Billing address."
 msgstr "账单地址。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1601
+#: includes/api/class-wc-rest-orders-controller.php:1596
 #: includes/api/v1/class-wc-rest-orders-controller.php:1569
 msgid "Refund total."
 msgstr "退款总计。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1589
+#: includes/api/class-wc-rest-orders-controller.php:1584
 #: includes/api/v1/class-wc-rest-orders-controller.php:1557
 #: includes/cli/class-wc-cli-runner.php:104
 msgid "Refund ID."
 msgstr "退款ID。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1581
+#: includes/api/class-wc-rest-orders-controller.php:1576
 #: includes/api/v1/class-wc-rest-orders-controller.php:1549
 msgid "List of refunds."
 msgstr "退款列表。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1595
+#: includes/api/class-wc-rest-orders-controller.php:1590
 #: includes/api/v1/class-wc-rest-orders-controller.php:1563
 msgid "Refund reason."
 msgstr "退款原因。"
@@ -6061,39 +6089,39 @@ msgstr "变量体积."
 msgid "Variation weight (%s)."
 msgstr "变量重量 (%s)."
 
-#: includes/api/class-wc-rest-orders-controller.php:1062
+#: includes/api/class-wc-rest-orders-controller.php:1057
 #: includes/api/v1/class-wc-rest-orders-controller.php:1138
 msgid "Payment method ID."
 msgstr "支付方式 ID。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1067
+#: includes/api/class-wc-rest-orders-controller.php:1062
 #: includes/api/v1/class-wc-rest-orders-controller.php:1143
 msgid "Payment method title."
 msgstr "支付方式标题。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1352
+#: includes/api/class-wc-rest-orders-controller.php:1347
 #: includes/api/v1/class-wc-rest-orders-controller.php:1399
 msgid "Shipping method name."
 msgstr "配送方式名称。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1357
+#: includes/api/class-wc-rest-orders-controller.php:1352
 #: includes/api/class-wc-rest-shipping-zone-methods-controller.php:49
 #: includes/api/class-wc-rest-shipping-zone-methods-controller.php:462
 #: includes/api/v1/class-wc-rest-orders-controller.php:1404
 msgid "Shipping method ID."
 msgstr "配送方式ID。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1339
+#: includes/api/class-wc-rest-orders-controller.php:1334
 #: includes/api/v1/class-wc-rest-orders-controller.php:1386
 msgid "Shipping lines data."
 msgstr "配送状态数据。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1438
+#: includes/api/class-wc-rest-orders-controller.php:1433
 #: includes/api/v1/class-wc-rest-orders-controller.php:1459
 msgid "Fee name."
 msgstr "费用名称。"
 
-#: includes/api/class-wc-rest-orders-controller.php:674
+#: includes/api/class-wc-rest-orders-controller.php:675
 #: includes/api/v1/class-wc-rest-orders-controller.php:711
 msgid "Fee name is required."
 msgstr "费用名称必填。"
@@ -6113,7 +6141,7 @@ msgstr "未能更新费用，请重试。"
 msgid "Cannot update coupon, try again."
 msgstr "未能更新优惠券，请重试。"
 
-#: includes/api/class-wc-rest-orders-controller.php:737
+#: includes/api/class-wc-rest-orders-controller.php:736
 #: includes/api/legacy/v2/class-wc-api-orders.php:851
 #: includes/api/legacy/v3/class-wc-api-orders.php:897
 #: includes/api/v1/class-wc-rest-orders-controller.php:772
@@ -6125,42 +6153,42 @@ msgstr "所提供的物品ID与此订单无关。"
 msgid "Fee tax class is required when fee is taxable."
 msgstr "如果费用是需要计税的那么费用的税类型是必需的。"
 
-#: includes/api/class-wc-rest-orders-controller.php:809
+#: includes/api/class-wc-rest-orders-controller.php:804
 #: includes/api/v1/class-wc-rest-orders-controller.php:920
 msgid "Parent order ID."
 msgstr "父级订单ID。"
 
-#: includes/api/class-wc-rest-orders-controller.php:845
+#: includes/api/class-wc-rest-orders-controller.php:840
 #: includes/api/v1/class-wc-rest-orders-controller.php:944
 msgid "Currency the order was created with, in ISO format."
 msgstr "此订单使用的币种，使用ISO格式。"
 
-#: includes/api/class-wc-rest-orders-controller.php:882
+#: includes/api/class-wc-rest-orders-controller.php:877
 #: includes/api/v1/class-wc-rest-orders-controller.php:987
 msgid "Total discount tax amount for the order."
 msgstr "此订单的总计折扣税的金额。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1072
+#: includes/api/class-wc-rest-orders-controller.php:1067
 #: includes/api/v1/class-wc-rest-orders-controller.php:1154
 msgid "Unique transaction ID."
 msgstr "唯一的交易ID。"
 
-#: includes/api/class-wc-rest-orders-controller.php:826
+#: includes/api/class-wc-rest-orders-controller.php:821
 #: includes/api/v1/class-wc-rest-orders-controller.php:1171
 msgid "Shows where the order was created."
 msgstr "显示该订单是在哪里创建的。"
 
-#: includes/api/class-wc-rest-orders-controller.php:942
+#: includes/api/class-wc-rest-orders-controller.php:937
 #: includes/api/v1/class-wc-rest-orders-controller.php:1177
 msgid "Note left by customer during checkout."
 msgstr "顾客结算时的备注信息。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1541
+#: includes/api/class-wc-rest-orders-controller.php:1536
 #: includes/api/v1/class-wc-rest-orders-controller.php:1535
 msgid "Discount total."
 msgstr "折扣总额"
 
-#: includes/api/class-wc-rest-orders-controller.php:1546
+#: includes/api/class-wc-rest-orders-controller.php:1541
 #: includes/api/v1/class-wc-rest-orders-controller.php:1540
 msgid "Discount total tax."
 msgstr "折扣税总额"
@@ -6245,79 +6273,79 @@ msgstr "产品的类型。"
 msgid "Product description."
 msgstr "产品的描述。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1089
+#: includes/api/class-wc-rest-orders-controller.php:1084
 #: includes/api/v1/class-wc-rest-orders-controller.php:1182
 msgid "The date the order was completed, in the site's timezone."
 msgstr "订单完成日期，以网站所在时区表示。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1101
+#: includes/api/class-wc-rest-orders-controller.php:1096
 #: includes/api/v1/class-wc-rest-orders-controller.php:1194
 msgid "MD5 hash of cart items to ensure orders are not modified."
 msgstr "用于确保订单未被修改的购物车物品的MD5 Hash。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1260
+#: includes/api/class-wc-rest-orders-controller.php:1255
 #: includes/api/v1/class-wc-rest-orders-controller.php:1333
 msgid "Tax lines data."
 msgstr "税的数据。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1274
+#: includes/api/class-wc-rest-orders-controller.php:1269
 #: includes/api/v1/class-wc-rest-orders-controller.php:1347
 msgid "Tax rate code."
 msgstr "税率代码。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1425
+#: includes/api/class-wc-rest-orders-controller.php:1420
 #: includes/api/v1/class-wc-rest-orders-controller.php:1446
 msgid "Fee lines data."
 msgstr "费用数据。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1304
+#: includes/api/class-wc-rest-orders-controller.php:1299
 #: includes/api/v1/class-wc-rest-orders-controller.php:1377
 msgid "Shipping tax total."
 msgstr "运费税总额。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1286
+#: includes/api/class-wc-rest-orders-controller.php:1281
 #: includes/api/v1/class-wc-rest-orders-controller.php:1359
 msgid "Tax rate label."
 msgstr "税率标签。"
 
-#: includes/api/class-wc-rest-orders-controller.php:900
+#: includes/api/class-wc-rest-orders-controller.php:895
 #: includes/api/v1/class-wc-rest-orders-controller.php:1005
 msgid "Sum of line item taxes only."
 msgstr "仅物品税总额。"
 
-#: includes/api/class-wc-rest-orders-controller.php:888
+#: includes/api/class-wc-rest-orders-controller.php:883
 #: includes/api/v1/class-wc-rest-orders-controller.php:993
 msgid "Total shipping amount for the order."
 msgstr "此订单的运费金额。"
 
-#: includes/api/class-wc-rest-orders-controller.php:894
+#: includes/api/class-wc-rest-orders-controller.php:889
 #: includes/api/v1/class-wc-rest-orders-controller.php:999
 msgid "Total shipping tax amount for the order."
 msgstr "此订单的运费税金额。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1292
+#: includes/api/class-wc-rest-orders-controller.php:1287
 #: includes/api/v1/class-wc-rest-orders-controller.php:1365
 msgid "Show if is a compound tax rate."
 msgstr "显示如果是一个完整的税率。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1610
+#: includes/api/class-wc-rest-orders-controller.php:1605
 #: includes/api/v1/class-wc-rest-orders-controller.php:1148
 msgid "Define if the order is paid. It will set the status to processing and reduce stock items."
 msgstr "定义订单是否已被支付，它的状态将会被设置为正在处理并减去相应的库存。"
 
-#: includes/api/class-wc-rest-orders-controller.php:912
+#: includes/api/class-wc-rest-orders-controller.php:907
 #: includes/api/v1/class-wc-rest-orders-controller.php:1017
 msgid "Sum of all taxes."
 msgstr "税的总计。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1298
+#: includes/api/class-wc-rest-orders-controller.php:1293
 #: includes/api/v1/class-wc-rest-orders-controller.php:1371
 msgid "Tax total (not including shipping taxes)."
 msgstr "总税额(不含运费税)。"
 
 #: includes/api/class-wc-rest-product-variations-controller.php:911
 #: includes/api/class-wc-rest-products-controller.php:1895
-#: includes/api/class-wc-rest-products-controller.php:1937
+#: includes/api/class-wc-rest-products-controller.php:1940
 #: includes/api/v1/class-wc-rest-product-attributes-controller.php:462
 #: includes/api/v1/class-wc-rest-products-controller.php:2204
 #: includes/api/v1/class-wc-rest-products-controller.php:2246
@@ -6510,7 +6538,7 @@ msgstr "属性列表。"
 
 #: includes/api/class-wc-rest-product-variations-controller.php:906
 #: includes/api/class-wc-rest-products-controller.php:1890
-#: includes/api/class-wc-rest-products-controller.php:1932
+#: includes/api/class-wc-rest-products-controller.php:1935
 #: includes/api/v1/class-wc-rest-products-controller.php:2199
 #: includes/api/v1/class-wc-rest-products-controller.php:2241
 #: includes/api/v1/class-wc-rest-products-controller.php:2531
@@ -6553,13 +6581,13 @@ msgstr "控制此变量产品是否在前台显示\"现货\" 或 \"售罄\" 。"
 msgid "Shows if the variation is on backordered."
 msgstr "如果允许延期交货就显示。"
 
-#: includes/api/class-wc-rest-products-controller.php:1959
+#: includes/api/class-wc-rest-products-controller.php:1962
 #: includes/api/v1/class-wc-rest-products-controller.php:2552
 msgid "List of grouped products ID."
 msgstr "成组产品的ID列表。"
 
 #: includes/api/class-wc-rest-product-variations-controller.php:924
-#: includes/api/class-wc-rest-products-controller.php:1967
+#: includes/api/class-wc-rest-products-controller.php:1970
 #: includes/api/v1/class-wc-rest-products-controller.php:2561
 msgid "Menu order, used to custom sort products."
 msgstr "目录顺序,用于自定的产品排序。"
@@ -6734,12 +6762,12 @@ msgstr "如果该变量为虚拟产品。"
 msgid "If the variation is downloadable."
 msgstr "如果该变量为可下载产品。"
 
-#: includes/api/class-wc-rest-products-controller.php:2018
+#: includes/api/class-wc-rest-products-controller.php:2021
 #: includes/api/v1/class-wc-rest-products-controller.php:2586
 msgid "Limit result set to products assigned a specific status."
 msgstr "将结果设置为特定别状态的产品。"
 
-#: includes/api/class-wc-rest-products-controller.php:2012
+#: includes/api/class-wc-rest-products-controller.php:2015
 #: includes/api/v1/class-wc-rest-products-controller.php:2580
 msgid "Limit result set to products with a specific slug."
 msgstr "将结果设置为特定别名(slug)的产品。"
@@ -6748,7 +6776,7 @@ msgstr "将结果设置为特定别名(slug)的产品。"
 msgid "Total number of purchases."
 msgstr "被购买总数。"
 
-#: includes/api/class-wc-rest-orders-controller.php:906
+#: includes/api/class-wc-rest-orders-controller.php:901
 #: includes/api/v1/class-wc-rest-orders-controller.php:1011
 msgid "Grand total."
 msgstr "总计。"
@@ -6798,13 +6826,13 @@ msgstr "cross-sell 产品的ID列表。"
 msgid "Product parent ID."
 msgstr "产品的父级ID。"
 
-#: includes/api/class-wc-rest-products-controller.php:1925
+#: includes/api/class-wc-rest-products-controller.php:1928
 #: includes/api/v1/class-wc-rest-products-controller.php:2234
 msgid "Defaults variation attributes."
 msgstr "默认的变量属性。"
 
 #: includes/api/class-wc-rest-product-variations-controller.php:916
-#: includes/api/class-wc-rest-products-controller.php:1942
+#: includes/api/class-wc-rest-products-controller.php:1945
 #: includes/api/v1/class-wc-rest-products-controller.php:2251
 #: includes/api/v1/class-wc-rest-products-controller.php:2541
 msgid "Selected attribute term name."
@@ -6878,32 +6906,32 @@ msgstr "购买项目总数。"
 msgid "Total charged for taxes."
 msgstr "税负总额。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1443
+#: includes/api/class-wc-rest-orders-controller.php:1438
 #: includes/api/v1/class-wc-rest-orders-controller.php:1464
 msgid "Tax class of fee."
 msgstr "费用的税的类型。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1448
+#: includes/api/class-wc-rest-orders-controller.php:1443
 #: includes/api/v1/class-wc-rest-orders-controller.php:1469
 msgid "Tax status of fee."
 msgstr "费用的税的状态。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1523
+#: includes/api/class-wc-rest-orders-controller.php:1518
 #: includes/api/v1/class-wc-rest-orders-controller.php:1517
 msgid "Coupons line data."
 msgstr "优惠券数据。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1631
+#: includes/api/class-wc-rest-orders-controller.php:1626
 #: includes/api/v1/class-wc-rest-orders-controller.php:1593
 msgid "Limit result set to orders assigned a specific status."
 msgstr "限制结果为一个特定状态的订单。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1644
+#: includes/api/class-wc-rest-orders-controller.php:1639
 #: includes/api/v1/class-wc-rest-orders-controller.php:1606
 msgid "Limit result set to orders assigned a specific product."
 msgstr "限制结果为与一个特定的产品相关的订单。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1638
+#: includes/api/class-wc-rest-orders-controller.php:1633
 #: includes/api/v1/class-wc-rest-orders-controller.php:1600
 msgid "Limit result set to orders assigned a specific customer."
 msgstr "限制结果为与某一个顾客相关的订单。"
@@ -6912,17 +6940,17 @@ msgstr "限制结果为与某一个顾客相关的订单。"
 msgid "Term name."
 msgstr "类别的名称。"
 
-#: includes/api/class-wc-rest-products-controller.php:2025
+#: includes/api/class-wc-rest-products-controller.php:2028
 #: includes/api/v1/class-wc-rest-products-controller.php:2593
 msgid "Limit result set to products assigned a specific type."
 msgstr "限制结果为与一个特定的产品类型相关的产品。"
 
-#: includes/api/class-wc-rest-products-controller.php:2032
+#: includes/api/class-wc-rest-products-controller.php:2035
 #: includes/api/v1/class-wc-rest-products-controller.php:2630
 msgid "Limit result set to products with a specific SKU."
 msgstr "限制结果为与一个特定的SKU相关的产品。"
 
-#: includes/api/class-wc-rest-products-controller.php:2062
+#: includes/api/class-wc-rest-products-controller.php:2065
 #: includes/api/v1/class-wc-rest-products-controller.php:2618
 msgid "Limit result set to products with a specific attribute."
 msgstr "限制结果为与一个特定的属性相关的产品。"
@@ -6942,22 +6970,22 @@ msgstr "为一个特定的截止日期返回销售额，日期格式需为 %s �
 msgid "Line item meta data."
 msgstr "订单物品的元数据."
 
-#: includes/api/class-wc-rest-products-controller.php:2068
+#: includes/api/class-wc-rest-products-controller.php:2071
 #: includes/api/v1/class-wc-rest-products-controller.php:2624
 msgid "Limit result set to products with a specific attribute term ID (required an assigned attribute)."
 msgstr "限制结果为与一个特定的属性类别(需要指定一个属性)相关的产品。"
 
-#: includes/api/class-wc-rest-products-controller.php:2056
+#: includes/api/class-wc-rest-products-controller.php:2059
 #: includes/api/v1/class-wc-rest-products-controller.php:2612
 msgid "Limit result set to products assigned a specific shipping class ID."
 msgstr "限制结果为与一个特定的配送类型相关的产品。"
 
-#: includes/api/class-wc-rest-products-controller.php:2050
+#: includes/api/class-wc-rest-products-controller.php:2053
 #: includes/api/v1/class-wc-rest-products-controller.php:2606
 msgid "Limit result set to products assigned a specific tag ID."
 msgstr "限制结果为与一个特定的标签相关的产品。"
 
-#: includes/api/class-wc-rest-products-controller.php:2044
+#: includes/api/class-wc-rest-products-controller.php:2047
 #: includes/api/v1/class-wc-rest-products-controller.php:2600
 msgid "Limit result set to products assigned a specific category ID."
 msgstr "限制结果为与一个特定的分类相关的产品。"
@@ -6976,17 +7004,17 @@ msgstr "无效的产品。"
 msgid "The ID for the parent of the resource."
 msgstr "该资源的父级项目的ID。"
 
-#: includes/api/class-wc-rest-orders-controller.php:918
+#: includes/api/class-wc-rest-orders-controller.php:913
 #: includes/api/v1/class-wc-rest-orders-controller.php:957
 msgid "True the prices included tax during checkout."
 msgstr "如果价格含税在结算时显示。"
 
-#: includes/api/class-wc-rest-orders-controller.php:1077
+#: includes/api/class-wc-rest-orders-controller.php:1072
 #: includes/api/v1/class-wc-rest-orders-controller.php:1188
 msgid "The date the order was paid, in the site's timezone."
 msgstr "订单付款日期，以网站所在时区表示。"
 
-#: includes/api/class-wc-rest-orders-controller.php:930
+#: includes/api/class-wc-rest-orders-controller.php:925
 #: includes/api/v1/class-wc-rest-orders-controller.php:1159
 msgid "Customer's IP address."
 msgstr "顾客的 IP 地址。"
@@ -7001,14 +7029,19 @@ msgstr "顾客的 IP 地址。"
 msgid "Customer ID is invalid."
 msgstr "顾客ID无效。"
 
-#: includes/api/class-wc-rest-orders-controller.php:936
+#: includes/api/class-wc-rest-orders-controller.php:931
 #: includes/api/v1/class-wc-rest-orders-controller.php:1165
 msgid "User agent of the customer."
 msgstr "此顾客的用户代理。"
 
+#: includes/api/v1/class-wc-rest-products-controller.php:1832
+#: includes/api/v1/class-wc-rest-products-controller.php:2317
+msgid "End date of sale price."
+msgstr "促销价格的截止日期。"
+
 #: includes/api/class-wc-rest-coupons-controller.php:63
 #: includes/api/class-wc-rest-coupons-controller.php:337
-#: includes/api/class-wc-rest-orders-controller.php:1536
+#: includes/api/class-wc-rest-orders-controller.php:1531
 #: includes/api/v1/class-wc-rest-coupons-controller.php:70
 #: includes/api/v1/class-wc-rest-coupons-controller.php:421
 #: includes/api/v1/class-wc-rest-orders-controller.php:1530
@@ -7070,7 +7103,7 @@ msgid "Order ID."
 msgstr "订单 ID。"
 
 #: includes/api/class-wc-rest-customer-downloads-controller.php:121
-#: includes/api/class-wc-rest-orders-controller.php:820
+#: includes/api/class-wc-rest-orders-controller.php:815
 #: includes/api/v1/class-wc-rest-customer-downloads-controller.php:199
 #: includes/api/v1/class-wc-rest-orders-controller.php:932
 msgid "Order key."
@@ -7191,7 +7224,7 @@ msgstr "为重新赋值提供了无效的资源ID。"
 #: includes/api/class-wc-rest-order-refunds-controller.php:92
 #: includes/api/class-wc-rest-order-refunds-controller.php:351
 #: includes/api/class-wc-rest-orders-controller.php:82
-#: includes/api/class-wc-rest-orders-controller.php:803
+#: includes/api/class-wc-rest-orders-controller.php:798
 #: includes/api/class-wc-rest-payment-gateways-controller.php:53
 #: includes/api/class-wc-rest-product-categories-controller.php:107
 #: includes/api/class-wc-rest-product-reviews-controller.php:155
@@ -7241,8 +7274,8 @@ msgstr "以网站所在时区显示的顾客被创建的时间。"
 
 #: includes/api/class-wc-rest-customers-controller.php:214
 #: includes/api/class-wc-rest-customers-controller.php:277
-#: includes/api/class-wc-rest-orders-controller.php:962
-#: includes/api/class-wc-rest-orders-controller.php:1025
+#: includes/api/class-wc-rest-orders-controller.php:957
+#: includes/api/class-wc-rest-orders-controller.php:1020
 #: includes/api/v1/class-wc-rest-customers-controller.php:738
 #: includes/api/v1/class-wc-rest-customers-controller.php:801
 #: includes/api/v1/class-wc-rest-orders-controller.php:1038
@@ -7266,8 +7299,8 @@ msgstr "地址行2。"
 
 #: includes/api/class-wc-rest-customers-controller.php:229
 #: includes/api/class-wc-rest-customers-controller.php:292
-#: includes/api/class-wc-rest-orders-controller.php:977
-#: includes/api/class-wc-rest-orders-controller.php:1040
+#: includes/api/class-wc-rest-orders-controller.php:972
+#: includes/api/class-wc-rest-orders-controller.php:1035
 #: includes/api/v1/class-wc-rest-customers-controller.php:753
 #: includes/api/v1/class-wc-rest-customers-controller.php:816
 #: includes/api/v1/class-wc-rest-orders-controller.php:1053
@@ -7278,8 +7311,8 @@ msgstr "城市名称。"
 
 #: includes/api/class-wc-rest-customers-controller.php:234
 #: includes/api/class-wc-rest-customers-controller.php:297
-#: includes/api/class-wc-rest-orders-controller.php:982
-#: includes/api/class-wc-rest-orders-controller.php:1045
+#: includes/api/class-wc-rest-orders-controller.php:977
+#: includes/api/class-wc-rest-orders-controller.php:1040
 #: includes/api/v1/class-wc-rest-customers-controller.php:758
 #: includes/api/v1/class-wc-rest-customers-controller.php:821
 #: includes/api/v1/class-wc-rest-orders-controller.php:1058
@@ -7289,8 +7322,8 @@ msgstr "省级区域的ISO代码。"
 
 #: includes/api/class-wc-rest-customers-controller.php:239
 #: includes/api/class-wc-rest-customers-controller.php:302
-#: includes/api/class-wc-rest-orders-controller.php:987
-#: includes/api/class-wc-rest-orders-controller.php:1050
+#: includes/api/class-wc-rest-orders-controller.php:982
+#: includes/api/class-wc-rest-orders-controller.php:1045
 #: includes/api/v1/class-wc-rest-customers-controller.php:763
 #: includes/api/v1/class-wc-rest-customers-controller.php:826
 #: includes/api/v1/class-wc-rest-orders-controller.php:1063
@@ -7306,14 +7339,14 @@ msgid "ISO code of the country."
 msgstr "国家的ISO代码。"
 
 #: includes/api/class-wc-rest-customers-controller.php:249
-#: includes/api/class-wc-rest-orders-controller.php:997
+#: includes/api/class-wc-rest-orders-controller.php:992
 #: includes/api/v1/class-wc-rest-customers-controller.php:773
 #: includes/api/v1/class-wc-rest-orders-controller.php:1073
 msgid "Email address."
 msgstr "电邮地址。"
 
 #: includes/api/class-wc-rest-customers-controller.php:255
-#: includes/api/class-wc-rest-orders-controller.php:1003
+#: includes/api/class-wc-rest-orders-controller.php:998
 #: includes/api/v1/class-wc-rest-customers-controller.php:779
 #: includes/api/v1/class-wc-rest-orders-controller.php:1079
 msgid "Phone number."
@@ -7469,18 +7502,18 @@ msgid "Reason for refund."
 msgstr "退款的原因。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:410
-#: includes/api/class-wc-rest-orders-controller.php:1133
+#: includes/api/class-wc-rest-orders-controller.php:1128
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:367
 #: includes/api/v1/class-wc-rest-orders-controller.php:1200
 msgid "Line items data."
 msgstr "订单内产品的数据。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:417
-#: includes/api/class-wc-rest-orders-controller.php:1140
-#: includes/api/class-wc-rest-orders-controller.php:1268
-#: includes/api/class-wc-rest-orders-controller.php:1346
-#: includes/api/class-wc-rest-orders-controller.php:1432
-#: includes/api/class-wc-rest-orders-controller.php:1530
+#: includes/api/class-wc-rest-orders-controller.php:1135
+#: includes/api/class-wc-rest-orders-controller.php:1263
+#: includes/api/class-wc-rest-orders-controller.php:1341
+#: includes/api/class-wc-rest-orders-controller.php:1427
+#: includes/api/class-wc-rest-orders-controller.php:1525
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:374
 #: includes/api/v1/class-wc-rest-orders-controller.php:1207
 #: includes/api/v1/class-wc-rest-orders-controller.php:1341
@@ -7492,7 +7525,7 @@ msgstr "项目ID。"
 
 #: includes/api/class-wc-rest-customer-downloads-controller.php:103
 #: includes/api/class-wc-rest-order-refunds-controller.php:423
-#: includes/api/class-wc-rest-orders-controller.php:1146
+#: includes/api/class-wc-rest-orders-controller.php:1141
 #: includes/api/class-wc-rest-products-controller.php:1404
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:380
 #: includes/api/v1/class-wc-rest-orders-controller.php:1213
@@ -7527,8 +7560,8 @@ msgstr "账单地址的数据。"
 
 #: includes/api/class-wc-rest-customers-controller.php:204
 #: includes/api/class-wc-rest-customers-controller.php:267
-#: includes/api/class-wc-rest-orders-controller.php:952
-#: includes/api/class-wc-rest-orders-controller.php:1015
+#: includes/api/class-wc-rest-orders-controller.php:947
+#: includes/api/class-wc-rest-orders-controller.php:1010
 #: includes/api/v1/class-wc-rest-customers-controller.php:728
 #: includes/api/v1/class-wc-rest-customers-controller.php:791
 #: includes/api/v1/class-wc-rest-orders-controller.php:1028
@@ -7538,8 +7571,8 @@ msgstr "名字"
 
 #: includes/api/class-wc-rest-customers-controller.php:209
 #: includes/api/class-wc-rest-customers-controller.php:272
-#: includes/api/class-wc-rest-orders-controller.php:957
-#: includes/api/class-wc-rest-orders-controller.php:1020
+#: includes/api/class-wc-rest-orders-controller.php:952
+#: includes/api/class-wc-rest-orders-controller.php:1015
 #: includes/api/v1/class-wc-rest-customers-controller.php:733
 #: includes/api/v1/class-wc-rest-customers-controller.php:796
 #: includes/api/v1/class-wc-rest-orders-controller.php:1033
@@ -7593,7 +7626,7 @@ msgstr "WooCommerce 数据更新"
 msgid "Legacy shipping methods (flat rate, international flat rate, local pickup and delivery, and free shipping) are deprecated but will continue to work as normal for now. <b><em>They will be removed in future versions of WooCommerce</em></b>. We recommend disabling these and setting up new rates within shipping zones as soon as possible."
 msgstr "我们建议使用传统的配送方式，这些包含 (一口价包裹, 国际一口价包裹, 本地配送与自取, 免费配送) 虽然我们目前还支持这些功能。 <b><em> 但是它们将会在未来的 WooCommerce 版本中被移除</em></b>. 我们建议你禁用上述功能以及尽快设置好新的根据区域划分的运单费率。"
 
-#: includes/data-stores/abstract-wc-order-item-type-data-store.php:120
+#: includes/data-stores/abstract-wc-order-item-type-data-store.php:121
 msgid "Invalid order item."
 msgstr "无效的订单项目。"
 
@@ -8252,11 +8285,11 @@ msgstr "按照资源属性排序集合。"
 msgid "Whether to hide resources not assigned to any products."
 msgstr "是否隐藏没有分配给任何产品的资源。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1031
+#: includes/admin/class-wc-admin-setup-wizard.php:1029
 msgid "PayPal by Braintree"
 msgstr "PayPal by Braintree"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1005
+#: includes/admin/class-wc-admin-setup-wizard.php:1003
 msgid "Stripe"
 msgstr "Stripe"
 
@@ -8277,15 +8310,15 @@ msgstr "限定结果设置为分配给特定产品的资源。"
 msgid "Limit result set to resources with a specific slug."
 msgstr "限定结果设置为分配给特定别名(slug)的资源。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1037
+#: includes/admin/class-wc-admin-setup-wizard.php:1035
 msgid "PayPal Express Checkout"
 msgstr "PayPal 快速结算"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1044
+#: includes/admin/class-wc-admin-setup-wizard.php:1042
 msgid "Accept payments via PayPal using account balance or credit card."
 msgstr "接受使用PayPal 账户余额或信用卡付款。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1085
+#: includes/admin/class-wc-admin-setup-wizard.php:1083
 msgid "A simple offline gateway that lets you accept a check as method of payment."
 msgstr "一个让您可以接受支票付款的简单的线下支付方式。"
 
@@ -8358,11 +8391,11 @@ msgstr "抱歉，您不能创建资源。"
 msgid "Sorry, you cannot update resource."
 msgstr "抱歉，您不能更新资源。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1097
+#: includes/admin/class-wc-admin-setup-wizard.php:1095
 msgid "A simple offline gateway that lets you accept cash on delivery."
 msgstr "一个便捷的货到付款的线下支付方式。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1091
+#: includes/admin/class-wc-admin-setup-wizard.php:1089
 msgid "A simple offline gateway that lets you accept BACS payment."
 msgstr "一个让您可以接受银行转账的简单的线下支付方式。"
 
@@ -8379,7 +8412,7 @@ msgstr "物流区域"
 msgid "Sorry, you are not allowed to batch manipulate this resource."
 msgstr "抱歉，您未被允许维护该资源。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1084
+#: includes/admin/class-wc-admin-setup-wizard.php:1082
 #: includes/gateways/cheque/class-wc-gateway-cheque.php:27
 #: includes/gateways/cheque/class-wc-gateway-cheque.php:63
 msgctxt "Check payment method"
@@ -8394,7 +8427,7 @@ msgstr "社区论坛 "
 msgid "For further assistance with WooCommerce core you can use the <a href=\"%1$s\">community forum</a>. If you need help with premium extensions sold by WooCommerce, please <a href=\"%2$s\">use our helpdesk</a>."
 msgstr "对于WooCommerce核心进一步的帮助，你可以使用<a href=\"%1$s\"> 社区论坛</a>。如果您需要WooThemes所售付费扩展相关的帮助，请 <a href=\"%2$s\">使用我们的服务台</a>。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1090
+#: includes/admin/class-wc-admin-setup-wizard.php:1088
 msgid "Bank transfer (BACS) payments"
 msgstr "银行转账支付(BACS) "
 
@@ -8519,7 +8552,7 @@ msgstr "GST"
 msgid "Copying to clipboard failed. Please press Ctrl/Cmd+C to copy."
 msgstr "复制到剪贴板失败，请按 Ctrl/Cmd+C 键来复制。"
 
-#: includes/wc-core-functions.php:416
+#: includes/wc-core-functions.php:417
 msgid "Saudi riyal"
 msgstr "沙特里亚尔"
 
@@ -8557,11 +8590,11 @@ msgstr "%2$s的订单#%1$d支付失败了，此订单如下："
 msgid "estimated for %s"
 msgstr "估计 %s"
 
-#: includes/wc-core-functions.php:367
+#: includes/wc-core-functions.php:368
 msgid "Kenyan shilling"
 msgstr "肯尼亚先令"
 
-#: includes/wc-core-functions.php:407
+#: includes/wc-core-functions.php:408
 msgid "Pakistani rupee"
 msgstr "巴基斯坦卢比"
 
@@ -8943,14 +8976,6 @@ msgstr "如果您想再次查看入门指南，请点击下面的按钮。"
 msgid "These settings control the permalinks used specifically for products."
 msgstr "此设置用于控制产品的固定链接。"
 
-#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:120
-msgid "This field allows you to set the minimum spend (subtotal, including taxes) allowed to use the coupon."
-msgstr "此栏可让您设置可用此优惠券的最低消费(小结、含税)。"
-
-#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:130
-msgid "This field allows you to set the maximum spend (subtotal, including taxes) allowed when using the coupon."
-msgstr "此栏可让您设置可用此优惠券的最高消费(小结、含税)。"
-
 #: includes/admin/class-wc-admin-help.php:231
 #: includes/admin/class-wc-admin-help.php:233
 #: includes/admin/class-wc-admin-help.php:235
@@ -9168,7 +9193,7 @@ msgctxt "submit button"
 msgid "Search"
 msgstr "搜索"
 
-#: includes/api/class-wc-rest-orders-controller.php:814
+#: includes/api/class-wc-rest-orders-controller.php:809
 #: includes/api/v1/class-wc-rest-orders-controller.php:938
 msgid "Order number."
 msgstr "订单号"
@@ -9299,79 +9324,79 @@ msgstr "阿根廷比索"
 msgid "Bangladeshi taka"
 msgstr "孟加拉塔卡"
 
-#: includes/wc-core-functions.php:324
+#: includes/wc-core-functions.php:325
 msgid "Chinese yuan"
 msgstr "中国人民币(&yen;)"
 
-#: includes/wc-core-functions.php:332
+#: includes/wc-core-functions.php:333
 msgid "Danish krone"
 msgstr "丹麦克朗"
 
-#: includes/wc-core-functions.php:333
+#: includes/wc-core-functions.php:334
 msgid "Dominican peso"
 msgstr "多米尼加比索"
 
-#: includes/wc-core-functions.php:354
+#: includes/wc-core-functions.php:355
 msgid "Hungarian forint"
 msgstr "匈牙利福林"
 
-#: includes/wc-core-functions.php:355
+#: includes/wc-core-functions.php:356
 msgid "Indonesian rupiah"
 msgstr "印尼盾"
 
-#: includes/wc-core-functions.php:366
+#: includes/wc-core-functions.php:367
 msgid "Japanese yen"
 msgstr "日元 (&yen;)"
 
-#: includes/wc-core-functions.php:376
+#: includes/wc-core-functions.php:377
 msgid "Lao kip"
 msgstr "老挝基普"
 
-#: includes/wc-core-functions.php:372
+#: includes/wc-core-functions.php:373
 msgid "South Korean won"
 msgstr "南非兰特 (R)"
 
-#: includes/wc-core-functions.php:394
+#: includes/wc-core-functions.php:395
 msgid "Malaysian ringgit"
 msgstr "马来西亚林吉特"
 
-#: includes/wc-core-functions.php:399
+#: includes/wc-core-functions.php:400
 msgid "Norwegian krone"
 msgstr "挪威克朗"
 
-#: includes/wc-core-functions.php:406
+#: includes/wc-core-functions.php:407
 msgid "Philippine peso"
 msgstr "菲律宾比索"
 
-#: includes/wc-core-functions.php:341
+#: includes/wc-core-functions.php:342
 msgid "Pound sterling"
 msgstr "英镑 (&pound;)"
 
-#: includes/wc-core-functions.php:453
+#: includes/wc-core-functions.php:454
 msgid "South African rand"
 msgstr "南非兰特 (R)"
 
-#: includes/wc-core-functions.php:420
+#: includes/wc-core-functions.php:421
 msgid "Swedish krona"
 msgstr "瑞典克郎"
 
-#: includes/wc-core-functions.php:322
+#: includes/wc-core-functions.php:323
 msgid "Swiss franc"
 msgstr "瑞士法郎"
 
-#: includes/wc-core-functions.php:430
+#: includes/wc-core-functions.php:431
 msgid "Thai baht"
 msgstr "泰铢"
 
-#: includes/wc-core-functions.php:435
+#: includes/wc-core-functions.php:436
 msgid "Turkish lira"
 msgstr "土耳其里拉 (TL)"
 
-#: includes/wc-core-functions.php:439
+#: includes/wc-core-functions.php:440
 msgid "Ukrainian hryvnia"
 msgstr "乌克兰格 里夫尼亚"
 
-#: includes/wc-core-functions.php:335
+#: includes/wc-core-functions.php:336
 msgid "Egyptian pound"
 msgstr "埃及镑"
 
@@ -9404,46 +9429,46 @@ msgstr "新产品标签 %s"
 msgid "&nbsp;&ndash; Page %s"
 msgstr "&nbsp;&ndash;页 %s"
 
-#: includes/wc-template-functions.php:842
+#: includes/wc-template-functions.php:841
 msgid "Default sorting"
 msgstr "默认产品排序"
 
-#: includes/wc-template-functions.php:843
+#: includes/wc-template-functions.php:842
 msgid "Sort by popularity"
 msgstr "按受关注度排序"
 
-#: includes/wc-template-functions.php:844
+#: includes/wc-template-functions.php:843
 msgid "Sort by average rating"
 msgstr "按好评度排序"
 
-#: includes/wc-template-functions.php:845
+#: includes/wc-template-functions.php:844
 msgid "Sort by newness"
 msgstr "按更新时间排序"
 
-#: includes/wc-template-functions.php:846
+#: includes/wc-template-functions.php:845
 msgid "Sort by price: low to high"
 msgstr "按价格从低到高"
 
-#: includes/wc-template-functions.php:847
+#: includes/wc-template-functions.php:846
 msgid "Sort by price: high to low"
 msgstr "按价格从高到低"
 
-#: includes/wc-template-functions.php:1206
+#: includes/wc-template-functions.php:1205
 msgid "Reviews (%d)"
 msgstr "用户评论  (%d)"
 
-#: includes/wc-template-functions.php:1646
+#: includes/wc-template-functions.php:1645
 msgid "Place order"
 msgstr "下单"
 
-#: includes/wc-template-functions.php:2073
+#: includes/wc-template-functions.php:2072
 #: templates/cart/shipping-calculator.php:64
 msgid "Select a state&hellip;"
 msgstr "选择地区&hellip;"
 
-#: includes/wc-template-functions.php:2118
-#: includes/wc-template-functions.php:2270
-#: includes/wc-template-functions.php:2280
+#: includes/wc-template-functions.php:2117
+#: includes/wc-template-functions.php:2269
+#: includes/wc-template-functions.php:2279
 msgid "Choose an option"
 msgstr "选择一个选项"
 
@@ -9575,7 +9600,7 @@ msgstr "拒绝"
 msgid "Password"
 msgstr "密码"
 
-#: includes/wc-template-functions.php:2718
+#: includes/wc-template-functions.php:2717
 msgid "Your cart is currently empty."
 msgstr "您的购物车目前是空的。"
 
@@ -9594,7 +9619,7 @@ msgstr "数量"
 msgid "No products in the cart."
 msgstr "购物车里没有产品"
 
-#: includes/wc-template-functions.php:1517
+#: includes/wc-template-functions.php:1516
 msgid "Checkout"
 msgstr "结算"
 
@@ -9607,7 +9632,7 @@ msgid "Create an account?"
 msgstr "创建一个帐户？"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:99
-#: includes/admin/class-wc-admin-setup-wizard.php:1211
+#: includes/admin/class-wc-admin-setup-wizard.php:1209
 msgid "Payment"
 msgstr "Payment"
 
@@ -9677,7 +9702,7 @@ msgid_plural "Showing all %d results"
 msgstr[0] "搜索结果: "
 
 #: includes/admin/class-wc-admin-profile.php:88
-#: includes/admin/class-wc-admin-setup-wizard.php:1620
+#: includes/admin/class-wc-admin-setup-wizard.php:1618
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:83
 #: includes/class-wc-countries.php:1158 includes/class-wc-form-handler.php:214
 #: templates/myaccount/form-edit-account.php:40
@@ -9724,7 +9749,7 @@ msgctxt "edit-address-slug"
 msgid "shipping"
 msgstr "配送"
 
-#: includes/wc-template-functions.php:1592
+#: includes/wc-template-functions.php:1591
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr "首页"
@@ -9739,15 +9764,15 @@ msgctxt "Product quantity input tooltip"
 msgid "Qty"
 msgstr "数量"
 
-#: includes/wc-core-functions.php:352
+#: includes/wc-core-functions.php:353
 msgid "Croatian kuna"
 msgstr "克罗地亚库纳"
 
-#: includes/wc-core-functions.php:397
+#: includes/wc-core-functions.php:398
 msgid "Nigerian naira"
 msgstr "尼日利亚奈拉"
 
-#: includes/wc-core-functions.php:414
+#: includes/wc-core-functions.php:415
 msgid "Russian ruble"
 msgstr "俄罗斯卢布"
 
@@ -9769,7 +9794,7 @@ msgstr "显示隐藏的产品"
 msgid "United Arab Emirates dirham"
 msgstr "阿联酋迪拉姆"
 
-#: includes/wc-core-functions.php:325
+#: includes/wc-core-functions.php:326
 msgid "Colombian peso"
 msgstr "哥伦比亚比索"
 
@@ -9777,11 +9802,11 @@ msgstr "哥伦比亚比索"
 msgid "Bulgarian lev"
 msgstr "保加利亚列弗"
 
-#: includes/wc-core-functions.php:323
+#: includes/wc-core-functions.php:324
 msgid "Chilean peso"
 msgstr "智利比索"
 
-#: includes/wc-core-functions.php:358
+#: includes/wc-core-functions.php:359
 msgid "Indian rupee"
 msgstr "印度卢比"
 
@@ -9929,7 +9954,7 @@ msgstr "免运费券"
 msgid "[Remove]"
 msgstr "[移除]"
 
-#: includes/wc-template-functions.php:2054
+#: includes/wc-template-functions.php:2053
 msgid "Update country"
 msgstr "更新国家"
 
@@ -10000,7 +10025,7 @@ msgstr "忘记密码了？请输入您的用户名或电邮地址。您将会收
 msgid "The following addresses will be used on the checkout page by default."
 msgstr "下列地址将默认用于结算页面。"
 
-#: includes/wc-core-functions.php:412
+#: includes/wc-core-functions.php:413
 msgid "Romanian leu"
 msgstr "罗马尼亚列伊"
 
@@ -10114,7 +10139,7 @@ msgstr "分类排序"
 msgid "Active filters"
 msgstr "启用过滤器"
 
-#: includes/wc-template-functions.php:1197
+#: includes/wc-template-functions.php:1196
 #: templates/checkout/form-shipping.php:63
 #: templates/single-product/tabs/additional-information.php:25
 msgid "Additional information"
@@ -10162,7 +10187,7 @@ msgstr "已存在使用此电邮地址的帐号，请尝试登陆。"
 msgid "Returning customer?"
 msgstr "顾客详情"
 
-#: includes/wc-core-functions.php:330
+#: includes/wc-core-functions.php:331
 msgid "Czech koruna"
 msgstr "捷克克朗 (Kč)"
 
@@ -10170,23 +10195,23 @@ msgstr "捷克克朗 (Kč)"
 msgid "Australian dollar"
 msgstr "澳元（$）"
 
-#: includes/wc-core-functions.php:421
+#: includes/wc-core-functions.php:422
 msgid "Singapore dollar"
 msgstr "新加坡元（S$）"
 
-#: includes/wc-core-functions.php:401
+#: includes/wc-core-functions.php:402
 msgid "New Zealand dollar"
 msgstr "新西兰元（$）"
 
-#: includes/wc-core-functions.php:393
+#: includes/wc-core-functions.php:394
 msgid "Mexican peso"
 msgstr "墨西哥比索（$）"
 
-#: includes/wc-core-functions.php:350
+#: includes/wc-core-functions.php:351
 msgid "Hong Kong dollar"
 msgstr "港币（HK$）"
 
-#: includes/wc-core-functions.php:320
+#: includes/wc-core-functions.php:321
 msgid "Canadian dollar"
 msgstr "加元（$）"
 
@@ -11662,19 +11687,19 @@ msgstr "请选择产品选项&hellip;"
 msgid "Error"
 msgstr "错误"
 
-#: includes/class-wc-form-handler.php:944
+#: includes/class-wc-form-handler.php:948
 msgid "Username is required."
 msgstr "用户名为必填。"
 
-#: includes/class-wc-form-handler.php:957
+#: includes/class-wc-form-handler.php:961
 msgid "A user could not be found with this email address."
 msgstr "该邮箱末注册过账户"
 
-#: includes/class-wc-form-handler.php:1035
+#: includes/class-wc-form-handler.php:1039
 msgid "Please enter your password."
 msgstr "请输入你的密码。"
 
-#: includes/class-wc-form-handler.php:1039
+#: includes/class-wc-form-handler.php:1043
 msgid "Passwords do not match."
 msgstr "密码不匹配."
 
@@ -11825,7 +11850,7 @@ msgid "Canton"
 msgstr "Canton"
 
 #. translators: %s: categories list
-#: includes/class-wc-coupon.php:968 includes/class-wc-discounts.php:829
+#: includes/class-wc-coupon.php:968 includes/class-wc-discounts.php:839
 msgid "Sorry, this coupon is not applicable to the categories: %s."
 msgstr "抱歉，此目录：%s不能使用这个优惠码。"
 
@@ -11883,13 +11908,13 @@ msgstr "你的订单已被取消。"
 msgid "Your order can no longer be cancelled. Please contact us if you need assistance."
 msgstr "无法取消订单。如果你需要帮助，请联系我们。"
 
-#: includes/class-wc-form-handler.php:903
+#: includes/class-wc-form-handler.php:907
 msgid "%s is a required field"
 msgid_plural "%s are required fields"
 msgstr[0] "%s 必填选项"
 
 #: includes/class-wc-frontend-scripts.php:516
-#: includes/wc-template-functions.php:1987
+#: includes/wc-template-functions.php:1986
 msgid "required"
 msgstr "(必填)"
 
@@ -11911,7 +11936,7 @@ msgid "Error processing checkout. Please try again."
 msgstr "处理结算时出错，请重试。"
 
 #. translators: %s: coupon code
-#: includes/class-wc-coupon.php:902 includes/class-wc-discounts.php:527
+#: includes/class-wc-coupon.php:902 includes/class-wc-discounts.php:539
 msgid "Coupon \"%s\" does not exist!"
 msgstr "优惠券\"%s\" 不存在！"
 
@@ -11920,7 +11945,7 @@ msgid "Sorry, this coupon is not applicable to your cart contents."
 msgstr "很抱歉，此优惠券不适用于您所购的产品。"
 
 #. translators: %s: products list
-#: includes/class-wc-coupon.php:948 includes/class-wc-discounts.php:788
+#: includes/class-wc-coupon.php:948 includes/class-wc-discounts.php:798
 msgid "Sorry, this coupon is not applicable to the products: %s."
 msgstr "抱歉，此优惠券不适用于这个产品：%s。"
 
@@ -12001,7 +12026,7 @@ msgstr "优惠码已被移除。"
 msgid "Coupon code applied successfully."
 msgstr "优惠码使用成功。"
 
-#: includes/class-wc-coupon.php:898 includes/class-wc-discounts.php:876
+#: includes/class-wc-coupon.php:898 includes/class-wc-discounts.php:901
 msgid "Coupon is not valid."
 msgstr "无效的优惠码。"
 
@@ -12020,26 +12045,26 @@ msgstr "该优惠码已被用过了！"
 msgid "Sorry, coupon \"%s\" has already been applied and cannot be used in conjunction with other coupons."
 msgstr "抱歉，优惠码 \"%s\" 已被使用过了，并且不能和其它优惠码一起使用。"
 
-#: includes/class-wc-coupon.php:923 includes/class-wc-discounts.php:587
+#: includes/class-wc-coupon.php:923 includes/class-wc-discounts.php:599
 msgid "This coupon has expired."
 msgstr "该优惠码已过期。"
 
-#: includes/class-wc-coupon.php:920 includes/class-wc-discounts.php:543
-#: includes/class-wc-discounts.php:570
+#: includes/class-wc-coupon.php:920 includes/class-wc-discounts.php:555
+#: includes/class-wc-discounts.php:582
 msgid "Coupon usage limit has been reached."
 msgstr "该优惠码使用次数超限。"
 
 #. translators: %s: coupon minimum amount
-#: includes/class-wc-coupon.php:927 includes/class-wc-discounts.php:606
+#: includes/class-wc-coupon.php:927 includes/class-wc-discounts.php:617
 msgid "The minimum spend for this coupon is %s."
 msgstr "此优惠码仅适用于消费金额不小于 %s 的订单 。"
 
 #. translators: %s: coupon maximum amount
-#: includes/class-wc-coupon.php:931 includes/class-wc-discounts.php:625
+#: includes/class-wc-coupon.php:931 includes/class-wc-discounts.php:635
 msgid "The maximum spend for this coupon is %s."
 msgstr "此优惠码仅适用于消费金额不大于 %s 的订单 。"
 
-#: includes/class-wc-coupon.php:971 includes/class-wc-discounts.php:716
+#: includes/class-wc-coupon.php:971 includes/class-wc-discounts.php:726
 msgid "Sorry, this coupon is not valid for sale items."
 msgstr "抱歉，促销产品不可使用此优惠码。"
 
@@ -13862,10 +13887,10 @@ msgid "Choose whether or not this tax rate also gets applied to shipping."
 msgstr "选择税率这是否也被应用到配送。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:478
-#: includes/api/class-wc-rest-orders-controller.php:1201
-#: includes/api/class-wc-rest-orders-controller.php:1280
-#: includes/api/class-wc-rest-orders-controller.php:1381
-#: includes/api/class-wc-rest-orders-controller.php:1473
+#: includes/api/class-wc-rest-orders-controller.php:1196
+#: includes/api/class-wc-rest-orders-controller.php:1275
+#: includes/api/class-wc-rest-orders-controller.php:1376
+#: includes/api/class-wc-rest-orders-controller.php:1468
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:447
 #: includes/api/v1/class-wc-rest-orders-controller.php:1280
 #: includes/api/v1/class-wc-rest-orders-controller.php:1353
@@ -14460,7 +14485,7 @@ msgstr "结算 &rarr;添加支付方式页面的端点"
 #: includes/admin/settings/class-wc-settings-checkout.php:197
 #: includes/class-wc-query.php:123
 #: templates/myaccount/form-add-payment-method.php:53
-#: templates/myaccount/payment-methods.php:79
+#: templates/myaccount/payment-methods.php:80
 msgid "Add payment method"
 msgstr "添加付款方法"
 
@@ -14567,21 +14592,21 @@ msgstr "尺寸"
 
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:26
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:70
-#: includes/admin/meta-boxes/views/html-variation-admin.php:245
+#: includes/admin/meta-boxes/views/html-variation-admin.php:249
 #: includes/admin/views/html-quick-edit-product.php:112
 msgid "Length"
 msgstr "长"
 
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:27
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:71
-#: includes/admin/meta-boxes/views/html-variation-admin.php:246
+#: includes/admin/meta-boxes/views/html-variation-admin.php:250
 #: includes/admin/views/html-quick-edit-product.php:113
 msgid "Width"
 msgstr "宽度"
 
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:28
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:72
-#: includes/admin/meta-boxes/views/html-variation-admin.php:247
+#: includes/admin/meta-boxes/views/html-variation-admin.php:251
 #: includes/admin/views/html-quick-edit-product.php:114
 msgid "Height"
 msgstr "高度"
@@ -14599,7 +14624,7 @@ msgstr "无运费类别"
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:444
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:579
 #: includes/admin/meta-boxes/views/html-product-data-shipping.php:50
-#: includes/admin/meta-boxes/views/html-variation-admin.php:266
+#: includes/admin/meta-boxes/views/html-variation-admin.php:270
 #: includes/admin/settings/class-wc-settings-shipping.php:343
 #: includes/admin/views/html-bulk-edit-product.php:166
 #: includes/admin/views/html-quick-edit-product.php:124
@@ -14721,14 +14746,14 @@ msgstr "可下载产品"
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:597
 #: includes/admin/meta-boxes/views/html-product-data-general.php:102
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:76
-#: includes/admin/meta-boxes/views/html-variation-admin.php:361
+#: includes/admin/meta-boxes/views/html-variation-admin.php:365
 #: includes/export/class-wc-product-csv-exporter.php:109
 msgid "Download limit"
 msgstr "下载限制"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:115
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:77
-#: includes/admin/meta-boxes/views/html-variation-admin.php:377
+#: includes/admin/meta-boxes/views/html-variation-admin.php:381
 msgid "Download expiry"
 msgstr "下载到期"
 
@@ -14805,7 +14830,6 @@ msgstr "税后折扣"
 msgid "Item"
 msgstr "项"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:629
 #: includes/admin/meta-boxes/views/html-order-items.php:31
 #: includes/shipping/flat-rate/includes/settings-flat-rate.php:31
 #: includes/shipping/legacy-flat-rate/includes/settings-flat-rate.php:58
@@ -14883,7 +14907,7 @@ msgstr "税率名称"
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:559
 #: includes/admin/meta-boxes/views/html-order-items.php:320
 #: includes/admin/meta-boxes/views/html-product-data-general.php:148
-#: includes/admin/meta-boxes/views/html-variation-admin.php:283
+#: includes/admin/meta-boxes/views/html-variation-admin.php:287
 #: includes/admin/settings/class-wc-settings-tax.php:190
 #: includes/admin/views/html-bulk-edit-product.php:89
 #: includes/admin/views/html-quick-edit-product.php:68
@@ -14976,8 +15000,8 @@ msgstr "启用该选项可启用库存管理的水平变化"
 msgid "Variation price (required)"
 msgstr "售价变化 (必填)"
 
-#: includes/admin/meta-boxes/views/html-variation-admin.php:270
-#: includes/admin/meta-boxes/views/html-variation-admin.php:284
+#: includes/admin/meta-boxes/views/html-variation-admin.php:274
+#: includes/admin/meta-boxes/views/html-variation-admin.php:288
 msgid "Same as parent"
 msgstr "与父级相同"
 
@@ -15148,7 +15172,7 @@ msgstr "优惠券折扣金额 %s "
 
 #: includes/admin/reports/class-wc-report-sales-by-date.php:676
 #: includes/admin/reports/class-wc-report-taxes-by-code.php:150
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:185
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:184
 msgid "Number of orders"
 msgstr "订单数量"
 
@@ -15185,23 +15209,23 @@ msgid "Rate"
 msgstr "评价等级"
 
 #: includes/admin/reports/class-wc-report-taxes-by-code.php:185
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:230
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:229
 msgid "No taxes found in this period"
 msgstr "此周期未产生税费"
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:184
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:183
 msgid "Period"
 msgstr "周期"
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:189
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:188
 msgid "Net profit"
 msgstr "净利润"
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:189
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:188
 msgid "Total sales minus shipping and tax."
 msgstr "销售额减去运费和税费."
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:219
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:218
 #: templates/checkout/form-pay.php:31
 msgid "Totals"
 msgstr "合计"
@@ -15323,7 +15347,7 @@ msgid "Enter a quantity to enable stock management at variation level, or leave 
 msgstr "输入一个数量以在可变级别启用库存管理，留空则表示使用父级产品的选项。"
 
 #: includes/admin/reports/class-wc-report-taxes-by-code.php:153
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:188
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:187
 msgid "This is the total tax for the rate (shipping tax + product tax)."
 msgstr "这是合计的税值（包括运输税+产品的税）"
 
@@ -15414,7 +15438,7 @@ msgid "Downloads remaining"
 msgstr "下载剩余次数"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:428
-#: includes/api/class-wc-rest-orders-controller.php:1151
+#: includes/api/class-wc-rest-orders-controller.php:1146
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:392
 #: includes/api/v1/class-wc-rest-orders-controller.php:1225
 #: includes/api/v1/class-wc-rest-report-top-sellers-controller.php:158
@@ -15423,7 +15447,7 @@ msgid "Product ID."
 msgstr "产品ID。"
 
 #: includes/api/class-wc-rest-order-refunds-controller.php:522
-#: includes/api/class-wc-rest-orders-controller.php:1245
+#: includes/api/class-wc-rest-orders-controller.php:1240
 #: includes/api/v1/class-wc-rest-order-refunds-controller.php:386
 #: includes/api/v1/class-wc-rest-orders-controller.php:1219
 msgid "Product SKU."
@@ -15522,24 +15546,24 @@ msgstr "我的账户页"
 msgid "Account pages"
 msgstr "账户页面"
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:187
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:186
 msgid "This is the sum of the 'Shipping total' field within your orders."
 msgstr "这是您的订单内“运费总计“的总和。"
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:187
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:186
 msgid "Total shipping"
 msgstr "运费合计"
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:186
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:185
 msgid "This is the sum of the 'Order total' field within your orders."
 msgstr "这是您“订单总计”栏内订单的总和。"
 
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:186
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:185
 msgid "Total sales"
 msgstr "销售额"
 
 #: includes/admin/reports/class-wc-report-taxes-by-code.php:153
-#: includes/admin/reports/class-wc-report-taxes-by-date.php:188
+#: includes/admin/reports/class-wc-report-taxes-by-date.php:187
 msgid "Total tax"
 msgstr "税费合计"
 
@@ -15648,7 +15672,7 @@ msgid "Variation description."
 msgstr "变量描述"
 
 #. translators: %s: dimension unit
-#: includes/admin/meta-boxes/views/html-variation-admin.php:239
+#: includes/admin/meta-boxes/views/html-variation-admin.php:243
 msgid "Dimensions (L&times;W&times;H) (%s)"
 msgstr "尺寸 (长&times;宽&times;高) (%s)"
 
@@ -15735,7 +15759,7 @@ msgstr "搜索顾客"
 msgid "No customers found."
 msgstr "没有顾客"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1236
+#: includes/admin/class-wc-admin-setup-wizard.php:1234
 msgid "Offline Payments"
 msgstr "线下支付"
 
@@ -16089,8 +16113,8 @@ msgstr "还没设置账单地址。"
 #: includes/shipping/legacy-flat-rate/includes/settings-flat-rate.php:93
 #: includes/shipping/legacy-free-shipping/class-wc-shipping-legacy-free-shipping.php:122
 #: includes/wc-account-functions.php:331
-#: includes/wc-formatting-functions.php:1106
-#: includes/wc-formatting-functions.php:1125
+#: includes/wc-formatting-functions.php:1109
+#: includes/wc-formatting-functions.php:1128
 #: templates/emails/email-addresses.php:31
 #: templates/order/order-details-customer.php:36
 #: templates/order/order-details-customer.php:54
@@ -16166,7 +16190,7 @@ msgid "Inventory"
 msgstr "库存"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:104
-#: includes/admin/class-wc-admin-setup-wizard.php:743
+#: includes/admin/class-wc-admin-setup-wizard.php:741
 #: includes/admin/meta-boxes/class-wc-meta-box-product-data.php:92
 #: includes/admin/meta-boxes/views/html-order-shipping.php:17
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:69
@@ -16226,17 +16250,17 @@ msgid "The sale will end at the beginning of the set date."
 msgstr "促销活动将会在设置的开始时间之前结束。"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:61
-#: includes/admin/meta-boxes/views/html-variation-admin.php:318
+#: includes/admin/meta-boxes/views/html-variation-admin.php:322
 msgid "Downloadable files"
 msgstr "可下载的文件"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:67
-#: includes/admin/meta-boxes/views/html-variation-admin.php:323
+#: includes/admin/meta-boxes/views/html-variation-admin.php:327
 msgid "File URL"
 msgstr "文件URL"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:67
-#: includes/admin/meta-boxes/views/html-variation-admin.php:323
+#: includes/admin/meta-boxes/views/html-variation-admin.php:327
 msgid "This is the URL or absolute path to the file which customers will get access to. URLs entered here should already be encoded."
 msgstr "这里是顾客可以访问的文件URL或纯粹的路径，输入到这里应该是已被编码过的URL。"
 
@@ -16246,18 +16270,18 @@ msgstr "添加文件"
 
 #: includes/admin/meta-boxes/views/html-order-download-permission.php:27
 #: includes/admin/meta-boxes/views/html-product-data-general.php:103
-#: includes/admin/meta-boxes/views/html-variation-admin.php:362
+#: includes/admin/meta-boxes/views/html-variation-admin.php:366
 msgid "Unlimited"
 msgstr "不限制"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:104
-#: includes/admin/meta-boxes/views/html-variation-admin.php:363
+#: includes/admin/meta-boxes/views/html-variation-admin.php:367
 msgid "Leave blank for unlimited re-downloads."
 msgstr "留空以不限制重复下载。"
 
 #: includes/admin/meta-boxes/views/html-order-download-permission.php:31
 #: includes/admin/meta-boxes/views/html-product-data-general.php:116
-#: includes/admin/meta-boxes/views/html-variation-admin.php:378
+#: includes/admin/meta-boxes/views/html-variation-admin.php:382
 #: templates/emails/email-downloads.php:56
 #: templates/emails/plain/email-downloads.php:43
 #: templates/order/order-downloads.php:60
@@ -16265,7 +16289,7 @@ msgid "Never"
 msgstr "永久有效"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:117
-#: includes/admin/meta-boxes/views/html-variation-admin.php:379
+#: includes/admin/meta-boxes/views/html-variation-admin.php:383
 msgid "Enter the number of days before a download link expires, or leave blank."
 msgstr "输入下载有效天数，或留空。"
 
@@ -16388,7 +16412,7 @@ msgid "Linked Products"
 msgstr "联锁产品"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:151
-#: includes/admin/meta-boxes/views/html-variation-admin.php:286
+#: includes/admin/meta-boxes/views/html-variation-admin.php:290
 msgid "Choose a tax class for this product. Tax classes are used to apply different tax rates specific to certain types of product."
 msgstr "为此产品选择一个税的算法。税的算法可用让不同的产品适用不同的税。"
 
@@ -16591,7 +16615,7 @@ msgstr "产品缓存已清除"
 msgid "Want to help make WooCommerce even more awesome? Allow WooCommerce to collect non-sensitive diagnostic data and usage information, and get %1$s discount on your next WooThemes purchase. <a href=\"%2$s\" target=\"_blank\">Find out more</a>."
 msgstr "想帮助WooCommerce变的更帅吗？允许WooThemes收集些非敏感的诊断数据和使用信息, 您在下一次购买WooThemes产品时，可获取得%1$s优惠。<a href=\"%2$s\" target=\"_blank\">了解详细内容</a>。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1096
+#: includes/admin/class-wc-admin-setup-wizard.php:1094
 #: includes/gateways/cod/class-wc-gateway-cod.php:52
 #: includes/gateways/cod/class-wc-gateway-cod.php:79
 msgid "Cash on delivery"
@@ -16610,7 +16634,7 @@ msgid "Allow, but notify customer"
 msgstr "允许，但通知顾客"
 
 #: includes/admin/meta-boxes/views/html-product-data-general.php:66
-#: includes/admin/meta-boxes/views/html-variation-admin.php:322
+#: includes/admin/meta-boxes/views/html-variation-admin.php:326
 msgid "This is the name of the download shown to the customer."
 msgstr "展示给顾客的下载名称"
 
@@ -16638,7 +16662,7 @@ msgstr "优惠券已存在 - 顾客将使用这个代码的最新的优惠券"
 msgid "List of allowed emails to check against the customer billing email when an order is placed. Separate email addresses with commas."
 msgstr "列出顾客账单地址里可使用优惠券的邮箱地址，以逗号隔开。"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1639
+#: includes/admin/class-wc-admin-setup-wizard.php:1637
 msgid "Next step"
 msgstr "下一步"
 
@@ -16657,6 +16681,14 @@ msgstr "你没有权限删除 Webhooks！"
 #: includes/admin/class-wc-admin-webhooks.php:204
 msgid "You do not have permission to create Webhooks"
 msgstr "你没有权限创建Webhooks！"
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:120
+msgid "This field allows you to set the minimum spend (subtotal) allowed to use the coupon."
+msgstr "此字段允许您设置允许使用优惠券的最小花费(subtotal)。"
+
+#: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:130
+msgid "This field allows you to set the maximum spend (subtotal) allowed when using the coupon."
+msgstr "此字段允许您在使用优惠券时设置允许的最大花费(subtotal)。"
 
 #: includes/admin/class-wc-admin-pointers.php:74
 msgid "This is your products main body of content. Here you should describe your product in detail."
@@ -17187,7 +17219,7 @@ msgstr "国家"
 #: includes/admin/class-wc-admin-profile.php:136
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:75
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:124
-#: includes/wc-template-functions.php:2046
+#: includes/wc-template-functions.php:2045
 #: templates/cart/shipping-calculator.php:39
 msgid "Select a country&hellip;"
 msgstr "选择国家&hellip;"
@@ -17276,9 +17308,9 @@ msgstr "WooCommerce &rsaquo; 安装向导"
 msgid "Not right now"
 msgstr "现在不"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:828
-#: includes/admin/class-wc-admin-setup-wizard.php:1251
-#: includes/admin/class-wc-admin-setup-wizard.php:1361
+#: includes/admin/class-wc-admin-setup-wizard.php:826
+#: includes/admin/class-wc-admin-setup-wizard.php:1249
+#: includes/admin/class-wc-admin-setup-wizard.php:1359
 #: includes/admin/importers/views/html-product-csv-import-form.php:89
 msgid "Continue"
 msgstr "继续"
@@ -17312,48 +17344,48 @@ msgstr "左侧留空"
 msgid "Right with space"
 msgstr "右侧留空"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:800
+#: includes/admin/class-wc-admin-setup-wizard.php:798
 #: includes/admin/settings/class-wc-settings-products.php:433
 msgid "kg"
 msgstr "公斤"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:801
+#: includes/admin/class-wc-admin-setup-wizard.php:799
 #: includes/admin/settings/class-wc-settings-products.php:434
 msgid "g"
 msgstr "克"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:802
+#: includes/admin/class-wc-admin-setup-wizard.php:800
 #: includes/admin/settings/class-wc-settings-products.php:435
 msgid "lbs"
 msgstr "磅"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:803
+#: includes/admin/class-wc-admin-setup-wizard.php:801
 #: includes/admin/settings/class-wc-settings-products.php:436
 msgid "oz"
 msgstr "盎司"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:818
+#: includes/admin/class-wc-admin-setup-wizard.php:816
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:216
 #: includes/admin/settings/class-wc-settings-products.php:450
 msgid "m"
 msgstr "米"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:819
+#: includes/admin/class-wc-admin-setup-wizard.php:817
 #: includes/admin/settings/class-wc-settings-products.php:451
 msgid "cm"
 msgstr "厘米"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:820
+#: includes/admin/class-wc-admin-setup-wizard.php:818
 #: includes/admin/settings/class-wc-settings-products.php:452
 msgid "mm"
 msgstr "毫米"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:821
+#: includes/admin/class-wc-admin-setup-wizard.php:819
 #: includes/admin/settings/class-wc-settings-products.php:453
 msgid "in"
 msgstr "英寸"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:822
+#: includes/admin/class-wc-admin-setup-wizard.php:820
 #: includes/admin/settings/class-wc-settings-products.php:454
 msgid "yd"
 msgstr "码"
@@ -17362,7 +17394,7 @@ msgstr "码"
 msgid "State"
 msgstr "省/直辖市/自治区"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1051
+#: includes/admin/class-wc-admin-setup-wizard.php:1049
 msgid "PayPal email address"
 msgstr "PayPal 电邮地址:"
 
@@ -17496,7 +17528,7 @@ msgctxt "Page title"
 msgid "My account"
 msgstr "我的帐户"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:421
+#: includes/admin/class-wc-admin-setup-wizard.php:419
 msgid "Let's go!"
 msgstr "开始吧!"
 
@@ -17625,7 +17657,7 @@ msgstr "定时发布的产品：%1$s. <a target=\"_blank\" href=\"%2$s\">预览�
 #: includes/admin/class-wc-admin-post-types.php:301
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:425
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:548
-#: includes/admin/meta-boxes/views/html-variation-admin.php:309
+#: includes/admin/meta-boxes/views/html-variation-admin.php:313
 #: includes/admin/settings/class-wc-settings-shipping.php:345
 #: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:73
 #: includes/admin/settings/views/html-keys-edit.php:16
@@ -17635,7 +17667,7 @@ msgstr "定时发布的产品：%1$s. <a target=\"_blank\" href=\"%2$s\">预览�
 #: includes/gateways/cod/class-wc-gateway-cod.php:83
 #: includes/gateways/paypal/includes/settings-paypal.php:25
 #: includes/gateways/simplify-commerce/class-wc-gateway-simplify-commerce.php:204
-#: includes/wc-template-functions.php:1188
+#: includes/wc-template-functions.php:1187
 #: templates/single-product/tabs/description.php:25
 msgid "Description"
 msgstr "描述"
@@ -17708,7 +17740,7 @@ msgstr "Keys/Apps"
 msgid "Action failed. Please refresh the page and retry."
 msgstr "动作失败。请刷新页面重试。"
 
-#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.2.2)  #-#-#-#-#
+#. #-#-#-#-#  woocommerce-code.pot (WooCommerce 3.2.5)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/admin/class-wc-admin-assets.php:89
 #: includes/admin/class-wc-admin-menus.php:60
@@ -17837,7 +17869,7 @@ msgstr "删除这个属性？"
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:543
 #: includes/admin/meta-boxes/views/html-product-attribute.php:17
 #: includes/admin/meta-boxes/views/html-product-data-general.php:66
-#: includes/admin/meta-boxes/views/html-variation-admin.php:322
+#: includes/admin/meta-boxes/views/html-variation-admin.php:326
 #: includes/admin/settings/views/html-webhooks-edit.php:15
 #: includes/admin/views/html-admin-page-status-report.php:614
 #: includes/export/class-wc-product-csv-exporter.php:83
@@ -18074,11 +18106,11 @@ msgstr "账户设置"
 msgid "Email Settings"
 msgstr "邮箱设置"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:1043
+#: includes/admin/class-wc-admin-setup-wizard.php:1041
 msgid "PayPal Standard"
 msgstr "PayPal 标准接口"
 
-#: includes/admin/class-wc-admin-setup-wizard.php:636
+#: includes/admin/class-wc-admin-setup-wizard.php:634
 #: includes/shipping/legacy-free-shipping/class-wc-shipping-legacy-free-shipping.php:92
 msgid "Free Shipping"
 msgstr "免运费"
@@ -18189,7 +18221,7 @@ msgstr "输入自定义基础去使用. <strong>必须</strong> 设置或 WordPr
 
 #: includes/admin/class-wc-admin-post-types.php:451
 #: includes/admin/reports/class-wc-report-stock.php:112
-#: includes/wc-formatting-functions.php:1037
+#: includes/wc-formatting-functions.php:1040
 #: includes/wc-product-functions.php:782
 msgid "In stock"
 msgstr "有货"
@@ -18285,19 +18317,19 @@ msgid "Orders"
 msgstr "订单"
 
 #: includes/admin/class-wc-admin-permalink-settings.php:76
-#: includes/wc-core-functions.php:1697 includes/wc-update-functions.php:51
+#: includes/wc-core-functions.php:1727 includes/wc-update-functions.php:51
 msgctxt "slug"
 msgid "product-category"
 msgstr "product-category"
 
 #: includes/admin/class-wc-admin-permalink-settings.php:85
-#: includes/wc-core-functions.php:1698 includes/wc-update-functions.php:52
+#: includes/wc-core-functions.php:1728 includes/wc-update-functions.php:52
 msgctxt "slug"
 msgid "product-tag"
 msgstr "product-tag"
 
 #: includes/admin/class-wc-admin-permalink-settings.php:194
-#: includes/wc-core-functions.php:1696 includes/wc-update-functions.php:60
+#: includes/wc-core-functions.php:1726 includes/wc-update-functions.php:60
 msgctxt "slug"
 msgid "product"
 msgstr "product"
@@ -18406,7 +18438,7 @@ msgstr "总计："
 
 #. translators: 1: current item count
 #: includes/legacy/abstract-wc-legacy-order.php:507
-#: includes/wc-template-functions.php:2560
+#: includes/wc-template-functions.php:2559
 msgid "Download %d"
 msgstr "下载"
 
@@ -18415,7 +18447,7 @@ msgstr "下载"
 #: includes/class-wc-emails.php:364
 #: includes/legacy/abstract-wc-legacy-order.php:507
 #: includes/wc-account-functions.php:205
-#: includes/wc-template-functions.php:2560
+#: includes/wc-template-functions.php:2559
 msgid "Download"
 msgstr "下载"
 
@@ -18442,15 +18474,15 @@ msgstr "加入购物车"
 msgid "Read more"
 msgstr "阅读更多"
 
-#: includes/wc-formatting-functions.php:1043
+#: includes/wc-formatting-functions.php:1046
 msgid "Only %s left in stock"
 msgstr "库存仅剩 %s"
 
-#: includes/wc-formatting-functions.php:1052
+#: includes/wc-formatting-functions.php:1055
 msgid "(can be backordered)"
 msgstr "( 可以延迟交货 )"
 
-#: includes/wc-formatting-functions.php:1047
+#: includes/wc-formatting-functions.php:1050
 msgid "%s in stock"
 msgstr "库存 %s 件"
 
@@ -18537,14 +18569,14 @@ msgstr "订单状态由 %1$s 变更为 %2$s 。"
 msgid "Available on backorder"
 msgstr "可超售"
 
-#: includes/wc-template-functions.php:2689
+#: includes/wc-template-functions.php:2688
 msgctxt "min_price"
 msgid "From:"
 msgstr "从："
 
 #. translators: %s: average rating
 #. translators: %s: rating
-#: includes/class-wc-embed.php:130 includes/wc-template-functions.php:2674
+#: includes/class-wc-embed.php:130 includes/wc-template-functions.php:2673
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:166
 msgid "Rated %s out of 5"
 msgstr "评分 %s &sol; 5"
@@ -22191,10 +22223,6 @@ msgstr "波斯尼亚和黑塞哥维那"
 msgid "Botswana"
 msgstr "博茨瓦纳"
 
-#: i18n/countries.php:49
-msgid "Bouvet Island"
-msgstr "圣诞岛"
-
 #: i18n/countries.php:50
 msgid "Brazil"
 msgstr "巴西"
@@ -22791,10 +22819,6 @@ msgstr "圣卢西亚"
 msgid "Saint Martin (French part)"
 msgstr "圣马丁（法国部分）"
 
-#: i18n/countries.php:206
-msgid "Saint Martin (Dutch part)"
-msgstr "圣马丁（法国部分）"
-
 #: i18n/countries.php:207
 msgid "Saint Pierre and Miquelon"
 msgstr "圣皮埃尔和密克隆"
@@ -22858,10 +22882,6 @@ msgstr "南乔治亚/南桑威奇群岛"
 #: i18n/countries.php:223
 msgid "South Korea"
 msgstr "韩国"
-
-#: i18n/countries.php:224
-msgid "South Sudan"
-msgstr "南非"
 
 #: i18n/countries.php:225
 msgid "Spain"
@@ -23406,3 +23426,15 @@ msgstr "博内尔岛，圣尤斯特修斯和萨巴"
 #: i18n/countries.php:40
 msgid "Belau"
 msgstr "贝劳"
+
+#: i18n/countries.php:206
+msgid "Saint Martin (Dutch part)"
+msgstr "圣马丁（荷兰部分）"
+
+#: i18n/countries.php:224
+msgid "South Sudan"
+msgstr "南苏丹"
+
+#: i18n/countries.php:49
+msgid "Bouvet Island"
+msgstr "这不是一个国家。是一个无人居住的小岛。应该删除。"

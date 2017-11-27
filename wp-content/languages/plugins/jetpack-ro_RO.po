@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Jetpack by WordPress.com - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-11-08 12:48:51+0000\n"
+"PO-Revision-Date: 2017-11-18 09:34:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -875,7 +875,7 @@ msgstr "Arhive"
 
 #: _inc/jetpack-strings.php:255
 msgid "Additional ad placements"
-msgstr "Locuri suplimentare de plasare anunțuri"
+msgstr "Locuri suplimentare de plasare a anunțurilor"
 
 #: _inc/jetpack-strings.php:254
 msgid "Top of each page"
