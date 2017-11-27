@@ -36,12 +36,12 @@
 
         <div class="row">
           <div class="col">
-            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_courses')">
+            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_courses')">
               <i class="fa fa-graduation-cap fa-3x" aria-hidden="true"></i>
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_courses')"><?= __("Manage Courses", "EOT_LMS"); ?></a>
+            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_courses')"><?= __("Manage Courses", "EOT_LMS"); ?></a>
             <br>
             <?= __("Select, create, and publish courses, then assign staff to a course.", "EOT_LMS"); ?>
           </div>
