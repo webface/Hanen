@@ -724,7 +724,7 @@ function display_subscription_dashboard ($subscription)
             </a>
         </div>
         <div class="menu">
-          <a href="?part=administration&subscription_id=<?= $subscription->ID ?>" onclick="load('load_administration')">
+          <a href="?part=administration&subscription_id=<?= $subscription->ID ?>&user_id=<?= $user_id ?>" onclick="load('load_administration')">
             <div class="thumbnail">
                 <i class="fa fa-cogs" alt="Administration"></i>
             </div>

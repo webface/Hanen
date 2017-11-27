@@ -15,7 +15,7 @@
   { 
 
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
-    $user_id = $current_user->ID; // Wordpress user ID
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // The // Wordpress user ID
     $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
 
     if(isset($true_subscription['status']) && $true_subscription['status'])
@@ -60,12 +60,12 @@
           </div>
           <div class="row">
             <div class="col">
-              <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>" target="_blank">
+              <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" target="_blank">
               <i class="fa fa-file-text fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Content", "EOT_LMS"); ?></a>
+            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Content", "EOT_LMS"); ?></a>
             <br>
             <?= __("Upload your home-made videos, documents, links, and quizzes.", "EOT_LMS"); ?>
           </div>

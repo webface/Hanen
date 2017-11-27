@@ -1621,7 +1621,7 @@ function verifyUserAccess ()
         if ($results)
         {
           // set the subscription ID and org ID
-          $_REQUEST['subscription_id'] = $results->id;
+          $_REQUEST['subscription_id'] = $results->ID;
           $_REQUEST['org_id'] = $org_id;
 
           return array ( 'status' => 1 );
