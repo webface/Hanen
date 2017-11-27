@@ -25,10 +25,10 @@ define ('DEFAULT_QUIZ_LENGTH', 7);
 define ('CRUMB_DASHBOARD', '<a href="'. get_home_url() .'/dashboard/" onclick="load(\'load_dashboard\')">My Dashboard</a>');
 
 // define breadcrumb to modules page
-define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$subscription_id.'">Manage Your Custom Modules</a>');
+define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$subscription_id.'&user_id='.$user_id.'">Manage Your Custom Modules</a>');
 
 // define breadcrumb to administrator page
-define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$subscription_id.'" onclick="load(\'load_administration\')">Administration</a>');
+define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_administration\')">Administration</a>');
 
 // define breadcrumb to subscription details page
 define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$subscription_id.'&library_id='.$library_id.'" onclick="load(\'load_loading\')">Subscription Details</a>');
@@ -36,12 +36,12 @@ define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?
 if($subscription_id == 0)
 {
 	// define breadcrumb to the quiz page for admins. NOTE: different part
-	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz_eot&subscription_id='.$subscription_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
+	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz_eot&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
 }
 else 
 {
 	// define breadcrumb to the quiz page
-	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&subscription_id='.$subscription_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');  
+	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');  
 }
 // define breadcrumb to view subscription page. This requires the subscription ID.
 define ('CRUMB_VIEW_SUBSCRIPTIONS', '<a href="'. get_home_url() .'/dashboard/?part=admin_view_subscriptions&library_id='.$library_id.'" onclick="load(\'load_manage_staff_accounts\')">View Subscriptions</a>');

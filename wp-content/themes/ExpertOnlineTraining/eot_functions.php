@@ -9555,6 +9555,10 @@ function verifyQuiz($quiz_id = 0)
     {
         return true;
     }
+    if (current_user_can("is_uber_manager") || current_user_can("is_umbrella_manager"))
+    {
+        return true;
+    }
     $quiz_user = $wpdb->get_var("SELECT user_id FROM ". TABLE_QUIZ. " WHERE ID = $quiz_id");
     if($quiz_user == $current_user->ID)
     {

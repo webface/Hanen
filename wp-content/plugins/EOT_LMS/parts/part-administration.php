@@ -73,24 +73,24 @@
 
         <div class="row">
           <div class="col">
-            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_quiz')">
+            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_quiz')">
               <i class="fa fa-question-circle fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_quiz')"><?= __("Manage Your Custom Quizzes", "EOT_LMS"); ?></a>
+            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_quiz')"><?= __("Manage Your Custom Quizzes", "EOT_LMS"); ?></a>
             <br>
             <?= __("Create custom quizzes for your staff.", "EOT_LMS"); ?>
           </div>
         </div>
           <div class="row">
             <div class="col">
-              <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" target="_blank">
+              <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" target="_blank">
               <i class="fa fa-list-alt fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Modules", "EOT_LMS"); ?></a>
+            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Modules", "EOT_LMS"); ?></a>
             <br>
             <?= __("Create and manage your own modules with your videos and quizzes.", "EOT_LMS"); ?>
           </div>

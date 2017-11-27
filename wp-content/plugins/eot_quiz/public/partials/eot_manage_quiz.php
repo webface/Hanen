@@ -2,7 +2,7 @@
 $path = WP_PLUGIN_DIR . '/eot_quiz/';
 require $path . 'public/class-eot_quiz_data.php';
 global $current_user;
-$user_id = $current_user->ID; // Wordpress user ID
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 $org_id = get_org_from_user($user_id);
 $eot_quiz = new EotQuizData();
 $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
@@ -31,7 +31,7 @@ if (isset($_POST['submit']))
 
 
     $quiz_id = $eot_quiz->addQuiz($data);
-    $url ='/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id; 
+    $url ='/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id; 
     ob_start();
     header('Location: '.$url);
     ob_end_flush();
@@ -74,12 +74,12 @@ if ($quizzes)
             $quiz['num_questions_to_display'],
             (($quiz['passing_score']) ? $quiz['passing_score'] : 0) . " of " . $quiz['num_questions_to_display'],
             $time_limit . " minutes",
-            '<a href="/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit Questions</a>',
-            '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-pencil tooltip" aria-hidden="true" title="Edit quiz settings such as title, description, number of questions to display, etc..." style="margin-bottom: -2px" onmouseover="Tip(\'Edit quiz settings such as title, description, number of questions to display, etc...\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>
+            '<a href="/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">Edit Questions</a>',
+            '<a  href="/dashboard?part=update_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '&user_id=' . $user_id. '"><i class="fa fa-pencil tooltip" aria-hidden="true" title="Edit quiz settings such as title, description, number of questions to display, etc..." style="margin-bottom: -2px" onmouseover="Tip(\'Edit quiz settings such as title, description, number of questions to display, etc...\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>
             &nbsp;&nbsp&nbsp;
-            <a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '"><i class="fa fa-eye tooltip" aria-hidden="true" title="View the quiz questions and answers." style="margin-bottom: -2px" onmouseover="Tip(\'View the quiz questions and answers.\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>
+            <a  href="/dashboard?part=view_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '&user_id=' . $user_id. '"><i class="fa fa-eye tooltip" aria-hidden="true" title="View the quiz questions and answers." style="margin-bottom: -2px" onmouseover="Tip(\'View the quiz questions and answers.\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>
             &nbsp;&nbsp&nbsp;
-            <a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id . '" data-type="Quiz" class="delete" rel="facebox"><i class="fa fa-trash tooltip" aria-hidden="true" title="Delete this quiz." style="margin-bottom: -2px" onmouseover="Tip(\'Delete this quiz.\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>'
+            <a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_quiz&quiz_id=' . $quiz['ID'] . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" data-type="Quiz" class="delete" rel="facebox"><i class="fa fa-trash tooltip" aria-hidden="true" title="Delete this quiz." style="margin-bottom: -2px" onmouseover="Tip(\'Delete this quiz.\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i></a>'
         );
     }
     CreateDataTable($quizTableObj); // Print the table in the page
@@ -144,6 +144,7 @@ else
             </div>
         </div>
         <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>">
+        <input type="hidden" name="user_id" value="<?= $user_id ?>">
         <input type="submit" class="bs btn btn-primary pull-right" name="submit" value="Submit">
         <span class="clearfix"></span>
     </form>
@@ -175,7 +176,7 @@ else
                 {
                     if(data.success===true)
                     {
-                        window.location.href = "/dashboard?part=manage_quiz&subscription_id=<?= $subscription_id ?>";
+                        window.location.href = "/dashboard?part=manage_quiz&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>";
                     }
                 }
        )

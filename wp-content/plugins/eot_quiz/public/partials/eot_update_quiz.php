@@ -13,7 +13,7 @@ if($subscription_id == 0)// in case its an eot quiz
 }
 else
 {
-    $user_id = $current_user->ID; // Wordpress user ID
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
     $org_id = get_org_from_user($user_id);
 
 }
@@ -43,11 +43,11 @@ if (isset($_POST['submit']))
     {
         if($subscription_id == 0)// in case its an eot quiz
         {
-            wp_redirect(home_url('dashboard?part=manage_quiz_eot&subscription_id='.$subscription_id));
+            wp_redirect(home_url('dashboard?part=manage_quiz_eot&subscription_id='.$subscription_id.'&user_id='.$user_id));
         }
         else
         {
-        wp_redirect(home_url('dashboard?part=manage_quiz&subscription_id='.$subscription_id));
+        wp_redirect(home_url('dashboard?part=manage_quiz&subscription_id='.$subscription_id.'&user_id='.$user_id));
         }
         exit();
     }
@@ -122,6 +122,7 @@ if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
             <div class="bs col-xs-6">
             <input type="hidden" name="quiz_id" value="<?= $quiz_id; ?>">
             <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>">
+            <input type="hidden" name="user_id" value="<?= $user_id ?>">
             </div>
             <div class="bs col-xs-6">
             <input type="submit" class="bs btn btn-primary pull-right" name="submit" value="Update">

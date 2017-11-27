@@ -12,7 +12,7 @@
     // Variable declaration
     global $current_user;
     global $wpdb;
-    $user_id = $current_user->ID; // Wordpress user ID
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
     $email = $current_user->user_email; // Wordpres e-mail address
     $org_id = get_org_from_user($user_id); // Organization ID
     $admin_ajax_url = admin_url('admin-ajax.php');
@@ -66,8 +66,8 @@
                         $moduleTableObj->rows[] = array(
                             '<span>' . stripslashes($module['title']) . '</span>',
                             $num_resources,
-                            '<a href="/dashboard?part=edit_module&module_id=' . $module['ID'] . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_module\')"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp; 
-                            <a href="' . $admin_ajax_url . '?action=get_module_form&form_name=delete_module&module_id=' . $module['ID'] . '&org_id=' . $org_id . '" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
+                            '<a href="/dashboard?part=edit_module&module_id=' . $module['ID'] . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_module\')"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp; 
+                            <a href="' . $admin_ajax_url . '?action=get_module_form&form_name=delete_module&module_id=' . $module['ID'] . '&org_id=' . $org_id .'&user_id=' . $user_id . '" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
                         );
                     }
                     CreateDataTable($moduleTableObj); // Print the table in the page
@@ -80,7 +80,7 @@
                 <span><em>Create a new module below</em></span><br>
                 <div class="bs">
                     <div class="well" style="padding:10px">
-                        <form action="/dashboard?part=manage_custom_modules&subscription_id=<?= $subscription_id ?>" method="POST">
+                        <form action="/dashboard?part=manage_custom_modules&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
                             <?php wp_nonce_field('submit_module', 'submit_module'); ?>
                             <div class="form-group">
                                 <label for="moduleName">Module Name*</label>
@@ -128,7 +128,7 @@
                                 {
                                     if (data.success === 'true') 
                                     {
-                                        window.location.href="/dashboard?part=manage_custom_modules&subscription_id=<?=$subscription_id?>";
+                                        window.location.href="/dashboard?part=manage_custom_modules&subscription_id=<?=$subscription_id?>&user_id=<?=$user_id?>";
                                     }
                                     else
                                     {
