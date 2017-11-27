@@ -5,8 +5,7 @@
 </div>
 <?php
   // verify this user has access to this portal/subscription/page/view
-  $true_subscription = verifyUserAccess(); 
-
+  $true_subscription = verifyUserAccess();
   // Variable declaration
   global $current_user;
   $page_title = __("Administration", "EOT_LMS");

@@ -1282,9 +1282,16 @@ function display_uber_manager_dashboard()
         $director_name = $director[0]->first_name . " " . $director[0]->last_name;
         $user_id = $director[0]->ID;
       }
+      $subscriptions = get_current_subscriptions ($org_id);
+      $subscription_id = 0;
+      if (!empty($subscriptions))
+      {
+        // user has at least 1 subscription
+        $subscription_id = $subscriptions[0]->ID;
 
+      }
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
+      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
 
     }
 
@@ -1360,9 +1367,16 @@ function display_umbrella_manager_dashboard()
         $director_name = $director[0]->first_name . " " . $director[0]->last_name;
         $user_id = $director[0]->ID;
       }
+      $subscriptions = get_current_subscriptions ($org_id);
+      $subscription_id = 0;
+      if (!empty($subscriptions))
+      {
+        // user has at least 1 subscription
+        $subscription_id = $subscriptions[0]->ID;
 
+      }
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
+      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
 
     }
 
@@ -1462,13 +1476,20 @@ function verifyUserAccess ()
         // verify that the current uber/umbrella manager has access to this user
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         $manager_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+
       }
       else
       {
         return array( 'status' => 0, 'message' => __("we didn't get an org_id and user_id", "EOT_LMS") );
       }
     }
+        $subscriptions = get_current_subscriptions ($org_id);
+    if (!empty($subscriptions))
+    {
+      // user has at least 1 subscription
+      $library_id = $subscriptions[0]->library_id;
 
+    }
     // now using the org_id and manager_id see if this uber admin is allowed to access this org.
     // get the uber admin's org id (post id)
     $args = array(
@@ -1495,7 +1516,7 @@ function verifyUserAccess ()
         // all good, proceed to get subscriptions and edit this org.
         $date = current_time('Y-m-d');
         $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ";
-        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".LE_ID." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
+        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".$library_id." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
         $results = $wpdb->get_row ($sql);
         if ($results)
         {
@@ -1562,7 +1583,13 @@ function verifyUserAccess ()
         return array( 'status' => 0, 'message' => __("we didn't get an org_id and user_id", "EOT_LMS") );
       }
     }
+    $subscriptions = get_current_subscriptions ($org_id);
+    if (!empty($subscriptions))
+    {
+      // user has at least 1 subscription
+      $library_id = $subscriptions[0]->library_id;
 
+    }
     // now using the org_id and manager_id see if this umbrella admin is allowed to access this org.
     // get the umbrella admin's org id (post id)
     $args = array(
@@ -1589,7 +1616,7 @@ function verifyUserAccess ()
         // all good, proceed to get subscriptions and edit this org.
         $date = current_time('Y-m-d');
         $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ";
-        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".LE_ID." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
+        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".$library_id." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
         $results = $wpdb->get_row ($sql);
         if ($results)
         {
@@ -9741,7 +9768,7 @@ function create_uber_camp_director_callback()
                                     }
                                     
                                 }
-                                else
+                                else //type is Umbrella Manager
                                 {
                                    if(!update_user_meta($user_id, 'regional_umbrella_group_id', $ugroup_id))
                                     {
@@ -9751,6 +9778,15 @@ function create_uber_camp_director_callback()
                                     if(!update_post_meta($org_id, 'regional_umbrella_group_id', $ugroup_id))
                                     {
                                             add_post_meta($org_id, 'regional_umbrella_group_id', $ugroup_id);
+                                    }
+                                    if(!update_user_meta($user_id, 'umbrella_group_id', $ugroup_id))
+                                    {
+                                            add_user_meta($user_id, 'umbrella_group_id', $ugroup_id);
+                                    }
+
+                                    if(!update_post_meta($org_id, 'umbrella_group_id', $ugroup_id))
+                                    {
+                                            add_post_meta($org_id, 'umbrella_group_id', $ugroup_id);
                                     }
                                 }
                             $subscription = getSubscriptions($subscription_id);
@@ -9796,7 +9832,7 @@ function upgrade_uber_manager_callback(){
 add_action('wp_ajax_upgrade_umbrella_manager', 'upgrade_umbrella_manager_callback');
 function upgrade_umbrella_manager_callback()
 {
-    if(!isset($_REQUEST['umbrella_group_id']))
+    if(empty($_REQUEST['umbrella_group_id']))
     {
         $result['success'] = false;
         $result['display_errors'] = true;
@@ -9819,6 +9855,15 @@ function upgrade_umbrella_manager_callback()
     if(!update_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id))
     {
             add_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id);
+    }
+    if(!update_user_meta($user_id, 'regional_umbrella_group_id', $umbrella_group_id))
+    {
+            add_user_meta($user_id, 'regional_umbrella_group_id', $umbrella_group_id);
+    }
+
+    if(!update_post_meta($org_id, 'regional_umbrella_group_id', $umbrella_group_id))
+    {
+            add_post_meta($org_id, 'regional_umbrella_group_id', $umbrella_group_id);
     }
     $result['success'] = true;
     $result['display_errors'] = false;
