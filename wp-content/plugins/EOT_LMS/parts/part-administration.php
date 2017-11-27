@@ -60,12 +60,12 @@
           </div>
           <div class="row">
             <div class="col">
-              <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" target="_blank">
+              <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?= $user_id ?>" target="_blank">
               <i class="fa fa-file-text fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Content", "EOT_LMS"); ?></a>
+            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?= $user_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Content", "EOT_LMS"); ?></a>
             <br>
             <?= __("Upload your home-made videos, documents, links, and quizzes.", "EOT_LMS"); ?>
           </div>
@@ -73,12 +73,12 @@
 
         <div class="row">
           <div class="col">
-            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_quiz')">
+            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" onclick="load('load_quiz')">
               <i class="fa fa-question-circle fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_quiz')"><?= __("Manage Your Custom Quizzes", "EOT_LMS"); ?></a>
+            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" onclick="load('load_quiz')"><?= __("Manage Your Custom Quizzes", "EOT_LMS"); ?></a>
             <br>
             <?= __("Create custom quizzes for your staff.", "EOT_LMS"); ?>
           </div>
@@ -95,6 +95,9 @@
             <?= __("Create and manage your own modules with your videos and quizzes.", "EOT_LMS"); ?>
           </div>
         </div>
+        <?php if($current_user->ID == $user_id)//show below buttons if its not an uber or umbrella managing this page
+                {
+            ?>
         <div class="row">
           <div class="col">
             <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')">
@@ -147,6 +150,7 @@
           </div>
         </div>
       <?php
+                } //close if is an uber or umbrella editing
       }
       else
       {
