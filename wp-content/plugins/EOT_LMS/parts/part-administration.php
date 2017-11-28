@@ -6,8 +6,13 @@
 <?php
   // verify this user has access to this portal/subscription/page/view
   $true_subscription = verifyUserAccess();
+  d($true_subscription);
   // Variable declaration
   global $current_user;
+  $current_user_id = $current_user->ID;
+  $current_user_meta = get_user_meta($current_user_id);
+  d($current_user_meta);
+  
   $page_title = __("Administration", "EOT_LMS");
 
   // Check if the subscription ID is valid.
@@ -36,24 +41,24 @@
 
         <div class="row">
           <div class="col">
-            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_courses')">
+            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_courses')">
               <i class="fa fa-graduation-cap fa-3x" aria-hidden="true"></i>
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_courses')"><?= __("Manage Courses", "EOT_LMS"); ?></a>
+            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_courses')"><?= __("Manage Courses", "EOT_LMS"); ?></a>
             <br>
             <?= __("Select, create, and publish courses, then assign staff to a course.", "EOT_LMS"); ?>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_staff_accounts')">
+            <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_manage_staff_accounts')">
                 <i class="fa fa-users fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;
               </a>
             </div>
             <div class="col">
-              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_staff_accounts')"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></a>
+              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_manage_staff_accounts')"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></a>
               <br>
               <?= __("Enter or upload staff names, email addresses, and passwords.", "EOT_LMS"); ?>
             </div>

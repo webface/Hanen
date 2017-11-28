@@ -59,7 +59,7 @@ define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=stati
 define ('CRUMB_USERSLISTS', '<a href="'. get_home_url() .'/dashboard/?part=user_list" onclick="load(\'load_manage_staff_accounts\')">Users Lists</a>');
 
 // define breadcrumb to the manage staff accounts
-define ('CRUMB_MANAGE_STAFF_ACCOUNTS', '<a href="'. get_home_url() .'/dashboard/?part=manage_staff_accounts&subscription_id='.$subscription_id.'&org_id='.$org_id.'">Manage Staff Accounts</a>');
+define ('CRUMB_MANAGE_STAFF_ACCOUNTS', '<a href="'. get_home_url() .'/dashboard/?part=manage_staff_accounts&subscription_id='.$subscription_id.'&org_id='.$org_id.'&user_id='.$user_id.'">Manage Staff Accounts</a>');
 
 // define breadcrumb to custom fields page
 define ('CRUMB_CUSTOMFIELDS', '<a href="'. get_home_url() .'/dashboard/?part=custom_fields"">Custom Fields</a>');
