@@ -175,11 +175,11 @@ static $i = 0;
   <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=invite_users&subscription_id=<?= $subscription_id ?>&org_id=<?= $org_id ?>">
     <?= __("Invite Users To Register", "EOT_LMS"); ?>
   </a>
-  <!-- 
+   
   <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=add_previous_staff_to_subscription&amp;year=<?= SUBSCRIPTION_YEAR ?>&amp;org_id=<?= $org_id ?>" rel="facebox">
     Manage Previous
   </a> 
-  -->  
+    
 </div>
 </div>
 
@@ -196,6 +196,7 @@ static $i = 0;
   $(function()
   {
       $('a[class="btn"][name="create_staff_account"]').facebox(); // Bind facebox to create_staff_account button.
+      $('a[class="btn"][rel="facebox"]').facebox();
       $('#debugger').click(
       function()
       {

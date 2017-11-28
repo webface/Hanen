@@ -6844,6 +6844,88 @@ function getCourseForm_callback ( )
         <?php
         $html = ob_get_clean();
         }
+        else if($form_name == "add_previous_staff_to_subscription")
+        {        
+            $year = filter_var($_REQUEST['year'], FILTER_SANITIZE_NUMBER_INT);
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+            global $current_user;
+            wp_get_current_user();
+        ?>
+            <div class="title">
+              <div class="title_h2">
+                <?= __("Add Previous Staff to Subscription", "EOT_LMS") ?>
+              </div>
+            </div>
+            <div class="middle" style ="font-size:12px;width:600px;margin:10px;padding:0px;clear:both;">
+                <form frm_name="send_message" id="send_message" frm_action="sendMail" rel="submit_form" hasError=0>
+                    <table>
+                      <tr>
+                        <td class="label" width="100px">
+                          <?= __("From", "EOT_LMS") ?>
+                        </td>
+                        <td class="value">
+                          <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?><span class="small">(<?= $current_user->user_email ?>)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="label">
+                          <?= __("Subject", "EOT_LMS") ?>
+                        </td>
+                        <td class="value">
+                          <input type="text" name="subject" value="<?= __("Your account on ExpertOnlineTraining.com (Leadership Training)", "EOT_LMS") ?>" size="60" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="label vtop"><?= __("Message", "EOT_LMS") ?></td>
+                        <td class="value">
+                          <textarea class="tinymce" id="composed_message" name="message" style="margin-left:1px;width: 525px; height: 300px">
+                            <b><?= __("Welcome", "EOT_LMS") ?></b>, <?= $name ?>!<br><br>
+                            <b><?= __("Congratulations", "EOT_LMS") ?>!</b> <?= __("You are now a member of Expert Online Training (EOT), the world’s best virtual classroom for youth development professionals. By using EOT now, before your job starts at", "EOT_LMS")?> <?= get_the_title($org_id); ?>, <?= __("you will turbocharge your leadership skills, boost your self-confidence, and get even more out of", "EOT_LMS")?> <?= get_the_title($org_id); ?>’s <?= __("on-site training.", "EOT_LMS")?><br><br>
+
+                            <p><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" alt="EOT Logo" style="width: 125px; height: 94px; float: left;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" data-mce-style="width: 150px; height: 113px; float: left;"> 
+                            <br><b><?= __("Take EOT with you.", "EOT_LMS")?></b> <?= __("We know you are busy, so our new website is mobile-friendly. You can now watch EOT videos and take your quizzes on any smartphone, tablet, or laptop with a WiFi connection. Imagine learning more about behavior management, leadership, supervision, games, and safety while you sit in a café, library, or student lounge!", "EOT_LMS")?>
+                            </p><br><br>
+
+                            <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("just created an account for you with these login credentials:", "EOT_LMS")?><br><br>
+
+                            <?= __("E-mail / username:", "EOT_LMS")?> <?= $email ?><br>
+                            <?= __("Password:", "EOT_LMS")?> <?= $password ?><br><br>
+
+                            <?= __("To watch EOT’s intro video and log in,", "EOT_LMS")?> <a href="https://www.expertonlinetraining.com" target="_blank" data-mce-href="https://www.expertonlinetraining.com"><?= __("click here", "EOT_LMS")?></a>.<br><br>
+
+                            <b><?= __("When is it due?", "EOT_LMS")?></b> <?= __("Directors usually require staff to complete their online learning assignment before arriving on-site. ", "EOT_LMS")?>
+                            <?= __("If you have not yet received a due-date for your assignment, check with", "EOT_LMS")?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("to get one. As you move through your course,", "EOT_LMS")?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __("will have access to an electronic dashboard that allows them to track your progress and quiz scores.", "EOT_LMS")?><br><br>
+
+                            <b><?= __("Got Questions?", "EOT_LMS")?></b> <?= __("If you get stuck, watch our online help videos or call us at", "EOT_LMS")?> <b><?= __("877-390-2267", "EOT_LMS")?></b>! <?= __("The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.", "EOT_LMS")?><br><br>
+
+                            <?= __("Enjoy your training!", "EOT_LMS")?><br><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;" data-mce-src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" data-mce-style="width: 100px; height: 55px;"><br>
+                            Dr. Chris Thurber<br> 
+                            <?= __("EOT Co-Founder", "EOT_LMS")?> &amp;<br> 
+                            <?= __("Director of Content", "EOT_LMS")?>
+                          </textarea>
+                          <br /><br />
+                            <input type="hidden" name="email" value="<?= $email ?>" />
+                            <input type="hidden" name="org_id" value="<?= $org_id ?>" />
+                            <input type="hidden" name="target" value="<?= $target ?>" />
+                            <input type="hidden" name="name" value="<?= $name ?>" />
+                        </td>
+                      </tr>
+                    </table>
+                </form>
+            </div>      
+            <div class="popup_footer">
+              <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');">
+                  <div style="height:15px;padding-top:2px;"> <?= __("Cancel", "EOT_LMS")?></div>
+                </a>
+                <a active='0' acton="send_message" rel="submit_button" >
+                  <div style="height:15px;padding-top:2px;"> <?= __("Send Message", "EOT_LMS")?></div>
+                </a>
+              </div>
+            </div>      
+        <?php
+        $html = ob_get_clean();
+        }
         else if($form_name == "add_staff_to_group")
         {        
             $course_id = filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
