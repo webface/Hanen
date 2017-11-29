@@ -9742,6 +9742,8 @@ function create_uber_camp_director_callback()
 			$result['success'] = false;
                         $result['display_errors'] = true;
 			$result['message'] = $user_id->get_error_message();
+                        echo json_encode($result);
+                        wp_die();
 
 		} 
 		else 
@@ -9759,6 +9761,8 @@ function create_uber_camp_director_callback()
 				$result['success'] = false;
                                 $result['display_errors'] = true;
 				$result['message'] = $org_id->get_error_message();
+                                echo json_encode($result);
+                                wp_die();
 			}
                         else
                         {
@@ -9788,7 +9792,7 @@ function create_uber_camp_director_callback()
                                     {
                                             add_post_meta($org_id, 'regional_umbrella_group_id', $ugroup_id);
                                     }
-                                        // get the uber admin's org id (post id)
+                                        // get the umbrella admins post from org_id
                                     $post_author_id = get_post_field( 'post_author', $ugroup_id );
                                     $args = array(
                                       'post_type' => 'org',
@@ -9797,6 +9801,7 @@ function create_uber_camp_director_callback()
                                     $posts = get_posts($args);
                                     if ($posts)
                                     {
+                                        //get umbrella group id from uber camp
                                       $umbrella_group_id = get_post_meta($posts[0]->ID, 'umbrella_group_id', true);
                                       if(!update_user_meta($user_id, 'umbrella_group_id', $umbrella_group_id))
                                         {
