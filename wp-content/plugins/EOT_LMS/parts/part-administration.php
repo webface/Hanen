@@ -6,12 +6,8 @@
 <?php
   // verify this user has access to this portal/subscription/page/view
   $true_subscription = verifyUserAccess();
-  d($true_subscription);
   // Variable declaration
   global $current_user;
-  $current_user_id = $current_user->ID;
-  $current_user_meta = get_user_meta($current_user_id);
-  d($current_user_meta);
   
   $page_title = __("Administration", "EOT_LMS");
 

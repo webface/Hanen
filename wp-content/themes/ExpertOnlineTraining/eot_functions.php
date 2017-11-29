@@ -1276,14 +1276,18 @@ function display_uber_manager_dashboard()
         'meta_value' => $org_id,
         'number' => 1
       );
-      $directorCamps = getUmbrellaCamps($org_id, 'regional_umbrella_group_id'); // Lists of umbrella camps
-      //d($directorCamps);
+
       $director = get_users($args); // get the user name associated with this org
       $director_name = 'John Doe';
+      $type = 'Director';
       if ($director)
       {
         $director_name = $director[0]->first_name . " " . $director[0]->last_name;
         $user_id = $director[0]->ID;
+        if(user_can($user_id,'is_umbrella_manager'))
+        {
+            $type = "Umbrella Manager";
+        }
       }
       $subscriptions = get_current_subscriptions ($org_id);
       $subscription_id = 0;
@@ -1294,37 +1298,7 @@ function display_uber_manager_dashboard()
 
       }
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, 'Umbrella Manager',  '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
-      while($directorCamps->have_posts())
-      {
-            $directorCamps->the_post(); 
-            $org_id = get_the_ID(); // The org ID
-            $camp_name = get_the_title(); // The camp name
-            $args = array (
-              'role__in' => array('manager'),
-              'meta_key' => 'org_id',
-              'meta_value' => $org_id,
-              'number' => 1
-            );
-            $director = get_users($args); // get the user name associated with this org
-            $director_name = 'John Doe';
-            if ($director)
-            {
-              $director_name = $director[0]->first_name . " " . $director[0]->last_name;
-              $user_id = $director[0]->ID;
-            }
-            $subscriptions = get_current_subscriptions ($org_id);
-            $subscription_id = 0;
-            if (!empty($subscriptions))
-            {
-              // user has at least 1 subscription
-              $subscription_id = $subscriptions[0]->ID;
-
-            }
-            // Create a table row.
-            $userTableObj->rows[] = array($camp_name, $director_name, 'Camp Director',  '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
-    
-      }
+      $userTableObj->rows[] = array($camp_name, $director_name, $type, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
     }
 
     // Display the user's table
@@ -1537,13 +1511,11 @@ function verifyUserAccess ()
     {
       return array( 'status' => 0, 'message' => __("couldn't get the uber admin's org_id", "EOT_LMS") );
     }
-
     // get the user meta for the manager so we can compare the umbrella_group_id
     $user_meta = get_user_meta($manager_id);
 
     if ($user_meta)
     {
-        d($user_meta);
       if (isset($user_meta['umbrella_group_id']) && $user_meta['umbrella_group_id'][0] == $umbrella_group_id && $user_meta['org_id'][0] == $org_id)
       {
         // all good, proceed to get subscriptions and edit this org.
@@ -9816,42 +9788,29 @@ function create_uber_camp_director_callback()
                                     {
                                             add_post_meta($org_id, 'regional_umbrella_group_id', $ugroup_id);
                                     }
-                                    //$umbrella_group_id = get_post_meta($post_id, 'umbrella_group_id', true);
-                                    // WP_Query arguments
-                                    $args = array (
-                                        'post_type'              => array( 'org' ),
-                                        'post_status'            => array( 'publish' ),
-                                        'meta_query'             => array(
-                                            array(
-                                                'key'       => 'umbrella_group_id',
-                                                'value'     => $ugroup_id,
-                                            ),
-                                        ),
+                                        // get the uber admin's org id (post id)
+                                    $post_author_id = get_post_field( 'post_author', $ugroup_id );
+                                    $args = array(
+                                      'post_type' => 'org',
+                                      'author' => $post_author_id
                                     );
-
-                                    // The Query
-                                    $query = new WP_Query( $args );
-
-                                    // The Loop
-                                    if ( $query->have_posts() ) {
-                                        while ( $query->have_posts() ) {
-                                            $query->the_post();
-                                            $post_id = get_the_ID();
-                                            if(!update_user_meta($user_id, 'umbrella_group_id', $post_id))
-                                            {
-                                                    add_user_meta($user_id, 'umbrella_group_id', $post_id);
-                                            }
-
-                                            if(!update_post_meta($org_id, 'umbrella_group_id', $post_id))
-                                            {
-                                                    add_post_meta($org_id, 'umbrella_group_id', $post_id);
-                                            }
+                                    $posts = get_posts($args);
+                                    if ($posts)
+                                    {
+                                      $umbrella_group_id = get_post_meta($posts[0]->ID, 'umbrella_group_id', true);
+                                      if(!update_user_meta($user_id, 'umbrella_group_id', $umbrella_group_id))
+                                        {
+                                                add_user_meta($user_id, 'umbrella_group_id', $umbrella_group_id);
                                         }
-                                    } else {
-                                        // no posts found
+
+                                        if(!update_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id))
+                                        {
+                                                add_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id);
+                                        }
                                     }
 
-                                }
+                            }           
+          
                             $subscription = getSubscriptions($subscription_id);
                             //error_log(json_encode($subscription));
                             if($subscription)
@@ -9885,7 +9844,6 @@ function upgrade_uber_manager_callback(){
     $role = "uber_manager";
     $user = new WP_User($user_id);
     $user->add_role($role);
-    //delete_post_meta($org_id, 'umbrella_group_id');//in case was an umbrella manager before
     $result['success'] = true;
     $result['display_errors'] = false;
     $result['message'] = "Success";
@@ -9919,15 +9877,6 @@ function upgrade_umbrella_manager_callback()
     if(!update_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id))
     {
             add_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id);
-    }
-    if(!update_user_meta($user_id, 'regional_umbrella_group_id', $umbrella_group_id))
-    {
-            add_user_meta($user_id, 'regional_umbrella_group_id', $umbrella_group_id);
-    }
-
-    if(!update_post_meta($org_id, 'regional_umbrella_group_id', $umbrella_group_id))
-    {
-            add_post_meta($org_id, 'regional_umbrella_group_id', $umbrella_group_id);
     }
     $result['success'] = true;
     $result['display_errors'] = false;
