@@ -6849,7 +6849,9 @@ function getCourseForm_callback ( )
             $year = filter_var($_REQUEST['year'], FILTER_SANITIZE_NUMBER_INT);
             $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
             global $current_user;
-            wp_get_current_user();
+            $users = getEotUsers($org_id);
+            d($users);
+            
         ?>
             <div class="title">
               <div class="title_h2">
