@@ -1235,12 +1235,12 @@ function display_uber_manager_dashboard()
 ?>
   <div class="row">
     <div class="col">
-      <a href="?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')">
+      <a href="/dashboard?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')">
         <i class="fa fa-files-o fa-3x" aria-hidden="true"></i>
       </a>
     </div>
     <div class="col">
-      <a href="?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')"><?= __("Copy Courses", "EOT_LMS") ?></a>
+      <a href="/dashboard?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')"><?= __("Copy Courses", "EOT_LMS") ?></a>
       <br>
       <?= __("Copy your custom courses into any of your organization's camps", "EOT_LMS") ?>
     </div>
@@ -1298,7 +1298,7 @@ function display_uber_manager_dashboard()
 
       }
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, $type, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
+      $userTableObj->rows[] = array($camp_name, $director_name, $type, '<a href="?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
     }
 
     // Display the user's table
@@ -1382,7 +1382,7 @@ function display_umbrella_manager_dashboard()
 
       }
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
+      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
 
     }
 

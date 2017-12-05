@@ -53,22 +53,22 @@
 			</div><!-- wrapper -->
 		</div><!-- main -->
 	  	<?php
-	  			getLoadingDiv("load_video", "Loading Video", "Please wait while we load the contents of your video..."); // Loading message for load video
-	  			getLoadingDiv("load_view_library", "Loading Library", "Please wait while we load your library..."); // Loading message for view library
-	  			getLoadingDiv("load_loading", "Loading", " "); // Loading message for manage courses
-	  			getLoadingDiv("load_manage_staff_accounts", "Loading your staff", "Please wait while we get your staff accounts..."); // Loading message for manage courses
-	  			getLoadingDiv("load_courses", "Loading your courses", "Please wait while we process your courses..."); // Loading message for manage courses
-	  			getLoadingDiv("load_statistics", "Loading the statistics page", "Please wait while we process your statistics..."); // Loading div for administration
-	  			getLoadingDiv("load_administration", "Loading the administrator page", "Please wait while we load your administration page..."); // Loading div for administration
-	  			getLoadingDiv("load_dashboard", "Loading your dashboard", "Please wait while we load your dashboard..."); // Loading div for administration
-	  			getLoadingDiv("load_email", "Loading your recepients", "Please wait while we load your recepients..."); // Loading div for loading recepients
-	  			getLoadingDiv("load_email_send", "Sending Message", "Please wait while we send your message to the selected staff members..."); // Loading div for sending e-mail message
-	  			getLoadingDiv("load_staff_lounge", "Loading Staff Lounge", "Please wait while we load the staff lounge..."); // Loading div for sending e-mail message
-                getLoadingDiv("load_upload_file", "Loading File Uploader", "Please wait while we load the file uploader...");
-                getLoadingDiv("load_quiz", "Loading the quiz page", "Please wait while we load the quizzes..."); // Loading div for sending e-mail message
-	  			getLoadingDiv("load_edit_quiz", "Loading the quiz page", "Please wait while we load the edit page..."); // Loading div for sending e-mail message
-	  			getLoadingDiv("load_edit_module", "Loading the module page", "Please wait while we load the edit page..."); // Loading div for sending e-mail message
-                getLoadingDiv("load_processing", "Processing your file", "Please wait ...");
+	  			getLoadingDiv("load_video", __("Loading Video","EOT_LMS"), __("Please wait while we load the contents of your video...","EOT_LMS")); // Loading message for load video
+	  			getLoadingDiv("load_view_library", __("Loading Library","EOT_LMS"), __("Please wait while we load your library...","EOT_LMS")); // Loading message for view library
+	  			getLoadingDiv("load_loading", __("Loading","EOT_LMS"), __(" ","EOT_LMS")); // Loading message for manage courses
+	  			getLoadingDiv("load_manage_staff_accounts", __("Loading your staff","EOT_LMS"), __("Please wait while we get your staff accounts...","EOT_LMS")); // Loading message for manage courses
+	  			getLoadingDiv("load_courses", __("Loading your courses","EOT_LMS"), __("Please wait while we process your courses...","EOT_LMS")); // Loading message for manage courses
+	  			getLoadingDiv("load_statistics", __("Loading the statistics page","EOT_LMS"), __("Please wait while we process your statistics...","EOT_LMS")); // Loading div for administration
+	  			getLoadingDiv("load_administration", __("Loading the administrator page","EOT_LMS"), __("Please wait while we load your administration page...","EOT_LMS")); // Loading div for administration
+	  			getLoadingDiv("load_dashboard", __("Loading your dashboard","EOT_LMS"), __("Please wait while we load your dashboard...","EOT_LMS")); // Loading div for administration
+	  			getLoadingDiv("load_email", __("Loading your recepients","EOT_LMS"), __("Please wait while we load your recepients...","EOT_LMS")); // Loading div for loading recepients
+	  			getLoadingDiv("load_email_send", __("Sending Message","EOT_LMS"), __("Please wait while we send your message to the selected staff members...","EOT_LMS")); // Loading div for sending e-mail message
+	  			getLoadingDiv("load_staff_lounge", __("Loading Staff Lounge","EOT_LMS"), __("Please wait while we load the staff lounge...","EOT_LMS")); // Loading div for sending e-mail message
+                                getLoadingDiv("load_upload_file", __("Loading File Uploader","EOT_LMS"),__("Please wait while we load the file uploader...","EOT_LMS") );
+                                getLoadingDiv("load_quiz", __("Loading the quiz page","EOT_LMS"), __("Please wait while we load the quizzes...","EOT_LMS")); // Loading div for sending e-mail message
+	  			getLoadingDiv("load_edit_quiz",__("Loading the quiz page","EOT_LMS"),__( "Please wait while we load the edit page...","EOT_LMS")); // Loading div for sending e-mail message
+	  			getLoadingDiv("load_edit_module",__("Loading the module page","EOT_LMS") ,__("Please wait while we load the edit page...","EOT_LMS") ); // Loading div for sending e-mail message
+                                getLoadingDiv("load_processing", __("Processing your file","EOT_LMS"),__("Please wait ...","EOT_LMS") );
                                 ?>
 	  	<script>
 			$ = jQuery;

@@ -56,7 +56,7 @@
       		<div class="tablehead-tr">
       			<div class="tablehead-tl">
       				<div style="padding:7px;margin-left:5px;height:20px">
-      					<h3 style="float:left;" class="tablehead-title">Select A Course To Copy</h3><div style="clear:both;"></div>
+      					<h3 style="float:left;" class="tablehead-title"><?= __('Select A Course To Copy','EOT_LMS'); ?></h3><div style="clear:both;"></div>
       				</div>
       			</div>
       		</div>
@@ -84,7 +84,7 @@
                   		<div class="group_list_table_row" group_id="<?= $course_id ?>" course-id="<?= $course_id ?>" org-id="<?= $org_id ?>">
                   		  <div class="group_name"><?= $course_name ?></div>
                         <p class="group_description" style="display:none;">
-                          <span class="video_count"></span>Now select which camps to copy this course to: 
+                          <span class="video_count"></span><?= __('Now select which camps to copy this course to:','EOT_LMS'); ?> 
                 				</p>
                       </div>
               <?php
@@ -95,13 +95,13 @@
                   /*
                    * Create an error message.
                    */
-                  $error_message = (isset($courses['message'])) ? $courses['message'] : "Could not find the fault.";
-                  $error_message .= " Please contact the administrator.";
-                  echo "There is an error in getting the courses: " . $error_message;
+                  $error_message = (isset($courses['message'])) ? $courses['message'] : __("Could not find the fault.","EOT_LMS");
+                  $error_message .= __(" Please contact the administrator.","EOT_LMS");
+                  echo __("There is an error in getting the courses: ","EOT_LMS") . $error_message;
                 }
                 else if($courses == null)
                 {
-                  echo '<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">You do not have any courses that can ba copied yet. <br>Please contact our Customer Success team toll-free at <br>(877) 237-3931 M-F 9-5 EST <br>and we will assist you with copying a course.</div>';
+                  echo '<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">'.__("You do not have any courses that can be copied yet.","EOT_LMS").' <br>'.__('Please contact our Customer Success team toll-free at','EOT_LMS').' <br>'.__('(877) 237-3931 M-F 9-5 EST').' <br>'.__('and we will assist you with copying a course.',"EOT_LMS").'</div>';
 
                 }
        		    ?>                  
@@ -1228,17 +1228,17 @@
       }
       else
       {
-        echo "Unauthorized!";
+        echo __("Unauthorized!","EOT_LMS");
       }
     }
     else
     {
-      echo "subscription ID does not belong to you";
+      echo __("subscription ID does not belong to you","EOT_LMS");
     }
   }
   // Could not find the subscription ID
   else
   {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID", "EOT_LMS");
   }
 ?>
