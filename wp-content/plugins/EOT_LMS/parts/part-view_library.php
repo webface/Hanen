@@ -145,7 +145,7 @@
 
                             if (!empty($description))
                             {
-                              echo ' | <span ' . hover_text_attr(str_replace("'", "&lsquo;", $description),true) .'>' . __("Description", "EOT_LMS") . '</span>' ;
+                              echo ' | <span ' . hover_text_attr(str_replace("'", "&lsquo;", __($description, 'EOT_LMS')),true) .'>' . __("Description", "EOT_LMS") . '</span>' ;
                             }
 
                             // check if we have resources to download. If so display them.
