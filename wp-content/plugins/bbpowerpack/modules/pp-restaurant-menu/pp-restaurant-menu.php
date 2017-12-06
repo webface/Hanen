@@ -25,7 +25,8 @@ class PPRestaurantMenuModule extends FLBuilderModule {
             'url'               => BB_POWERPACK_URL . 'modules/pp-restaurant-menu/',
             'editor_export'     => true,
             'enabled'           => true,
-            'partial_refresh'   => false
+            'partial_refresh'   => false,
+            'icon'				=> 'text.svg',
         ));
     }
 }

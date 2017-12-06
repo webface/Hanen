@@ -18,7 +18,8 @@ class PPCustomGridModule extends FLBuilderModule {
             'dir'               => BB_POWERPACK_DIR . 'modules/pp-custom-grid/',
             'url'               => BB_POWERPACK_URL . 'modules/pp-custom-grid/',
 			'editor_export' 	=> true,
-			'partial_refresh'	=> true
+			'partial_refresh'	=> true,
+			'icon'				=> 'schedule.svg',
 		));
 
 		add_filter( 'fl_builder_register_settings_form',   				__CLASS__ . '::presets_form_fields', 10, 2 );

@@ -171,16 +171,22 @@
     <?php } ?>
 }
 
-.fl-node-<?php echo $id; ?> .gform_wrapper .gsection {
+.fl-node-<?php echo $id; ?> .pp-gf-content .gform_wrapper .gsection {
 	<?php if( $settings->section_border_width >= 0 ) { ?>
 	border-bottom-width: <?php echo $settings->section_border_width; ?>px;
 	<?php } ?>
 	<?php if( $settings->section_border_color ) { ?>
 	border-bottom-color: #<?php echo $settings->section_border_color; ?>;
-	<?php } ?>
+    <?php } ?>
+    <?php if( $settings->section_field_margin >= 0 ) { ?>
+        margin-bottom: <?php echo $settings->section_field_margin; ?>px;
+    <?php } ?>
 }
 
 .fl-node-<?php echo $id; ?> .gform_wrapper h2.gsection_title {
+    <?php if( $settings->section_font['family'] != 'Default' ) { ?>
+    <?php FLBuilderFonts::font_css( $settings->section_font ); ?>
+    <?php } ?>
 	<?php if( $settings->section_text_color ) { ?>
 	color: #<?php echo $settings->section_text_color; ?>;
 	<?php } ?>

@@ -286,26 +286,13 @@ span.pp-multitext.fa-long-arrow-right:before {
 }
 
 .pp-color-picker {
-    float: left;
-    margin-right: 5px;
-}
-.fl-builder-ui-skin--light .pp-color-picker,
-.fl-builder-ui-skin--dark .pp-color-picker {
-    width: 34% !important;
-}
-.fl-builder-ui-is-pinned .pp-color-picker {
-    width: 48% !important;
-}
-.pp-color-picker .fl-color-picker-clear {
-    float: right;
+    margin-bottom: 5px;
 }
 .pp-color-picker .pp-color-text {
     padding: 7px 10px;
-    display: inline-block;
     vertical-align: middle;
     position: relative;
-    border: 1px solid #e1e1e1;
-    background: #FAFAFA ;
+    border-left: 1px solid #e6eaed !important;
     float: left;
     border-left: 0;
     line-height: 1.4;
@@ -319,24 +306,11 @@ span.pp-multitext.fa-long-arrow-right:before {
 
 .fl-builder-ui-skin--light .pp-color-picker .pp-color-text,
 .fl-builder-ui-skin--dark .pp-color-picker .pp-color-text {
-    border: 0 !important;
-    padding: 10px 10px;
-    width: 40px;
-}
-.fl-builder-ui-skin--light .pp-color-picker .pp-color-text {
-    border-left: 1px solid #e6e6e6 !important;
-    border-right: 1px solid #e6e6e6 !important;
+    max-width: 80px;
+    min-width: 70px;
 }
 .fl-builder-ui-skin--dark .pp-color-picker .pp-color-text {
     border-left: 1px solid #161a1e !important;
-    border-right: 1px solid #161a1e !important;
-}
-.fl-builder-ui-skin--light .pp-color-picker .fl-color-picker-color,
-.fl-builder-ui-skin--dark .pp-color-picker .fl-color-picker-color {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: 0 !important;
-    max-width: 40px !important;
 }
 
 .pp-switch {

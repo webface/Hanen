@@ -22,6 +22,7 @@ class PPFormidableFormModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-formidable-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
+            'icon'				=> 'editor-table.svg',
         ));
     }
 

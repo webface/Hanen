@@ -1,5 +1,7 @@
 <?php
 
+if( $settings->gallery_layout != 'justified' ) {
+
 $desktop_col = ( $settings->photo_grid_count ) ? $settings->photo_grid_count : 4;
 $medium_col = ( $settings->photo_grid_count_medium ) ? $settings->photo_grid_count_medium : 2;
 $mobile_col = ( $settings->photo_grid_count_responsive ) ? $settings->photo_grid_count_responsive : 1;
@@ -14,74 +16,20 @@ $space_mobile = ( $mobile_col - 1 ) * $settings->photo_spacing;
 $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 ?>
 
-<?php if($settings->gallery_layout == 'grid') { ?>
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item {
-		width: <?php echo $photo_columns_desktop;?>%;
-		margin-right: <?php echo $settings->photo_spacing; ?>%;
-		margin-bottom: <?php echo $settings->photo_spacing; ?>%;
-		<?php if ( $settings->photo_spacing == 0 ) { ?>
-        margin-right: <?php echo $settings->photo_spacing - ( $settings->photo_border != 'none' ? $settings->photo_border_width : 0 ); ?>px;
-        margin-bottom: <?php echo $settings->photo_spacing - ( $settings->photo_border != 'none' ? $settings->photo_border_width : 0 ); ?>px;
-        <?php } ?>
-		<?php if( $settings->photo_padding ) { ?>
-			padding: <?php echo $settings->photo_padding; ?>px;
-		<?php } ?>
-		border-style: <?php echo $settings->photo_border; ?>;
-		<?php if( $settings->photo_border_width && $settings->photo_border != 'none' ) { ?>border-width: <?php echo $settings->photo_border_width; ?>px; <?php } ?>
-		<?php if( $settings->photo_border_color ) { ?> border-color: #<?php echo $settings->photo_border_color; ?>; <?php } ?>
-		<?php if( $settings->photo_border_radius >= 0 ) { ?> border-radius: <?php echo $settings->photo_border_radius; ?>px; <?php } ?>
-		<?php if ( 'yes' == $settings->show_image_shadow ) { ?>
-	    -webkit-box-shadow: <?php echo $settings->image_shadow['horizontal']; ?>px <?php echo $settings->image_shadow['vertical']; ?>px <?php echo $settings->image_shadow['blur']; ?>px <?php echo $settings->image_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color, $settings->image_shadow_opacity / 100 ); ?>;
-	    -moz-box-shadow: <?php echo $settings->image_shadow['horizontal']; ?>px <?php echo $settings->image_shadow['vertical']; ?>px <?php echo $settings->image_shadow['blur']; ?>px <?php echo $settings->image_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color, $settings->image_shadow_opacity / 100 ); ?>;
-	    -o-box-shadow: <?php echo $settings->image_shadow['horizontal']; ?>px <?php echo $settings->image_shadow['vertical']; ?>px <?php echo $settings->image_shadow['blur']; ?>px <?php echo $settings->image_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color, $settings->image_shadow_opacity / 100 ); ?>;
-	    box-shadow: <?php echo $settings->image_shadow['horizontal']; ?>px <?php echo $settings->image_shadow['vertical']; ?>px <?php echo $settings->image_shadow['blur']; ?>px <?php echo $settings->image_shadow['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color, $settings->image_shadow_opacity / 100 ); ?>;
-	    <?php } ?>
-		<?php if ( 'yes' == $settings->show_image_shadow_hover ) { ?>
-		-webkit-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in;
-		-moz-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		-ms-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		-o-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		<?php } ?>
-	}
-
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:hover {
-		<?php if ( 'yes' == $settings->show_image_shadow_hover ) { ?>
-	    -webkit-box-shadow: <?php echo $settings->image_shadow_hover['horizontal']; ?>px <?php echo $settings->image_shadow_hover['vertical']; ?>px <?php echo $settings->image_shadow_hover['blur']; ?>px <?php echo $settings->image_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color_hover, $settings->image_shadow_opacity_hover / 100 ); ?>;
-	    -moz-box-shadow: <?php echo $settings->image_shadow_hover['horizontal']; ?>px <?php echo $settings->image_shadow_hover['vertical']; ?>px <?php echo $settings->image_shadow_hover['blur']; ?>px <?php echo $settings->image_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color_hover, $settings->image_shadow_opacity_hover / 100 ); ?>;
-	    -o-box-shadow: <?php echo $settings->image_shadow_hover['horizontal']; ?>px <?php echo $settings->image_shadow_hover['vertical']; ?>px <?php echo $settings->image_shadow_hover['blur']; ?>px <?php echo $settings->image_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color_hover, $settings->image_shadow_opacity_hover / 100 ); ?>;
-	    box-shadow: <?php echo $settings->image_shadow_hover['horizontal']; ?>px <?php echo $settings->image_shadow_hover['vertical']; ?>px <?php echo $settings->image_shadow_hover['blur']; ?>px <?php echo $settings->image_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color_hover, $settings->image_shadow_opacity_hover / 100 ); ?>;
-		-webkit-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		-moz-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		-ms-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		-o-transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
-		<?php } ?>
-	}
-	<?php if ( $desktop_col > 1 ) { ?>
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $desktop_col; ?>n+1){
-		clear: left;
-	}
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $desktop_col; ?>n+0){
-		clear: right;
-	}
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $desktop_col; ?>n){
-		margin-right: 0;
-	}
+.fl-node-<?php echo $id; ?> .pp-photo-gallery-item {
+	width: <?php echo $photo_columns_desktop;?>%;
+	<?php if( $settings->gallery_layout == 'grid' ) { ?>
+	margin-right: <?php echo $settings->photo_spacing; ?>%;
 	<?php } ?>
-
-<?php } elseif ($settings->gallery_layout == 'masonry') { ?>
-
-.fl-node-<?php echo $id; ?> .pp-grid-sizer {
-	width: <?php echo $photo_columns_desktop;?>%;
-}
-
-.fl-node-<?php echo $id; ?> .pp-gallery-masonry-item {
-	width: <?php echo $photo_columns_desktop;?>%;
+	margin-bottom: <?php echo $settings->photo_spacing; ?>%;
+	<?php if ( $settings->photo_spacing == 0 && $settings->gallery_layout == 'grid' ) { ?>
+	margin-right: <?php echo $settings->photo_spacing - ( $settings->photo_border != 'none' ? $settings->photo_border_width : 0 ); ?>px;
+	margin-bottom: <?php echo $settings->photo_spacing - ( $settings->photo_border != 'none' ? $settings->photo_border_width : 0 ); ?>px;
+	<?php } ?>
+	
 	<?php if( $settings->photo_padding ) { ?>
 		padding: <?php echo $settings->photo_padding; ?>px;
 	<?php } ?>
-	margin-bottom: <?php echo $settings->photo_spacing; ?>%;
 	border-style: <?php echo $settings->photo_border; ?>;
 	<?php if( $settings->photo_border_width && $settings->photo_border != 'none' ) { ?>border-width: <?php echo $settings->photo_border_width; ?>px; <?php } ?>
 	<?php if( $settings->photo_border_color ) { ?> border-color: #<?php echo $settings->photo_border_color; ?>; <?php } ?>
@@ -100,7 +48,8 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 	transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
 	<?php } ?>
 }
-.fl-node-<?php echo $id; ?> .pp-gallery-masonry-item:hover {
+
+.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:hover {
 	<?php if ( 'yes' == $settings->show_image_shadow_hover ) { ?>
 	-webkit-box-shadow: <?php echo $settings->image_shadow_hover['horizontal']; ?>px <?php echo $settings->image_shadow_hover['vertical']; ?>px <?php echo $settings->image_shadow_hover['blur']; ?>px <?php echo $settings->image_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color_hover, $settings->image_shadow_opacity_hover / 100 ); ?>;
 	-moz-box-shadow: <?php echo $settings->image_shadow_hover['horizontal']; ?>px <?php echo $settings->image_shadow_hover['vertical']; ?>px <?php echo $settings->image_shadow_hover['blur']; ?>px <?php echo $settings->image_shadow_hover['spread']; ?>px <?php echo pp_hex2rgba( '#'.$settings->image_shadow_color_hover, $settings->image_shadow_opacity_hover / 100 ); ?>;
@@ -113,10 +62,19 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 	transition: all <?php echo ($settings->image_shadow_hover_speed / 1000); ?>s ease-in; ease-in;
 	<?php } ?>
 }
+<?php if ( $desktop_col > 1 ) { ?>
+.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $desktop_col; ?>n+1){
+	clear: left;
+}
+.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $desktop_col; ?>n+0){
+	clear: right;
+}
+.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $desktop_col; ?>n){
+	margin-right: 0;
+}
 <?php } ?>
 
 .fl-node-<?php echo $id; ?> .pp-photo-gallery-item img,
-.fl-node-<?php echo $id; ?> .pp-gallery-masonry-item img,
 .fl-node-<?php echo $id; ?> .pp-gallery-overlay,
 .fl-node-<?php echo $id; ?> .pp-photo-gallery-content {
 	<?php if( $settings->photo_border_radius >= 0 ) { ?> border-radius: <?php echo $settings->photo_border_radius; ?>px; <?php } ?>
@@ -124,15 +82,13 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 
 <?php if( $settings->show_captions == 'below' && $settings->caption_bg_color ) { ?>
 .fl-node-<?php echo $id; ?> .pp-photo-gallery-item.has-caption img,
-.fl-node-<?php echo $id; ?> .pp-gallery-masonry-item.has-caption img,
 .fl-node-<?php echo $id; ?> .has-caption .pp-gallery-overlay,
 .fl-node-<?php echo $id; ?> .has-caption .pp-photo-gallery-content {
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-.fl-node-<?php echo $id; ?> .pp-photo-gallery-item.has-caption .pp-photo-gallery-caption,
-.fl-node-<?php echo $id; ?> .pp-gallery-masonry-item.has-caption .pp-photo-gallery-caption {
+.fl-node-<?php echo $id; ?> .pp-photo-gallery-item.has-caption .pp-photo-gallery-caption {
 	<?php if( $settings->photo_border_radius >= 0 ) { ?> border-bottom-left-radius: <?php echo $settings->photo_border_radius; ?>px; <?php } ?>
 	<?php if( $settings->photo_border_radius >= 0 ) { ?> border-bottom-right-radius: <?php echo $settings->photo_border_radius; ?>px; <?php } ?>
 }
@@ -142,6 +98,8 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 .fl-node-<?php echo $id; ?> .pp-photo-space {
 	width: <?php echo $settings->photo_spacing; ?>%;
 }
+
+<?php } ?>
 
 <?php if( $settings->show_captions == 'below' ) { ?>
 .fl-node-<?php echo $id; ?> .pp-photo-gallery-caption {
@@ -465,8 +423,7 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 <?php } ?>
 
 <?php if( $settings->hover_effects != 'none' ) { ?>
-.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img,
-.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content .pp-gallery-img {
+.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img {
 	-webkit-transition: all <?php echo ($settings->image_animation_speed/1000); ?>s ease;
 	-moz-transition: all <?php echo ($settings->image_animation_speed/1000); ?>s ease;
 	-ms-transition: all <?php echo ($settings->image_animation_speed/1000); ?>s ease;
@@ -476,8 +433,7 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 <?php } ?>
 
 <?php if( $settings->hover_effects == 'zoom-in' ) { ?>
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img {
 		-webkit-transform: scale(1);
 		-moz-transform: scale(1);
 		-ms-transform: scale(1);
@@ -485,8 +441,7 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 		transform: scale(1);
 	}
 
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content:hover .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img {
 		-webkit-transform: scale(1.3);
 		-moz-transform: scale(1.3);
 		-ms-transform: scale(1.3);
@@ -496,8 +451,7 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 <?php } ?>
 
 <?php if( $settings->hover_effects == 'zoom-out' ) { ?>
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img {
 		-webkit-transform: scale(1.5);
 		-moz-transform: scale(1.5);
 		-ms-transform: scale(1.5);
@@ -505,8 +459,7 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 		transform: scale(1.5);
 	}
 
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content:hover .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img {
 		-webkit-transform: scale(1);
 		-moz-transform: scale(1);
 		-ms-transform: scale(1);
@@ -516,8 +469,7 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 <?php } ?>
 
 <?php if( $settings->hover_effects == 'greyscale' ) { ?>
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content:hover .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img {
 		-webkit-filter: grayscale(100%);
     	-moz-filter: grayscale(100%);
     	-ms-filter: grayscale(100%);
@@ -526,28 +478,24 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 <?php } ?>
 
 <?php if( $settings->hover_effects == 'blur' ) { ?>
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img {
 		-webkit-filter: blur(0);
     	filter: blur(0);
 	}
 
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content:hover .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img {
 		-webkit-filter: blur(3px);
     	filter: blur(3px);
 	}
 <?php } ?>
 
 <?php if( $settings->hover_effects == 'rotate' ) { ?>
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content .pp-gallery-img {
 		-webkit-transform: rotate(0) scale(1);
     	transform: rotate(0) scale(1);
 	}
 
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img,
-	.fl-node-<?php echo $id; ?> .pp-masonry-content .pp-photo-gallery-content:hover .pp-gallery-img {
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery .pp-photo-gallery-content:hover .pp-gallery-img {
 		-webkit-transform: rotate(15deg) scale(1.6);
 		transform: rotate(15deg) scale(1.6);
 	}
@@ -571,13 +519,16 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 }
 
 @media only screen and ( max-width: <?php echo $global_settings->medium_breakpoint; ?>px ) {
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item,
-	.fl-node-<?php echo $id; ?> .pp-gallery-masonry-item {
+	
+	<?php if( $settings->gallery_layout != 'justified' ) { ?>
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item {
 		width: <?php echo $photo_columns_tablet;?>%;
 		<?php if( $settings->photo_padding_medium ) { ?>
 			padding: <?php echo $settings->photo_padding_medium; ?>px;
 		<?php } ?>
 	}
+
+	<?php if( $settings->gallery_layout == 'grid' ) { ?>
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $desktop_col; ?>n+1){
 		clear: none;
 	}
@@ -598,6 +549,8 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $medium_col; ?>n){
 		margin-right: 0;
 	}
+	<?php } ?>
+	<?php } ?>
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-caption,
 	.fl-node-<?php echo $id; ?> .pp-gallery-overlay .pp-caption  {
 		<?php if( $settings->caption_font_size_toggle != 'default' && $settings->caption_custom_font_size_medium ) { ?>
@@ -607,13 +560,14 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 }
 
 @media only screen and ( max-width: <?php echo $global_settings->responsive_breakpoint; ?>px ) {
-	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item,
-	.fl-node-<?php echo $id; ?> .pp-gallery-masonry-item {
+	<?php if( $settings->gallery_layout != 'justified' ) { ?>
+	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item {
 		width: <?php echo $photo_columns_mobile;?>%;
 		<?php if( $settings->photo_padding_responsive ) { ?>
 			padding: <?php echo $settings->photo_padding_responsive; ?>px;
 		<?php } ?>
 	}
+	<?php if( $settings->gallery_layout == 'grid' ) { ?>
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $medium_col; ?>n+1){
 		clear: none;
 	}
@@ -634,6 +588,8 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $mobile_col;
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $mobile_col; ?>n){
 		margin-right: 0;
 	}
+	<?php } ?>
+	<?php } ?>
 
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-caption,
 	.fl-node-<?php echo $id; ?> .pp-gallery-overlay .pp-caption  {

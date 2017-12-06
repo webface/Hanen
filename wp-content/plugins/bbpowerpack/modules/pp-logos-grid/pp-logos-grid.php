@@ -23,6 +23,7 @@ class PPLogosGridModule extends FLBuilderModule {
             'editor_export'     => true, // Defaults to true and can be omitted.
             'enabled'           => true, // Defaults to true and can be omitted.
             'partial_refresh'   => true,
+            'icon'				=> 'slides.svg',
         ));
 
         $this->add_css('settings', $this->url . 'css/settings.css');

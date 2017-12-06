@@ -22,6 +22,7 @@ class PPGravityFormModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-gravity-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
+            'icon'				=> 'editor-table.svg',
         ));
     }
 }
@@ -407,7 +408,7 @@ FLBuilder::register_module('PPGravityFormModule', array(
                         'default'       => 1,
                         'preview'       => array(
                             'type'      => 'css',
-                            'selector'  => '.gform_wrapper .gsection',
+                            'selector'  => '.pp-gf-content .gform_wrapper .gsection',
                             'property'  => 'border-bottom-width',
                             'unit'      => 'px'
                         )
@@ -420,8 +421,21 @@ FLBuilder::register_module('PPGravityFormModule', array(
                         'show_reset'    => true,
                         'preview'           => array(
                             'type'          => 'css',
-                            'selector'      => '.gform_wrapper .gsection',
+                            'selector'      => '.pp-gf-content .gform_wrapper .gsection',
                             'property'      => 'border-bottom-color'
+                        )
+                    ),
+                    'section_field_margin'    => array(
+                        'type'              => 'text',
+                        'label'             => __('Margin Bottom', 'bb-powerpack'),
+                        'description'       => 'px',
+                        'class'             => 'bb-gf-input input-small',
+                        'default'           => '20',
+                        'preview'           => array(
+                            'type'          => 'css',
+                            'selector'      => '.pp-gf-content .gform_wrapper .gsection',
+                            'property'      => 'margin-bottom',
+                            'unit'          => 'px'
                         )
                     ),
 				)
@@ -1148,6 +1162,18 @@ FLBuilder::register_module('PPGravityFormModule', array(
 			'section_typography'	=> array(
 				'title'	=> __( 'Sections', 'bb-powerpack' ),
 				'fields'	=> array(
+                    'section_font' => array(
+                        'type'          => 'font',
+                        'default'		=> array(
+                            'family'		=> 'Default',
+                            'weight'		=> 300
+                        ),
+                        'label'         => __('Font', 'bb-powerpack'),
+                        'preview'         => array(
+                            'type'            => 'font',
+                            'selector'        => '.gform_wrapper h2.gsection_title'
+                        )
+                    ),
 					'section_font_size'      => array(
                         'type'          => 'text',
                         'label'         => __('Font Size', 'bb-powerpack'),

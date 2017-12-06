@@ -100,6 +100,10 @@ div.gform_wrapper .field_sublabel_below .ginput_complex.ginput_container label {
     padding-top: 5px;
 }
 
+.pp-gf-content .gform_wrapper h2.gsection_title {
+	margin-bottom: 0;
+}
+
 @media only screen and (max-width: 640px) {
 	.pp-gf-content .gform_wrapper ul.gform_fields li.gfield.gf_left_half {
 		padding-right: 0;

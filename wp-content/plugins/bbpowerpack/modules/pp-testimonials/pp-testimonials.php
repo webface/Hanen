@@ -21,7 +21,8 @@ class PPTestimonialsModule extends FLBuilderModule {
             'dir'           => BB_POWERPACK_DIR . 'modules/pp-testimonials/',
             'url'           => BB_POWERPACK_URL . 'modules/pp-testimonials/',
             'editor_export' => true, // Defaults to true and can be omitted.
-            'enabled'       => true, // Defaults to true and can be omitted.
+            'enabled'       => true, // Defaults to true and can be omitted.,
+            'icon'				=> 'format-quote.svg',
         ));
 
         /**

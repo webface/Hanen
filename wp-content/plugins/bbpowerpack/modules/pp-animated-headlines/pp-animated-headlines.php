@@ -44,7 +44,7 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 						'toggle'		=> array(
 							'highlight'		=> array(
 								'tabs'			=> array('style'),
-								'fields'		=> array('headline_shape', 'highlighted_text')
+								'fields'		=> array('headline_shape', 'highlighted_text', 'loop')
 							),
 							'rotate'		=> array(
 								'fields'		=> array('rotating_text', 'animation_type')
@@ -118,6 +118,15 @@ FLBuilder::register_module('PPAnimatedHeadlinesModule', array(
 							'property'        => 'text-align'
 						),
 					),
+					'loop'		=> array(
+						'type'		=> 'pp-switch',
+						'label'		=> __('Loop', 'bb-powerpack'),
+						'default'	=> 'yes',
+						'options'	=> array(
+							'yes'		=> __('Yes', 'bb-powerpack'),
+							'no'		=> __('No', 'bb-powerpack')
+						)
+					)
 				)
 			),
 		)

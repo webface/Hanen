@@ -22,7 +22,8 @@ class PPHoverCardsModuleNew extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-hover-cards-2/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
-            'partial_refresh'   => true
+            'partial_refresh'   => true,
+            'icon'				=> 'star-filled.svg',
         ));
 
         $this->add_css( 'hover-cards-2-settings-style', $this->url . 'css/settings.css' );

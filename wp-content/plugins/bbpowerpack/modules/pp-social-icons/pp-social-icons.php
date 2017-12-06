@@ -18,7 +18,8 @@ class PPSocialIconsModule extends FLBuilderModule {
             'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-social-icons/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-social-icons/',
 			'editor_export' 	=> true,
-			'partial_refresh'	=> true
+			'partial_refresh'	=> true,
+			'icon'				=> 'star-filled.svg',
 		));
 
 		$this->add_css( 'font-awesome' );

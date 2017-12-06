@@ -51,6 +51,13 @@
 
 <?php if( $settings->form_bg_image && $settings->form_bg_type == 'image' ) { ?>
 .fl-node-<?php echo $id; ?> .pp-ff-content:before {
+    content: "";
+	display: block;
+	position: absolute;;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
 	background-color: <?php echo ( $settings->form_bg_overlay ) ? pp_hex2rgba('#' . $settings->form_bg_overlay, $settings->form_bg_overlay_opacity / 100 ) : 'transparent'; ?>;
 }
 <?php } ?>

@@ -11,14 +11,13 @@
 <?php if ( is_network_admin() || ! is_multisite() ) { ?>
 
     <?php
-    $quick_preview      = self::get_option( 'bb_powerpack_quick_preview' );
-    $search_box         = self::get_option( 'bb_powerpack_search_box' );
     $extensions         = pp_extensions();
     $enabled_extensions = self::get_enabled_extensions();
     ?>
 
     <table class="form-table">
         <tbody>
+            <?php if ( !class_exists( 'FLBuilderUIContentPanel' ) ) { ?>
             <tr valign="top">
                 <th scope="row" valign="top">
                     <?php esc_html_e('Quick Preview', 'bb-powerpack'); ?>
@@ -45,6 +44,7 @@
                     </p>
                 </td>
             </tr>
+            <?php } ?>
             <tr valign="top">
                 <th scope="row" valign="top">
                     <?php esc_html_e('Row Extensions', 'bb-powerpack'); ?>

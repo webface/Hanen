@@ -1,5 +1,6 @@
 <?php
 $class = 'pp-headline';
+$loop = isset( $settings->loop ) && $settings->loop == 'yes' ? ' pp-headline-loop' : '';
 
 if ( 'rotate' == $settings->headline_style ) {
 	$class .= ' pp-headline-animation-type-' . $settings->animation_type;
@@ -9,7 +10,7 @@ if ( 'rotate' == $settings->headline_style ) {
 }
 
 ?>
-<div class="pp-animated-headlines pp-headline--style-<?php echo $settings->headline_style; ?>">
+<div class="pp-animated-headlines pp-headline--style-<?php echo $settings->headline_style; ?><?php echo $loop; ?>">
 	<<?php echo $settings->headline_tag; ?> class="<?php echo $class; ?>">
 		<?php if ( ! empty( $settings->before_text ) ) : ?>
 			<span class="pp-headline-plain-text pp-headline-text-wrapper"><?php echo $settings->before_text; ?></span>

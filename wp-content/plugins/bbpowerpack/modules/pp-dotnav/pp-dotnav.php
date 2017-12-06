@@ -22,6 +22,7 @@ class PPDotNavModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-dotnav/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
+            'icon'				=> 'star-filled.svg',
         ));
     }
 

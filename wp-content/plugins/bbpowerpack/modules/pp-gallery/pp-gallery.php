@@ -41,6 +41,9 @@ class PPGalleryModule extends FLBuilderModule {
 		$this->add_css( 'fancybox-thumbs', $this->url . 'helpers/jquery.fancybox-thumbs.css', BB_POWERPACK_VER );
 		$this->add_js( 'fancybox-thumbs-script', $this->url . 'helpers/jquery.fancybox-thumbs.js', array('jquery'), BB_POWERPACK_VER, true );
 		$this->add_js( 'fancybox-media-script', $this->url . 'helpers/jquery.fancybox-media.js', array('jquery'), BB_POWERPACK_VER, true );
+
+		$this->add_css( 'justified-style', $this->url . 'css/justifiedGallery.min.css', BB_POWERPACK_VER );
+		$this->add_js( 'justified-script', $this->url . 'js/jquery.justifiedGallery.min.js', array('jquery'), BB_POWERPACK_VER );
 	}
 
 
@@ -212,12 +215,24 @@ FLBuilder::register_module('PPGalleryModule', array(
 						'options'       => array(
 							'grid'          => __( 'Grid', 'bb-powerpack' ),
 							'masonry'       => __( 'Masonry', 'bb-powerpack' ),
+							'justified'     => __( 'Justified', 'bb-powerpack' ),
 						),
+						'toggle'	=> array(
+							'grid'	=> array(
+								'sections'	=> array('gallery_columns', 'general_style', 'image_shadow_style', 'image_shadow_hover_style')
+							),
+							'masonry'	=> array(
+								'sections'	=> array('gallery_columns', 'general_style', 'image_shadow_style', 'image_shadow_hover_style')
+							),
+							'justified'	=> array(
+								'sections'	=> array('justified_settings')
+							),
+						)
 					),
 					'gallery_photos' => array(
 					    'type'          => 'multiple-photos',
 					    'label'         => __( 'Photos', 'bb-powerpack' ),
-                        'connections'  => array('photo')
+                        'connections'  	=> array('multiple-photos')
 					),
 					'photo_size'        => array(
 						'type'          => 'photo-sizes',
@@ -404,6 +419,42 @@ FLBuilder::register_module('PPGalleryModule', array(
 						'description'   => _x( '%', 'bb-powerpack' )
 					),
 				)
+			),
+			'justified_settings'	=> array(
+				'title'		=>	__('Justified Gallery Settings', 'bb-powerpack'),
+				'fields'	=> array(
+					'justified_spacing' => array(
+						'type'          => 'text',
+						'label'         => __('Spacing', 'bb-powerpack'),
+						'default'       => 5,
+						'size'          => 5,
+						'description'   => _x( 'px', 'bb-powerpack' )
+					),
+					'row_height' => array(
+						'type'          => 'text',
+						'label'         => __('Row Height', 'bb-powerpack'),
+						'default'       => 120,
+						'size'          => 5,
+						'description'   => _x( 'px', 'bb-powerpack' )
+					),
+					'max_row_height' => array(
+						'type'          => 'text',
+						'label'         => __('Max Row Height', 'bb-powerpack'),
+						'default'       => 0,
+						'size'          => 5,
+						'description'   => _x( 'px', 'bb-powerpack' )
+					),
+					'last_row' => array(
+						'type'		=> 'pp-switch',
+						'label'		=> __('Last Row', 'bb-powerpack'),
+						'default'	=> 'nojustify',
+						'options'	=> array(
+							'nojustify'		=> __('No Justfiy', 'bb-powerpack'),
+							'justify'		=> __('Justify', 'bb-powerpack'),
+							'hide'			=> __('Hide', 'bb-powerpack'),
+						),
+					)
+				)
 			)
         )
     ),
@@ -485,7 +536,7 @@ FLBuilder::register_module('PPGalleryModule', array(
                         'default'       => '1',
                         'preview'         => array(
                             'type'            => 'css',
-                            'selector'        => '.pp-photo-gallery-item, .pp-gallery-masonry-item',
+                            'selector'        => '.pp-photo-gallery-item',
                             'property'        => 'border-width',
                             'unit'            => 'px'
                         )
@@ -497,7 +548,7 @@ FLBuilder::register_module('PPGalleryModule', array(
                         'default'   => '',
 						'preview'         => array(
                             'type'            => 'css',
-                            'selector'        => '.pp-photo-gallery-item, .pp-gallery-masonry-item',
+                            'selector'        => '.pp-photo-gallery-item',
                             'property'        => 'border-color',
                         )
                     ),
@@ -510,7 +561,7 @@ FLBuilder::register_module('PPGalleryModule', array(
 						'default'       => 0,
 						'preview'         => array(
 							'type'            => 'css',
-							'selector'        => '.pp-photo-gallery-item, .pp-gallery-masonry-item, .pp-photo-gallery-item img, .pp-gallery-masonry-item img, .pp-gallery-overlay',
+							'selector'        => '.pp-photo-gallery-item, .pp-photo-gallery-item img, .pp-gallery-overlay',
 							'property'        => 'border-radius',
 							'unit'            => 'px'
 						)
@@ -529,7 +580,7 @@ FLBuilder::register_module('PPGalleryModule', array(
 						),
 						'preview' => array(
 							'type' 		=> 'css',
-							'selector'	=> '.pp-photo-gallery-item, .pp-gallery-masonry-item',
+							'selector'	=> '.pp-photo-gallery-item',
 							'property'	=> 'padding',
 							'unit' 		=> 'px'
 						),
@@ -543,7 +594,7 @@ FLBuilder::register_module('PPGalleryModule', array(
 						'default'       => '0',
 						'preview'         => array(
 							'type'            => 'css',
-							'selector'        => '.pp-photo-gallery-item, .pp-gallery-masonry-item',
+							'selector'        => '.pp-photo-gallery-item',
 							'property'        => 'border-radius',
 							'unit'            => 'px'
 						)

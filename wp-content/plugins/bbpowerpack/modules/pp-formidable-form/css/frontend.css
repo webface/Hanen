@@ -11,22 +11,12 @@
 	position: relative;
 }
 
-.pp-ff-content:before {
-	content: "";
-	display: block;
-	position: absolute;;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-}
-
 .pp-ff-content .pp-form-title,
 .pp-ff-content .pp-form-description {
 	position: relative;
 }
 
-.pp-ff-content .frm_style_formidable-style.with_frm_style {
+.pp-ff-content .frm_forms {
     max-width: 100%;
 	position: relative;
 }

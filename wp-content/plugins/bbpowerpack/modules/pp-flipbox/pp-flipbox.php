@@ -22,7 +22,8 @@ class PPFlipBoxModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-flipbox/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
-            'partial_refresh'   => true
+            'partial_refresh'   => true,
+            'icon'				=> 'share-alt2.svg',
         ));
 
         /**

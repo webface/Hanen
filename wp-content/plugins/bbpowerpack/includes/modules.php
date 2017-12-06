@@ -46,6 +46,7 @@ $modules = array(
     'modules/pp-advanced-menu/pp-advanced-menu.php',
     'modules/pp-gallery/pp-gallery.php',
     'modules/pp-animated-headlines/pp-animated-headlines.php',
+    'modules/pp-image-carousel/pp-image-carousel.php',
 );
 
 /* Custom Grid */
@@ -80,6 +81,8 @@ if ( is_child_theme() ) {
 } else {
     $theme_dir = get_template_directory();
 }
+
+sort($modules);
 
 /**
  * Loop through each module path and

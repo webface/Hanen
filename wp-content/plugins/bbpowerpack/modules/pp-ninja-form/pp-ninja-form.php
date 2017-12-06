@@ -22,6 +22,7 @@ class PPNinjaFormModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-ninja-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
+            'icon'				=> 'editor-tab.svg',
         ));
     }
 

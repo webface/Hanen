@@ -22,7 +22,8 @@ class PPFilterableGalleryModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-filterable-gallery/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
-            'partial_refresh' => true
+            'partial_refresh' => true,
+            'icon'				=> 'format-gallery.svg',
         ));
 
 		$this->add_js('jquery-magnificpopup');

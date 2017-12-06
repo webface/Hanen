@@ -22,7 +22,8 @@ class PPHeadingModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-heading/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
-            'partial_refresh' => true
+            'partial_refresh' => true,
+            'icon'				=> 'text.svg',
         ));
     }
 }
@@ -89,7 +90,21 @@ FLBuilder::register_module('PPHeadingModule', array(
                             'property'          => 'display'
                         )
                     ),
- 				   'heading_link'          => array(
+                    'enable_link'   => array(
+                        'type'          => 'pp-switch',
+                        'label'         => __('Enable Link', 'bb-powerpack'),
+                        'default'       => 'yes',
+                        'options'       => array(
+                            'yes'           => __('Yes', 'bb-powerpack'),
+                            'no'            => __('No', 'bb-powerpack')
+                        ),
+                        'toggle'        => array(
+                            'yes'           => array(
+                                'fields'        => array('heading_link', 'heading_link_target')
+                            )
+                        )
+                    ),
+ 				    'heading_link'          => array(
  						'type'          => 'link',
  						'label'         => __('Link', 'bb-powerpack'),
                         'connections'   => array( 'url' ),

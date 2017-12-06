@@ -19,6 +19,7 @@ class PPContactFormModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-contact-form/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
+			'icon'				=> 'editor-table.svg',
 		));
 
 		add_action('wp_ajax_pp_send_email', array($this, 'send_mail'));

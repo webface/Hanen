@@ -18,7 +18,8 @@ class PPContentTilesModule extends FLBuilderModule {
             'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-content-tiles/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-content-tiles/',
 			'editor_export' 	=> false,
-			'partial_refresh'	=> true
+			'partial_refresh'	=> true,
+			'icon'				=> 'layout.svg',
 		));
 
 		add_action( 'wp_ajax_ct_get_post_tax', array( $this, 'get_post_taxonomies' ) );
