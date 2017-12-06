@@ -1,8 +1,8 @@
 <?php
 
-if( ! class_exists('acf_field_accordion') ) :
+if( ! class_exists('acf_field__accordion') ) :
 
-class acf_field_accordion extends acf_field {
+class acf_field__accordion extends acf_field {
 	
 	
 	/**
@@ -160,7 +160,7 @@ class acf_field_accordion extends acf_field {
 
 
 // initialize
-acf_register_field_type( 'acf_field_accordion' );
+acf_register_field_type( 'acf_field__accordion' );
 
 endif; // class_exists check
 
