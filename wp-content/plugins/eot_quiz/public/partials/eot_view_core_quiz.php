@@ -15,16 +15,16 @@
 ?>
     <h3><?= $quiz_data['quiz']['name']; ?></h3>
     <p><?= $quiz_data['quiz']['description']; ?><p>
-    <span><strong>Time Limit: </strong><?= $quiz_data['quiz']['time_limit']; ?> minutes</span><br>
-    <span><strong>Passing Score: </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
+    <span><strong><?= __('Time Limit: ', 'EOT_LMS')?></strong><?= $quiz_data['quiz']['time_limit']; ?> <?= __('minutes', 'EOT_LMS')?></span><br>
+    <span><strong><?= __('Passing Score:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
     
 <?php 
     foreach ($quiz_data['questions'] as $question) 
     { 
 ?>
     <hr>
-    <h4>Question: <?= $question['quiz_question']; ?></h4>
-    <p>Answers</p>
+    <h4><?= __('Question:', 'EOT_LMS')?> <?= $question['quiz_question']; ?></h4>
+    <p><?= __('Answers', 'EOT_LMS')?></p>
     <ul>
 <?php
         foreach ($question['possibilities'] as $answer) 

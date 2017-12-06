@@ -168,14 +168,14 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     $quizTableObj = new stdClass();
                     $quizTableObj->rows = array();
                     $quizTableObj->headers = array(
-                        'Name' => 'quiz-title',
-                        'Passed' => 'center',
-                        'Failed' => 'center',
-                        'Logins' => 'center',
-                        'Views' => 'center',
-                        '<div ' . hover_text_attr('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed, passed, failed or pending review', true) . '>Status</div>' => 'center',
-                        '<div ' . hover_text_attr('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', true) . '>Progress</div>' => 'staff-progress',
-                        'Actions' => 'center'
+                        __('Name', 'EOT_LMS') => 'quiz-title',
+                        __('Passed', 'EOT_LMS') => 'center',
+                        __('Failed', 'EOT_LMS') => 'center',
+                        __('Logins', 'EOT_LMS') => 'center',
+                        __('Views', 'EOT_LMS') => 'center',
+                        '<div ' . hover_text_attr(__('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed, passed, failed or pending review', 'EOT_LMS'), true) . '>'.__('Status', 'EOT_LMS').'</div>' => 'center',
+                        '<div ' . hover_text_attr(__('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', 'EOT_LMS'), true) . '>'.__('Progress', 'EOT_LMS').'</div>' => 'staff-progress',
+                        __('Actions', 'EOT_LMS') => 'center'
                     );
                     /*
                      * This goes through all the enrollments and display a table 

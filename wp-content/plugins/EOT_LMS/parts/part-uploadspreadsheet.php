@@ -420,44 +420,44 @@
 			wp_die('You do not have privilege for this subscription.');
 		}
 		?>
-		<h1 class="article_page_title"><?= __(, 'EOT_LMS')?>Upload Staff Spreadsheet</h1>
+		<h1 class="article_page_title"><?= __('Upload Staff Spreadsheet', 'EOT_LMS')?></h1>
 		<p>
-      	You can <a href="<?= get_template_directory_uri() . '/templates/template-staff.xlsx' ?>"><?= __(, 'EOT_LMS')?>Download our Excel Template</a> <?= __(, 'EOT_LMS')?>and fill out your staff details, then upload it back to create your staff accounts. Make sure to follow these instructions carefully:
+      	You can <a href="<?= get_template_directory_uri() . '/templates/template-staff.xlsx' ?>"><?= __('Download our Excel Template', 'EOT_LMS')?></a> <?= __('and fill out your staff details, then upload it back to create your staff accounts. Make sure to follow these instructions carefully:', 'EOT_LMS')?>
     	</p>
 		<ol>
 			<li>
-				<h2><?= __(, 'EOT_LMS')?>Download the Excel Template</h2>
-				<a href="<?= get_template_directory_uri() . '/templates/template-staff.xlsx' ?>"><?= __(, 'EOT_LMS')?>Download the Excel Template (XLSX file)</a>. <?= __(, 'EOT_LMS')?>You will use this to fill in your staff data.
+				<h2><?= __('Download the Excel Template', 'EOT_LMS')?></h2>
+				<a href="<?= get_template_directory_uri() . '/templates/template-staff.xlsx' ?>"><?= __('Download the Excel Template (XLSX file)', 'EOT_LMS')?></a>. <?= __('You will use this to fill in your staff data.', 'EOT_LMS')?>
 				<br><br>
 			</li>
 			<li>
-		        <h2><?= __(, 'EOT_LMS')?>Populate the Spreadsheet</h2>
-		        <?= __(, 'EOT_LMS')?>Enter your staff details using <b><?= __(, 'EOT_LMS')?>Microsoft Excel</b> <i><?= __(, 'EOT_LMS')?>(or a compatible application)</i> <?= __(, 'EOT_LMS')?>according to these guidelines:
+		        <h2><?= __('Populate the Spreadsheet', 'EOT_LMS')?></h2>
+		        <?= __('Enter your staff details using', 'EOT_LMS')?> <b><?= __('Microsoft Excel', 'EOT_LMS')?></b> <i><?= __('(or a compatible application)', 'EOT_LMS')?></i> <?= __(' according to these guidelines:', 'EOT_LMS')?>
 		        <div class="sm">
 			        <ul class="nested">
 			          	<li>
-			      			<b><?= __(, 'EOT_LMS')?>First Name <span class="red"><?= __(, 'EOT_LMS')?>(required)</span></b>
+			      			<b><?= __('First Name', 'EOT_LMS')?> <span class="red"><?= __('(required)', 'EOT_LMS')?></span></b>
 			          	</li>
 						<li>
-							<b><?= __(, 'EOT_LMS')?>Last Name <span class="red"><?= __(, 'EOT_LMS')?>(required)</span></b>
+							<b><?= __('Last Name', 'EOT_LMS')?> <span class="red"><?= __('(required)', 'EOT_LMS')?></span></b>
 						</li>
 						<li>
-							<b><?= __(, 'EOT_LMS')?>E-mail <span class="red"><?= __(, 'EOT_LMS')?>(required)</span></b>
+							<b><?= __('E-mail ', 'EOT_LMS')?><span class="red"><?= __('(required)', 'EOT_LMS')?></span></b>
 						</li>
 						<li>
-							<b><?= __(, 'EOT_LMS')?>Password</b> <?= __(, 'EOT_LMS')?>- if left blank, a password will be generated (and will be included in a welcome e-mail automatically sent) <span class="red"><?= __(, 'EOT_LMS')?>If included, it must be a minimum of 6 characters.</span>
+							<b><?= __('Password', 'EOT_LMS')?></b> <?= __('- if left blank, a password will be generated (and will be included in a welcome e-mail automatically sent) ', 'EOT_LMS')?><span class="red"><?= __('If included, it must be a minimum of 6 characters', 'EOT_LMS')?>.</span>
 						</li>
 						<li>
-				          	<b><?= __(, 'EOT_LMS')?>Course <i><?= __(, 'EOT_LMS')?>1, 2, 3, 4</i> <span class="red"><?= __(, 'EOT_LMS')?>(minimum 1 course)</span></b><?= __(, 'EOT_LMS')?> - Enter the <b><?= __(, 'EOT_LMS')?>Name</b> <?= __(, 'EOT_LMS')?>of the Course you want this staff member to join. It must <u><?= __(, 'EOT_LMS')?>exactly match</u> <?= __(, 'EOT_LMS')?>the name of the Course, so it is recommended that you copy-and-paste the name to avoid errors.
+				          	<b><?= __('Course', 'EOT_LMS')?> <i><?= __('1, 2, 3, 4', 'EOT_LMS')?></i> <span class="red"><?= __('(minimum 1 course)', 'EOT_LMS')?></span></b><?= __(' - Enter the ', 'EOT_LMS')?><b><?= __('Name', 'EOT_LMS')?></b> <?= __('of the Course you want this staff member to join. It must ', 'EOT_LMS')?><u><?= __('exactly match', 'EOT_LMS')?></u> <?= __('the name of the Course, so it is recommended that you copy-and-paste the name to avoid errors.', 'EOT_LMS')?>
 				            <ul class="nested">
 								<li>
-									<?= __(, 'EOT_LMS')?>You must put each user in <u><?= __(, 'EOT_LMS')?>at least 1 Course</u> <?= __(, 'EOT_LMS')?>(in any of the 4 slots)
+									<?= __('You must put each user in ', 'EOT_LMS')?><u><?= __('at least 1 Cours', 'EOT_LMS')?>e</u> <?= __('(in any of the 4 slots)', 'EOT_LMS')?>
 								</li>
 								<li>
-									<?= __(, 'EOT_LMS')?>You can put each user into <u><?= __(, 'EOT_LMS')?>up to 4 Courses</u> <?= __(, 'EOT_LMS')?>(there are 4 slots in the template)
+									<?= __('You can put each user into ', 'EOT_LMS')?><u><?= __('up to 4 Courses', 'EOT_LMS')?></u> <?= __('(there are 4 slots in the template)', 'EOT_LMS')?>
 								</li>
 								<li>
-									<?= __(, 'EOT_LMS')?>You don't have to use the field <b><?= __(, 'EOT_LMS')?>Course 1</b> <?= __(, 'EOT_LMS')?>(you can put a Course into <b><?= __(, 'EOT_LMS')?>Course 2</b> <?= __(, 'EOT_LMS')?>and leave <b><?= __(, 'EOT_LMS')?>Course 1</b> <?= __(, 'EOT_LMS')?>blank and it will still work fine. Our system is smart that way).
+									<?= __("You don't have to use the field ", 'EOT_LMS')?><b><?= __('Course 1', 'EOT_LMS')?></b> <?= __('(you can put a Course into ', 'EOT_LMS')?> <b><?= __('Course 2 ', 'EOT_LMS')?></b> <?= __('and leave ', 'EOT_LMS')?> <b><?= __('Course 1 ', 'EOT_LMS')?></b> <?= __('blank and it will still work fine. Our system is smart that way).', 'EOT_LMS')?>
 								</li>
 				            </ul>
 			          	</li>
@@ -470,7 +470,7 @@
 								<div class="error-bl">
 									<div class="error-br">
 										<div class="errorbox">
-											<center><?= __(, 'EOT_LMS')?>Do not delete, move, or add columns!</center>
+											<center><?= __('Do not delete, move, or add columns', 'EOT_LMS')?>!</center>
 										</div>              
 									</div>
 								</div>
@@ -540,7 +540,7 @@
 							<br><br>
 						</li>
 						<li>
-							<b><?= __('Existing Users:', 'EOT_LMS')?></b> <br><?= __('If a user already exists and you specify a', 'EOT_LMS')?> <b><?= __('Course', 'EOT_LMS')?></b><?= __('to join (which they are not currently in), they will be added to that course. If the user exists and you', 'EOT_LMS')?>  <i><?= __("don't", 'EOT_LMS')?></i> <?= __('specify any extra courses to join (that they are not in yet), it will be considered an erroneous duplicate, and you will need to remove this person from the spreadsheet.', 'EOT_LMS')?>
+							<b><?= __('Existing Users:', 'EOT_LMS')?></b> <br><?= __('If a user already exists and you specify a', 'EOT_LMS')?> <b><?= __('Course', 'EOT_LMS')?></b> <?= __('to join (which they are not currently in), they will be added to that course. If the user exists and you', 'EOT_LMS')?>  <i><?= __("don't", 'EOT_LMS')?></i> <?= __('specify any extra courses to join (that they are not in yet), it will be considered an erroneous duplicate, and you will need to remove this person from the spreadsheet.', 'EOT_LMS')?>
 								<br><br></li>
 						<li>
 							<b><?= __('Help!', 'EOT_LMS')?></b><br>
