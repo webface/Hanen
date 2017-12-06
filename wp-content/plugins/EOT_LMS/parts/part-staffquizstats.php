@@ -35,7 +35,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 ?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">View <?= $fullname ?>'s Quizzes</h1>
+                                        <h1 class="article_page_title"><?= __('View', 'EOT_LMS')?> <?= $fullname ?><?= __("'s Quizzes", 'EOT_LMS')?></h1>
                                         
                 </div>
 <?php
@@ -61,9 +61,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     $quizTableObj = new stdClass();
                     $quizTableObj->rows = array();
                     $quizTableObj->headers = array(
-                        'Quiz Name' => 'left',
-                        'Attempts' => 'center',
-                        'Status' => 'center'
+                        __('Quiz Name', 'EOT_LMS') => 'left',
+                        __('Attempts', 'EOT_LMS') => 'center',
+                        __('Status', 'EOT_LMS') => 'center'
                     );
 
                     // Creating rows for the table
@@ -71,11 +71,11 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     {
 
                         ///$time_limit = date('i', strtotime($quiz['time_limit']));
-                        $passed = isset($passed_users[$quiz['ID']])? 'Passed' : 'Incomplete';//Number of passes
+                        $passed = isset($passed_users[$quiz['ID']])? __('Passed', 'EOT_LMS') : __('Incomplete', 'EOT_LMS');//Number of passes
                         $attempts = isset($attempt_count[$quiz['ID']]) ? $attempt_count[$quiz['ID']] : 0;//Number of quiz attempts
                         if(!isset($passed_users[$quiz['ID']]) && $attempts > 0)//they must have failed that quiz
                         {
-                            $passed = "Failed";
+                            $passed = __("Failed", 'EOT_LMS');
                         }
                         //$percentage = $attempts>0?(($passed_count/$attempts)*100):0;
 

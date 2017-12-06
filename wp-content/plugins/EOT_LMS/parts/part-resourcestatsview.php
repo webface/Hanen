@@ -43,12 +43,12 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 //d($stats);
 ?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">Video Viewing Record for "<?= $fullname ?>"</h1>
+                                        <h1 class="article_page_title"><?= __('Video Viewing Record for', 'EOT_LMS')?> "<?= $fullname ?>"</h1>
                                         <h2><?= $resource['name'] ?></h2>
                                         <p>
-                                            Here is a table showing when these users have viewed <b><?=$resource['name']?></b>.<br />
-                                            Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
-                                            It is currently <b><?=date('g:ia', time())?></b> on <b><?=date('F j, Y', time())?></b>.
+                                            <?= __('Here is a table showing when these users have viewed', 'EOT_LMS')?> <b><?=$resource['name']?></b>.<br />
+                                            <?= __('Times are shown in', 'EOT_LMS')?> <b><?= __('Pacific Standard Time (PST)', 'EOT_LMS')?></b> <span class="small"><?= __('(GMT - 8).', 'EOT_LMS')?></span><br />
+                                            <?= __('It is currently', 'EOT_LMS')?> <b><?=date('g:ia', time())?></b> <?= __('on', 'EOT_LMS')?> <b><?=date('F j, Y', time())?></b>.
                                         </p>
                                         
                 </div>
@@ -57,8 +57,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $usersTableObj = new stdClass();
                             $usersTableObj->rows = array();
                             $usersTableObj->headers = array(
-          '<div>No</div>' => 'left',
-          '<center><div>Views</div></center>' => 'left'
+          '<div>'.__('No','EOT_LMS').'</div>' => 'left',
+          '<center><div>'.__('Views', 'EOT_LMS').'</div></center>' => 'left'
                             );
 
                                $usersTableObj->rows[] = array(
