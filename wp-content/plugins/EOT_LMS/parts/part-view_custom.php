@@ -71,6 +71,21 @@
                 </div>
 
                <script type='text/javascript'>
+                   $(document).ready(function(){
+                       var agent = navigator.userAgent;
+                        var isIphone = ((agent.indexOf('iPhone') != -1) || (agent.indexOf('iPod') != -1)|| (agent.indexOf('iPad') != -1)) ;
+                        if (isIphone) {
+                            var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
+                                                $.ajax({
+                                                url:url,
+                                            success:
+                                            function(data)
+                                            {
+
+                                            }
+                                            });
+                        }
+                   });
 
       			// Update the video status to finish.
       		   	$('video').on("ended", function() {
