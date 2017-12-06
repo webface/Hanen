@@ -793,13 +793,13 @@ msgstr "Copierea verificării nunicului a eșuat. Te rog încearcă din nou."
 
 #. translators: Site admin email change notification email subject. %s: Site
 #. title
-#: wp-includes/functions.php:5770
+#: wp-includes/functions.php:5771
 msgid "[%s] Notice of Admin Email Change"
 msgstr "[%s] Notificare pentru modificarea emailului administratorului"
 
 #. translators: Do not translate OLD_EMAIL, NEW_EMAIL, SITENAME, SITEURL: those
 #. are placeholders.
-#: wp-includes/functions.php:5755
+#: wp-includes/functions.php:5756
 msgid ""
 "Hi,\n"
 "\n"
@@ -851,7 +851,7 @@ msgstr "%s teme"
 msgid "Filter themes (%s)"
 msgstr "Filtrează teme (%s)"
 
-#: wp-includes/functions.php:5698
+#: wp-includes/functions.php:5699
 msgid "Only UUID V4 is supported at this time."
 msgstr "Numai UUID V4 este suportat în acest moment."
 
@@ -3864,7 +3864,7 @@ msgstr "Ștergerea a eșuat: %s"
 msgid "Edit Menu"
 msgstr "Editează meniu"
 
-#: wp-includes/wp-db.php:1849 wp-includes/wp-db.php:1855
+#: wp-includes/wp-db.php:1856 wp-includes/wp-db.php:1862
 msgid "Unable to retrieve the error message from MySQL"
 msgstr "Nu pot prelua mesajul de eroare din MySQL"
 
@@ -4162,11 +4162,11 @@ msgstr "Alegere logo"
 
 #. translators: 1: PHP class name, 2: PHP parent class name, 3: version number,
 #. 4: __construct() method
-#: wp-includes/functions.php:3899
+#: wp-includes/functions.php:3900
 msgid "The called constructor method for %1$s in %2$s is <strong>deprecated</strong> since version %3$s! Use %4$s instead."
 msgstr "Metoda constructor apelată pentru %1$s în %2$s este <strong>învechită</strong> de la versiunea %3$s! Folosește în schimb %4$s."
 
-#: wp-includes/functions.php:5311
+#: wp-includes/functions.php:5312
 msgid "Close dialog"
 msgstr "Închide dialog"
 
@@ -4296,12 +4296,12 @@ msgstr "Citește pagina <a href=\"%s\" target=\"_blank\">raport de erori</a>. Un
 msgid "https://codex.wordpress.org/Debugging_a_WordPress_Network"
 msgstr "https://codex.wordpress.org/Debugging_a_WordPress_Network"
 
-#: wp-includes/functions.php:4142
+#: wp-includes/functions.php:4143
 msgid "https://codex.wordpress.org/Debugging_in_WordPress"
 msgstr "https://codex.wordpress.org/Debugging_in_WordPress"
 
 #. translators: %s: Codex URL
-#: wp-includes/functions.php:4141
+#: wp-includes/functions.php:4142
 msgid "Please see <a href=\"%s\">Debugging in WordPress</a> for more information."
 msgstr "Te rog vezi <a href=\"%s\">Depanare în WordPress</a> pentru mai multe informații."
 
@@ -4510,25 +4510,25 @@ msgstr "Misiune terminată. Mesajul %s a fost șters."
 msgid "Author:"
 msgstr "Autor:"
 
-#: wp-includes/wp-db.php:1596 wp-includes/wp-db.php:1746
+#: wp-includes/wp-db.php:1596 wp-includes/wp-db.php:1753
 msgid "Are you sure that the database server is running?"
 msgstr "Sigur funcționează serverul de baze de date?"
 
 #. translators: %s: support forums URL
-#: wp-includes/wp-db.php:1601 wp-includes/wp-db.php:1752
+#: wp-includes/wp-db.php:1601 wp-includes/wp-db.php:1759
 msgid "If you&#8217;re unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href=\"%s\">WordPress Support Forums</a>."
 msgstr "Dacă nu ai siguranța semnificației acestor termeni ar trebui probabil să contactezi serviciul tău de găzduire. Dacă ai nevoie în continuare de ajutor poți oricând vizita <a href=\"%s\">Forumurile de suport WordPress</a>."
 
-#: wp-includes/wp-db.php:1737
+#: wp-includes/wp-db.php:1744
 msgid "Error reconnecting to the database"
 msgstr "Eroare de reconectare la baza de date"
 
 #. translators: %s: database host
-#: wp-includes/wp-db.php:1741
+#: wp-includes/wp-db.php:1748
 msgid "This means that we lost contact with the database server at %s. This could mean your host&#8217;s database server is down."
 msgstr "Asta înseamnă că am pierdut conexiunea cu serverul de baze de date la %s. Asta poate să însemne că acesta a căzut."
 
-#: wp-includes/wp-db.php:1747
+#: wp-includes/wp-db.php:1754
 msgid "Are you sure that the database server is not under particularly heavy load?"
 msgstr "Sigur serverul de baze de date nu este sub o supraîncărcare anume?"
 
@@ -5124,7 +5124,7 @@ msgid "Preformatted"
 msgstr "Preformatat"
 
 #. translators: 1: PHP class name, 2: version number, 3: __construct() method
-#: wp-includes/functions.php:3903
+#: wp-includes/functions.php:3904
 msgid "The called constructor method for %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead."
 msgstr "Metoda apelată a constructorului pentru %1$s este <strong>abandonată</strong> de la versiunea %2$s! Folosește în schimb %3$s."
 
@@ -7103,7 +7103,7 @@ msgstr "https://ro.wordpress.org/"
 #: wp-includes/admin-bar.php:164 wp-includes/update.php:153
 #: wp-includes/update.php:345 wp-includes/update.php:523
 #: wp-includes/wp-db.php:1069 wp-includes/wp-db.php:1602
-#: wp-includes/wp-db.php:1753 wp-login.php:882
+#: wp-includes/wp-db.php:1760 wp-login.php:882
 msgid "https://wordpress.org/support/"
 msgstr "http://ro.forums.wordpress.org/"
 
@@ -7282,22 +7282,22 @@ msgstr "Aliniază la dreapta"
 msgid "Align left"
 msgstr "Aliniază la stânga"
 
-#: wp-includes/general-template.php:3908
+#: wp-includes/general-template.php:3910
 msgctxt "admin color scheme"
 msgid "Sunrise"
 msgstr "Răsărit"
 
-#: wp-includes/general-template.php:3914
+#: wp-includes/general-template.php:3916
 msgctxt "admin color scheme"
 msgid "Ectoplasm"
 msgstr "Ectoplasmă"
 
-#: wp-includes/general-template.php:3920
+#: wp-includes/general-template.php:3922
 msgctxt "admin color scheme"
 msgid "Ocean"
 msgstr "Ocean"
 
-#: wp-includes/general-template.php:3926
+#: wp-includes/general-template.php:3928
 msgctxt "admin color scheme"
 msgid "Coffee"
 msgstr "Cafea"
@@ -7354,17 +7354,17 @@ msgctxt "Open Sans font: on or off"
 msgid "on"
 msgstr "on"
 
-#: wp-includes/general-template.php:3902
+#: wp-includes/general-template.php:3904
 msgctxt "admin color scheme"
 msgid "Midnight"
 msgstr "Miezul nopții"
 
-#: wp-includes/general-template.php:3890
+#: wp-includes/general-template.php:3892
 msgctxt "admin color scheme"
 msgid "Light"
 msgstr "Deschis"
 
-#: wp-includes/general-template.php:3879
+#: wp-includes/general-template.php:3881
 msgctxt "admin color scheme"
 msgid "Default"
 msgstr "Implicit"
@@ -7572,7 +7572,7 @@ msgstr "Sesiunea ta a expirat. Te poți autentifica din nou din această pagină
 msgid "%1$s %2$s, %3$s @ %4$s:%5$s"
 msgstr "%2$s.%1$s.%3$s la %4$s:%5$s"
 
-#: wp-includes/functions.php:5328
+#: wp-includes/functions.php:5329
 msgid "The login page will open in a new window. After logging in you can close it and return to this page."
 msgstr "Pagina de autentificare se va deschide într-o fereastră nouă. După autentificare o poți închide și să revii la această pagină."
 
@@ -7597,7 +7597,7 @@ msgctxt "placeholder"
 msgid "Search &hellip;"
 msgstr "Căutare &hellip;"
 
-#: wp-includes/functions.php:5326 wp-includes/script-loader.php:568
+#: wp-includes/functions.php:5327 wp-includes/script-loader.php:568
 msgid "Session expired"
 msgstr "Sesiune expirată"
 
@@ -8601,16 +8601,16 @@ msgstr "Documentație"
 msgid "Support Forums"
 msgstr "Forumuri pentru suport"
 
-#: wp-includes/formatting.php:3361 wp-includes/general-template.php:3798
+#: wp-includes/formatting.php:3361 wp-includes/general-template.php:3800
 msgid "&hellip;"
 msgstr "&hellip;"
 
-#: wp-includes/functions.php:3776 wp-includes/ms-load.php:455
+#: wp-includes/functions.php:3777 wp-includes/ms-load.php:455
 #: wp-includes/wp-db.php:1584
 msgid "Error establishing a database connection"
 msgstr "Eroare la stabilirea unei conexiuni cu baza de date"
 
-#: wp-includes/functions.php:3772
+#: wp-includes/functions.php:3773
 msgid "Database Error"
 msgstr "Eroare bază de date"
 
@@ -8663,7 +8663,7 @@ msgstr "Acest fișier nu este o imagine. Te rog încearcă altul."
 msgid "This is larger than the maximum size. Please try another."
 msgstr "Acesta e mai mare decât dimensiunea maximă. Te rog încearcă altul."
 
-#: wp-includes/general-template.php:3896
+#: wp-includes/general-template.php:3898
 msgctxt "admin color scheme"
 msgid "Blue"
 msgstr "Albastru"
@@ -8788,13 +8788,13 @@ msgid "The user is already active."
 msgstr "Utilizatorul este deja activat."
 
 #. translators: %s: version number
-#: wp-includes/functions.php:4138
+#: wp-includes/functions.php:4139
 msgid "(This message was added in version %s.)"
 msgstr "(Acest mesaj a fost adăugat în versiunea %s.)"
 
 #. translators: Developer debugging message. 1: PHP function name, 2:
 #. Explanatory message, 3: Version information message
-#: wp-includes/functions.php:4145
+#: wp-includes/functions.php:4146
 msgid "%1$s was called <strong>incorrectly</strong>. %2$s %3$s"
 msgstr "%1$s a fost denumit <strong>incorect</strong>. %2$s %3$s"
 
@@ -9893,19 +9893,19 @@ msgstr[2] "%s de zile"
 msgid ", "
 msgstr ", "
 
-#: wp-includes/functions.php:2615
+#: wp-includes/functions.php:2616
 msgid "WordPress Failure Notice"
 msgstr "Notificare eșec WordPress"
 
-#: wp-includes/functions.php:2610 wp-includes/ms-functions.php:2047
+#: wp-includes/functions.php:2611 wp-includes/ms-functions.php:2047
 msgid "Please try again."
 msgstr "Te rog reîncearcă."
 
-#: wp-includes/functions.php:2735
+#: wp-includes/functions.php:2736
 msgid "&laquo; Back"
 msgstr "&laquo; Înapoi"
 
-#: wp-includes/functions.php:2747 wp-load.php:92
+#: wp-includes/functions.php:2748 wp-load.php:92
 msgid "WordPress &rsaquo; Error"
 msgstr "Eroare &rsaquo; WordPress"
 
@@ -10414,7 +10414,7 @@ msgstr "Acel nume de utilizator este momentan rezervat, dar ar putea fi disponib
 
 #. translators: 1: WordPress version number, 2: Minimum required MySQL version
 #. number
-#: wp-includes/wp-db.php:3311
+#: wp-includes/wp-db.php:3318
 msgid "<strong>ERROR</strong>: WordPress %1$s requires MySQL %2$s or higher"
 msgstr "<strong>EROARE</strong>: WordPress %1$s are nevoie de MySQL %2$s sau mai recent"
 
@@ -10429,22 +10429,22 @@ msgstr[2] "În așteptare <span class=\"count\">(%s)</span>"
 msgid "Revision"
 msgstr "Revizie"
 
-#: wp-includes/functions.php:4721
+#: wp-includes/functions.php:4722
 msgid "Manual Offsets"
 msgstr "Completări manuale"
 
-#: wp-includes/functions.php:4713 wp-includes/functions.php:4717
+#: wp-includes/functions.php:4714 wp-includes/functions.php:4718
 msgid "UTC"
 msgstr "UTC"
 
 #. translators: 1: PHP function name, 2: version number
-#: wp-includes/functions.php:4032
+#: wp-includes/functions.php:4033
 msgid "%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available."
 msgstr "%1$s s-a apelat cu un argument care s-a <strong>învechit</strong> odată cu versiunea %2$s și care nu oferă alternative."
 
 #. translators: 1: PHP function name, 2: version number, 3: optional message
 #. regarding the change
-#: wp-includes/functions.php:4029
+#: wp-includes/functions.php:4030
 msgid "%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s"
 msgstr "%1$s s-a apelat cu un argument care s-a <strong>învechit</strong> odată cu versiunea %2$s! %3$s"
 
@@ -10482,8 +10482,8 @@ msgstr "%1$s %2$d"
 #. translators: 1: PHP function name, 2: version number
 #. translators: 1: PHP file name, 2: version number
 #. translators: 1: WordPress hook name, 2: version number
-#: wp-includes/functions.php:3840 wp-includes/functions.php:3968
-#: wp-includes/functions.php:4091
+#: wp-includes/functions.php:3841 wp-includes/functions.php:3969
+#: wp-includes/functions.php:4092
 msgid "%1$s is <strong>deprecated</strong> since version %2$s with no alternative available."
 msgstr "%1$s este <strong>învechită</strong> din versiunea %2$s fără alternative disponibile în loc."
 
@@ -10492,8 +10492,8 @@ msgstr "%1$s este <strong>învechită</strong> din versiunea %2$s fără alterna
 #. translators: 1: PHP file name, 2: version number, 3: alternative file name
 #. translators: 1: WordPress hook name, 2: version number, 3: alternative hook
 #. name
-#: wp-includes/functions.php:3837 wp-includes/functions.php:3965
-#: wp-includes/functions.php:4088
+#: wp-includes/functions.php:3838 wp-includes/functions.php:3966
+#: wp-includes/functions.php:4089
 msgid "%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead."
 msgstr "%1$s este <strong>învechită</strong> din versiunea %2$s! Folosește %3$s în loc."
 
@@ -10742,7 +10742,7 @@ msgid "Registration complete. Please check your email."
 msgstr "Înregistrare completă. Te rog verifică-ți emailul."
 
 #. translators: %s: site name
-#: wp-includes/functions.php:2594
+#: wp-includes/functions.php:2595
 msgid "You are attempting to log out of %s"
 msgstr "Încerci să te dezautentifici de pe %s"
 
@@ -10850,7 +10850,7 @@ msgstr "%s este o opțiune WP protejată și nu poate fi modificată"
 msgid "Empty filename"
 msgstr "Nume fișier gol"
 
-#: wp-includes/functions.php:4668
+#: wp-includes/functions.php:4669
 msgid "Select a city"
 msgstr "Selectează un oraș"
 
@@ -10859,11 +10859,11 @@ msgstr "Selectează un oraș"
 msgid "%1$s %2$s %3$s Comments Feed"
 msgstr "Flux comentarii %1$s %2$s %3$s"
 
-#: wp-includes/general-template.php:3712
+#: wp-includes/general-template.php:3714
 msgid "&laquo; Previous"
 msgstr "&laquo; Anterior"
 
-#: wp-includes/general-template.php:3713
+#: wp-includes/general-template.php:3715
 msgid "Next &raquo;"
 msgstr "Următor &raquo;"
 
@@ -11042,7 +11042,7 @@ msgstr "<strong>EROARE</strong>: Câmpul numelui de utilizator este gol."
 msgid "<strong>ERROR</strong>: The password field is empty."
 msgstr "<strong>EROARE</strong>: Câmpul parolei este gol."
 
-#: wp-includes/functions.php:5327 wp-includes/user.php:285
+#: wp-includes/functions.php:5328 wp-includes/user.php:285
 msgid "Please log in again."
 msgstr "Te rog autentifică-te din nou."
 
@@ -11193,7 +11193,7 @@ msgid "Fill Screen"
 msgstr "Completează ecran"
 
 #. translators: %s: logout URL
-#: wp-includes/functions.php:2601
+#: wp-includes/functions.php:2602
 msgid "Do you really want to <a href=\"%s\">log out</a>?"
 msgstr "Sigur vrei să te <a href=\"%s\">dezautentifici</a>?"
 
@@ -11539,7 +11539,7 @@ msgid "There are no options for this widget."
 msgstr "Nu există opțiuni pentru această piesă."
 
 #: wp-includes/admin-bar.php:830 wp-includes/class-wp-customize-widgets.php:412
-#: wp-includes/functions.php:3713
+#: wp-includes/functions.php:3714
 msgid "Widgets"
 msgstr "Piese"
 
@@ -12015,7 +12015,7 @@ msgstr "Rezumat"
 msgid "Caption"
 msgstr "Text asociat"
 
-#: wp-includes/deprecated.php:3130 wp-includes/functions.php:2605
+#: wp-includes/deprecated.php:3130 wp-includes/functions.php:2606
 msgid "Are you sure you want to do this?"
 msgstr "Sigur vrei să faci asta?"
 

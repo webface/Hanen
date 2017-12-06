@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 4.9.x - Development - Administration - Network Admin package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-10-20 05:40:25+0000\n"
+"PO-Revision-Date: 2017-12-04 01:44:20+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -69,17 +69,17 @@ msgctxt "theme"
 msgid "Delete %s"
 msgstr "%s 테마 삭제"
 
-#: wp-admin/network/sites.php:288
-msgid "Sorry, you are not allowed to delete that site."
-msgstr "죄송합니다. 해당 사이트를 삭제할 권한이 업습니다."
-
 #: wp-admin/network/themes.php:14
 msgid "Sorry, you are not allowed to manage network themes."
-msgstr "죄송합니다. 네트워크 테마를 관리할 권한이 업습니다."
+msgstr "죄송합니다. 네트워크 테마를 관리할 권한이 없습니다."
 
 #: wp-admin/network/themes.php:90
 msgid "Sorry, you are not allowed to delete themes for this site."
-msgstr "죄송합니다. 이 사이트의 테마를 삭제할 권한이 업습니다."
+msgstr "죄송합니다. 이 사이트의 테마를 삭제할 권한이 없습니다."
+
+#: wp-admin/network/sites.php:288
+msgid "Sorry, you are not allowed to delete that site."
+msgstr "죄송합니다. 해당 사이트를 삭제할 권한이 없습니다."
 
 #. translators: 1: wp-config.php 2: location of wp-config file, 3: translated
 #. version of "That's all, stop editing! Happy blogging."

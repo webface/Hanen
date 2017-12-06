@@ -789,13 +789,13 @@ msgstr "Scrape nonce check가 실패했습니다. 다시 시도해주세요."
 
 #. translators: Site admin email change notification email subject. %s: Site
 #. title
-#: wp-includes/functions.php:5770
+#: wp-includes/functions.php:5771
 msgid "[%s] Notice of Admin Email Change"
 msgstr "[%s] 관리자 이메일 변경 알림"
 
 #. translators: Do not translate OLD_EMAIL, NEW_EMAIL, SITENAME, SITEURL: those
 #. are placeholders.
-#: wp-includes/functions.php:5755
+#: wp-includes/functions.php:5756
 msgid ""
 "Hi,\n"
 "\n"
@@ -821,7 +821,7 @@ msgstr ""
 "###SITENAME###\n"
 "###SITEURL###"
 
-#: wp-includes/functions.php:5698
+#: wp-includes/functions.php:5699
 msgid "Only UUID V4 is supported at this time."
 msgstr "현재는 UUID V4만 지원됩니다."
 
@@ -3825,7 +3825,7 @@ msgctxt "site"
 msgid "&larr; Back to %s"
 msgstr "&larr; %s(으)로 돌아가기"
 
-#: wp-includes/wp-db.php:1849 wp-includes/wp-db.php:1855
+#: wp-includes/wp-db.php:1856 wp-includes/wp-db.php:1862
 msgid "Unable to retrieve the error message from MySQL"
 msgstr "MySQL에서 오류 메시지를 가져올 수 없습니다."
 
@@ -4132,13 +4132,13 @@ msgstr "<strong>에러</strong>:유효하지 않은 사용자명, 이메일 주�
 msgid "%1$s %2$s %3$s %4$s Feed"
 msgstr "%1$s %2$s %3$s %4$s 피드"
 
-#: wp-includes/functions.php:5311
+#: wp-includes/functions.php:5312
 msgid "Close dialog"
 msgstr "대화상자 닫기"
 
 #. translators: 1: PHP class name, 2: PHP parent class name, 3: version number,
 #. 4: __construct() method
-#: wp-includes/functions.php:3899
+#: wp-includes/functions.php:3900
 msgid "The called constructor method for %1$s in %2$s is <strong>deprecated</strong> since version %3$s! Use %4$s instead."
 msgstr "%2$s에서 %1$s에 호출된 컨스트럭터 메소드는 버전 %3$s로(으로) 인해 <strong>폐기 예정입니다.</strong> 대신 %4$s을(를) 사용하세요."
 
@@ -4276,12 +4276,12 @@ msgstr "https://codex.wordpress.org/Debugging_a_WordPress_Network"
 msgid "Read the <a href=\"%s\" target=\"_blank\">bug report</a> page. Some of the guidelines there may help you figure out what went wrong."
 msgstr " <a href=\"%s\" target=\"_blank\">버그 리포트</a> 페이지를 참고하세요. 가이드 라인에서 잘못된 부분을 찾을 수 있을 것입니다."
 
-#: wp-includes/functions.php:4142
+#: wp-includes/functions.php:4143
 msgid "https://codex.wordpress.org/Debugging_in_WordPress"
 msgstr "https://codex.wordpress.org/Debugging_in_WordPress"
 
 #. translators: %s: Codex URL
-#: wp-includes/functions.php:4141
+#: wp-includes/functions.php:4142
 msgid "Please see <a href=\"%s\">Debugging in WordPress</a> for more information."
 msgstr "<a href=\"%s\">워드프레스 디버깅 하기 페이지</a>를 참고하시면, 더 많은 정보를 얻을 수 있습니다."
 
@@ -4490,25 +4490,25 @@ msgstr "게시된 제목:"
 msgid "Author:"
 msgstr "글쓴이:"
 
-#: wp-includes/wp-db.php:1747
+#: wp-includes/wp-db.php:1754
 msgid "Are you sure that the database server is not under particularly heavy load?"
 msgstr "데이터베이스 서버에 과중한 부하가 걸리지 않고 있는지 체크 하셨나요?"
 
 #. translators: %s: database host
-#: wp-includes/wp-db.php:1741
+#: wp-includes/wp-db.php:1748
 msgid "This means that we lost contact with the database server at %s. This could mean your host&#8217;s database server is down."
 msgstr "이러한 현상은 데이터베이스 서버 %s 에 접속을 실패했음을 의미합니다. 호스트의 데이터베이스 서버가 다운 됐을 수도 있습니다."
 
-#: wp-includes/wp-db.php:1737
+#: wp-includes/wp-db.php:1744
 msgid "Error reconnecting to the database"
 msgstr "데이터베이스 재접속 오류입니다."
 
 #. translators: %s: support forums URL
-#: wp-includes/wp-db.php:1601 wp-includes/wp-db.php:1752
+#: wp-includes/wp-db.php:1601 wp-includes/wp-db.php:1759
 msgid "If you&#8217;re unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href=\"%s\">WordPress Support Forums</a>."
 msgstr "이 용어들의 의미를 알 수 없으면 호스트 관리자에게 문의하세요. 더 많은 도움이 필요하면, <a href=\"%s\"> 워드프레스 지원 포럼</a>을 방문하세요."
 
-#: wp-includes/wp-db.php:1596 wp-includes/wp-db.php:1746
+#: wp-includes/wp-db.php:1596 wp-includes/wp-db.php:1753
 msgid "Are you sure that the database server is running?"
 msgstr "데이타베이스서버가 작동하고있는가요?"
 
@@ -5088,7 +5088,7 @@ msgid "The %s directory of the develop repository must be used for RTL."
 msgstr "개발 저장소의 %s 디렉토리는 RTL 에서 사용합니다."
 
 #. translators: 1: PHP class name, 2: version number, 3: __construct() method
-#: wp-includes/functions.php:3903
+#: wp-includes/functions.php:3904
 msgid "The called constructor method for %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead."
 msgstr "%1$s에서 호출한 생성자 함수는 %2$s 버전부터 <strong>폐지예정</strong>입니다. 대신 %3$s를 사용해주세요."
 
@@ -7218,7 +7218,7 @@ msgstr "https://wordpress.org/support/forum/requests-and-feedback"
 #: wp-includes/admin-bar.php:164 wp-includes/update.php:153
 #: wp-includes/update.php:345 wp-includes/update.php:523
 #: wp-includes/wp-db.php:1069 wp-includes/wp-db.php:1602
-#: wp-includes/wp-db.php:1753 wp-login.php:882
+#: wp-includes/wp-db.php:1760 wp-login.php:882
 msgid "https://wordpress.org/support/"
 msgstr "https://wordpress.org/support/"
 
@@ -7255,22 +7255,22 @@ msgstr "열 그룹"
 msgid "Could not find the specified string."
 msgstr "특정 스트링을 찾을 수 없습니다."
 
-#: wp-includes/general-template.php:3926
+#: wp-includes/general-template.php:3928
 msgctxt "admin color scheme"
 msgid "Coffee"
 msgstr "커피"
 
-#: wp-includes/general-template.php:3920
+#: wp-includes/general-template.php:3922
 msgctxt "admin color scheme"
 msgid "Ocean"
 msgstr "대양"
 
-#: wp-includes/general-template.php:3914
+#: wp-includes/general-template.php:3916
 msgctxt "admin color scheme"
 msgid "Ectoplasm"
 msgstr "유령"
 
-#: wp-includes/general-template.php:3908
+#: wp-includes/general-template.php:3910
 msgctxt "admin color scheme"
 msgid "Sunrise"
 msgstr "해돋이"
@@ -7345,17 +7345,17 @@ msgstr "cyrillic"
 msgid "Use commas instead of %s to separate excluded terms."
 msgstr "제외 용어를 분리하려면 %s 대신 콤마를 사용하세요."
 
-#: wp-includes/general-template.php:3902
+#: wp-includes/general-template.php:3904
 msgctxt "admin color scheme"
 msgid "Midnight"
 msgstr "한밤중"
 
-#: wp-includes/general-template.php:3890
+#: wp-includes/general-template.php:3892
 msgctxt "admin color scheme"
 msgid "Light"
 msgstr "밝음"
 
-#: wp-includes/general-template.php:3879
+#: wp-includes/general-template.php:3881
 msgctxt "admin color scheme"
 msgid "Default"
 msgstr "기본"
@@ -7539,7 +7539,7 @@ msgstr "%1$s %2$s, %3$s @ %4$s : %5$s"
 msgid "Your session has expired. You can log in again from this page or go to the login page."
 msgstr "세션이 만료됐습니다. 이 페이지에서 다시 로그인하거나 로그인 페이지로 이동할 수 있습니다."
 
-#: wp-includes/functions.php:5328
+#: wp-includes/functions.php:5329
 msgid "The login page will open in a new window. After logging in you can close it and return to this page."
 msgstr "로그인 페이지는 새 창에 열릴 것입니다. 로그인 후에 새 창을 닫고 이 페이지에 다시 올 수 있습니다."
 
@@ -7564,7 +7564,7 @@ msgctxt "placeholder"
 msgid "Search &hellip;"
 msgstr "검색 &hellip;"
 
-#: wp-includes/functions.php:5326 wp-includes/script-loader.php:568
+#: wp-includes/functions.php:5327 wp-includes/script-loader.php:568
 msgid "Session expired"
 msgstr "세션이 만료됐습니다"
 
@@ -8560,16 +8560,16 @@ msgstr "지원 포럼"
 msgid "Documentation"
 msgstr "문서"
 
-#: wp-includes/formatting.php:3361 wp-includes/general-template.php:3798
+#: wp-includes/formatting.php:3361 wp-includes/general-template.php:3800
 msgid "&hellip;"
 msgstr "&hellip;"
 
-#: wp-includes/functions.php:3776 wp-includes/ms-load.php:455
+#: wp-includes/functions.php:3777 wp-includes/ms-load.php:455
 #: wp-includes/wp-db.php:1584
 msgid "Error establishing a database connection"
 msgstr "데이터베이스 연결중 에러"
 
-#: wp-includes/functions.php:3772
+#: wp-includes/functions.php:3773
 msgid "Database Error"
 msgstr "데이터베이스 에러"
 
@@ -8620,7 +8620,7 @@ msgstr "이 파일은 이미지 파일이 아닙니다. 다른 것으로 올려�
 msgid "This is larger than the maximum size. Please try another."
 msgstr "이것은 최대 사이즈보다 큽니다. 다른 것으로 올려주세요."
 
-#: wp-includes/general-template.php:3896
+#: wp-includes/general-template.php:3898
 msgctxt "admin color scheme"
 msgid "Blue"
 msgstr "파란색"
@@ -8745,13 +8745,13 @@ msgid "The user is already active."
 msgstr "사용자는 이미 활동 중입니다."
 
 #. translators: %s: version number
-#: wp-includes/functions.php:4138
+#: wp-includes/functions.php:4139
 msgid "(This message was added in version %s.)"
 msgstr "(이 메세지는 버전 %s에서 추가되었습니다.)"
 
 #. translators: Developer debugging message. 1: PHP function name, 2:
 #. Explanatory message, 3: Version information message
-#: wp-includes/functions.php:4145
+#: wp-includes/functions.php:4146
 msgid "%1$s was called <strong>incorrectly</strong>. %2$s %3$s"
 msgstr "%1$s 은 <strong>잘못불렀습니다</strong>. %2$s %3$s"
 
@@ -9914,7 +9914,7 @@ msgstr "Powered by WordPress"
 
 #. translators: 1: WordPress version number, 2: Minimum required MySQL version
 #. number
-#: wp-includes/wp-db.php:3311
+#: wp-includes/wp-db.php:3318
 msgid "<strong>ERROR</strong>: WordPress %1$s requires MySQL %2$s or higher"
 msgstr "<strong>에러</strong>: 워드프레스 %1$s는 MySQL %2$s 또는 그 이상을 필요로 합니다."
 
@@ -9922,7 +9922,7 @@ msgstr "<strong>에러</strong>: 워드프레스 %1$s는 MySQL %2$s 또는 그 �
 msgid "Sidebar %d"
 msgstr "사이드바 %d"
 
-#: wp-includes/functions.php:5327 wp-includes/user.php:285
+#: wp-includes/functions.php:5328 wp-includes/user.php:285
 msgid "Please log in again."
 msgstr "다시 로그인하세요."
 
@@ -10838,11 +10838,11 @@ msgstr "사용자가 HTTP를 통해 요청이 차단되었습니다."
 msgid "Gray"
 msgstr "회색"
 
-#: wp-includes/general-template.php:3713
+#: wp-includes/general-template.php:3715
 msgid "Next &raquo;"
 msgstr "다음 &raquo;"
 
-#: wp-includes/general-template.php:3712
+#: wp-includes/general-template.php:3714
 msgid "&laquo; Previous"
 msgstr "&laquo; 이전"
 
@@ -10929,34 +10929,34 @@ msgstr "로그아웃"
 msgid "Log in"
 msgstr "로그인"
 
-#: wp-includes/functions.php:4721
+#: wp-includes/functions.php:4722
 msgid "Manual Offsets"
 msgstr "메뉴얼 오프셋"
 
-#: wp-includes/functions.php:4713 wp-includes/functions.php:4717
+#: wp-includes/functions.php:4714 wp-includes/functions.php:4718
 msgid "UTC"
 msgstr "UTC"
 
-#: wp-includes/functions.php:4668
+#: wp-includes/functions.php:4669
 msgid "Select a city"
 msgstr "도시 선택"
 
 #. translators: 1: PHP function name, 2: version number
-#: wp-includes/functions.php:4032
+#: wp-includes/functions.php:4033
 msgid "%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available."
 msgstr "%1$s는 버전 %2$s때부터 대체할 내용이 없이 <strong>사용중단</strong>되었습니다."
 
 #. translators: 1: PHP function name, 2: version number, 3: optional message
 #. regarding the change
-#: wp-includes/functions.php:4029
+#: wp-includes/functions.php:4030
 msgid "%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s"
 msgstr "%1$s는 버전 %2$s부터 <strong>사용중단</strong>되었습니다! %3$s"
 
 #. translators: 1: PHP function name, 2: version number
 #. translators: 1: PHP file name, 2: version number
 #. translators: 1: WordPress hook name, 2: version number
-#: wp-includes/functions.php:3840 wp-includes/functions.php:3968
-#: wp-includes/functions.php:4091
+#: wp-includes/functions.php:3841 wp-includes/functions.php:3969
+#: wp-includes/functions.php:4092
 msgid "%1$s is <strong>deprecated</strong> since version %2$s with no alternative available."
 msgstr "%1$s는 버전 %2$s때부터 대체할 내용이 없이 <strong>사용중단</strong>되었습니다."
 
@@ -10965,34 +10965,34 @@ msgstr "%1$s는 버전 %2$s때부터 대체할 내용이 없이 <strong>사용�
 #. translators: 1: PHP file name, 2: version number, 3: alternative file name
 #. translators: 1: WordPress hook name, 2: version number, 3: alternative hook
 #. name
-#: wp-includes/functions.php:3837 wp-includes/functions.php:3965
-#: wp-includes/functions.php:4088
+#: wp-includes/functions.php:3838 wp-includes/functions.php:3966
+#: wp-includes/functions.php:4089
 msgid "%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead."
 msgstr "%1$s는 버전 %2$s부터 <strong>사용 중단</strong>되었습니다! 대신 %3$s를 사용하십시오."
 
-#: wp-includes/functions.php:2747 wp-load.php:92
+#: wp-includes/functions.php:2748 wp-load.php:92
 msgid "WordPress &rsaquo; Error"
 msgstr "워드프레스 &rsaquo; 오류"
 
-#: wp-includes/functions.php:2735
+#: wp-includes/functions.php:2736
 msgid "&laquo; Back"
 msgstr "&laquo; 뒤로"
 
-#: wp-includes/functions.php:2610 wp-includes/ms-functions.php:2047
+#: wp-includes/functions.php:2611 wp-includes/ms-functions.php:2047
 msgid "Please try again."
 msgstr "재시도 하십시오."
 
 #. translators: %s: logout URL
-#: wp-includes/functions.php:2601
+#: wp-includes/functions.php:2602
 msgid "Do you really want to <a href=\"%s\">log out</a>?"
 msgstr "정말로 <a href=\"%s\">로그아웃</a> 하시려나요?"
 
-#: wp-includes/functions.php:2615
+#: wp-includes/functions.php:2616
 msgid "WordPress Failure Notice"
 msgstr "워드프레스 실패 알림"
 
 #. translators: %s: site name
-#: wp-includes/functions.php:2594
+#: wp-includes/functions.php:2595
 msgid "You are attempting to log out of %s"
 msgstr "%s에서 로그아웃 하려고 합니다."
 
@@ -11391,7 +11391,7 @@ msgid "For some strange yet very annoying reason, this post could not be edited.
 msgstr "약간 이상하고 성가신 이유로, 이 글은 편집할 수 없습니다."
 
 #: wp-includes/admin-bar.php:830 wp-includes/class-wp-customize-widgets.php:412
-#: wp-includes/functions.php:3713
+#: wp-includes/functions.php:3714
 msgid "Widgets"
 msgstr "위젯"
 
@@ -11995,7 +11995,7 @@ msgstr "편집"
 msgid "No"
 msgstr "아니오"
 
-#: wp-includes/deprecated.php:3130 wp-includes/functions.php:2605
+#: wp-includes/deprecated.php:3130 wp-includes/functions.php:2606
 msgid "Are you sure you want to do this?"
 msgstr "이 작업을 수행하시겠습니까?"
 
