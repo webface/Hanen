@@ -166,7 +166,7 @@
                                                         {
 ?>                                                                                                  
 				          									/ Take Quiz
-                                                                                                                &nbsp; <i class="fa fa-question-circle" title="<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                                                            &nbsp; <i class="fa fa-question-circle" title="<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
 <?php
                                                         }
                                                     }
