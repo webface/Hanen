@@ -123,14 +123,18 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 	<?php  } ?>
 }
 
+.fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?>:hover .pp-hover-card-overlay {
+	<?php if ( $card->hover_card_bg_type != 'color' ) { ?>
+	background: #<?php echo $card->hover_card_overlay; ?>;
+	opacity: <?php echo $card->hover_card_overlay_opacity; ?>
+	<?php } ?>
+}
+
 .fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?> img {
 	border-radius: <?php echo $card->hover_card_box_border_radius; ?>px;
-	transition: opacity 0.3s linear;
 }
 .fl-node-<?php echo $id; ?> .pp-hover-card-<?php echo $i; ?>:hover img {
-	<?php if ( $card->hover_card_bg_type != 'color' ) { ?>
-	opacity: <?php echo $card->hover_card_overlay_opacity; ?>;
-	<?php } ?>
+	
 }
 
 <?php if ( $card->hover_card_bg_type == 'color' ) { ?>
@@ -170,6 +174,7 @@ for( $i = 0; $i < count( $settings->card_content ); $i++ ) {
 	<?php if( $settings->hover_card_title_line_height['desktop'] ) { ?>line-height: <?php echo $settings->hover_card_title_line_height['desktop']; ?>;<?php } ?>
 	margin-top: 0;
 	margin-bottom: 10px;
+	transition: all 0.3s ease;
 }
 
 .fl-node-<?php echo $id; ?> .pp-hover-card .pp-hover-card-description .pp-hover-card-description-inner {

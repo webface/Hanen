@@ -37,6 +37,9 @@
 						</div>
 					</div>
 				</div>
+				<?php if ( $card->hover_card_bg_type == 'image' ) { ?>
+					<div class="pp-hover-card-overlay"></div>
+				<?php } ?>
 			<?php if( $card->hover_card_link_type == 'box' ) { ?>
 			</a>
 			<?php } ?>

@@ -34,6 +34,9 @@
 	new PPGallery({
 		id: '<?php echo $id ?>',
 		layout: '<?php echo $settings->gallery_layout; ?>',
+		spacing: <?php echo $settings->justified_spacing; ?>,
+		rowheight: <?php echo $settings->row_height; ?>,
+		maxrowheight: <?php echo $settings->max_row_height; ?>,
+		lastrow: '<?php echo $settings->last_row; ?>',
 	});
-
 })(jQuery);

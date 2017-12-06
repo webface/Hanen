@@ -133,9 +133,9 @@
 							foreach ($terms_list as $term):
 								?>
 							<?php if( $i == count($terms_list) ) { ?>
-								<?php echo $term->name; ?>
+								<a href="<?php echo get_term_link($term); ?>"><?php echo $term->name; ?></a>
 							<?php } else { ?>
-								<?php echo $term->name . ' /'; ?>
+								<a href="<?php echo get_term_link($term); ?>"><?php echo $term->name; ?></a> /
 							<?php } ?>
 							<?php $i++; endforeach; ?>
 						<?php } ?>

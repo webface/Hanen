@@ -9,7 +9,6 @@ $space_mobile = ( $settings->photo_grid_count['mobile'] - 1 ) * $settings->photo
 $photo_columns_mobile = ( 100 - $space_mobile ) / $settings->photo_grid_count['mobile'];
 ?>
 
-<?php //echo $space_desktop; ?>
 .fl-node-<?php echo $id; ?> .pp-photo-gallery,
 .fl-node-<?php echo $id; ?> .pp-masonry-content {
 	margin: -<?php echo $settings->photo_spacing / 2; ?>px;
@@ -28,10 +27,8 @@ $photo_columns_mobile = ( 100 - $space_mobile ) / $settings->photo_grid_count['m
 	}
 	<?php if ( $settings->photo_grid_count['desktop'] > 1 ) { ?>
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $settings->photo_grid_count['desktop']; ?>n+1){
-		<!-- clear: left; -->
 	}
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $settings->photo_grid_count['desktop']; ?>n+0){
-		<!-- clear: right; -->
 	}
 	.fl-node-<?php echo $id; ?> .pp-photo-gallery-item:nth-child(<?php echo $settings->photo_grid_count['desktop']; ?>n){
 		margin-right: 0;

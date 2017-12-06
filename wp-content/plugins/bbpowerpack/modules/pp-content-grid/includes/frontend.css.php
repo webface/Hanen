@@ -398,6 +398,12 @@ if($settings->layout == 'grid' || $settings->layout == 'carousel') { // GRID ?>
 	background-color: <?php echo ($settings->post_background['secondary']) ? '#' . $settings->post_background['secondary'] : 'transparent'; ?>;
 }
 
+.woocommerce .fl-node-<?php echo $id; ?> .pp-content-post {
+	<?php if( 'grid' == $settings->layout ) { ?>
+	margin-bottom: <?php echo $settings->post_spacing; ?>%;
+	<?php } ?>
+}
+
 .fl-node-<?php echo $id; ?> .pp-content-post {
 	position: relative;
     <?php if( 'grid' == $settings->layout ) { ?>
@@ -626,9 +632,24 @@ if($settings->layout == 'grid' || $settings->layout == 'carousel') { // GRID ?>
 }
 
 @media only screen and ( max-width: 480px ) {
-	.fl-node-<?php echo $id; ?> ul.pp-post-filters li {
-		display: block;
-		text-align: center;
-		margin-right: 0;
+	<?php if ( $settings->responsive_filter == 'yes' ) { ?>
+	.fl-node-<?php echo $id; ?> .pp-post-filters-toggle {
+        display: block;
+    }
+    .fl-node-<?php echo $id; ?> ul.pp-post-filters {
+        display: none;
 	}
+	.fl-node-<?php echo $id; ?> ul.pp-post-filters li {
+        display: block;
+        float: none;
+        margin: 0 !important;
+        text-align: left;
+    }
+	<?php } else { ?>
+		.fl-node-<?php echo $id; ?> ul.pp-post-filters li {
+			display: block;
+			text-align: center;
+			margin-right: 0;
+		}
+	<?php } ?>
 }

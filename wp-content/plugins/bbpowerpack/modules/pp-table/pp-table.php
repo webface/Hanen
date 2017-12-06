@@ -22,7 +22,8 @@ class PPTableModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-table/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
-            'partial_refresh' => true
+            'partial_refresh' => true,
+            'icon'				=> 'editor-table.svg',
         ));
 
         $this->add_css('tablesaw-style', $this->url . 'css/tablesaw.css');

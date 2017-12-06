@@ -19,7 +19,8 @@ class PPAdvancedTabsModule extends FLBuilderModule {
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-advanced-tabs/',
             'editor_export' 	=> true, // Defaults to true and can be omitted.
             'enabled'       	=> true, // Defaults to true and can be omitted.
-			'partial_refresh'	=> true
+			'partial_refresh'	=> true,
+			'icon'				=> 'layout.svg',
 		));
 
 		$this->add_css('font-awesome');

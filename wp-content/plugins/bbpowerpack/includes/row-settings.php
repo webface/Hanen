@@ -483,7 +483,7 @@ function pp_row_expandable( $form, $id ) {
                         'default'           => 'collapsed',
                         'options'           => array(
                             'collapsed'         => __('Collapsed', 'bb-powerpack'),
-                            'expanded'          => __('Expaded', 'bb-powerpack')
+                            'expanded'          => __('Expanded', 'bb-powerpack')
                         )
                     )
                 )

@@ -22,6 +22,7 @@ class PPModalBoxModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-modal-box/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
+            'icon'				=> 'star-filled.svg',
         ));
 
         if ( class_exists( 'FLBuilderModel' ) && FLBuilderModel::is_builder_active() ) {

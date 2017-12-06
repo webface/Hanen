@@ -22,7 +22,8 @@ class PPImagePanelsModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-image-panels/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
-            'partial_refresh'   => true
+            'partial_refresh'   => true,
+            'icon'				=> 'format-image.svg',
         ));
     }
 

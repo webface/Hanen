@@ -82,14 +82,41 @@
 
                 if ( this.settings.filters || this.masonry ) {
 
-                    var postFilters = $(this.nodeClass).find('.pp-content-post-grid').isotope(postFilterData);
+					var postFilters = $(this.nodeClass).find('.pp-content-post-grid').isotope(postFilterData);
+					var filterWrap = $(this.nodeClass).find('.pp-post-filters');
+					var filterToggle = $(this.nodeClass).find('.pp-post-filters-toggle');
 
-                    $(this.nodeClass).find('.pp-post-filters').on('click', '.pp-post-filter', function() {
+					filterToggle.on('click', function () {
+						filterWrap.slideToggle(function () {
+							if ($(this).is(':visible')) {
+								$(this).addClass('pp-post-filters-open');
+							}
+							if (!$(this).is(':visible')) {
+								$(this).removeClass('pp-post-filters-open');
+							}
+						});
+					});
+
+					filterWrap.on('click', '.pp-post-filter', function() {
                         var filterVal = $(this).attr('data-filter');
                         postFilters.isotope({ filter: filterVal });
 
-                        node.find('.pp-post-filters .pp-post-filter').removeClass('pp-filter-active');
-                        $(this).addClass('pp-filter-active');
+						filterWrap.find('.pp-post-filter').removeClass('pp-filter-active');
+						$(this).addClass('pp-filter-active');
+
+						if (!base.masonry) {
+							if (filterVal !== '*') {
+								base._gridLayoutMatchHeightSimple();
+							} else {
+								base._gridLayoutMatchHeight();
+							}
+							node.find('.pp-content-post-grid').isotope('layout');
+						}
+						
+						filterToggle.find('span.toggle-text').html($(this).text());
+						if (filterWrap.hasClass('pp-post-filters-open')) {
+							filterWrap.slideUp();
+						}
                     });
                 }
 
@@ -133,11 +160,13 @@
 		{
 			var highestBox = 0;
 			var contentHeight = 0;
-			var postElements = $(this.postClass);
+			var postElements = $(this.postClass + ':visible');
 
 			if (0 === this.matchHeight) {
 				return;
 			}
+
+			postElements.css('height', 'auto');
 
 			if ( this.settings.layout === 'grid' ) {
 				var columns = this.settings.postColumns.desktop;
@@ -161,7 +190,7 @@
 
 				for( var i = 0; i < rows; i++ ) {
 					// select number of posts in the current row.
-					var postsInRow = $(this.postClass + ':nth-child(n+' + j + '):nth-child(-n+' + k + ')');
+					var postsInRow = $(this.postClass + ':visible:nth-child(n+' + j + '):nth-child(-n+' + k + ')');
 
 					// get height of the larger post element within the current row.
 					postsInRow.css('height', '').each(function () {
@@ -193,6 +222,26 @@
 				postElements.height(highestBox);
 			}
             //$(this.postClass).find('.pp-content-post-data').css('min-height', contentHeight + 'px').addClass('pp-content-relative');
+		},
+
+		_gridLayoutMatchHeightSimple: function () {
+			var highestBox = 0;
+			var contentHeight = 0;
+			var postElements = $(this.postClass + ':visible');
+
+			if (0 === this.matchHeight) {
+				return;
+			}
+
+			postElements.css('height', '').each(function () {
+
+				if ($(this).height() > highestBox) {
+					highestBox = $(this).height();
+					contentHeight = $(this).find('.pp-content-post-data').outerHeight();
+				}
+			});
+
+			postElements.height(highestBox);
 		},
 
 		_initInfiniteScroll: function()

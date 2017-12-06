@@ -28,6 +28,10 @@
     stroke-width: 9;
     fill: none;
     stroke-dasharray: 1500;
+    -webkit-animation: pp-headline-dash-no-loop 10s ease;
+    animation: pp-headline-dash-no-loop 10s ease;
+}
+.pp-headline--style-highlight.pp-headline-loop svg path {
     -webkit-animation: pp-headline-dash 10s infinite;
     animation: pp-headline-dash 10s infinite;
 }
@@ -71,6 +75,44 @@
     100% {
         stroke-dasharray: 0 1500;
         opacity: 0;
+    }
+}
+@-webkit-keyframes pp-headline-dash-no-loop {
+    0% {
+        stroke-dasharray: 0 1500;
+    }
+    15% {
+        stroke-dasharray: 1500 1500;
+    }
+    85% {
+        opacity: 1;
+    }
+    90% {
+        stroke-dasharray: 1500 1500;
+        opacity: 1;
+    }
+    100% {
+        stroke-dasharray: 1500 1500;
+        opacity: 1;
+    }
+}
+@keyframes pp-headline-dash-no-loop {
+    0% {
+        stroke-dasharray: 0 1500;
+    }
+    15% {
+        stroke-dasharray: 1500 1500;
+    }
+    85% {
+        opacity: 1;
+    }
+    90% {
+        stroke-dasharray: 1500 1500;
+        opacity: 1;
+    }
+    100% {
+        stroke-dasharray: 1500 1500;
+        opacity: 1;
     }
 }
 .pp-headline-dynamic-wrapper {

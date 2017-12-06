@@ -22,7 +22,8 @@ class PPSubscribeFormModule extends FLBuilderModule {
             'dir'           	=> BB_POWERPACK_DIR . 'modules/pp-subscribe-form/',
             'url'           	=> BB_POWERPACK_URL . 'modules/pp-subscribe-form/',
 			'editor_export' 	=> false,
-			'partial_refresh'	=> true
+			'partial_refresh'	=> true,
+			'icon'				=> 'editor-table.svg',
 		));
 
 		add_action( 'wp_ajax_pp_subscribe_form_submit', array( $this, 'submit' ) );

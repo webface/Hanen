@@ -20,6 +20,18 @@
 .pp-post-filters-wrapper {
 	position: relative;
 }
+.pp-post-filters-toggle {
+    display: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    background: #fafafa;
+}
+.pp-post-filters-toggle:after {
+    content: "+";
+    float: right;
+    font-weight: bold;
+}
 .pp-post-filters-wrapper.pp-filter-mobile {
 	display: none;
 }

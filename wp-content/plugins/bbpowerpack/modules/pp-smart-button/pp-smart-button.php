@@ -19,7 +19,8 @@ class PPSmartButtonModule extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-smart-button/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
-            'partial_refresh'   => true
+            'partial_refresh'   => true,
+			'icon'				=> 'button.svg',
 		));
 	}
 
@@ -170,6 +171,15 @@ FLBuilder::register_module('PPSmartButtonModule', array(
 						),
 						'preview'       => array(
 							'type'          => 'none'
+						)
+					),
+					'link_no_follow'	=> array(
+						'type'				=> 'pp-switch',
+						'label'				=> __('Link No Follow', 'bb-powerpack'),
+						'default'			=> 'no',
+						'options'			=> array(
+							'yes'				=> __('Yes', 'bb-powerpack'),
+							'no'				=> __('No', 'bb-powerpack')
 						)
 					)
 				)

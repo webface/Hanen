@@ -21,6 +21,7 @@ class PPAdvancedMenu extends FLBuilderModule {
             'url'           => BB_POWERPACK_URL . 'modules/pp-advanced-menu/',
             'editor_export' => true, // Defaults to true and can be omitted.
             'enabled'       => true, // Defaults to true and can be omitted.
+            'icon'				=> 'hamburger-menu.svg',
         ));
 
     }
