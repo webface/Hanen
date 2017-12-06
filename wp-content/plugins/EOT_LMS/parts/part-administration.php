@@ -4,6 +4,7 @@
   <span class="current"><?= __("Administration", "EOT_LMS"); ?></span>     
 </div>
 <?php
+
   // verify this user has access to this portal/subscription/page/view
   $true_subscription = verifyUserAccess();
   // Variable declaration

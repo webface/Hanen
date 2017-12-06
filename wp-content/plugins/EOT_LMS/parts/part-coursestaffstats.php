@@ -207,13 +207,13 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                         $quizTableObj->rows[] = array(
                             $name,
-                            "<a href='/dashboard?part=staffquizstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $passed_count . '/' . count($quizzes_in_course) . "</a>",
-                            "<a href='/dashboard?part=staffquizstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $fail_count . "</a>",
-                            "<a href='/dashboard?part=loginrecordstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $login_count . "</a>",
-                            "<a href='/dashboard?part=videowatchstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $view_count . "</a>",
+                            "<a href='?part=staffquizstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $passed_count . '/' . count($quizzes_in_course) . "</a>",
+                            "<a href='?part=staffquizstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $fail_count . "</a>",
+                            "<a href='?part=loginrecordstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $login_count . "</a>",
+                            "<a href='?part=videowatchstats&user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id'>" . $view_count . "</a>",
                             $status,
                             $percentage,
-                            "<a href='/dashboard?part=improved_email_staff&subscription_id=".$subscription_id."&target=select-staff&recipient=".$enrollment['user_id']."' target='_blank'><i class='fa fa-envelope tooltip' title=\"Send an email to $name\" style=\"margin-bottom: -2px\" onmouseover=\"Tip('Send an email to $name', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')\" onmouseout=\"UnTip()\"></i></a>"
+                            "<a href='?part=improved_email_staff&subscription_id=".$subscription_id."&target=select-staff&recipient=".$enrollment['user_id']."' target='_blank'><i class='fa fa-envelope tooltip' title=\"Send an email to $name\" style=\"margin-bottom: -2px\" onmouseover=\"Tip('Send an email to $name', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')\" onmouseout=\"UnTip()\"></i></a>"
                         );
                     }
                     CreateDataTable($quizTableObj, "100%", 25, true, "Stats");

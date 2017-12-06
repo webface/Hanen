@@ -102,16 +102,16 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
         } 
         else 
         {
-            wp_die('You do not have privilege to view this page.');
+            wp_die(__('You do not have privilege to view this page.',"EOT_LMS"));
         }
     } 
     else 
     {
-        wp_die('Invalid library id.');
+        wp_die(__('Invalid library id.', 'EOT_LMS'));
     }
 } 
 else 
 {
-    wp_die('Invalid subscription id');
+    wp_die(__('Invalid subscription id','EOT_LMS'));
 }
 ?>

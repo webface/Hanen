@@ -37,7 +37,7 @@
             $has_access = verify_student_access($course_id);
             if (!$has_access)
             {
-                wp_die("You do not have access to this course");
+                wp_die(__("You do not have access to this course", 'EOT_LMS'));
             }
             $path = WP_PLUGIN_DIR . '/eot_quiz/';
             require $path . 'public/class-eot_quiz_data.php';
@@ -48,7 +48,7 @@
             $question_ids_string = implode(",", $question_ids);
             $quiz_attempts = getQuizAttempts($quiz_id, $user_id);
 ?>
-            <h2 class="article_page_title">Quiz: <?=$quiz['quiz']['name']?></h2>
+            <h2 class="article_page_title"><?= __('Quiz: ', 'EOT_LMS')?><?=$quiz['quiz']['name']?></h2>
 <?php
             $count = 1;
             foreach ($quiz_attempts as $attempt) 
@@ -58,7 +58,7 @@
                 {
 ?>
                     <div class="bs">
-                        <div class="well well-lg">You have passed this quiz, congratulations!</div>
+                        <div class="well well-lg"><?= __('You have passed this quiz, congratulations!', 'EOT_LMS')?></div>
                     </div>
 <?php
                 }
@@ -110,11 +110,11 @@
         }
 		else
 		{
-			wp_die('You do not have privilege to view this page.');
+			wp_die(__('You do not have privilege to view this page.', 'EOT_LMS'));
 		}
 	}
 	else
 	{
-		wp_die('Invalid course. Please report this to the technical support.');
+		wp_die(__('Invalid course. Please report this to the technical support.', 'EOT_LMS'));
 	}
 ?>

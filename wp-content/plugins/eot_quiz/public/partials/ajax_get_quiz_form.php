@@ -78,6 +78,7 @@ switch ($_REQUEST['form_name'])
     case 'delete_quiz':
         $quiz_id = filter_var($_REQUEST['quiz_id'],FILTER_SANITIZE_NUMBER_INT);
         $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
         ob_start();
         ?>
         <div class="title">
@@ -90,7 +91,8 @@ switch ($_REQUEST['form_name'])
                         <td class="value">
                             <p>If there are users assigned to this quiz, all records of the results will be lost</p>
                             <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" /> 
-                            <input type="hidden" name="quiz_id" value="<?= $quiz_id ?>" /> 
+                            <input type="hidden" name="quiz_id" value="<?= $quiz_id ?>" />
+                            <input type="hidden" name="user_id" value="<?= $user_id ?>" />
                             <?php wp_nonce_field('delete-quiz_' . $quiz_id); ?>
                         </td> 
                     </tr> 
@@ -117,6 +119,7 @@ switch ($_REQUEST['form_name'])
     case 'delete_question':
         $question_id = filter_var($_REQUEST['question_id'],FILTER_SANITIZE_NUMBER_INT);
         $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
         ob_start();
 ?>
         <div class="title">
@@ -130,7 +133,7 @@ switch ($_REQUEST['form_name'])
                             <p>If there are users assigned to this quiz, all records of the results will be lost</p>
                             <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>" /> 
                             <input type="hidden" name="question_id" value="<?= $question_id ?>" /> 
-
+                            <input type="hidden" name="user_id" value="<?= $user_id ?>" />
                             <?php wp_nonce_field('delete-question_' . $question_id); ?>
                         </td> 
                     </tr> 

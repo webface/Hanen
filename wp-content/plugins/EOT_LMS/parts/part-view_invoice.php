@@ -49,13 +49,13 @@ if(current_user_can( "is_director" ))
 	}
 	else
 	{
-		echo "You do not have any previous invoices.";
+		echo __("You do not have any previous invoices.","EOT_LMS");
 	}
 }
 else
 {
 	// Not a director?
-    echo 'ERROR: You do not have permisison to view this page.';
+    echo __('ERROR: You do not have permisison to view this page.', "EOT_LMS");
 }
 
 	

@@ -66,7 +66,7 @@
                         $moduleTableObj->rows[] = array(
                             '<span>' . stripslashes($module['title']) . '</span>',
                             $num_resources,
-                            '<a href="/dashboard?part=edit_module&module_id=' . $module['ID'] . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_module\')"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp; 
+                            '<a href="?part=edit_module&module_id=' . $module['ID'] . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_module\')"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp; 
                             <a href="' . $admin_ajax_url . '?action=get_module_form&form_name=delete_module&module_id=' . $module['ID'] . '&org_id=' . $org_id .'&user_id=' . $user_id . '" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
                         );
                     }
@@ -80,7 +80,7 @@
                 <span><em>Create a new module below</em></span><br>
                 <div class="bs">
                     <div class="well" style="padding:10px">
-                        <form action="/dashboard?part=manage_custom_modules&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
+                        <form action="?part=manage_custom_modules&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
                             <?php wp_nonce_field('submit_module', 'submit_module'); ?>
                             <div class="form-group">
                                 <label for="moduleName">Module Name*</label>
@@ -128,7 +128,7 @@
                                 {
                                     if (data.success === 'true') 
                                     {
-                                        window.location.href="/dashboard?part=manage_custom_modules&subscription_id=<?=$subscription_id?>&user_id=<?=$user_id?>";
+                                        window.location.href="?part=manage_custom_modules&subscription_id=<?=$subscription_id?>&user_id=<?=$user_id?>";
                                     }
                                     else
                                     {

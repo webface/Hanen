@@ -54,13 +54,13 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                //d($stats,$video_id,$video);
 ?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">Video Viewing Record for "<?= $fullname ?>"</h1>
+                                        <h1 class="article_page_title"><?= __('Video Viewing Record for ','EOT_LMS')?>"<?= $fullname ?>"</h1>
                                         <h2><?= $video['name'] ?></h2>
-                                        <a class="btn btn-primary watch_video" onclick="watchVideo();" style="float:right">Watch Video</a>
+                                        <a class="btn btn-primary watch_video" onclick="watchVideo();" style="float:right"><?= __('Watch Video','EOT_LMS')?></a>
                                         <p>
-                                            Here is a table showing when these users have viewed <b><?=$video['name']?></b>.<br />
-                                            Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
-                                            It is currently <b><?=date('g:ia', time())?></b> on <b><?=date('F j, Y', time())?></b>.
+                                            <?= __('Here is a table showing when these users have viewed ','EOT_LMS')?><b><?=$video['name']?></b>.<br />
+                                            <?= __('Times are shown in ','EOT_LMS')?><b><?= __('Pacific Standard Time (PST)','EOT_LMS')?></b> <span class="small"><?= __('(GMT - 8).','EOT_LMS')?></span><br />
+                                            <?= __('It is currently ','EOT_LMS')?><b><?=date('g:ia', time())?></b><?= __(' on ','EOT_LMS')?><b><?=date('F j, Y', time())?></b>.
                                         </p>
                                         
                 </div>
@@ -74,7 +74,7 @@ function watchVideo()
                 data: {'video_id': <?= $video_id?>,'custom':<?= $custom?>},
                 error: function () 
                 {
-                    $.facebox('There was an error loading the title. Please try again shortly.');
+                    $.facebox(<?= __('There was an error loading the title. Please try again shortly.','EOT_LMS')?>);
                 },
                 success: function (data)
                 {
@@ -106,22 +106,22 @@ function watchVideo()
                 }
             else 
             {
-                echo "You dont have a valid course ID";
+                echo __("You dont have a valid course ID", 'EOT_LMS');
             }
         } 
         else 
         {
-            echo "Unauthorized!";
+            echo __("Unauthorized!", 'EOT_LMS') ;
         }
     } 
     else 
     {
-        echo "subscription ID does not belong to you";
+        echo __("subscription ID does not belong to you", 'EOT_LMS') ;
     }
 }
 // Could not find the subscription ID
 else
 {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID", 'EOT_LMS') ;
 }
 ?>

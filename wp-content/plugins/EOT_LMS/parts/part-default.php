@@ -205,7 +205,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
                     </tr>
                     <tr>
                         <td class="label">
-                            <a href="./?part=admin_view_subscriptions&library_id=<?= $library->ID ?>&sub_year=<?= $year ?>">
+                            <a href="?part=admin_view_subscriptions&library_id=<?= $library->ID ?>&sub_year=<?= $year ?>">
                                 Subscribers
                             </a>
                         </td>
