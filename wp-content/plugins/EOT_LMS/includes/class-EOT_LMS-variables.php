@@ -53,7 +53,7 @@ define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=vie
 define ('CRUMB_SEPARATOR', '<span class="crumb">&gt;</span>');
 
 // define breadcrumb to the statistics page
-define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=statistics&subscription_id='.$subscription_id.'" onclick="load(\'load_statistics\')">View Statistics</a>');
+define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=statistics&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_statistics\')">View Statistics</a>');
 
 // define breadcrumb to user lists page
 define ('CRUMB_USERSLISTS', '<a href="'. get_home_url() .'/dashboard/?part=user_list" onclick="load(\'load_manage_staff_accounts\')">Users Lists</a>');

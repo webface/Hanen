@@ -4,7 +4,7 @@
 	// verify this user has access to this portal/subscription/page/view
 	$true_subscription = verifyUserAccess(); 
 
-	$user_id = $current_user->ID; // Wordpress user ID
+	$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 	$org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID	
 	$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 	$courses = getCoursesById($org_id, $subscription_id);// All published courses in the portal.
@@ -242,8 +242,8 @@
 ?>
 						<tr>
 							<td><?= $course_name ?></td>
-							<td><a href="?part=coursestats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>"><?= __("View Course Stats", "EOT_LMS") ?></a></td>
-                            <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>"><?= __("View Staff Stats", "EOT_LMS") ?></a></td>
+							<td><a href="?part=coursestats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>"><?= __("View Course Stats", "EOT_LMS") ?></a></td>
+                            <td><a href="?part=coursestaffstats&course_id=<?= $course['ID'] ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>"><?= __("View Staff Stats", "EOT_LMS") ?></a></td>
 							<!--<td><a href="#">Download Excel Report</a></td>-->
                         </tr>
 <?php

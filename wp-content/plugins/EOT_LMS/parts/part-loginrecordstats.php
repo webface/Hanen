@@ -16,7 +16,8 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
 
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
-
+global $current_user;
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 // Check if the subscription ID is valid.
 if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0) 
 {
@@ -26,9 +27,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
         {
             if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] > 0)
             {
-              $user_id = isset($_REQUEST['user_id']) ? filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
-              $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
-              $track_login = getTrack($user_id, 0, 'login');
+              $suser_id = isset($_REQUEST['stats_user_id']) ? filter_var($_REQUEST['stats_user_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+              $fullname = get_user_meta($suser_id, 'first_name', true)." ".get_user_meta($suser_id, 'last_name', true);
+              $track_login = getTrack($suser_id, 0, 'login');
               //d($track_login);
               
 ?>

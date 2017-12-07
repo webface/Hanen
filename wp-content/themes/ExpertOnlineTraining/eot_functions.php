@@ -3286,6 +3286,11 @@ function getResourcesInCourse($course_id = 0, $type = '')
                 . "FROM " . $table . " AS r "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.resource_id = r.ID "
                 . "WHERE cmr.course_id = $course_id AND cmr.type = '$type'";
+    if($type == 'doc')
+    {
+        $sql.=" AND r.type = '$type'";
+    }
+   //error_log($sql);
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
 }
