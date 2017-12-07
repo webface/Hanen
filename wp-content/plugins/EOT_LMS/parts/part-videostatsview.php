@@ -15,7 +15,7 @@ wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.h
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 global $current_user;
 $user_id = $current_user->ID;
-$page_title = "Stats";
+$page_title = __("Stats", 'EOT_LMS');
 $admin_ajax_url = admin_url('admin-ajax.php');
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
