@@ -14,7 +14,7 @@ wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js'
 wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 global $current_user;
-$user_id = $current_user->ID;
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 $page_title = "Stats";
 $admin_ajax_url = admin_url('admin-ajax.php');
 // verify this user has access to this portal/subscription/page/view
@@ -37,18 +37,18 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 		$course_name = $course_data['course_name'];
                 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 $video_id = filter_var($_REQUEST['video_id'], FILTER_SANITIZE_NUMBER_INT);// The video ID
-                $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);// The user ID
-                $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
+                $suser_id = filter_var($_REQUEST['stats_user_id'], FILTER_SANITIZE_NUMBER_INT);// The user ID
+                $fullname = get_user_meta($suser_id, 'first_name', true)." ".get_user_meta($suser_id, 'last_name', true);
                 $custom = filter_var($_REQUEST['custom'], FILTER_SANITIZE_NUMBER_INT);
                 if($custom == 0)
                 {
                 $video = getVideoById($video_id,false);
-                $stats= getTrack($user_id, $video_id,'watch_video');
+                $stats= getTrack($suser_id, $video_id,'watch_video');
                 }
                 else 
                 {
                 $video = getVideoById($video_id, true);
-                $stats= getTrack($user_id, $video_id, 'watch_custom_video');
+                $stats= getTrack($suser_id, $video_id, 'watch_custom_video');
                 }
                 
                //d($stats,$video_id,$video);

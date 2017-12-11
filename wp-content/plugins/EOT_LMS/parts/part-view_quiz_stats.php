@@ -25,14 +25,14 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
                 $path = WP_PLUGIN_DIR . '/eot_quiz/';
                 require $path . 'public/class-eot_quiz_data.php';
                 global $current_user;
-                $user_id = $current_user->ID; // Wordpress user ID
+                $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
                 $org_id = get_org_from_user($user_id);
                 $eot_quiz = new EotQuizData();
                 $quiz_id = filter_var($_REQUEST['quiz_id'],FILTER_SANITIZE_NUMBER_INT);
                 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
                 $attempt_id = filter_var($_REQUEST['attempt_id'],FILTER_SANITIZE_NUMBER_INT);
-                $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // The user ID
-                $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
+                $suser_id = filter_var($_REQUEST['stats_user_id'],FILTER_SANITIZE_NUMBER_INT); // The user ID
+                $fullname = get_user_meta($suser_id, 'first_name', true)." ".get_user_meta($suser_id, 'last_name', true);
                 $quiz_data = $eot_quiz->get_quiz_data($quiz_id,true);
                 $quiz_result = getQuizResults($attempt_id);
                 //d($quiz_data, $quiz_result);

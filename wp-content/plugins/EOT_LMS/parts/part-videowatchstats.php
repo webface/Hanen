@@ -15,6 +15,8 @@ wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.h
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
+global $current_user;
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 // Check if the subscription ID is valid.
 if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0) 
 {
@@ -28,8 +30,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
             {
               $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
               $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
-              $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
-              $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
+              $suser_id = filter_var($_REQUEST['stats_user_id'], FILTER_SANITIZE_NUMBER_INT);
+              $fullname = get_user_meta($suser_id, 'first_name', true)." ".get_user_meta($suser_id, 'last_name', true);
               
 ?>
                 <div class="smoothness">
@@ -47,7 +49,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $videos =  getResourcesInCourse($course_id, 'video');
                         $custom_videos = getResourcesInCourse($course_id, 'custom_video');
                         $all_videos = array_merge($videos, $custom_videos);
-                        $track_videos = array_merge(getTrack($user_id, 0, 'watch_video'),getTrack($user_id, 0, 'watch_custom_video'));
+                        $track_videos = array_merge(getTrack($suser_id, 0, 'watch_video'),getTrack($suser_id, 0, 'watch_custom_video'));
                         //d($all_videos,$track_videos);
                         $watched_videos = array_column($track_videos,'video_id');
                         $views = array_count_values($watched_videos);
@@ -74,7 +76,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                                 $videosTableObj->rows[] = array(
                                     ' <span>' . stripslashes($video['name']) . '</span>',
-                                    "<a href='?part=videostatsview&course_id=$course_id&custom=$custom&user_id=$user_id&video_id=".$video['ID']."&subscription_id=$subscription_id'>".$view_count."</a>"
+                                    "<a href='?part=videostatsview&course_id=$course_id&custom=$custom&stats_user_id=$suser_id&user_id=$user_id&video_id=".$video['ID']."&subscription_id=$subscription_id'>".$view_count."</a>"
                                     );
                             }
                          CreateDataTable($videosTableObj,"100%",10,true,"Stats"); // Print the table in the page

@@ -16,7 +16,7 @@ wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.h
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 
 global $current_user;
-$user_id = $current_user->ID;
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 $page_title = __("Stats", "EOT_LMS");
 
 // verify this user has access to this portal/subscription/page/view
@@ -160,7 +160,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                         $quizTableObj->rows[] = array(
                             ' <span>' . stripslashes($quiz['name']) . '</span>',
-                            "<a href='?part=quizstats&course_id=$course_id&quiz_id=" . $quiz['ID'] . "&subscription_id=$subscription_id'>" . $passed_count . '/' . $attempts . "</a>",
+                            "<a href='?part=quizstats&course_id=$course_id&quiz_id=" . $quiz['ID'] . "&subscription_id=$subscription_id&user_id=$user_id'>" . $passed_count . '/' . $attempts . "</a>",
                             eotprogressbar('12em', $percentage, true)
                         );
                     }
@@ -214,7 +214,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                         $videosTableObj->rows[] = array(
                             ' <span>' . stripslashes($video['name']) . '</span>',
-                            "<a href='?part=videostats&course_id=$course_id&video_id=" . $video['ID'] . "&custom=$custom&subscription_id=$subscription_id'>" . $view_count . "</a>"
+                            "<a href='?part=videostats&course_id=$course_id&video_id=" . $video['ID'] . "&custom=$custom&subscription_id=$subscription_id&user_id=$user_id'>" . $view_count . "</a>"
                         );
                     }
                     CreateDataTable($videosTableObj, "100%", 10, true, "Stats"); // Print the table in the page
@@ -248,7 +248,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                         $resourceTableObj->rows[] = array(
                             ' <span>' . stripslashes($resource['name']) . '</span>',
-                            "<a href='?part=resourcestats&course_id=$course_id&resource_id=" . $resource['ID'] . "&subscription_id=$subscription_id'>" . $download_count . "</a>"
+                            "<a href='?part=resourcestats&course_id=$course_id&resource_id=" . $resource['ID'] . "&subscription_id=$subscription_id&user_id=$user_id'>" . $download_count . "</a>"
                         );
                     }
                     CreateDataTable($resourceTableObj, "100%", 10, true, "Stats"); // Print the table in the page

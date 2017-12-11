@@ -17,7 +17,7 @@
 	// verify this user has access to this portal/subscription/page/view
 	$true_subscription = verifyUserAccess(); 
 	global $current_user;
-	$user_id = $current_user->ID;                  // Wordpress user ID
+	$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 
 	// Check if the subscription ID is valid.
 	if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] != "")
@@ -153,7 +153,7 @@
 				            $staff_credits += $upgrade->accounts;
 				        }
 				    }
-
+                                        $current_user = get_user_by('ID', $user_id);
 					$directorname =	$current_user->display_name; // the directors name
 					$campname =	get_the_title($org_id); // the camp name
 					$response = getEotUsers($org_id); // All users in this org
@@ -334,7 +334,7 @@
 				</tbody>
 			</table>
 			<br>
-			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&subscription_id=' . $subscription_id ?>">Please fix your spreadsheet and upload your file again. </a>
+			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&user_id='.$user_id.'subscription_id=' . $subscription_id ?>">Please fix your spreadsheet and upload your file again. </a>
 
 <?php
 		}
@@ -390,7 +390,7 @@
                                     if (count > <?= $max ?> && overall_status == 1)
                                     {
                                             <?php
-                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id . '&sent=1';
+                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '&sent=1';
                                         ?>
                                         $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
 
@@ -414,7 +414,7 @@
 	{
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
 		$subscription = getSubscriptions($subscription_id, 0, 1); // get active Subscription details
-
+                //d($subscription);
 		if( !isset($subscription) || $subscription->manager_id != $user_id)
 		{
 			wp_die('You do not have privilege for this subscription.');
@@ -510,7 +510,7 @@
 				$options = array(
 						'post_id' => 'user_' . $user_id,
 						'field_groups' => array(ACF_UPLOAD_SPREADSHEET),
-						'return' => '?part=uploadspreadsheet&uploadFile=true&subscription_id='.$subscription_id,
+						'return' => '?part=uploadspreadsheet&uploadFile=true&subscription_id='.$subscription_id.'&user_id='.$user_id,
 						'submit_value' => __("Upload Spreadsheet", 'acf'),
 				);
 			 	acf_form( $options ); 

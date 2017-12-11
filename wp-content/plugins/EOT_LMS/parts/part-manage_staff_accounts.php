@@ -13,7 +13,7 @@
   // verify this user has access to this portal/subscription/page/view
   $true_subscription = verifyUserAccess(); 
 
-  $user_id = $current_user->ID;                  // Wordpress user ID
+  $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // The // Wordpress user ID                  // Wordpress user ID
   $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
   $user_data = getEotUsers($org_id);
   $users = isset($user_data['users']) ? $user_data['users'] : array();
@@ -165,14 +165,14 @@ static $i = 0;
     })(jQuery);
   </script>
 <div class="bottom_buttons">
-  <a class="btn" name="create_staff_account" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_staff_account&amp;org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>" rel="facebox">
+  <a class="btn" name="create_staff_account" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_staff_account&amp;org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" rel="facebox">
     <?= __("Create Staff Account", "EOT_LMS"); ?>
   </a>
 
-  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=uploadspreadsheet&subscription_id=<?= $subscription_id ?>">
+  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=uploadspreadsheet&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&org_id=<?= $org_id ?>">
     <?= __("Upload A Spreadsheet", "EOT_LMS"); ?>
   </a>
-  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=invite_users&subscription_id=<?= $subscription_id ?>&org_id=<?= $org_id ?>">
+  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=invite_users&subscription_id=<?= $subscription_id ?>&org_id=<?= $org_id ?>&user_id=<?= $user_id ?>">
     <?= __("Invite Users To Register", "EOT_LMS"); ?>
   </a>
   <!-- 

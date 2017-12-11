@@ -141,7 +141,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
         <li><a href="?part=admin_create_account"><b>Create New User</b></a></li>
         <li><a href="?part=custom_fields"><b>Update Custom User Fields</b></a></li>
         <li><a href="?part=upload_resources"><b>Upload Resources</b></a></li>
-        <li><a href="?part=manage_uber_managers2"><b>Manage Uber/Umbrella Managers</b></a></li>
+        <li><a href="?part=manage_uber_managers"><b>Manage Uber/Umbrella Managers</b></a></li>
 
 <?php
         if (current_user_can('sales_manager')) 

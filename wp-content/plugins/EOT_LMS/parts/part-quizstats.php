@@ -15,7 +15,7 @@ wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.h
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 
 global $current_user;
-$user_id = $current_user->ID;
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 $page_title = "Stats";
 
 // verify this user has access to this portal/subscription/page/view

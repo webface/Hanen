@@ -247,6 +247,12 @@ function CreateDataTable($tableObj, $width="100%", $num_rows = 10, $download = f
         //listen for paged event and re-initialize facebox.
         $('#<?=$id?>').on( 'page.dt', function () {
             setTimeout(function(){$('a[rel*=facebox]').facebox();},500);
+        });
+        $('#<?=$id?>').on( 'search.dt', function () {
+            setTimeout(function(){$('a[rel*=facebox]').facebox();},500);
+        } );
+        $('#<?=$id?>').on( 'draw.dt', function () {
+            setTimeout(function(){$('a[rel*=facebox]').facebox();},500);
         } );
       });
     })(jQuery);
@@ -1240,10 +1246,6 @@ function display_uber_manager_dashboard()
   wp_get_current_user ();
   $user_id = $current_user->ID;
   $org_id = get_org_from_user ($user_id);
-  $org = get_post ($org_id);
-  $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-  $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
-  $data = compact ('org_id');
 
   echo '<h1>' . __("Uber Manager Administration", "EOT_LMS") . '</h1>';
 
@@ -1251,12 +1253,12 @@ function display_uber_manager_dashboard()
 ?>
   <div class="row">
     <div class="col">
-      <a href="?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')">
+      <a href="/dashboard?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')">
         <i class="fa fa-files-o fa-3x" aria-hidden="true"></i>
       </a>
     </div>
     <div class="col">
-      <a href="?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')"><?= __("Copy Courses", "EOT_LMS") ?></a>
+      <a href="/dashboard?part=copy_courses&amp;org_id=<?= $org_id ?>&user_id=<?= $user_id; ?>" onclick="load('load_courses')"><?= __("Copy Courses", "EOT_LMS") ?></a>
       <br>
       <?= __("Copy your custom courses into any of your organization's camps", "EOT_LMS") ?>
     </div>
@@ -1265,8 +1267,7 @@ function display_uber_manager_dashboard()
 <?php
   // Display a table of current Camps/managers/stats
   $umbrellaCamps = getUmbrellaCamps($org_id); // Lists of umbrella camps
-
-  if ($umbrellaCamps->have_posts())
+  if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts() )
   { 
 
     /*
@@ -1277,6 +1278,7 @@ function display_uber_manager_dashboard()
     $userTableObj->headers = array(
       __("Camp Name", "EOT_LMS") => 'left',
       __("Director", "EOT_LMS") => 'left',
+      __("Type", "EOT_LMS") => 'center',
       __("Actions", "EOT_LMS") => 'center'
     );
 
@@ -1292,17 +1294,29 @@ function display_uber_manager_dashboard()
         'meta_value' => $org_id,
         'number' => 1
       );
+
       $director = get_users($args); // get the user name associated with this org
       $director_name = 'John Doe';
+      $type = 'Director';
       if ($director)
       {
         $director_name = $director[0]->first_name . " " . $director[0]->last_name;
         $user_id = $director[0]->ID;
+        if(user_can($user_id,'is_umbrella_manager'))
+        {
+            $type = "Umbrella Manager";
+        }
       }
+      $subscriptions = get_current_subscriptions ($org_id);
+      $subscription_id = 0;
+      if (!empty($subscriptions))
+      {
+        // user has at least 1 subscription
+        $subscription_id = $subscriptions[0]->ID;
 
+      }
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
-
+      $userTableObj->rows[] = array($camp_name, $director_name, $type, '<a href="?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
     }
 
     // Display the user's table
@@ -1322,10 +1336,6 @@ function display_umbrella_manager_dashboard()
   wp_get_current_user ();
   $user_id = $current_user->ID;
   $org_id = get_org_from_user ($user_id);
-  $org = get_post ($org_id);
-  $org_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-  $org_lrn_upon_id = get_post_meta ($org_id, 'lrn_upon_id', true); // the LU portal ID
-  $data = compact ('org_id');
 
   echo '<h1>' . __("Umbrella Manager Administration", "EOT_LMS") . '</h1>';
 
@@ -1348,7 +1358,7 @@ function display_umbrella_manager_dashboard()
   // Display a table of current Camps/managers/stats
   $umbrellaCamps = getUmbrellaCamps($org_id, 'regional_umbrella_group_id'); // Lists of regional umbrella camps
 
-  if ($umbrellaCamps->have_posts())
+  if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts())
   { 
 
     /*
@@ -1381,9 +1391,16 @@ function display_umbrella_manager_dashboard()
         $director_name = $director[0]->first_name . " " . $director[0]->last_name;
         $user_id = $director[0]->ID;
       }
+      $subscriptions = get_current_subscriptions ($org_id);
+      $subscription_id = 0;
+      if (!empty($subscriptions))
+      {
+        // user has at least 1 subscription
+        $subscription_id = $subscriptions[0]->ID;
 
+      }
       // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="/dashboard/?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="/dashboard/?part=administration&org_id='.$org_id.'&user_id='.$user_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
+      $userTableObj->rows[] = array($camp_name, $director_name, '<a href="?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
 
     }
 
@@ -1404,7 +1421,6 @@ function getUmbrellaCamps($org_id = 0, $key = 'umbrella_group_id')
   {
     return;
   }
-
   // verify that $key is only umbrella_group_id or regional_umbrella_group_id
   $valid_keys = array (
     'umbrella_group_id',
@@ -1428,7 +1444,6 @@ function getUmbrellaCamps($org_id = 0, $key = 'umbrella_group_id')
     )
   );
   $query = new WP_Query($args);
-
 //  echo $query->request; // this shows the query if you ever need to see the SQL.
 
   return $query;
@@ -1451,8 +1466,6 @@ function verifyUserAccess ()
   {
     $subscription_id = 0; // no subscription ID provided
   }
-
-
   // check if were dealing with an uber admin or a director
   if (current_user_can("is_uber_manager"))
   {
@@ -1466,7 +1479,6 @@ function verifyUserAccess ()
       {
         $manager_id = $results->manager_id;
         $org_id = $results->org_id;  
-
         // if its our own subscription, then we can modify, otherwise we need to check umbrella org below
         if ($current_user->ID == $manager_id)
         {
@@ -1488,13 +1500,20 @@ function verifyUserAccess ()
         // verify that the current uber/umbrella manager has access to this user
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         $manager_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+
       }
       else
       {
         return array( 'status' => 0, 'message' => __("we didn't get an org_id and user_id", "EOT_LMS") );
       }
     }
+        $subscriptions = get_current_subscriptions ($org_id);
+    if (!empty($subscriptions))
+    {
+      // user has at least 1 subscription
+      $library_id = $subscriptions[0]->library_id;
 
+    }
     // now using the org_id and manager_id see if this uber admin is allowed to access this org.
     // get the uber admin's org id (post id)
     $args = array(
@@ -1510,7 +1529,6 @@ function verifyUserAccess ()
     {
       return array( 'status' => 0, 'message' => __("couldn't get the uber admin's org_id", "EOT_LMS") );
     }
-
     // get the user meta for the manager so we can compare the umbrella_group_id
     $user_meta = get_user_meta($manager_id);
 
@@ -1521,12 +1539,12 @@ function verifyUserAccess ()
         // all good, proceed to get subscriptions and edit this org.
         $date = current_time('Y-m-d');
         $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ";
-        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".LE_ID." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
+        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".$library_id." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
         $results = $wpdb->get_row ($sql);
         if ($results)
         {
           // set the subscription ID and org ID
-          $_REQUEST['subscription_id'] = $results->id;
+          $_REQUEST['subscription_id'] = $results->ID;
           $_REQUEST['org_id'] = $org_id;
 
           return array ( 'status' => 1 );
@@ -1588,7 +1606,13 @@ function verifyUserAccess ()
         return array( 'status' => 0, 'message' => __("we didn't get an org_id and user_id", "EOT_LMS") );
       }
     }
+    $subscriptions = get_current_subscriptions ($org_id);
+    if (!empty($subscriptions))
+    {
+      // user has at least 1 subscription
+      $library_id = $subscriptions[0]->library_id;
 
+    }
     // now using the org_id and manager_id see if this umbrella admin is allowed to access this org.
     // get the umbrella admin's org id (post id)
     $args = array(
@@ -1615,12 +1639,12 @@ function verifyUserAccess ()
         // all good, proceed to get subscriptions and edit this org.
         $date = current_time('Y-m-d');
         $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ";
-        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".LE_ID." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
+        $sql .= "org_id = ".$org_id." AND manager_id = ".$manager_id." AND library_id = ".$library_id." AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'";
         $results = $wpdb->get_row ($sql);
         if ($results)
         {
           // set the subscription ID and org ID
-          $_REQUEST['subscription_id'] = $results->id;
+          $_REQUEST['subscription_id'] = $results->ID;
           $_REQUEST['org_id'] = $org_id;
 
           return array ( 'status' => 1 );
@@ -2980,11 +3004,25 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
 
   if($course_id > 0)
   {
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE ID = $course_id", OBJECT_K); 
+    $sql = "SELECT * FROM " . TABLE_COURSES . " WHERE ID = $course_id "; 
+    if($org_id > -1)
+    {
+        $sql.= "AND org_id = $org_id ";
+    }
+    if($subscription_id > 0)
+    {
+        $sql.= "AND subscription_id = $subscription_id ";
+    }
+    $courses = $wpdb->get_results($sql, OBJECT_K); 
   }
   else if($org_id > -1) // org_id == 0 belongs to EOT
   {
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id", OBJECT_K); 
+    $sql = "SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id ";
+    if($subscription_id > 0)
+    {
+        $sql.= "AND subscription_id = $subscription_id ";
+    }
+    $courses = $wpdb->get_results($sql, OBJECT_K); 
   }
   else if($subscription_id > 0)
   {
@@ -3271,6 +3309,7 @@ function getResourcesInCourse($course_id = 0, $type = '')
     {
       $sql .= " AND r.type = '$type'";
     }
+
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
 }
@@ -5748,15 +5787,19 @@ function getCourseForm_callback ( )
 
         else if($form_name == "create_uber_camp_director")
         {
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+            $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
             $data = compact("org_id");
+            global $wpdb;
+            $subscriptions = $wpdb->get_results("SELECT s.*,l.name AS library FROM ".TABLE_SUBSCRIPTIONS . " s LEFT JOIN "
+                                . TABLE_LIBRARY. " l ON s.library_id = l.ID WHERE status = 'active' AND org_id = $org_id", ARRAY_A);
             ob_start();
         ?>
             <div class="title">
                 <div class="title_h2"><?= __("Add a Camp Director", "EOT_LMS") ?></div>
             </div>
             <div class="middle">
-                <form id= "edit_staff_group" frm_name="create_uber_camp_director" frm_action="createUberCampDirector" rel="submit_form" hasError=0> 
+                <form id= "edit_staff_group" frm_name="create_uber_camp_director" frm_action="create_uber_camp_director" rel="submit_form" hasError=0> 
                     <table style="border-spacing: 10px; border-collapse: separate;">   
                         <tr> 
                           <td class="label"> 
@@ -5778,7 +5821,23 @@ function getCourseForm_callback ( )
                           <td class="value"> 
                             <input  type="text" name="last_name" id="field_last_name" size="20" value=""/>
                           </td>
-                        </tr>  
+                        </tr>
+                        
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_subscription_id"><?= __("Subscription:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+<?php                        foreach($subscriptions as $subscription) 
+                              {
+                                 if(strtotime($subscription['end_date'])<=strtotime(SUBSCRIPTION_END))
+                                 {
+                                 echo '<input type="radio" name="subscription_id" value="'.$subscription['ID'].'"> '.$subscription['library'].': '.$subscription['end_date'].'<br>';
+                                 }
+                              }
+?>
+
+                          </td>
+                        </tr>
                         <tr> 
                           <td class="label"> 
                             <label for="field_password"><?= __("Email:", "EOT_LMS") ?></label> 
@@ -5797,8 +5856,9 @@ function getCourseForm_callback ( )
                             <td class="label"> 
                             </td> 
                             <td class="value"> 
-                                <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
-                                 <?php wp_nonce_field( 'create-uber_camp_director_' . $org_id ); ?>
+                                <input type="hidden" name="org_id" value="<?= $org_id ?>" />
+                                <input type="hidden" name="type" value="<?= $type ?>" />
+                                 <?php wp_nonce_field( 'create-uber_camp_director_' . $org_id ,'my_nonce_field'); ?>
                             </td> 
                         </tr> 
                     </table> 
@@ -5892,7 +5952,168 @@ function getCourseForm_callback ( )
             <?php
             $html = ob_get_clean();
         }
-
+        else if($form_name == "upgrade_umbrella_manager")
+        {
+            $user_id  = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+            $org_id = get_org_from_user($user_id);
+            $camp_name = get_the_title($org_id);
+            $user = get_user_by('ID', $user_id);
+            $director = $user->first_name." ".$user->last_name;
+            $email = $user->user_email;
+            global $wpdb;
+            // display the uber managers
+            $args = array(
+              'role__in' => array(
+                'uber_manager'
+              ),
+            );
+            $uber_admins = new WP_User_Query($args);
+           
+                
+            ob_start();
+        ?>
+            <div class="title" style="width:640px;">
+                <div class="title_h2"><?= __("Upgrade to Umbrella Manager", "EOT_LMS") ?></div>
+            </div>
+            <div class="middle">
+                <form id= "upgrade_umbrella_manager" frm_name="upgrade_umbrella_manager" frm_action="upgrade_umbrella_manager" rel="submit_form" hasError=0> 
+                    <table padding=0 class="form"> 
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_name"><?= __("Camp Name:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <?= $camp_name ?>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_name"><?= __("Director:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <?= $director ?>
+                          </td>
+                        </tr> 
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_name"><?= __("Email:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <?= $email ?>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_name"><?= __("Uber Group:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <?php  if (!empty($uber_admins->results)){
+                                echo "<ul>";
+                                foreach($uber_admins->results as $uber_admin)
+                                {
+                                  $uber_id = $uber_admin->ID; // Wordpress user ID
+                                  $name = get_user_meta ($uber_id, 'first_name', true) . " " . get_user_meta ($uber_id, 'last_name', true); // User's First and Last name in wordpress
+                                  $uber_email = $uber_admin->user_email; // User's Wordpress Email
+                                  $umbrella_group_id = get_user_meta( $uber_id, 'org_id', true); // Get the user's org ID
+                                  $umbrella_camp = get_the_title($umbrella_group_id);
+                                  echo "<li><input type ='radio' name='umbrella_group_id' value='$umbrella_group_id'/>$umbrella_camp</li>";
+                                }
+                                echo "</ul>";
+                            }
+                            
+?>
+             
+                          </td>
+                        </tr>
+                        <tr> 
+                            <td class="label"> 
+                            </td> 
+                            <td class="value">
+                                <input type="hidden" name="user_id" value="<?= $user_id ?>" />
+                                <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
+                                <?php wp_nonce_field( 'upgrade_umbrella_manager' . $org_id ); ?>
+                            </td> 
+                        </tr> 
+                    </table> 
+                </form>
+            </div>      
+            <div class="popup_footer">
+                <div class="buttons">
+                  <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
+                      <?= __("Cancel", "EOT_LMS") ?>
+                  </a>
+                  <a active = '0' acton = "upgrade_umbrella_manager" rel = "submit_button" class="positive">
+                    <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
+                    <?= __("Upgrade", "EOT_LMS") ?>
+                  </a>
+                </div>
+            </div>
+            <?php
+            $html = ob_get_clean();
+        }
+        else if($form_name == "upgrade_uber_manager")
+        {
+            $user_id  = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+            $org_id = get_org_from_user($user_id);
+            $camp_name = get_the_title($org_id);
+            $user = get_user_by('ID', $user_id);
+            $director = $user->first_name." ".$user->last_name;
+            $email = $user->user_email;
+            global $wpdb;
+           
+            ob_start();
+        ?>
+            <div class="title" style="width:320px;">
+                <div class="title_h2"><?= __("Upgrade to Uber Manager", "EOT_LMS") ?></div>
+            </div>
+            <div class="middle">
+                <form id= "upgrade_uber_manager" frm_name="upgrade_uber_manager" frm_action="upgrade_uber_manager" rel="submit_form" hasError=0> 
+                    <table padding=0 class="form"> 
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_name"><?= __("Camp Name:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <?= $camp_name ?>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_name"><?= __("Director:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <?= $director ?>
+                          </td>
+                        </tr> 
+                        <tr> 
+                          <td class="label"> 
+                            <label for="field_name"><?= __("Email:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <?= $email ?>
+                          </td>
+                        </tr>
+                        <tr> 
+                            <td class="label"> 
+                            </td> 
+                            <td class="value">
+                                <input type="hidden" name="user_id" value="<?= $user_id ?>" />
+                                <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
+                                <?php wp_nonce_field( 'upgrade_uber_manager' . $org_id ); ?>
+                            </td> 
+                        </tr> 
+                    </table> 
+                </form>
+            </div>      
+            <div class="popup_footer">
+                <div class="buttons">
+                  <a onclick="jQuery(document).trigger('close.facebox');" class="negative">
+                    <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/cross.png" alt=""/>
+                      <?= __("Cancel", "EOT_LMS") ?>
+                  </a>
+                  <a active = '0' acton = "upgrade_uber_manager" rel = "submit_button" class="positive">
+                    <img src="<?php bloginfo ('stylesheet_directory'); ?>/images/tick.png" alt=""/> 
+                    <?= __("Upgrade", "EOT_LMS") ?>
+                  </a>
+                </div>
+            </div>
+            <?php
+            $html = ob_get_clean();
+        }
         else if($form_name == "delete_course")
         {
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
@@ -5945,88 +6166,76 @@ function getCourseForm_callback ( )
         {
           $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The course ID
           $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); // The organization ID
-          $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
           $umbrellaCamps = (current_user_can('is_umbrella_manager')) ? getUmbrellaCamps($org_id, 'regional_umbrella_group_id') : getUmbrellaCamps($org_id); // Lists of umbrella camps
           $camps = array(); // Lists of camps
-          $data = compact("org_id");
           $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING); // the name of the course
-          
           if ($umbrellaCamps->have_posts())
           { 
+            $course_library_id = 0;
+            $course_subscription = getSubscriptionByCourseId($course_id); // Course subscription
+            // Check if the course subscription exist.
+            if( $course_subscription )
+            {
+              $course_library_id = $course_subscription->library_id; // Course library ID
+            }
             // Get all umbrella camps, and add them into camps array.
             while ( $umbrellaCamps->have_posts() ) 
             {
               $umbrellaCamps->the_post(); 
-              $camp['id'] = get_the_ID(); // The org ID
+              $camp['id'] = get_the_ID(); // The ORG ID
               $camp['name'] = get_the_title(); // The camp name
+              $subscriptions = getSubscriptions(0, 0, 1, $camp['id']); // Subscription
+              
+              $camp_course_names = array();
+              foreach($subscriptions as $subscription)
+              {
+                  if($subscription->library_id == $course_library_id)
+                  {
+                      $camp_subscription = $subscription;
+                      break;
+                  }
+              }
+              if(isset($camp_subscription))
+              {
+                   $camp_courses = getCourses(0, -1, $camp_subscription->ID);
+                   $camp_course_names = array_column($camp_courses, 'course_name');
+              }
+              
+              $camp_library_ids = array_column($subscriptions, 'library_id');
+              $camp['allow_copy'] = (in_array($course_library_id, $camp_library_ids) && !in_array($course_name, $camp_course_names)) ? true : false;// boolean indicator if the camp has the right subscription to copy the course.
+              $camp['needs_upgrade'] = (in_array($course_library_id, $camp_library_ids)) ? true : false;
+              $camp['check'] = (!in_array($course_name, $camp_course_names)) ? true : false;// boolean indicator if the camp already has the course.
               array_push($camps, $camp);
             }
           }
-
-
         ?>
-
-             <div style="position:absolute;right:-290px;top:0px;">
-              <div class="popup"> 
-                <table> 
-                  <tbody>
-                    <tr> 
-                      <td class="tl"/><td class="b"/><td class="tr"/> 
-                    </tr>
-                    <tr> 
-                      <td class="b"/> 
-                      <td class="body"> 
-                        <div class="content">  
-                          <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
-                            <tr  class="head">
-                              <td style ="padding:5px;" colspan="2">
-                                <?= __("Publish Option", "EOT_LMS") ?>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style ="padding:2px 5px 2px 5px;"><?= __("Do you want to Publish this course after the copy?", "EOT_LMS") ?><br><?= __("(Published courses can not be modified by the individual camp. Draft courses will need to be published by each individual camp.)", "EOT_LMS") ?></td>
-                              <td style="padding:2px 5px 2px 5px;font-size:16px;font-weight:bold;text-align:center;"  id="timeToComplete" >
-                                <input type="checkbox" name="chkbox_is_publish_course_after_copy" id="chkbox_is_publish_course_after_copy" value='' /> 
-                              </td>
-                            </tr>
-                          </table>         
-                        </div> 
-                      </td> 
-                      <td class="b"/> 
-                    </tr>
-                    <tr> 
-                      <td class="bl"/>
-                      <td class="b"/>
-                      <td class="br"/>
-                    </tr>
-                  </tbody> 
-                </table> 
-              </div> 
-            </div>
             <div class="title">
               <div class="title_h2"><?= $course_name; ?></div>
             </div>
             <div class="middle" style ="padding:0px;clear:both;">  
               <div id="video_listing" display="video_list" group_id="null" class="holder osX">
                 <div id="video_listing_pane" class="scroll-pane" style="padding:0px 0px 0px 10px;width: 600px">
-                  <form name="add_video_group" id="add_video_group">
-                    <ul class="tree organizeassignment">
+
+                  <form name = "add_video_group" id = "add_video_group" course_name="<?= $course_name; ?>"
+                   <ul class="tree organizeassignment">
                       <h3 class="library_topic"><?= __("Select which camps to copy this course into:", "EOT_LMS") ?></h3>
               <?php
                       // Display all uber camps and a clone checkbox beside it for cloning functionality.
                       foreach($camps as $camp)
                       {
+                        $camp_name = $camp['name']; // The camp name.
               ?>
                         <li class="video_item" camp_id="<?= $camp['id']?>">
-                          <input collection="add_remove_from_group" org_id="<?= $org_id ?>" portal_subdomain="<?= DEFAULT_SUBDOMAIN ?>" id="chk_video_<?= $camp['id']?>" name="chk_video_<?= $camp['id']?>" type="checkbox" value="1" camp_id="<?= $camp['id']?>" course_id="<?= $course_id ?>" "/> 
+                          <input collection="add_remove_from_group" org_id="<?= $org_id ?>" portal_subdomain="<?= DEFAULT_SUBDOMAIN ?>" id="chk_video_<?= $camp['id']?>" name="chk_video_<?= $camp['id']?>" type="checkbox" value="1" camp_id="<?= $camp['id']?>" course_id="<?= $course_id ?>" " <?= ($camp['allow_copy']) ? "" : "disabled"  ?>/> 
                           <label for="<?= $camp['id'] ?>">
                               <span name="video_title">
-                                <b>Camp</b> - <span class="vtitle"><?= $camp['name'] ?></span>
+                                <b>Camp</b> - <span class="vtitle"><?= $camp_name ?></span>
                               </span>
                           </label>
                           <img style="margin-right: 0; display:none" class="loader" id="img_loading" src="<?= get_template_directory_uri() . "/images/loading.gif"?>">
-                          <img style="margin-right: 0; display:none" class="loader" id="img_check" src="<?= get_template_directory_uri() . "/images/checkmark.gif"?>">
+                          <img style="margin-right: 0; <?=(!$camp['check'])? '':'display:none' ?>" class="loader" id="img_check" src="<?= get_template_directory_uri() . "/images/checkmark.gif"?>">
                           <img style="margin-right: 0; display:none" class="loader" id="img_delete" src="<?= get_template_directory_uri() . "/images/delete.gif"?>">
+                          <?= ($camp['needs_upgrade']) ? "" : "($camp_name requires to upgrade its subscription to before we can copy the $course_name course.)" ?>
                           <span id="clone_error_message" style="margin-right: 0; display:none"></span>
                         </li> 
               <?php
@@ -7050,7 +7259,7 @@ function getCourseForm_callback ( )
 
             // Check if the user has enough credits to add more staff members
             //if(org_has_maxed_staff($org_id, $subscription_id) )
-            if(2>3)
+            if(org_has_maxed_staff($org_id, $subscription_id) )
             {
                     ob_start();
         ?>
@@ -7272,6 +7481,85 @@ jane@email.com
                 </a>
                 <a active = '0' acton = "delete_staff_account" rel = "submit_button" >
                   <div style="height:15px;padding-top:2px;"> Delete</div>
+                </a>
+              </div>
+            </div>
+        <?php
+        $html = ob_get_clean();
+        }
+        else if($form_name == "view_uber_stats")
+        {        
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+            $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+            $type = filter_var($_REQUEST['type'],FILTER_SANITIZE_STRING);
+            $the_camp = get_the_title($org_id);
+            if($type == "Uber Manager")
+            {
+                $umbrellaCamps = getUmbrellaCamps($org_id); // Lists of umbrella camps
+            }
+            else
+            {
+                $umbrellaCamps = getUmbrellaCamps($org_id, 'regional_umbrella_group_id');
+            }
+            ob_start();
+        ?>
+            <div class="title" style="width:640px">
+              <div class="title_h2">Uber Admin Stats: <?= $the_camp ?></div>
+            </div>
+            <div class="middle bs" style="font-size:12px !important">
+              <form id= "uber_admin_stats" frm_name="uber_admin_stats" frm_action="uber_admin_stats" rel="submit_form" hasError=0> 
+                <table padding=0 class="table table-bordered table-striped">
+                    <thead><th>Camp Name</th><th>Director</th><th>Email</th></thead>
+                <?php
+                
+    if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts() )
+    { 
+
+    // Get all umbrella camps, and add them into camps array.
+    while ( $umbrellaCamps->have_posts() ) 
+    {
+      $umbrellaCamps->the_post(); 
+      $org_id = get_the_ID(); // The org ID
+      $camp_name = get_the_title(); // The camp name
+      $args = array (
+        'role__in' => array('manager'),
+        'meta_key' => 'org_id',
+        'meta_value' => $org_id,
+        'number' => 1
+      );
+      $director = get_users($args); // get the user name associated with this org
+      $director_name = 'John Doe';
+      $email = 'john@example.com';
+      if ($director)
+      {
+        $director_name = $director[0]->first_name . " " . $director[0]->last_name;
+        $user_id = $director[0]->ID;
+        $email = $director[0]->user_email;
+      }
+                ?>
+                  <tr> 
+                    <td> 
+                      <?= $camp_name ?>
+                    </td>
+                    <td> 
+                      <?= $director_name ?>
+                    </td>
+                    <td> 
+                      <?= $email ?>
+                    </td>
+                  </tr> 
+                  <?php 
+        }
+
+   }     
+                  ?>
+                </table> 
+              </form>
+            </div>      
+            <div class="popup_footer">
+              <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');" >
+                  <div style="height:15px;padding-top:2px;"> Cancel</div>
                 </a>
               </div>
             </div>
@@ -8221,7 +8509,7 @@ function updateVideoProgress_callback()
     {
       $result['display_errors'] = true;
       $result['success'] = false;
-      $result['errors'] = 'updateVideoProgress_callback error: Failed to update the database. Please contact the administrator.';
+      $result['errors'] = __('updateVideoProgress_callback error: Failed to update the database. Please contact the administrator.', "EOT_LMS");
     }
   }
   else
@@ -8229,7 +8517,7 @@ function updateVideoProgress_callback()
     //return an error message
     $result['display_errors'] = true;
     $result['success'] = false;
-    $result['errors'] = "updateVideoProgress_callback error: You do not have the privilege to modify other user's video progress.";
+    $result['errors'] = __("updateVideoProgress_callback error: You do not have the privilege to modify other user's video progress.", "EOT_LMS");
   }
   echo json_encode( $result );
   wp_die();
@@ -8616,6 +8904,7 @@ function verifyCertificate($student_user_id = 0, $director_org_id = 0)
   $results = $wpdb->get_row ($sql);
   return $results;
 }
+
 
 add_action('wp_ajax_acceptTerms', 'acceptTerms_callback');
 // Updates the user field "accepted_terms" and gives a redirect location to view tutorial
@@ -9202,11 +9491,79 @@ function deleteStaffOrgId_callback ()
         $result['success'] = false;
         $result['errors'] = 'deleteStaffOrgId_callback ERROR: Missing some parameters.';
     }
+    return json_encode($result);
+    exit();
+}
+/********************************************************************************************************
+ * Clone a course to umbrella camps.
+ *******************************************************************************************************/
+add_action('wp_ajax_cloneCourse', 'cloneCourse_callback'); 
+function cloneCourse_callback() 
+{
+
+    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['camp_id'] ) && isset ( $_REQUEST['course_name'] ) )
+    {
+        $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID to clone
+        $org_id = filter_var($_REQUEST['camp_id'],FILTER_SANITIZE_NUMBER_INT); // The WP camp (POST) id
+        $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING); // The course name.
+        
+        $org_subscriptions = getSubscriptions(0, 0, 0, $org_id); // Org subscriptions
+        
+        $course_library_id = 0;
+        $course_subscription = getSubscriptionByCourseId($course_id); // Course subscription
+        // Check if the course subscription exist.
+        if( $course_subscription )
+        {
+          $course_library_id = $course_subscription->library_id; // Course library ID
+        }
+        // Find where to locate the clone course base on the subscription library ID.
+        if(isset($org_subscriptions) && !empty($org_subscriptions))
+        {
+          foreach($org_subscriptions as $org_subscription)
+          {
+            if($org_subscription->library_id == $course_library_id)
+            {
+              $subscription_id = $org_subscription->ID;
+              break;
+            }
+          }
+        }
+        $data = compact("subscription_id", "org_id", "course_name");
+        $response = cloneCourse($course_id, $data);
+
+        // Check for error message.
+        if (isset($response['message'])) 
+        {
+          $result['success'] = false;
+          $result['data'] = 'failed';
+          $result['message'] = "LUERROR in cloneCourse_callback: " . $response['message'] . " " . $course_id . " " . $org_id;
+        }
+        else if (isset($response['status']) && $response['status']) 
+        {
+          $result['success'] = true;
+          $result['data'] = 'success';
+        }
+        else 
+        {
+          $result['success'] = false;
+          $result['data'] = 'failed';
+          $result['message'] = "LUERROR in cloneCourse_callback: There was a problem. Please try again later.\n";
+        }
+
+    }
+    else // Invalid request.
+    {
+        $result['success'] = false;
+        $result['data'] = 'failed';
+        $result['message'] = 'cloneCourse_callback: missing parameters.';
+    }
+
+
     echo json_encode($result);
     wp_die();
 }
 
-/**
+/*
  * Verify quiz belongs to current user, or current user is sales manager
  * @global type $current_user
  * @param type $quiz_id
@@ -9224,6 +9581,10 @@ function verifyQuiz($quiz_id = 0)
     }
     global $current_user;
     if(current_user_can("is_sales_manager"))
+    {
+        return true;
+    }
+    if (current_user_can("is_uber_manager") || current_user_can("is_umbrella_manager"))
     {
         return true;
     }
@@ -9598,3 +9959,268 @@ function removeAllCourseModuleResources_callback()
   wp_die();
 }
 
+/**
+ * Deals with Cloning/Copying each course from one org to another org or within the current
+ * @param array $course_id - The course ID to clone
+ * @param array $data - an array of field value to create the clone course.
+ **/
+function cloneCourse($course_id = 0, $data = array()) 
+{
+  extract($data);
+  /**  REQUIRED VARIABLES IN $data
+   * $subscription_id - The subscription ID
+   * $org_id - the ORG ID
+   * $course_name - The new course name
+   */
+  if( !$course_id || !$org_id || !$subscription_id || !$course_name )
+  {
+    $response = array('status' => 0, 'message' => "Invalid course_id, org_id, or subscription_id");
+  }
+  global $current_user;
+  $user_id = $current_user->ID; // The user ID
+  $data = compact( "org_id", "user_id", "subscription_id");
+  $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+  if (isset($response['status']) && !$response['status']) 
+  {
+      $response = array('status' => 0, 'message' => "ERROR in cloneCourse: Couldnt Create Course: $course_name " . $response['message']);
+      error_log("ERROR in cloneCourse: Couldnt Create Course: $course_name " . $response['message']);
+  }
+  return $response;
+}
+
+/**
+ * Get the library ID of the specificed course ID
+ * @param array $course_id - The course ID
+ * returns the library ID or NULL when nothing found.
+ **/
+function getSubscriptionByCourseId($course_id = 0) 
+{
+  if( $course_id <= 0)
+  {
+    return false;
+  }
+  global $wpdb;
+  $sql = "SELECT subscription.*
+          FROM " . TABLE_COURSES . " as course 
+          INNER JOIN " . TABLE_SUBSCRIPTIONS . " subscription 
+          ON course.subscription_id = subscription.ID 
+          AND course.ID = $course_id";
+  $results = $wpdb->get_row ($sql);
+  return $results;
+}
+
+add_action('wp_ajax_create_uber_camp_director', 'create_uber_camp_director_callback');
+function create_uber_camp_director_callback()
+{
+    $camp_name = filter_var($_REQUEST['camp_name'], FILTER_SANITIZE_STRING);
+    $first_name = filter_var($_REQUEST['first_name'], FILTER_SANITIZE_STRING);
+    $last_name = filter_var($_REQUEST['last_name'], FILTER_SANITIZE_STRING);
+    $email = filter_var($_REQUEST['email'], FILTER_SANITIZE_STRING);
+    $password = filter_var($_REQUEST['password'], FILTER_SANITIZE_STRING);
+    $ugroup_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+    $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
+    $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+    $role = 'manager';
+    
+    if ( !check_admin_referer('create-uber_camp_director_'.$ugroup_id,'my_nonce_field') ) 
+    {
+
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = __("Your nonce did not verify.", "EOT_LMS");
+        echo json_encode($result);
+        wp_die();
+
+    }
+    if(trim($camp_name) == "" || trim($first_name) == "" || trim($last_name) == "" || trim($email) == "" || trim($password) == "")
+    {
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = __("All fields are mandatory.", "EOT_LMS");
+        echo json_encode($result);
+        wp_die();        
+    }
+    
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+    {
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = __("The email address provided is invalid.", "EOT_LMS");
+        echo json_encode($result);
+        wp_die();
+    }
+    if(email_exists($email))
+    {
+        $result['display_errors'] = true;
+        $result['success'] = false;
+        $result['errors'] = __("The email address belongs to another user.", "EOT_LMS");
+        echo json_encode($result);
+        wp_die();        
+    }  
+    else 
+    {
+       /* otherwise, go ahead and create a new director */
+                
+  		$new_user = array(
+  			'user_login' => $email,
+  			'user_pass' => $password,
+  			'display_name' => ucwords ($first_name) . " " . ucwords ($last_name),
+  			'user_email' => $email,
+  			'first_name' => $first_name,
+  			'last_name' => $last_name,
+  			'role' => $role
+  		);
+  		$user_id = wp_insert_user ($new_user);
+  		if (is_wp_error($user_id)) 
+  		{ /* if director has error, output to front-end */
+  			$result['success'] = false;
+        $result['display_errors'] = true;
+        $result['message'] = $user_id->get_error_message();
+        echo json_encode($result);
+        wp_die();
+  		} 
+  		else 
+  		{ 	/* now director has been created, go ahead and add a new organization with the post_author variable being the new director id */
+  			$new_org = array(
+  				'post_title' => $camp_name,
+  				'post_author' => $user_id,
+  				'post_type' => 'org',
+  				'post_status' => 'publish',
+  				'post_content' => ''
+  			);
+
+  			$org_id = wp_insert_post ($new_org);
+  			/* if error creating new organization, output to director on screen */
+        if (is_wp_error($org_id)) 
+        { 
+  				$result['success'] = false;
+          $result['display_errors'] = true;
+  				$result['message'] = $org_id->get_error_message();
+          echo json_encode($result);
+          wp_die();
+  			}
+        else
+        {
+          /* set the organization id to the director to link together */
+				  update_user_meta ($user_id, 'org_id', $org_id);
+          if($type == "Uber Manager")
+          {
+            if(!update_user_meta($user_id, 'umbrella_group_id', $ugroup_id))
+            {
+              add_user_meta($user_id, 'umbrella_group_id', $ugroup_id);
+            }
+
+            if(!update_post_meta($org_id, 'umbrella_group_id', $ugroup_id))
+            {
+              add_post_meta($org_id, 'umbrella_group_id', $ugroup_id);
+            }
+          }
+          else //type is Umbrella Manager
+          {
+            if(!update_user_meta($user_id, 'regional_umbrella_group_id', $ugroup_id))
+            {
+              add_user_meta($user_id, 'regional_umbrella_group_id', $ugroup_id);
+            }
+
+            if(!update_post_meta($org_id, 'regional_umbrella_group_id', $ugroup_id))
+            {
+              add_post_meta($org_id, 'regional_umbrella_group_id', $ugroup_id);
+            }
+            // get the umbrella admins post from org_id
+            $post_author_id = get_post_field( 'post_author', $ugroup_id );
+            $args = array(
+              'post_type' => 'org',
+              'author' => $post_author_id
+            );
+            $posts = get_posts($args);
+            if ($posts)
+            {
+              //get umbrella group id from uber camp
+              $umbrella_group_id = get_post_meta($posts[0]->ID, 'umbrella_group_id', true);
+              if(!update_user_meta($user_id, 'umbrella_group_id', $umbrella_group_id))
+              {
+                add_user_meta($user_id, 'umbrella_group_id', $umbrella_group_id);
+              }
+
+              if(!update_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id))
+              {
+                add_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id);
+              }
+            }
+          }           
+          
+          $subscription = getSubscriptions($subscription_id);
+          //error_log(json_encode($subscription));
+          if($subscription)
+          {
+            global $wpdb;
+            $data = array(
+                "org_id" => $org_id,
+                "manager_id" =>$user_id,
+                "library_id" =>$subscription->library_id,
+                "start_date" => $subscription->start_date,
+                "end_date" => $subscription->end_date,
+                "status" => $subscription->status
+            );
+            $new_sub = $wpdb->insert(TABLE_SUBSCRIPTIONS, $data);
+          }
+          
+          $result['success'] = true;
+          $result['display_errors'] = false;
+          $result['message'] = "Success";
+        }
+      }
+    }
+    
+    echo json_encode($result);
+    wp_die();
+}
+
+add_action('wp_ajax_upgrade_uber_manager', 'upgrade_uber_manager_callback');
+function upgrade_uber_manager_callback()
+{
+    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+    $role = "uber_manager";
+    $user = new WP_User($user_id);
+    $user->add_role($role);
+    $result['success'] = true;
+    $result['display_errors'] = false;
+    $result['message'] = "Success";
+    echo json_encode($result);
+    wp_die();
+}
+
+add_action('wp_ajax_upgrade_umbrella_manager', 'upgrade_umbrella_manager_callback');
+function upgrade_umbrella_manager_callback()
+{
+    if(empty($_REQUEST['umbrella_group_id']))
+    {
+        $result['success'] = false;
+        $result['display_errors'] = true;
+        $result['message'] = __("You must select an Uber Group", "EOT_LMS");
+        echo json_encode($result);
+        wp_die();
+    }
+        
+    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+    $umbrella_group_id =isset($_REQUEST['umbrella_group_id'])? filter_var($_REQUEST['umbrella_group_id'],FILTER_SANITIZE_NUMBER_INT):0;
+    $role = "umbrella_manager";
+    $user = new WP_User($user_id);
+    $user->add_role($role);
+    if(!update_user_meta($user_id, 'umbrella_group_id', $umbrella_group_id))
+    {
+            add_user_meta($user_id, 'umbrella_group_id', $umbrella_group_id);
+    }
+
+    if(!update_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id))
+    {
+            add_post_meta($org_id, 'umbrella_group_id', $umbrella_group_id);
+    }
+    $result['success'] = true;
+    $result['display_errors'] = false;
+    $result['message'] = "Success";
+    echo json_encode($result);
+    wp_die();
+}

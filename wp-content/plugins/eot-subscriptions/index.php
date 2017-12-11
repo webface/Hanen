@@ -296,7 +296,7 @@ function handle_steps_callback () {
 			break;
 		case 4:
 			require_once ('stripe-php-5.2.0/init.php');
-            \Stripe\Stripe::setApiKey(STRIPE_SECRET);
+                        \Stripe\Stripe::setApiKey(STRIPE_SECRET);
 			$error = '';
 			$success = '';
 			$org_id = intval ($_REQUEST['org_id']);
@@ -361,7 +361,7 @@ function handle_steps_callback () {
 
 				$org_id = intval ($_REQUEST['org_id']);
 				$user_id = $_REQUEST['user_id'];
-                $price = str_replace(",", "", $_REQUEST['total_price']);
+                                $price = str_replace(",", "", $_REQUEST['total_price']);
 				$price = floatval($price);
 				if ($processPayment) 
 				{ //process payment based on status of variable defined above
@@ -654,7 +654,7 @@ function handle_steps_callback () {
 			        array_push($recepients, $recepient);
 			        // send the e-mail
 					$response = sendMail( 'NewSubscription', $recepients, $data );
-                    echo json_encode($response);
+                                        echo json_encode($response);
 				}
 				else
 				{

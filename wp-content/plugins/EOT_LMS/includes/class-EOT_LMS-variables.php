@@ -9,6 +9,7 @@ $course_id = isset( $_REQUEST['course_id'] ) ? filter_var($_REQUEST['course_id']
 $org_id = isset( $_REQUEST['org_id'] ) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 $quiz_id = isset($_REQUEST['quiz_id']) ? filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 $enrollment_id = isset($_REQUEST['enrollment_id'])? filter_var($_REQUEST['enrollment_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+$user_id = isset( $_REQUEST['user_id'] ) ? filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT):0;
 
 
 // define default name for Leadership Essentials - ie. the name of the course in LU in case we need to reference it.
@@ -24,10 +25,10 @@ define ('DEFAULT_QUIZ_LENGTH', 7);
 define ('CRUMB_DASHBOARD', '<a href="'. get_home_url() .'/dashboard/" onclick="load(\'load_dashboard\')">My Dashboard</a>');
 
 // define breadcrumb to modules page
-define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$subscription_id.'">Manage Your Custom Modules</a>');
+define ('CRUMB_MODULES', '<a href="/dashboard?part=manage_custom_modules&subscription_id='.$subscription_id.'&user_id='.$user_id.'">Manage Your Custom Modules</a>');
 
 // define breadcrumb to administrator page
-define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$subscription_id.'" onclick="load(\'load_administration\')">Administration</a>');
+define ('CRUMB_ADMINISTRATOR', '<a href="'. get_home_url() .'/dashboard/?part=administration&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_administration\')">Administration</a>');
 
 // define breadcrumb to subscription details page
 define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?part=admin_subscription_details&subscription_id='.$subscription_id.'&library_id='.$library_id.'" onclick="load(\'load_loading\')">Subscription Details</a>');
@@ -35,12 +36,12 @@ define ('CRUMB_SUBSCRIPTION_DETAILS', '<a href="'. get_home_url() .'/dashboard/?
 if($subscription_id == 0)
 {
 	// define breadcrumb to the quiz page for admins. NOTE: different part
-	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz_eot&subscription_id='.$subscription_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
+	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz_eot&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');
 }
 else 
 {
 	// define breadcrumb to the quiz page
-	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&subscription_id='.$subscription_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');  
+	define('CRUMB_QUIZ','<span><a href="?part=manage_quiz&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_quiz\')">Manage Quizzes</a></span>');  
 }
 // define breadcrumb to view subscription page. This requires the subscription ID.
 define ('CRUMB_VIEW_SUBSCRIPTIONS', '<a href="'. get_home_url() .'/dashboard/?part=admin_view_subscriptions&library_id='.$library_id.'" onclick="load(\'load_manage_staff_accounts\')">View Subscriptions</a>');
@@ -52,13 +53,13 @@ define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=vie
 define ('CRUMB_SEPARATOR', '<span class="crumb">&gt;</span>');
 
 // define breadcrumb to the statistics page
-define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=statistics&subscription_id='.$subscription_id.'" onclick="load(\'load_statistics\')">View Statistics</a>');
+define ('CRUMB_STATISTICS', '<a href="'. get_home_url() .'/dashboard/?part=statistics&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_statistics\')">View Statistics</a>');
 
 // define breadcrumb to user lists page
 define ('CRUMB_USERSLISTS', '<a href="'. get_home_url() .'/dashboard/?part=user_list" onclick="load(\'load_manage_staff_accounts\')">Users Lists</a>');
 
 // define breadcrumb to the manage staff accounts
-define ('CRUMB_MANAGE_STAFF_ACCOUNTS', '<a href="'. get_home_url() .'/dashboard/?part=manage_staff_accounts&subscription_id='.$subscription_id.'&org_id='.$org_id.'">Manage Staff Accounts</a>');
+define ('CRUMB_MANAGE_STAFF_ACCOUNTS', '<a href="'. get_home_url() .'/dashboard/?part=manage_staff_accounts&subscription_id='.$subscription_id.'&org_id='.$org_id.'&user_id='.$user_id.'">Manage Staff Accounts</a>');
 
 // define breadcrumb to custom fields page
 define ('CRUMB_CUSTOMFIELDS', '<a href="'. get_home_url() .'/dashboard/?part=custom_fields"">Custom Fields</a>');

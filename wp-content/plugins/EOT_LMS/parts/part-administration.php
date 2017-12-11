@@ -5,10 +5,10 @@
 </div>
 <?php
   // verify this user has access to this portal/subscription/page/view
-  $true_subscription = verifyUserAccess(); 
-
+  $true_subscription = verifyUserAccess();
   // Variable declaration
   global $current_user;
+  
   $page_title = __("Administration", "EOT_LMS");
 
   // Check if the subscription ID is valid.
@@ -16,7 +16,7 @@
   { 
 
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
-    $user_id = $current_user->ID; // Wordpress user ID
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // The // Wordpress user ID
     $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
 
     if(isset($true_subscription['status']) && $true_subscription['status'])
@@ -37,36 +37,36 @@
 
         <div class="row">
           <div class="col">
-            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_courses')">
+            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_courses')">
               <i class="fa fa-graduation-cap fa-3x" aria-hidden="true"></i>
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_courses')"><?= __("Manage Courses", "EOT_LMS"); ?></a>
+            <a href="?part=manage_courses&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_courses')"><?= __("Manage Courses", "EOT_LMS"); ?></a>
             <br>
             <?= __("Select, create, and publish courses, then assign staff to a course.", "EOT_LMS"); ?>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_staff_accounts')">
+            <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_manage_staff_accounts')">
                 <i class="fa fa-users fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;
               </a>
             </div>
             <div class="col">
-              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_staff_accounts')"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></a>
+              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_manage_staff_accounts')"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></a>
               <br>
               <?= __("Enter or upload staff names, email addresses, and passwords.", "EOT_LMS"); ?>
             </div>
           </div>
           <div class="row">
             <div class="col">
-              <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>" target="_blank">
+              <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?= $user_id ?>" target="_blank">
               <i class="fa fa-file-text fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Content", "EOT_LMS"); ?></a>
+            <a href="?part=upload_file&subscription_id=<?=  $subscription_id ?>&user_id=<?= $user_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Content", "EOT_LMS"); ?></a>
             <br>
             <?= __("Upload your home-made videos, documents, links, and quizzes.", "EOT_LMS"); ?>
           </div>
@@ -74,28 +74,31 @@
 
         <div class="row">
           <div class="col">
-            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_quiz')">
+            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" onclick="load('load_quiz')">
               <i class="fa fa-question-circle fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_quiz')"><?= __("Manage Your Custom Quizzes", "EOT_LMS"); ?></a>
+            <a href="?part=manage_quiz&amp;subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" onclick="load('load_quiz')"><?= __("Manage Your Custom Quizzes", "EOT_LMS"); ?></a>
             <br>
             <?= __("Create custom quizzes for your staff.", "EOT_LMS"); ?>
           </div>
         </div>
           <div class="row">
             <div class="col">
-              <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" target="_blank">
+              <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" target="_blank">
               <i class="fa fa-list-alt fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Modules", "EOT_LMS"); ?></a>
+            <a href="?part=manage_custom_modules&subscription_id=<?=  $subscription_id ?>&user_id=<?=  $user_id ?>" onclick="load('load_manage_custom_content')"><?= __("Manage Your Custom Modules", "EOT_LMS"); ?></a>
             <br>
             <?= __("Create and manage your own modules with your videos and quizzes.", "EOT_LMS"); ?>
           </div>
         </div>
+        <?php if($current_user->ID == $user_id)//show below buttons if its not an uber or umbrella managing this page
+                {
+            ?>
         <div class="row">
           <div class="col">
             <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')">
@@ -148,6 +151,7 @@
           </div>
         </div>
       <?php
+                } //close if is an uber or umbrella editing
       }
       else
       {

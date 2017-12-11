@@ -14,7 +14,7 @@ wp_enqueue_script('vfs-fonts', get_template_directory_uri() . '/js/vfs_fonts.js'
 wp_enqueue_script('buttons-html5', get_template_directory_uri() . '/js/buttons.html5.min.js', array(), '1.2.4', true);
 wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.print.min.js', array(), '1.2.4', true);
 global $current_user;
-$user_id = $current_user->ID;
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 $page_title = "Stats";
 // verify this user has access to this portal/subscription/page/view
 $true_subscription = verifyUserAccess();
@@ -30,8 +30,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
             if(isset($_REQUEST['course_id']) && $_REQUEST['course_id'] > 0)
             {
                 $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
-                $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
-                $fullname = get_user_meta($user_id, 'first_name', true)." ".get_user_meta($user_id, 'last_name', true);
+                $suser_id = filter_var($_REQUEST['stats_user_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+                $fullname = get_user_meta($suser_id, 'first_name', true)." ".get_user_meta($suser_id, 'last_name', true);
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 ?>
                 <div class="smoothness">
@@ -40,7 +40,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 </div>
 <?php
                 $quizzes = getQuizzesInCourse($course_id);
-                $track_quizzes = getAllQuizAttempts($course_id, $user_id);//All quiz attempts for this course
+                $track_quizzes = getAllQuizAttempts($course_id, $suser_id);//All quiz attempts for this course
                 $track_passed = array();
                 $track_quiz_attempts = array();
                 foreach ($track_quizzes as $key => $record) 
@@ -81,7 +81,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                         $quizTableObj->rows[] = array(
                             ' <span>' . stripslashes($quiz['name']) . '</span>',
-                            "<a href='?part=staffquizattemptstats&course_id=$course_id&user_id=$user_id&quiz_id=".$quiz['ID']."&subscription_id=$subscription_id'>".$attempts."</a>",
+                            "<a href='?part=staffquizattemptstats&course_id=$course_id&stats_user_id=$suser_id&quiz_id=".$quiz['ID']."&subscription_id=$subscription_id&user_id=$user_id'>".$attempts."</a>",
                             $passed
                             );
                     }

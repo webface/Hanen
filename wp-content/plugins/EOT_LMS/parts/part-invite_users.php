@@ -13,7 +13,8 @@
     // verify this user has access to this portal/subscription/page/view
     $true_subscription = verifyUserAccess();
     $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
-    $user_id = $current_user->ID;
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
+    $current_user = get_user_by('ID', $user_id);
     $directors_email = $current_user->user_email; // the director's email
     $step = isset($_REQUEST['step']) ? $_REQUEST['step'] : 1; //step 4 comes before 3 so 1,2,4,3,5,6 etc
     
@@ -72,12 +73,12 @@
                             </li>
                         </ol>
                         <div class="buttons" >        
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=4&use_email=yes" class = "use_own_email" >
+                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4&use_email=yes" class = "use_own_email" >
                                 <div style="height:15px;padding-top:2px;"> 
                                     Use your own Email
                                 </div>
                             </a>
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=2&use_email=no" class = "use_invitation_email" >
+                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=2&use_email=no" class = "use_invitation_email" >
                                 <div style="height:15px;padding-top:2px;"> 
                                     Use our Invitation Sender
                                 </div>
@@ -122,7 +123,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=4" method="post" id="">
+                        <form action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4" method="post" id="">
                             <?php if (isset($_REQUEST['emails'])) { ?>
                                 <textarea name="emails" style="width: 100%; height: 300px;"><?= $_REQUEST['emails'] ?></textarea>
                             <?php } else { ?>
@@ -141,7 +142,7 @@ jane@email.com
                                     Next
                                 </div>
                             </a>            
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>" class = "" >
+                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" class = "" >
                                 <div style="height:15px;padding-top:2px;"> 
                                     Back
                                 </div>
@@ -199,7 +200,7 @@ jane@email.com
                                 </div>
                             </div>
                         </div>
-                        <form id= "use_invitation_msg"  action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=5" method="POST"> 
+                        <form id= "use_invitation_msg"  action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=5" method="POST"> 
                             <table padding="0" class="form">
                                 <tr> 
                                     <td class="value"> 
@@ -234,6 +235,7 @@ jane@email.com
                                         <input type="hidden" name="choice" id="" value="<?= $choice ?>" />
                                         <input type="hidden" name="course_id" id="" value=" <?= $course_id ?>" />
                                         <input type="hidden" name="emails" value="<?= $emails ?>" />
+                                        <input type="hidden" name="user_id" value="<?= $user_id ?>" />
                                     </td>
                                 </tr>
                             </table> 
@@ -241,7 +243,7 @@ jane@email.com
 
                         <br>
                         <div class="buttons" >        
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=5" class = "submit_invite" >
+                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=5" class = "submit_invite" >
                                 <div style="height:15px;padding-top:2px;"> 
                                     Send
                                 </div>
@@ -271,7 +273,7 @@ jane@email.com
                                 });
                                 $('.back_btn').click(function(e){
                                     e.preventDefault();
-                                    $('form').attr('action',"/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=4");
+                                    $('form').attr('action',"/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4");
                                     $('form').submit();
                                 });
                                 $('.submit_invite').click(function(e){
@@ -311,13 +313,14 @@ jane@email.com
                             </div>
                         </div>
 
-                        <form method="POST" id="choose_enrollment" action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=3"> 
+                        <form method="POST" id="choose_enrollment" action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=3"> 
                             <input type="radio" name="choice" id="" value="org">
                             <label for="">Just add these staff members to my camp</label><br>
                             <input type="radio" name="choice" id="" value="course">
                             <label for="">I would like to enroll these staff members into a specific course</label><br>
                             
-                            <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" /> 
+                            <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" />
+                            <input type="hidden" name="user_id" id="user_id" value="<?= $user_id ?>" />
                             <input type="hidden" name="emails" id="emails" value="<?= $emails; ?>" />
                             <input type="hidden" name="subscription_id" id="subscription_id" value="<?= $subscription_id ?>" />
                             <div class='courses' style="display:none">
@@ -332,7 +335,7 @@ jane@email.com
                         </form>
                         <br>
                         <div class="buttons" >        
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=3" class = "next_btn" >
+                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=3" class = "next_btn" >
                                 <div style="height:15px;padding-top:2px;"> 
                                     Next
                                 </div>
@@ -357,7 +360,7 @@ jane@email.com
                                 $(".go_back").click(function(e){
                                     console.log("go back");
                                     e.preventDefault();
-                                    $("form").attr("action","/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=2");
+                                    $("form").attr("action","/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=2");
                                    jQuery("#choose_enrollment").submit();
                                 });
                                 $('.next_btn').click(function(e){
@@ -373,7 +376,7 @@ jane@email.com
                                         }
                                     }
                                     if(use_email){
-                                        $("form").attr("action","/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&step=6");
+                                        $("form").attr("action","/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=6");
                                     }
                                         jQuery("#choose_enrollment").submit();
                                     
@@ -387,7 +390,8 @@ jane@email.com
                         // process the recipients when using the invitation sender
                         global $wpdb;
                         global $current_user;
-//                        $code = isset($_REQUEST['code']) ? filter_var($_REQUEST['code'], FILTER_SANITIZE_STRING) : '';
+                        $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
+                        $current_user = get_user_by('ID', $user_id);
                         $choice = isset($_REQUEST['choice']) ? filter_var($_REQUEST['choice'], FILTER_SANITIZE_STRING) : '';
                         $msg = isset($_REQUEST['msg']) ? stripslashes($_REQUEST['msg']) : '';
                         $emails = isset($_REQUEST['emails']) ? filter_var($_REQUEST['emails'], FILTER_SANITIZE_STRING) : '';
@@ -516,7 +520,7 @@ jane@email.com
                             }
                         }
                         
-                        $redirect_url = '/dashboard?part=invite_users&subscription_id='.$subscription_id.'&org_id='.$org_id.'&process=1&step=7&max='.count($recipients);
+                        $redirect_url = '/dashboard?part=invite_users&subscription_id='.$subscription_id.'&org_id='.$org_id.'&user_id='.$user_id.'&process=1&step=7&max='.count($recipients);
                         // if failed return false
                         if ($failed)
                         {
@@ -643,7 +647,7 @@ jane@email.com
                             });
                             function sendMail() {
                                 $.ajax({
-                                    url: "<?= $admin_ajax_url ?>?action=mass_mail_ajax&org_id=<?= $org_id ?>", 
+                                    url: "<?= $admin_ajax_url ?>?action=mass_mail_ajax&org_id=<?= $org_id ?>&user_id=<?= $user_id ?>", 
                                     success: function (result) 
                                     {
                                         result = JSON.parse(result);

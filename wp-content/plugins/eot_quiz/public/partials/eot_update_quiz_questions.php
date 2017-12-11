@@ -2,7 +2,7 @@
     $path = WP_PLUGIN_DIR . '/eot_quiz/';
     require $path . 'public/class-eot_quiz_data.php';
     global $current_user;
-    $user_id = $current_user->ID; // Wordpress user ID
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
     $org_id = get_org_from_user($user_id);
     $eot_quiz = new EotQuizData();
     $question_id = filter_var($_REQUEST['question_id'] , FILTER_SANITIZE_NUMBER_INT);
@@ -23,7 +23,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
 ?>
         <h3><?php echo $question['quiz_question'] ?></h3>
         <span class="note">
-            <a href="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id ?>&subscription_id=<?=$subscription_id ?>" onclick="load('load_quiz')"><em>Click here to return to quiz</em></a>
+            <a href="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id ?>&subscription_id=<?=$subscription_id ?>&user_id=<?=$user_id ?>" onclick="load('load_quiz')"><em>Click here to return to quiz</em></a>
         </span>
 <?php
         $answers = $eot_quiz->get_question_answers($question_id);

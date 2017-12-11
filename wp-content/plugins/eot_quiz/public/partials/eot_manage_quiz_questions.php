@@ -6,12 +6,13 @@
 $path = WP_PLUGIN_DIR . '/eot_quiz/';
 require $path . 'public/class-eot_quiz_data.php';
 global $current_user;
-$user_id = $current_user->ID; // Wordpress user ID
+$user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
 $org_id = get_org_from_user($user_id);
 $eot_quiz = new EotQuizData();
 $quiz_id = filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT);
 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
 $admin_ajax_url = admin_url('admin-ajax.php');
+
 if(!verifyQuiz($quiz_id))
 {
     die("This quiz does not belong to you");
@@ -361,7 +362,7 @@ if (isset($_POST['submit']))
             function (event, data)
             {
                 if (data.success === true) {
-                    window.location.href = "/dashboard?part=manage_quiz_questions&quiz_id=<?=$quiz_id?>&subscription_id=<?= $subscription_id ?>";
+                    window.location.href = "/dashboard?part=manage_quiz_questions&quiz_id=<?=$quiz_id?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>";
                 }
             }
     )
@@ -395,8 +396,8 @@ $quiz_id = $quiz['ID'];
             '<span>' . stripslashes($question['quiz_question']) . '</span>', // Transaction Date
             $question['quiz_question_type'],
             $question['answers'],
-            '<a href="/dashboard?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', // The name of the camp,
-            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',);
+            '<a href="/dashboard?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', // The name of the camp,
+            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id=' . $user_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',);
     }
     CreateDataTable($questionsTableObj); // Print the table in the page
     echo "<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
@@ -415,11 +416,12 @@ $quiz_id = $quiz['ID'];
 <div id="createQuestion" style="display:none">
     <h3>Create Question</h3>
     <p>Click the question name to create and edit answers before saving.</p>
-    <form id="SaveQuestion" action="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id; ?>&subscription_id=<?= $subscription_id ?>" method="POST">
+    <form id="SaveQuestion" action="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id; ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
         <?php wp_nonce_field('save_question', 'save_question'); ?>
         <div class="bs panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>
         <input type="hidden" name="quiz_id" value="<?= $quiz_id; ?>"/>
         <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>"/>
+        <input type="hidden" name="user_id" value="<?= $user_id ?>"/>
         <input type="submit" class="bs btn btn-primary pull-right" name="submit" value="Save Question">
         <span class="clearfix"></span>
     </form>
