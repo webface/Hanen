@@ -95,6 +95,7 @@ function watchVideo()
                             $usersTableObj->rows = array();
                             $usersTableObj->headers = array(
           '<div>Name</div>' => 'left',
+          '<div>Email</div>' => 'center',
           '<center><div>Views</div></center>' => 'center'
                             );
                             
@@ -105,8 +106,10 @@ function watchVideo()
                                {
                                    $custom = 1;
                                }
+                               $user_info = get_userdata($stat['user_id']);
                                $usersTableObj->rows[] = array(
                                     $stat['display_name'],
+                                    $user_info->user_email,
                                     "<a href='?part=videostatsview&course_id=$course_id&custom=$custom&video_id=".$video_id."&stats_user_id=".$stat['user_id']."&subscription_id=$subscription_id&user_id=$user_id'>1</a>"
                                     ); 
                                 

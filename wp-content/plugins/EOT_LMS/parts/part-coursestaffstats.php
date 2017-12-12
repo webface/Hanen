@@ -169,6 +169,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     $quizTableObj->rows = array();
                     $quizTableObj->headers = array(
                         'Name' => 'quiz-title',
+                        'Email' => 'center',
                         'Passed' => 'center',
                         'Failed' => 'center',
                         'Logins' => 'center',
@@ -184,6 +185,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     foreach ($enrollments as $enrollment) 
                     {
                         $name = get_user_meta($enrollment['user_id'], "first_name", true) . " " . get_user_meta($enrollment['user_id'], "last_name", true);
+                        $user_info = get_userdata($enrollment['user_id']);
                         $status = formatStatus($enrollment['status']);
                         $login_count = isset($login_users[$enrollment['user_id']]) ? $login_users[$enrollment['user_id']] : 0; // Number of times the user has log in to our system.
                         $view_count = isset($watched_users[$enrollment['user_id']]) ? $watched_users[$enrollment['user_id']] : 0; // Number of times the user has watch the module.
@@ -207,6 +209,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                         $quizTableObj->rows[] = array(
                             $name,
+                            $user_info->user_email,
                             "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $passed_count . '/' . count($quizzes_in_course) . "</a>",
                             "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $fail_count . "</a>",
                             "<a href='/dashboard?part=loginrecordstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $login_count . "</a>",
