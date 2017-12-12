@@ -2761,6 +2761,22 @@ function getEotUsers($org_id = 0, $role = 'student')
       return array('status' => 1, 'users' => $learners);
 }
 
+/**
+ * 
+ * @param type $subscription_id - the subscription ID
+ */
+function getUsersInSubscription($subscription_id = 0)
+{
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    if($subscription_id == 0)
+    {
+        return array('status'=> 0, 'message' => __("No subscription id specified", "EOT_LMS"));
+    }
+    global $wpdb;
+    $query = "SELECT * FROM ".TABLE_USERS ." "
+            . "LEFT JOIN ";
+}
+
  /**
  * Creates a course for the org
  *
