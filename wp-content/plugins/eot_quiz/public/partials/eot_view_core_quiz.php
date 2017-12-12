@@ -16,7 +16,7 @@
     <h3><?= $quiz_data['quiz']['name']; ?></h3>
     <p><?= $quiz_data['quiz']['description']; ?><p>
     <span><strong>Time Limit: </strong><?= $quiz_data['quiz']['time_limit']; ?> minutes</span><br>
-    <span><strong>Passing Score: </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
+    <span><strong>Passing Score: </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['num_questions_to_display']; ?></span><br>
     
 <?php 
     foreach ($quiz_data['questions'] as $question) 
