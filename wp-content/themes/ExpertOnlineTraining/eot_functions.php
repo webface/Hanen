@@ -1466,6 +1466,14 @@ function verifyUserAccess ()
   {
     $subscription_id = 0; // no subscription ID provided
   }
+  if(isset($_REQUEST['user_id']) && $_REQUEST['user_id'] > 0)
+  { 
+    $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+  }
+  else
+  {
+    $user_id = 0; // no subscription ID provided
+  }
   // check if were dealing with an uber admin or a director
   if (current_user_can("is_uber_manager"))
   {
@@ -1483,6 +1491,30 @@ function verifyUserAccess ()
         if ($current_user->ID == $manager_id)
         {
           return array ( 'status' => 1 );
+        }
+        else 
+        {
+            // get the uber admin's org id (post id)
+            if($user_id)
+            {
+                $args = array(
+                  'post_type' => 'org',
+                  'author' => $current_user->ID
+                );
+                $posts = get_posts($args);
+                if ($posts)
+                {
+                  $umbrella_group_id = $posts[0]->ID;
+                  if($umbrella_group_id == get_user_meta($user_id,'umbrella_group_id', true))
+                  {
+                     return array ( 'status' => 1 ); 
+                  }
+                  else
+                  {
+                      return array( 'status' => 0, 'message' => __("you dont have permission to manage this user's subscription", "EOT_LMS") );
+                  }
+                }
+            }
         }
 
       }
@@ -1584,7 +1616,30 @@ function verifyUserAccess ()
         {
           return array ( 'status' => 1 );
         }
-
+        else
+        {
+            // get the uber admin's org id (post id)
+            if($user_id)
+            {
+                $args = array(
+                  'post_type' => 'org',
+                  'author' => $current_user->ID
+                );
+                $posts = get_posts($args);
+                if ($posts)
+                {
+                  $umbrella_group_id = get_post_meta($posts[0]->ID,'umbrella_group_id', true);
+                  if($umbrella_group_id ==  get_user_meta($user_id,'umbrella_group_id', true))
+                  {
+                     return array ( 'status' => 1 ); 
+                  }
+                  else
+                  {
+                      return array( 'status' => 0, 'message' => __("you dont have permission to manage this user's subscription", "EOT_LMS") );
+                  }
+                }
+            }
+        }
       }
       else
       {
