@@ -2629,7 +2629,8 @@ function org_has_maxed_staff($org_id = 0, $subscription_id = 0)
       }
   }
   
-  $response = getEotUsers($org_id); // gets the users for the org
+  //$response = getEotUsers($org_id); // gets the users for the org
+  $response = getUsersInSubscription($subscription_id);
   if ($response['status'] == 1)
   {
     $users = $response['users'];
@@ -2773,8 +2774,23 @@ function getUsersInSubscription($subscription_id = 0)
         return array('status'=> 0, 'message' => __("No subscription id specified", "EOT_LMS"));
     }
     global $wpdb;
-    $query = "SELECT * FROM ".TABLE_USERS ." "
-            . "LEFT JOIN ";
+    $query = "SELECT u.* FROM ". TABLE_USERS ." u "
+            . "LEFT JOIN ". TABLE_USERS_IN_SUBSCRIPTION." uis "
+            . "ON uis.user_id = u.ID "
+            . "WHERE uis.subscription_id = $subscription_id";
+    $users = $wpdb->get_results($query,ARRAY_A);
+    $learners = array();
+    foreach($users as $user_info)
+    {
+        $user = array();
+        $user['ID'] = $user_info['ID'];
+        $user['email'] = $user_info['user_email'];
+        $user['first_name'] = get_user_meta ($user_info['ID'], "first_name", true);
+        $user['last_name'] = get_user_meta ( $user_info['ID'], "last_name", true);
+        $user['user_type'] = 'learner';  // @TODO remove if not used(used in manage_staff_accounts line 90)
+        array_push($learners, $user);
+    }
+      return array('status' => 1, 'users' => $learners);
 }
 
  /**
@@ -8781,7 +8797,8 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
     $quizzes_in_course = $wpdb->get_results("SELECT DISTINCT cmr.resource_id,c.* FROM ".TABLE_COURSE_MODULE_RESOURCES." as cmr LEFT JOIN ". TABLE_COURSES . " as c ON c.ID = cmr.course_id WHERE c.org_id = $org_id AND c.subscription_id = $subscription_id AND cmr.type = 'exam'",ARRAY_A);
     $quizzes_ids = array_column($quizzes_in_course, 'resource_id');
     $quiz_ids_string = implode(',',$quizzes_ids);
-    $users_in_org = getEotUsers($org_id);
+    //$users_in_org = getEotUsers($org_id);
+    $users_in_org = getUsersInSubscription($subscription_id);
     $users_in_org = isset($users_in_org['users']) ? $users_in_org['users'] : array();
     if(count($users_in_org) == 0)
     {

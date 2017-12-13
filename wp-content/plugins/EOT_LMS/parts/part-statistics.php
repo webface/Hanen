@@ -8,7 +8,8 @@
 	$org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID	
 	$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
 	$courses = getCoursesById($org_id, $subscription_id);// All published courses in the portal.
-    $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
+    //$staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
+	$staff_accounts = getUsersInSubscription($subscription_id);
 	$num_staff_completed_assignment = 0; // Number of staff who have completed all their assignment
 	$num_staff_signed_in = calculate_logged_in($org_id); // Number of staff who signed in at least once.
 	$learners = '';

@@ -15,8 +15,8 @@
 
   $user_id = $current_user->ID;                  // Wordpress user ID
   $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
-  $user_data = getEotUsers($org_id);
-  $users = isset($user_data['users']) ? $user_data['users'] : array();
+  //$user_data = getEotUsers($org_id);
+  
   $admin_ajax_url = admin_url('admin-ajax.php');
 
   // Check if the subscription ID is valid.
@@ -24,6 +24,8 @@
   {
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
     $subscription = getSubscriptions($subscription_id,0,1); // get the current subscription
+    $user_data = getUsersInSubscription($subscription_id);
+    $users = isset($user_data['users']) ? $user_data['users'] : array();
     $library = getLibrary($subscription->library_id); // The library information base on the user current subscription
     $library_name = $library->name;
     if(isset($true_subscription['status']) && $true_subscription['status'])
