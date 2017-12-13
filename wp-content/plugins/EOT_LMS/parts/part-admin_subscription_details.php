@@ -37,8 +37,8 @@
 		$rep_name = get_user_meta ( $rep_id, 'first_name', true );// Name of te representative
 	  	$url = get_post_meta ($org_id, 'org_url', true); // Organization URL
   		$courses = getCourses($org_id); // All the courses in the org.
-
-	  	$users = getEotUsers($org_id, 'student'); // gets the users for the org
+		//$users = getEotUsers($org_id, 'student'); // gets the users for the org
+	  	$users = getUsersInSubscription($subscription_id);
 		if (isset($users['status']) && $users['status'])
 		{
 			$learners = $users['users'];

@@ -156,7 +156,8 @@
                                         $current_user = get_user_by('ID', $user_id);
 					$directorname =	$current_user->display_name; // the directors name
 					$campname =	get_the_title($org_id); // the camp name
-					$response = getEotUsers($org_id); // All users in this org
+					//$response = getEotUsers($org_id); // All users in this org
+					$response = getUsersInSubscription($subscription_id);
 
 					if (isset($response['status']) && $response['status'] == 1)
 					{

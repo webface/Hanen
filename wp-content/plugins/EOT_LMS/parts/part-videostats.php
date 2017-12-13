@@ -48,7 +48,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $video = getVideoById($video_id, true); 
                 $video_stats = getVideoStats($video_id, $org_id, true);
                 }
-                $users = getEotUsers($org_id);
+                //$users = getEotUsers($org_id);
+                $users = getUsersInSubscription($subscription_id);
                 $users = $users['users'];
                 $user_ids = array_column($users, 'ID');
                 $user_ids_string = implode(",", $user_ids);

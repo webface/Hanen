@@ -15,8 +15,8 @@
 
   $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // The // Wordpress user ID                  // Wordpress user ID
   $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
-  $user_data = getEotUsers($org_id);
-  $users = isset($user_data['users']) ? $user_data['users'] : array();
+  //$user_data = getEotUsers($org_id);
+  
   $admin_ajax_url = admin_url('admin-ajax.php');
 
   // Check if the subscription ID is valid.
@@ -24,6 +24,8 @@
   {
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
     $subscription = getSubscriptions($subscription_id,0,1); // get the current subscription
+    $user_data = getUsersInSubscription($subscription_id);
+    $users = isset($user_data['users']) ? $user_data['users'] : array();
     $library = getLibrary($subscription->library_id); // The library information base on the user current subscription
     $library_name = $library->name;
     if(isset($true_subscription['status']) && $true_subscription['status'])
@@ -175,11 +177,11 @@ static $i = 0;
   <a class="btn" style="" href="<?= get_home_url() ?>/dashboard?part=invite_users&subscription_id=<?= $subscription_id ?>&org_id=<?= $org_id ?>&user_id=<?= $user_id ?>">
     <?= __("Invite Users To Register", "EOT_LMS"); ?>
   </a>
-  <!-- 
+   
   <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=add_previous_staff_to_subscription&amp;year=<?= SUBSCRIPTION_YEAR ?>&amp;org_id=<?= $org_id ?>" rel="facebox">
     Manage Previous
   </a> 
-  -->  
+    
 </div>
 </div>
 
@@ -196,6 +198,7 @@ static $i = 0;
   $(function()
   {
       $('a[class="btn"][name="create_staff_account"]').facebox(); // Bind facebox to create_staff_account button.
+      $('a[class="btn"][rel="facebox"]').facebox();
       $('#debugger').click(
       function()
       {

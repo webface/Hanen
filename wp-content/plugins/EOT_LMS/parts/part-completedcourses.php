@@ -14,7 +14,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 		 	$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // Subscription ID
 		 	$courses = getCourses(0, $org_id, $subscription_id); // All the courses in the organization.
 			$num_staff_completed_courses = 0; // Number of staff who have completed all their courses
-			$response = getEotUsers($org_id); // gets the users for the org
+			//$response = getEotUsers($org_id); // gets the users for the org
+			$response = getUsersInSubscription($subscription_id);
 			if ($response['status'] == 1)
 			{
 				$staff_accounts = $response['users'];

@@ -113,7 +113,7 @@ define ('NUM_VIDEOS_LE_SP_PRP', 9); // number of videos they get access to for l
 define ('AVG_VIDEO_LENGTH', 10); // the number of minutes it takes to watch a video
 define ('AVG_EXAM_LENGTH', 10);  // the number of minutes it takes to complete an exam
 
-// define table names
+// define table na(mes
 define ('TABLE_SUBSCRIPTIONS', $wpdb->prefix."subscriptions");
 define ('TABLE_LIBRARY', $wpdb->prefix."library");
 define ('TABLE_LIBRARY_MODULES', $wpdb->prefix."library_modules");
@@ -152,6 +152,7 @@ define ('TABLE_HELP_TOPICS', $wpdb->prefix.'help_topics');
 define ('TABLE_HELP_TOPICS_FOR_VIEW', $wpdb->prefix . 'help_topics_for_view');
 define ('TABLE_TRACK', $wpdb->prefix . 'track');
 define ('TABLE_REFUNDS', $wpdb->prefix . 'refunds');
+define ('TABLE_USERS_IN_SUBSCRIPTION', $wpdb->prefix.'user_in_subscription'); 
 
 
 // base courses (course name => course description)
