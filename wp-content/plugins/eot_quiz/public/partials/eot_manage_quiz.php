@@ -14,7 +14,7 @@ if (isset($_POST['submit']))
 {
     if (!isset($_POST['submit_quiz']) || !wp_verify_nonce($_POST['submit_quiz'], 'submit_quiz')) 
     {
-        print 'Sorry, your nonce did not verify.';
+        print __('Sorry, your nonce did not verify.', 'EOT_LMS');
         exit;
     }
 
@@ -40,7 +40,7 @@ if (isset($_POST['submit']))
 ?>
 
 <h3>My Quizzes</h3>
-<span><span class="fa fa-info-circle" aria-hidden="true"></span> <em>Edit Quiz Details after creating questions to set the passing score and time limit</em></span><br>
+<span><span class="fa fa-info-circle" aria-hidden="true"></span> <em><?= __('Edit Quiz Details after creating questions to set the passing score and time limit', 'EOT_LMS')?></em></span><br>
 <?php
 $quizzes = $eot_quiz->getQuizzes($org_id, $user_id);
 ?>
@@ -53,13 +53,13 @@ if ($quizzes)
     $quizTableObj = new stdClass();
     $quizTableObj->rows = array();
     $quizTableObj->headers = array(
-        'Quiz Name' => 'left',
-        '# Questions' => 'center',
-        'Displayed Questions' => 'center',
-        'Passing Score' => 'center',
-        'Time Limit' => 'center',
-        'Questions' => 'center',
-        'Actions' => 'center'
+        __('Quiz Name', 'EOT_LMS') => 'left',
+        __('# Questions', 'EOT_LMS') => 'center',
+        __('Displayed Questions', 'EOT_LMS') => 'center',
+        __('Passing Score', 'EOT_LMS') => 'center',
+        __('Time Limit', 'EOT_LMS') => 'center',
+        __('Questions', 'EOT_LMS') => 'center',
+        __('Actions', 'EOT_LMS') => 'center'
     );
 
     // Creating rows for the table
@@ -88,30 +88,30 @@ if ($quizzes)
 } 
 else 
 {
-    echo "<div class='bs'><div class='well well-lg'>No Quizzes yet!</div></div>";
+    echo "<div class='bs'><div class='well well-lg'>".__('No Quizzes yet!', 'EOT_LMS')."</div></div>";
 }
 ?>
 
 
 
-<h3>Create Quiz</h3>
-<span><em>Create a new quiz below</em></span><br>
+<h3><?= __('Create Quiz','EOT_LMS') ?></h3>
+<span><em><?= __('Create a new quiz below','EOT_LMS') ?></em></span><br>
 
 <div class="bs well" style="padding:10px">
     <form action="/dashboard?part=manage_quiz" method="POST">
         <?php wp_nonce_field('submit_quiz', 'submit_quiz'); ?>
         <div class="bs form-group">
-            <label for="quizName">Quiz Name *</label>
+            <label for="quizName"><?= __('Quiz Name *','EOT_LMS') ?></label>
             <input type="text" class="bs form-control" id="quizName" name="quizName" placeholder="Quiz Name">
         </div>
         <div class="bs form-group">
-            <label for="quizDescription">Quiz Description</label>
+            <label for="quizDescription"><?= __('Quiz Description','EOT_LMS') ?></label>
             <textarea class="bs form-control" rows="3" id="quizDescription" name="quizDescription"></textarea>
         </div>
         <div class="bs row">
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizAttempts">Number of attempts allowed *<br><em>Leave 0 for unlimited</em></label>
+                    <label for="quizAttempts"><?= __('Number of attempts allowed *','EOT_LMS') ?><br><em><?= __('Leave 0 for unlimited','EOT_LMS') ?></em></label>
                     <select class="bs form-control"  id="quizAttempts" name="quizAttempts">
                         <option value="0">0</option>
                         <option value="1">1</option>
@@ -129,7 +129,7 @@ else
             </div>
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizTime">Time limit for the quiz *<br><em>(in minutes)</em></label>
+                    <label for="quizTime"><?= __('Time limit for the quiz *','EOT_LMS') ?><br><em><?= __('(in minutes)','EOT_LMS') ?></em></label>
                     <select class="bs form-control"  id="quizTime" name="quizTimeText">
                         <option value="5">5</option>
                         <option value="10">10</option>
@@ -166,7 +166,7 @@ else
             } 
             else 
             {
-                alert("Quiz Name is mandatory!");
+                alert(<?= __("Quiz Name is mandatory!",'EOT_LMS') ?>);
                 return false;
             }
         })

@@ -25,7 +25,7 @@
           <div class="center">
             <a href="<?=get_home_url()?>/premade-courses/" target="_blank"><button type="button" class="btn btn-primary"><?= __("Pre-Made Courses", "EOT_LMS") ?></button></a>&nbsp;&nbsp;&nbsp;
             <a href="<?=get_home_url()?>/module-choices/" target="_blank"><button type="button" class="btn btn-primary"><?= __("Module Choices", "EOT_LMS") ?></button></a>&nbsp;&nbsp;&nbsp;
-            <a href="<?=get_home_url()?>/dashboard/?part=administration&subscription_id=<?=$subscription_id?>"><button type="button" class="btn btn-primary"><?= __("Custom Content", "EOT_LMS") ?></button></a>
+            <a href="<?=get_home_url()?>?part=administration&subscription_id=<?=$subscription_id?>"><button type="button" class="btn btn-primary"><?= __("Custom Content", "EOT_LMS") ?></button></a>
           </div>
           <br>
         </span>
@@ -120,7 +120,7 @@
                     <p><?= $title ?></p>
                     <ul>
                       <li>
-                        <a href="./?part=view_video&module_id=<?= $module->id ?>&subscription_id=<?= $subscription_id ?>" onclick="load('load_video')"><?= __("Watch Video", "EOT_LMS") ?></a> 
+                        <a href="?part=view_video&module_id=<?= $module->id ?>&subscription_id=<?= $subscription_id ?>" onclick="load('load_video')"><?= __("Watch Video", "EOT_LMS") ?></a> 
                         <?php
                           // make sure the video exists in the video table
                           if (isset($video_times[$title]))
@@ -155,16 +155,16 @@
                             }
                             else if (isset($handouts[$module->id]) && count($handouts[$module->id]) > 1)
                             {
-                              echo " | <a href='./?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>" . __("View Resources", "EOT_LMS") . "</a>";
+                              echo " | <a href='?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>" . __("View Resources", "EOT_LMS") . "</a>";
                             }
                             // Check if we have quiz or resources for the module. If so display them
                             if(isset($quizzes[$module->id]) && count($quizzes[$module->id]) == 1)
                             {
-                              echo ' | <a  href=\'/dashboard?part=view_core_quiz&quiz_id=' . $quizzes[$module->id][0]['id'] . '&subscription_id=' . $_REQUEST["subscription_id"] . '\'>' . __("View quiz", "EOT_LMS") . '</a';
+                              echo ' | <a  href=?part=view_core_quiz&quiz_id=' . $quizzes[$module->id][0]['id'] . '&subscription_id=' . $_REQUEST["subscription_id"] . '\'>' . __("View quiz", "EOT_LMS") . '</a';
                             }
                             else if (isset($quizzes[$module->id]) && count($quizzes[$module->id]) > 1)
                             {
-                              echo " | <a href='./?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>" . __("View Resources", "EOT_LMS") . "</a>";
+                              echo " | <a href='?part=view_video&module_id=" . $module->id . "&subscription_id=" . $subscription_id . "#resources'>" . __("View Resources", "EOT_LMS") . "</a>";
                             }
                           }
                         ?>

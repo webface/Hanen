@@ -169,10 +169,10 @@ static $i = 0;
     <?= __("Create Staff Account", "EOT_LMS"); ?>
   </a>
 
-  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=uploadspreadsheet&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&org_id=<?= $org_id ?>">
+  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard?part=uploadspreadsheet&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&org_id=<?= $org_id ?>">
     <?= __("Upload A Spreadsheet", "EOT_LMS"); ?>
   </a>
-  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard/?part=invite_users&subscription_id=<?= $subscription_id ?>&org_id=<?= $org_id ?>&user_id=<?= $user_id ?>">
+  <a class="btn" style="" href="<?= get_home_url() ?>/dashboard?part=invite_users&subscription_id=<?= $subscription_id ?>&org_id=<?= $org_id ?>&user_id=<?= $user_id ?>">
     <?= __("Invite Users To Register", "EOT_LMS"); ?>
   </a>
   <!-- 

@@ -35,13 +35,13 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
               
 ?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">Videos and Resources Viewed</h1>
+                                        <h1 class="article_page_title"><?= __('Videos and Resources Viewed', 'EOT_LMS')?></h1>
                                         <p>
-                                            See which videos, resources and links <b><?= $fullname ?></b> has viewed.
+                                            <?= __('See which videos, resources and links ', 'EOT_LMS')?><b><?= $fullname ?></b><?= __(' has viewed.', 'EOT_LMS')?>
                                         </p>
-                                        <h3>Video Views</h3>
+                                        <h3><?= __('Video Views', 'EOT_LMS')?></h3>
                                         <p>
-                                           Here is a table showing the number of times this user has watched each video. 
+                                           <?= __('Here is a table showing the number of times this user has watched each video.', 'EOT_LMS')?> 
                                         </p>
                 </div>                        
                
@@ -82,9 +82,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                          CreateDataTable($videosTableObj,"100%",10,true,"Stats"); // Print the table in the page
             
 ?>
-                         <h2>Document, Link, and Resource File Views</h2>
+                         <h2><?= __('Document, Link, and Resource File Views','EOT_LMS')?></h2>
                          <p>
-                             Here is a table showing the number of times this user has downloaded each resource.
+                             <?= __('Here is a table showing the number of times this user has downloaded each resource.','EOT_LMS')?>
                          </p>
 <?php
                         $resources = getResourcesInCourse($course_id, 'doc');
@@ -115,22 +115,22 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         }
             else 
             {
-                echo "You dont have a valid course ID";
+                echo __("You dont have a valid course ID",'EOT_LMS');
             }
         } 
         else 
         {
-            echo "Unauthorized!";
+            echo __("Unauthorized!",'EOT_LMS');
         }
     } 
     else 
     {
-        echo "subscription ID does not belong to you";
+        echo __("subscription ID does not belong to you",'EOT_LMS');
     }
 }
 // Could not find the subscription ID
 else
 {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID",'EOT_LMS');
 }
 ?>

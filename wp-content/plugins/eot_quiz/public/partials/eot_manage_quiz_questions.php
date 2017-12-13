@@ -15,7 +15,7 @@ $admin_ajax_url = admin_url('admin-ajax.php');
 
 if(!verifyQuiz($quiz_id))
 {
-    die("This quiz does not belong to you");
+    die(__("This quiz does not belong to you", 'EOT_LMS'));
 }
 if (isset($_POST['submit'])) 
 {
@@ -23,7 +23,7 @@ if (isset($_POST['submit']))
     {
         if (!isset($_POST['save_question']) || !wp_verify_nonce($_POST['save_question'], 'save_question')) 
         {
-            print 'Sorry, your nonce did not verify.';
+            print __('Sorry, your nonce did not verify.', 'EOT_LMS');
             exit;
         }
         unset($_POST['submit']);
@@ -110,7 +110,7 @@ if (isset($_POST['submit']))
                 !isset($_POST['save_question']) || !wp_verify_nonce($_POST['save_question'], 'save_question')
         ) {
 
-            print 'Sorry, your nonce did not verify.';
+            print __('Sorry, your nonce did not verify.', 'EOT_LMS');
             exit;
         }
         unset($_POST['submit']);
@@ -193,7 +193,7 @@ if (isset($_POST['submit']))
                 !isset($_POST['save_question']) || !wp_verify_nonce($_POST['save_question'], 'save_question')
         ) {
 
-            print 'Sorry, your nonce did not verify.';
+            print __('Sorry, your nonce did not verify.', 'EOT_LMS');
             exit;
         }
         unset($_POST['submit']);
@@ -247,19 +247,19 @@ if (isset($_POST['submit']))
                 '<input type="hidden" name="type" id="type" value="' + type + '"/>' +
                 '<a role="button" data-toggle="collapse" data-parent="#accordion"' +
                 'href="#collapse' + num + '" aria-expanded="false" aria-controls="collapse' + num + '">' +
-                'The Question' +
+                '<?= __('The Question', 'EOT_LMS')?>' +
                 '</a>' +
                 '</h4>' +
                 '</div>' +
                 '<div id="collapse' + num + '" class="bs panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + num + '">' +
                 '<div class="bs panel-body">' +
-                '<span style="color:red" class="editTitle" onclick="editTitle(' + num + ')"><i>Edit Question</i></span><br>' +
-                '<strong>Answers</strong><i>&nbsp;Indicate which is correct.</i>' +
-                '<button class="bs btn btn-primary pull-right addBtn">Add Answer</button></div' +
+                '<span style="color:red" class="editTitle" onclick="editTitle(' + num + ')"><i><?= __('Edit Question', 'EOT_LMS')?></i></span><br>' +
+                '<strong><?= __('Answers', 'EOT_LMS')?></strong><i>&nbsp;<?= __('Indicate which is correct.', 'EOT_LMS')?></i>' +
+                '<button class="bs btn btn-primary pull-right addBtn"><?= __('Add Answe', 'EOT_LMS')?>r</button></div' +
                 '<div class="bs clearfix"></div>' +
                 '<div class="bs panel-content">' +
                 '</div>' +
-                '&nbsp;&nbsp;<span style="color:red" class="deleteQuestion" onclick="deleteQuestion(' + num + ')"><i>Delete Question</i></span><br>' +
+                '&nbsp;&nbsp;<span style="color:red" class="deleteQuestion" onclick="deleteQuestion(' + num + ')"><i><?= __('Delete Question', 'EOT_LMS')?></i></span><br>' +
                 '</div>' +
                 '</div>' +
                 ' </div>';
@@ -282,7 +282,7 @@ if (isset($_POST['submit']))
 
     function addNewQuestion(type) 
     {
-        var label = prompt("Please enter your question");
+        var label = prompt(<?= __("Please enter your question", 'EOT_LMS')?>);
 
         if (label === null || label === false || label === '') 
         { // Canceled
@@ -319,7 +319,7 @@ if (isset($_POST['submit']))
                 data: {'title': $('#heading0 .panel-title a').html()},
                 error: function () 
                 {
-                    $.facebox('There was an error loading the title. Please try again shortly.');
+                    $.facebox(<?= __('There was an error loading the title. Please try again shortly.', 'EOT_LMS')?>);
                 },
                 success: function (data)
                 {
@@ -383,11 +383,11 @@ $quiz_id = $quiz['ID'];
     $questionsTableObj = new stdClass();
     $questionsTableObj->rows = array();
     $questionsTableObj->headers = array(
-        'Question' => 'left',
-        'Type' => 'center',
-        'Num Answers' => 'center',
-        'Actions' => 'center',
-        'Delete' => 'center',
+        __('Question','EOT_LMS') => 'left',
+        __('Type','EOT_LMS') => 'center',
+        __('Num Answers','EOT_LMS') => 'center',
+        __('Actions','EOT_LMS') => 'center',
+        __('Delete','EOT_LMS') => 'center',
     );
 
     // Creating rows for the table
@@ -400,22 +400,22 @@ $quiz_id = $quiz['ID'];
             '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id=' . $user_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',);
     }
     CreateDataTable($questionsTableObj); // Print the table in the page
-    echo "<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>Add Checkbox Question&nbsp;<span class='fa fa-check-square-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>Add Text Question&nbsp;<span class='fa fa-file-text-o'></span></a>";
+    echo "<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>".__('Add Choice Question','EOT_LMS')."&nbsp;<span class='fa fa-circle-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>".__('Add Checkbox Question', 'EOT_LMS')."&nbsp;<span class='fa fa-check-square-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>".__('Add Text Question', 'EOT_LMS')."&nbsp;<span class='fa fa-file-text-o'></span></a>";
     ?>
     <?php
 } else {
-    echo "<div class='bs'><div class='well well-lg'>No Questions yet!</div></div><a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>Add Choice Question&nbsp;<span class='fa fa-circle-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>Add Checkbox Question&nbsp;<span class='fa fa-check-square-o'></span></a>";
-    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>Add Text Question&nbsp;<span class='fa fa-file-text-o'></span></a>";
+    echo "<div class='bs'><div class='well well-lg'>No Questions yet!</div></div><a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>".__('Add Choice Question', 'EOT_LMS')."&nbsp;<span class='fa fa-circle-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>".__('Add Checkbox Question', 'EOT_LMS')."&nbsp;<span class='fa fa-check-square-o'></span></a>";
+    echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>".__('Add Text Question', 'EOT_LMS')."&nbsp;<span class='fa fa-file-text-o'></span></a>";
 }
 ?>
 
 
 <div id="createQuestion" style="display:none">
-    <h3>Create Question</h3>
-    <p>Click the question name to create and edit answers before saving.</p>
+    <h3><?= __('Create Question', 'EOT_LMS')?></h3>
+    <p><?= __('Click the question name to create and edit answers before saving', 'EOT_LMS')?>.</p>
     <form id="SaveQuestion" action="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id; ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
         <?php wp_nonce_field('save_question', 'save_question'); ?>
         <div class="bs panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>
@@ -433,7 +433,7 @@ $quiz_id = $quiz['ID'];
             if ($('#SaveQuestion #type').val() == "choice") {
                 //console.log('creating a multiple choice question');
                 if (!$("input[name='correctquestion_0']:checked").val()) {
-                    alert('You didnt select a correct answer!');
+                    alert(<?= __('You didnt select a correct answer!', 'EOT_LMS')?>);
                     return false;
                 }
 

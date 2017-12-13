@@ -40,11 +40,11 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $quiz = $eot_quiz->get_quiz_by_id($quiz_id);
 ?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">View <?= $fullname ?>'s Quiz Attempts</h1>
+                                        <h1 class="article_page_title"><?= __('View', 'EOT_LMS')?> <?= $fullname ?><?= __("'s Quiz Attempts", 'EOT_LMS')?></h1>
                                         <h3><?= $quiz['name'] ?></h3>
                                         <p>
-                                            Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
-                                            It is currently <b><?=date('g:ia', time())?></b> on <b><?=date('F j, Y', time())?></b>.
+                                            <?= __('Times are shown in', 'EOT_LMS')?> <b><?= __('Pacific Standard Time (PST)', 'EOT_LMS')?></b> <span class="small"><?= __('(GMT - 8).', 'EOT_LMS')?></span><br />
+                                            <?= __('It is currently', 'EOT_LMS')?> <b><?=date('g:ia', time())?></b> <?= __('on', 'EOT_LMS')?> <b><?=date('F j, Y', time())?></b>.
                                         </p>
                                         
                 </div>
@@ -66,10 +66,10 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     $quizTableObj = new stdClass();
                     $quizTableObj->rows = array();
                     $quizTableObj->headers = array(
-                        'No' => 'left',
-                        'Date and Time' => 'center',
-                        'Score' => 'center',
-                        'Status' => 'center'
+                        __('No', 'EOT_LMS') => 'left',
+                        __('Date and Time', 'EOT_LMS') => 'center',
+                        __('Score', 'EOT_LMS') => 'center',
+                        __('Status', 'EOT_LMS') => 'center'
                     );
 
                     // Creating rows for the table
@@ -78,7 +78,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     {
 
                         $count++;
-                        $passed = ($quiz_att['passed'] == 1)? "Pass":"Fail";
+                        $passed = ($quiz_att['passed'] == 1)? __("Pass",'EOT_LMS'):__("Fail",'EOT_LMS');
                         $quizTableObj->rows[] = array(
                             $count,
                             date('F j, Y g:i a', strtotime($quiz_att['date_attempted'])),
@@ -86,27 +86,27 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $passed
                             );
                     }
-                    CreateDataTable($quizTableObj,"100%",10,true,"Stats"); // Print the table in the page
+                    CreateDataTable($quizTableObj,"100%",10,true,__("Stats", 'EOT_LMS')); // Print the table in the page
                  
             }
             else 
             {
-                echo "You dont have a valid course ID";
+                echo __("You dont have a valid course ID", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "Unauthorized!";
+            echo __("Unauthorized!", "EOT_LMS");
         }
     } 
     else 
     {
-        echo "subscription ID does not belong to you";
+        echo __("subscription ID does not belong to you", "EOT_LMS");
     }
 }
 // Could not find the subscription ID
 else
 {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID", "EOT_LMS");
 }
 ?>

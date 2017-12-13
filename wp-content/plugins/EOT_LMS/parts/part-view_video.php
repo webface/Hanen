@@ -32,11 +32,11 @@
                     {
 ?>
                         <h1 class="article_page_title" class="video_title"><?= $module['name'] ?></h1>
-                        <h3>Description</h3>
+                        <h3><?= __('Description', 'EOT_LMS')?></h3>
                         <p>
                             <?= isset($module['desc']) ? $module['desc'] : "There is no description yet for this video." ?>
                         </p>
-                        <b>Language:</b>  <?= $subLanguage ? '<a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'">English</a>' : 'English' ?> 
+                        <b><?= __('Language:', 'EOT_LMS')?></b>  <?= $subLanguage ? '<a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'">English</a>' : 'English' ?> 
 
 <?php 
                         echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>';
@@ -57,8 +57,8 @@
 ?>
                                     <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $module['spanish'] : $module['shortname_medium'] ?>.mp4" type='video/mp4'>4
                                     <p class="vjs-no-js">
-                                    To view this video please enable JavaScript, and consider upgrading to a web browser that
-                                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                    <?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that ', 'EOT_LMS')?>
+                                    <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video', 'EOT_LMS')?></a>
                                     </p>
 <?php
                                 }
@@ -81,8 +81,8 @@
 
                                     <source src="https://eot-output.s3.amazonaws.com/<?= $video_name ?>.mp4" type='video/mp4'>
                                     <p class="vjs-no-js">
-                                        To view this video please enable JavaScript, and consider upgrading to a web browser that
-                                        <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                    <?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that ', 'EOT_LMS')?>
+                                    <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video', 'EOT_LMS')?></a>
                                     </p>        
 <?php
                                 }
@@ -101,7 +101,7 @@
 ?>
                 <br />
                 <div id="msg">       
-                    <h3>Loading Slowly? Click here.</h3>
+                    <h3><?= __('Loading Slowly? Click here.', 'EOT_LMS')?></h3>
                 </div>
                 <div id="loading_message" style="margin-top: 10px;">
                     <div class="msgboxcontainer " >
@@ -110,16 +110,16 @@
                                 <div class="msg-bl">
                                     <div class="msg-br">
                                         <div class='msgbox'>
-                                            <h3>Change Visual Quality <img src="<?php echo bloginfo('template_directory'); ?>/images/target/info-sm.gif" title="If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother." class="tooltip" style="margin-bottom: -2px"<?=hover_text_attr("If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother.", true) ?>></h3>
+                                            <h3><?= __('Change Visual Quality', 'EOT_LMS')?><img src="<?php echo bloginfo('template_directory'); ?>/images/target/info-sm.gif" title="If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother." class="tooltip" style="margin-bottom: -2px"<?=hover_text_attr("If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother.", true) ?>></h3>
                                             <ul class="notop">
 <?php 
                                                 if( $resolution != "high" && $resolution != null)
                                                 {
 ?>
                                                     <li>
-                                                        View <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=high">
+                                                        <?= __('View ', 'EOT_LMS')?><a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=high">
                                                         <!--High-Resolution Version-->
-                                                        Full HD Version</a> for high-speed connections and large screen viewing
+                                                        <?= __('Full HD Version', 'EOT_LMS')?></a><?= __(' for high-speed connections and large screen viewing', 'EOT_LMS')?>
                                                     </li>
 <?php
                                                 }
@@ -127,9 +127,9 @@
                                                 {
 ?>
                                                     <li>
-                                                        View <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=medium">
+                                                        <?= __('View ', 'EOT_LMS')?> <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=medium">
                                                       <!--Medium-Resolution Version-->
-                                                        Medium-Resolution Version</a>
+                                                        <?= __('Medium-Resolution Version', 'EOT_LMS')?></a>
                                                     </li>
 <?php
                                                 }
@@ -137,9 +137,9 @@
                                                 {
 ?>
                                                     <li>
-                                                        View <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=low">
+                                                        <?= __('View ', 'EOT_LMS')?><a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id?>&res=low">
                                                       <!--Low-Resolution Version-->
-                                                        Low-Resolution Version</a> for slow Internet connections
+                                                        <?= __('Low-Resolution Version', 'EOT_LMS')?></a><?= __(' for slow Internet connections', 'EOT_LMS')?>
                                                     </li>
 <?php
                                                 }
@@ -159,7 +159,7 @@
                 if(!empty($resources))
                 {
 ?>
-                    <h3>Resources</h3>
+                    <h3><?= __('Resources', 'EOT_LMS')?></h3>
                     <ul>
 <?php
                         foreach ($resources as $resource) 
@@ -172,7 +172,7 @@
                 }
                 else
                 {
-                    echo "No resources exist for this module yet.";
+                    echo __("No resources exist for this module yet.", 'EOT_LMS');
                 }
 ?>
                 </div>
@@ -194,16 +194,16 @@
             }
             else
             {
-                echo "Could not find the module.";
+                echo __("Could not find the module.", 'EOT_LMS');
             }
         }
         else
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", 'EOT_LMS');
         }
     }
     else
     {
-        echo "Sorry but you have an invalid request. Please contact the site administrator.";
+        echo __("Sorry but you have an invalid request. Please contact the site administrator.", 'EOT_LMS');
     }
 ?>

@@ -92,8 +92,8 @@
 ?>
                             <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $video['spanish'] : $video['shortname_medium'] ?>.mp4" type='video/mp4'>
                             <p class="vjs-no-js">
-                            To view this video please enable JavaScript, and consider upgrading to a web browser that
-                            <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                    <?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that ', 'EOT_LMS')?>
+                                    <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video', 'EOT_LMS')?></a>
                             </p>
 <?php
                         }
@@ -116,9 +116,9 @@
 
                             <source src="https://eot-output.s3.amazonaws.com/<?= $video_name ?>.mp4#t=<?= $video_last_time ?>" type='video/mp4'>
                             <p class="vjs-no-js">
-        	                    To view this video please enable JavaScript, and consider upgrading to a web browser that
-            	                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-		                    </p>        
+                                    <?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that ', 'EOT_LMS')?>
+                                    <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video', 'EOT_LMS')?></a>
+                                    </p>        
 <?php
                         }
 ?>
@@ -140,13 +140,13 @@
 ?>
       			<center>
       				<div id="quiz" style="display:none">
-                                    <span class="loadingQuiz" style="display:none"><i class="fa fa-spinner fa-pulse fa-2x"></i>loading quiz</span>
+                                    <span class="loadingQuiz" style="display:none"><i class="fa fa-spinner fa-pulse fa-2x"></i><?= __('loading qui', "EOT_LMS")?>z</span>
                                     <a class="btn takeQuiz" style="display:none" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">
-                                    Take Quiz
+                                    <?= __('Take Quiz', "EOT_LMS")?>
                                     </a>
                                 </div>
                                 <div id="noQuiz" style="display:none">
-                                        <p>Note* You have to <b>finish</b> <b>watching</b> the <b>video</b> to be able to take the quiz.</p>
+                                        <p><?= __('Note* You have to ', "EOT_LMS")?><b><?= __('finish watching', "EOT_LMS")?></b><?= __(' the ', "EOT_LMS")?><b><?= __('video', "EOT_LMS")?></b><?= __(' to be able to take the quiz.', "EOT_LMS")?></p>
                                 </div>
                         </center>     			
 <?php
@@ -237,7 +237,7 @@
                                                 $("#quiz").show();
                                                 $(".loadingQuiz").show();
                                                 $(".takeQuiz").hide();
-                                                var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
+                                                var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$('this').attr("track-id")+"&status=finish&type=watch_video";
                                                 $.ajax({
                                                 url:url,
                                             success:
@@ -302,16 +302,16 @@
 			}
 			else
 			{ // Error, module does not belong to the course.
-				echo 'Error: This module does not belong to this course.';
+				echo __('Error: This module does not belong to this course.', 'EOT_LMS');
 			}
 		}
 		else
 		{
-			echo "Error: You do not have access to this course";
+			echo __("Error: You do not have access to this course", 'EOT_LMS');
 		}
 	}
 	else
 	{ // Incorrect parameters.
-		echo "Sorry but you have an invalid request. Please contact the site administrator.";
+		echo __("Sorry but you have an invalid request. Please contact the site administrator.", 'EOT_LMS');
 	}
 ?>
