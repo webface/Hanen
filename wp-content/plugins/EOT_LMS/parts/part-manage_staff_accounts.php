@@ -178,7 +178,7 @@ static $i = 0;
     <?= __("Invite Users To Register", "EOT_LMS"); ?>
   </a>
    
-  <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=add_previous_staff_to_subscription&amp;year=<?= SUBSCRIPTION_YEAR ?>&amp;org_id=<?= $org_id ?>" rel="facebox">
+  <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=add_previous_staff_to_subscription&amp;year=<?= SUBSCRIPTION_YEAR ?>&amp;org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>" rel="facebox">
     Manage Previous
   </a> 
     
@@ -368,6 +368,112 @@ static $i = 0;
         alert($(".csis").length)
       }
     )
+    // Manage the add and remove button action.
+            //$('.add_remove_btn').live('click', function () {
+            $(document).on('click','.add_remove_btn',function(){
+              var task = "";
+              //alert($(this).attr("status"));
+              if ($(this).attr("status")=="add")
+              {
+              task = "enrollUserInSubscription";
+              }
+              else if($(this).attr("status")=="remove")
+              {
+              task = "deleteEnrolledUserInSubscription";
+              //enrollment_id = $(this).attr("enrollment_id");
+              }
+              if (task!="")
+              {
+              var loading_img = $('<img />', { 
+                class: 'add_remove_btn',
+                src: ajax_object.template_url + '/images/loading.gif',
+                alt: 'loading...',
+                status: 1
+              });
+              var temp =  $(this);
+              $(this).replaceWith(loading_img);
+              var btn = $(this);
+
+              $.getJSON( ajax_object.ajax_url + '?action='+task+'&email='+encodeURIComponent($(this).attr("email"))+'&org_id='+$(this).attr("org_id")+'&subscription_id='+$(this).attr("subscription_id")+'&user_id='+$(this).attr("user_id")+'&nonce='+$(this).attr("nonce"),
+                function (json)
+                {
+                if(json.success)
+                {
+                  if(task == "enrollUserInSubscription")
+                  {
+                    temp.text( "<?= __("Remove", "EOT_LMS"); ?>" );
+                    temp.attr( "status" , "remove" );
+                    temp.attr( "selected" , 1 );
+                    temp.attr( "insert_id", json.insert_id);
+                    loading_img.replaceWith(temp);
+                    btn.parent().parent().css("background-color","#d7f3ca");
+                    $( "#noStaffAccount" ).remove(); // Remove message no staff account
+                    var staffTable = $('#DataTable_1').DataTable(); // The table for manage staff accounts listing.
+                    // Create a new row for the newly created user.
+                    staffTable.row.add([json.first_name + " " + json.last_name, // First and last name
+                              json.email, // Email Address
+                              '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=edit_staff_account&org_id='+json.org_id+'&staff_id='+json.user_id+'&email='+json.email+'" rel="facebox">\
+                                <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
+                              </a>&nbsp;&nbsp;&nbsp;\
+                              <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&org_id='+json.org_id+'&staff_id='+json.user_id+'&email='+json.email+'" email="'+json.email+'" rel="facebox">\
+                                <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
+                              </a>\
+                                  ' // User options
+                    ]).draw( false );
+                  }
+                  else
+                  {
+                    temp.text( "<?= __("Add", "EOT_LMS"); ?>" );
+                    temp.attr( "status" , "add" );
+                    temp.attr( "selected" , 0 );
+                    loading_img.replaceWith(temp); // CHHANGE STATUS MAYBE
+                    btn.parent().parent().css("background-color","");
+                    var staffTable = $('#DataTable_1').DataTable(); // The table for manage staff accounts listing.
+                    var email = json.email;
+                    staffTable.rows( function ( idx, data, node ) {
+                                  return data[1] === email;//column 1
+                              } )
+                              .remove()
+                              .draw();
+                  }                                
+                  //$('#staff_and_assignment_list').attr("refresh",1);
+                }
+                else
+                {
+                  $('.errorbox').text(json.errors);
+                  $('.errorbox').show();
+                }
+                });
+              }
+            });
+
+            /******************************************************************************************
+      * Binds a function to the success event of the create_staff_account form
+      * 
+      *******************************************************************************************/               
+      $(document).bind('success.add_previous_staff_to_subscription',
+      function (event,data)
+      {
+        alert('success');
+          //close facebox
+          if(typeof data.close == "undefined") 
+            $(document).trigger('close.facebox')
+        
+        $( "#noStaffAccount" ).remove(); // Remove message no staff account
+        var staffTable = $('#DataTable_1').DataTable(); // The table for manage staff accounts listing.
+        // Create a new row for the newly created user.
+        staffTable.row.add([data.name + " " + data.lastname, // First and last name
+                  data.email, // Email Address
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=edit_staff_account&org_id='+data.org_id+'&staff_id='+data.user_id+'&email='+data.email+'" rel="facebox">\
+                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
+                  </a>&nbsp;&nbsp;&nbsp;\
+                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&org_id='+data.org_id+'&staff_id='+data.staff_id+'&email='+data.email+'" email="'+data.email+'" rel="facebox">\
+                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
+                  </a>\
+                      ' // User options
+        ]).draw( false );
+      });
+      /////////
 }
 );
 })(jQuery);

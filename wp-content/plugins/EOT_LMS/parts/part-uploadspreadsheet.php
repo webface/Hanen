@@ -369,7 +369,7 @@
                 function sendMail() 
                 {
                     $.ajax({
-                        url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>", 
+                        url: "<?= $admin_ajax_url ?>?action=mass_register_ajax&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>", 
                         success: function (result) 
                         {
                             //console.log(result);

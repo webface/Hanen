@@ -102,12 +102,12 @@
             ?>
         <div class="row">
           <div class="col">
-            <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')">
+            <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_email')">
               <i class="fa fa-envelope fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_email')"><?= __("Send Staff Mass Mail", "EOT_LMS"); ?></a>
+            <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_email')"><?= __("Send Staff Mass Mail", "EOT_LMS"); ?></a>
             <br>
             <?= __("Select staff by several options and send them customized emails.", "EOT_LMS"); ?>
           </div>
@@ -115,12 +115,12 @@
 
         <div class="row">
           <div class="col">
-            <a href="?part=staff_lounge&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
+            <a href="?part=staff_lounge&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_staff_lounge')">
               <i class="fa fa-comments fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=staff_lounge&amp;subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')"><?= __("Virtual Staff Lounge", "EOT_LMS"); ?></a>
+            <a href="?part=staff_lounge&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_staff_lounge')"><?= __("Virtual Staff Lounge", "EOT_LMS"); ?></a>
             <br>
             <?= __("Manage your forum.", "EOT_LMS"); ?>
           </div>
@@ -141,12 +141,12 @@
 -->
         <div class="row">
           <div class="col">
-            <a href="?part=manage_logo&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>">
+            <a href="?part=manage_logo&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>">
               <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>&nbsp;&nbsp;
             </a>
           </div>
           <div class="col">
-            <a href="?part=manage_logo&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>"><?= __("Customize Dashboard Logo", "EOT_LMS"); ?></a>
+            <a href="?part=manage_logo&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>"><?= __("Customize Dashboard Logo", "EOT_LMS"); ?></a>
             <br>
             <?= __("Personalize what your staff see by uploading your own logo.", "EOT_LMS"); ?>
           </div>
