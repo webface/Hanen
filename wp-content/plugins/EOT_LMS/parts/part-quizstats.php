@@ -41,6 +41,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $quiz = $eot_quiz->get_quiz_data($quiz_id, false);
                 $quiz_name = $quiz['quiz']['name'];
                 $users = getEotUsers($org_id);
+                //$users = getUsersInSubscription($subscription_id);
                 $users = $users['users'];
                 $user_ids = array_column($users, 'ID');
                 $user_ids_string = implode(",", $user_ids);

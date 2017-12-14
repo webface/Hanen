@@ -38,6 +38,10 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 require $path . 'public/class-eot_quiz_data.php';
                 $eot_quiz = new EotQuizData();
                 $quiz = $eot_quiz->get_quiz_by_id($quiz_id);
+                if(!verifyStatsUser())
+                {
+                    die(__('You dont have permission to view this user\'s stats','EOT_LMS'));
+                }
 ?>
                 <div class="smoothness">
                                         <h1 class="article_page_title">View <?= $fullname ?>'s Quiz Attempts</h1>
