@@ -5891,6 +5891,13 @@ function getCourseForm_callback ( )
                         </tr>
                         <tr> 
                           <td class="label"> 
+                            <label for="field_staff_accounts"><?= __("Staff Accounts:", "EOT_LMS") ?></label> 
+                          <td class="value"> 
+                            <input  type="number" name="staff_accounts" id="staff_accounts" size="20" value="0"/>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td class="label"> 
                             <label for="field_password"><?= __("Email:", "EOT_LMS") ?></label> 
                           <td class="value"> 
                             <input  type="email" name="email" id="field_email" size="20" value=""/>
@@ -10071,6 +10078,7 @@ function create_uber_camp_director_callback()
     $ugroup_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
     $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
     $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+    $staff_credits = (isset($_REQUEST['staff_credits']) && $_REQUEST['staff_credits'] > 0 ) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT):0;
     $role = 'manager';
     
     if ( !check_admin_referer('create-uber_camp_director_'.$ugroup_id,'my_nonce_field') ) 
@@ -10211,7 +10219,11 @@ function create_uber_camp_director_callback()
                 "library_id" =>$subscription->library_id,
                 "start_date" => $subscription->start_date,
                 "end_date" => $subscription->end_date,
-                "status" => $subscription->status
+                "status" => $subscription->status,
+                "method" => 'free',
+                "trans_date" => date('Y-m-d H:i:s'),
+                "notes" => 'uber/umbrella camp',
+                "staff_credits" => $staff_credits
             );
             $new_sub = $wpdb->insert(TABLE_SUBSCRIPTIONS, $data);
           }
