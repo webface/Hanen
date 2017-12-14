@@ -1500,23 +1500,25 @@ function verifyUserAccess ()
         // verify that the current uber/umbrella manager has access to this user
         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
         $manager_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
-
       }
       else
       {
         return array( 'status' => 0, 'message' => __("we didn't get an org_id and user_id", "EOT_LMS") );
       }
     }
-        $subscriptions = get_current_subscriptions ($org_id);
+
+    $subscriptions = get_current_subscriptions ($org_id);
     if (!empty($subscriptions))
     {
       // user has at least 1 subscription
       $library_id = $subscriptions[0]->library_id;
 
     }
+
     // now using the org_id and manager_id see if this uber admin is allowed to access this org.
     // get the uber admin's org id (post id)
-    $args = array(
+
+/*    $args = array(
       'post_type' => 'org',
       'author' => $current_user->ID
     );
@@ -1529,6 +1531,9 @@ function verifyUserAccess ()
     {
       return array( 'status' => 0, 'message' => __("couldn't get the uber admin's org_id", "EOT_LMS") );
     }
+*/
+    $umbrella_group_id = get_org_from_user ( $current_user->ID );
+        
     // get the user meta for the manager so we can compare the umbrella_group_id
     $user_meta = get_user_meta($manager_id);
 

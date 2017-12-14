@@ -1,4 +1,7 @@
 <?php
+
+  /* ABANDONED */
+
   if(current_user_can("is_sales_rep") || current_user_can("is_sales_manager"))
   {
     $admin_ajax_url = admin_url('admin-ajax.php');

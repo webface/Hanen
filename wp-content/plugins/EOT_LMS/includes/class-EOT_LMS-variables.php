@@ -9,7 +9,7 @@ $course_id = isset( $_REQUEST['course_id'] ) ? filter_var($_REQUEST['course_id']
 $org_id = isset( $_REQUEST['org_id'] ) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 $quiz_id = isset($_REQUEST['quiz_id']) ? filter_var($_REQUEST['quiz_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 $enrollment_id = isset($_REQUEST['enrollment_id'])? filter_var($_REQUEST['enrollment_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
-$user_id = isset( $_REQUEST['user_id'] ) ? filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT):0;
+$user_id = isset( $_REQUEST['user_id'] ) ? filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 
 
 // define default name for Leadership Essentials - ie. the name of the course in LU in case we need to reference it.

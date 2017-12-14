@@ -1,11 +1,10 @@
 <div class="breadcrumb">
   <?= CRUMB_DASHBOARD ?>    
   <?= CRUMB_SEPARATOR ?>     
-  <?= CRUMB_ADMINISTRATOR ?>    
-  <?= CRUMB_SEPARATOR ?>    
     <span class="current">Copy Course</span>     
 </div>
 <?php
+
   // Check if the org ID is valid and that the user is an uber/umbrella manager.
   if(current_user_can('is_uber_manager') || current_user_can('is_umbrella_manager'))
   {
@@ -70,7 +69,6 @@
           			 * If there's no course, it will display an error.
           			 */
                 $courses = getCourses(0, $org_id, $subscription_id); // get the courses from their org.
-                $numCourses = count($courses);
                	// Check if there are any courses.
                	if($courses)
                 {
@@ -309,18 +307,6 @@
       #facebox #datepicker table.ui-datepicker-calendar td {
         padding: 0;
       }
-       </style>
-    	<script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.mousewheel.js'?>"></script>
-    	<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>--> 
-    	<script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jScrollPane.js'?>"></script> 
-    	<link rel="stylesheet" type="text/css" media="all" href="<?= get_template_directory_uri() . "/css/jScrollPane.css"?>" /> 
-    	<script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.rotate.js'?>"></script>
-    	<script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.tinymce.js'?>"></script>
-      <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js'?>"></script> 
-    	<link href="<?= get_template_directory_uri() . "/css/fileuploader.css"?>" rel="stylesheet" type="text/css" />
-    	<script src="<?= get_template_directory_uri() . '/js/fileuploader.js'?>" type="text/javascript"></script>
-
-    <style type ="text/css">
       #pane2  {
         height: 250px;
       /*  height:250px;*/

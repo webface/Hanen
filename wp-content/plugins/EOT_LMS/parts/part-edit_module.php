@@ -16,7 +16,7 @@
     // Variable declaration
     global $current_user;
     global $wpdb;
-    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT) : $current_user->ID; // Wordpress user ID
     $email = $current_user->user_email; // Wordpres e-mail address
     $org_id = get_org_from_user($user_id); // Organization ID
     $admin_ajax_url = admin_url('admin-ajax.php');

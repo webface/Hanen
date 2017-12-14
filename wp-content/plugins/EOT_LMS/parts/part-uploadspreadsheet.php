@@ -30,20 +30,20 @@
 		{
 			if(!current_user_can( "is_director" ))
 			{
-				echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+				echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.", "EOT_LMS");
 				return;
 			}
 		}
 		else
 		{
-			echo "subscription ID does not belong to you";
+			echo __("subscription ID does not belong to you", "EOT_LMS");
 			return;
 		}
 	}
 	// Could not find the subscription ID
 	else
 	{
-		echo "Could not find the subscription ID";
+		echo __("Could not find the subscription ID", "EOT_LMS");
 		return;
 	}
 
@@ -60,19 +60,19 @@
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
     	if( !current_user_can ('is_director') && !current_user_can ('is_administrator') )
         {
-         	wp_die('Sorry, you do not have permisison to view this page.');
+         	wp_die(__('Sorry, you do not have permisison to view this page.', "EOT_LMS"));
         }
 		// Check if the file exsist and is a text or csv file.
 		else if ( pathinfo($fileLink, PATHINFO_EXTENSION) != 'txt' && pathinfo($fileLink, PATHINFO_EXTENSION) != 'csv')
 		{
-			echo 'The file needs to be a text or csv file. Please follow the instruction carefuly.<br><br>';
-			echo '<a href="?part=uploadspreadsheet&subscription_id='.$subscription_id.'">Go back</a>';
+			echo __('The file needs to be a text or csv file. Please follow the instruction carefuly.', "EOT_LMS") . '<br><br>';
+			echo '<a href="?part=uploadspreadsheet&subscription_id='.$subscription_id.'"> ' . __("Go back", "EOT_LMS") . '</a>';
 		}
 		else if ( !$fileLink )
 		{
 			// Check if file exsist.
-			echo 'Could not find your file. Please upload your text file again.<br><br>';
-			echo '<a href="?part=uploadspreadsheet&subscription_id='.$subscription_id.'">Go back</a>';
+			echo __("Could not find your file. Please upload your text file again.", "EOT_LMS") . '<br><br>';
+			echo '<a href="?part=uploadspreadsheet&subscription_id='.$subscription_id.'"> ' . __("Go back", "EOT_LMS") . '</a>';
 		}
 		else
 		{
@@ -95,9 +95,10 @@
 			<h1 class="article_page_title">Upload Spreadsheet</h1>
 
 	        <div class="spreadsheet_upload round_msgbox">
-				Processing your staff list ... <i class="fa fa-spinner fa-pulse fa-2x"></i><br><br>
-				This page will refresh itself to show you the progress unless there are errors below.<br><br>
-				Please inspect the table below to see if any errors exist, if so you will need to fix them, otherwise sit tight and we will create your staff accounts.<br>
+				<?=  __("Processing your staff list ...", "EOT_LMS") ?>  <i class="fa fa-spinner fa-pulse fa-2x"></i><br><br>
+				<?=  __("This page will refresh itself to show you the progress unless there are errors below.<br><br>
+				Please inspect the table below to see if any errors exist, if so you will need to fix them, otherwise sit tight and we will create your staff accounts.", "EOT_LMS") ?>
+				<br>
 			</div>
 			<br/>
 			<br/>
@@ -414,7 +415,6 @@
 	{
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
 		$subscription = getSubscriptions($subscription_id, 0, 1); // get active Subscription details
-                //d($subscription);
 		if( !isset($subscription) || $subscription->manager_id != $user_id)
 		{
 			wp_die('You do not have privilege for this subscription.');
