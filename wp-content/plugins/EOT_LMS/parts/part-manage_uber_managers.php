@@ -54,7 +54,7 @@
               $type = 'Director';
 
               // create a director's row
-              $directorTableObj->rows[] = array($name, $email, $type, '<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=upgrade_uber_manager&user_id=' . $user_id. '&type='.$type.'&org_id='.$org_id.'" rel="facebox"><i class="fa fa-user-plus " aria-hidden="true" '. hover_text_attr('Upgrade to Uber Manager',true) .' user-id="'. $user_id .'"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=upgrade_umbrella_manager&user_id=' . $user_id. '&type='.$type.'&org_id='.$org_id.'" rel="facebox"><i class="fa fa-umbrella " aria-hidden="true" ' . hover_text_attr('Upgrade to Umbrella Manager',true) . ' user-id="'. $user_id .'"></i></a>');
+              $directorTableObj->rows[] = array($name, $email, $type, '<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=upgrade_uber_manager&user_id=' . $user_id. '&type='.$type.'&org_id='.$org_id.'" rel="facebox"><i class="fa fa-user-plus " aria-hidden="true" '. hover_text_attr('Upgrade to Uber Manager',true) .' user-id="'. $user_id .'"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=upgrade_umbrella_manager&user_id=' . $user_id. '&type='.$type.'&org_id='.$org_id.'" rel="facebox"><i class="fa fa-umbrella " aria-hidden="true" ' . hover_text_attr('Upgrade to Umbrella Manager',true) . ' user-id="'. $user_id .'"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="?part=add_camp_to_uber_group&user_id=' . $user_id. '&type='.$type.'&org_id='.$org_id.'"><i class="fa fa-plus " aria-hidden="true" ' . hover_text_attr('Add to Uber/Umrella Camp',true) . ' user-id="'. $user_id .'"></i></a>');
             }
         }
     ?>
