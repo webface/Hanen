@@ -35,7 +35,7 @@ if(current_user_can("is_sales_rep") || current_user_can("is_sales_manager"))
 
             $org_id = get_user_meta( $user_id, 'org_id', true); // Get the user's org ID
             $org = get_the_title($org_id);
-      		$action = '<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=add_director_to_uber_umbrella&org_id=' . $org_id. '&type='.$type.'&uber_id='.$user_id.'&camp_user_id='.$camp_user_id.'&camp_org_id='.$camp_org_id.'" rel="facebox"><i class="fa fa-plus" aria-hidden="true" '. hover_text_attr('View Stats',true) .' user-id="'. $user_id .'"></i></a>';
+      		$action = '<a href="' . $admin_ajax_url . '?action=getCourseForm&form_name=add_director_to_uber_umbrella&org_id=' . $org_id. '&type='.$type.'&uber_id='.$user_id.'&camp_user_id='.$camp_user_id.'&camp_org_id='.$camp_org_id.'" rel="facebox"><i class="fa fa-plus" aria-hidden="true" '. hover_text_attr('Add camp under this user',true) .' user-id="'. $user_id .'"></i></a>';
           // Create a table row.
       		$userTableObj->rows[] = array($name, $email, $org, $type, $action);
         }
