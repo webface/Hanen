@@ -22,6 +22,8 @@
             {
                 //copy courses begin
             $subscriptions =getSubscriptions(0, 0, TRUE, $org_id);
+            $courses = getCoursesById($org_id, $subscription_id);//the courses in the current subscription
+            $course_names = array_column($courses, 'course_name');// an array of current course names
                 ?>
             <div class="bs">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -40,10 +42,60 @@
 					    <div id="collapse<?= $count?>" class="panel-collapse collapse <?= $class ?>" role="tabpanel" aria-labelledby="heading<?= $count?>">
 					      <div class="panel-body">
 					        <?php
-					        $courses = getCoursesById($org_id, $subscription->ID);
-					        d($courses);
+
+					        $sub_courses = getCoursesById($org_id, $subscription->ID);
+					       // d($sub_courses);
 
 					        ?>
+                  <div  id="staff_listing" display="staff_list" group_id="null" class="holder osX">
+                                <div  id="staff_listing_pane" class="scroll-pane" style="width: 100%">  
+                                    <div style="width:100%;">
+                                        <div class="errorbox" style="display:none;"></div>
+                                        <?php 
+                                            foreach($sub_courses as $course)
+                                            {
+                                              $name = $course['course_name']; // the course name.
+                                              $nonce = wp_create_nonce ('add-deleteCourse_' . $org_id);
+                                              if(in_array($name, $course_names))
+                                              {      
+                                        ?>
+                                                <div class="staff_and_assignment_list_row" style="background-color:#D7F3CA; width:100%" >  
+                                                    <span class="staff_name" style="font-size:12px;"><?= $name ?></span> 
+                                                    <div style="width:140px;text-align:center;float:right;padding-right:35px;">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group"  status="remove" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>" >
+                                                            <?=__('Remove', 'EOT_LMS')?>
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both;">
+                                                    </div> 
+                                                </div> 
+
+                                            <?php
+                                                }
+                                                else 
+                                                {
+                                            ?>
+                                                <div class="staff_and_assignment_list_row" style="width:100%;padding:7px 155px 7px 5px;" >  
+                                                    <span class="staff_name" style="font-size:12px;"><?= $name ?></span>
+                                                    <div style="width:140px;text-align:center;float:right;padding-right:35px;">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group"  status="add" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>">
+                                                             <?=__('Add', 'EOT_LMS')?>
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both;">
+                                                    </div> 
+                                                </div> 
+                                        <?php
+                                                }
+                                            }                      
+                                        ?>
+
+                                    </div>
+                                </div>
+                            </div> 
+<div style="clear:both;">
+
+
 					      </div>
 					    </div>
 					  </div>
