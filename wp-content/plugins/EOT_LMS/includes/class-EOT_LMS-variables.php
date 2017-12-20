@@ -84,6 +84,8 @@ define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part
 
 // define breadcrumb to view invoice page
 define ('CRUMB_INVOICE_PAGE', '<a href="'. get_home_url() .'/dashboard/?part=view_invoice&subscription_id='.$subscription_id.'">Invoice Page</a>');
+// define breadcrumb to manage courses page
+define ('CRUMB_COURSES', '<a href="'. get_home_url() .'/dashboard/?part=manage_courses&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_courses\')">Manage Courses</a>');
 
 // define the part name of manage logo dashboard
 define ('FILE_MANAGE_LOGO', 'manage_logo');

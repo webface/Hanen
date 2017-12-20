@@ -47,54 +47,55 @@ function getLibrary ($library_id = 0)
 function getSubscriptions($subscription_id = 0, $library_id = 0, $active = 0, $org_id = 0, $start_date = '0000-00-00', $end_date = '0000-00-00', $year_end_date = '0000', $user_id = 0) 
 {
   global $wpdb;
-  $sql = "SELECT * from " . TABLE_SUBSCRIPTIONS;
+  $sql = "SELECT s.*, l.name AS library from " . TABLE_SUBSCRIPTIONS." s";
+  $sql.=" LEFT JOIN ".TABLE_LIBRARY. " l ON l.ID = s.library_id";
 
   if($subscription_id) 
   { 
     // looking for a specific subscription
-    $sql .=  " WHERE `ID` = " . $subscription_id;
+    $sql .=  " WHERE s.`ID` = " . $subscription_id;
   }
   else if($library_id)
   {
     // looking for all subscriptions for a specific library
-    $sql .= " WHERE library_id = " . $library_id;
+    $sql .= " WHERE s.library_id = " . $library_id;
 
     // check if we were also provided an org_id
-    $sql .= $org_id ? " AND org_id = $org_id" : "";
+    $sql .= $org_id ? " AND s.org_id = $org_id" : "";
 
     // check if we are looking for a specific date range
-    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND trans_date >= '$start_date' AND trans_date <= '$end_date'" : "";
+    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND s.trans_date >= '$start_date' AND s.trans_date <= '$end_date'" : "";
 
     // check if we are looking for a specific manager
-    $sql .= $user_id ? " AND manager_id = $user_id" : "";
+    $sql .= $user_id ? " AND s.manager_id = $user_id" : "";
   }
   else if($org_id)
   {
     // looking for all subscriptions for organization ID
-    $sql .= " WHERE org_id = " . $org_id; 
+    $sql .= " WHERE s.org_id = " . $org_id; 
 
     // check if we are looking for a specific date range
-    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND trans_date >= '$start_date' AND trans_date <= '$end_date'" : "";
+    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND s.trans_date >= '$start_date' AND s.trans_date <= '$end_date'" : "";
 
     // check if we are looking for a specific manager
-    $sql .= $user_id ? " AND manager_id = $user_id" : "";
+    $sql .= $user_id ? " AND s.manager_id = $user_id" : "";
   }
   else if($user_id)
   {
-    $sql .= " WHERE manager_id = " . $user_id; 
+    $sql .= " WHERE s.manager_id = " . $user_id; 
 
     // check if we are looking for a specific date range
-    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND trans_date >= '$start_date' AND trans_date <= '$end_date'" : "";
+    $sql .= ($start_date != "0000-00-00" && $end_date != "0000-00-00") ? " AND s.trans_date >= '$start_date' AND s.trans_date <= '$end_date'" : "";
   }
   else if($start_date != "0000-00-00" && $end_date != "0000-00-00")
   {
-    $sql .= "  WHERE trans_date >= '" . $start_date . "' AND trans_date <= '" . $end_date . "'";
+    $sql .= "  WHERE s.trans_date >= '" . $start_date . "' AND s.trans_date <= '" . $end_date . "'";
   }
   
-  $sql .= ($year_end_date != "0000") ? " AND YEAR(end_date) = $year_end_date" : "";
+  $sql .= ($year_end_date != "0000") ? " AND YEAR(s.end_date) = $year_end_date" : "";
 
   $date = current_time('Y-m-d');
-  $sql .= ($active) ? " AND status = 'active' AND start_date <= '$date' AND end_date >= '$date'" : "";
+  $sql .= ($active) ? " AND s.status = 'active' AND s.start_date <= '$date' AND s.end_date >= '$date'" : "";
   $results = ($subscription_id > 0) ? $wpdb->get_row ($sql) : $wpdb->get_results ($sql);
   return $results;
 }
