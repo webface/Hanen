@@ -106,7 +106,70 @@
   			?>
 			</div>
 		</div>
+<script type="text/javascript">
+$(document).ready(function(){
+  $(document).on('click','.add_remove_btn',function(){
+              $('.errorbox').text("");
+              var task = "";
+              //alert($(this).attr("status"));
+              if ($(this).attr("status")=="add")
+              {
+              task = "addCourseToSubscription";
+              }
+              else if($(this).attr("status")=="remove")
+              {
+              task = "removeCourseFromSubscription";
+              //enrollment_id = $(this).attr("enrollment_id");
+              }
+              if (task!="")
+              {
+              var loading_img = $('<img />', { 
+                class: 'add_remove_btn',
+                src: ajax_object.template_url + '/images/loading.gif',
+                alt: 'loading...',
+                status: 1
+              });
+              var temp =  $(this);
+              $(this).replaceWith(loading_img);
+              var btn = $(this);
 
+              $.getJSON( ajax_object.ajax_url + '?action='+task+'&org_id='+$(this).attr("org_id")+'&subscription_id='+$(this).attr("subscription_id")+'&nonce='+$(this).attr("nonce"),
+                function (json)
+                {
+                if(json.success)
+                {
+                  if(task == "addCourseToSubscription")
+                  {
+                    temp.text( "<?= __("Remove", "EOT_LMS"); ?>" );
+                    temp.attr( "status" , "remove" );
+                    temp.attr( "selected" , 1 );
+                    temp.attr( "insert_id", json.insert_id);
+                    loading_img.replaceWith(temp);
+                    btn.parent().parent().css("background-color","#d7f3ca");
+                    
+                  }
+                  else
+                  {
+                    temp.text( "<?= __("Add", "EOT_LMS"); ?>" );
+                    temp.attr( "status" , "add" );
+                    temp.attr( "selected" , 0 );
+                    loading_img.replaceWith(temp); // CHANGE STATUS MAYBE
+                    btn.parent().parent().css("background-color","");
+                   
+                  }                                
+                 
+                }
+                else
+                {
+                  $('.errorbox').text(json.errors);
+                  $('.errorbox').show();
+                }
+                });
+              }
+            });
+});
+
+</script>  
                 <?php
 
                 //d($subscriptions);
