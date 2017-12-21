@@ -10486,3 +10486,49 @@ function add_director_to_uber_umbrella_callback()
     echo json_encode($result);
     wp_die();
 }
+
+
+add_action('wp_ajax_addCourseToSubscription', 'addCourseToSubscription_callback');
+function addCourseToSubscription_callback()
+{
+  $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+  $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+  $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
+  $user_id = filter_var($_REQUEST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+  // Check permissions
+  if(!wp_verify_nonce( $_REQUEST['nonce'], 'add-deleteCourse_' . $org_id ) )
+  {
+      $result['display_errors'] = 'Failed';
+      $result['success'] = false;
+      $result['errors'] = __("addCourseToSubscription_callback Error: Sorry, your nonce did not verify.", "EOT_LMS");
+  }
+  else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+  {
+      $result['display_errors'] = 'Failed';
+      $result['success'] = false;
+      $result['errors'] = __("addCourseToSubscription_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
+  }
+  else 
+  {
+      global $wpdb;
+      $data = compact( "org_id", "user_id", "subscription_id");
+      $course = $wpdb->get_row("SELECT * FROM ". TABLE_COURSES . " WHERE ID = $course_id", ARRAY_A);
+      $course_name = $course['course_name'];
+      $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+      if (isset($response['status']) && $response['status']) 
+      {
+        $result['data'] = 'success';
+        $result['success'] = true;
+        $result['insert_id'] = $response['id'];
+        $result['message'] = __('Course Added','EOT_LMS');
+      }
+      else
+      {
+        $result['success'] = false;
+        $result['display_errors'] = true;
+        $result['errors'] = __('Could not add the course','EOT_LMS');
+      }
+  }
+  echo json_encode($result);
+  wp_die();
+}

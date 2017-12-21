@@ -62,8 +62,8 @@
                                                 <div class="staff_and_assignment_list_row" style="background-color:#D7F3CA; width:100%" >  
                                                     <span class="staff_name" style="font-size:12px;"><?= $name ?></span> 
                                                     <div style="width:140px;text-align:center;float:right;padding-right:35px;">
-                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group"  status="remove" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>" >
-                                                            <?=__('Remove', 'EOT_LMS')?>
+                                                        <a selected=1 class="add_remove_button" collection="add_remove_from_group"  status="remove" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" course_id="<?= $course['ID'] ?>" user_id="<?= $user_id ?>">
+                                                            <?=__('Added', 'EOT_LMS')?>
                                                         </a>
                                                     </div>
                                                     <div style="clear:both;">
@@ -78,7 +78,7 @@
                                                 <div class="staff_and_assignment_list_row" style="width:100%;padding:7px 155px 7px 5px;" >  
                                                     <span class="staff_name" style="font-size:12px;"><?= $name ?></span>
                                                     <div style="width:140px;text-align:center;float:right;padding-right:35px;">
-                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group"  status="add" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group"  status="add" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" course_id="<?= $course['ID'] ?> " user_id="<?= $user_id ?>">
                                                              <?=__('Add', 'EOT_LMS')?>
                                                         </a>
                                                     </div>
@@ -133,14 +133,14 @@ $(document).ready(function(){
               $(this).replaceWith(loading_img);
               var btn = $(this);
 
-              $.getJSON( ajax_object.ajax_url + '?action='+task+'&org_id='+$(this).attr("org_id")+'&subscription_id='+$(this).attr("subscription_id")+'&nonce='+$(this).attr("nonce"),
+              $.getJSON( ajax_object.ajax_url + '?action='+task+'&org_id='+$(this).attr("org_id")+'&subscription_id='+$(this).attr("subscription_id")+'&course_id='+$(this).attr("course_id")+'&user_id='+$(this).attr("user_id")+'&nonce='+$(this).attr("nonce"),
                 function (json)
                 {
                 if(json.success)
                 {
                   if(task == "addCourseToSubscription")
                   {
-                    temp.text( "<?= __("Remove", "EOT_LMS"); ?>" );
+                    temp.text( "<?= __("Added", "EOT_LMS"); ?>" );
                     temp.attr( "status" , "remove" );
                     temp.attr( "selected" , 1 );
                     temp.attr( "insert_id", json.insert_id);
