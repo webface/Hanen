@@ -2901,7 +2901,7 @@ function getUsersInSubscription($subscription_id = 0)
             . "LEFT JOIN ". TABLE_USERS_IN_SUBSCRIPTION." uis "
             . "ON uis.user_id = u.ID "
             . "WHERE uis.subscription_id = $subscription_id";
-    $users = $wpdb->get_results($query,ARRAY_A);
+    $users = $wpdb->get_results($query, ARRAY_A);
     $learners = array();
     foreach($users as $user_info)
     {

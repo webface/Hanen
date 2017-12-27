@@ -41,12 +41,12 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 				$email_address = $current_user->user_email;			// Email address in wordpress db wp_users 
 			  	$data = compact ("org_id");
 			  	$courses = getCourses(0,$org_id, 0); // All the courses that are published cause draft courses cant have staff enrolled.
-                                //$response = getEotUsers($org_id); // Lists of users in the org
+                //$response = getEotUsers($org_id); // Lists of users in the org
                 $response = getUsersInSubscription($subscription_id);
 				$users = array(); // Lists of users
 				$incomplete_statuses = array ('not_started', 'in_progress', 'failed'); // the statuses that an incomplete user has
 				$complete_statuses = array ('completed', 'passed'); // the statuses that an incomplete user has
-                                $complete_users_email = array(); // Lists of email address that has been processed.
+                $complete_users_email = array(); // Lists of email address that has been processed.
 		  		$courses_with_num_enrollments = array(); // Courses information in associative array. which includes the ID, Name, and the number of enrollments.
                 $c = isset($_REQUEST['recipient']) ? filter_var($_REQUEST['recipient'], FILTER_SANITIZE_NUMBER_INT) : 0;
 				// make sure we have some users in this portal

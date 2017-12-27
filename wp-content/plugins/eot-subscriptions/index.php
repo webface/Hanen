@@ -366,11 +366,11 @@ function handle_steps_callback () {
 				if ($processPayment) 
 				{ //process payment based on status of variable defined above
 					
+					$trans_id = ''; // define empty value as default.
 					// check if paying by credit card
 					if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'Stripe')
 					{
 
-						$trans_id = ''; // define empty value as default.
 						if (!isset($_REQUEST['cc_card']) && ($_REQUEST['cc_num'] == '' || $_REQUEST['cc_cvc'] == '')) 
 						{
 							throw new Exception("You must choose a credit card or add a new credit card.");

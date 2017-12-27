@@ -242,13 +242,7 @@ static $i = 0;
         // Create a new row for the newly created user.
         staffTable.row.add([data.name + " " + data.lastname, // First and last name
                   data.email, // Email Address
-                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=edit_staff_account&org_id='+data.org_id+'&staff_id='+data.user_id+'&email='+data.email+'" rel="facebox">\
-                    <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
-                  </a>&nbsp;&nbsp;&nbsp;\
-                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&org_id='+data.org_id+'&staff_id='+data.staff_id+'&email='+data.email+'" email="'+data.email+'" rel="facebox">\
-                    <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
-                  </a>\
-                      ' // User options
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=edit_staff_account&org_id='+data.org_id+'&staff_id='+data.user_id+'&email='+data.email+'" rel="facebox"><i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i></a>&nbsp;&nbsp;&nbsp;<a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&org_id='+data.org_id+'&staff_id='+data.staff_id+'&email='+data.email+'" email="'+data.email+'" rel="facebox"><i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i></a>' // User options
         ]).draw( false );
       });
     /******************************************************************************************

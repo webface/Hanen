@@ -55,7 +55,7 @@
                                         <?= __("Just copy-and-paste the staff e-mail addresses and we'll send out the invitation e-mail.", "EOT_LMS")?>
                                     </li>
                                     <li>
-                                        <?= __('You can ', 'EOT_LMS')?><b><?= __('Track', 'EOT_LMS')?></b><?= __(" those who haven't registered yet by viewing the ", 'EOT_LMS')?><b><?= __('Invite List Report', 'EOT_LMS')?></b>.
+                                        <?= __("You can <b>Track</b> those who haven't registered yet by viewing the <b>Invite List Report</b>.", 'EOT_LMS')?>
                                     </li>
                                 </ul>
                             </li>
@@ -66,7 +66,7 @@
                                         <?= __('We give you the hyperlink to copy-and-paste into an e-mail and you send it yourself.', 'EOT_LMS')?>
                                     </li>
                                     <li>
-                                        <?= __('You ', 'EOT_LMS')?><b><u><?= __('cannot', 'EOT_LMS')?></u><?= __(' Track', 'EOT_LMS')?></b><?= __(" those who haven't registered yet.", 'EOT_LMS')?>
+                                        <?= __("You <b><u>cannot</u> Track</b> those who haven't registered yet.", 'EOT_LMS')?>
                                     </li>
                                 </ul>
                             </li>
