@@ -122,6 +122,9 @@
         <div class="bottom_buttons">
           <a class="btn" style="" href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=create_course_group&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id?>" rel="facebox">
             <?= __("Create Course", "EOT_LMS"); ?>
+          </a>&nbsp;&nbsp;
+          <a class="btn" style="" href="?part=copy_previous_courses&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id?>&user_id=<?= $user_id?>">
+            <?= __("Import Courses", "EOT_LMS"); ?>
           </a>
         </div>
       </div>  
