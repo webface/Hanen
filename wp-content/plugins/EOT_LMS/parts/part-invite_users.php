@@ -5,7 +5,7 @@
     <?= CRUMB_SEPARATOR ?>
     <?= CRUMB_MANAGE_STAFF_ACCOUNTS ?>
     <?= CRUMB_SEPARATOR ?> 
-    <span class="current">Invite Staff To Register</span>     
+    <span class="current"><?= __('Invite Staff To Register', 'EOT_LMS')?></span>     
 </div>
 
 <?php
@@ -32,55 +32,54 @@
                     case 1:
                         // the options page
 ?>
-                        <h1 class="article_page_title">Invite Staff To Register</h1>
+                        <h1 class="article_page_title"><?= __('Invite Staff To Register', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
                                     <div class="msg-bl">
                                         <div class="msg-br">
                                             <div class="msgbox">
-                                                <p>Staff will receive an e-mail with a hyperlink (containing a unique code) that lets them register
-                                                    and be automatically placed in the Camp or Course.</p>
+                                                <p><?= __('Staff will receive an e-mail with a hyperlink (containing a unique code) that lets them register and be automatically placed in the Camp or Course.', 'EOT_LMS')?></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <h2>Choose an Invitation Method:</h2>
+                        <h2><?= __('Choose an Invitation Method:', 'EOT_LMS')?></h2>
                         <ol>
                             <li>
-                                <h3>Use our Invitation Sender</h3>
+                                <h3><?= __('Use our Invitation Sender', 'EOT_LMS')?></h3>
                                 <ul>
                                     <li>
-                                        Just copy-and-paste the staff e-mail addresses and we'll send out the invitation e-mail.
+                                        <?= __("Just copy-and-paste the staff e-mail addresses and we'll send out the invitation e-mail.", "EOT_LMS")?>
                                     </li>
                                     <li>
-                                        You can <b>Track</b> those who haven't registered yet by viewing the <b>Invite List Report</b>.
+                                        <?= __('You can ', 'EOT_LMS')?><b><?= __('Track', 'EOT_LMS')?></b><?= __(" those who haven't registered yet by viewing the ", 'EOT_LMS')?><b><?= __('Invite List Report', 'EOT_LMS')?></b>.
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <h3>Use your own E-mail (Hotmail, GMail, etc.)</h3>
+                                <h3><?= __('Use your own E-mail (Hotmail, GMail, etc.)', 'EOT_LMS')?></h3>
                                 <ul>
                                     <li>
-                                        We give you the hyperlink to copy-and-paste into an e-mail and you send it yourself.
+                                        <?= __('We give you the hyperlink to copy-and-paste into an e-mail and you send it yourself.', 'EOT_LMS')?>
                                     </li>
                                     <li>
-                                        You <b><u>cannot</u> Track</b> those who haven't registered yet.
+                                        <?= __('You ', 'EOT_LMS')?><b><u><?= __('cannot', 'EOT_LMS')?></u><?= __(' Track', 'EOT_LMS')?></b><?= __(" those who haven't registered yet.", 'EOT_LMS')?>
                                     </li>
                                 </ul>
                             </li>
                         </ol>
                         <div class="buttons" >        
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4&use_email=yes" class = "use_own_email" >
+                            <a href="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4&use_email=yes" class = "use_own_email" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Use your own Email
+                                    <?= __('Use your own Email', 'EOT_LMS')?>
                                 </div>
                             </a>
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=2&use_email=no" class = "use_invitation_email" >
+                            <a href="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=2&use_email=no" class = "use_invitation_email" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Use our Invitation Sender
+                                    <?= __('Use our Invitation Sender', 'EOT_LMS')?>
                                 </div>
                             </a>            
                             <div style="clear:both">
@@ -92,7 +91,7 @@
                     case 2:
                         // our invitation sender. User will be asked to input a comma seperated list of emails
 ?>
-                        <h1 class="article_page_title">Staff Emails</h1>
+                        <h1 class="article_page_title"><?= __('Staff Emails', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
@@ -100,20 +99,20 @@
                                         <div class="msg-br">
                                             <div class="msgbox">
                                                 <p>
-                                                    Paste a list of e-mail addresses in the field below.
+                                                    <?= __('Paste a list of e-mail addresses in the field below.', 'EOT_LMS')?>
                                                 </p>
                                                 <div class="small">
-                                                    <b>Format of E-mail Addresses:</b>
-                                                    The format should be one of the following:
+                                                    <b><?= __('Format of E-mail Addresses:', 'EOT_LMS')?></b>
+                                                    <?= __('The format should be one of the following:', 'EOT_LMS')?>
                                                     <ul>
                                                         <li>
-                                                            comma-separated list, or
+                                                            <?= __('comma-separated list, or', 'EOT_LMS')?>
                                                         </li>
                                                         <li>
-                                                            one e-mail address per line (no comma), or
+                                                            <?= __('one e-mail address per line (no comma), or', 'EOT_LMS')?>
                                                         </li>
                                                         <li>
-                                                            a combination of commas and one-per-line
+                                                            <?= __('a combination of commas and one-per-line', 'EOT_LMS')?>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -123,7 +122,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4" method="post" id="">
+                        <form action="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4" method="post" id="">
                             <?php if (isset($_REQUEST['emails'])) { ?>
                                 <textarea name="emails" style="width: 100%; height: 300px;"><?= $_REQUEST['emails'] ?></textarea>
                             <?php } else { ?>
@@ -139,12 +138,12 @@ jane@email.com
                         <div class="buttons" >        
                             <a href="#" class = "submit_invite" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Next
+                                    <?= __('Next', 'EOT_LMS')?>
                                 </div>
                             </a>            
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" class = "" >
+                            <a href="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" class = "" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Back
+                                    <?= __('Back', 'EOT_LMS')?>
                                 </div>
                             </a>
                             <div style="clear:both">
@@ -186,44 +185,44 @@ jane@email.com
 ?>
                         <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.tinymce.js' ?>"></script>
                         <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js' ?>"></script>
-                        <h1 class="article_page_title">Compose Message</h1>
+                        <h1 class="article_page_title"><?= __('Compose Message', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
                                     <div class="msg-bl">
                                         <div class="msg-br">
                                             <div class="msgbox">
-                                                <p>The following message will be sent to your staff. For your convenience we've written a sample letter that you can customize to your liking. Once you are done, click <strong>Send</strong>. <br><br>Your message <strong>MUST</strong> include the following text which will substitute a unique sign up link for each staff member:<br><strong><?= $code; ?></strong> </p>
+                                                <p><?= __("The following message will be sent to your staff. For your convenience we've written a sample letter that you can customize to your liking. Once you are done, click ", 'EOT_LMS')?><strong><?= __('Send', 'EOT_LMS')?></strong>. <br><br><?= __('Your message ', 'EOT_LMS')?><strong><?= __('MUST', 'EOT_LMS')?></strong> <?= __('include the following text which will substitute a unique sign up link for each staff member:', 'EOT_LMS')?><br><strong><?= $code; ?></strong> </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <form id= "use_invitation_msg"  action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=5" method="POST"> 
+                        <form id= "use_invitation_msg"  action="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=5" method="POST"> 
                             <table padding="0" class="form">
                                 <tr> 
                                     <td class="value"> 
                                         <textarea class="tinymce" id="composed_message" name="msg" style="margin-left:1px;width: 100%; height: 300px">
-                                            <p><b>Congratulations!</b> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> of <?= $camp_name; ?> is inviting you to join  Expert Online Training (EOT), the world’s best virtual classroom for youth development professionals. By using EOT now, before your job starts at <?= $camp_name; ?>, you will turbocharge your leadership skills, boost your self-confidence, and get even more out of <?= $camp_name; ?>’s on-site training. </p>
+                                            <p><b><?= __('Congratulations!', 'EOT_LMS')?></b> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> of <?= $camp_name; ?><?= __(' is inviting you to join  Expert Online Training (EOT), the world’s best virtual classroom for youth development professionals. By using EOT now, before your job starts at ', 'EOT_LMS')?><?= $camp_name; ?><?= __(', you will turbocharge your leadership skills, boost your self-confidence, and get even more out of ', 'EOT_LMS')?><?= $camp_name; ?><?= __("’s on-site training.", 'EOT_LMS')?> </p>
 
-                                            <div style="height: 94px;"><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" alt="EOT Logo" style="width: 125px; height: 94px; float: left;"> <b>Take EOT with you.</b> We know you are busy, so our new website is mobile-friendly. You can now watch EOT videos and take your quizzes on any smartphone, tablet, or laptop with a WiFi connection. Imagine learning more about behavior management, leadership, supervision, games, and safety while you sit in a café, library, or student lounge!</div>
+                                            <div style="height: 94px;"><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" alt="EOT Logo" style="width: 125px; height: 94px; float: left;"> <b><?= __('Take EOT with you. ', 'EOT_LMS')?></b> <?= __('We know you are busy, so our new website is mobile-friendly. You can now watch EOT videos and take your quizzes on any smartphone, tablet, or laptop with a WiFi connection. Imagine learning more about behavior management, leadership, supervision, games, and safety while you sit in a café, library, or student lounge!', 'EOT_LMS')?></div>
 
-                                            <p>You must create your account by following this link:</p>
+                                            <p><?= __('You must create your account by following this link:', 'EOT_LMS')?></p>
 
                                             <p><?= $code; ?></p>
 
-                                            <p>To watch EOT’s intro video, <a href="https://www.expertonlinetraining.com" target="_blank">click here</a>.</p>
+                                            <p><?= __("To watch EOT’s intro video, ", 'EOT_LMS')?><a href="https://www.expertonlinetraining.com" target="_blank"><?= __('click here', 'EOT_LMS')?></a>.</p>
 
-                                            <p><b>When is it due?</b> Directors usually require staff to complete their online learning assignment before arriving on-site. If you have not yet received a due-date for your assignment, check with <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> to get one. As you move through your course, <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> will have access to an electronic dashboard that allows them to track your progress and quiz scores.</p>
+                                            <p><b><?= __('When is it due?', 'EOT_LMS')?></b> <?= __('Directors usually require staff to complete their online learning assignment before arriving on-site. If you have not yet received a due-date for your assignment, check with', 'EOT_LMS')?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?><?= __(' to get one. As you move through your course,', 'EOT_LMS')?> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> <?= __('will have access to an electronic dashboard that allows them to track your progress and quiz scores.', 'EOT_LMS')?></p>
 
-                                            <p><b>Got Questions?</b> If you get stuck, watch our online help videos or call us at <b>877-390-2267</b>! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.</p>
+                                            <p><b><?= __('Got Questions?', 'EOT_LMS')?></b> <?= __('If you get stuck, watch our online help videos or call us at ', 'EOT_LMS')?><b><?= __('877-390-2267', 'EOT_LMS')?></b><?= __('! The EOT Customer Success team is on duty M-F from 9-5 ET. As Director of Content, I also welcome your comments and suggestions for new features and video topics.', 'EOT_LMS')?></p>
 
-                                            <p>Enjoy your training!<br><br>
+                                            <p><?= __('Enjoy your training!', 'EOT_LMS')?><br><br>
                                             <img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image2.jpeg" alt="Chris's signature" style="width: 100px; height: 55px;"><br><br>
-                                            Dr. Chris Thurber<br>
-                                            EOT Co-Founder &<br>
-                                            Director of Content</p>
+                                            <?= __('Dr. Chris Thurber', 'EOT_LMS')?><br>
+                                            <?= __('EOT Co-Founder &', 'EOT_LMS')?><br>
+                                            <?= __('Director of Content', 'EOT_LMS')?></p>
                                         </textarea>
                                     </td>
                                 </tr>
@@ -243,14 +242,14 @@ jane@email.com
 
                         <br>
                         <div class="buttons" >        
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=5" class = "submit_invite" >
+                            <a href="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=5" class = "submit_invite" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Send
+                                    <?= __('Send', 'EOT_LMS')?>
                                 </div>
                             </a>            
                             <a href="#" class = "back_btn" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Back
+                                    <?= __('Back', 'EOT_LMS')?>
                                 </div>
                             </a>
                             <div style="clear:both">
@@ -273,7 +272,7 @@ jane@email.com
                                 });
                                 $('.back_btn').click(function(e){
                                     e.preventDefault();
-                                    $('form').attr('action',"/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4");
+                                    $('form').attr('action',"?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=4");
                                     $('form').submit();
                                 });
                                 $('.submit_invite').click(function(e){
@@ -298,14 +297,14 @@ jane@email.com
                             echo "<script>var use_email=false;</script>";
                         }
 ?>
-                        <h1 class="article_page_title">Select Registration Type</h1>
+                        <h1 class="article_page_title"><?= __('Select Registration Type', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
                                     <div class="msg-bl">
                                         <div class="msg-br">
                                             <div class="msgbox">
-                                                <p>When a staff member signs up, please select whether or not you would like to enroll these staff members into a specific course or simply add them to your camp and enroll them into specific courses later on.</p>
+                                                <p><?= __('When a staff member signs up, please select whether or not you would like to enroll these staff members into a specific course or simply add them to your camp and enroll them into specific courses later on.', 'EOT_LMS')?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -313,18 +312,18 @@ jane@email.com
                             </div>
                         </div>
 
-                        <form method="POST" id="choose_enrollment" action="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=3"> 
+                        <form method="POST" id="choose_enrollment" action="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=3"> 
                             <input type="radio" name="choice" id="" value="org">
-                            <label for="">Just add these staff members to my camp</label><br>
+                            <label for=""><?= __('Just add these staff members to my camp', 'EOT_LMS')?></label><br>
                             <input type="radio" name="choice" id="" value="course">
-                            <label for="">I would like to enroll these staff members into a specific course</label><br>
+                            <label for=""><?= __('I would like to enroll these staff members into a specific course', 'EOT_LMS')?></label><br>
                             
                             <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" />
                             <input type="hidden" name="user_id" id="user_id" value="<?= $user_id ?>" />
                             <input type="hidden" name="emails" id="emails" value="<?= $emails; ?>" />
                             <input type="hidden" name="subscription_id" id="subscription_id" value="<?= $subscription_id ?>" />
                             <div class='courses' style="display:none">
-                                <h3>Course(s)</h3>
+                                <h3><?= __('Course(s)', 'EOT_LMS')?></h3>
 <?php
                                 foreach($courses as $course)
                                 {
@@ -335,14 +334,14 @@ jane@email.com
                         </form>
                         <br>
                         <div class="buttons" >        
-                            <a href="/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=3" class = "next_btn" >
+                            <a href="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=3" class = "next_btn" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Next
+                                    <?= __('Next', 'EOT_LMS')?>
                                 </div>
                             </a>            
                             <a href="#" class = "go_back" >
                                 <div style="height:15px;padding-top:2px;"> 
-                                    Back
+                                    <?= __('Back', 'EOT_LMS')?>
                                 </div>
                             </a>
                             <div style="clear:both">
@@ -360,23 +359,23 @@ jane@email.com
                                 $(".go_back").click(function(e){
                                     console.log("go back");
                                     e.preventDefault();
-                                    $("form").attr("action","/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=2");
+                                    $("form").attr("action","?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=2");
                                    jQuery("#choose_enrollment").submit();
                                 });
                                 $('.next_btn').click(function(e){
                                     e.preventDefault();
                                     console.log($("input[name='choice']").val());
                                     if(!$("input[name='choice']:checked").val()){
-                                        alert('Please make a selection');
+                                        alert(<?= __('Please make a selection','EOT_LMS')?>);
                                         return false;
                                     }else if($("input[name='choice']:checked").val()=="course"){
                                         if(!$("input:radio[name='course_id']").is(":checked")){
-                                        alert('Please choose a course');
+                                        alert(<?= __('Please choose a course','EOT_LMS')?>);
                                         return false;
                                         }
                                     }
                                     if(use_email){
-                                        $("form").attr("action","/dashboard?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=6");
+                                        $("form").attr("action","?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=6");
                                     }
                                         jQuery("#choose_enrollment").submit();
                                     
@@ -436,7 +435,7 @@ jane@email.com
                                   'sender_name'=>$current_user->user_firstname." ".$current_user->user_lastname,
                                   'sender_email'=>$directors_email,
                                   'email'=>$recipient,
-                                  'subject'=>"Your account on ExpertOnlineTraining.com (Camp Training)",
+                                  'subject'=>__("Your account on ExpertOnlineTraining.com (Camp Training)", 'EOT_LMS'),
                                   'message'=>$message
                                 );
 
@@ -520,7 +519,7 @@ jane@email.com
                             }
                         }
                         
-                        $redirect_url = '/dashboard?part=invite_users&subscription_id='.$subscription_id.'&org_id='.$org_id.'&user_id='.$user_id.'&process=1&step=7&max='.count($recipients);
+                        $redirect_url = '?part=invite_users&subscription_id='.$subscription_id.'&org_id='.$org_id.'&user_id='.$user_id.'&process=1&step=7&max='.count($recipients);
                         // if failed return false
                         if ($failed)
                         {
@@ -578,7 +577,7 @@ jane@email.com
                 				  <div class="msg-bl">
                 					<div class="msg-br">
                 						<div class="msgbox">
-                							<h2>Instructions</h2> For your convenience we've written a sample letter that you can send to your staff. Copy and paste this letter into your e-mail program (you can customize the letter of course) and send it out to your staff. <br><br>It contains the unique registration link at the bottom. Your email <strong>MUST</strong> include this code to link your staff to your camp:<br>CODE: <strong><?= $code; ?></strong><br><br>We've already filled in some details for you, like <b>Your Name</b> and your <b>Camp Name</b>
+                							<h2><?= __('Instructions', 'EOT_LMS')?></h2> <?= __("For your convenience we've written a sample letter that you can send to your staff. Copy and paste this letter into your e-mail program (you can customize the letter of course) and send it out to your staff. ", 'EOT_LMS')?><br><br><?= __('It contains the unique registration link at the bottom. Your email', 'EOT_LMS')?> <strong><?= __('MUST', 'EOT_LMS')?></strong> <?= __('include this code to link your staff to your camp', 'EOT_LMS')?>:<br><?= __('CODE:', 'EOT_LMS')?> <strong><?= $code; ?></strong><br><br><?= __("We've already filled in some details for you, like", 'EOT_LMS')?> <b><?= __("Your Name", 'EOT_LMS')?></b> <?= __('and your ', 'EOT_LMS')?><b><?= __('Camp Name', 'EOT_LMS')?></b>
                 						</div>
                 				  </div>
                 				</div>
@@ -588,21 +587,21 @@ jane@email.com
 <p>
     Dear Staff,<br>
     <br>
-    Summer is right around the corner! Before you know it, the campers will be arriving at <?= get_the_title($org_id)?>, full of energy, enthusiasm, and youthful exuberance.<br>
+    <?= __("Summer is right around the corner! Before you know it, the campers will be arriving at ", 'EOT_LMS')?><?= get_the_title($org_id)?>, <?= __('full of energy, enthusiasm, and youthful exuberance.', 'EOT_LMS')?><br>
     <br>
-    Before you arrive for our on-site training, I'd like you to watch a set of short training videos and take the accompanying quizzes. I'll be monitoring your progress along the way. This combination of online and on-site training is engaging, relevant, and essential for your work with children this summer.<br>
+    <?= __("Before you arrive for our on-site training, I'd like you to watch a set of short training videos and take the accompanying quizzes. I'll be monitoring your progress along the way. This combination of online and on-site training is engaging, relevant, and essential for your work with children this summer.", 'EOT_LMS')?><br>
     <br>
-    Follow the link below to register your account and start the training. If you already have an account, still click the link as it will add you to the appropriate grouping.<br>
+    <?= __("Follow the link below to register your account and start the training. If you already have an account, still click the link as it will add you to the appropriate grouping.", 'EOT_LMS')?><br>
     <br>
-    CODE: <a href="<?= site_url('/register/?type=Student&code='.$code); ?>"><strong><?= $code; ?></strong></a><br>
+    <?= __("CODE: ", 'EOT_LMS')?><a href="<?= site_url('/register/?type=Student&code='.$code); ?>"><strong><?= $code; ?></strong></a><br>
     <br>
-    If the link above does not work, try to copy/paste this URL into your browser: <?= site_url('/register/?type=Student&code='.$code); ?><br>
+    <?= __("If the link above does not work, try to copy/paste this URL into your browser:", 'EOT_LMS')?> <?= site_url('/register/?type=Student&code='.$code); ?><br>
     <br>
-    If you run into any technical snags, you can call the toll-free support line: 877-390-2267 during regular business hours. <br>
+    <?= __("If you run into any technical snags, you can call the toll-free support line: 877-390-2267 during regular business hours. ", 'EOT_LMS')?><br>
     <br>
-    Sincerely,<br>
+    <?= __('Sincerely,', 'EOT_LMS')?><br>
     <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?><br>
-    Camp Director
+    <?= __('Camp Director', 'EOT_LMS')?>
 </p>
     		 </div>
 <?php
@@ -618,22 +617,22 @@ jane@email.com
                         $errors = isset($_REQUEST['errors']) ? json_decode($_REQUEST['errors']) : '';
 
 ?>
-                        <h1 class="article_page_title">Sending Out Your Invitations</h1>
+                        <h1 class="article_page_title"><?= __('Sending Out Your Invitations', 'EOT_LMS')?></h1>
 <?php
                         if ($errors)
                         {
                             echo '<div class="errors round_msgbox">';
-                            echo '  There were some errors when we tried to process the following users:<br>';
+                            echo __(" There were some errors when we tried to process the following users:","EOT_LMS").' <br>';
                             foreach ($errors as $key => $value) {
                                 echo $value['email'] . ': ' . $value['error_message'] . '<br>';
                             }
-                            echo '  <br>The above users DID NOT get an email invitation to join EOT. You will have to fix the errors and try them again seperatly.';
+                            echo '  <br>'.__("The above users DID NOT get an email invitation to join EOT. You will have to fix the errors and try them again seperatly.", "EOT_LMS");
                             echo '</div>';
                         }
 ?>
                         <div class="spreadsheet_processing round_msgbox">
-                            <strong>Please wait while we send your emails: <br>
-                                <span class="processing">Processing 1 out of <?= $max ?></span> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br />DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF HAS BEEN EMAILED.<br><br>A report showing which emails were sent and which were not will be displayed once the process is complete.
+                            <strong><?= __('Please wait while we send your emails: ', 'EOT_LMS')?><br>
+                                <span class="processing">Processing 1 out of <?= $max ?></span> ... </strong> <i class="fa fa-spinner fa-pulse fa-2x"></i><br /><br /><?= __("DO NOT CLOSE THIS WINDOW UNTIL ALL STAFF HAS BEEN EMAILED.", "EOT_LMS")?><br><br><?= __("A report showing which emails were sent and which were not will be displayed once the process is complete.", "EOT_LMS")?>
                         </div>
                         <script>
                             var count = 1;
@@ -665,11 +664,11 @@ jane@email.com
                                         // check if we finished sending
                                         if (count > <?= $max ?> && overall_status == 1)
                                         {
-                                            $('.round_msgbox').html("Messages Sent Successfully!<br><br>" + sent_emails.replace(/,/g, "")); 
+                                            $('.round_msgbox').html("<?= __("Messages Sent Successfully!","EOT_LMS")?><br><br>" + sent_emails.replace(/,/g, "")); 
                                         }
                                         else if (count > <?= $max ?> && overall_status == 0)
                                         {
-                                            $('.round_msgbox').html("ERROR: Some emails below did not get sent.<br><br>Please contact us for assistance 1-877-390-2267 M-F 9-5 EST.<br><br>" + sent_emails.replace(/,/g, "")); 
+                                            $('.round_msgbox').html("<?= __("ERROR: Some emails below did not get sent.","EOT_LMS")?><br><br><?= __("Please contact us for assistance 1-877-390-2267 M-F 9-5 EST.", "EOT_LMS")?><br><br>" + sent_emails.replace(/,/g, "")); 
                                         }
                                         else
                                         {
@@ -687,18 +686,18 @@ jane@email.com
             } 
             else 
             {
-                echo "Unauthorized!";
+                echo __("Unauthorized!","EOT_LMS");
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", "EOT_LMS");
         }
     }
     // Could not find the subscription ID
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID", "EOT_LMS");
     }
 ?>
 

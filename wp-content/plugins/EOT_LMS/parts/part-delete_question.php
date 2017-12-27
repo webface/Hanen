@@ -1,5 +1,7 @@
 <?php
     $true_subscription = verifyUserAccess();
+    global $current_user;
+    $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT):$current_user->ID; // Wordpress user ID
     if ((isset($true_subscription['status']) && $true_subscription['status']) || current_user_can("is_sales_manager")) 
     {
         if (current_user_can("is_director")|| current_user_can("is_sales_manager")) 
@@ -20,7 +22,7 @@
 			if($delete)
 			{
 			    
-                            wp_redirect(home_url('/dashboard?part=manage_quiz_questions&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id));
+                            wp_redirect(home_url('/dashboard?part=manage_quiz_questions&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&user_id='.$user_id));
 			    exit();
 			}
 			else

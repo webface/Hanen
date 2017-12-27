@@ -46,8 +46,8 @@
             if (current_user_can("is_director")) 
             {
 ?>
-                <h1 class="article_page_title">Manage Your Custom Modules</h1>
-                <h3>Your Modules</h3>
+                <h1 class="article_page_title"><?= __('Manage Your Custom Modules', 'EOT_LMS')?></h1>
+                <h3><?= __('Your Modules', 'EOT_LMS')?></h3>
 <?php
                 $modules = getModules($org_id); // get all the custom modules belonging to this org
                 if ($modules)// then display datatable 
@@ -56,9 +56,9 @@
                     $moduleTableObj = new stdClass();
                     $moduleTableObj->rows = array();
                     $moduleTableObj->headers = array(
-                        'Title' => 'left',
-                        'Num Resources' => 'center',
-                        'Actions' => 'center'
+                        __('Title', 'EOT_LMS') => 'left',
+                        __('Num Resources', 'EOT_LMS') => 'center',
+                        __('Actions', 'EOT_LMS') => 'center'
                     );
                     foreach ($modules as $module) 
                     {
@@ -66,7 +66,7 @@
                         $moduleTableObj->rows[] = array(
                             '<span>' . stripslashes($module['title']) . '</span>',
                             $num_resources,
-                            '<a href="/dashboard?part=edit_module&module_id=' . $module['ID'] . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_module\')"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp; 
+                            '<a href="?part=edit_module&module_id=' . $module['ID'] . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_module\')"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp; 
                             <a href="' . $admin_ajax_url . '?action=get_module_form&form_name=delete_module&module_id=' . $module['ID'] . '&org_id=' . $org_id .'&user_id=' . $user_id . '" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
                         );
                     }
@@ -77,17 +77,17 @@
                     echo "<div class='bs'><div class='well well-lg'>No Custom Modules yet!</div></div>";
                 }
 ?>
-                <span><em>Create a new module below</em></span><br>
+                <span><em><?= __('Create a new module below', 'EOT_LMS')?></em></span><br>
                 <div class="bs">
                     <div class="well" style="padding:10px">
-                        <form action="/dashboard?part=manage_custom_modules&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
+                        <form action="?part=manage_custom_modules&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
                             <?php wp_nonce_field('submit_module', 'submit_module'); ?>
                             <div class="form-group">
-                                <label for="moduleName">Module Name*</label>
+                                <label for="moduleName"><?= __('Module Name*', 'EOT_LMS')?></label>
                                 <input type="text" class="form-control" id="moduleName" name="moduleName" placeholder="Module Name">
                             </div>
                             <div class="bs form-group">
-                                <label for="moduleDescription">Module Description*</label>
+                                <label for="moduleDescription"><?= __('Module Description*', 'EOT_LMS')?></label>
                                 <textarea class="form-control" rows="3" id="moduleDescription" name="moduleDescription"></textarea>
                             </div>
 
@@ -118,7 +118,7 @@
                             } 
                             else 
                             {
-                                alert("Name and Description fields are mandatory");
+                                alert(<?= __("Name and Description fields are mandatory", 'EOT_LMS')?>);
                                 return false;
                             }
                         })
@@ -128,11 +128,11 @@
                                 {
                                     if (data.success === 'true') 
                                     {
-                                        window.location.href="/dashboard?part=manage_custom_modules&subscription_id=<?=$subscription_id?>&user_id=<?=$user_id?>";
+                                        window.location.href="?part=manage_custom_modules&subscription_id=<?=$subscription_id?>&user_id=<?=$user_id?>";
                                     }
                                     else
                                     {
-                                        alert("There was an error deleting your module");
+                                        alert(<?= __("There was an error deleting your module", 'EOT_LMS')?>);
                                     }
                                 }
                         )
@@ -142,17 +142,17 @@
             } 
             else 
             {
-                echo "Unauthorized!";
+                echo __("Unauthorized!", 'EOT_LMS');
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you", 'EOT_LMS');
         }
     }
     // Could not find the subscription ID
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID", 'EOT_LMS');
     }
 ?>

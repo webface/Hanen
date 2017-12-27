@@ -11,11 +11,11 @@
     $question = $eot_quiz->get_question_by_id($question_id);
 if(!verifyQuiz($quiz_id))
 {
-    die("This quiz does not belong to you");
+    die(__("This quiz does not belong to you", 'EOT_LMS'));
 }
 if(!verifyQuizQuestion($quiz_id, $question_id))
 {
-    die("This quiz question does not belong to you");
+    die(__("This quiz question does not belong to you", 'EOT_LMS'));
 }
     if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
     {
@@ -23,7 +23,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
 ?>
         <h3><?php echo $question['quiz_question'] ?></h3>
         <span class="note">
-            <a href="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id ?>&subscription_id=<?=$subscription_id ?>&user_id=<?=$user_id ?>" onclick="load('load_quiz')"><em>Click here to return to quiz</em></a>
+            <a href="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id ?>&subscription_id=<?=$subscription_id ?>&user_id=<?=$user_id ?>" onclick="load('load_quiz')"><em><?= __('Click here to return to quiz', 'EOT_LMS')?></em></a>
         </span>
 <?php
         $answers = $eot_quiz->get_question_answers($question_id);
@@ -33,8 +33,8 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
             $answersTableObj = new stdClass();
             $answersTableObj->rows = array();
             $answersTableObj->headers = array(
-                'Answer' => 'left',
-                'Correct' => 'center',
+                __('Answer', 'EOT_LMS') => 'left',
+                __('Correct', 'EOT_LMS') => 'center',
             );
 
             // Creating rows for the table
@@ -47,7 +47,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
             }
             CreateDataTable($answersTableObj); // Print the table in the page"
         }
-        echo "<button class='bs btn btn-primary pull-right editBtn' onclick='editQuestion(\"" . $question['quiz_question_type'] . "\")'>Edit</button>";
+        echo "<button class='bs btn btn-primary pull-right editBtn' onclick='editQuestion(\"" . $question['quiz_question_type'] . "\")'>".__('Edit', 'EOT_LMS')."</button>";
 ?>
 
         <div id="editDiv"></div>
@@ -60,7 +60,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
             var answers =<?= json_encode($answers); ?>;
             var html = '<div class="bs panel panel-default">' +
                     '<div class="bs panel-heading">' +
-                    '<div class="bs form-group"><label for="question">Question</label>' +
+                    '<div class="bs form-group"><label for="question"><?= __('Question', 'EOT_LMS')?></label>' +
                     '<input type="text" class="bs form-control" name="question" />' +
                     '<input type="hidden" class="bs form-control" name="question_id" />' +
                     '</div>' +
@@ -71,7 +71,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
                     '</div>';
             var html_form = '<form id="UpdateForm"><div class="bs panel panel-default">' +
                     '<div class="bs panel-heading">' +
-                    '<div class="bs form-group"><label for="question">Question</label>' +
+                    '<div class="bs form-group"><label for="question"><?= __('Question', 'EOT_LMS')?></label>' +
                     '<input type="text" class="bs form-control" name="question" />' +
                     '<input type="hidden" class="bs form-control" name="question_id" />' +
                     '</div>' +
@@ -79,10 +79,10 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
                     '<div class="bs panel-body">' +
                     '</div>' +
                     '<div class="bs panel-footer">' +
-                    '<span><em>Remember to Update when youre done</em><span><br>' +
-                    '<a class="bs btn btn-primary updateBtn">Update</a>&nbsp;' +
-                    '<a class="bs btn btn-primary cancelBtn">Cancel</a>' +
-                    '<a class="bs btn btn-primary addAnswerBtn pull-right">New Answer</a>' +
+                    '<span><em><?= __('Remember to Update when youre done', 'EOT_LMS')?></em><span><br>' +
+                    '<a class="bs btn btn-primary updateBtn"><?= __('Update', 'EOT_LMS')?></a>&nbsp;' +
+                    '<a class="bs btn btn-primary cancelBtn"><?= __('Cancel', 'EOT_LMS')?></a>' +
+                    '<a class="bs btn btn-primary addAnswerBtn pull-right"><?= __('New Answer', 'EOT_LMS')?></a>' +
                     '</div></form>' +
                     '</div>';
             function editQuestion(type) 
@@ -109,7 +109,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
     }
     else
     {
-        echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+        echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.", 'EOT_LMS');
         return;
       }
 ?>

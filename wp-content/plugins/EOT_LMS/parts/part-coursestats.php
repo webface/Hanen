@@ -99,7 +99,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     <h2><?= __("Summary", "EOT_LMS"); ?></h2>
                     <div class="cell-row middle-row">
                         <div class="cell-caption">
-                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="<?= __("The total number of staff (in Staff Groups) who have been assigned this Course.", "EOT_LMS"); ?>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __('The total number of staff (in Staff Groups) who have been assigned this Course.', 'EOT_LMS'); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff given this <b>Course</b>
+                            <i class="fa fa-question-circle" title="<?= __("The total number of staff (in Staff Groups) who have been assigned this Course.", "EOT_LMS"); ?>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __('The total number of staff (in Staff Groups) who have been assigned this Course.', 'EOT_LMS'); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i> <?= __('Staff given this ', 'EOT_LMS')?><b><?= __('Course', 'EOT_LMS')?></b>
                         </div>
                         <div class="cell-field number">
                             <b><?= $total_number_of_staff ?></b>
@@ -107,7 +107,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     </div>
                     <div class="cell-row">
                         <div class="cell-caption">
-                            <img src="<?= get_template_directory_uri() . "/images/info-sm.gif" ?>" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __('The total number of staff who have passed all the required modules in this Course.', 'EOT_LMS'); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"> Staff who have <b>Completed</b> this Course
+                            <i class="fa fa-question-circle" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<?= __('The total number of staff who have passed all the required modules in this Course.', 'EOT_LMS'); ?>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i> <?= __('Staff who have ', 'EOT_LMS')?><b><?= __('Completed', 'EOT_LMS')?></b> <?= __(' this Course', 'EOT_LMS')?>
                         </div>
                         <div class="cell-field number">
                             <b><?= $calculated_num_completed ?></b>

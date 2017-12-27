@@ -68,17 +68,17 @@ if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
 <div class="bs well" style="padding:10px">
     <form action="/dashboard?part=update_quiz" method="POST">
         <div class="bs form-group">
-            <label for="quizName">Quiz Name *</label>
+            <label for="quizName"><?= __('Quiz Name *', 'EOT_LMS')?></label>
             <input type="text" class="bs form-control" id="quizName" name="quizName" placeholder="Quiz Name" value="<?php echo ($quiz['name']);?>">
         </div>
         <div class="bs form-group">
-            <label for="quizDescription">Quiz Description</label>
+            <label for="quizDescription"><?= __('Quiz Description', 'EOT_LMS')?></label>
             <textarea class="bs form-control" rows="3" id="quizDescription" name="quizDescription"><?= ($quiz['description']);?></textarea>
         </div>
         <div class="bs row">
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizAttempts">Number of attempts allowed *<br><em>Leave 0 for unlimited</em></label>
+                    <label for="quizAttempts"><?= __('Number of attempts allowed *', 'EOT_LMS')?><br><em><?= __('Leave 0 for unlimited', 'EOT_LMS')?></em></label>
                     <select class="bs form-control"  id="quizAttempts" name="quizAttempts">
                         <option value="0" <?= ($quiz['num_attempts']==0) ?  'selected': ''; ?>>0</option>
                         <option value="1" <?= ($quiz['num_attempts']==1) ?  'selected': ''; ?>>1</option>
@@ -96,7 +96,7 @@ if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
             </div>
             <div class="bs col-xs-6">
                 <div class="bs form-group">
-                    <label for="quizTime">Time limit for the quiz *<br><em>(in minutes)</em></label>
+                    <label for="quizTime"><?= __('Time limit for the quiz *', 'EOT_LMS')?><br><em><?= __('(in minutes)', 'EOT_LMS')?></em></label>
                     <select class="bs form-control"  id="quizTime" name="quizTimeText">
                         <option value="5" <?= (date('i', strtotime($quiz['time_limit']))==5) ?  'selected': ''; ?>>5</option>
                         <option value="10" <?= (date('i', strtotime($quiz['time_limit']))==10) ?  'selected': ''; ?>>10</option>
@@ -111,10 +111,10 @@ if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
             </div>
         </div>
         <div class="bs row">
-            <div class="bs col-xs-6"><label for="num_questions_to_display">Number of Questions to display <span class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="You have a total of <?= $quiz['questions']?> question(s) in this quiz but you do not have to display all of them. You can select to display only a subset of the questions. We will randomly display that number of questions to your staff."></span></label>
+            <div class="bs col-xs-6"><label for="num_questions_to_display"><?= __('Number of Questions to display', 'EOT_LMS')?> <span class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="You have a total of <?= $quiz['questions']?> question(s) in this quiz but you do not have to display all of them. You can select to display only a subset of the questions. We will randomly display that number of questions to your staff."></span></label>
                 <input type="text" id="num_questions_to_display" name="num_questions_to_display" class="bs form-control" value="<?= ($quiz['num_questions_to_display']) ? $quiz['num_questions_to_display']: 0; ?>"/>
             </div>
-            <div class="bs col-xs-6"><label for="passing_score">Passing Score <span class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Please enter the number of questions a staff member has to answer correctly in order to pass this quiz. Please note that you should set the number of questions based on the number of displayed questions. Eg. If your quiz has 15 questions but you're only displaying 10, a passing requirement of 80% would be 8."></span></label>
+            <div class="bs col-xs-6"><label for="passing_score"><?= __('Passing Score', 'EOT_LMS')?> <span class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Please enter the number of questions a staff member has to answer correctly in order to pass this quiz. Please note that you should set the number of questions based on the number of displayed questions. Eg. If your quiz has 15 questions but you're only displaying 10, a passing requirement of 80% would be 8."></span></label>
                 <input type="text" id="passing_score" name="passing_score" class="bs form-control" value="<?= ($quiz['passing_score']) ? $quiz['passing_score']: 0; ?>"/>
             </div>
         </div>
@@ -137,13 +137,13 @@ if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
         $('form').submit(function () {
             if ($.trim($('#quizName').val()) == '') 
             {
-                alert("Quiz Name is mandatory!");
+                alert(<?= __("Quiz Name is mandatory!", 'EOT_LMS')?>);
                 return false;
             }
             
             if ($('#passing_score').val() > $('#num_questions_to_display').val())
             {
-                alert("Can't have a passing score that's more than the number of questions you are displaying!");
+                alert(<?= __("Can't have a passing score that's more than the number of questions you are displaying!", 'EOT_LMS')?>);
                 return false;
             }
 
@@ -159,7 +159,7 @@ if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
 }
 else
         {
-            echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+            echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.",'EOT_LMS');
             return;
           }
 

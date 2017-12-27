@@ -19,16 +19,16 @@
             } 
             else 
             {
-                echo "ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.";
+                echo __("ERROR: This subscription does not match your user's access permissions. Please contact the administrator at info@expertonlinetraining.com for help with this issue.",'EOT_LMS');
             }
         } 
         else 
         {
-            echo "subscription ID does not belong to you";
+            echo __("subscription ID does not belong to you",'EOT_LMS');
         }
     } 
     else 
     {
-        echo "Could not find the subscription ID";
+        echo __("Could not find the subscription ID",'EOT_LMS');
     }
 ?>

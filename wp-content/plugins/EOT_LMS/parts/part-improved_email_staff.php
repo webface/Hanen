@@ -41,7 +41,8 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 				$email_address = $current_user->user_email;			// Email address in wordpress db wp_users 
 			  	$data = compact ("org_id");
 			  	$courses = getCourses(0,$org_id, 0); // All the courses that are published cause draft courses cant have staff enrolled.
-                                $response = getEotUsers($org_id); // Lists of users in the org
+                                //$response = getEotUsers($org_id); // Lists of users in the org
+                $response = getUsersInSubscription($subscription_id);
 				$users = array(); // Lists of users
 				$incomplete_statuses = array ('not_started', 'in_progress', 'failed'); // the statuses that an incomplete user has
 				$complete_statuses = array ('completed', 'passed'); // the statuses that an incomplete user has

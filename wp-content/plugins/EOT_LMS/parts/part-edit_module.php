@@ -58,7 +58,7 @@
             <a class="btn btn-primary float-l" href="#" onclick="rename_module();"><?= __("Rename Module", "EOT_LMS"); ?></a>
             <h3><?= __("Your Modules Content", "EOT_LMS"); ?></h3>
             <div class="bs">
-                <form method="POST" action="/dashboard?part=edit_module&subscription_id=<?= $subscription_id ?>&module_id=<?= $module_id ?>">
+                <form method="POST" action="?part=edit_module&subscription_id=<?= $subscription_id ?>&module_id=<?= $module_id ?>">
                     <table class="table table-hover table-bordered table-striped files">
                         <thead>
                             <tr>
@@ -197,7 +197,7 @@
                                 {
                                     if (data.success === 'true') 
                                     {
-                                        window.location.href="/dashboard?part=edit_module&module_id=<?= $module_id?>&subscription_id=<?= $subscription_id?>&user_id=<?= $user_id?>";
+                                        window.location.href="?part=edit_module&module_id=<?= $module_id?>&subscription_id=<?= $subscription_id?>&user_id=<?= $user_id?>";
                                     }else{
                                         alert(data.errors);
                                     }

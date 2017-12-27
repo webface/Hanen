@@ -1507,8 +1507,6 @@ function verifyUserAccess ()
 
   }
 
-
-
   // check if were dealing with an uber admin or a director
   if (current_user_can("is_uber_manager"))
   {
@@ -1526,6 +1524,30 @@ function verifyUserAccess ()
         if ($current_user->ID == $manager_id)
         {
           return array ( 'status' => 1 );
+        }
+        else 
+        {
+            // get the uber admin's org id (post id)
+            if($user_id)
+            {
+                $args = array(
+                  'post_type' => 'org',
+                  'author' => $current_user->ID
+                );
+                $posts = get_posts($args);
+                if ($posts)
+                {
+                  $umbrella_group_id = $posts[0]->ID;
+                  if($umbrella_group_id == get_user_meta($user_id,'umbrella_group_id', true))
+                  {
+                     return array ( 'status' => 1 ); 
+                  }
+                  else
+                  {
+                      return array( 'status' => 0, 'message' => __("you dont have permission to manage this user's subscription", "EOT_LMS") );
+                  }
+                }
+            }
         }
 
       }
@@ -1636,7 +1658,30 @@ function verifyUserAccess ()
         {
           return array ( 'status' => 1 );
         }
-
+        else
+        {
+            // get the uber admin's org id (post id)
+            if($user_id)
+            {
+                $args = array(
+                  'post_type' => 'org',
+                  'author' => $current_user->ID
+                );
+                $posts = get_posts($args);
+                if ($posts)
+                {
+                  $umbrella_group_id = get_post_meta($posts[0]->ID,'umbrella_group_id', true);
+                  if($umbrella_group_id ==  get_user_meta($user_id,'umbrella_group_id', true))
+                  {
+                     return array ( 'status' => 1 ); 
+                  }
+                  else
+                  {
+                      return array( 'status' => 0, 'message' => __("you dont have permission to manage this user's subscription", "EOT_LMS") );
+                  }
+                }
+            }
+        }
       }
       else
       {
@@ -2280,6 +2325,7 @@ add_action('wp_ajax_mass_register_ajax', 'mass_register_ajax_callback');
 function mass_register_ajax_callback()
 {
     $org_id = (isset($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
+    $subscription_id = (isset($_REQUEST['subscription_id'])) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
     $result = processUsers(PENDING_USERS_LIMIT, $org_id);
 
     if ($org_id == 0)
@@ -2454,7 +2500,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
       $staff_id = get_user_by('email', $email)->ID;
       if ( get_user_meta($staff_id, 'org_id', true) == $org_id )
       {
-        $result = createWpUser($data, 'student'); // Create WP user
+        $result = createWpUser($data, 'student', $subscription_id); // Create WP user
         if (isset($result['success']) && $result['success'])
         {
           // enroll user in courses 
@@ -2494,7 +2540,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
     else
     {
       // if user doesnt exist in WP, create user in WP 
-      $result = createWpUser($data,'student'); // Create WP and LU user
+      $result = createWpUser($data,'student', $subscription_id); // Create WP and LU user
 
       if (isset($result['success']) && $result['success'])
       {
@@ -2705,7 +2751,8 @@ function org_has_maxed_staff($org_id = 0, $subscription_id = 0)
       }
   }
   
-  $response = getEotUsers($org_id); // gets the users for the org
+  //$response = getEotUsers($org_id); // gets the users for the org
+  $response = getUsersInSubscription($subscription_id);
   if ($response['status'] == 1)
   {
     $users = $response['users'];
@@ -2798,6 +2845,7 @@ function enrollUserInCourse($email = '', $data = array())
     }    
     else
     {
+        $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id,'user_id'=> $user->ID));
         return array('status' => 1);
     } 
 }
@@ -2833,6 +2881,37 @@ function getEotUsers($org_id = 0, $role = 'student')
         $user['user_type'] = 'learner';  // @TODO remove if not used(used in manage_staff_accounts line 90)
         array_push($learners, $user);
       }
+    }
+      return array('status' => 1, 'users' => $learners);
+}
+
+/**
+ * 
+ * @param type $subscription_id - the subscription ID
+ */
+function getUsersInSubscription($subscription_id = 0)
+{
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    if($subscription_id == 0)
+    {
+        return array('status'=> 0, 'message' => __("No subscription id specified", "EOT_LMS"));
+    }
+    global $wpdb;
+    $query = "SELECT u.* FROM ". TABLE_USERS ." u "
+            . "LEFT JOIN ". TABLE_USERS_IN_SUBSCRIPTION." uis "
+            . "ON uis.user_id = u.ID "
+            . "WHERE uis.subscription_id = $subscription_id";
+    $users = $wpdb->get_results($query,ARRAY_A);
+    $learners = array();
+    foreach($users as $user_info)
+    {
+        $user = array();
+        $user['ID'] = $user_info['ID'];
+        $user['email'] = $user_info['user_email'];
+        $user['first_name'] = get_user_meta ($user_info['ID'], "first_name", true);
+        $user['last_name'] = get_user_meta ( $user_info['ID'], "last_name", true);
+        $user['user_type'] = 'learner';  // @TODO remove if not used(used in manage_staff_accounts line 90)
+        array_push($learners, $user);
     }
       return array('status' => 1, 'users' => $learners);
 }
@@ -4137,7 +4216,7 @@ function createUser_callback()
                       // Newly created WP user needs some meta data values added
                       update_user_meta ( $WP_user_id, 'org_id', $org_id );
                       update_user_meta ( $WP_user_id, 'accepted_terms', '0');
- 
+                      $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id));
                       // Create enrollment
                       if($course_id)
                       {
@@ -4186,9 +4265,10 @@ function createUser_callback()
  * Create Wordpress User for upload spreadsheet page
  * @param array $data - user data
  * @param string $role - the user role
+ * @param int $subscription_id - the subscription to add the user into.
  */
 
-function createWpUser($data = array(), $role = 'student')
+function createWpUser($data = array(), $role = 'student', $subscription_id = 0)
 {
    /*******************************************************
    * org_id - The organization ID
@@ -4234,6 +4314,10 @@ function createWpUser($data = array(), $role = 'student')
         // Newly created WP user needs some meta data values added
         update_user_meta ( $WP_user_id, 'org_id', $org_id );
         update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+        if($subscription_id > 0)
+        {
+          $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id));
+        }
         $result['success'] = true;
         $result['name'] = $first_name;
         $result['lastname'] = $last_name;
@@ -4865,7 +4949,6 @@ function enrollUserInCourse_callback ()
           array( 
             '%d', 
             '%d',
-            '%s', 
             '%d',
             '%d' 
         ));
@@ -7223,30 +7306,102 @@ function getCourseForm_callback ( )
         <?php
         $html = ob_get_clean();
         }
+        else if($form_name == "add_previous_staff_to_subscription")
+        {        
+            $year = filter_var($_REQUEST['year'], FILTER_SANITIZE_NUMBER_INT);
+            $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+            $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
+            global $current_user;
+            $learners = getEotUsers($org_id);
+            $learners= $learners['users'];
+            usort($learners, "sort_first_name");
+            global $wpdb;
+            $subscriptions = $wpdb->get_results("SELECT * FROM " . TABLE_USERS_IN_SUBSCRIPTION . " WHERE subscription_id = $subscription_id", ARRAY_A); // Lists of enrollments base on course ID
+            $user_ids_in_subscription = array_column($subscriptions, 'user_id'); // Lists of Ids that are enrolled in the specified course.
+            
+        ?>
+            <div class="title">
+              <div class="title_h2">
+                <?= __("Add Previous Staff to Subscription", "EOT_LMS") ?>
+              </div>
+            </div>
+            <div class="middle" style="padding:0px;clear:both;">
+                    <div class="fixed_fb_width">
+                        <form id="add_previous_staff_to_subscription" frm_name="add_previous_staff_to_subscription" rel="submit_form" hasError=0> 
+                            <div  id="staff_listing" display="staff_list" group_id="null" class="holder osX">
+                                <div  id="staff_listing_pane" class="scroll-pane" style="width: 600px">  
+                                    <div style="width:100%;">
+                                        <div class="errorbox" style="display:none;"></div>
+                                        <?php 
+                                            foreach($learners as $user)
+                                            {
+                                              $name = $user['first_name'] . " " . $user['last_name']; // Learner's First and last name.
+                                              $email = $user['email']; // Learner's email.
+                                              $user_id = $user['ID']; // Learner's user ID
+                                              $nonce = wp_create_nonce ('add-deleteSubscription-userEmail_' . $email);
+                                              if(in_array($user_id, $user_ids_in_subscription))
+                                              {      
+                                        ?>
+                                                <div class="staff_and_assignment_list_row" style="background-color:#D7F3CA; width:100%" >  
+                                                    <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
+                                                    <span class="staff_name" style="font-size:12px;"><?= $email ?></span>
+                                                    <div style="width:140px;text-align:center;float:right;padding-right:35px;">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" email="<?= $email ?>" status="remove" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>" >
+                                                            <?=__('Remove', 'EOT_LMS')?>
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both;">
+                                                    </div> 
+                                                </div> 
+
+                                            <?php
+                                                }
+                                                else 
+                                                {
+                                            ?>
+                                                <div class="staff_and_assignment_list_row" style="width:600px;padding:7px 155px 7px 5px;" >  
+                                                    <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
+                                                    <span class="staff_emai" style="font-size:12px;"><?= $email ?></span>
+                                                    <div style="width:140px;text-align:center;float:right;padding-right:35px;">
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" email="<?= $email ?>" status="add" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>">
+                                                             <?=__('Add', 'EOT_LMS')?>
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both;">
+                                                    </div> 
+                                                </div> 
+                                        <?php
+                                                }
+                                            }                      
+                                        ?>
+
+                                    </div>
+                                </div>
+                            </div>     
+                        </form>
+                    </div>
+                </div>            
+            <div class="popup_footer">
+              <div class="buttons">
+                <a onclick="jQuery(document).trigger('close.facebox');">
+                  <div style="height:15px;padding-top:2px;"> <?= __("Done", "EOT_LMS")?></div>
+                </a>
+              </div>
+            </div>      
+        <?php
+        $html = ob_get_clean();
+        }
         else if($form_name == "add_staff_to_group")
         {        
             $course_id = filter_var($_REQUEST['group_id'], FILTER_SANITIZE_NUMBER_INT);
             $course_name = filter_var($_REQUEST['group_name'], FILTER_SANITIZE_STRING);
             $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT); 
             $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); 
-            $users_info = get_users( array('meta_key' => 'org_id',
-                                           'meta_value' => $org_id,
-                                           'role' => 'student'
-            ));
+            $users_info = getUsersInSubscription($subscription_id);
             $learners = array(); // Lists of learners.
-            if( count($users_info) > 0 )
+            if( count($users_info['users']) > 0 )
             {
-              if($users_info && count($users_info) > 0)
-              {
-                foreach ($users_info as $user_info) 
-                {
-                  $user['first_name'] = get_user_meta ( $user_info->ID, "first_name", true);
-                  $user['last_name'] = get_user_meta ( $user_info->ID, "last_name", true);
-                  $user['email'] = $user_info->user_email;
-                  $user['ID'] = $user_info->ID;
-                  array_push($learners, $user);
-                }
-              }
+              $learners = $users_info['users'];
               usort($learners, "sort_first_name"); // sort learners by first name.
               global $wpdb;
               $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A); // Lists of enrollments base on course ID
@@ -9140,7 +9295,8 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
     $quizzes_in_course = $wpdb->get_results("SELECT DISTINCT cmr.resource_id,c.* FROM ".TABLE_COURSE_MODULE_RESOURCES." as cmr LEFT JOIN ". TABLE_COURSES . " as c ON c.ID = cmr.course_id WHERE c.org_id = $org_id AND c.subscription_id = $subscription_id AND cmr.type = 'exam'",ARRAY_A);
     $quizzes_ids = array_column($quizzes_in_course, 'resource_id');
     $quiz_ids_string = implode(',',$quizzes_ids);
-    $users_in_org = getEotUsers($org_id);
+    //$users_in_org = getEotUsers($org_id);
+    $users_in_org = getUsersInSubscription($subscription_id);
     $users_in_org = isset($users_in_org['users']) ? $users_in_org['users'] : array();
     if(count($users_in_org) == 0)
     {
@@ -10482,10 +10638,76 @@ function add_director_to_uber_umbrella_callback()
       $result['success'] = true;
       $result['display_errors'] = false;
       $result['message'] = "Success";
-   
-      
+
+    echo json_encode($result);
+    wp_die();
+}      
     
     
+/********************************************************************************************************
+ * Add user to subscription
+ *******************************************************************************************************/
+add_action('wp_ajax_enrollUserInSubscription', 'enrollUserInSubscription_callback'); 
+function enrollUserInSubscription_callback () 
+{
+
+    $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); // The organization ID
+    $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // The organization ID
+    $email  = filter_var($_REQUEST['email'],FILTER_SANITIZE_STRING); // The Email Address of the user
+    $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_STRING); // The subscription id
+
+    // Check permissions
+    if(!wp_verify_nonce( $_REQUEST['nonce'], 'add-deleteSubscription-userEmail_' . $email ) )
+    {
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = __("addUserToSubscription_callback error: Sorry, your nonce did not verify.", "EOT_LMS");
+    }
+    else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+    {
+        $result['display_errors'] = 'Failed';
+        $result['success'] = false;
+        $result['errors'] = __("addUserToSubscription_callback error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
+    }
+    else 
+    {
+        global $wpdb;
+        // Save enrollments to the database.
+        $insert = $wpdb->insert(
+          TABLE_USERS_IN_SUBSCRIPTION, 
+          array( 
+            'subscription_id' => $subscription_id,
+            'user_id' => $user_id
+          ), 
+          array( 
+            '%d', 
+            '%d' 
+        ));
+
+        // Didn't save. return an error.
+        if ($insert === FALSE)
+        {
+            // return an error message
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $wpdb->last_error;
+        }
+        else
+        {
+          $user_info = get_user_by('id', $user_id);
+          // Build the response if successful
+          $result['message'] = __("User has been enrolled.", "EOT_LMS");
+          $result['first_name'] = $user_info->first_name;
+          $result['last_name'] = $user_info->last_name;
+          $result['user_id'] = $user_id;
+          $result['org_id'] = $org_id;
+          $result['email'] = $email;
+          $result['success'] = true;
+          $result['insert_id'] = $wpdb->insert_id;
+        }
+
+    }
+
     echo json_encode($result);
     wp_die();
 }
@@ -10530,6 +10752,55 @@ function addCourseToSubscription_callback()
         $result['display_errors'] = true;
         $result['errors'] = __('Could not add the course','EOT_LMS');
       }
+  }
+  echo json_encode($result);
+  wp_die();
+}
+
+
+add_action('wp_ajax_deleteEnrolledUserInSubscription', 'deleteEnrolledUserInSubscription_callback');
+function deleteEnrolledUserInSubscription_callback()
+{ 
+  $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT); // The organization ID
+  $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT); // The organization ID
+  $email  = filter_var($_REQUEST['email'],FILTER_SANITIZE_STRING); // The Email Address of the user
+  $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_STRING); // The subscription id
+  // Check permissions
+  if(!wp_verify_nonce( $_REQUEST['nonce'], 'add-deleteSubscription-userEmail_' . $email ) )
+  {
+      $result['display_errors'] = 'Failed';
+      $result['success'] = false;
+      $result['errors'] = __("deleteEnrolledUserInSubscription_callback Error: Sorry, your nonce did not verify.", "EOT_LMS");
+  }
+  else if( !current_user_can ('is_director') && !current_user_can ('is_sales_rep') )
+  {
+      $result['display_errors'] = 'Failed';
+      $result['success'] = false;
+      $result['errors'] = __("deleteEnrolledUserInSubscription_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
+  }
+  else 
+  {
+    global $wpdb;
+    // Delete the record from our database.
+    $response = $wpdb->delete(TABLE_USERS_IN_SUBSCRIPTION, // Table to delete the data from
+                              array('subscription_id' => $subscription_id, 
+                                    'user_id' => $user_id));
+    // Something went wrong. Display error message.
+    if ($response === FALSE)
+    {
+          // return an error message
+          $result['display_errors'] = true;
+          $result['success'] = false;
+          $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $wpdb->last_error;
+    }
+    else 
+    {
+        // Build the response if successful
+        $result['data'] = 'success';
+        $result['message'] = __("the enrollment has been deleted", "EOT_LMS");
+        $result['email'] = $email;
+        $result['success'] = true;
+    }
   }
   echo json_encode($result);
   wp_die();

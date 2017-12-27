@@ -2,7 +2,7 @@
 $path = WP_PLUGIN_DIR . '/eot_quiz/';
 require $path . 'public/class-eot_quiz_data.php';
 global $current_user;
-$user_id = $current_user->ID; // Wordpress user ID
+$user_id = 0; // EOT user ID
 $org_id = 0;
 $eot_quiz = new EotQuizData();
 $subscription_id = 0;
@@ -31,7 +31,7 @@ if (isset($_POST['submit']))
 
 
     $quiz_id = $eot_quiz->addQuiz($data);
-    $url ='/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id; 
+    $url ='/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id='.$user_id; 
     ob_start();
     header('Location: '.$url);
     ob_end_flush();
@@ -144,6 +144,7 @@ else
             </div>
         </div>
         <input type="hidden" name="subscription_id" value="<?= $subscription_id ?>">
+        <input type="hidden" name="user_id" value="<?= $user_id ?>">
         <input type="submit" class="bs btn btn-primary pull-right" name="submit" value="Submit">
         <span class="clearfix"></span>
     </form>
@@ -175,7 +176,7 @@ else
                 {
                     if(data.success===true)
                     {
-                        window.location.href = "/dashboard?part=manage_quiz&subscription_id=<?= $subscription_id ?>";
+                        window.location.href = "/dashboard?part=manage_quiz&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>";
                     }
                 }
        )

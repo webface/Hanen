@@ -42,12 +42,12 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 //d($resource,$resource_stats);
 ?>
                 <div class="smoothness">
-                                        <h1 class="article_page_title">Resource Viewing Record for "<?= $course_name ?>"</h1>
+                                        <h1 class="article_page_title"><?= __('Resource Viewing Record for ', 'EOT_LMS')?>"<?= $course_name ?>"</h1>
                                         <h2><?= $resource['name'] ?></h2>
                                         <p>
-                                            Here is a table showing when these users have viewed <b><?=$resource['name']?></b>.<br />
-                                            Times are shown in <b>Pacific Standard Time (PST)</b> <span class="small">(GMT - 8).</span><br />
-                                            It is currently <b><?=date('g:ia', time())?></b> on <b><?=date('F j, Y', time())?></b>.
+                                            <?= __('Here is a table showing when these users have viewed ', 'EOT_LMS')?><b><?=$resource['name']?></b>.<br />
+                                            <?= __('Times are shown in', 'EOT_LMS')?> <b><?= __('Pacific Standard Time (PST)', 'EOT_LMS')?></b> <span class="small"><?= __('(GMT - 8).', 'EOT_LMS')?></span><br />
+                                            <?= __('It is currently', 'EOT_LMS')?> <b><?=date('g:ia', time())?></b> <?= __('on', 'EOT_LMS')?> <b><?=date('F j, Y', time())?></b>.
                                         </p>
                                         
                 </div>
@@ -56,8 +56,8 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $usersTableObj = new stdClass();
                             $usersTableObj->rows = array();
                             $usersTableObj->headers = array(
-          '<div>Name</div>' => 'left',
-          '<center><div>Views</div></center>' => 'center'
+          '<div>'.__('Name', 'EOT_LMS').'</div>' => 'left',
+          '<center><div>'.__('Views', 'EOT_LMS').'</div></center>' => 'center'
                             );
                             
                             foreach ($resource_stats as $stat) 
@@ -72,22 +72,22 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 }
             else 
             {
-                echo "You dont have a valid course ID";
+                echo __("You dont have a valid course ID", "EOT_LMS");
             }
         } 
         else 
         {
-            echo "Unauthorized!";
+            echo __("Unauthorized!", "EOT_LMS");
         }
     } 
     else 
     {
-        echo "subscription ID does not belong to you";
+        echo __("subscription ID does not belong to you", "EOT_LMS");
     }
 }
 // Could not find the subscription ID
 else
 {
-    echo "Could not find the subscription ID";
+    echo __("Could not find the subscription ID", "EOT_LMS");
 }
 ?>
