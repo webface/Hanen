@@ -6682,7 +6682,7 @@ function getCourseForm_callback ( )
                                     <label for="chk_video_<?= $module_id ?>">
                                         <span name="video_title" class="<?=$video_class?> video_title">
                                           <b><?= __("Video", "EOT_LMS") ?></b> - <span class="vtitle"><?= $module->title ?></span>
-                                          <a href="?part=view_video&module_id=<?= $module_id?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module->title ?>. This will open a <b>new window</b>.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                                          <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module->title ?>. This will open a <b>new window</b>.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                                           </a>
                                         </span>
                                     </label>
@@ -6775,7 +6775,7 @@ function getCourseForm_callback ( )
 
                                   // show the input checkbox as ususal
 ?>
-                                  <li class="video_item" video_id="<?= $module['ID'] ?>" >
+                                  <li class="video_item" video_id="<?= $module_id ?>" >
                                   <input collection="add_remove_from_group" item="module" org_id=" <?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['ID'] ?>" item_id="<?= $module['ID']?>" id="chk_module_<?= $module['ID'] ?>" name="chk_module_<?= $module['ID'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
                                   <label for="chk_module_<?= $module['ID'] ?>">
                                   <span name="video_title" class="<?=$module_class?> video_title">
@@ -6785,7 +6785,7 @@ function getCourseForm_callback ( )
 
 
                                   <span class="vtitle"><?= $module['title'] ?></span>
-                                  <a href="?part=view_video&module_id=<?= $module_id?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module->title ?>. This will open a new window.<b>', FIX, [t</b>his, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                                  <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module->title ?>. This will open a new window.<b>', FIX, [t</b>his, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                                   </a>
                                   </span><br>
 <?php
