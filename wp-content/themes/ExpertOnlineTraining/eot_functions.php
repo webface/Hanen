@@ -6000,7 +6000,7 @@ function getCourseForm_callback ( )
                           <td class="label"> 
                             <label for="field_staff_accounts"><?= __("Staff Accounts:", "EOT_LMS") ?></label> 
                           <td class="value"> 
-                            <input  type="number" name="staff_accounts" id="staff_accounts" size="20" value="0"/>
+                            <input  type="number" name="staff_credits" id="staff_credits" size="20" value="0"/>
                           </td>
                         </tr>
                         <tr> 
@@ -10186,7 +10186,7 @@ function create_uber_camp_director_callback()
     $ugroup_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
     $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
     $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
-    $staff_credits = (isset($_REQUEST['staff_credits']) && $_REQUEST['staff_credits'] > 0 ) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT):0;
+    $staff_credits = (isset($_REQUEST['staff_credits']) && $_REQUEST['staff_credits'] > 0 ) ? filter_var($_REQUEST['staff_credits'], FILTER_SANITIZE_NUMBER_INT):0;
     $role = 'manager';
     
     if ( !check_admin_referer('create-uber_camp_director_'.$ugroup_id,'my_nonce_field') ) 
@@ -10405,7 +10405,7 @@ function add_director_to_uber_umbrella_callback()
     $camp_user_id = filter_var($_REQUEST['camp_user_id'], FILTER_SANITIZE_NUMBER_INT);
     $type = filter_var($_REQUEST['type'], FILTER_SANITIZE_STRING);
     $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
-    $staff_credits = (isset($_REQUEST['staff_credits']) && $_REQUEST['staff_credits'] > 0 ) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT):0;
+    $staff_credits = (isset($_REQUEST['staff_credits']) && $_REQUEST['staff_credits'] > 0 ) ? filter_var($_REQUEST['staff_credits'], FILTER_SANITIZE_NUMBER_INT):0;
     $role = 'manager';
 
       if($type == "Uber Manager")
