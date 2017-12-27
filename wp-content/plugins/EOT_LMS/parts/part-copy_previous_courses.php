@@ -57,7 +57,8 @@
                                               $name = $course['course_name']; // the course name.
                                               $nonce = wp_create_nonce ('add-deleteCourse_' . $org_id);
                                               if(in_array($name, $course_names))
-                                              {      
+                                              { 
+                                              // the first part of the if statement doesnt have to call ajax to remove a course. this is done on the manage_courses page     
                                         ?>
                                                 <div class="staff_and_assignment_list_row" style="background-color:#D7F3CA; width:100%" >  
                                                     <span class="staff_name" style="font-size:12px;"><?= $name ?></span> 
