@@ -7326,10 +7326,10 @@ function getCourseForm_callback ( )
               </div>
             </div>
             <div class="middle" style="padding:0px;clear:both;">
-                    <div class="fixed_fb_width">
+                    <div class="">
                         <form id="add_previous_staff_to_subscription" frm_name="add_previous_staff_to_subscription" rel="submit_form" hasError=0> 
                             <div  id="staff_listing" display="staff_list" group_id="null" class="holder osX">
-                                <div  id="staff_listing_pane" class="scroll-pane" style="width: 600px">  
+                                <div  id="staff_listing_pane" class="scroll-pane" style="width:600px;overflow-x:hidden !important">  
                                     <div style="width:100%;">
                                         <div class="errorbox" style="display:none;"></div>
                                         <?php 

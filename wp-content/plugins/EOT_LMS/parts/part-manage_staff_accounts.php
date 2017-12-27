@@ -106,7 +106,7 @@
             echo '<div id="noStaffAccount" style="width:100%;text-align:center;font-size:140%;">' . __("Create a Staff Account...", "EOT_LMS") . '</div>';
           }
 ?>
-<div style="width:625px;" class="tableheadboxcontainer">
+<div style="width:100%;" class="tableheadboxcontainer">
   <div class="tablehead-tr">
     <div class="tablehead-tl">
       <div style="padding:7px;margin-left:5px;height:20px">

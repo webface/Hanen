@@ -4692,3 +4692,7 @@ span.gfield_required {
 	#video_selection_form tr.nomatch { background-color: #FF9E9E; }
 	#form_results_status { display:none; width: 90%; padding: 10px 5%; background: #FFCFCF; font-weight: bold; margin-top: 10px; }
 	#form_results_results { display:none; width: 90%; padding: 10px 5%; background: #FFE3E3; }
+
+#add_previous_staff_to_subscription > .staff_and_assignment_list_row{
+	width:100% !important;
+}
