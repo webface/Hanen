@@ -6280,7 +6280,6 @@ function getCourseForm_callback ( )
         {
             $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT);
             $course_name = filter_var($_REQUEST['course_name'], FILTER_SANITIZE_STRING);
-            $portal_subdomain = filter_var($_REQUEST['portal_subdomain'], FILTER_SANITIZE_STRING);
             ob_start();
         ?>
             <div class="title">
@@ -6301,7 +6300,6 @@ function getCourseForm_callback ( )
                             <td class="value"> 
                                 <input type="hidden" name="org_id" value="<?= $org_id ?>" /> 
                                 <input type="hidden" name="group_id" value="<?= $course_id ?>" />
-                                <input type="hidden" name="portal_subdomain" value="<?= $portal_subdomain ?>" />
                                 <?php wp_nonce_field( 'delete-course_' . $course_id ); ?>
                             </td> 
                         </tr> 
@@ -10492,7 +10490,7 @@ function add_director_to_uber_umbrella_callback()
     wp_die();
 }
 
-
+// duplicate the course to users 
 add_action('wp_ajax_addCourseToSubscription', 'addCourseToSubscription_callback');
 function addCourseToSubscription_callback()
 {
@@ -10515,9 +10513,8 @@ function addCourseToSubscription_callback()
   }
   else 
   {
-      global $wpdb;
       $data = compact( "org_id", "user_id", "subscription_id");
-      $course = $wpdb->get_row("SELECT * FROM ". TABLE_COURSES . " WHERE ID = $course_id", ARRAY_A);
+      $course = getCourse($course_id); 
       $course_name = $course['course_name'];
       $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
       if (isset($response['status']) && $response['status']) 

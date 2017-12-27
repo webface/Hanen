@@ -370,6 +370,7 @@ function handle_steps_callback () {
 					if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'Stripe')
 					{
 
+						$trans_id = ''; // define empty value as default.
 						if (!isset($_REQUEST['cc_card']) && ($_REQUEST['cc_num'] == '' || $_REQUEST['cc_cvc'] == '')) 
 						{
 							throw new Exception("You must choose a credit card or add a new credit card.");
