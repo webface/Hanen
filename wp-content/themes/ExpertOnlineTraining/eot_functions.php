@@ -6000,7 +6000,7 @@ function getCourseForm_callback ( )
                           <td class="label"> 
                             <label for="field_staff_accounts"><?= __("Staff Accounts:", "EOT_LMS") ?></label> 
                           <td class="value"> 
-                            <input  type="number" name="staff_accounts" id="staff_accounts" size="20" value="0"/>
+                            <input  type="number" name="staff_credits" id="staff_credits" size="20" value="0"/>
                           </td>
                         </tr>
                         <tr> 
