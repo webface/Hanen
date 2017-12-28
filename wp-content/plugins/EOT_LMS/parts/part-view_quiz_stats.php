@@ -30,6 +30,10 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
                 $eot_quiz = new EotQuizData();
                 $quiz_id = filter_var($_REQUEST['quiz_id'],FILTER_SANITIZE_NUMBER_INT);
                 $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
+                if(!verifyStatsUser())
+                {
+                    die(__('You dont have permission to view this user\'s stats','EOT_LMS'));
+                }
                 $attempt_id = filter_var($_REQUEST['attempt_id'],FILTER_SANITIZE_NUMBER_INT);
                 $suser_id = filter_var($_REQUEST['stats_user_id'],FILTER_SANITIZE_NUMBER_INT); // The user ID
                 $fullname = get_user_meta($suser_id, 'first_name', true)." ".get_user_meta($suser_id, 'last_name', true);

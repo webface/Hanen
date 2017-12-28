@@ -52,7 +52,10 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $video = getVideoById($video_id, true);
                 $stats= getTrack($suser_id, $video_id, 'watch_custom_video');
                 }
-                
+                if(!verifyStatsUser())
+                {
+                    die(__('You dont have permission to view this user\'s stats','EOT_LMS'));
+                }
                //d($stats,$video_id,$video);
 ?>
                 <div class="smoothness">

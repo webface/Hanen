@@ -10814,3 +10814,27 @@ function deleteEnrolledUserInSubscription_callback()
   echo json_encode($result);
   wp_die();
 }
+
+// confirm that the stats user id's org is the same as the current user's org
+function verifyStatsUser()
+{
+  global $current_user;
+  $current_user_id =  $current_user->ID;
+  
+  if(isset($_REQUEST['stats_user_id']) && $_REQUEST['stats_user_id'] > 0)
+  {
+    $stats_user_id = filter_var($_REQUEST['stats_user_id'], FILTER_SANITIZE_NUMBER_INT);
+    if(get_user_meta($stats_user_id,'org_id', true) == get_user_meta($current_user_id,'org_id', true))
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else
+  {
+    return false;
+  }
+}

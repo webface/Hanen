@@ -41,6 +41,10 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $resource = getResourceById($resource_id);
                 $stats= trackResource($suser_id, $resource_id);
                 //d($stats);
+                if(!verifyStatsUser())
+                {
+                    die(__('You dont have permission to view this user\'s stats','EOT_LMS'));
+                }
 ?>
                 <div class="smoothness">
                                         <h1 class="article_page_title"><?= __('Video Viewing Record for', 'EOT_LMS')?> "<?= $fullname ?>"</h1>
