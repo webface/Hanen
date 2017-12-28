@@ -31,7 +31,7 @@ if (isset($_POST['submit']))
 
 
     $quiz_id = $eot_quiz->addQuiz($data);
-    $url ='/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id='.$user_id; 
+    $url ='?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id='.$user_id; 
     ob_start();
     header('Location: '.$url);
     ob_end_flush();
@@ -98,7 +98,7 @@ else
 <span><em>Create a new quiz below</em></span><br>
 
 <div class="bs well" style="padding:10px">
-    <form action="/dashboard?part=manage_quiz" method="POST">
+    <form action="?part=manage_quiz_eot" method="POST">
         <?php wp_nonce_field('submit_quiz', 'submit_quiz'); ?>
         <div class="bs form-group">
             <label for="quizName">Quiz Name *</label>
@@ -176,7 +176,7 @@ else
                 {
                     if(data.success===true)
                     {
-                        window.location.href = "/dashboard?part=manage_quiz&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>";
+                        window.location.href = "?part=manage_quiz&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>";
                     }
                 }
        )

@@ -289,5 +289,9 @@ function get_users_in_org ($org_id) {
  * @return org_id
 **/
 function get_org_from_user ($user_id) {
+	if($user_id == 0)
+	{
+		return 0;
+	}
 	return get_user_meta ($user_id, 'org_id', true);
 }
