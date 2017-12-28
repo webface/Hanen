@@ -92,28 +92,31 @@ function watchVideo()
     </script>
 <?php
                 // Tables that will be displayed in the front end.
-                            $usersTableObj = new stdClass();
-                            $usersTableObj->rows = array();
-                            $usersTableObj->headers = array(
-          '<div>Name</div>' => 'left',
-          '<center><div>Views</div></center>' => 'center'
-                            );
-                            
-                            foreach ($video_stats as $stat) 
-                            {   
-                               $custom = 0;
-                               if($stat['type'] == 'watch_custom_video')
-                               {
-                                   $custom = 1;
-                               }
-                               $usersTableObj->rows[] = array(
-                                    $stat['display_name'],
-                                    "<a href='?part=videostatsview&course_id=$course_id&custom=$custom&video_id=".$video_id."&stats_user_id=".$stat['user_id']."&subscription_id=$subscription_id&user_id=$user_id'>1</a>"
-                                    ); 
-                                
-                            }
-                            CreateDataTable($usersTableObj,"100%",10,true,"Stats"); // Print the table in the page
+                $usersTableObj = new stdClass();
+                $usersTableObj->rows = array();
+                $usersTableObj->headers = array(
+                    '<div>'.__('Name', 'EOT_LMS').'</div>' => 'left',
+                    '<div>'.__('Email', 'EOT_LMS').'</div>' => 'center',
+                    '<center><div>'.__('Views', 'EOT_LMS').'</div></center>' => 'center'
+                );
+                
+                foreach ($video_stats as $stat) 
+                {   
+                   $custom = 0;
+                   if($stat['type'] == 'watch_custom_video')
+                   {
+                       $custom = 1;
+                   }
+                   $user_info = get_userdata($stat['user_id']);
+                   $usersTableObj->rows[] = array(
+                        $stat['display_name'],
+                        $user_info->user_email,
+                        "<a href='?part=videostatsview&course_id=$course_id&custom=$custom&video_id=".$video_id."&stats_user_id=".$stat['user_id']."&subscription_id=$subscription_id&user_id=$user_id'>1</a>"
+                        ); 
+                    
                 }
+                CreateDataTable($usersTableObj,"100%",10,true,"Stats"); // Print the table in the page
+            }
             else 
             {
                 echo __("You dont have a valid course ID",'EOT_LMS');

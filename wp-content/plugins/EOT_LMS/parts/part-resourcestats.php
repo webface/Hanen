@@ -57,13 +57,16 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             $usersTableObj->rows = array();
                             $usersTableObj->headers = array(
           '<div>'.__('Name', 'EOT_LMS').'</div>' => 'left',
+          '<div>'.__('Email', 'EOT_LMS').'</div>' => 'center',
           '<center><div>'.__('Views', 'EOT_LMS').'</div></center>' => 'center'
                             );
                             
                             foreach ($resource_stats as $stat) 
                             {
-                               $usersTableObj->rows[] = array(
+                                $user_info = get_userdata($stat['user_id']);
+                                $usersTableObj->rows[] = array(
                                     $stat['display_name'],
+                                    $user_info->user_email,
                                     "<a href='?part=resourcestatsview&course_id=$course_id&resource_id=".$stat['resource_id']."&stat_user_id=".$stat['user_id']."&subscription_id=$subscription_id&user_id=$user_id'>1</a>"
                                     ); 
                                 
