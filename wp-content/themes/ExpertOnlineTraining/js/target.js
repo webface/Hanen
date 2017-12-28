@@ -261,10 +261,10 @@ jQuery(document).ready(function ($) {
             usr_email: {
                 checkEmail: true        //calling checkEmail method on the email field
             },
-            org_subdomain: {
-                checkPortalRegex: true,  // check portal is letters only
-                checkPortal: true       //calling checkPortal method on the portal name field
-            },
+//            org_subdomain: {
+//                checkPortalRegex: true,  // check portal is letters only
+//                checkPortal: true       //calling checkPortal method on the portal name field
+//            },
             org_name: {
                 checkNameRegex: true
             }
