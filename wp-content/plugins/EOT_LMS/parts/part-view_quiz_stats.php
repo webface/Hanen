@@ -56,7 +56,7 @@ wp_enqueue_script('buttons-print', get_template_directory_uri() . '/js/buttons.p
                 <h3><?= $quiz_data['quiz']['name']; ?></h3>
                 <p><?= $quiz_data['quiz']['description']; ?><p>
                 <span><strong><?= __("Time Limit:", "EOT_LMS"); ?> </strong><?= $quiz_data['quiz']['time_limit']; ?> <?= __("minutes", "EOT_LMS"); ?></span><br>
-                <span><strong><?= __("Passing Score:", "EOT_LMS"); ?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
+                <span><strong><?= __("Passing Score:", "EOT_LMS"); ?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['num_questions_to_display']; ?></span><br>
             <?php 
                 foreach ($quiz_data['questions'] as $question) 
                 {

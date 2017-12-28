@@ -17,7 +17,7 @@
     <p><?= $quiz_data['quiz']['description']; ?><p>
 
     <span><strong><?= __('Time Limit:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['time_limit']; ?> <?= __('minutes', 'EOT_LMS')?></span><br>
-    <span><strong><?= __('Passing Score:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['questions']; ?></span><br>
+    <span><strong><?= __('Passing Score:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['num_questions_to_display']; ?></span><br>
     <?= '<a  href="?part=update_quiz&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '">'.__('Edit quiz details', 'EOT_LMS').'</a>'; ?>
 
 <?php 

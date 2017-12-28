@@ -1,8 +1,12 @@
 <?php
+/**
+ * This manager the EOT specific quizzes, ie. the LE quizzes, etc... Therefor need user_id = 0.
+ */ 
+
 $path = WP_PLUGIN_DIR . '/eot_quiz/';
 require $path . 'public/class-eot_quiz_data.php';
 global $current_user;
-$user_id = 0; // EOT user ID
+$user_id = 0; // EOT user ID cause were managing EOT's quizzes, not a user's quizzes.
 $org_id = 0;
 $eot_quiz = new EotQuizData();
 $subscription_id = 0;
