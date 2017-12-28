@@ -282,7 +282,7 @@ if (isset($_POST['submit']))
 
     function addNewQuestion(type) 
     {
-        var label = prompt(<?= __("Please enter your question", 'EOT_LMS')?>);
+        var label = prompt("<?= __("Please enter your question", 'EOT_LMS')?>");
 
         if (label === null || label === false || label === '') 
         { // Canceled
@@ -319,7 +319,7 @@ if (isset($_POST['submit']))
                 data: {'title': $('#heading0 .panel-title a').html()},
                 error: function () 
                 {
-                    $.facebox(<?= __('There was an error loading the title. Please try again shortly.', 'EOT_LMS')?>);
+                    $.facebox("<?= __('There was an error loading the title. Please try again shortly.', 'EOT_LMS')?>");
                 },
                 success: function (data)
                 {
@@ -433,7 +433,7 @@ $quiz_id = $quiz['ID'];
             if ($('#SaveQuestion #type').val() == "choice") {
                 //console.log('creating a multiple choice question');
                 if (!$("input[name='correctquestion_0']:checked").val()) {
-                    alert(<?= __('You didnt select a correct answer!', 'EOT_LMS')?>);
+                    alert("<?= __('You didnt select a correct answer!', 'EOT_LMS')?>");
                     return false;
                 }
 
