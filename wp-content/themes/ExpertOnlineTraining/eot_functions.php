@@ -2325,7 +2325,6 @@ add_action('wp_ajax_mass_register_ajax', 'mass_register_ajax_callback');
 function mass_register_ajax_callback()
 {
     $org_id = (isset($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
-    $subscription_id = (isset($_REQUEST['subscription_id'])) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
     $result = processUsers(PENDING_USERS_LIMIT, $org_id);
 
     if ($org_id == 0)
@@ -2845,7 +2844,8 @@ function enrollUserInCourse($email = '', $data = array())
     }    
     else
     {
-        $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id,'user_id'=> $user->ID));
+        $today = current_time( 'Y-m-d' );
+        $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $user->ID, 'date' => $today));
         return array('status' => 1);
     } 
 }
@@ -4216,7 +4216,8 @@ function createUser_callback()
                       // Newly created WP user needs some meta data values added
                       update_user_meta ( $WP_user_id, 'org_id', $org_id );
                       update_user_meta ( $WP_user_id, 'accepted_terms', '0');
-                      $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id));
+                      $today = current_time( 'Y-m-d' );
+                      $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id, 'date' => $today));
                       // Create enrollment
                       if($course_id)
                       {
@@ -4316,7 +4317,8 @@ function createWpUser($data = array(), $role = 'student', $subscription_id = 0)
         update_user_meta ( $WP_user_id, 'accepted_terms', '0');
         if($subscription_id > 0)
         {
-          $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id));
+          $today = current_time( 'Y-m-d' );
+          $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id, 'date' => $today));
         }
         $result['success'] = true;
         $result['name'] = $first_name;
@@ -4849,6 +4851,7 @@ function deleteStaffAccount_callback ()
                     {
                         // Build the response if successful
                         $deleted_enrollment = $wpdb->delete(TABLE_ENROLLMENTS, array('user_id'=>$user->ID)); // must delete their enrollment as well.
+                        $deleted_user_in_sub = $wpdb->delete(TABLE_USERS_IN_SUBSCRIPTION, array('user_id'=>$user->ID, 'subscription_id'=>$subscription_id)); // must delete their user in subscription entry as well
                         $result['data'] = 'success';
                         $result['user_id'] = $staff_id;
                         $result['success'] = true;
@@ -4987,6 +4990,7 @@ function deleteEnrolledUser_callback ()
     $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
     $enrollment_id = filter_var($_REQUEST['enrollment_id'],FILTER_SANITIZE_NUMBER_INT);
     $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
 
     // Check permissions
     if(wp_verify_nonce( $_REQUEST['nonce'], 'process-userEmail_' . $email ) )
@@ -5018,6 +5022,8 @@ function deleteEnrolledUser_callback ()
       }
       else 
       {
+          $deleted_user_in_sub = $wpdb->delete(TABLE_USERS_IN_SUBSCRIPTION, array('user_id'=>$user_id, 'subscription_id'=>$subscription_id)); // must delete their user in subscription entry as well
+
           // Build the response if successful
           $result['data'] = 'success';
           $result['message'] = __("the enrollment has been deleted", "EOT_LMS");
@@ -10673,15 +10679,18 @@ function enrollUserInSubscription_callback ()
     {
         global $wpdb;
         // Save enrollments to the database.
+        $today = current_time( 'Y-m-d' );
         $insert = $wpdb->insert(
           TABLE_USERS_IN_SUBSCRIPTION, 
           array( 
             'subscription_id' => $subscription_id,
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'date' => $today
           ), 
           array( 
             '%d', 
-            '%d' 
+            '%d',
+            '%s' 
         ));
 
         // Didn't save. return an error.

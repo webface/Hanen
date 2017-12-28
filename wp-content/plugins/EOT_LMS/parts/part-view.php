@@ -229,7 +229,6 @@
                                 $this = $(this);
                                 
                                 if( this.currentTime > ( this.duration - 30 ) ) {
-                                    console.log(this.currentTime);
                                         if(!video_ended)
                                         {
                                                 video_ended=true;                            
@@ -237,7 +236,7 @@
                                                 $("#quiz").show();
                                                 $(".loadingQuiz").show();
                                                 $(".takeQuiz").hide();
-                                                var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$('this').attr("track-id")+"&status=finish&type=watch_video";
+                                                var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
                                                 $.ajax({
                                                 url:url,
                                             success:
