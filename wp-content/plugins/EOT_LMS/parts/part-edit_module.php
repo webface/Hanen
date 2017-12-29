@@ -120,6 +120,9 @@
                         <a href="#" class="btn btn-primary addBtn">Add</a>
                     </div>
                 </div>
+                <br>
+                <br>
+                <span class="bs"><a class="btn btn-success" href="?part=manage_custom_modules&subscription_id=<?= $subscription_id; ?>&user_id=<?= $user_id ?>"><?= __("I'm done for now", "EOT_LMS") ?>&nbsp;&nbsp;<i class="fa fa-exclamation"></i></a></span>
                 <script>
                     $(document).ready(function () {
                         $('a[rel*=facebox]').facebox();
