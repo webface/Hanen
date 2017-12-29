@@ -202,7 +202,6 @@
                                 $this = $(this);
                                 
                                 if( this.currentTime > ( this.duration - 30 ) ) {
-                                    console.log(this.currentTime);
                                         if(!video_ended)
                                         {
                                                 video_ended=true;                            
