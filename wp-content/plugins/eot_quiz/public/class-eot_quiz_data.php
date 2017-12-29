@@ -126,7 +126,7 @@ class EotQuizData
     public function get_quiz_questions($quiz_id = 0)
     {
         global $wpdb;
-        $questions = $wpdb->get_results("SELECT q.ID,q.quiz_question,q.quiz_question_type, "
+        $questions = $wpdb->get_results("SELECT q.ID,q.quiz_question,q.quiz_question_type,q.feedback_correct,q.feedback_incorrect, "
                 . "COUNT(qa.answer_text) AS answers "
                 . "FROM " . TABLE_QUIZ_QUESTION . " AS q "
                 . "LEFT JOIN " . TABLE_QUIZ_ANSWER . " AS qa ON q.ID=qa.question_id "
@@ -202,5 +202,18 @@ class EotQuizData
         $lastid = $wpdb->insert_id;
         return $lastid;
     }
-
+    
+    public function updateFeedback($data = array(), $id = 0)
+    {
+        global $wpdb;
+        $result = $wpdb->update(TABLE_QUIZ_QUESTION, $data, array('ID' => $id),array('%s','%s'));
+        if ($result === false) 
+        {
+            return false;
+        } 
+        else 
+        {
+            return true;
+        }
+    }
 }

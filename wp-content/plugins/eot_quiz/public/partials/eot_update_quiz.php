@@ -69,11 +69,11 @@ if(current_user_can( "is_director" ) || current_user_can("is_sales_manager"))
     <form action="/dashboard?part=update_quiz" method="POST">
         <div class="bs form-group">
             <label for="quizName"><?= __('Quiz Name *', 'EOT_LMS')?></label>
-            <input type="text" class="bs form-control" id="quizName" name="quizName" placeholder="Quiz Name" value="<?php echo ($quiz['name']);?>">
+            <input type="text" class="bs form-control" id="quizName" name="quizName" placeholder="Quiz Name" value="<?php echo esc_attr($quiz['name']);?>">
         </div>
         <div class="bs form-group">
             <label for="quizDescription"><?= __('Quiz Description', 'EOT_LMS')?></label>
-            <textarea class="bs form-control" rows="3" id="quizDescription" name="quizDescription"><?= ($quiz['description']);?></textarea>
+            <textarea class="bs form-control" rows="3" id="quizDescription" name="quizDescription"><?= esc_attr($quiz['description']);?></textarea>
         </div>
         <div class="bs row">
             <div class="bs col-xs-6">

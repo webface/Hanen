@@ -13,19 +13,18 @@
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
     $quiz_data = $eot_quiz->get_quiz_data($quiz_id, false);
 ?>
-    <h3><?= $quiz_data['quiz']['name']; ?></h3>
-    <p><?= $quiz_data['quiz']['description']; ?><p>
+    <h3><?= esc_attr($quiz_data['quiz']['name']); ?></h3>
+    <p><?= $esc_attr(quiz_data['quiz']['description']); ?><p>
 
     <span><strong><?= __('Time Limit:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['time_limit']; ?> <?= __('minutes', 'EOT_LMS')?></span><br>
     <span><strong><?= __('Passing Score:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['num_questions_to_display']; ?></span><br>
     <?= '<a  href="?part=update_quiz&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '">'.__('Edit quiz details', 'EOT_LMS').'</a>'; ?>
-
 <?php 
     foreach ($quiz_data['questions'] as $question) 
     { 
 ?>
     <hr>
-    <h4><?= __('Question:', 'EOT_LMS')?> <?= $question['quiz_question']; ?></h4>
+    <h4><?= __('Question:', 'EOT_LMS')?> <?= esc_attr($question['quiz_question']); ?></h4>
     <p><?= __('Answers', 'EOT_LMS')?></p>
     <ul>
 <?php
@@ -43,6 +42,6 @@
 ?>
     </ul>
 <?php
-    echo '<a href="/dashboard?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">'.__('Edit question & answers', 'EOT_LMS').'</a>';
+    echo '<a href="?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">'.__('Edit question & answers', 'EOT_LMS').'</a>';
     }
 ?>

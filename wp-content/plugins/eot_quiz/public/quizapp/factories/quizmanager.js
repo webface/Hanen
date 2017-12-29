@@ -54,6 +54,7 @@
             quiz_preloader: quizapp.preloader,
             quizIsLoading: true,
             quizActive: false,
+            quiz_id:quiz_id,
             course_id:course_id,
             enrollment_id:enrollment_id,
             resultsActive: false,

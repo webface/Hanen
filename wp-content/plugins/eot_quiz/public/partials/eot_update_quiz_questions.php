@@ -49,6 +49,10 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
         }
         echo "<br><br><span class='bs done-btn'><a href='?part=manage_quiz&subscription_id=".$subscription_id."&user_id=".$user_id."' class='btn btn-success'>".__("I'm done for now", "EOT_LMS")."&nbsp;&nbsp;<i class='fa fa-exclamation'></i></a></span>";
         echo "<button class='bs btn btn-primary pull-right editBtn' onclick='editQuestion(\"" . $question['quiz_question_type'] . "\")'>".__('Edit', 'EOT_LMS')."</button>";
+        if ($answers) 
+        {
+          echo '<span class ="bs pull right"><a href="?part=quiz_feedback&quiz_id='.$quiz_id.'&subscription_id='.$subscription_id.'&question_id='.$question_id.'&user_id='.$user_id.'" class="btn btn-success">'.__("Edit Feedback", "EOT_LMS").'&nbsp;&nbsp;<i class="fa fa-comment-o"></i></a></span>';  
+        }
 ?>
 
         <div id="editDiv"></div>

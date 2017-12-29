@@ -215,7 +215,12 @@ if (isset($_POST['submit']))
             'answer_correct' => 1
         );
         $eot_quiz->addAnswer($data);
-    }
+        }
+    $url ='/dashboard?part=quiz_feedback&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&question_id='.$question_id; 
+    ob_start();
+    header('Location: '.$url);
+    ob_end_flush();
+    die();
 }
 ?>
 <script>
@@ -387,6 +392,7 @@ $quiz_id = $quiz['ID'];
         __('Type','EOT_LMS') => 'center',
         __('Num Answers','EOT_LMS') => 'center',
         __('Actions','EOT_LMS') => 'center',
+        __('Give Feedback','EOT_LMS') => 'center',
         __('Delete','EOT_LMS') => 'center',
     );
 
@@ -396,8 +402,10 @@ $quiz_id = $quiz['ID'];
             '<span>' . stripslashes($question['quiz_question']) . '</span>', // Transaction Date
             $question['quiz_question_type'],
             $question['answers'],
-            '<a href="/dashboard?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', // The name of the camp,
-            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id=' . $user_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',);
+            '<a href="?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', // The name of the camp
+            '<a href="?part=quiz_feedback&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '&user_id=' . $user_id . '" data-type="Question"><i class="fa fa-comment-o" aria-hidden="true"></i></a>',
+            '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id=' . $user_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
+        );
     }
     CreateDataTable($questionsTableObj); // Print the table in the page
 
