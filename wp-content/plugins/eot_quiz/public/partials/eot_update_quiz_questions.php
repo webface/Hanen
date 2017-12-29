@@ -47,6 +47,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
             }
             CreateDataTable($answersTableObj); // Print the table in the page"
         }
+        echo "<br><br><span class='bs done-btn'><a href='?part=manage_quiz&subscription_id=".$subscription_id."&user_id=".$user_id."' class='btn btn-success'>".__("I'm done for now", "EOT_LMS")."&nbsp;&nbsp;<i class='fa fa-exclamation'></i></a></span>";
         echo "<button class='bs btn btn-primary pull-right editBtn' onclick='editQuestion(\"" . $question['quiz_question_type'] . "\")'>".__('Edit', 'EOT_LMS')."</button>";
 ?>
 
@@ -88,7 +89,7 @@ if(!verifyQuizQuestion($quiz_id, $question_id))
             function editQuestion(type) 
             {
                 //console.log("Editing: " + type);
-                $('.dataTables_wrapper').hide();
+                $('.dataTables_wrapper, .done-btn').hide();
                 $('.editBtn').hide();
                 $('.note').hide();
                 switch (type) 

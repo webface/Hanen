@@ -9345,6 +9345,12 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
     $quizzes_in_course = $wpdb->get_results("SELECT DISTINCT cmr.resource_id,c.* FROM ".TABLE_COURSE_MODULE_RESOURCES." as cmr LEFT JOIN ". TABLE_COURSES . " as c ON c.ID = cmr.course_id WHERE c.org_id = $org_id AND c.subscription_id = $subscription_id AND cmr.type = 'exam'",ARRAY_A);
     $quizzes_ids = array_column($quizzes_in_course, 'resource_id');
     $quiz_ids_string = implode(',',$quizzes_ids);
+
+    if($quiz_ids_string == "")
+    {
+      return 0;
+    }
+
     //$users_in_org = getEotUsers($org_id);
     $users_in_org = getUsersInSubscription($subscription_id);
     $users_in_org = isset($users_in_org['users']) ? $users_in_org['users'] : array();

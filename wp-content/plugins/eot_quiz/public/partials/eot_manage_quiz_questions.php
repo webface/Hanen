@@ -400,9 +400,11 @@ $quiz_id = $quiz['ID'];
             '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id=' . $user_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>',);
     }
     CreateDataTable($questionsTableObj); // Print the table in the page
+
     echo "<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=choice' rel='facebox'>".__('Add Choice Question','EOT_LMS')."&nbsp;<span class='fa fa-circle-o'></span></a>";
     echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=checkbox' rel='facebox'>".__('Add Checkbox Question', 'EOT_LMS')."&nbsp;<span class='fa fa-check-square-o'></span></a>";
     echo "&nbsp;<a class='bs btn btn-primary  createBtn' href='" . $admin_ajax_url . "?action=get_quiz_form&form_name=add_title&type=text' rel='facebox'>".__('Add Text Question', 'EOT_LMS')."&nbsp;<span class='fa fa-file-text-o'></span></a>";
+    echo "<br><br><span class='bs'><a href='?part=manage_quiz&subscription_id=".$subscription_id."&user_id=".$user_id."' class='btn btn-success'>".__("I'm done for now", "EOT_LMS")."&nbsp;&nbsp;<i class='fa fa-exclamation'></i></a></span>";
     ?>
     <?php
 } else {
