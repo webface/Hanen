@@ -216,7 +216,7 @@ if (isset($_POST['submit']))
         );
         $eot_quiz->addAnswer($data);
         }
-    $url ='/dashboard?part=quiz_feedback&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&question_id='.$question_id; 
+    $url ='?part=quiz_feedback&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&question_id='.$question_id . '&user_id=' . $user_id; 
     ob_start();
     header('Location: '.$url);
     ob_end_flush();
@@ -367,7 +367,7 @@ if (isset($_POST['submit']))
             function (event, data)
             {
                 if (data.success === true) {
-                    window.location.href = "/dashboard?part=manage_quiz_questions&quiz_id=<?=$quiz_id?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>";
+                    window.location.href = "?part=manage_quiz_questions&quiz_id=<?=$quiz_id?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>";
                 }
             }
     )
@@ -393,7 +393,7 @@ $quiz_id = $quiz['ID'];
         __('Num Answers','EOT_LMS') => 'center',
         __('Actions','EOT_LMS') => 'center',
         __('Give Feedback','EOT_LMS') => 'center',
-        __('Delete','EOT_LMS') => 'center',
+        __('Delete','EOT_LMS') => 'center'
     );
 
     // Creating rows for the table
@@ -402,7 +402,7 @@ $quiz_id = $quiz['ID'];
             '<span>' . stripslashes($question['quiz_question']) . '</span>', // Transaction Date
             $question['quiz_question_type'],
             $question['answers'],
-            '<a href="?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', // The name of the camp
+            '<a href="?part=update_quiz_questions&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '" onclick="load(\'load_edit_quiz\')">Edit question & answers</a>', 
             '<a href="?part=quiz_feedback&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '&user_id=' . $user_id . '" data-type="Question"><i class="fa fa-comment-o" aria-hidden="true"></i></a>',
             '<a href="' . $admin_ajax_url . '?action=get_quiz_form&form_name=delete_question&question_id=' . $question['ID'] . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id.'&user_id=' . $user_id . '" data-type="Question" class="delete" rel="facebox"><i class="fa fa-trash" aria-hidden="true"></i></a>'
         );
@@ -426,7 +426,7 @@ $quiz_id = $quiz['ID'];
 <div id="createQuestion" style="display:none">
     <h3><?= __('Create Question', 'EOT_LMS')?></h3>
     <p><?= __('Click the question name to create and edit answers before saving', 'EOT_LMS')?>.</p>
-    <form id="SaveQuestion" action="/dashboard?part=manage_quiz_questions&quiz_id=<?= $quiz_id; ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
+    <form id="SaveQuestion" action="?part=manage_quiz_questions&quiz_id=<?= $quiz_id; ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
         <?php wp_nonce_field('save_question', 'save_question'); ?>
         <div class="bs panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>
         <input type="hidden" name="quiz_id" value="<?= $quiz_id; ?>"/>

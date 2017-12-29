@@ -36,7 +36,7 @@ if(isset($_POST['feedback']))
     $update_feedback = $eot_quiz->updateFeedback($data, $question_id);
     if($update_feedback)
     {
-        $url ='/dashboard?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id; 
+        $url ='?part=manage_quiz_questions&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '&user_id=' . $user_id; 
         ob_start();
         header('Location: '.$url);
         ob_end_flush();
@@ -75,7 +75,7 @@ else
                     <button type="submit" class="btn btn-default">Update Feedback</button>
                   
             </div>
-            <div class="panel-footer"><a href="/dashboard/?part=update_quiz_questions&question_id=<?= $question_id?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id ?>" class="btn btn-success pull-right">Take me back to the Question</a><div style="clear:both"></div></div>
+            <div class="panel-footer"><a href="?part=update_quiz_questions&question_id=<?= $question_id?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" class="btn btn-success pull-right">Take me back to the Question</a><div style="clear:both"></div></div>
         </form>
     </div>
 </div>
