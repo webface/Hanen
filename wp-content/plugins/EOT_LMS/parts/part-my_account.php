@@ -4,10 +4,12 @@
   /* 
   * User Info
   */
-  $user_id    = $current_user->ID;                                // Wordpress account user id
+  $user_id    = $current_user->ID;                                // Wordpress account user ID
   $user_email = $current_user->user_email;                        // Wordpress account email address
   $first_name = get_user_meta($user_id, "first_name", true);      // First name
   $last_name  = get_user_meta($user_id, "last_name", true);       // Last name
+  $org_id = get_org_from_user($user_id);
+  $admin_ajax_url = admin_url('admin-ajax.php');// Org ID
 ?>
 <h1 class="article_page_title">My Account</h1>
 <?php
@@ -183,7 +185,6 @@ Change your account details here.
         <a href="#" id="password-generate">Generate Password: &nbsp;&nbsp;</a> <input readonly id="suggested-password" size="18" style="display:inline-block;"> 
       </td>
     </tr>
-    
   </table>
   <input type="hidden" name="action" value="contact_form">
   <input type="hidden" name="submitted" value="1">
@@ -194,9 +195,23 @@ Change your account details here.
 <h1 class="article_page_title" ><a name="subscription_settings">Profile Picture</a></h1>
 <?php echo do_shortcode( '[avatar_upload]' ); ?>
 
-<!--
+
 <h1 class="article_page_title" ><a name="subscription_settings">Subscription Settings</a></h1>
--->
+<script>
+ function save_checkbox(org_id) {
+    $( "#subscription_settings_result" ).html("");
+    $.post( '<?= $admin_ajax_url?>?action=continue_education' , { checked : $('#subscription_settings').is(":checked"), org_id : org_id }, 
+       function( response ) {
+         //alert(response);
+         $( "#subscription_settings_result" ).html( response );
+       }
+    );
+ }
+</script>
+ 
+<div id="subscription_settings_result"></div>  <!-- div to hold results from ajax -->
+ 
+<input id="subscription_settings" type="checkbox" value="" checked="<?= get_post_meta($org_id, 'continue_learning', true)?>" onclick="save_checkbox(<?php echo $org_id ?>);";/>&nbsp;&nbsp;Allow staff to continue training after they have completed assigned modules?  
 <script>
   $ = jQuery;
 
@@ -288,4 +303,42 @@ Change your account details here.
     $('#password-strength-meter').val(strengthNumber);
   }
 
+</script>
+<script type="text/javascript">
+  (function($){
+    $(".subsettings").click(function()
+    {
+		$(this).parent().addClass("toggled");
+        
+	    url = 'my-dashboard.html?task=do_ajax&ajax_task=toggle_continue_education&format=ajax';
+	    $.post(url,
+				"sub_id=" + $(this).attr("sub_id"),
+				function(data)
+				{
+					if(data.success)
+					{
+						animate($($(".toggled")[0]).children()[2]);
+						$($(".toggled")[0]).removeClass("toggled");
+		
+					}
+				},
+				"json"
+			);
+    });
+
+	function animate(message)
+	{
+		$(message).fadeIn(500,
+			function()
+			{
+				$(this).fadeTo(1000, 1,
+					function()
+					{
+						$(this).fadeOut(500);
+					}
+				);
+			}
+		);
+	};
+  })(jQuery); 
 </script>

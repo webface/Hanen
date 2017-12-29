@@ -3444,7 +3444,49 @@ function getResourcesInCourse($course_id = 0, $type = '')
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
 }
-
+/**
+ * get the resources in a course
+ * @param $course_id - the course ID
+ * @param $type - the type of resource
+ * @return array of resources in course
+ */
+function getResourcesInLibrary($library_id = 0, $type = '')
+{
+    global $wpdb;
+    // make sure there is a type or else return empty array
+    if ($type == '' )
+    {
+      return array();
+    }
+    $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
+    switch($type)
+    {
+        case 'exam':
+            $table = TABLE_QUIZ;
+            break;
+        case 'video':
+            $table = TABLE_VIDEOS;
+            break;
+        case 'doc':
+            $table = TABLE_RESOURCES;
+            break;
+        case 'link':
+            $table = TABLE_RESOURCES;
+            break;
+        case 'custom_video':
+            $table = TABLE_RESOURCES;
+            break;
+        default:
+            $table = TABLE_RESOURCES;
+    }
+    $sql = "SELECT r.*, mr.module_id as mid "
+                . "FROM " . $table . " AS r "
+                . "LEFT JOIN ". TABLE_LIBRARY_MODULES ." AS lm ON lm.library_id = $library_id " 
+                . "LEFT JOIN " . TABLE_MODULE_RESOURCES . " AS mr ON mr.module_id = lm.module_id AND mr.resource_id = r.ID "
+                . "WHERE mr.type = '$type'";
+    $library_resources = $wpdb->get_results($sql, ARRAY_A);
+    return $library_resources;
+}
 /**
  * Get Modules in Org
  * @global type $wpdb
@@ -10834,6 +10876,54 @@ function verifyStatsUser()
     }
   }
   else
+  {
+    return false;
+  }
+}
+
+// update user's meta to allow for continue learning
+add_action('wp_ajax_continue_education', 'continue_education_callback');
+function continue_education_callback()
+{
+    $checked = filter_var($_REQUEST['checked'], FILTER_SANITIZE_STRING);
+    $org_id = filter_var($_REQUEST['org_id'] , FILTER_SANITIZE_NUMBER_INT);
+    
+    if($checked == 'true')
+    {
+        update_post_meta($org_id, 'continue_learning', 1);
+    }
+    else 
+    {
+        update_post_meta($org_id, 'continue_learning', 0);
+    }
+    echo __("Your settings have been saved successfully!", "EOT_LMS");
+    wp_die();
+}
+
+/**
+ * verify a module is in a subscription
+ * @param type $module_id
+ * @param type $subscription_id
+ */
+function verify_module_in_subscription($module_id = 0, $subscription_id = 0)
+{
+  global $wpdb;
+  if(!$module_id || !$subscription_id)
+  {
+    return false;
+  }
+  $subscription = getSubscriptions($subscription_id);
+  if(!$subscription)
+  {
+    return false;
+  }
+  $library_id = $subscription->library_id;
+  $verified = $wpdb->get_row("SELECT * FROM ". TABLE_LIBRARY_MODULES ." WHERE library_id = $library_id AND module_id = $module_id", ARRAY_A);
+  if ( $verified !== null ) 
+  {
+    return true;
+  } 
+  else 
   {
     return false;
   }

@@ -14,6 +14,8 @@
     $subscription_id = isset($_REQUEST['subscription_id']) ? filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
     $enrollment_id = isset($_REQUEST['enrollment_id'])? filter_var($_REQUEST['enrollment_id'], FILTER_SANITIZE_NUMBER_INT) : 0;
 
+        $org_id = get_org_from_user($user_id);
+        $continue_learning = get_post_meta($org_id, 'continue_learning', true);
     // make sure we got a question ID, quiz ID, and subscription ID
     if (!$quiz_id || !$subscription_id)
             wp_die();
@@ -44,7 +46,7 @@
     {
         if (verify_student_access($course_id)) 
         {
-            if(verifyQuizInCourse($quiz_id, $course_id))
+            if(verifyQuizInCourse($quiz_id, $course_id) || $continue_learning)
             {
                 echo '<script>var quiz_id = ' . $quiz_id . '; var course_id = ' . $course_id . '; var enrollment_id = ' . $enrollment_id . ';</script>'; // set the quiz ID in JS
 
