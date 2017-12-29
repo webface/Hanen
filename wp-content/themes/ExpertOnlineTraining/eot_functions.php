@@ -3444,8 +3444,9 @@ function getResourcesInCourse($course_id = 0, $type = '')
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
 }
+
 /**
- * get the resources in a course
+ * get the resources in a library
  * @param $course_id - the course ID
  * @param $type - the type of resource
  * @return array of resources in course
@@ -3487,6 +3488,7 @@ function getResourcesInLibrary($library_id = 0, $type = '')
     $library_resources = $wpdb->get_results($sql, ARRAY_A);
     return $library_resources;
 }
+
 /**
  * Get Modules in Org
  * @global type $wpdb
