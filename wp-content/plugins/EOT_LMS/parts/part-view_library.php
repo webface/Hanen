@@ -9,6 +9,7 @@
       $library = getLibrary($subscription->library_id); // The library information base on the user current subscription
       if($library)
       {
+        $user_id =  (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT) : $current_user->ID; // The Wordpress user ID
         $library_name = $library->name; // The name of the library
         $description = $library->desc; // The library description
         $library_id = $library->ID; // the library ID
@@ -25,7 +26,7 @@
           <div class="center">
             <a href="<?=get_home_url()?>/premade-courses/" target="_blank"><button type="button" class="btn btn-primary"><?= __("Pre-Made Courses", "EOT_LMS") ?></button></a>&nbsp;&nbsp;&nbsp;
             <a href="<?=get_home_url()?>/module-choices/" target="_blank"><button type="button" class="btn btn-primary"><?= __("Module Choices", "EOT_LMS") ?></button></a>&nbsp;&nbsp;&nbsp;
-            <a href="<?=get_home_url()?>?part=administration&subscription_id=<?=$subscription_id?>"><button type="button" class="btn btn-primary"><?= __("Custom Content", "EOT_LMS") ?></button></a>
+            <a href="<?=get_home_url()?>/dashboard/?part=upload_file&subscription_id=<?=$subscription_id?>&user_id=<?=$user_id?>"><button type="button" class="btn btn-primary"><?= __("Custom Content", "EOT_LMS") ?></button></a>
           </div>
           <br>
         </span>

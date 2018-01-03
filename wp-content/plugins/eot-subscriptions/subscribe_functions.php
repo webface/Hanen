@@ -712,7 +712,7 @@ function display_subscription_dashboard ($subscription)
     <div class="content_right">
         <div class="clear"></div>
         <div class="menu">
-            <a href="?part=view_library&subscription_id=<?= $subscription->ID ?>" onclick="load('load_view_library')">
+            <a href="?part=view_library&subscription_id=<?= $subscription->ID ?>&user_id=<?= $user_id ?>" onclick="load('load_view_library')">
               <div class="thumbnail">
                   <i class="fa fa-youtube-play" alt="Content"></i>
               </div>
