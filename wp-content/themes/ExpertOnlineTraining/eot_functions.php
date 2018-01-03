@@ -1264,19 +1264,32 @@ function display_uber_manager_dashboard()
       <?= __("Copy your custom courses into any of your organization's camps", "EOT_LMS") ?>
     </div>
   </div>
-  <br>
 <?php
   // Display a table of current Camps/managers/stats
   $umbrellaCamps = getUmbrellaCamps($org_id); // Lists of umbrella camps
   if ( isset($umbrellaCamps) && $umbrellaCamps->have_posts() )
   { 
 
+    // boolean whether there are umbrella camps for this uber and whether there are camps under this uber.
+    $have_umbrella_camps = 0;
+    $have_camps = 0;
+
     /*
-     * Create table heading
+     * Create umbrella camps table 
      */
-    $userTableObj = new stdClass(); 
-    $userTableObj->rows = array();
-    $userTableObj->headers = array(
+    $umbrellaTableObj = new stdClass(); 
+    $umbrellaTableObj->rows = array();
+    $umbrellaTableObj->headers = array(
+      __("Camp Name", "EOT_LMS") => 'left',
+      __("Director", "EOT_LMS") => 'left',
+      __("Type", "EOT_LMS") => 'center',
+      __("Actions", "EOT_LMS") => 'center'
+    );
+
+    // camps table
+    $campTableObj = new stdClass(); 
+    $campTableObj->rows = array();
+    $campTableObj->headers = array(
       __("Camp Name", "EOT_LMS") => 'left',
       __("Director", "EOT_LMS") => 'left',
       __("Type", "EOT_LMS") => 'center',
@@ -1296,6 +1309,14 @@ function display_uber_manager_dashboard()
         'number' => 1
       );
 
+      $subscriptions = get_current_subscriptions ($org_id);
+      $subscription_id = 0;
+      if (!empty($subscriptions))
+      {
+        // user has at least 1 subscription
+        $subscription_id = $subscriptions[0]->ID;
+      }
+
       $director = get_users($args); // get the user name associated with this org
       $director_name = 'John Doe';
       $type = 'Director';
@@ -1305,25 +1326,37 @@ function display_uber_manager_dashboard()
         $user_id = $director[0]->ID;
         if(user_can($user_id,'is_umbrella_manager'))
         {
-            $type = "Umbrella Manager";
+          $have_umbrella_camps = 1;
+          $type = "Umbrella Manager";
+          // Create an umbrella table row.
+          $umbrellaTableObj->rows[] = array($camp_name, $director_name, $type, '<a href="?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
+        }
+        else
+        {
+          $have_camps = 1;
+          $type = 'Director';
+          // Create a camp table row.
+          $campTableObj->rows[] = array($camp_name, $director_name, $type, '<a href="?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
         }
       }
-      $subscriptions = get_current_subscriptions ($org_id);
-      $subscription_id = 0;
-      if (!empty($subscriptions))
-      {
-        // user has at least 1 subscription
-        $subscription_id = $subscriptions[0]->ID;
 
-      }
-      // Create a table row.
-      $userTableObj->rows[] = array($camp_name, $director_name, $type, '<a href="?part=statistics&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'" onclick="load(\'load_loading\')"><i class="fa fa-line-chart" aria-hidden="true"></i>Stats</a>&nbsp;&nbsp;&nbsp;<a href="?part=administration&org_id='.$org_id.'&user_id='.$user_id.'&subscription_id='.$subscription_id.'"><i class="fa fa-share" aria-hidden="true"></i>' . __("Admin", "EOT_LMS") . '</a>');
     }
 
-    // Display the user's table
-    CreateDataTable($userTableObj);
-    echo '<div class="row">&nbsp;</div>';
+    if ($have_umbrella_camps)
+    {
+      // Display the umbrella camps table
+      echo '<h2>Umbrella Managers</h2>';
+      CreateDataTable($umbrellaTableObj);
+    }
 
+    if ($have_camps)
+    {
+      // Display the camps table
+      echo '<h2>Camps</h2>';
+      CreateDataTable($campTableObj);
+    }
+
+    echo '<div class="row">&nbsp;</div>';
   }
 }
 
