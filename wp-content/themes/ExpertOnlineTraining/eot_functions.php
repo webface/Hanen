@@ -5101,8 +5101,6 @@ function deleteEnrolledUser_callback ()
       }
       else 
       {
-          $deleted_user_in_sub = $wpdb->delete(TABLE_USERS_IN_SUBSCRIPTION, array('user_id'=>$user_id, 'subscription_id'=>$subscription_id)); // must delete their user in subscription entry as well
-
           // Build the response if successful
           $result['data'] = 'success';
           $result['message'] = __("the enrollment has been deleted", "EOT_LMS");
