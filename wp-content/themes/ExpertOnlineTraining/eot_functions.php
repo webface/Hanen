@@ -4212,6 +4212,7 @@ add_action('wp_ajax_createUser', 'createUser_callback'); //handles actions and t
 
 function createUser_callback() 
 {
+    global $wpdb;
     if( isset ( $_REQUEST['name'] ) && isset ( $_REQUEST['lastname'] ) && isset ( $_REQUEST['email'] ) && isset ( $_REQUEST['pw'] ) && isset ( $_REQUEST['org_id'] ) && isset ( $_REQUEST['subscription_id'] ))
     {
         //$first_name = filter_var($_REQUEST['name'], FILTER_SANITIZE_STRING); // User's first name
