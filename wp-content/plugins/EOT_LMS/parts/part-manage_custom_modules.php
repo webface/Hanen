@@ -35,7 +35,7 @@
         $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
         $module_added = $wpdb->insert(TABLE_MODULES, $data);
         $module_id = $wpdb->insert_id;
-        $url ='?part=edit_module&module_id=' . $module_id . '&subscription_id=' . $subscription_id . 'user_id=' . $user_id; 
+        $url ='?part=edit_module&module_id=' . $module_id . '&subscription_id=' . $subscription_id . '&user_id=' . $user_id; 
         ob_start();
         header('Location: '.$url);
         ob_end_flush();
@@ -89,11 +89,11 @@
                         <form action="?part=manage_custom_modules&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" method="POST">
                             <?php wp_nonce_field('submit_module', 'submit_module'); ?>
                             <div class="form-group">
-                                <label for="moduleName"><?= __('Module Name*', 'EOT_LMS')?></label>
+                                <label for="moduleName"><?= __('Module Name *', 'EOT_LMS')?></label>
                                 <input type="text" class="form-control" id="moduleName" name="moduleName" placeholder="Module Name">
                             </div>
                             <div class="bs form-group">
-                                <label for="moduleDescription"><?= __('Module Description*', 'EOT_LMS')?></label>
+                                <label for="moduleDescription"><?= __('Module Description', 'EOT_LMS')?></label>
                                 <textarea class="form-control" rows="3" id="moduleDescription" name="moduleDescription"></textarea>
                             </div>
 
