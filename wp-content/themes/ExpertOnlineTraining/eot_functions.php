@@ -4358,7 +4358,8 @@ function createWpUser($data = array(), $role = 'student', $subscription_id = 0)
    * @return json encoded list of completion or errors
    ********************************************************/    
   extract($data);
-
+  global $wpdb;
+  
   // Check if all parameters are available.
   if( $org_id != "" && $first_name != "" &&  $last_name != "" &&  $email != "" && $password != "" )
   {
