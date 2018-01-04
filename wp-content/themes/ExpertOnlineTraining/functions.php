@@ -405,7 +405,7 @@ function unsubscribe_wp_mail_filter( $args ) {
 		$user = get_user_by( 'email', $user_email );
 		$hash_key = wp_hash( $user->ID . $user_email );
 		$message = $args['message'] . "<br><br>";
-		$message .= '<span style="font-size:10px;">' . __("You are receiving this email because ", "EOT_LMS") . $user_email . __(" is signed up to receive Expert Online Training communications. To unsubscribe,", "EOT_LMS").' <a rel="nofollow" target="_blank" href="'.get_site_url().'/unsubscribe/?email='.$user_email.'&sec='.$hash_key.'" title="Unsubscribe" style="color:#006AC3;text-decoration:underline;">'.__("click here.", "EOT_LMS").'</span>';
+		$message .= '<span style="font-size:10px;">' . __("You are receiving this email because ", "EOT_LMS") . $user_email . __(" is signed up to receive Expert Online Training communications. To unsubscribe, ", "EOT_LMS").' <a rel="nofollow" target="_blank" href="'.get_site_url().'/unsubscribe/?email='.$user_email.'&sec='.$hash_key.'" title="Unsubscribe" style="color:#006AC3;text-decoration:underline;">'.__("click here.", "EOT_LMS").'</a></span>';
 
 		$new_wp_mail = array(
 			'to'          => $args['to'],
@@ -418,3 +418,23 @@ function unsubscribe_wp_mail_filter( $args ) {
 	}
 	
 }
+
+// Display User IP in WordPress
+function get_the_user_ip() 
+{
+  if (!empty($_SERVER['HTTP_CLIENT_IP'])) 
+  {
+    $ip = $_SERVER['HTTP_CLIENT_IP'];
+  } 
+  elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) 
+  {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+  } 
+  else 
+  {
+    $ip = $_SERVER['REMOTE_ADDR'];
+  }
+  return $ip;
+}
+ 
+

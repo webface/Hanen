@@ -1,11 +1,11 @@
 <?php
 	/**
-	 * Template Name: Unsubsribe Page
+	 * Template Name: Unsubscribe Page
 	 *
 	 * @package WordPress
 	 */
 	get_header();
-	?> 
+?> 
 	<style>
 	.btn {
 	  background: #3498db;
@@ -47,20 +47,20 @@
 <?php
 if( isset($_REQUEST['email']) && isset($_REQUEST['sec']) )
 {
-	$ip = do_shortcode( '[show_ip]' ); // User IP Address
+	global $wpdb;
+	$ip = get_the_user_ip(); // User IP Address
 	$user_email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL); // user email address
-	$key = filter_var($_REQUEST['sec'], FILTER_SANITIZE_STRING); // hash email address and ID
-	$unsubsribe = $wpdb->get_row ("SELECT * from " . TABLE_UNSUBSCRIBE . " where email = '$user_email'");
-	if(!$unsubsribe)
+	$sec = filter_var($_REQUEST['sec'], FILTER_SANITIZE_STRING); // hash email address and ID
+	$user = get_user_by( 'email', $user_email );
+	if($user) // Check if the e-mail is a valid user.
 	{
-		$user = get_user_by( 'email', $user_email );
-		if($user) // Check if the e-mail is a valid user.
+		if($sec == wp_hash( $user->ID . $user_email )) // Check if the hash key is valid.
 		{
-			if($key == wp_hash( $user->ID . $user_email )) // Check if the hash key is valid.
+			$unsubsribe = getUnsubscribe( $user_email ); // check if the email is already in the unsubscribe table.
+			if(!$unsubsribe)
 			{
 				if( isset($_REQUEST['answer']) && $_REQUEST['answer'] == "unsubsribe") 
 				{
-					global $wpdb;
 					$wpdb->insert( 
 						TABLE_UNSUBSCRIBE, 
 						array( 
@@ -76,29 +76,39 @@ if( isset($_REQUEST['email']) && isset($_REQUEST['sec']) )
 					);
 					echo __("You have been unsubscribed from our mailing list.", "EOT_LMS");
 				}
+				else if( isset($_REQUEST['answer']) && $_REQUEST['answer'] == "subsribe") 
+				{
+					$wpdb->delete( TABLE_UNSUBSCRIBE, array( 'email' => $user_email ) );
+					echo __("You have been subscribed to our notifications. Your camp director will now be able to send you notifications.", "EOT_LMS");
+				}
 				else
 				{
 ?>
 					<h2><u><?= __("We are sorry to see you go!", "EOT_LMS") ?></u></h2>
-					<?= __("To unsubscribe from Expert Online Training helpful emails, simply click the button below. Please note that you can still receive email from your camp director.", "EOT_LMS") ?>
+					<?= __("To unsubscribe from Expert Online Training notifications, simply click the button below. Please note that you WILL NOT receive emails from your camp director which may cause you to miss assigned courses.", "EOT_LMS") ?>
 					<br><br>
-					<a class="btn" href="?email=<?=$user_email?>&sec=<?=$key?>&answer=unsubsribe"><?= __("Unsubsribe", "EOT_LMS") ?></a>
+					<a class="btn" href="?email=<?=$user_email?>&sec=<?=$sec?>&answer=unsubsribe"><?= __("Unsubsribe", "EOT_LMS") ?></a>
 <?php
 				}
-			} // Invalid Key.
-			else
+			} 
+			else 
 			{
-				echo __("Invalid Request.", "EOT_LMS");
+				// User has already been subscribed. Try to resubscribe them.
+				echo __("You have already been unsubsribed. Please note that your camp director WILL NOT be able to send you emails through our system which may cause you to miss assigned courses. To re-subscribe to our notifications, click the link below:", "EOT_LMS");
+
+				// add resubscribe link
+				echo '<br><br><a class="btn" href="?email=<?=$user_email?>&sec=<?=$sec?>&answer=subsribe">' . __("Subsribe", "EOT_LMS") . '</a>';
 			}
-		}
+
+		} // Invalid Key.
 		else
 		{
-			echo __("User does not exist.", "EOT_LMS");
+			echo __("Invalid Request.", "EOT_LMS");
 		}
-	} // User has already been subscribed.
+	}
 	else
 	{
-		echo __("You have already been unsubsribed. Please note that your camp director can still sends you an e-mail.", "EOT_LMS");
+		echo __("User does not exist.", "EOT_LMS");
 	}
 } // Invalid parameters.
 else
