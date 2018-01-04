@@ -24,7 +24,6 @@ if(isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
         {
             if (isset($_REQUEST['processing'])) 
             {
-                var_dump("test");
                 $processing = filter_var($_REQUEST['processing'], FILTER_SANITIZE_NUMBER_INT); //the number out of total users we are processing right now
                 $max = filter_var($_REQUEST['max'], FILTER_SANITIZE_NUMBER_INT);     //total users being processed from this instance of spreadsheet upload
 //                $processing_top = ($processing + PENDING_EMAILS_LIMIT - 1 > $max) ? $max : $processing + PENDING_EMAILS_LIMIT - 1;

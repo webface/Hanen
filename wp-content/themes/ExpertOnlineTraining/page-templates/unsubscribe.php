@@ -85,7 +85,7 @@ if( isset($_REQUEST['email']) && isset($_REQUEST['sec']) )
 				{
 ?>
 					<h2><u><?= __("We are sorry to see you go!", "EOT_LMS") ?></u></h2>
-					<?= __("To unsubscribe from Expert Online Training notifications, simply click the button below. Please note that you WILL NOT receive emails from your camp director which may cause you to miss assigned courses.", "EOT_LMS") ?>
+					<?= __("To unsubscribe from Expert Online Training notifications, simply click the button below. Please note that you <b>WILL NOT</b> receive emails from your camp director which may cause you to miss assigned courses.", "EOT_LMS") ?>
 					<br><br>
 					<a class="btn" href="?email=<?=$user_email?>&sec=<?=$sec?>&answer=unsubsribe"><?= __("Unsubsribe", "EOT_LMS") ?></a>
 <?php
@@ -94,7 +94,7 @@ if( isset($_REQUEST['email']) && isset($_REQUEST['sec']) )
 			else 
 			{
 				// User has already been subscribed. Try to resubscribe them.
-				echo __("You have already been unsubsribed. Please note that your camp director WILL NOT be able to send you emails through our system which may cause you to miss assigned courses. To re-subscribe to our notifications, click the link below:", "EOT_LMS");
+				echo __("You have already been unsubsribed. Please note that your camp director <b>WILL NOT</b> be able to send you emails through our system which may cause you to miss assigned courses. To re-subscribe to our notifications, click the link below:", "EOT_LMS");
 
 				// add resubscribe link
 				echo '<br><br><a class="btn" href="?email=<?=$user_email?>&sec=<?=$sec?>&answer=subsribe">' . __("Subsribe", "EOT_LMS") . '</a>';

@@ -2877,8 +2877,7 @@ function enrollUserInCourse($email = '', $data = array())
     }    
     else
     {
-        $today = current_time( 'Y-m-d' );
-        $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $user->ID, 'date' => $today));
+        add_user_in_subscription( $subscription_id, $user_id );
         return array('status' => 1);
     } 
 }
@@ -4306,8 +4305,7 @@ function createUser_callback()
                       // Newly created WP user needs some meta data values added
                       update_user_meta ( $WP_user_id, 'org_id', $org_id );
                       update_user_meta ( $WP_user_id, 'accepted_terms', '0');
-                      $today = current_time( 'Y-m-d' );
-                      $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id, 'date' => $today));
+                      add_user_in_subscription( $subscription_id, $WP_user_id );
                       // Create enrollment
                       if($course_id)
                       {
@@ -4408,8 +4406,7 @@ function createWpUser($data = array(), $role = 'student', $subscription_id = 0)
         update_user_meta ( $WP_user_id, 'accepted_terms', '0');
         if($subscription_id > 0)
         {
-          $today = current_time( 'Y-m-d' );
-          $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $WP_user_id, 'date' => $today));
+          add_user_in_subscription( $subscription_id, $WP_user_id );
         }
         $result['success'] = true;
         $result['name'] = $first_name;
@@ -4592,14 +4589,14 @@ function sendMail ( $target = '', $recipients = '', $data = array())
           // go through all recipients and remove those that unsubscribed.
           foreach ($recipients as $key => $recipient) 
           {
-            if( getUnsubsribe( $recipient['email'] ) ) 
+            if( getUnsubscribe( $recipient['email'] ) ) 
             {
               unset($recipients[$key]);
             }
           }
 
 /*
-            $unsubscribe = getUnsubsribe();
+            $unsubscribe = getUnsubscribe();
             // Remove unsubscribers 
             if ( $unsubscribe )
             {
@@ -10798,19 +10795,7 @@ function enrollUserInSubscription_callback ()
     {
         global $wpdb;
         // Save enrollments to the database.
-        $today = current_time( 'Y-m-d' );
-        $insert = $wpdb->insert(
-          TABLE_USERS_IN_SUBSCRIPTION, 
-          array( 
-            'subscription_id' => $subscription_id,
-            'user_id' => $user_id,
-            'date' => $today
-          ), 
-          array( 
-            '%d', 
-            '%d',
-            '%s' 
-        ));
+        add_user_in_subscription( $subscription_id, $user_id );
 
         // Didn't save. return an error.
         if ($insert === FALSE)
@@ -11011,7 +10996,7 @@ function verify_module_in_subscription($module_id = 0, $subscription_id = 0)
 * @param string $email - Email Address
 * @return array - Unsubsribe lists 
 *******************************************************************************************************/
-function getUnsubsribe($email = "") 
+function getUnsubscribe($email = "") 
 {
   global $wpdb;
   $sql = "SELECT * from " . TABLE_UNSUBSCRIBE;
@@ -11022,4 +11007,36 @@ function getUnsubsribe($email = "")
   $results = ( $email ) ? $wpdb->get_row ($sql) : $wpdb->get_results ($sql);
   return $results;
 }
+
+/**
+ * Add user into user_in_subscription table if they dont exist already
+ * INT $subscription_id - the subscription ID
+ * INT $user_id = the user id
+ * retrun true on success false otherwise
+ */
+function add_user_in_subscription( $subscription_id = 0, $user_id = 0 )
+{
+  global $wpdb;
+  // check that we have both subscription_id and user_id
+  if (!$subscription_id || !$user_id)
+    return false;
+
+  $subscription_id = filter_var( $subscription_id, FILTER_SANITIZE_NUMBER_INT );
+  $user_id = filter_var( $user_id, FILTER_SANITIZE_NUMBER_INT );
+
+  // check that this user is not already in the table
+  $row = $wpdb->get_row("SELECT ID FROM " . TABLE_USERS_IN_SUBSCRIPTION . " WHERE subscription_id = $subscription_id AND user_id = $user_id");
+  if ( $row )
+  {
+    // user already in table. Dont add again.
+    return false;
+  }
+  else
+  {
+    // user not in table, add them.
+    $today = current_time( 'Y-m-d' );
+    $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $user_id, 'date' => $today));
+  }
+}
+
 
