@@ -395,3 +395,26 @@ function track_logins($user_login, $user)
   }
 }
 add_action('wp_login', 'track_logins', 10, 2);
+
+// Add unsubscribe link to every e-mail send out from EOT.
+add_filter( 'wp_mail', 'unsubscribe_wp_mail_filter' );
+function unsubscribe_wp_mail_filter( $args ) {
+	$user_email = sanitize_email($args['to']);
+	if($user_email)
+	{
+		$user = get_user_by( 'email', $user_email );
+		$hash_key = wp_hash( $user->ID . $user_email );
+		$message = $args['message'] . "<br><br>";
+		$message .= '<span style="font-size:10px;">' . __("You are receiving this email because ", "EOT_LMS") . $user_email . __(" is signed up to receive Expert Online Training communications. To unsubscribe,", "EOT_LMS").' <a rel="nofollow" target="_blank" href="'.get_site_url().'/unsubscribe/?email='.$user_email.'&sec='.$hash_key.'" title="Unsubscribe" style="color:#006AC3;text-decoration:underline;">'.__("click here.", "EOT_LMS").'</span>';
+
+		$new_wp_mail = array(
+			'to'          => $args['to'],
+			'subject'     => $args['subject'],
+			'message'     => $message,
+			'headers'     => $args['headers'],
+			'attachments' => $args['attachments'],
+		);
+		return $new_wp_mail;
+	}
+	
+}

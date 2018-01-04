@@ -153,6 +153,7 @@ define ('TABLE_HELP_TOPICS_FOR_VIEW', $wpdb->prefix . 'help_topics_for_view');
 define ('TABLE_TRACK', $wpdb->prefix . 'track');
 define ('TABLE_REFUNDS', $wpdb->prefix . 'refunds');
 define ('TABLE_USERS_IN_SUBSCRIPTION', $wpdb->prefix . 'user_in_subscription'); 
+define ('TABLE_UNSUBSCRIBE', $wpdb->prefix . 'unsubscribe');
 
 
 // base courses (course name => course description)
