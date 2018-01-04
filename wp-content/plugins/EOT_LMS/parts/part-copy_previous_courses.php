@@ -22,7 +22,7 @@
             if (current_user_can("is_director")) 
             {
               //copy courses begin
-              $subscriptions = getSubscriptions(0, 0, TRUE, $org_id);
+              $subscriptions = getSubscriptions(0, 0, 0, $org_id);
               $courses = getCoursesById($org_id, $subscription_id); //the courses in the current subscription
               $course_names = array_column($courses, 'course_name'); // an array of current course names
 ?>
@@ -38,7 +38,7 @@
                     <div class="panel-heading" role="tab" id="headingOne">
                       <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?= $count?>" aria-expanded="true" aria-controls="collapse<?= $count?>">
-                          <?= $subscription->library?>: From  <?= $subscription->start_date?> to  <?= $subscription->end_date?>
+                          <?= $subscription->library?> <?= substr( $subscription->end_date, 0, 4 ) ?>
 					              </a>
 					            </h4>
 					          </div>
