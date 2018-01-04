@@ -4092,9 +4092,8 @@ function deleteCourse_callback()
       {
         global $wpdb;
         // Delete enrollments and courses from our database.
-        $wpdb->delete(TABLE_ENROLLMENTS, array('course_id' => $course_id));
-        $response = $wpdb->delete(TABLE_COURSES, array('ID' => $course_id));
-        if ($response === FALSE)
+        $remove_enrollments = $wpdb->delete(TABLE_ENROLLMENTS, array('course_id' => $course_id));
+        if ($remove_enrollments === FALSE)
         {
             // return an error message
             $result['display_errors'] = true;
@@ -4103,11 +4102,22 @@ function deleteCourse_callback()
         }
         else 
         {
-            // Build the response if successful
-            $result['data'] = 'success';
-            $result['message'] = __("Course has been deleted", "EOT_LMS");
-            $result['group_id'] = $course_id;
-            $result['success'] = true;
+          $response = $wpdb->delete(TABLE_COURSES, array('ID' => $course_id));
+          if ($response === FALSE)
+          {
+              // return an error message
+              $result['display_errors'] = true;
+              $result['success'] = false;
+              $result['errors'] = __("Response Message:", "EOT_LMS") . " " . $wpdb->last_error;
+          }
+          else 
+          {
+              // Build the response if successful
+              $result['data'] = 'success';
+              $result['message'] = __("Course has been deleted", "EOT_LMS");
+              $result['group_id'] = $course_id;
+              $result['success'] = true;
+          }
         }
       }
       echo json_encode( $result );
