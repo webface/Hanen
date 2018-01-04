@@ -4091,6 +4091,8 @@ function deleteCourse_callback()
       else 
       {
         global $wpdb;
+        // Delete enrollments and courses from our database.
+        $wpdb->delete(TABLE_ENROLLMENTS, array('course_id' => $course_id));
         $response = $wpdb->delete(TABLE_COURSES, array('ID' => $course_id));
         if ($response === FALSE)
         {
