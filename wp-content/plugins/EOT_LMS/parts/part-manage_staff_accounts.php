@@ -195,8 +195,16 @@ static $i = 0;
 <script type="text/javascript">
 (function ($) 
 { 
+
   $(function()
-  {
+  {   
+      // Show loading font awesome when creating staff. It dissappears after 3 seconds.
+      $(document).on('click','a[acton="create_staff_account"]',function(){
+        $("#loading_create_staff_account").show().delay(3000).fadeOut();
+      });
+      $(document).on('click','a[acton="send_message"]',function(){
+        $("#loading_email_create_staff_account").show().delay(3000).fadeOut();
+      });
       $('a[class="btn"][name="create_staff_account"]').facebox(); // Bind facebox to create_staff_account button.
       $('a[class="btn"][rel="facebox"]').facebox();
       $('#debugger').click(
