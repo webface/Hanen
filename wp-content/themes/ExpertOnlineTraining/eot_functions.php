@@ -8772,9 +8772,11 @@ jane@email.com
 /**
  * Get enrolled users in a specific course
  * @param int $user_id - the user ID
+ * @param string $status - the enrollement status
+ * @param int $subscription_id - the subscription ID
  * @return array of enrollements for this user or NULL if none exist
  */
-function getEnrollmentsByUserId($user_id = 0, $status = "all")
+function getEnrollmentsByUserId($user_id = 0, $status = "all", $subscription_id = 0)
 {
     global $wpdb;
     $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
@@ -8782,10 +8784,17 @@ function getEnrollmentsByUserId($user_id = 0, $status = "all")
     $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE user_id = $user_id";
 
     // Modify SQL Query for searching by status.
-    if($status == "not_started")
+    if($status != "all")
     {
-      $sql .= " WHERE status == 'not_started'";
+      $sql .= " AND status = '$status'";
     }
+
+    // Modify SQL Query for searching including the subscription ID.
+    if($subscription_id)
+    {
+      $sql .= " AND subscription_id = $subscription_id";
+    }
+
     // Get the enrollments who are enrolled in the course.
     $enrollments = $wpdb->get_results($sql, ARRAY_A);
 
@@ -10795,7 +10804,7 @@ function enrollUserInSubscription_callback ()
     {
         global $wpdb;
         // Save enrollments to the database.
-        add_user_in_subscription( $subscription_id, $user_id );
+        $insert = add_user_in_subscription( $subscription_id, $user_id );
 
         // Didn't save. return an error.
         if ($insert === FALSE)
@@ -11037,6 +11046,7 @@ function add_user_in_subscription( $subscription_id = 0, $user_id = 0 )
     $today = current_time( 'Y-m-d' );
     $wpdb->insert(TABLE_USERS_IN_SUBSCRIPTION, array('subscription_id'=> $subscription_id, 'user_id'=> $user_id, 'date' => $today));
   }
+  return true;
 }
 
 

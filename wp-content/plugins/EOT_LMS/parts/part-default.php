@@ -258,6 +258,21 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
 // Student
 else if (current_user_can("is_student")) 
 {
+
+    $current_subscriptions = get_current_subscriptions ($org_id); // all the active current subscriptions for this user.
+
+    // make sure user accepted the terms for all the libraries.
+    if ($current_subscriptions)
+    {
+        $library = getLibrary ($current_subscriptions[0]->library_id);
+        $accepted = accepted_terms($library); // Boolean if user has accepted terms
+        if (!$accepted)
+        {
+           return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
+        }
+    }
+    $enrollments = getEnrollmentsByUserId($user_id, "all", $current_subscriptions[0]->ID); // All the enrollments of the user.
+/*    
     $enrollments = getEnrollmentsByUserId($user_id); // All the enrollments of the user.
     if ( $enrollments && count($enrollments) > 0) 
     {
@@ -276,7 +291,7 @@ else if (current_user_can("is_student"))
 
         }
     }
-
+*/
     //user just accepted terms and need to be presented with tutorial video
     if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
     {
