@@ -284,7 +284,7 @@ else if (current_user_can("is_student"))
         <h1 class="article_page_title"><?= __('Intro To Expert Online Training', 'EOT_LMS')?></h1>
         <div id='tutorial_video'>
             <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
-                <source src="https://eot-output.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
+                <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
                 <p class="vjs-no-js">
                     <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
                     <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>

@@ -111,7 +111,7 @@
 		            <script type="text/javascript" src="https://vjs.zencdn.net/5.8.8/video.js?ver=5.8.8"></script>
 		            <div id='tutorial_video'>
 		                <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Tutorial-thumbnail-e1478882719523.png" data-setup='{"controls": true}'>
-		                    <source src="https://eot-output.s3.amazonaws.com/tutorial_Analyze_Course_Statistics2.mp4" type='video/mp4'>
+		                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/tutorial_Analyze_Course_Statistics2.mp4" type='video/mp4'>
 		                    <p class="vjs-no-js">
 		                        <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS") ?>
 		                        <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS") ?></a>

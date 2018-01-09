@@ -7,7 +7,7 @@
 				<div class="featured_video">
 					<div id='player123' style='width:400px;height:225px'>
 					  	<video id="my-video" class="video-js vjs-default-skin" controls preload="auto" width="400" height="225" poster="<?php echo bloginfo('template_directory'); ?>/images/webpromo_2016.jpg" data-setup='{"controls": true}'>
-							<source src="https://eot-output.s3.amazonaws.com/webpromo_2015.mp4" type='video/mp4'>4
+							<source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/webpromo_2015.mp4" type='video/mp4'>4
 							<p class="vjs-no-js">
 							To view this video please enable JavaScript, and consider upgrading to a web browser that
 							<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
