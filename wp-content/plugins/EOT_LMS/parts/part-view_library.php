@@ -121,7 +121,7 @@
                     <p><?= $title ?></p>
                     <ul>
                       <li>
-                        <a href="?part=view_video&module_id=<?= $module->id ?>&subscription_id=<?= $subscription_id ?>" onclick="load('load_video')"><?= __("Watch Video", "EOT_LMS") ?></a> 
+                        <a href="?part=view_video&module_id=<?= $module->id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" onclick="load('load_video')"><?= __("Watch Video", "EOT_LMS") ?></a> 
                         <?php
                           // make sure the video exists in the video table
                           if (isset($video_times[$title]))

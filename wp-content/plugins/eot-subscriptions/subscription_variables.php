@@ -219,4 +219,4 @@ define ('AWS_PRESET_SD_MED','1351620000001-000050');
 define ('AWS_PRESET_SD_LOW','1351620000001-000061');
 
 // AWS S3 bucket
-define ('AWS_S3_BUCKET','eot-output');
+define ('AWS_S3_BUCKET','eot-videos');

@@ -47,7 +47,7 @@ else
 define ('CRUMB_VIEW_SUBSCRIPTIONS', '<a href="'. get_home_url() .'/dashboard/?part=admin_view_subscriptions&library_id='.$library_id.'" onclick="load(\'load_manage_staff_accounts\')">View Subscriptions</a>');
 
 // define breadcrumb to the library page
-define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library&subscription_id='.$subscription_id.'" onclick="load(\'load_view_library\')">View Library</a>');
+define ('CRUMB_VIEW_LIBRARY', '<a href="'. get_home_url() .'/dashboard/?part=view_library&subscription_id='.$subscription_id.'&user_id='.$user_id.'" onclick="load(\'load_view_library\')">View Library</a>');
 
 // define breadcrumb separator
 define ('CRUMB_SEPARATOR', '<span class="crumb">&gt;</span>');
