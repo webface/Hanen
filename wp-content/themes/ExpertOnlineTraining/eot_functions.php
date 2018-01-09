@@ -9682,7 +9682,7 @@ function get_video_form_callback()
     else 
     {
        $video = getVideoById($video_id);
-       $video_file = "https://eot-output.s3.amazonaws.com/".$video['shortname'].".mp4";
+       $video_file = "https://" . AWS_S3_BUCKET . ".s3.amazonaws.com/".$video['shortname'].".mp4";
     }
     //d($video);
     $title = $video['name'];

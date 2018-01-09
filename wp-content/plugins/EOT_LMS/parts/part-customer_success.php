@@ -547,70 +547,70 @@ div#col1 {
     var videos = [
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_When_to_Give.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_When_to_Give.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("When should I give EOT courses to my staff?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_Accreditation_Help.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_Accreditation_Help.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("How does EOT help with accreditation?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_How_Many_Modules.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_How_Many_Modules.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("How many modules should I assign?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_International_Staff.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_International_Staff.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("Should I give EOT to my international staff?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_Module_Selection.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_Module_Selection.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("How do I choose which modules to assign?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_OnSite_Use_of_EOT.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_OnSite_Use_of_EOT.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("What are the best ways to use EOT for on-site training?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_Press_Play.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_Press_Play.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("What are the Press Play workshops?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_Staff_Complete_Course.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_Staff_Complete_Course.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("How do I get my staff to complete their EOT assignment?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_Statistics_Benefits.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_Statistics_Benefits.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("How do the statistics functions help?", "EOT_LMS"); ?>'
       },
       {
         src : [
-          'https://eot-output.s3.amazonaws.com/CS_What_Custom_Content.mp4'
+          'https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/CS_What_Custom_Content.mp4'
         ],
         poster : 'https://www.expertonlinetraining.com/wp-content/uploads/2016/09/EOT-Clear.png',
         title : '<?= __("What custom content should I upload?", "EOT_LMS"); ?>'

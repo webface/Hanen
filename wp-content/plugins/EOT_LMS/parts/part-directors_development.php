@@ -24,7 +24,7 @@
                 <h2><?= __("Introduction", "EOT_LMS"); ?></h2>
                 <a href="/wp-content/uploads/2017/03/Notes_Substance.pdf" target="_blank"><?= __("Download the PDF Resource", "EOT_LMS"); ?></a>
                 <video id="my-video-1-big" class="video-js vjs-default-skin" preload="auto" width="650" height="365" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/10/Chris-thumbnail.png" data-setup='{"controls": true}'>
-                    <source src="https://eot-output.s3.amazonaws.com/substance-1.mp4" type='video/mp4'>
+                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/substance-1.mp4" type='video/mp4'>
                     <p class="vjs-no-js">
                         <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
                         <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
@@ -33,7 +33,7 @@
                 </br>
                 <h2><?= __("Policy Design", "EOT_LMS"); ?></h2>
                 <video id="my-video-2-big" class="video-js vjs-default-skin" preload="auto" width="650" height="365" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/10/Chris-thumbnail.png" data-setup='{"controls": true}'>
-                    <source src="https://eot-output.s3.amazonaws.com/substance-2.mp4" type='video/mp4'>
+                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/substance-2.mp4" type='video/mp4'>
                     <p class="vjs-no-js">
                         <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
                         <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
@@ -43,7 +43,7 @@
                 <h2><?= __("Policy Evaluation", "EOT_LMS"); ?></h2>
                 <a href="/wp-content/uploads/2017/03/Notes_Substnc_PrsCns.pdf" target="_blank"><?= __("Download the PDF Resource", "EOT_LMS"); ?></a>
                 <video id="my-video-3-big" class="video-js vjs-default-skin" preload="auto" width="650" height="365" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/10/Chris-thumbnail.png" data-setup='{"controls": true}'>
-                    <source src="https://eot-output.s3.amazonaws.com/substance-3.mp4" type='video/mp4'>
+                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/substance-3.mp4" type='video/mp4'>
                     <p class="vjs-no-js">
                         <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
                         <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
@@ -53,7 +53,7 @@
                 <h2><?= __("Policy Enforcement", "EOT_LMS"); ?></h2>
                 <a href="/wp-content/uploads/2017/03/Notes_Substnc_Enforce.pdf" target="_blank"><?= __("Download the PDF Resource", "EOT_LMS"); ?></a>
                 <video id="my-video-4-big" class="video-js vjs-default-skin" preload="auto" width="650" height="365" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/10/Chris-thumbnail.png" data-setup='{"controls": true}'>
-                    <source src="https://eot-output.s3.amazonaws.com/substance-4.mp4" type='video/mp4'>
+                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/substance-4.mp4" type='video/mp4'>
                     <p class="vjs-no-js">
                         <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
                         <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
@@ -84,7 +84,7 @@
                     <a href="/wp-content/uploads/2017/03/Notes_Training_Week.pdf" target="_blank"><?= __("Download the PDF Resource", "EOT_LMS"); ?></a>
                 </p>
                 <video id="my-video-1-big" class="video-js vjs-default-skin" preload="auto" width="650" height="365" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/10/Chris-thumbnail.png" data-setup='{"controls": true}'>
-                    <source src="https://eot-output.s3.amazonaws.com/10tips.mp4" type='video/mp4'>
+                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/10tips.mp4" type='video/mp4'>
                     <p class="vjs-no-js">
                         <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
                         <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>

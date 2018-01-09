@@ -90,7 +90,7 @@
                         if($subLanguage)
                         {
 ?>
-                            <source src="https://eot-output.s3.amazonaws.com/<?= $subLanguage ? $video['spanish'] : $video['shortname_medium'] ?>.mp4" type='video/mp4'>
+                            <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/<?= $subLanguage ? $video['spanish'] : $video['shortname_medium'] ?>.mp4" type='video/mp4'>
                             <p class="vjs-no-js">
                                     <?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that ', 'EOT_LMS')?>
                                     <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video', 'EOT_LMS')?></a>
@@ -114,7 +114,7 @@
                             } 
 ?>
 
-                            <source src="https://eot-output.s3.amazonaws.com/<?= $video_name ?>.mp4#t=<?= $video_last_time ?>" type='video/mp4'>
+                            <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/<?= $video_name ?>.mp4#t=<?= $video_last_time ?>" type='video/mp4'>
                             <p class="vjs-no-js">
                                     <?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that ', 'EOT_LMS')?>
                                     <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video', 'EOT_LMS')?></a>
