@@ -2553,11 +2553,19 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
         }
         else
         {
-          // ERROR in creating user
-          $has_error = true;
-          $has_user_error = true;
-//            echo "<p>ERROR: Could not create user: $email ".$result['message']."</p>";
-          $import_status .= "$email - " . __("ERROR: Could not create user:", "EOT_LMS") . " ".$result['message']."<br>";
+          $result = enrollUserInCourses($courses, $org_id, $email, $subscription_id);
+          if (isset($result['status']) && !$result['status'])
+          {
+            // User has already enrolled previously, same organization but could not enroll the user.
+            $has_error = true;
+            $has_user_error = true;
+            $import_status .= "$email - " . __("ERROR: User exists in WP. But couldnt enroll into course:", "EOT_LMS") . " ".$result['message']."<br>";
+
+          }
+          else
+          {
+            $import_status .= "$email - " . __("SUCCESS: enrolled in course", "EOT_LMS") . "<br>";
+          }
         }
       }
       else
