@@ -2865,7 +2865,7 @@ function enrollUserInCourse($email = '', $data = array())
     }    
     else
     {
-        add_user_in_subscription( $subscription_id, $user_id );
+        add_user_in_subscription( $subscription_id, $user->ID );
         return array('status' => 1);
     } 
 }
