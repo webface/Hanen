@@ -4264,73 +4264,104 @@ function createUser_callback()
         }
         else 
         {
-            // check that the user doesnt exist in WP
-            if ( email_exists($email) == false )
+          // check if user exists in WP, if yes make sure they are in the same org. 
+          if ( email_exists($email) )
+          {
+            $staff_id = get_user_by('email', $email)->ID;
+            if ( get_user_meta($staff_id, 'org_id', true) == $org_id ) // if user is in the same org
             {
-                    $result['success'] = true;
-                    $result['msg_sent'] = $send_mail;
-                    $result['name'] = $first_name;
-                    $result['lastname'] = $last_name;
-                    $result['org_id'] = $org_id;
-                    $result['email'] = $email;
-                    $result['password'] = $password;
-
-                    // create the user in WP (student)
-                    $userdata = array (
-                        'user_login' => $email,
-                        'user_pass' => $password,
-                        'role' => 'student',
-                        'user_email' => $email,
-                        'first_name' => $first_name,
-                        'last_name' => $last_name
-                    );
-                    $WP_user_id = wp_insert_user ($userdata);
-
-                    // check if we successfully inserted the user
-                    if ( ! is_wp_error( $WP_user_id ) ) 
-                    {
-                      $result['user_id'] = $WP_user_id;
-                      // Newly created WP user needs some meta data values added
-                      update_user_meta ( $WP_user_id, 'org_id', $org_id );
-                      update_user_meta ( $WP_user_id, 'accepted_terms', '0');
-                      add_user_in_subscription( $subscription_id, $WP_user_id );
-                      // Create enrollment
-                      if($course_id)
-                      {
-                          // Adding the course name in the $data
-                          $response = enrollUserInCourse($email, $data);    
-                          if($response['status'] == 1)
-                          {
-                              // success message is set above.
-                          }
-                          else
-                          {
-                              $result['success'] = false;
-                              $result['display_errors'] = true;
-                              $result['errors'] = __("CreateUser_callback Error:", "EOT_LMS") . " " . $response['message'];
-                          }
-                      }
-                      else // user created successfully, but no course ID so can't enroll
-                      {
-                          $result['success'] = false;
-                          $result['display_errors'] = true;
-                          $result['errors'] = __("createUser_callback Error: Created user but could not enroll in course because couldn't find the course name.", "EOT_LMS");
-                      }   
-                    }
-                    else
-                    {
-                      // error, couldnt insert the user
-                      $result['display_errors'] = 'Failed';
-                      $result['success'] = false;
-                      $result['errors'] = __("create staff account error: Sorry, we couldnt create the user.", "EOT_LMS");
-                    }
-            }
-            else 
-            {
+              // enroll the user into the courses (this auto adds user to subscription)
+              $result2 = enrollUserInCourse($email, $data);
+              if (isset($result2['status']) && !$result2['status'])
+              {
+                // ERROR in enrolling user
                 $result['success'] = false;
                 $result['display_errors'] = true;
-                $result['errors'] = __("Wordpress error: User already exsists.", "EOT_LMS");
-            } 
+                $result['errors'] = __("createUser_callback Error: ", "EOT_LMS") . " " . $response['message'];
+                // got errors enrolling user ... still want to add user to subscription.
+                add_user_in_subscription( $subscription_id, $staff_id );
+              }
+              else
+              {
+                // success
+                $result['success'] = true;
+                $result['msg_sent'] = $send_mail;
+                $result['name'] = $first_name;
+                $result['lastname'] = $last_name;
+                $result['org_id'] = $org_id;
+                $result['email'] = $email;
+                $result['password'] = $password;
+              }
+            }
+            else
+            {
+              // ERROR: WP user exists but in a different org.
+              $result['success'] = false;
+              $result['display_errors'] = true;
+              $result['errors'] = "$email - " . __("ERROR: This user already exists but is assigned to a different camp. We could not enroll him in your camp. Please contact us at info@expertonlinetraining.com", "EOT_LMS") . "<br>";
+            }
+          }
+          // check that the user doesnt exist in WP
+          else
+          {
+            $result['success'] = true;
+            $result['msg_sent'] = $send_mail;
+            $result['name'] = $first_name;
+            $result['lastname'] = $last_name;
+            $result['org_id'] = $org_id;
+            $result['email'] = $email;
+            $result['password'] = $password;
+
+            // create the user in WP (student)
+            $userdata = array (
+                'user_login' => $email,
+                'user_pass' => $password,
+                'role' => 'student',
+                'user_email' => $email,
+                'first_name' => $first_name,
+                'last_name' => $last_name
+            );
+            $WP_user_id = wp_insert_user ($userdata);
+
+            // check if we successfully inserted the user
+            if ( ! is_wp_error( $WP_user_id ) ) 
+            {
+              $result['user_id'] = $WP_user_id;
+              // Newly created WP user needs some meta data values added
+              update_user_meta ( $WP_user_id, 'org_id', $org_id );
+              update_user_meta ( $WP_user_id, 'accepted_terms', '0');
+              add_user_in_subscription( $subscription_id, $WP_user_id );
+              // Create enrollment
+              if($course_id)
+              {
+                  // Adding the course name in the $data
+                  $response = enrollUserInCourse($email, $data);    
+                  if($response['status'] == 1)
+                  {
+                      // success message is set above.
+                  }
+                  else
+                  {
+                      $result['success'] = false;
+                      $result['display_errors'] = true;
+                      $result['errors'] = __("CreateUser_callback Error:", "EOT_LMS") . " " . $response['message'];
+                  }
+              }
+              else // user created successfully, but no course ID so can't enroll
+              {
+                  $result['success'] = false;
+                  $result['display_errors'] = true;
+                  $result['errors'] = __("createUser_callback Error: Created user but could not enroll in course because couldn't find the course name.", "EOT_LMS");
+              }   
+            }
+            else
+            {
+              // error, couldnt insert the user
+              $result['display_errors'] = 'Failed';
+              $result['success'] = false;
+              $result['errors'] = __("createUser_callback error: Sorry, we couldnt create the user.", "EOT_LMS");
+            }
+          }
         }
         // This variable will return to part-manage_staff_accounts.php $(document).bind('success.create_staff_account). Line 865
         echo json_encode( $result );
