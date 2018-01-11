@@ -4327,9 +4327,40 @@ function createUser_callback()
             }
             else 
             {
+              // user already exists. Check if they are in the same org.
+              $staff_id = get_user_by('email', $email)->ID;
+              if ( get_user_meta($staff_id, 'org_id', true) == $org_id ) // if user is in the same org
+              {
+                // enroll the user into the courses (this auto adds user to subscription)
+                $result2 = enrollUserInCourse($email, $data);
+                if (isset($result2['status']) && !$result2['status'])
+                {
+                  // ERROR in enrolling user
+                  $result['success'] = false;
+                  $result['display_errors'] = true;
+                  $result['errors'] = __("createUser_callback Error: User existed previously in this org but couldn't enroll them into this course. ", "EOT_LMS") . " " . $result2['message'];
+                  // got errors enrolling user ... still want to add user to subscription.
+                  add_user_in_subscription( $subscription_id, $staff_id );
+                }
+                else
+                {
+                  // success
+                  $result['success'] = true;
+                  $result['msg_sent'] = $send_mail;
+                  $result['name'] = $first_name;
+                  $result['lastname'] = $last_name;
+                  $result['org_id'] = $org_id;
+                  $result['email'] = $email;
+                  $result['password'] = $password;
+                }
+              }
+              else
+              {
+                // ERROR: WP user exists but in a different org.
                 $result['success'] = false;
                 $result['display_errors'] = true;
-                $result['errors'] = __("Wordpress error: User already exsists.", "EOT_LMS");
+                $result['errors'] = "$email - " . __("ERROR: This user already exists but is assigned to a different camp. We could not enroll him in your camp. Please contact us at info@expertonlinetraining.com", "EOT_LMS") . "<br>";
+              }
             } 
         }
         // This variable will return to part-manage_staff_accounts.php $(document).bind('success.create_staff_account). Line 865
