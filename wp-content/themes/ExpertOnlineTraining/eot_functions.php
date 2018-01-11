@@ -2530,34 +2530,23 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
     if ( email_exists($email) )
     {
       $staff_id = get_user_by('email', $email)->ID;
-      if ( get_user_meta($staff_id, 'org_id', true) == $org_id )
+      if ( get_user_meta($staff_id, 'org_id', true) == $org_id ) // if user is in the same org
       {
-        $result = createWpUser($data, 'student', $subscription_id); // Create WP user
-        if (isset($result['success']) && $result['success'])
+        // enroll the user into the courses (this auto adds user to subscription)
+        $result2 = enrollUserInCourses($courses, $org_id, $email, $subscription_id);
+        if (isset($result2['status']) && !$result2['status'])
         {
-          // enroll user in courses 
-          $result2 = enrollUserInCourses($courses, $org_id, $email, $subscription_id);
-          if (isset($result2['status']) && !$result2['status'])
-          {
-            // ERROR in enrolling user
-            $has_error = true;
-            $has_user_error = true;
-//              echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-            $import_status .= "$email - " . __("ERROR: User exists in WP. But couldnt enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
-          }
-          else
-          {
-            // success
-            $import_status .= "$email - " . __("SUCCESS: enrolled in course", "EOT_LMS") . "<br>";
-          }
+          // ERROR in enrolling user
+          $has_error = true;
+          $has_user_error = true;
+          $import_status .= "$email - " . __("ERROR: User exists in WP. But couldn't enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
+          // got errors enrolling user ... still want to add user to subscription.
+          add_user_in_subscription( $subscription_id, $staff_id );
         }
         else
         {
-          // ERROR in creating user
-          $has_error = true;
-          $has_user_error = true;
-//            echo "<p>ERROR: Could not create user: $email ".$result['message']."</p>";
-          $import_status .= "$email - " . __("ERROR: Could not create user:", "EOT_LMS") . " ".$result['message']."<br>";
+          // success
+          $import_status .= "$email - " . __("SUCCESS: enrolled in course", "EOT_LMS") . "<br>";
         }
       }
       else
@@ -2565,8 +2554,7 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
         // ERROR: WP user exists but in a different org.
         $has_error = true;
         $has_user_error = true;
-//        echo "<p>ERROR: This user, $email, already exists but is assigned to a different organization.</p>";
-        $import_status .= "$email - " . __("ERROR: This user, already exists but is assigned to a different camp.", "EOT_LMS") . "<br>";
+        $import_status .= "$email - " . __("ERROR: This user already exists but is assigned to a different camp. We could not enroll him in your camp. Please contact us at info@expertonlinetraining.com", "EOT_LMS") . "<br>";
       }
     }
     else
@@ -2583,8 +2571,9 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
           // ERROR in enrolling user
           $has_error = true;
           $has_user_error = true;
-//          echo "<p>ERROR: Could not enroll $email into one or more courses. ".$result2['message']."</p>";
-          $import_status .= "$email - " . __("ERROR: Created user in WPLU but couldnt enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
+          $import_status .= "$email - " . __("ERROR: Created user in WP but couldnt enroll into course:", "EOT_LMS") . " ".$result2['message']."<br>";
+          // got errors enrolling user ... still want to add user to subscription.
+          add_user_in_subscription( $subscription_id, $result['user_id'] );
         }
         else
         {
@@ -2597,7 +2586,6 @@ function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
         // ERROR in creating user
         $has_error = true;
         $has_user_error = true;
-//        echo "<p>ERROR: Could not create user: $email ".$result['message']."</p>";
         $import_status .= "$email - " . __("ERROR: User didnt exist but could not create user:", "EOT_LMS") . " ".$result['message']."<br>";
       }
     }
