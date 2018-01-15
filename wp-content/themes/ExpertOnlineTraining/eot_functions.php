@@ -7349,7 +7349,8 @@ function getCourseForm_callback ( )
                 <a active="0" acton="create_staff_account" rel="submit_button" class="positive">
                   <img src="<?php bloginfo('template_directory'); ?>/images/tick.png" alt=""/> 
                   <?= __("Create", "EOT_LMS") ?>
-                </a>        
+                </a>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="loading_create_staff_account" style="display:none"></i> 
               </div>
             </div>
         <?php
@@ -7436,6 +7437,7 @@ function getCourseForm_callback ( )
                 <a active='0' acton="send_message" rel="submit_button" >
                   <div style="height:15px;padding-top:2px;"> <?= __("Send Message", "EOT_LMS")?></div>
                 </a>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" id="loading_email_create_staff_account" style="display:none"></i> 
               </div>
             </div>      
         <?php
