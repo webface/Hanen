@@ -88,6 +88,11 @@
                         }
                    });
 
+                // Disable the right click on videos to not allow easy download of the video.
+                $("video").on('contextmenu', function(e) {
+                    e.preventDefault();
+                });
+
       			// Update the video status to finish.
       		   	$('video').on("ended", function() {
 	            	

@@ -90,6 +90,13 @@
                                 
                             </video>
                         </div>
+
+                        <script type="text/javascript">
+                            // Disable the right click on videos to not allow easy download of the video.
+                            $("video").on('contextmenu', function(e) {
+                                e.preventDefault();
+                            });
+                        </script>
 <?php
                     }
                     // Add docs into the resources table.

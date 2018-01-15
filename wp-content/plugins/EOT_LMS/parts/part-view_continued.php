@@ -225,7 +225,12 @@
 
                             });
 
-      		   	// Update the video time.
+                // Disable the right click on videos to not allow easy download of the video.
+                $("video").on('contextmenu', function(e) {
+                    e.preventDefault();
+                });
+
+     		   	// Update the video time.
       		   	$("video").on("pause", function (e) {
       		   		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&time=" + e.target.currentTime + "&track_id="+$(this).attr("track-id")+"&video_id=<?=$video_id?>&status=pause&type=watch_video";
 					$.ajax({url:url,
