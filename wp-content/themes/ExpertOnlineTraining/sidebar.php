@@ -41,17 +41,21 @@
 								}
 ?>
 
-							<?php 
+<?php 
 								if(current_user_can ('is_director'))
 								{
-							?>
+?>
 									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=view_invoice"><?= __("View Invoice(s)", "EOT_LMS") ?></a></li>
 									<!-- <li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=view_statistics">Statistics History</a></li>
 									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=my_account#subscription_settings">Advance Training & Certification</a></li>
 									-->
-							<?php 
+<?php
+									if (!userIsSubscribed( P4C_ID ))
+									{
+										echo "<li><a href='/new-subscription/?library_id=" . P4C_ID . "'>Add Prep 4 Camp</a></li>";
+									}
 								}
-							?>
+?>
 						
 							</ul>
 						<?php 

@@ -4,8 +4,22 @@
  * 
  * @package eot
  */
+	
+	get_header();
 
-get_header();?> 
+	$title = __("Subscribe to Expert Online Training", "EOT_LMS");
+
+	if ( isset($_REQUEST['library_id']) && $_REQUEST['library_id'] > 0 )
+    {
+    	// get the library title
+    	$library = getLibrary($_REQUEST['library_id']);
+    	if ($library)
+    	{
+    		$title = __("Subscribe to " . $library->name, "EOT_LMS");
+    	}
+    }
+
+?> 
 <div id="main-content" class="s-c-x">
 	<div id="colmask" class="ckl-color2">
 		<div id="colmid" class="cdr-color1">
@@ -15,7 +29,7 @@ get_header();?>
 					<div id="col1pad">
 						<div id="col1">
 							<div class="component-pad">
-								<h1 class="article_page_title">Subscribe to Expert Online Training</h1>
+								<h1 class="article_page_title"><?= $title ?></h1>
 								<?php new_subscription (); ?>
 							</div>
 						</div>

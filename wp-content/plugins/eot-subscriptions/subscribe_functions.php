@@ -71,7 +71,33 @@ function display_subscriptions ()
                                     'setup' => '1' 
                                 ), 
                                 array( 
-                                    'id' => $subscription->ID 
+                                    'ID' => $subscription->ID 
+                                ) 
+                            );
+                    display_subscription_dashboard ($subscription);
+                }
+            }
+            // check if user subscribed to Prep 4 Camp.
+            else if($library_id == P4C_ID && !$subscription->setup)
+            {
+                $subscription_id = $subscription->ID;
+                $course_name = "Prep 4 Camp";
+                $course_id = PREP4CAMP_COURSE_ID;
+                $data = compact("user_id", "subscription_id"); //course description is ommitted in this case
+                $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+                if (isset($response['status']) && !$response['status']) 
+                {
+                    echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
+                    error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message']);
+                }
+                else
+                {
+                    $upd = $wpdb->update(TABLE_SUBSCRIPTIONS, 
+                                array( 
+                                    'setup' => '1' 
+                                ), 
+                                array( 
+                                    'ID' => $subscription->ID 
                                 ) 
                             );
                     display_subscription_dashboard ($subscription);
@@ -303,6 +329,268 @@ function new_subscription ($user_id = 0) {
 
 	$org_id = get_org_from_user ($user->ID);
 	$org = get_post ($org_id);
+
+    // check if were adding a non eot library
+    if ( isset($_REQUEST['library_id']) && $_REQUEST['library_id'] > 0 )
+    {
+        // show form for adding non eot library
+        $library_id = $_REQUEST['library_id'];
+        $library = getLibrary( $library_id );
+        $num_accounts = 1000;
+
+        echo $library->desc;
+
+        // check if current user has an active EOT subscription
+        $current_LE_subscription = userIsSubscribed( LE_ID );
+
+        if ($current_LE_subscription)
+        {
+            // user has a subscription to LE adjust price accordingly
+            echo "<p>Because you are already subscribed to Leadership Essentials the cost to add the Camp Readyness Program for up to 1,000 families is $" . P4C_LVL_2_PRICE . "</p>";
+            $price = P4C_LVL_2_PRICE;
+        }
+        else
+        {
+            $price = P4C_PRICE;
+        }
+
+        $org_name = apply_filters ('the_title', $org->post_title);
+        $full_name = ucwords ($user->user_firstname . " " . $user->user_lastname);
+        $address = get_post_meta ($org_id, 'org_address', true);
+        $city = get_post_meta ($org_id, 'org_city', true);
+        $state = get_post_meta ($org_id, 'org_state', true);
+        $country = get_post_meta ($org_id, 'org_country', true);
+        $zip = get_post_meta ($org_id, 'org_zip', true);
+        $phone = get_post_meta ($org_id, 'org_phone', true);
+
+?>
+        <style type="text/css">
+                #error_box {
+                     background-color: #9F0000;
+                     color: #FFF;
+                     width: 626px;
+                     margin: 10px 0;
+                     padding: 5px 20px;
+                     display: none;
+                }
+                #error_box h2 {
+                     margin: 5px 0;
+                     padding: 0;
+                     color: #FFF;
+                     font-size: 21px;
+                     text-decoration: underline;
+                }
+                .processing_payment {
+                    display: none;
+                }
+        </style>
+        <form id="new-alt-subscription" data-user_id="" action="#">
+            <h2><?= __("Please complete your payment details:", "EOT_LMS") ?></h2>
+            <table class="staff_accounts subscription_confirm Tstandard data" id="le_table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <?= __("Library Name:", "EOT_LMS") ?>
+                        </td>
+                        <td>
+                            <?= __($library->name, "EOT_LMS") ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?= __("No. of family accounts:", "EOT_LMS") ?>
+                        </td>
+                        <td>
+                            <?= __("Up to 1,000", "EOT_LMS") ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?= __("Total Cost:", "EOT_LMS") ?>
+                        </td>
+                        <td>
+                            $<?= $price ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" border="0">
+                            * Should you require more than 1,000 family accounts, please contact us at <a href="mailto:info@expertonlinetraining.com">info@expertonlinetraining.com</a>.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+  
+            <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
+            <div class="form-row">
+                <label><?= __("Organization Name", "EOT_LMS") ?></label>
+                <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
+            </div>
+            <div class="form-row">
+                <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
+                <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
+            </div>
+            <div class="form-row">
+                <label><?= __("Address", "EOT_LMS") ?></label>
+                <input type="text" name="address" value="<?php echo $address; ?>" required/>
+            </div>
+            <div class="form-row">
+                <label><?= __("City", "EOT_LMS") ?></label>
+                <input type="text" name="city" value="<?php echo $city; ?>" required/>
+            </div>
+            <div class="form-row">
+                <label><?= __("State/Province", "EOT_LMS") ?></label>
+                <input type="text" name="state" value="<?php echo $state; ?>" required/>
+            </div>
+            <div class="form-row">
+                <label><?= __("Country", "EOT_LMS") ?></label>
+                <input type="text" name="country" value="<?php echo $country; ?>" required/>
+            </div>
+            <div class="form-row">
+                <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
+                <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
+            </div>
+            <div class="form-row">
+                <label><?= __("Phone Number", "EOT_LMS") ?></label>
+                <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
+            </div>
+            <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
+            <?php 
+                $cus_id = get_post_meta($org_id, 'stripe_id', true);
+                $cards = get_customer_cards ($cus_id);
+            ?>
+
+            <?php if (!empty($cards)) { ?>
+                <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><?= __("Type", "EOT_LMS") ?></td>
+                        <td><?= __("Number", "EOT_LMS") ?></td>
+                        <td><?= __("Expiration", "EOT_LMS") ?></td>
+                        <td><?= __("CVC", "EOT_LMS") ?></td>
+                    </tr>
+                    <?php foreach ($cards as $card) { ?>
+                        <tr>
+                            <td><input type="radio" name="cc_card" value="<?php echo $card->id; ?>" /></td>
+                            <td><?php echo $card->brand; ?></td>
+                            <td>**** **** **** <?php echo $card->last4; ?></td>
+                            <td><?php echo $card->exp_month; ?> / <?php echo $card->exp_year; ?></td>
+                            <td>***</td>
+                        </tr>
+                    <?php } ?>
+                </table>
+                <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
+            <?php } ?>
+                <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
+                    <div class="form-row">
+                        <label><?= __("Card Number", "EOT_LMS") ?></label>
+                        <input type="text" size="20" autocomplete="off" name="cc_num" value="" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("CVC", "EOT_LMS") ?></label>
+                        <input type="text" size="4" autocomplete="off" name="cc_cvc" value="" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Expiration", "EOT_LMS") ?></label>
+                        <select name="cc_mon" required>
+                            <option value="" selected="selected">MM</option>
+                            <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
+                                <option value="<?php if ($i < 10) {echo "0";} echo $i; ?>"><?php if ($i < 10) {echo "0";} echo $i; ?></option>
+                            <?php } ?>
+                        </select>
+                        <span> / </span>
+                        <select name="cc_yr" required>
+                            <option value="" selected="selected">YYYY</option>
+                            <?php for ($i = date('Y') ; $i <= (date('Y') + 10) ; $i++) { ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+            </div>
+            <?php if ($cus_id) { ?><input type="hidden" name="customer_id" value="<?php echo $cus_id; ?>" /><?php } ?>
+            <input type="hidden" name="email" value="<?php echo $user->user_email; ?>" />
+            <input type="hidden" name="org_id" value="<?php echo $org_id; ?>" />
+            <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
+            <input type="hidden" name="method" value="Stripe" />
+            <input type="hidden" name="price" value="<?= $price ?>" />
+            <input type="hidden" name="library_id" value="<?= $library_id ?>" />
+            <input type="hidden" name="accounts" value="<?= $num_accounts ?>" />
+
+
+            <p>
+                <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
+            </p>
+
+            <input type="button" value="Subscribe" id="subscribe-alt" />
+
+            <div id="error_box">
+                <h2><?= __("Errors found", "EOT_LMS") ?></h2>
+                <p id="error_msgs">
+                    <?= __("Name not specified", "EOT_LMS") ?> <br />
+                    <?= __("Phone number not given", "EOT_LMS") ?>
+                </p>
+            </div>
+
+            <div class="processing_payment round_msgbox">
+                <?= __("Attempting to charge Credit card and create the subscription...", "EOT_LMS") ?> <br />
+                <i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>                         <br />
+                <?= __("If you see this message for more than 15 seconds, please call 877-390-2267 for assistance. ", "EOT_LMS") ?> 
+            </div>
+
+        </form>
+
+        <script type="text/javascript">
+            jQuery(function($) {
+                $(document).ready(function() {
+console.log("1");                
+                    $('#subscribe-alt').click( function() {
+console.log("2");                
+
+//                        $('#new-alt-subscription').preventDefault(); // stop the form from submitting
+
+                        var button_ref = $(this);
+                        $(button_ref).attr('disabled','disabled');
+
+                        $('#error_box').slideUp();
+                        $('.processing_payment').slideDown();
+                    
+
+                        var eot_status = 1;
+                        var data = $('#new-alt-subscription').serialize () + "&action=subscribe_alt";
+                        $.ajax({
+                            type: "POST",
+                            url: eot.ajax_url,
+                            data: data,
+                            dataType: "json",
+                            success: function(response) {
+                                eot_status = response.status;
+                                my_response = response;
+                                $('#error_box').hide();
+                                $('.processing_payment').slideUp();
+                                if (!eot_status) {
+                                    $(button_ref).removeAttr('disabled');
+                                    $('.processing_payment').slideUp();
+                                    show_error (my_response.message);
+                                }
+                                else
+                                {
+                                    // show completed message
+                                    $('.processing_payment').slideUp();
+                                    show_error ("SUCCESS: created subscription!");
+                                    window.location.replace("/dashboard/");
+                                }
+
+                                return eot_status;
+                            }
+                        });
+                    });
+                });
+            });            
+        </script>
+
+<?php
+    } // end if for non eot form
+    else
+    {
 ?>
 	<form id="new-subscription" data-user_id="" action="#">
 		<h3><?= __("Subscribe", "EOT_LMS") ?></h3>
@@ -635,9 +923,10 @@ function new_subscription ($user_id = 0) {
         
         </fieldset>
 	</form>	
-
-
 <?php
+        
+    } // end else for eot form
+
 }
 
 /**
@@ -2802,6 +3091,147 @@ function getUmbrellaGroups()
 }
 
 /********************************************************************************************************
+ * Subscribe user to a NON EOT library
+ *******************************************************************************************************/
+add_action('wp_ajax_subscribe_alt', 'subscribe_alt_callback');
+function subscribe_alt_callback () 
+{
+    require_once ('stripe_functions.php');
+
+    // Check permissions only director can upgrade account.
+    if( !current_user_can ('is_sales_rep') && !current_user_can('is_sales_manager') && !current_user_can('is_director') )
+    {
+        $result['status'] = false;
+        $result['message'] = __("subscribe_alt_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
+        echo json_encode($result);
+        wp_die();   
+    }
+
+    if(isset($_REQUEST['library_id']) && $_REQUEST['library_id'] != "")
+    {
+        $ordered_accounts = intval(filter_var($_REQUEST['accounts'],FILTER_SANITIZE_NUMBER_INT));
+        $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+        $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
+        $method = filter_var($_REQUEST['method'],FILTER_SANITIZE_STRING);
+        $price = filter_var($_REQUEST['price'],FILTER_SANITIZE_NUMBER_FLOAT); // the cost for the subscription
+        $trans_id = ''; 
+        $library = getLibrary($_REQUEST['library_id']);
+        $statement_description = "Expert Online Training Subscription: " . $ordered_accounts . " Accounts for " . $library->name;
+        $autorenew = isset($_REQUEST['autorenew']) ? filter_var($_REQUEST['autorenew']. FILTER_SANITIZE_NUMBER_INT) : 0;
+
+        // Credit card info
+        // check if paying by credit card
+        if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'Stripe')
+        {
+
+            if (!isset($_REQUEST['cc_card']) && ($_REQUEST['cc_num'] == '' || $_REQUEST['cc_cvc'] == '')) 
+            {
+                $result['status'] = false;
+                $result['message'] = __("You must choose a credit card or add a new credit card.", "EOT_LMS"); 
+                echo json_encode($result);
+                wp_die();   
+            }
+        
+            $cc_card = array (
+                "object" => "card",
+                "number" => $_REQUEST['cc_num'],
+                "exp_month" => $_REQUEST['cc_mon'],
+                "exp_year" => $_REQUEST['cc_yr'],
+                "cvc" => $_REQUEST['cc_cvc'],
+                "name" => $_REQUEST['full_name'],
+                "address_line1" => $_REQUEST['address'],
+                "address_city" => $_REQUEST['city'],
+                "address_state" => $_REQUEST['state'],
+                "address_zip" => $_REQUEST['zip'],
+                "address_country" => $_REQUEST['country']
+            );
+
+            if (isset($_REQUEST['customer_id'])) 
+            {
+                $customer_id = $_REQUEST['customer_id'];
+            } 
+            else 
+            {
+                $customer = create_new_customer ($cc_card, $_REQUEST['email'], $_REQUEST['org_name']); //$customer->{'id'}; 
+                $customer_id = $customer['customer_id'];
+                $card_id = $customer['cc_card'];
+                update_post_meta ($org_id, 'stripe_id', $customer_id);
+            }
+
+            if (isset($_REQUEST['cc_card'])) 
+            {
+                $card_id = $_REQUEST['cc_card'];
+            } 
+            else 
+            {
+                $card_id = $cc_card;
+            }
+            
+            $trans_id = charge_customer ($price, $customer_id, $card_id, $statement_description); //$charge->{'id'};
+        }
+        else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
+        {
+            $trans_id = 'FREE';
+        }
+        else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'cheque')
+        {
+            $trans_id = 'CHEQUE';
+        }
+
+        $data = compact('org_id', 'price', 'ordered_accounts', 'user_id', 'method', 'trans_id');
+
+        if($trans_id)
+        { 
+            // Add a new subscription
+            $subscription_data = array (
+                'org_id' => $org_id,                                                // org id
+                'manager_id' => $user_id,                                           // manager id
+                'lib_id' => $library->ID,                                              // library id (1=Leadership,2=Clinical,3=Safety)
+                'start' => SUBSCRIPTION_START,                                      // subscription start date
+                'end' => SUBSCRIPTION_END,                                          // subscription end date
+                'method' => $method,    // transaction method
+                'trans_id' => $trans_id,                                            // transaction id
+                'date' => date ('Y-m-d'),                                           // current date
+                'total' => number_format ($price, 2, '.', ''),  // total price paid
+                'data_disk_price' => 0.00,  // Data Disk price for library
+                'dash_price' => number_format ($price, 2, '.', ''),            // dashboard price for library
+                'staff_price' => 0,          // staff price for library
+                'dash_dis' => 0.00,    // discount for dashboard
+                'staff_dis' => 0.00,   // discount for staff accounts
+                'count' => $ordered_accounts,                               // number of staff accounts for subscription
+                'status' => 'active',                                               // subscription status
+                'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0, // ID of the rep for the sale
+                'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : '',   // any notes
+                'auto-renew' => $autorenew                                          // whether to auto renew next year
+            );
+
+            if (!add_new_subscription($subscription_data)) 
+            {
+                $result['status'] = false;
+                $result['message'] = 'subscribe_alt_callback Error: There was an error adding the Subscription. Please contact the administrator';
+            }
+            else 
+            {
+                $result['data'] = 'success';
+                $result['status'] = true;
+            }
+
+        }
+        else
+        {   // This does not need to return json. Stripe echos the return.
+            wp_die();
+        }
+    }
+    else
+    {
+        $result['status'] = false;
+        $result['message'] = __("subscribe_alt_callback ERROR: Missing some parameters.", "EOT_LMS"); 
+    }
+    echo json_encode($result);
+    wp_die();
+}
+
+/********************************************************************************************************
  * Upgrade Subscription via sales rep or sales administrator
  *******************************************************************************************************/
 add_action('wp_ajax_upgradeSubscription', 'upgradeSubscription_callback');
@@ -3540,4 +3970,28 @@ function renewCamp_callback ()
     echo json_encode($result);
     wp_die();   
 }
+
+/**
+ * check whether the current user is subscribed to the given library
+ * @param INT $library_id - The ID of the library to check
+ * @return boolean - true if current user is subscribed for the current season
+ */
+function userIsSubscribed( $library_id )
+{
+    global $current_user;
+    global $wpdb;
+    $date = date ('Y-m-d');
+
+    $sql = "SELECT ID FROM " . TABLE_SUBSCRIPTIONS . " WHERE manager_id = " . $current_user->ID . " AND library_id = $library_id AND start_date <= '$date' AND end_date >= '$date' AND status = 'active' ORDER BY start_date";
+
+    $subscribed = $wpdb->get_var( $sql );
+
+    if ($subscribed)
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 ?>

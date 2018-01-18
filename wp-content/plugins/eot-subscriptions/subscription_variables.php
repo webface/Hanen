@@ -82,6 +82,18 @@ define ('SE_LVL_2_PRICE', 10);
 define ('SE_LVL_2_MIN', 21);
 define ('SE_MIN_ACC', 21);
 
+// define variables for Prep 4 Camp
+define ('P4C_PRICE', 499); // price if not subscribed to LE
+define ('P4C_LVL_1_PRICE', 6.99); // price for 1 account for parent
+define ('P4C_LVL_1_MIN', 1);
+define ('P4C_LVL_1_MAX', 1);
+define ('P4C_LVL_2_PRICE', 99); // price for camp thats already subscribed to LE
+define ('P4C_LVL_2_MIN', 2);
+define ('P4C_LVL_2_MAX', 249);
+define ('P4C_LVL_3_PRICE', 99);
+define ('P4C_LVL_3_MIN', 250);
+define ('P4C_MIN_ACC', 1);
+
 // define subscription variables
 $today = time();
 $current_year = date('Y');
@@ -176,8 +188,13 @@ define ('BCB_ID', 4); // Burn Camp Bundle
 define ('LE_SP_DC_ID', 6); // Leadership Essentials - Starter Pack - Day Camps
 define ('LE_SP_OC_ID', 7); // Leadership Essentials - Starter Pack - Overnight Camps
 define ('LE_SP_PRP_ID', 8); // Leadership Essentials - Starter Pack - Park & Rec Programs
+define ('P4C_ID', 9); // Prep 4 Camp
 
+// define specific course IDs
 define ('CHILD_WELFARE_COURSE_ID', 32);
+define ('PREP4CAMP_COURSE_ID', 0);
+
+
 // questionnaire base course IDs
 $questionnaire_base_course_id = array (
 	"New Staff" => '1',
