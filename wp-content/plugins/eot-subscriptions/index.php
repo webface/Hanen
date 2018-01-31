@@ -296,7 +296,7 @@ function handle_steps_callback () {
 			break;
 		case 4:
 			require_once ('stripe-php-5.2.0/init.php');
-                        \Stripe\Stripe::setApiKey(STRIPE_SECRET);
+            \Stripe\Stripe::setApiKey(STRIPE_SECRET);
 			$error = '';
 			$success = '';
 			$org_id = intval ($_REQUEST['org_id']);
@@ -361,7 +361,7 @@ function handle_steps_callback () {
 
 				$org_id = intval ($_REQUEST['org_id']);
 				$user_id = $_REQUEST['user_id'];
-                                $price = str_replace(",", "", $_REQUEST['total_price']);
+                $price = str_replace(",", "", $_REQUEST['total_price']);
 				$price = floatval($price);
 				if ($processPayment) 
 				{ //process payment based on status of variable defined above
@@ -419,9 +419,10 @@ function handle_steps_callback () {
 					$message = "";
 					
 					if (isset($_REQUEST['le'])) { // Leadership essentials - complete
-						$dash_price = $_REQUEST['le_dash_price'];
-						$staff_price = $_REQUEST['le_staff_price'];
-						$data_disk_price = $_REQUEST['subtotal_dd'];
+						$dash_price =  floatval(str_replace(",", "", $_REQUEST['le_dash_price']));
+						$staff_price = floatval(str_replace(",", "", $_REQUEST['le_staff_price']));
+						$data_disk_price = floatval(str_replace(",", "", $_REQUEST['subtotal_dd']));
+
 						// if free, set price to 0
 						if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
 						{
@@ -442,22 +443,22 @@ function handle_steps_callback () {
 							'data_disk_price' => number_format ($data_disk_price, 2, '.', ''),	// Data Disk price for library
 							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
-							'dash_dis' => (isset($_REQUEST['le_dash_disc'])) ? $_REQUEST['le_dash_disc'] : 0.00,	// discount for dashboard
-							'staff_dis' => (isset($_REQUEST['le_staff_disc'])) ? $_REQUEST['le_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => (isset($_REQUEST['le_staff'])) && (!empty($_REQUEST['le_staff'])) ? $_REQUEST['le_staff'] : LE_MIN_ACC,	// number of staff accounts for subscription
+							'dash_dis' => (isset($_REQUEST['le_dash_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_dash_disc'])) : 0.00,	// discount for dashboard
+							'staff_dis' => (isset($_REQUEST['le_staff_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_staff_disc'])) : 0.00,	// discount for staff accounts
+							'count' => (isset($_REQUEST['le_staff'])) && (!empty($_REQUEST['le_staff'])) ? intval(str_replace(",", "", $_REQUEST['le_staff'])) : LE_MIN_ACC,	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
 						);
-
+					
 						if (!add_new_subscription($subscription_data)) {
 							$message .= "Unable to add subscription for Leadership Essentials" . $break;
 						}
 					}
 					if (isset($_REQUEST['le_sp_dc'])) { // Leadership essentials - Starter Pack - Day Camps
-						$dash_price = $_REQUEST['le_sp_dc_dash_price'];
-						$staff_price = $_REQUEST['le_sp_dc_staff_price'];
-						$data_disk_price = $_REQUEST['subtotal_dd'];
+						$dash_price = floatval(str_replace(",", "", $_REQUEST['le_sp_dc_dash_price']));
+						$staff_price = floatval(str_replace(",", "", $_REQUEST['le_sp_dc_staff_price']));
+						$data_disk_price = floatval(str_replace(",", "", $_REQUEST['subtotal_dd']));
 						// if free, set price to 0
 						if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
 						{
@@ -478,9 +479,9 @@ function handle_steps_callback () {
 							'data_disk_price' => number_format ($data_disk_price, 2, '.', ''),	// Data Disk price for library
 							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
-							'dash_dis' => (isset($_REQUEST['le_sp_dc_dash_disc'])) ? $_REQUEST['le_sp_dc_dash_disc'] : 0.00,	// discount for dashboard
-							'staff_dis' => (isset($_REQUEST['le_sp_dc_staff_disc'])) ? $_REQUEST['le_sp_dc_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => (isset($_REQUEST['le_sp_dc_staff']) && (!empty($_REQUEST['le_sp_dc_staff'])) ? $_REQUEST['le_sp_dc_staff'] : LE_SP_DC_MIN_ACC),	// number of staff accounts for subscription
+							'dash_dis' => (isset($_REQUEST['le_sp_dc_dash_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_dc_dash_disc'])) : 0.00,	// discount for dashboard
+							'staff_dis' => (isset($_REQUEST['le_sp_dc_staff_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_dc_staff_disc'])) : 0.00,	// discount for staff accounts
+							'count' => (isset($_REQUEST['le_sp_dc_staff']) && (!empty($_REQUEST['le_sp_dc_staff'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_dc_staff'])) : LE_SP_DC_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -491,9 +492,9 @@ function handle_steps_callback () {
 						}
 					}
 					if (isset($_REQUEST['le_sp_oc'])) { // Leadership essentials - Starter Pack - Overnight Camps
-						$dash_price = $_REQUEST['le_sp_oc_dash_price'];
-						$staff_price = $_REQUEST['le_sp_oc_staff_price'];
-						$data_disk_price = $_REQUEST['subtotal_dd'];
+						$dash_price = floatval(str_replace(",", "", $_REQUEST['le_sp_oc_dash_price']));
+						$staff_price = floatval(str_replace(",", "", $_REQUEST['le_sp_oc_staff_price']));
+						$data_disk_price = floatval(str_replace(",", "", $_REQUEST['subtotal_dd']));
 						// if free, set price to 0
 						if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
 						{
@@ -514,9 +515,9 @@ function handle_steps_callback () {
 							'data_disk_price' => number_format ($data_disk_price, 2, '.', ''),	// Data Disk price for library
 							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
-							'dash_dis' => (isset($_REQUEST['le_sp_oc_dash_disc'])) ? $_REQUEST['le_sp_oc_dash_disc'] : 0.00,	// discount for dashboard
-							'staff_dis' => (isset($_REQUEST['le_sp_oc_staff_disc'])) ? $_REQUEST['le_sp_oc_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => (isset($_REQUEST['le_sp_oc_staff']) && (!empty($_REQUEST['le_sp_oc_staff'])) ? $_REQUEST['le_sp_oc_staff'] : LE_SP_OC_MIN_ACC),	// number of staff accounts for subscription
+							'dash_dis' => (isset($_REQUEST['le_sp_oc_dash_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_oc_dash_disc'])) : 0.00,	// discount for dashboard
+							'staff_dis' => (isset($_REQUEST['le_sp_oc_staff_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_oc_staff_disc'])) : 0.00,	// discount for staff accounts
+							'count' => (isset($_REQUEST['le_sp_oc_staff']) && (!empty($_REQUEST['le_sp_oc_staff'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_oc_staff'])) : LE_SP_OC_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -527,9 +528,9 @@ function handle_steps_callback () {
 						}
 					}
 					if (isset($_REQUEST['le_sp_prp'])) { // Leadership essentials - Starter Pack - Parks & Rec Programs
-						$dash_price = $_REQUEST['le_sp_prp_dash_price'];
-						$staff_price = $_REQUEST['le_sp_prp_staff_price'];
-						$data_disk_price = $_REQUEST['subtotal_dd'];
+						$dash_price = floatval(str_replace(",", "", $_REQUEST['le_sp_prp_dash_price']));
+						$staff_price = floatval(str_replace(",", "", $_REQUEST['le_sp_prp_staff_price']));
+						$data_disk_price = floatval(str_replace(",", "", $_REQUEST['subtotal_dd']));
 						// if free, set price to 0
 						if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
 						{
@@ -550,9 +551,9 @@ function handle_steps_callback () {
 							'data_disk_price' => number_format ($data_disk_price, 2, '.', ''),	// Data Disk price for library
 							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
-							'dash_dis' => (isset($_REQUEST['le_sp_prp_dash_disc'])) ? $_REQUEST['le_sp_prp_dash_disc'] : 0.00,	// discount for dashboard
-							'staff_dis' => (isset($_REQUEST['le_sp_prp_staff_disc'])) ? $_REQUEST['le_sp_prp_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => (isset($_REQUEST['le_sp_prp_staff']) && (!empty($_REQUEST['le_sp_prp_staff'])) ? $_REQUEST['le_sp_prp_staff'] : LE_SP_PRP_MIN_ACC),	// number of staff accounts for subscription
+							'dash_dis' => (isset($_REQUEST['le_sp_prp_dash_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_prp_dash_disc'])) : 0.00,	// discount for dashboard
+							'staff_dis' => (isset($_REQUEST['le_sp_prp_staff_disc'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_prp_staff_disc'])) : 0.00,	// discount for staff accounts
+							'count' => (isset($_REQUEST['le_sp_prp_staff']) && (!empty($_REQUEST['le_sp_prp_staff'])) ? floatval(str_replace(",", "", $_REQUEST['le_sp_prp_staff'])) : LE_SP_PRP_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
@@ -564,9 +565,9 @@ function handle_steps_callback () {
 					}
 
 					if (isset($_REQUEST['se'])) { // Child Care & Protection (formerly Safety essentials)
-						$dash_price = $_REQUEST['se_dash_price'];
-						$staff_price = $_REQUEST['se_staff_price'];
-						$data_disk_price = $_REQUEST['subtotal_dd'];
+						$dash_price = floatval(str_replace(",", "", $_REQUEST['se_dash_price']));
+						$staff_price = floatval(str_replace(",", "", $_REQUEST['se_staff_price']));
+						$data_disk_price = floatval(str_replace(",", "", $_REQUEST['subtotal_dd']));
 						// if free, set price to 0
 						if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
 						{
@@ -587,9 +588,9 @@ function handle_steps_callback () {
 							'data_disk_price' => number_format ($data_disk_price, 2, '.', ''),	// Data Disk price for library
 							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
 							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
-							'dash_dis' => (isset($_REQUEST['se_dash_disc'])) ? $_REQUEST['se_dash_disc'] : 0.00,	// discount for dashboard
-							'staff_dis' => (isset($_REQUEST['se_staff_disc'])) ? $_REQUEST['se_staff_disc'] : 0.00,	// discount for staff accounts
-							'count' => (isset($_REQUEST['se_staff']) && (!empty($_REQUEST['se_staff'])) ? $_REQUEST['se_staff'] : SE_MIN_ACC),	// number of staff accounts for subscription
+							'dash_dis' => (isset($_REQUEST['se_dash_disc'])) ? floatval(str_replace(",", "", $_REQUEST['se_dash_disc'])) : 0.00,	// discount for dashboard
+							'staff_dis' => (isset($_REQUEST['se_staff_disc'])) ? floatval(str_replace(",", "", $_REQUEST['se_staff_disc'])) : 0.00,	// discount for staff accounts
+							'count' => (isset($_REQUEST['se_staff']) && (!empty($_REQUEST['se_staff'])) ? floatval(str_replace(",", "", $_REQUEST['se_staff'])) : SE_MIN_ACC),	// number of staff accounts for subscription
 							'status' => 'active',												// subscription status
 							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
 							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
