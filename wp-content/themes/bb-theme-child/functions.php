@@ -83,7 +83,6 @@ function new_nav_menu_items($items,$args)
     //check if its the frigging main beaver builder menu
     if ($args->menu == 'main-menu-for-beaver-builder' || is_object($args->menu) && $args->menu->slug == 'main-menu-for-beaver-builder')
     {
-        
         $languages = icl_get_languages('skip_missing=1');
         if(1 < count($languages))
         {
@@ -98,6 +97,6 @@ function new_nav_menu_items($items,$args)
     
     return $items;
 }
-add_filter( 'wp_list_pages', 'new_nav_menu_items' , 600, 2);
-add_filter( 'wp_nav_menu_items', 'new_nav_menu_items', 600, 2);
+//add_filter( 'wp_list_pages', 'new_nav_menu_items' , 600, 2);
+//add_filter( 'wp_nav_menu_items', 'new_nav_menu_items', 600, 2);
  
