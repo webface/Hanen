@@ -52,14 +52,34 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     }
                 }
 
-                $calculated_num_completed = 0;
                 $total_number_failed = 0;
                 $enrollments = getEnrollments($course_id, 0, 0, false); // Get all failed/passed enrollments in the course.
 
+                $quizzes_in_course = getQuizzesInCourse($course_id);
+                $num_quizzes_in_course = count($quizzes_in_course);
+                $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
+                $trackPassed = array();
+                $quizPassed = array();//needed to verify and remove quizzes passed more than once
+                foreach ($track_quizzes as $key => $record) 
+                {
+                    if ($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || ($quizPassed[$record['quiz_id']] != $record['user_id'])))//make sure the quiz has not been already passed 
+                    {
+                        $quizPassed[$record['quiz_id']] = $record['user_id'];
+                        array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
+                        //unset($track_quizzes[$key]); // Delete them from the array.
+                    }
+                }
+                $passed_users = array_count_values($trackPassed);
+
+                $calculated_num_completed = count($passed_users);
+
+/*
                 foreach ($enrollments as $enrollment) 
                 {
-                    $status = $enrollment['status'];
-                    if ($status == "completed" || $status == "passed") 
+
+                    $passed_count = isset($passed_users[$enrollment['user_id']]) ? $passed_users[$enrollment['user_id']] : 0; //Number of passes
+
+                    if ($passed_count == $num_quizzes_in_course) 
                     {
                         $calculated_num_completed++; // people who passed also completed the course.
                     } 
@@ -68,6 +88,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $total_number_failed++;
                     }
                 }
+*/
                 $total_number_of_staff = count($enrollments); // The total number of staff enrolled in the course.
 
                 // Variable initialisation 

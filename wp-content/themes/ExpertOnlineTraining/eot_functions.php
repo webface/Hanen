@@ -310,6 +310,46 @@ function formatStatus($status = '')
     }
 }
 
+/***************************************************************************
+ *
+ * Display the status based on progress 
+ * @param int num_passed - the number of passed quizzes
+ * @param int num_quizzes - the number of quizzes in total
+ * @param int attempts - the number of quizz attempts
+ * @param int views - the number of module views
+ *
+ **************************************************************************/
+function displayStatus($num_passed = 0, $num_quizzes = 0, $attempts = 0, $views = 0)
+{
+    if (!$num_passed)
+    {
+      if (!$attempts && !$views)
+      {
+         return formatStatus('not_started');
+      }
+      else
+      {
+          return formatStatus('in_progress');
+      }
+    }
+    else if (!$num_quizzes)
+    {
+      return formatStatus('');
+    }
+    else if ($num_passed < $num_quizzes)
+    {
+      return formatStatus('in_progress');
+    }
+    else if ($num_passed == $num_quizzes)
+    {
+      return formatStatus('completed');
+    }
+    else
+    {
+      return formatStatus('');
+    }
+}
+
 /**
  *   Display Help Videos
  */  
@@ -9464,15 +9504,19 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
  * stats function calculate the number of staff logged in
  * @param $org_id - the org ID
  */
-function calculate_logged_in($org_id = 0)
+function calculate_logged_in($org_id = 0, $subscription_id = 0)
 {
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    if ($org_id == 0) 
+    if ($org_id == 0 || $subscription_id == 0) 
     {
         return 0;
     }
     global $wpdb;
-    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT user_id) as count FROM ". TABLE_TRACK ." WHERE org_id = $org_id and type = 'login'",ARRAY_A);
+//    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT user_id) as count FROM ". TABLE_TRACK ." WHERE org_id = $org_id and type = 'login'",ARRAY_A);
+// Need to check for users in a specific subscription
+    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT t.user_id) as count FROM " . TABLE_TRACK . " LEFT JOIN " . TABLE_USERS_IN_SUBSCRIPTION . " uis ON t.user_id = uis.user_idWHERE t.org_id = $org_id AND t.type = 'login' AND uis.subscription_id = $subscription_id
+    ", ARRAY_A);
+
     return $num_logged_in['count'];
 }
 

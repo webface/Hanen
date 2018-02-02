@@ -158,7 +158,7 @@
 			<h2><?= __("Summary", "EOT_LMS") ?></h2>
 			<div class="cell-row">
 				<div class="cell-caption">
-					<?= __("Staff who have", "EOT_LMS") ?> <b><?= __("completed all their courses", "EOT_LMS") ?></b>
+					<?= __("Staff who have <b>completed all their courses</b>", "EOT_LMS") ?>
 				</div>
 				<div class="cell-field number">
 					<b>
@@ -177,7 +177,7 @@
 		  	</div>
 		  	<div class="cell-row">
 			        <div class="cell-caption">
-			        	<?= __("Staff who have", "EOT_LMS") ?> <b><?= __("Logged In", "EOT_LMS") ?></b> <?= __("at least once", "EOT_LMS") ?>
+			        	<?= __("Staff who have <b>Logged In</b> at least once", "EOT_LMS") ?>
 			    	</div>
 			        <div class="cell-field number">
 			        	<b><?= $num_staff_signed_in ?></b>

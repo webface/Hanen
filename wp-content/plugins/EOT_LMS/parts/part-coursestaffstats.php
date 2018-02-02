@@ -25,6 +25,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $course_data = getCourse($course_id); // The course information
                 $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
                 $quizzes_in_course = getQuizzesInCourse($course_id);
+                $num_quizzes_in_course = count($quizzes_in_course);
                 $track_records = getAllTrack($org_id); // All track records.
                 $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
                 $track_watchVideo = array();
@@ -75,7 +76,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                 $attempt_count = array_count_values($track_quiz_attempts);
                 $login_users = array_count_values($track_login); // Return the user ID and the key/times the user has logged in.
                 $watched_users = array_count_values($track_watchVideo); // Return the user ID and the key/times the user has watch the module.
-                //d($login_users, $track_quizzes);
 
                 if (isset($course_data['status']) && $course_data['status'] == 0) 
                 {
@@ -88,49 +88,72 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     {
 
                         $course_name = $course_data['course_name'];
-                        $total_number_complete = $course_data['num_completed']; // The total number of staff who have completed the course.
-                        $total_number_not_started = $course_data['num_not_started']; // The total number of staff who haven't started yet
-                        $total_number_in_progress = $course_data['num_in_progress']; // The total number of staff who are in progress
-                        $total_number_passed = $course_data['num_passed']; // The total number of staff who have passed the course
                     }
                 }
                 $calculated_num_completed = 0;
-                $total_number_failed = 0;
                 $enrollments = getEnrollments($course_id, 0, 0, false); // Get all failed/passed enrollments in the course.
-
-                foreach ($enrollments as $enrollment) 
-                {
-                    $status = $enrollment['status'];
-                    if ($status == "completed" || $status == "passed") 
-                    {
-                        $calculated_num_completed++; // people who passed also completed the course.
-                    } 
-                    else if ($status == "failed") 
-                    {
-                        $total_number_failed++;
-                    }
-                }
-
                 $total_number_of_staff = count($enrollments); // The total number of staff enrolled in the course.
-                // Variable initialisation 
-                $percentage_completed = 0; // The percentage of staff who logged in once.
-                $percentage_not_started = 0;  // The percentage of staff who logged in once.
-                $percentage_number_in_progress = 0; // The percentage of staff who are in progress.
-                $percentage_number_passed = 0; // The percentage of staff who passed in this course.
-                $percentage_number_failed = 0; // The percentage of staff who failed in this course.
-                $calculated_percentage_completed = 0;
+                $calculated_percentage_completed = 0; // the percentage of completed staff
 
                 // This calculates the percentage for the progressbars.
                 if ($total_number_of_staff > 0)
-                { // Can't be divided by 0.
-                    $percentage_completed = (($total_number_complete / $total_number_of_staff) * 100);
-                    $percentage_not_started = (($total_number_not_started / $total_number_of_staff) * 100);
-                    $percentage_number_in_progress = (($total_number_in_progress / $total_number_of_staff) * 100);
-                    $percentage_number_passed = (($total_number_passed / $total_number_of_staff) * 100);
-                    $percentage_number_failed = (($total_number_failed / $total_number_of_staff) * 100);
+                { 
+                    $quizTableObj = new stdClass();
+                    $quizTableObj->rows = array();
+                    $quizTableObj->headers = array(
+                        __('Name', 'EOT_LMS') => 'quiz-title',
+                        __('Email', 'EOT_LMS') => 'center',
+                        __('Passed', 'EOT_LMS') => 'center',
+                        __('Failed', 'EOT_LMS') => 'center',
+                        __('Logins', 'EOT_LMS') => 'center',
+                        __('Views', 'EOT_LMS') => 'center',
+                        '<div ' . hover_text_attr(__('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed, passed, failed or pending review', 'EOT_LMS'), true) . '>'.__('Status', 'EOT_LMS').'</div>' => 'center',
+                        '<div ' . hover_text_attr(__('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', 'EOT_LMS'), true) . '>'.__('Progress', 'EOT_LMS').'</div>' => 'staff-progress',
+                        __('Actions', 'EOT_LMS') => 'center'
+                    );
+                    /*
+                     * This goes through all the enrollments and display a table 
+                     * with Name, Status and the Progress of each staff in the course
+                     */
+                    foreach ($enrollments as $enrollment) 
+                    {
+                        $name = get_user_meta($enrollment['user_id'], "first_name", true) . " " . get_user_meta($enrollment['user_id'], "last_name", true);
+                        $user_info = get_userdata($enrollment['user_id']);
+                        $login_count = isset($login_users[$enrollment['user_id']]) ? $login_users[$enrollment['user_id']] : 0; // Number of times the user has log in to our system.
+                        $view_count = isset($watched_users[$enrollment['user_id']]) ? $watched_users[$enrollment['user_id']] : 0; // Number of times the user has watch the module.
+                        $fail_count = isset($failed_users[$enrollment['user_id']]) ? $failed_users[$enrollment['user_id']] : 0; // Number of times they failed
+                        $passed_count = isset($passed_users[$enrollment['user_id']]) ? $passed_users[$enrollment['user_id']] : 0; //Number of passes
+                        $attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0; //Number of quiz attempts
+                        $percentage = eotprogressbar('8em', 0, true);
 
-                    $calculated_percentage_completed = (($calculated_num_completed / $total_number_of_staff) * 100);
+                        if ($attempts > 0) 
+                        {
+                            $percentage = eotprogressbar('8em', (($passed_count / $num_quizzes_in_course) * 100), true);
+                        }
+
+                        $status = displayStatus($passed_count, $num_quizzes_in_course, $attempts, $view_count);
+                        if ($status == 'Completed')
+                        {
+                            $calculated_num_completed++;
+                        }
+
+                        $quizTableObj->rows[] = array(
+                            $name,
+                            $user_info->user_email,
+                            "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $passed_count . '/' . $num_quizzes_in_course . "</a>",
+                            "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $fail_count . "</a>",
+                            "<a href='/dashboard?part=loginrecordstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $login_count . "</a>",
+                            "<a href='/dashboard?part=videowatchstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $view_count . "</a>",
+                            $status,
+                            $percentage,
+                            "<a href='?part=improved_email_staff&subscription_id=".$subscription_id."&target=select-staff&recipient=".$enrollment['user_id']."' target='_blank'><i class='fa fa-envelope tooltip' title=\"Send an email to $name\" style=\"margin-bottom: -2px\" onmouseover=\"Tip('Send an email to $name', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')\" onmouseout=\"UnTip()\"></i></a>"
+                        );
+                    }
+
+                    $calculated_percentage_completed = (($calculated_num_completed / $total_number_of_staff) * 100); 
                 }
+
+
 ?>
                 <div class="breadcrumb">
                 <?= CRUMB_DASHBOARD ?>              
@@ -165,68 +188,14 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 <?php
                 if ($enrollments) 
                 {
-                    $quizTableObj = new stdClass();
-                    $quizTableObj->rows = array();
-                    $quizTableObj->headers = array(
-                        __('Name', 'EOT_LMS') => 'quiz-title',
-                        __('Email', 'EOT_LMS') => 'center',
-                        __('Passed', 'EOT_LMS') => 'center',
-                        __('Failed', 'EOT_LMS') => 'center',
-                        __('Logins', 'EOT_LMS') => 'center',
-                        __('Views', 'EOT_LMS') => 'center',
-                        '<div ' . hover_text_attr(__('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed, passed, failed or pending review', 'EOT_LMS'), true) . '>'.__('Status', 'EOT_LMS').'</div>' => 'center',
-                        '<div ' . hover_text_attr(__('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', 'EOT_LMS'), true) . '>'.__('Progress', 'EOT_LMS').'</div>' => 'staff-progress',
-                        __('Actions', 'EOT_LMS') => 'center'
-                    );
-                    /*
-                     * This goes through all the enrollments and display a table 
-                     * with Name, Status and the Progress of each staff in the course
-                     */
-                    foreach ($enrollments as $enrollment) 
-                    {
-                        $name = get_user_meta($enrollment['user_id'], "first_name", true) . " " . get_user_meta($enrollment['user_id'], "last_name", true);
-                        $user_info = get_userdata($enrollment['user_id']);
-                        $status = formatStatus($enrollment['status']);
-                        $login_count = isset($login_users[$enrollment['user_id']]) ? $login_users[$enrollment['user_id']] : 0; // Number of times the user has log in to our system.
-                        $view_count = isset($watched_users[$enrollment['user_id']]) ? $watched_users[$enrollment['user_id']] : 0; // Number of times the user has watch the module.
-                        $fail_count = isset($failed_users[$enrollment['user_id']]) ? $failed_users[$enrollment['user_id']] : 0; // Number of times they failed
-                        $passed_count = isset($passed_users[$enrollment['user_id']]) ? $passed_users[$enrollment['user_id']] : 0; //Number of passes
-                        $attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0; //Number of quiz attempts
-                        $percentage = eotprogressbar('8em', 0, true);
-
-                        if ($attempts > 0) 
-                        {
-                            $percentage = eotprogressbar('8em', (($passed_count / count($quizzes_in_course)) * 100), true);
-                        }
-                        if ($status == "Failed") 
-                        {
-                            $status = __("In Progress", "EOT_LMS");
-                        } 
-                        else if ($status == "Completed" || $status == "Passed") 
-                        {
-                            $percentage = eotprogressbar('8em', 100, true);
-                        }
-
-                        $quizTableObj->rows[] = array(
-                            $name,
-                            $user_info->user_email,
-                            "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $passed_count . '/' . count($quizzes_in_course) . "</a>",
-                            "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $fail_count . "</a>",
-                            "<a href='/dashboard?part=loginrecordstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $login_count . "</a>",
-                            "<a href='/dashboard?part=videowatchstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $view_count . "</a>",
-                            $status,
-                            $percentage,
-                            "<a href='?part=improved_email_staff&subscription_id=".$subscription_id."&target=select-staff&recipient=".$enrollment['user_id']."' target='_blank'><i class='fa fa-envelope tooltip' title=\"Send an email to $name\" style=\"margin-bottom: -2px\" onmouseover=\"Tip('Send an email to $name', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')\" onmouseout=\"UnTip()\"></i></a>"
-                        );
-                    }
                     CreateDataTable($quizTableObj, "100%", 25, true, "Stats");
                 } 
                 else 
                 {
 ?>
-                        <?= __("There are no staff registered in this course.", "EOT_LMS"); ?>
+                    <?= __("There are no staff registered in this course.", "EOT_LMS"); ?>
 <?php
-                    }
+                }
 ?>
                 </div>
 
