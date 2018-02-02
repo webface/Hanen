@@ -3048,12 +3048,12 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
 function getModulesInCourse($course_id = 0){
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT DISTINCT m.*, c.name AS category "
+    $sql = "SELECT DISTINCT m.*, c.name AS category, cmr.`order` "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.module_id = m.id "
                 . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
-                . "WHERE cmr.course_id = $course_id";
-
+                . "WHERE cmr.course_id = $course_id "
+                . "ORDER BY `order` ASC";
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
     //error_log(json_encode($course_modules));
     return $course_modules;
@@ -3411,7 +3411,7 @@ function getQuizzesInCourse($course_id = 0)
     $sql = "SELECT q.* "
                 . "FROM " . TABLE_QUIZ . " AS q "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cq ON cq.resource_id = q.ID "
-                . "WHERE cq.course_id = $course_id AND cq.type = 'exam'";
+                . "WHERE cq.course_id = $course_id AND cq.type = 'exam' order by cq.`order`";
     $course_quizzes = $wpdb->get_results($sql, ARRAY_A);
     return $course_quizzes;
 }
@@ -11071,3 +11071,77 @@ function add_user_in_subscription( $subscription_id = 0, $user_id = 0 )
 }
 
 
+
+/********************************************************************************************************
+* Update the modules order
+* @param int $course_id - Course ID
+* @param int array $modules - The modules ID. In Ascending order.
+* @return boolean - status boolean true/false
+*******************************************************************************************************/
+function updateModulesOrder($course_id = 0, $modules = array())
+{
+  $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // course ID
+  if( $course_id <= 0 || count($modules) <= 0)
+  {
+    return false;
+  }
+  global $wpdb;
+  // Update modules order in ASC.
+  for ($i=0; $i < count($modules); $i++) 
+  {
+    $module_id = filter_var($modules[$i], FILTER_SANITIZE_NUMBER_INT);
+    // Update the database.
+    $result = $wpdb->update( 
+      TABLE_COURSE_MODULE_RESOURCES, 
+      array( 'order' => ($i+1)), 
+      array( 'course_id' => $course_id,
+             'module_id' => $module_id )
+    );
+  }
+  return true;
+}
+
+/********************************************************************************************************
+ * Update modules order
+ *******************************************************************************************************/
+add_action('wp_ajax_updateModulesOrder', 'updateModulesOrder_callback');
+function updateModulesOrder_callback () 
+{
+    global $wpdb;
+    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['modules'] ) )
+    {
+        $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The Course ID
+        $modules = $_REQUEST['modules']; // Array modules from part-sort_modules.php
+        if( !current_user_can('is_director') )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = __("updateModulesOrder_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
+        }
+        else
+        {
+          // Update modules order
+          $updateModulesOrder = updateModulesOrder($course_id, $modules);
+          if( $updateModulesOrder )
+          {
+            $result['data'] = 'success';
+            $result['success'] = true;
+            $result['message'] = 'success';
+          }
+          else
+          {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = __("updateModulesOrder_callback Error: Unable to update the modules order.", "EOT_LMS");
+          }
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = __("updateModulesOrder_callback ERROR: Missing some parameters.", "EOT_LMS");
+    }
+    echo json_encode($result);
+    wp_die();
+}

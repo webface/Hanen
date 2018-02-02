@@ -166,6 +166,12 @@
           <a id="show_add_to_group" class="btn">
             <?= __("Add/Remove Staff", "EOT_LMS"); ?>
           </a>
+          <br>
+          <br>
+          <br>
+          <a id="sort_modules_order" href="?part=sort_modules&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>" class="btn">
+            <?= __("Sort Modules Order", "EOT_LMS"); ?>
+          </a>
         </div>
       </div>
       <br />
@@ -703,6 +709,21 @@
             }
           });
 
+          $(document).on('click', '#sort_modules_order', function(event) {
+            if($("#staff_and_assignment_list").attr("group_id")!="null")
+            {
+              // User has selected a course. Redirect through javascript.
+              event.preventDefault();
+              load('load_loading'); 
+              var course_id = ($("#staff_and_assignment_list").attr("group_id"));
+              window.location.href = "<?= get_site_url() ?>/dashboard/?part=sort_modules&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&course_id="+course_id ;
+            }
+            else
+            {
+              // Sort modules order button will use the link from the a element.
+              load('load_loading');
+            }
+          })
           /***************************************************************
           * The click event handler for the "Add/Remove Staff" button
           ****************************************************************/
