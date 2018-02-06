@@ -133,7 +133,11 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 
                         $status = displayStatus($passed_count, $num_quizzes_in_course, $attempts, $view_count);
                         if ($status == 'Completed')
-                        {
+                        {   // Add completion date
+                            $getQuizMaxDate = getLatestQuizCompletionDate($enrollment['user_id'], $course_id);
+                            $date = date_create($getQuizMaxDate->max_date);
+                            $date_format = date_format($date,"w-m-y");
+                            $status = $status . "<br>$date_format";
                             $calculated_num_completed++;
                         }
 
