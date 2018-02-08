@@ -107,7 +107,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         __('Failed', 'EOT_LMS') => 'center',
                         __('Logins', 'EOT_LMS') => 'center',
                         __('Views', 'EOT_LMS') => 'center',
-                        '<div ' . hover_text_attr(__('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed, passed, failed or pending review', 'EOT_LMS'), true) . '>'.__('Status', 'EOT_LMS').'</div>' => 'center',
+                        '<div ' . hover_text_attr(__('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed. For completed courses a completion date is shown in the format: Y-M-D.', 'EOT_LMS'), true) . '>'.__('Status', 'EOT_LMS').'</div>' => 'center',
                         '<div ' . hover_text_attr(__('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', 'EOT_LMS'), true) . '>'.__('Progress', 'EOT_LMS').'</div>' => 'staff-progress',
                         __('Actions', 'EOT_LMS') => 'center'
                     );
@@ -134,10 +134,12 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $status = displayStatus($passed_count, $num_quizzes_in_course, $attempts, $view_count);
                         if ($status == 'Completed')
                         {   // Add completion date
-                            $getQuizMaxDate = getLatestQuizCompletionDate($enrollment['user_id'], $course_id);
-                            $date = date_create($getQuizMaxDate->max_date);
-                            $date_format = date_format($date,"w-m-y");
-                            $status = $status . "<br>$date_format";
+                            $lastCompletedDate = getLatestQuizCompletionDate($enrollment['user_id'], $course_id);
+                            if ($lastCompletedDate && isset($lastCompletedDate->max_date))
+                            {
+                                $date = date_format( date_create($lastCompletedDate->max_date), "Y-m-d" );
+                                $status = $status . " $date";
+                            }
                             $calculated_num_completed++;
                         }
 

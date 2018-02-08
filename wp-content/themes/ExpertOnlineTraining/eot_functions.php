@@ -11121,16 +11121,20 @@ function add_user_in_subscription( $subscription_id = 0, $user_id = 0 )
  * INT $course_id = The course ID
  * retrun the date on success false otherwise
  */
-function getLatestQuizCompletionDate ($user_id = 0,$course_id = 0)
+function getLatestQuizCompletionDate ($user_id = 0, $course_id = 0)
 {
   $user_id = filter_var($user_id,FILTER_SANITIZE_NUMBER_INT);
   $course_id = filter_var($course_id,FILTER_SANITIZE_NUMBER_INT);
-  if($user_id <= 0 && $course_id <= 0)
+
+  if($user_id <= 0 || $course_id <= 0)
+  {
     return false;
+  }
+
   global $wpdb;
   $sql = "SELECT MAX(date_attempted) as max_date
-          FROM wp_quiz_attempts 
-          WHERE user_id = $user_id AND course_id = $course_id AND completed = 1 LIMIT 1";
+          FROM " . TABLE_QUIZ_ATTEMPTS . " 
+          WHERE user_id = $user_id AND course_id = $course_id AND completed = 1 AND passed = 1 LIMIT 1";
   $results = $wpdb->get_row ($sql);
   return $results;
 }
