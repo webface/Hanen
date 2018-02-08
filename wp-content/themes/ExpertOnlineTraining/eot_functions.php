@@ -3088,12 +3088,12 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
 function getModulesInCourse($course_id = 0){
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT DISTINCT m.*, c.name AS category, cmr.`order` "
+    $sql = "SELECT DISTINCT m.*, c.name AS category, cmr.order "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.module_id = m.id "
                 . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
                 . "WHERE cmr.course_id = $course_id "
-                . "ORDER BY `order` ASC";
+                . "ORDER BY cmr.order ASC";
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
     //error_log(json_encode($course_modules));
     return $course_modules;
@@ -3449,9 +3449,9 @@ function getQuizzesInCourse($course_id = 0)
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT q.* "
-                . "FROM " . TABLE_QUIZ . " AS q "
-                . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cq ON cq.resource_id = q.ID "
-                . "WHERE cq.course_id = $course_id AND cq.type = 'exam' order by cq.`order`";
+          . "FROM " . TABLE_QUIZ . " AS q "
+          . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cq ON cq.resource_id = q.ID "
+          . "WHERE cq.course_id = $course_id AND cq.type = 'exam' ORDER BY cq.order";
     $course_quizzes = $wpdb->get_results($sql, ARRAY_A);
     return $course_quizzes;
 }
@@ -11147,12 +11147,14 @@ function getLatestQuizCompletionDate ($user_id = 0, $course_id = 0)
 function updateModulesOrder($course_id = 0, $modules = array())
 {
   $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // course ID
+
   if( $course_id <= 0 || count($modules) <= 0)
   {
     return false;
   }
-  global $wpdb;
+
   // Update modules order in ASC.
+  global $wpdb;
   for ($i=0; $i < count($modules); $i++) 
   {
     $module_id = filter_var($modules[$i], FILTER_SANITIZE_NUMBER_INT);

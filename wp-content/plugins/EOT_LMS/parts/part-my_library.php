@@ -174,7 +174,7 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
                     echo '<ul class="tree">';
 ?>
                     <li class="tree_video">
-                        <a href="?part=view&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>">
+                        <a href="?part=view&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id ?>">
                             <i class="fa fa-play" aria-hidden="true"></i>
                         </a> 
                         <b><?= $module_title ?></b> 
