@@ -11,7 +11,7 @@
     //$staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
 	$staff_accounts = getUsersInSubscription($subscription_id);
 	$num_staff_completed_assignment = 0; // Number of staff who have completed all their assignment
-	$num_staff_signed_in = calculate_logged_in($org_id); // Number of staff who signed in at least once.
+	$num_staff_signed_in = calculate_logged_in($org_id, $subscription_id); // Number of staff who signed in at least once.
 	$learners = '';
 	$completed_user_ids = array();
 	$incomplete_user_ids = array();

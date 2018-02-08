@@ -9514,7 +9514,8 @@ function calculate_logged_in($org_id = 0, $subscription_id = 0)
     global $wpdb;
 //    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT user_id) as count FROM ". TABLE_TRACK ." WHERE org_id = $org_id and type = 'login'",ARRAY_A);
 // Need to check for users in a specific subscription
-    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT t.user_id) as count FROM " . TABLE_TRACK . " LEFT JOIN " . TABLE_USERS_IN_SUBSCRIPTION . " uis ON t.user_id = uis.user_idWHERE t.org_id = $org_id AND t.type = 'login' AND uis.subscription_id = $subscription_id
+    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT t.user_id) as count FROM " . TABLE_TRACK . " as t LEFT JOIN " . TABLE_USERS_IN_SUBSCRIPTION . " uis ON t.user_id = uis.user_id WHERE t.org_id = $org_id AND t.type = 'login' AND uis.subscription_id = $subscription_id
+
     ", ARRAY_A);
 
     return $num_logged_in['count'];
