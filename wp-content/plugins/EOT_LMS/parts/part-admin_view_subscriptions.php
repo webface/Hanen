@@ -114,7 +114,7 @@
 			" $" . number_format($price, 2, ".", ""));
 		}
 ?>
-  		<h2><?= $library_name ?></h2>
+  		<h2><?= $library_name ?> -  <?= $year ?></h2>
 		<table class="data">
 			<tbody>
 				<tr class="head">
