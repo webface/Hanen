@@ -5,6 +5,7 @@
 
 function display_subscriptions () 
 {
+
     global $current_user;
     global $wpdb;
 
@@ -85,6 +86,7 @@ function display_subscriptions ()
                 $course_id = PREP4CAMP_COURSE_ID;
                 $data = compact("user_id", "subscription_id"); //course description is ommitted in this case
                 $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+                // THIS NEEDS CHANGE. What if the user is parent? with org_id 0, create course will not work.
                 if (isset($response['status']) && !$response['status']) 
                 {
                     echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
@@ -336,7 +338,7 @@ function new_subscription ($user_id = 0) {
         // show form for adding non eot library
         $library_id = $_REQUEST['library_id'];
         $library = getLibrary( $library_id );
-        $num_accounts = 1000;
+        $num_accounts = P4C_MIN_ACC;
 
         echo $library->desc;
 
@@ -401,7 +403,7 @@ function new_subscription ($user_id = 0) {
                             <?= __("No. of family accounts:", "EOT_LMS") ?>
                         </td>
                         <td>
-                            <?= __("Up to 1,000", "EOT_LMS") ?>
+                            <?= __("Up to ", "EOT_LMS") . P4C_MIN_ACC ?>
                         </td>
                     </tr>
                     <tr>
@@ -591,340 +593,505 @@ console.log("2");
     } // end if for non eot form
     else
     {
+        if( current_user_can('is_individual') ) 
+        {
 ?>
-	<form id="new-subscription" data-user_id="" action="#">
-		<h3><?= __("Subscribe", "EOT_LMS") ?></h3>
-		<fieldset>
-			
-            <legend><h2><?= __("Subscribe Online using your Credit Card", "EOT_LMS") ?></h2></legend>
-			<ol>
-                <li>
-                    <input type="checkbox" name="le" value="<?= LE_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le"><span class="heading"><b><?= __("Leadership Essentials - Full Pack", "EOT_LMS") ?></b></span></label>
-                    <p class="small" style="margin: 9px 0 9px 21px">
-                        <?= __("Our complete library of", "EOT_LMS") ?> <b><?= NUM_VIDEOS ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics.", "EOT_LMS") ?>
+            <form id="new-subscription-individual" data-user_id="" action="#">
+                <h3><?= __("Subscribe", "EOT_LMS") ?></h3>
+                <fieldset>
+                    <legend><h2><?= __("Subscribe Online using your Credit Card", "EOT_LMS") ?></h2></legend>
+                    <ol>
+                        <li>
+                            <input type="checkbox" name="P4C" value="<?= P4C_ID ?>" class="library">&nbsp;&nbsp;
+                            <label for="chk_le"><span class="heading"><b><?= __("Prep 4 Camp - Individual family subscriptions", "EOT_LMS") ?></b></span></label>
+                            <p class="small" style="margin: 9px 0 9px 21px">
+                                <?= __("$7/Year (USD) for individual families. Same price as if you purchased on amazon.com", "EOT_LMS") ?>
+                            </p>
+                        </li>           
+                    </ol>
+                    <h2><?= __("Subscribe with a Different Payment Method", "EOT_LMS") ?></h2>
+                    <p>
+                        <?= __("If you prefer to subscribe and pay by check or credit card over the phone, then you can", "EOT_LMS") ?> <b><?= __("call us Toll-Free at 877-390-2267.", "EOT_LMS") ?> </b>
                     </p>
-                </li>
-                <li>
-                    <input type="checkbox" name="le_sp_dc" value="<?= LE_SP_DC_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le_sp_dc"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></b></span></label>
-                    <p class="small" style="margin: 9px 0 9px 21px">
-                        <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_DC ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics specific to day camps.", "EOT_LMS") ?>
-                    </p>
-                </li>
+                </fieldset>
+                <h3><?= __("Terms of Use", "EOT_LMS") ?></h3>
+                <fieldset>
+                    <h2><?= __("Terms of Use", "EOT_LMS") ?></h2>
+                    <ol class="terms">
+                        <li><?= __("I understand that I am purchasing a license to use copyrighted works (a library of video training modules, online quizzes, and related print materials) owned by CampSpirit, LLC, and Target Directories Corporation.  This license allows only the use described below as respects the works.  These works are intended for educational use only.  Any commercial use by me or my organization, such as charging a fee to someone in exchange for viewing these modules or uploading the videos to any website, is strictly forbidden.", "EOT_LMS") ?></li>
+                        <li><?= __("I understand that, pursuant to the license, the works may be read or viewed only by me and my employees or volunteers.  No other use is permitted.  During the year of subscription, the works may be viewed an unlimited number of times by me and by each such employee or volunteer.  However, no copies of any kind (other than those required for such viewing on desktops, laptops, portable media players, or other similar devices of mine or those of my employees or volunteers) of any video training modules or quizzes may be made by me or by any of my employees or volunteers.  During the year of subscription, I may duplicate paper copies of print materials (e.g., handouts) for educational use by my employees of volunteers and for no other purpose.  Handouts may be included in staff training manuals during the year of subscription.", "EOT_LMS") ?></li>
+                        <li><?= __("I understand that my license to use to these works (video training modules, online quizzes, and print materials) and my legal right to view them expires on October 15th of the year of purchase.  If I or my employees or volunteers wish to continue viewing the modules, quizzes, or print materials, or have access to the updated online library, I must renew my subscription to the library on or after January 1st of the subsequent year.", "EOT_LMS") ?></li>
+                        <li><?= __("I agree to advise my employees and volunteers that these video training modules are intended for their educational use only and that other use, sale, or distribution is strictly forbidden.  If I become aware of an employee or volunteer who may have violated these terms, (e.g., posting a module on a personal website or a commercial site such as YouTube) then I agree: (a) to immediately direct that employee or volunteer to summarily remove the module; and (b) to immediately notify Target Directories and CampSpirit of that wrongful conduct along with the name and address of that employee or volunteer.  I understand that this material is copyrighted and that copyright infringements may be prosecuted to the full extent of the law.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("I understand that although these modules cover material outlined in certain accreditation standards, such as those provided by the American Camp Association or the Ontario Camp Association, viewing these modules does not constitute compliance with any particular standard.  I understand that these modules, and the quizzes, handouts, and discussion questions that accompany them, are intended to help camps meet their educational goals and that it is a camp director’s sole responsibility to ensure compliance with any and all applicable laws and standards.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("I understand that although the content of some video training modules may discuss abnormal or problematic thoughts, behaviors, and emotions, as well as some forms of psychopathology, there is no expressed or implied psychotherapeutic or other treatment relationship between my camp and its employees, volunteers, and patrons / campers and the owners, employees, and volunteers of Target Directories Corporation and CampSpirit, LLC.  These relationships are best described as educational.  I understand that medical or psychological questions I may have about my employees, volunteers, or patrons / campers are best answered in consultation with a licensed health care professional.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("Although the video training modules and associated print materials are designed to maximize the resources and well-being of an organization’s employees, volunteers, and patrons / campers, neither Target Directories Inc. nor CampSpirit, LLC is a guarantor of results.  Neither Target Directories Inc. nor CampSpirit, LLC, or any of its owners, employees, or volunteers, may be held liable for any camper’s or staff member’s illnesses, injuries, accidents, mental health problems, behavior problems, or lapses in judgment that may occur during or after viewing these video training modules and associated quizzes and print materials.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("I understand that it is my responsibility to preview all of these works (e.g., video training modules, quizzes, and handouts) in order to familiarize myself with the content.  In places where my organization’s policies or procedures differ in important ways from what is recommended in the works, I understand that it is my responsibility to educate my employees and volunteers about these differences and instruct them in my organization’s policies and procedures.", "EOT_LMS") ?>                
+                        </li>
+                        <li><?= __("Our team is so confident that you’ll love training your staff with EOT that we guarantee your satisfaction. If you have any questions or need customer support after activating your subscription, simply contact our team toll-free (877) 390-2267, M-F during the hours of 9am to 5pm EST. We promise to do everything we can to answer your questions and get you up and running. We will also help you strategize the best ways to get the most out of your subscription.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("Because activating your subscription instantly gives you full access to our digital content, we cannot refund your subscription fee after activation. However, we are happy to roll over any unused staff accounts when you renew your subscription. For example, if you purchased 100 staff accounts in 2014 but used only 95 staff accounts, we will credit your 2015 account with 5 staff accounts. Note that unused staff accounts can only be rolled over to your own EOT subscription and only when you renew for the following year. Unused staff accounts are not transferable to other organizations.", "EOT_LMS") ?>           
+                        </li>
+                        <p class="accept_terms">
+                            <input type="checkbox" value="accept" name="terms_of_use" required/> <label><b><?= __("I accept the terms of use", "EOT_LMS") ?></b></label>
+                        </p>
+                    </ol>
+                </fieldset>
 
-                <li>
-                    <input type="checkbox" name="le_sp_oc" value="<?= LE_SP_OC_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le_sp_oc"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Overnight Camps", "EOT_LMS") ?></b></span></label>
-                    <p class="small" style="margin: 9px 0 9px 21px">
-                        <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_OC ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics specific to overnight camps.", "EOT_LMS") ?>
-                    </p>
-                </li>
-                <li>
-                    <input type="checkbox" name="le_sp_prp" value="<?= LE_SP_PRP_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_le_sp_prp"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Park & Rec Programs", "EOT_LMS") ?></b></span></label>
-                    <p class="small" style="margin: 9px 0 9px 21px">
-                        <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_PRP ?></b> <?= __("videos, quizzes and resources covering a wide array of staff and leadership related topics specific to park & rec programs.", "EOT_LMS") ?>
-                    </p>
-                </li>
-<!--
-                <li>
-                    <input type="checkbox" name="ce" value="<?= CE_ID ?>" class="library">&nbsp;&nbsp;
-                    <label for="chk_ce"><span class="heading"><b>Clinical Essentials</b></span></label> - <a class="sm" href="#prices_ce">See Pricing</a>
-                    <p class="small" style="margin: 9px 0 9px 21px">
-                        A library of presentations on clinical topics for Camp Nurses and Doctors.
-                    </p>
-                </li>
--->
-				<li>
-					<input type="checkbox" name="se" value="<?= SE_ID ?>" class="library">&nbsp;&nbsp;
-					<label for="chk_se"><span class="heading"><b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b></span></label>
-				</li>            
-			</ol>
-            <h2><?= __("Subscribe with a Different Payment Method", "EOT_LMS") ?></h2>
-            <p>
-                <?= __("If you prefer to subscribe and pay by check or credit card over the phone, then you can", "EOT_LMS") ?> <b><?= __("call us Toll-Free at 877-390-2267.", "EOT_LMS") ?> </b>
-            </p>
-		</fieldset>
+                <h3><?= __("Payment", "EOT_LMS") ?></h3>
+            <fieldset id="new-subscription-p-3" role="tabpanel" aria-labelledby="new-subscription-h-3" class="body current" aria-hidden="false" style="display: block; left: 0px;">
+            <?php
+                    $org_name = apply_filters ('the_title', $org->post_title);
+                    $full_name = ucwords ($user->user_firstname . " " . $user->user_lastname);
+                    $address = get_post_meta ($org_id, 'org_address', true);
+                    $city = get_post_meta ($org_id, 'org_city', true);
+                    $state = get_post_meta ($org_id, 'org_state', true);
+                    $country = get_post_meta ($org_id, 'org_country', true);
+                    $zip = get_post_meta ($org_id, 'org_zip', true);
+                    $phone = get_post_meta ($org_id, 'org_phone', true);
+                ?>
+                    <h2><?= __("Please complete your payment details:", "EOT_LMS") ?></h2>
+                    <table class="staff_accounts subscription_confirm Tstandard data" id="total_table_payment">
+                    </table>
+                    <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
+                    <div class="form-row">
+                        <label><?= __("Organization Name", "EOT_LMS") ?></label>
+                        <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
+                        <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Address", "EOT_LMS") ?></label>
+                        <input type="text" name="address" value="<?php echo $address; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("City", "EOT_LMS") ?></label>
+                        <input type="text" name="city" value="<?php echo $city; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("State/Province", "EOT_LMS") ?></label>
+                        <input type="text" name="state" value="<?php echo $state; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Country", "EOT_LMS") ?></label>
+                        <input type="text" name="country" value="<?php echo $country; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
+                        <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Phone Number", "EOT_LMS") ?></label>
+                        <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
+                    </div>
+                    <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
+                    <?php 
+                        $cus_id = get_post_meta($org_id, 'stripe_id', true);
+                        $cards = get_customer_cards ($cus_id);
+                    ?>
 
-		<h3><?= __("Staff Accounts", "EOT_LMS") ?></h3>
-		<fieldset>
-            <h2><?= __("Please indicate how many staff accounts you will need:", "EOT_LMS") ?></h2>
-            <table class="staff_accounts subscription_confirm Tstandard data" id="le_table">
-                <tbody>
-                    <tr>
-                        <td colspan="2">
-                            <b><?= __("Leadership Essentials - Complete", "EOT_LMS") ?></b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
-                        </td>
-                        <td>
-                            <input type="text" name="le_staff">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table class="staff_accounts subscription_confirm Tstandard data" id="le_sp_dc_table">
-                <tbody>
-                    <tr>
-                        <td colspan="2">
-                            <b><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
-                        </td>
-                        <td>
-                            <input type="text" name="le_sp_dc_staff">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="staff_accounts subscription_confirm Tstandard data" id="le_sp_oc_table">
-                <tbody>
-                    <tr>
-                        <td colspan="2">
-                            <b><?= __("Leadership Essentials - Starter Pack - Overnight Camps", "EOT_LMS") ?></b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
-                        </td>
-                        <td>
-                            <input type="text" name="le_sp_oc_staff">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="staff_accounts subscription_confirm Tstandard data" id="le_sp_prp_table">
-                <tbody>
-                    <tr>
-                        <td colspan="2">
-                            <b><?= __("Leadership Essentials - Starter Pack - Parks & Rec Programs", "EOT_LMS") ?></b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <?= __("No. of staff accounts:", "EOT_LMS") ?>
-                        </td>
-                        <td>
-                            <input type="text" name="le_sp_prp_staff">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-<!--
-			<table class="staff_accounts subscription_confirm Tstandard data" id="ce_table">
-				<tbody>
-					<tr>
-						<td colspan="2">
-							<b>Clinical Essentials</b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							No. of staff accounts:<br />
-							<span>(first 12 are included)</span>
-						</td>
-						<td>
-							<input type="text" name="ce_staff">
-						</td>
-					</tr>
-				</tbody>
-			</table>
--->
-			<table class="staff_accounts subscription_confirm Tstandard data" id="se_table">
-				<tbody>
-					<tr>
-						<td colspan="2">
-							<b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?= __("No. of staff accounts:", "EOT_LMS") ?><br />
-							<span><?= __("(first 20 are included)", "EOT_LMS") ?></span>
-						</td>
-						<td>
-							<input type="text" name="se_staff">
-						</td>
-					</tr>
-				</tbody>
-			</table>
-<!--
-			<table class="staff_accounts subscription_confirm Tstandard data">
-				<tbody>
-					<tr>
-						<td>
-							Coupon Code:
-						</td>
-						<td>
-							<input type="text" name="coupon">
-						</td>
-					</tr>
-				</tbody>
-			</table>
--->
-		</fieldset>
-
-		<h3>Total</h3>
-		<fieldset>
-            <h2><?= __("Please verify the information below is correct:", "EOT_LMS") ?></h2>
-
-			<table class="staff_accounts subscription_confirm Tstandard data" id="total_table">
-			</table>
-            <input type="hidden" name="total_price" id="total" value="0.00" />
-		</fieldset>
-
-		<h3><?= __("Terms of Use", "EOT_LMS") ?></h3>
-		<fieldset>
-			<h2><?= __("Terms of Use", "EOT_LMS") ?></h2>
-            <ol class="terms">
-                <li><?= __("I understand that I am purchasing a license to use copyrighted works (a library of video training modules, online quizzes, and related print materials) owned by CampSpirit, LLC, and Target Directories Corporation.  This license allows only the use described below as respects the works.  These works are intended for educational use only.  Any commercial use by me or my organization, such as charging a fee to someone in exchange for viewing these modules or uploading the videos to any website, is strictly forbidden.", "EOT_LMS") ?></li>
-                <li><?= __("I understand that, pursuant to the license, the works may be read or viewed only by me and my employees or volunteers.  No other use is permitted.  During the year of subscription, the works may be viewed an unlimited number of times by me and by each such employee or volunteer.  However, no copies of any kind (other than those required for such viewing on desktops, laptops, portable media players, or other similar devices of mine or those of my employees or volunteers) of any video training modules or quizzes may be made by me or by any of my employees or volunteers.  During the year of subscription, I may duplicate paper copies of print materials (e.g., handouts) for educational use by my employees of volunteers and for no other purpose.  Handouts may be included in staff training manuals during the year of subscription.", "EOT_LMS") ?></li>
-                <li><?= __("I understand that my license to use to these works (video training modules, online quizzes, and print materials) and my legal right to view them expires on October 15th of the year of purchase.  If I or my employees or volunteers wish to continue viewing the modules, quizzes, or print materials, or have access to the updated online library, I must renew my subscription to the library on or after January 1st of the subsequent year.", "EOT_LMS") ?></li>
-                <li><?= __("I agree to advise my employees and volunteers that these video training modules are intended for their educational use only and that other use, sale, or distribution is strictly forbidden.  If I become aware of an employee or volunteer who may have violated these terms, (e.g., posting a module on a personal website or a commercial site such as YouTube) then I agree: (a) to immediately direct that employee or volunteer to summarily remove the module; and (b) to immediately notify Target Directories and CampSpirit of that wrongful conduct along with the name and address of that employee or volunteer.  I understand that this material is copyrighted and that copyright infringements may be prosecuted to the full extent of the law.", "EOT_LMS") ?>
-                </li>
-                <li><?= __("I understand that although these modules cover material outlined in certain accreditation standards, such as those provided by the American Camp Association or the Ontario Camp Association, viewing these modules does not constitute compliance with any particular standard.  I understand that these modules, and the quizzes, handouts, and discussion questions that accompany them, are intended to help camps meet their educational goals and that it is a camp director’s sole responsibility to ensure compliance with any and all applicable laws and standards.", "EOT_LMS") ?>
-                </li>
-                <li><?= __("I understand that although the content of some video training modules may discuss abnormal or problematic thoughts, behaviors, and emotions, as well as some forms of psychopathology, there is no expressed or implied psychotherapeutic or other treatment relationship between my camp and its employees, volunteers, and patrons / campers and the owners, employees, and volunteers of Target Directories Corporation and CampSpirit, LLC.  These relationships are best described as educational.  I understand that medical or psychological questions I may have about my employees, volunteers, or patrons / campers are best answered in consultation with a licensed health care professional.", "EOT_LMS") ?>
-                </li>
-                <li><?= __("Although the video training modules and associated print materials are designed to maximize the resources and well-being of an organization’s employees, volunteers, and patrons / campers, neither Target Directories Inc. nor CampSpirit, LLC is a guarantor of results.  Neither Target Directories Inc. nor CampSpirit, LLC, or any of its owners, employees, or volunteers, may be held liable for any camper’s or staff member’s illnesses, injuries, accidents, mental health problems, behavior problems, or lapses in judgment that may occur during or after viewing these video training modules and associated quizzes and print materials.", "EOT_LMS") ?>
-                </li>
-                <li><?= __("I understand that it is my responsibility to preview all of these works (e.g., video training modules, quizzes, and handouts) in order to familiarize myself with the content.  In places where my organization’s policies or procedures differ in important ways from what is recommended in the works, I understand that it is my responsibility to educate my employees and volunteers about these differences and instruct them in my organization’s policies and procedures.", "EOT_LMS") ?>                
-                </li>
-                <li><?= __("Our team is so confident that you’ll love training your staff with EOT that we guarantee your satisfaction. If you have any questions or need customer support after activating your subscription, simply contact our team toll-free (877) 390-2267, M-F during the hours of 9am to 5pm EST. We promise to do everything we can to answer your questions and get you up and running. We will also help you strategize the best ways to get the most out of your subscription.", "EOT_LMS") ?>
-                </li>
-                <li><?= __("Because activating your subscription instantly gives you full access to our digital content, we cannot refund your subscription fee after activation. However, we are happy to roll over any unused staff accounts when you renew your subscription. For example, if you purchased 100 staff accounts in 2014 but used only 95 staff accounts, we will credit your 2015 account with 5 staff accounts. Note that unused staff accounts can only be rolled over to your own EOT subscription and only when you renew for the following year. Unused staff accounts are not transferable to other organizations.", "EOT_LMS") ?>           
-                </li>
-                <p class="accept_terms">
-                    <input type="checkbox" value="accept" name="terms_of_use" required/> <label><b><?= __("I accept the terms of use", "EOT_LMS") ?></b></label>
-                </p>
-            </ol>
-		</fieldset>
-
-		<h3><?= __("Payment", "EOT_LMS") ?></h3>
-	<fieldset id="new-subscription-p-3" role="tabpanel" aria-labelledby="new-subscription-h-3" class="body current" aria-hidden="false" style="display: block; left: 0px;">
-    <?php
-            $org_name = apply_filters ('the_title', $org->post_title);
-            $full_name = ucwords ($user->user_firstname . " " . $user->user_lastname);
-            $address = get_post_meta ($org_id, 'org_address', true);
-            $city = get_post_meta ($org_id, 'org_city', true);
-            $state = get_post_meta ($org_id, 'org_state', true);
-            $country = get_post_meta ($org_id, 'org_country', true);
-            $zip = get_post_meta ($org_id, 'org_zip', true);
-            $phone = get_post_meta ($org_id, 'org_phone', true);
-        ?>
-            <h2><?= __("Please complete your payment details:", "EOT_LMS") ?></h2>
-            <table class="staff_accounts subscription_confirm Tstandard data" id="total_table_payment">
-            </table>
-            <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
-            <div class="form-row">
-                <label><?= __("Organization Name", "EOT_LMS") ?></label>
-                <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
-            </div>
-            <div class="form-row">
-                <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
-                <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
-            </div>
-            <div class="form-row">
-                <label><?= __("Address", "EOT_LMS") ?></label>
-                <input type="text" name="address" value="<?php echo $address; ?>" required/>
-            </div>
-            <div class="form-row">
-                <label><?= __("City", "EOT_LMS") ?></label>
-                <input type="text" name="city" value="<?php echo $city; ?>" required/>
-            </div>
-            <div class="form-row">
-                <label><?= __("State/Province", "EOT_LMS") ?></label>
-                <input type="text" name="state" value="<?php echo $state; ?>" required/>
-            </div>
-            <div class="form-row">
-                <label><?= __("Country", "EOT_LMS") ?></label>
-                <input type="text" name="country" value="<?php echo $country; ?>" required/>
-            </div>
-            <div class="form-row">
-                <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
-                <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
-            </div>
-            <div class="form-row">
-                <label><?= __("Phone Number", "EOT_LMS") ?></label>
-                <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
-            </div>
-            <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
-            <?php 
-                $cus_id = get_post_meta($org_id, 'stripe_id', true);
-                $cards = get_customer_cards ($cus_id);
-            ?>
-
-            <?php if (!empty($cards)) { ?>
-                <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td><?= __("Type", "EOT_LMS") ?></td>
-                        <td><?= __("Number", "EOT_LMS") ?></td>
-                        <td><?= __("Expiration", "EOT_LMS") ?></td>
-                        <td><?= __("CVC", "EOT_LMS") ?></td>
-                    </tr>
-                    <?php foreach ($cards as $card) { ?>
-                        <tr>
-                            <td><input type="radio" name="cc_card" value="<?php echo $card->id; ?>" /></td>
-                            <td><?php echo $card->brand; ?></td>
-                            <td>**** **** **** <?php echo $card->last4; ?></td>
-                            <td><?php echo $card->exp_month; ?> / <?php echo $card->exp_year; ?></td>
-                            <td>***</td>
-                        </tr>
+                    <?php if (!empty($cards)) { ?>
+                        <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td><?= __("Type", "EOT_LMS") ?></td>
+                                <td><?= __("Number", "EOT_LMS") ?></td>
+                                <td><?= __("Expiration", "EOT_LMS") ?></td>
+                                <td><?= __("CVC", "EOT_LMS") ?></td>
+                            </tr>
+                            <?php foreach ($cards as $card) { ?>
+                                <tr>
+                                    <td><input type="radio" name="cc_card" value="<?php echo $card->id; ?>" /></td>
+                                    <td><?php echo $card->brand; ?></td>
+                                    <td>**** **** **** <?php echo $card->last4; ?></td>
+                                    <td><?php echo $card->exp_month; ?> / <?php echo $card->exp_year; ?></td>
+                                    <td>***</td>
+                                </tr>
+                            <?php } ?>
+                        </table>
+                        <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
                     <?php } ?>
-                </table>
-                <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
-            <?php } ?>
-                <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
-                    <div class="form-row">
-                        <label><?= __("Card Number", "EOT_LMS") ?></label>
-                        <input type="text" size="20" autocomplete="off" name="cc_num" value="" required/>
+                        <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
+                            <div class="form-row">
+                                <label><?= __("Card Number", "EOT_LMS") ?></label>
+                                <input type="text" size="20" autocomplete="off" name="cc_num" value="" required/>
+                            </div>
+                            <div class="form-row">
+                                <label><?= __("CVC", "EOT_LMS") ?></label>
+                                <input type="text" size="4" autocomplete="off" name="cc_cvc" value="" required/>
+                            </div>
+                            <div class="form-row">
+                                <label><?= __("Expiration", "EOT_LMS") ?></label>
+                                <select name="cc_mon" required>
+                                    <option value="" selected="selected">MM</option>
+                                    <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
+                                        <option value="<?php if ($i < 10) {echo "0";} echo $i; ?>"><?php if ($i < 10) {echo "0";} echo $i; ?></option>
+                                    <?php } ?>
+                                </select>
+                                <span> / </span>
+                                <select name="cc_yr" required>
+                                    <option value="" selected="selected">YYYY</option>
+                                    <?php for ($i = date('Y') ; $i <= (date('Y') + 10) ; $i++) { ?>
+                                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
                     </div>
-                    <div class="form-row">
-                        <label><?= __("CVC", "EOT_LMS") ?></label>
-                        <input type="text" size="4" autocomplete="off" name="cc_cvc" value="" required/>
-                    </div>
-                    <div class="form-row">
-                        <label><?= __("Expiration", "EOT_LMS") ?></label>
-                        <select name="cc_mon" required>
-                            <option value="" selected="selected">MM</option>
-                            <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
-                                <option value="<?php if ($i < 10) {echo "0";} echo $i; ?>"><?php if ($i < 10) {echo "0";} echo $i; ?></option>
-                            <?php } ?>
-                        </select>
-                        <span> / </span>
-                        <select name="cc_yr" required>
-                            <option value="" selected="selected">YYYY</option>
-                            <?php for ($i = date('Y') ; $i <= (date('Y') + 10) ; $i++) { ?>
-                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-            </div>
-            <?php if ($cus_id) { ?><input type="hidden" name="customer_id" value="<?php echo $cus_id; ?>" /><?php } ?>
-            <input type="hidden" name="email" value="<?php echo $user->user_email; ?>" />
-            <input type="hidden" name="org_id" value="<?php echo $org_id; ?>" />
-            <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
-            <input type="hidden" name="method" value="Stripe" />
+                    <?php if ($cus_id) { ?><input type="hidden" name="customer_id" value="<?php echo $cus_id; ?>" /><?php } ?>
+                    <input type="hidden" name="email" value="<?php echo $user->user_email; ?>" />
+                    <input type="hidden" name="org_id" value="<?php echo $org_id; ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
+                    <input type="hidden" name="method" value="Stripe" />
 
-            <p>
-                <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
-            </p>
-        
-        </fieldset>
-	</form>	
+                    <p>
+                        <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
+                    </p>
+                
+                </fieldset>
+            </form> 
 <?php
-        
+        }
+        else
+        {
+?>
+        	<form id="new-subscription" data-user_id="" action="#">
+        		<h3><?= __("Subscribe", "EOT_LMS") ?></h3>
+        		<fieldset>
+                    <legend><h2><?= __("Subscribe Online using your Credit Card", "EOT_LMS") ?></h2></legend>
+        			<ol>
+                        <li>
+                            <input type="checkbox" name="le" value="<?= LE_ID ?>" class="library">&nbsp;&nbsp;
+                            <label for="chk_le"><span class="heading"><b><?= __("Leadership Essentials - Full Pack", "EOT_LMS") ?></b></span></label>
+                            <p class="small" style="margin: 9px 0 9px 21px">
+                                <?= __("Our complete library of", "EOT_LMS") ?> <b><?= NUM_VIDEOS ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics.", "EOT_LMS") ?>
+                            </p>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="le_sp_dc" value="<?= LE_SP_DC_ID ?>" class="library">&nbsp;&nbsp;
+                            <label for="chk_le_sp_dc"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></b></span></label>
+                            <p class="small" style="margin: 9px 0 9px 21px">
+                                <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_DC ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics specific to day camps.", "EOT_LMS") ?>
+                            </p>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" name="le_sp_oc" value="<?= LE_SP_OC_ID ?>" class="library">&nbsp;&nbsp;
+                            <label for="chk_le_sp_oc"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Overnight Camps", "EOT_LMS") ?></b></span></label>
+                            <p class="small" style="margin: 9px 0 9px 21px">
+                                <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_OC ?></b> <?= __("videos, quizzes and resources covering a wide array of summer camp-related topics specific to overnight camps.", "EOT_LMS") ?>
+                            </p>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="le_sp_prp" value="<?= LE_SP_PRP_ID ?>" class="library">&nbsp;&nbsp;
+                            <label for="chk_le_sp_prp"><span class="heading"><b><?= __("Leadership Essentials - Starter Pack - Park & Rec Programs", "EOT_LMS") ?></b></span></label>
+                            <p class="small" style="margin: 9px 0 9px 21px">
+                                <?= __("Access to", "EOT_LMS") ?> <b><?= NUM_VIDEOS_LE_SP_PRP ?></b> <?= __("videos, quizzes and resources covering a wide array of staff and leadership related topics specific to park & rec programs.", "EOT_LMS") ?>
+                            </p>
+                        </li>
+        <!--
+                        <li>
+                            <input type="checkbox" name="ce" value="<?= CE_ID ?>" class="library">&nbsp;&nbsp;
+                            <label for="chk_ce"><span class="heading"><b>Clinical Essentials</b></span></label> - <a class="sm" href="#prices_ce">See Pricing</a>
+                            <p class="small" style="margin: 9px 0 9px 21px">
+                                A library of presentations on clinical topics for Camp Nurses and Doctors.
+                            </p>
+                        </li>
+        -->
+        				<li>
+        					<input type="checkbox" name="se" value="<?= SE_ID ?>" class="library">&nbsp;&nbsp;
+        					<label for="chk_se"><span class="heading"><b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b></span></label>
+        				</li>            
+        			</ol>
+                    <h2><?= __("Subscribe with a Different Payment Method", "EOT_LMS") ?></h2>
+                    <p>
+                        <?= __("If you prefer to subscribe and pay by check or credit card over the phone, then you can", "EOT_LMS") ?> <b><?= __("call us Toll-Free at 877-390-2267.", "EOT_LMS") ?> </b>
+                    </p>
+        		</fieldset>
+
+        		<h3><?= __("Staff Accounts", "EOT_LMS") ?></h3>
+        		<fieldset>
+                    <h2><?= __("Please indicate how many staff accounts you will need:", "EOT_LMS") ?></h2>
+                    <table class="staff_accounts subscription_confirm Tstandard data" id="le_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <b><?= __("Leadership Essentials - Complete", "EOT_LMS") ?></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= __("No. of staff accounts:", "EOT_LMS") ?>
+                                </td>
+                                <td>
+                                    <input type="text" name="le_staff">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="staff_accounts subscription_confirm Tstandard data" id="le_sp_dc_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <b><?= __("Leadership Essentials - Starter Pack - Day Camps", "EOT_LMS") ?></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= __("No. of staff accounts:", "EOT_LMS") ?>
+                                </td>
+                                <td>
+                                    <input type="text" name="le_sp_dc_staff">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="staff_accounts subscription_confirm Tstandard data" id="le_sp_oc_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <b><?= __("Leadership Essentials - Starter Pack - Overnight Camps", "EOT_LMS") ?></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= __("No. of staff accounts:", "EOT_LMS") ?>
+                                </td>
+                                <td>
+                                    <input type="text" name="le_sp_oc_staff">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="staff_accounts subscription_confirm Tstandard data" id="le_sp_prp_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <b><?= __("Leadership Essentials - Starter Pack - Parks & Rec Programs", "EOT_LMS") ?></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= __("No. of staff accounts:", "EOT_LMS") ?>
+                                </td>
+                                <td>
+                                    <input type="text" name="le_sp_prp_staff">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+        <!--
+        			<table class="staff_accounts subscription_confirm Tstandard data" id="ce_table">
+        				<tbody>
+        					<tr>
+        						<td colspan="2">
+        							<b>Clinical Essentials</b>
+        						</td>
+        					</tr>
+        					<tr>
+        						<td>
+        							No. of staff accounts:<br />
+        							<span>(first 12 are included)</span>
+        						</td>
+        						<td>
+        							<input type="text" name="ce_staff">
+        						</td>
+        					</tr>
+        				</tbody>
+        			</table>
+        -->
+        			<table class="staff_accounts subscription_confirm Tstandard data" id="se_table">
+        				<tbody>
+        					<tr>
+        						<td colspan="2">
+        							<b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b>
+        						</td>
+        					</tr>
+        					<tr>
+        						<td>
+        							<?= __("No. of staff accounts:", "EOT_LMS") ?><br />
+        							<span><?= __("(first 20 are included)", "EOT_LMS") ?></span>
+        						</td>
+        						<td>
+        							<input type="text" name="se_staff">
+        						</td>
+        					</tr>
+        				</tbody>
+        			</table>
+        <!--
+        			<table class="staff_accounts subscription_confirm Tstandard data">
+        				<tbody>
+        					<tr>
+        						<td>
+        							Coupon Code:
+        						</td>
+        						<td>
+        							<input type="text" name="coupon">
+        						</td>
+        					</tr>
+        				</tbody>
+        			</table>
+        -->
+        		</fieldset>
+
+        		<h3>Total</h3>
+        		<fieldset>
+                    <h2><?= __("Please verify the information below is correct:", "EOT_LMS") ?></h2>
+
+        			<table class="staff_accounts subscription_confirm Tstandard data" id="total_table">
+        			</table>
+                    <input type="hidden" name="total_price" id="total" value="0.00" />
+        		</fieldset>
+
+        		<h3><?= __("Terms of Use", "EOT_LMS") ?></h3>
+        		<fieldset>
+        			<h2><?= __("Terms of Use", "EOT_LMS") ?></h2>
+                    <ol class="terms">
+                        <li><?= __("I understand that I am purchasing a license to use copyrighted works (a library of video training modules, online quizzes, and related print materials) owned by CampSpirit, LLC, and Target Directories Corporation.  This license allows only the use described below as respects the works.  These works are intended for educational use only.  Any commercial use by me or my organization, such as charging a fee to someone in exchange for viewing these modules or uploading the videos to any website, is strictly forbidden.", "EOT_LMS") ?></li>
+                        <li><?= __("I understand that, pursuant to the license, the works may be read or viewed only by me and my employees or volunteers.  No other use is permitted.  During the year of subscription, the works may be viewed an unlimited number of times by me and by each such employee or volunteer.  However, no copies of any kind (other than those required for such viewing on desktops, laptops, portable media players, or other similar devices of mine or those of my employees or volunteers) of any video training modules or quizzes may be made by me or by any of my employees or volunteers.  During the year of subscription, I may duplicate paper copies of print materials (e.g., handouts) for educational use by my employees of volunteers and for no other purpose.  Handouts may be included in staff training manuals during the year of subscription.", "EOT_LMS") ?></li>
+                        <li><?= __("I understand that my license to use to these works (video training modules, online quizzes, and print materials) and my legal right to view them expires on October 15th of the year of purchase.  If I or my employees or volunteers wish to continue viewing the modules, quizzes, or print materials, or have access to the updated online library, I must renew my subscription to the library on or after January 1st of the subsequent year.", "EOT_LMS") ?></li>
+                        <li><?= __("I agree to advise my employees and volunteers that these video training modules are intended for their educational use only and that other use, sale, or distribution is strictly forbidden.  If I become aware of an employee or volunteer who may have violated these terms, (e.g., posting a module on a personal website or a commercial site such as YouTube) then I agree: (a) to immediately direct that employee or volunteer to summarily remove the module; and (b) to immediately notify Target Directories and CampSpirit of that wrongful conduct along with the name and address of that employee or volunteer.  I understand that this material is copyrighted and that copyright infringements may be prosecuted to the full extent of the law.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("I understand that although these modules cover material outlined in certain accreditation standards, such as those provided by the American Camp Association or the Ontario Camp Association, viewing these modules does not constitute compliance with any particular standard.  I understand that these modules, and the quizzes, handouts, and discussion questions that accompany them, are intended to help camps meet their educational goals and that it is a camp director’s sole responsibility to ensure compliance with any and all applicable laws and standards.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("I understand that although the content of some video training modules may discuss abnormal or problematic thoughts, behaviors, and emotions, as well as some forms of psychopathology, there is no expressed or implied psychotherapeutic or other treatment relationship between my camp and its employees, volunteers, and patrons / campers and the owners, employees, and volunteers of Target Directories Corporation and CampSpirit, LLC.  These relationships are best described as educational.  I understand that medical or psychological questions I may have about my employees, volunteers, or patrons / campers are best answered in consultation with a licensed health care professional.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("Although the video training modules and associated print materials are designed to maximize the resources and well-being of an organization’s employees, volunteers, and patrons / campers, neither Target Directories Inc. nor CampSpirit, LLC is a guarantor of results.  Neither Target Directories Inc. nor CampSpirit, LLC, or any of its owners, employees, or volunteers, may be held liable for any camper’s or staff member’s illnesses, injuries, accidents, mental health problems, behavior problems, or lapses in judgment that may occur during or after viewing these video training modules and associated quizzes and print materials.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("I understand that it is my responsibility to preview all of these works (e.g., video training modules, quizzes, and handouts) in order to familiarize myself with the content.  In places where my organization’s policies or procedures differ in important ways from what is recommended in the works, I understand that it is my responsibility to educate my employees and volunteers about these differences and instruct them in my organization’s policies and procedures.", "EOT_LMS") ?>                
+                        </li>
+                        <li><?= __("Our team is so confident that you’ll love training your staff with EOT that we guarantee your satisfaction. If you have any questions or need customer support after activating your subscription, simply contact our team toll-free (877) 390-2267, M-F during the hours of 9am to 5pm EST. We promise to do everything we can to answer your questions and get you up and running. We will also help you strategize the best ways to get the most out of your subscription.", "EOT_LMS") ?>
+                        </li>
+                        <li><?= __("Because activating your subscription instantly gives you full access to our digital content, we cannot refund your subscription fee after activation. However, we are happy to roll over any unused staff accounts when you renew your subscription. For example, if you purchased 100 staff accounts in 2014 but used only 95 staff accounts, we will credit your 2015 account with 5 staff accounts. Note that unused staff accounts can only be rolled over to your own EOT subscription and only when you renew for the following year. Unused staff accounts are not transferable to other organizations.", "EOT_LMS") ?>           
+                        </li>
+                        <p class="accept_terms">
+                            <input type="checkbox" value="accept" name="terms_of_use" required/> <label><b><?= __("I accept the terms of use", "EOT_LMS") ?></b></label>
+                        </p>
+                    </ol>
+        		</fieldset>
+
+        		<h3><?= __("Payment", "EOT_LMS") ?></h3>
+        	<fieldset id="new-subscription-p-3" role="tabpanel" aria-labelledby="new-subscription-h-3" class="body current" aria-hidden="false" style="display: block; left: 0px;">
+            <?php
+                    $org_name = apply_filters ('the_title', $org->post_title);
+                    $full_name = ucwords ($user->user_firstname . " " . $user->user_lastname);
+                    $address = get_post_meta ($org_id, 'org_address', true);
+                    $city = get_post_meta ($org_id, 'org_city', true);
+                    $state = get_post_meta ($org_id, 'org_state', true);
+                    $country = get_post_meta ($org_id, 'org_country', true);
+                    $zip = get_post_meta ($org_id, 'org_zip', true);
+                    $phone = get_post_meta ($org_id, 'org_phone', true);
+                ?>
+                    <h2><?= __("Please complete your payment details:", "EOT_LMS") ?></h2>
+                    <table class="staff_accounts subscription_confirm Tstandard data" id="total_table_payment">
+                    </table>
+                    <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
+                    <div class="form-row">
+                        <label><?= __("Organization Name", "EOT_LMS") ?></label>
+                        <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
+                        <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Address", "EOT_LMS") ?></label>
+                        <input type="text" name="address" value="<?php echo $address; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("City", "EOT_LMS") ?></label>
+                        <input type="text" name="city" value="<?php echo $city; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("State/Province", "EOT_LMS") ?></label>
+                        <input type="text" name="state" value="<?php echo $state; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Country", "EOT_LMS") ?></label>
+                        <input type="text" name="country" value="<?php echo $country; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Zip/Postal Code", "EOT_LMS") ?></label>
+                        <input type="text" name="zip" value="<?php echo $zip; ?>" required/>
+                    </div>
+                    <div class="form-row">
+                        <label><?= __("Phone Number", "EOT_LMS") ?></label>
+                        <input type="text" name="phone" value="<?php echo $phone; ?>" required/>
+                    </div>
+                    <h2><?= __("Credit Card", "EOT_LMS") ?></h2>
+                    <?php 
+                        $cus_id = get_post_meta($org_id, 'stripe_id', true);
+                        $cards = get_customer_cards ($cus_id);
+                    ?>
+
+                    <?php if (!empty($cards)) { ?>
+                        <table cellpadding="5" cellspacing="0" width="90%" class="cc_cards_list">
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td><?= __("Type", "EOT_LMS") ?></td>
+                                <td><?= __("Number", "EOT_LMS") ?></td>
+                                <td><?= __("Expiration", "EOT_LMS") ?></td>
+                                <td><?= __("CVC", "EOT_LMS") ?></td>
+                            </tr>
+                            <?php foreach ($cards as $card) { ?>
+                                <tr>
+                                    <td><input type="radio" name="cc_card" value="<?php echo $card->id; ?>" /></td>
+                                    <td><?php echo $card->brand; ?></td>
+                                    <td>**** **** **** <?php echo $card->last4; ?></td>
+                                    <td><?php echo $card->exp_month; ?> / <?php echo $card->exp_year; ?></td>
+                                    <td>***</td>
+                                </tr>
+                            <?php } ?>
+                        </table>
+                        <a href="#" id="new_card"><?= __("Add new Card", "EOT_LMS") ?></a>
+                    <?php } ?>
+                        <div id="new_cc_form" <?php if (!empty($cards)) { ?> style="display:none;" <?php } else { ?> style="display:block;" <?php } ?> >
+                            <div class="form-row">
+                                <label><?= __("Card Number", "EOT_LMS") ?></label>
+                                <input type="text" size="20" autocomplete="off" name="cc_num" value="" required/>
+                            </div>
+                            <div class="form-row">
+                                <label><?= __("CVC", "EOT_LMS") ?></label>
+                                <input type="text" size="4" autocomplete="off" name="cc_cvc" value="" required/>
+                            </div>
+                            <div class="form-row">
+                                <label><?= __("Expiration", "EOT_LMS") ?></label>
+                                <select name="cc_mon" required>
+                                    <option value="" selected="selected">MM</option>
+                                    <?php for ($i = 1 ; $i <= 12 ; $i++) { ?>
+                                        <option value="<?php if ($i < 10) {echo "0";} echo $i; ?>"><?php if ($i < 10) {echo "0";} echo $i; ?></option>
+                                    <?php } ?>
+                                </select>
+                                <span> / </span>
+                                <select name="cc_yr" required>
+                                    <option value="" selected="selected">YYYY</option>
+                                    <?php for ($i = date('Y') ; $i <= (date('Y') + 10) ; $i++) { ?>
+                                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+                    <?php if ($cus_id) { ?><input type="hidden" name="customer_id" value="<?php echo $cus_id; ?>" /><?php } ?>
+                    <input type="hidden" name="email" value="<?php echo $user->user_email; ?>" />
+                    <input type="hidden" name="org_id" value="<?php echo $org_id; ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
+                    <input type="hidden" name="method" value="Stripe" />
+
+                    <p>
+                        <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>
+                    </p>
+                
+                </fieldset>
+        	</form>	
+<?php
+        }
+                
     } // end else for eot form
 
 }

@@ -279,10 +279,10 @@
 /*
     New Subscription Loading
 */
-#new-subscription {
+#new-subscription, #new-subscription-individual {
     position:relative;
 }
-#new-subscription #loading {
+#new-subscription #loading, #new-subscription-individual #loading {
     display:none;
     width:100%;
     height:100%;
@@ -292,7 +292,7 @@
     position:absolute;
     z-index:1000;
 }
-#new-subscription #loading .spinner {
+#new-subscription #loading .spinner, #new-subscription-individual #loading .spinner {
     position: absolute;
     display:block;
     width: 30px;

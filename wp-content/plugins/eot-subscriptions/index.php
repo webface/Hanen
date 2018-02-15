@@ -104,7 +104,7 @@ function handle_steps_callback () {
 
 	switch ($step) {
 		case 0:
-			if (!isset ($_REQUEST['le']) && !isset ($_REQUEST['lel']) && !isset ($_REQUEST['le_sp_dc']) && !isset ($_REQUEST['le_sp_oc']) && !isset ($_REQUEST['le_sp_prp']) && !isset ($_REQUEST['se'])) 
+			if (!isset ($_REQUEST['le']) && !isset ($_REQUEST['lel']) && !isset ($_REQUEST['le_sp_dc']) && !isset ($_REQUEST['le_sp_oc']) && !isset ($_REQUEST['le_sp_prp']) && !isset ($_REQUEST['se']) && !isset($_REQUEST['P4C'])) 
 			{
 				echo json_encode(array('status' => 0, 'message' => 'Please choose a library'));
 			} 
@@ -286,6 +286,18 @@ function handle_steps_callback () {
 
 				$total_price += SE_PRICE + $staff_price;
 			}
+			if (isset($_REQUEST['P4C'])) { // Individual Parents
+				$p4c_staff = P4C_LVL_1_PRICE;
+				$staff_price = 0;
+				$subscription = array (
+					"label" => "Individual Parents " . SUBSCRIPTION_YEAR . " Base Subscription",
+					"price" => number_format (P4C_LVL_1_PRICE, 2),
+					"name" => "p4c_dash_price"
+				);
+				array_push ($data, $subscription);
+				$total_price += P4C_LVL_1_PRICE;
+			}
+
 			echo json_encode(array('status' => 1, 'message' => $data, 'total_price' => number_format ($total_price, 2)));
 			break;
 		case 2:
@@ -299,8 +311,14 @@ function handle_steps_callback () {
                         \Stripe\Stripe::setApiKey(STRIPE_SECRET);
 			$error = '';
 			$success = '';
-			$org_id = intval ($_REQUEST['org_id']);
-			$subscriptions = getSubscriptions(0, 0, true, $org_id, '0000-00-00', '0000-00-00', SUBSCRIPTION_YEAR); // All subscriptions for this organization this year
+			if( isset($_REQUEST['org_id']) )
+			{
+				$org_id = intval(filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT));
+				if($org_id > 0)
+				{
+					$subscriptions = getSubscriptions(0, 0, true, $org_id, '0000-00-00', '0000-00-00', SUBSCRIPTION_YEAR); // All subscriptions for this organization this year
+				}
+			}
 			$skip_activate_account = 0;
 			$processPayment = true; //variable to enable/disable processing of payment
 			$statement_description = "Expert Online Training - Full Pack " . SUBSCRIPTION_YEAR . " Subscription";
@@ -335,6 +353,12 @@ function handle_steps_callback () {
 				$library_id = SE_ID;
 				$statement_description = "Expert Online Training - Child Welfare & Protection " . SUBSCRIPTION_YEAR . " Subscription";
 				$number_of_licenses = SE_MIN_ACC; // at least 20 
+			}
+			else if( isset($_REQUEST['P4C']))
+			{
+				$library_id = P4C_ID;
+				$statement_description = "Expert Online Training - Prep 4 Camp " . SUBSCRIPTION_YEAR . " Subscription";
+				$number_of_licenses = P4C_MIN_ACC; // at least 20
 			}
 
 			// check if there's already an active subscirption for this user and library in this year.
@@ -599,6 +623,42 @@ function handle_steps_callback () {
 							$message .= "Unable to add subscription for Safety Essentials" . $break;
 						}
 					}
+					if (isset($_REQUEST['P4C'])) { // Prep 4 Camp
+						$dash_price = isset($_REQUEST['p4c_dash_price']) ? filter_var($_REQUEST['p4c_dash_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : 0;
+						$staff_price = isset($_REQUEST['p4c_staff_price']) ? filter_var($_REQUEST['p4c_staff_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : 0;				
+						$data_disk_price = 0; // No datak disk price.
+						// if free, set price to 0
+						if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
+						{
+							$dash_price = 0;
+							$staff_price = 0;
+						}
+						$subscription_data = array (
+							'org_id' => $org_id, 												// org id
+							'manager_id' => $user_id,	 										// manager id
+							'lib_id' => P4C_ID, 													// library id (1=Leadership,2=Clinical,3=Safety)
+							'start' => SUBSCRIPTION_START,										// subscription start date
+							'end' => SUBSCRIPTION_END,											// subscription end date
+							'method' => (isset($_REQUEST['method'])) ? $_REQUEST['method'] : '',	// transaction method
+							'trans_id' => $trans_id,											// transaction id
+							'date' => date ('Y-m-d'),											// current date
+							'total' => number_format ($dash_price+$staff_price+$data_disk_price, 2, '.', ''),	// total price paid
+							'data_disk_price' => number_format ($data_disk_price, 2, '.', ''),	// Data Disk price for library
+							'dash_price' => number_format ($dash_price, 2, '.', ''),			// dashboard price for library
+							'staff_price' => number_format ($staff_price, 2, '.', ''),			// staff price for library
+							'dash_dis' => (isset($_REQUEST['p4c_dash_disc'])) ? $_REQUEST['p4c_dash_disc'] : 0.00,	// discount for dashboard
+							'staff_dis' => (isset($_REQUEST['p4c_staff_disc'])) ? $_REQUEST['p4c_staff_disc'] : 0.00,	// discount for staff accounts
+							'count' => (isset($_REQUEST['p4c_staff']) && (!empty($_REQUEST['p4c_staff'])) ? $_REQUEST['p4c_staff'] : P4C_MIN_ACC),	// number of staff accounts for subscription
+							'status' => 'active',												// subscription status
+							'rep_id' => (isset($_REQUEST['rep_id'])) ? $_REQUEST['rep_id'] : 0,	// ID of the rep for the sale
+							'notes' => (isset($_REQUEST['notes'])) ? $_REQUEST['notes'] : ''	// any notes
+						);
+
+						if (!add_new_subscription($subscription_data)) {
+							$message .= "Unable to add subscription for Prep 4 Camp" . $break;
+						}
+					}
+
 				}
 
 				if ($message != "") 

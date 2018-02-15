@@ -92,7 +92,7 @@ define ('P4C_LVL_2_MIN', 2);
 define ('P4C_LVL_2_MAX', 249);
 define ('P4C_LVL_3_PRICE', 99);
 define ('P4C_LVL_3_MIN', 250);
-define ('P4C_MIN_ACC', 1);
+define ('P4C_MIN_ACC', 500);
 
 // define subscription variables
 $today = time();
@@ -176,6 +176,10 @@ $base_courses = array (
 	"Supervisory Staff" => 4
 );
 
+$base_courses_prep4camp = array (
+	"Prep 4 Camp" => 1
+);
+
 // define LearnUpon Vars
 define ('DEFAULT_SUBDOMAIN', 'eot');
 
@@ -192,7 +196,7 @@ define ('P4C_ID', 9); // Prep 4 Camp
 
 // define specific course IDs
 define ('CHILD_WELFARE_COURSE_ID', 32);
-define ('PREP4CAMP_COURSE_ID', 0);
+define ('PREP4CAMP_COURSE_ID', 167);
 
 
 // questionnaire base course IDs

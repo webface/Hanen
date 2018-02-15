@@ -258,193 +258,263 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
 // Student
 else if (current_user_can("is_student")) 
 {
-
-    $current_subscriptions = get_current_subscriptions ($org_id); // all the active current subscriptions for this user.
-    // make sure user accepted the terms for all the libraries.
-    if ($current_subscriptions)
+    // Student
+    if($org_id > 0)
     {
-
-        $library = getLibrary ($current_subscriptions[0]->library_id);
-        $accepted = accepted_terms($library); // Boolean if user has accepted terms
-        if (!$accepted)
+        $current_subscriptions = get_current_subscriptions ($org_id); // all the active current subscriptions for this user.
+        // make sure user accepted the terms for all the libraries.
+        if ($current_subscriptions)
         {
-           return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
-        }
 
-        $enrollments = array();
-        foreach ($current_subscriptions as $sub)
-        {
-            $sub_enrollments = getEnrollmentsByUserId($user_id, "all", $sub->ID);// All the enrollments of the user.
-            if( $sub_enrollments )
+            $library = getLibrary ($current_subscriptions[0]->library_id);
+            $accepted = accepted_terms($library); // Boolean if user has accepted terms
+            if (!$accepted)
             {
-                if (empty($enrollments))
-                {
-                    // add the first one
-                    $enrollments = $sub_enrollments;
-                }
-                else
-                {
-                    $enrollments = array_merge($enrollments, $sub_enrollments);
-                }
+               return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
             }
-        }
-    }
 
-    //user just accepted terms and need to be presented with tutorial video
-    if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
-    {
-?>
-        <h1 class="article_page_title"><?= __('Intro To Expert Online Training', 'EOT_LMS')?></h1>
-        <div id='tutorial_video'>
-            <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
-                <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
-                <p class="vjs-no-js">
-                    <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
-                    <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
-                </p>        
-            </video>
-        </div>
-        <br><br><br><br>
-        <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton"><?= __("View Dashboard", "EOT_LMS"); ?></a>
-<?php
-    }
-    else
-    {
-        $courses = getCourses(0, $org_id);
-
-        if (!empty($image)) 
-        {
-?>
-            <div class="dashboard_banner acf-image-image">
-                <img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/>
-                <br/>
-            </div>
-<?php
-        }
-        if ( $enrollments && count($enrollments) > 0) 
-        { // Check if the user is enrolled to any course.
-            // Display the enrollments information in the dashboard
-            foreach ($enrollments as $enrollment) 
+            $enrollments = array();
+            foreach ($current_subscriptions as $sub)
             {
-                $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
-                $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
-                $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
-                // Get all the modules in this course
-                $modules = getModulesInCourse($course_id);
-                $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : __("could not find the course name", "EOT_LMS"); // Check if the that course id is in $courses.
-                $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
-                if ($modules) 
+                $sub_enrollments = getEnrollmentsByUserId($user_id, "all", $sub->ID);// All the enrollments of the user.
+                if( $sub_enrollments )
                 {
-                    $status = formatStatus($enrollment['status']);
-                    
-                    $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
-                    //d($status, $percentage_complete);
-                    if ($status == "Failed") 
+                    if (empty($enrollments))
                     {
-                        $status = __("In Progress", "EOT_LMS");
-                    } 
-                    if ($percentage_complete < 100) 
-                    {
-                        $status = __("In Progress", "EOT_LMS");
+                        // add the first one
+                        $enrollments = $sub_enrollments;
                     }
                     else
                     {
-                        $status = __("Completed", "EOT_LMS");
-                        // Update the enrollment status if necessary.
-                        if($enrollment['status'] != "completed" && $enrollment['status'] != "passed")
-                        {
-                            $update_status = $wpdb->update(
-                                TABLE_ENROLLMENTS,
-                                array (
-                                    'status' => "completed"
-                                ),
-                                array (
-                                    'ID' => $enrollment['ID']
-                                )
-                            );
-                        }
+                        $enrollments = array_merge($enrollments, $sub_enrollments);
                     }
-?>
-                    <div class="dashboard_border student">
-                        <h1><?= $course_name ?>
-                        </h1>
-                        <div class="content_right">
-                            <div class="clear"></div>
-                            <div class="menu">
-                                <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
-                                    <div class="thumbnail">
-                                        <i class="fa fa-youtube-play" alt="Content"></i>
-                                    </div>
-                                    <div class="para">
-                                        <h1><?= __("Start Course", "EOT_LMS"); ?></h1>
-                                        <br/>
-                                        <?= __("Watch the videos, take quizzes, see resources", "EOT_LMS"); ?>
+                }
+            }
+        }
+
+        //user just accepted terms and need to be presented with tutorial video
+        if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
+        {
+    ?>
+            <h1 class="article_page_title"><?= __('Intro To Expert Online Training', 'EOT_LMS')?></h1>
+            <div id='tutorial_video'>
+                <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
+                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
+                    <p class="vjs-no-js">
+                        <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
+                        <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
+                    </p>        
+                </video>
+            </div>
+            <br><br><br><br>
+            <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton"><?= __("View Dashboard", "EOT_LMS"); ?></a>
+    <?php
+        }
+        else
+        {
+            $courses = getCourses(0, $org_id);
+
+            if (!empty($image)) 
+            {
+    ?>
+                <div class="dashboard_banner acf-image-image">
+                    <img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/>
+                    <br/>
+                </div>
+    <?php
+            }
+            if ( $enrollments && count($enrollments) > 0) 
+            { // Check if the user is enrolled to any course.
+                // Display the enrollments information in the dashboard
+                foreach ($enrollments as $enrollment) 
+                {
+                    $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
+                    $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
+                    $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
+                    // Get all the modules in this course
+                    $modules = getModulesInCourse($course_id);
+                    $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : __("could not find the course name", "EOT_LMS"); // Check if the that course id is in $courses.
+                    $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
+                    if ($modules) 
+                    {
+                        $status = formatStatus($enrollment['status']);
+                        
+                        $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
+                        //d($status, $percentage_complete);
+                        if ($status == "Failed") 
+                        {
+                            $status = __("In Progress", "EOT_LMS");
+                        } 
+                        if ($percentage_complete < 100) 
+                        {
+                            $status = __("In Progress", "EOT_LMS");
+                        }
+                        else
+                        {
+                            $status = __("Completed", "EOT_LMS");
+                            // Update the enrollment status if necessary.
+                            if($enrollment['status'] != "completed" && $enrollment['status'] != "passed")
+                            {
+                                $update_status = $wpdb->update(
+                                    TABLE_ENROLLMENTS,
+                                    array (
+                                        'status' => "completed"
+                                    ),
+                                    array (
+                                        'ID' => $enrollment['ID']
+                                    )
+                                );
+                            }
+                        }
+    ?>
+                        <div class="dashboard_border student">
+                            <h1><?= $course_name ?>
+                            </h1>
+                            <div class="content_right">
+                                <div class="clear"></div>
+                                <div class="menu">
+                                    <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
+                                        <div class="thumbnail">
+                                            <i class="fa fa-youtube-play" alt="Content"></i>
+                                        </div>
+                                        <div class="para">
+                                            <h1><?= __("Start Course", "EOT_LMS"); ?></h1>
+                                            <br/>
+                                            <?= __("Watch the videos, take quizzes, see resources", "EOT_LMS"); ?>
+                                        </div>
+                                    </a>
+                                </div> 
+                            </div>
+                            <div class="content_left student">
+                                <table class="tb_border">
+                                    <tbody>
+                                        <tr>
+                                            <td class="s1 darklabel">
+                                                <?= __("Modules", "EOT_LMS"); ?>
+                                            </td>
+                                            <td class="s2">
+                                                <?= count($modules) ?>            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="s1 darklabel">
+                                                <?= __("Status", "EOT_LMS"); ?>
+                                            </td>
+                                            <td class="s2">
+                                                <?= $status ?>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+
+                            </div>
+                            <div class="dashboard_button">
+                                <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
+                                    <div class="title" style="padding-top: 5px;">
+                                        <b><?= __("Virtual Staff Lounge", "EOT_LMS"); ?></b>
+                                        <br><?= __("Manage your Forum", "EOT_LMS"); ?>
                                     </div>
                                 </a>
-                            </div> 
+                            </div>
+                            <div>
+                                <b><?= __("Technical Support", "EOT_LMS"); ?></b>
+                                <br>
+                                <?= __("Toll-free", "EOT_LMS"); ?> 877-390-2267
+                            </div>
                         </div>
-                        <div class="content_left student">
-                            <table class="tb_border">
-                                <tbody>
-                                    <tr>
-                                        <td class="s1 darklabel">
-                                            <?= __("Modules", "EOT_LMS"); ?>
-                                        </td>
-                                        <td class="s2">
-                                            <?= count($modules) ?>            
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="s1 darklabel">
-                                            <?= __("Status", "EOT_LMS"); ?>
-                                        </td>
-                                        <td class="s2">
-                                            <?= $status ?>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <br>
-
-                        </div>
-                        <div class="dashboard_button">
-                            <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
-                                <div class="title" style="padding-top: 5px;">
-                                    <b><?= __("Virtual Staff Lounge", "EOT_LMS"); ?></b>
-                                    <br><?= __("Manage your Forum", "EOT_LMS"); ?>
-                                </div>
-                            </a>
-                        </div>
-                        <div>
-                            <b><?= __("Technical Support", "EOT_LMS"); ?></b>
-                            <br>
-                            <?= __("Toll-free", "EOT_LMS"); ?> 877-390-2267
-                        </div>
-                    </div>
-                    <script>
-                        $ = jQuery;
-                    // Create HTML with the enrollments and append it to the sidebar
-                        $("#listOfCourses").append('\
-                            <div id="bannerArea">\
-                                    <img id="menu-banner" src="' + ajax_object.template_url + '/images/menu-banner.png">\
-                                    <h2><?= $course_name ?></h2>\
-                            </div>\
-                            <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
-                    </script>
-<?php
-                } 
-                else 
-                { 
-                    // User has no modules
-                    echo '<b>' . $course_name . '</b>: ' . __("There are no modules in this course. Please contact your camp director.", "EOT_LMS");
-                } 
+                        <script>
+                            $ = jQuery;
+                        // Create HTML with the enrollments and append it to the sidebar
+                            $("#listOfCourses").append('\
+                                <div id="bannerArea">\
+                                        <img id="menu-banner" src="' + ajax_object.template_url + '/images/menu-banner.png">\
+                                        <h2><?= $course_name ?></h2>\
+                                </div>\
+                                <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
+                        </script>
+    <?php
+                    } // End $modules 
+                    else 
+                    { 
+                        // User has no modules
+                        echo '<b>' . $course_name . '</b>: ' . __("There are no modules in this course. Please contact your camp director.", "EOT_LMS");
+                    } 
+                } // End of foreach
+            } 
+            else 
+            { 
+                // Display message if the user has no enrollments.
+                echo "<p>" . __("You do not have any enrollments", "EOT_LMS") . ".</p>";
             }
-        } 
-        else 
-        { 
-            // Display message if the user has no enrollments.
-            echo "<p>" . __("You do not have any enrollments", "EOT_LMS") . ".</p>";
         }
+    }
+    else // Parent
+    {
+        // Display info for the subscription page.
+        global $current_user;
+        $user_id = $current_user->ID;
+        $date = date ('Y-m-d');
+        $subscriptions = getSubscriptions($subscription_id = 0, $library_id = 0, $active = 1, $org_id = 0, $date, $date, $year_end_date = '0000', $user_id); 
+        if (empty($subscriptions)) 
+        {
+            echo '<h1 class="article_page_title">Prep 4 Camp Dashboard</h1>';
+            if (current_user_can('is_individual')) 
+            { 
+                // only director or individual can purchase subscriptions so only include the link for them. Not students.
+    ?>
+                <p>
+                    <?= __("You have no subscriptions associated with this organization. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
+                </p>
+    <?php 
+            }
+        }
+        else
+        {
+            foreach ($subscriptions as $subscription) 
+            {
+                $library = getLibrary ($subscription->library_id);
+                $accepted = accepted_terms($library); // Boolean if user has accepted terms
+                if (!$accepted)
+                {
+                   return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
+                }
+                $enrollments = array();
+                $sub_enrollments = getEnrollmentsByUserId($user_id, "all", $subscription->ID);// All the enrollments of the user.
+                if( $sub_enrollments )
+                {
+                    if (empty($enrollments))
+                    {
+                        // add the first one
+                        $enrollments = $sub_enrollments;
+                    }
+                    else
+                    {
+                        $enrollments = array_merge($enrollments, $sub_enrollments);
+                    }
+                }
+            }
+        }
+
+        //user just accepted terms and need to be presented with tutorial video
+        if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
+        {
+    ?>
+            <h1 class="article_page_title"><?= __('Intro To Expert Online Training', 'EOT_LMS')?></h1>
+            <div id='tutorial_video'>
+                <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
+                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
+                    <p class="vjs-no-js">
+                        <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
+                        <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
+                    </p>        
+                </video>
+            </div>
+            <br><br><br><br>
+            <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton"><?= __("View Dashboard", "EOT_LMS"); ?></a>
+    <?php
+        }
+
     }
 } 
 else 
