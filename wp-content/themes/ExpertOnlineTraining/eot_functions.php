@@ -1587,7 +1587,7 @@ function verifyUserAccess ()
     if ($subscription_id)
     {
       // we have a subscription ID so just check that this uber admin is authorized to modify this subscription/org
-      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE id = " . $subscription_id;
+      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
       if ($results)
       {
@@ -1617,7 +1617,16 @@ function verifyUserAccess ()
                   }
                   else
                   {
+                    // allow for multiple uber admins if all else fails.
+                    if(get_user_meta($current_user->ID,'org_id', true) == get_user_meta($user_id,'umbrella_group_id', true) )
+                    {
+                      return array ( 'status' => 1 ); 
+                    }
+                    else
+                    {
                       return array( 'status' => 0, 'message' => __("you dont have permission to manage this user's subscription", "EOT_LMS") );
+
+                    }
                   }
                 }
             }
