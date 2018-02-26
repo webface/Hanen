@@ -99,4 +99,19 @@ function new_nav_menu_items($items,$args)
 }
 //add_filter( 'wp_list_pages', 'new_nav_menu_items' , 600, 2);
 //add_filter( 'wp_nav_menu_items', 'new_nav_menu_items', 600, 2);
+
+// Disabled video download for every page that is using beaver builder.
+function disable_video_download_js() {
+    echo '<script>';
+    echo    '$ = jQuery;';
+    echo    '$("#my-video-2-big").on("contextmenu", function(e) {';
+    echo     'e.preventDefault()';
+    echo    '});';
+    echo "alert('test');";
+    echo '</script>';
+};
+// Add hook for admin <footer>
+add_action('admin_footer', 'disable_video_download_js');
+// Add hook for front-end <footer
+add_action('wp_footer', 'disable_video_download_js');
  
