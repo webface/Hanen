@@ -102,13 +102,16 @@ function new_nav_menu_items($items,$args)
 
 // Disabled video download for every page that is using beaver builder.
 function disable_video_download_js() {
-    echo '<script>';
-    echo    '$ = jQuery;';
-    echo    '$("#my-video-2-big").on("contextmenu", function(e) {';
-    echo     'e.preventDefault()';
-    echo    '});';
-    echo "alert('test');";
-    echo '</script>';
+?>
+    <script>
+    $ = jQuery
+    // Disable video from right clicking and download.
+    $("video").on("contextmenu", function(e) 
+    {
+     e.preventDefault();
+    });
+    </script>;
+<?php
 };
 // Add hook for admin <footer>
 add_action('admin_footer', 'disable_video_download_js');
