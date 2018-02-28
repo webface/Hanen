@@ -10035,11 +10035,11 @@ function cloneCourse_callback()
     if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['camp_id'] ) && isset ( $_REQUEST['course_name'] ) )
     {
         $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID to clone
-        $org_id = filter_var($_REQUEST['camp_id'],FILTER_SANITIZE_NUMBER_INT); // The WP camp (POST) id
         $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING); // The course name.
+        $org_id = filter_var($_REQUEST['camp_id'],FILTER_SANITIZE_NUMBER_INT); // The WP camp (POST) id
         
-        $org_subscriptions = getSubscriptions(0, 0, 0, $org_id); // Org subscriptions
-        
+        $org_subscriptions = getSubscriptions(0, 0, 1, $org_id); // get active Org subscriptions for the camp were copying into
+
         $course_library_id = 0;
         $course_subscription = getSubscriptionByCourseId($course_id); // Course subscription
         // Check if the course subscription exist.
