@@ -6767,7 +6767,7 @@ function getCourseForm_callback ( )
             }
 //d($exams,$handouts,$videos_in_course,$modules_in_portal,$handout_resources,$course_handouts_ids);
             $course_data=getCourse($course_id);// all the settings for the specified course
-            $due_date =$course_data['due_date_after_enrollment']!==NULL? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])):NULL; // the due date of the specified course
+            $due_date = (isset($course_data['due_date_after_enrollment']) && $course_data['due_date_after_enrollment'] != "0000-00-00 00:00:00") ? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])): null; // the due date of the specified course
             $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
             $videoCount = count($course_videos);
             $quizCount = count($course_quizzes);

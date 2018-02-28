@@ -849,6 +849,7 @@
                   $("#datepicker").hide().datepicker(
                   { minDate: 0, 
                     onSelect: function(dateText, inst) {
+                            $('.curr_duedate').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
                             if (!due_date_set) 
                             {
                               due_date_set = true;
