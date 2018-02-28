@@ -10039,7 +10039,6 @@ function cloneCourse_callback()
         $org_id = filter_var($_REQUEST['camp_id'],FILTER_SANITIZE_NUMBER_INT); // The WP camp (POST) id
 
         $org_subscriptions = getSubscriptions(0, 0, 1, $org_id); // get active Org subscriptions for the camp were copying into
-error_log("cloneCourse: Trying to get active subscriptions: " . json_encode($org_subscriptions));        
 
         $course_library_id = 0;
         $course_subscription = getSubscriptionByCourseId($course_id); // Course subscription
@@ -10049,8 +10048,6 @@ error_log("cloneCourse: Trying to get active subscriptions: " . json_encode($org
         {
           $course_library_id = $course_subscription->library_id; // Course library ID
         }
-error_log("cloneCourse: course_library_id=$course_library_id course_subscription=" . json_encode($course_subscription));        
-
         // Find where to locate the clone course base on the subscription library ID.
         if(isset($org_subscriptions) && !empty($org_subscriptions))
         {
@@ -10064,7 +10061,6 @@ error_log("cloneCourse: course_library_id=$course_library_id course_subscription
             }
           }
         }
-error_log("cloneCourse: subscription_id=$subscription_id owner_id=$owner_id");        
 
         $data = compact("subscription_id", "org_id", "course_name", "owner_id");
         $response = cloneCourse($course_id, $data);
