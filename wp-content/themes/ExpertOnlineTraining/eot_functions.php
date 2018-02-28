@@ -3024,6 +3024,11 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     
     // filter user input and make sure parameters are included
     $course_name = trim(filter_var($course_name, FILTER_SANITIZE_STRING));
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    $course_due_date = (isset($course_due_date)) ? $course_due_date : '1000-01-01 00:00:00';
+
     if(isset($course_description))
     {
         $course_description = trim(filter_var($course_description, FILTER_SANITIZE_STRING));
@@ -3033,13 +3038,14 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
         $copy_course_id = filter_var($copy_course_id, FILTER_SANITIZE_NUMBER_INT);
         $course = $wpdb->get_row("SELECT * FROM ".TABLE_COURSES." WHERE ID = $copy_course_id",OBJECT);
         $course_description = $course->course_description;
+
+        // overwrite the user id if were copying a course from an uber into a camp.
+        if ( isset( $owner_id ) && !empty( $owner_id ) )
+        {
+          $user_id = $owner_id;
+        }
     }
     
-    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
-    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
-    $course_due_date = (isset($course_due_date)) ? $course_due_date : '1000-01-01 00:00:00';
-   
     $insert = $wpdb->insert( 
       TABLE_COURSES, 
       array( 
@@ -10049,11 +10055,12 @@ function cloneCourse_callback()
             if($org_subscription->library_id == $course_library_id)
             {
               $subscription_id = $org_subscription->ID;
+              $owner_id = $org_subscription->manager_id;
               break;
             }
           }
         }
-        $data = compact("subscription_id", "org_id", "course_name");
+        $data = compact("subscription_id", "org_id", "course_name", "owner_id");
         $response = cloneCourse($course_id, $data);
 
         // Check for error message.
@@ -10496,6 +10503,7 @@ function cloneCourse($course_id = 0, $data = array())
    * $subscription_id - The subscription ID
    * $org_id - the ORG ID
    * $course_name - The new course name
+   * $owner_id - the user ID of the camp director of the camp we're cloning into.
    */
   if( !$course_id || !$org_id || !$subscription_id || !$course_name )
   {
@@ -10503,7 +10511,7 @@ function cloneCourse($course_id = 0, $data = array())
   }
   global $current_user;
   $user_id = $current_user->ID; // The user ID
-  $data = compact( "org_id", "user_id", "subscription_id");
+  $data = compact( "org_id", "user_id", "subscription_id", "owner_id");
   $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
   if (isset($response['status']) && !$response['status']) 
   {
