@@ -69,13 +69,12 @@ if ( ! wp_next_scheduled( 'processUsersHook' ) ) {
   wp_schedule_event( time(), 'hourly', 'processUsersHook' );
 }
 add_action( 'processUsersHook', 'processUsersCron' );
-
+*/
 //cron job for processing emails that were scheduled to send but not processed
 if ( ! wp_next_scheduled( 'processEmailsHook' ) ) {
   wp_schedule_event( time(), 'hourly', 'processEmailsHook' );
 }
 add_action( 'processEmailsHook', 'processEmailsCron' );
-*/
 
 /**
  * Begins execution of the plugin.
