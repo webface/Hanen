@@ -2517,6 +2517,8 @@ function processUsersCron()
   $sql = "SELECT count(*) as count FROM " . TABLE_PENDING_USERS . " WHERE time < DATE_SUB(NOW(), INTERVAL ".PENDING_USERS_CRON_TIME_LIMIT." HOUR) ORDER BY id asc";
   $result = $wpdb->get_row($sql)->count;
 
+  error_log("ProccessUsersCron started");
+
   if($result>0)
   {
     for($i=0;$i<$result;$i+=PENDING_USERS_CRON_LIMIT)
@@ -2528,10 +2530,13 @@ function processUsersCron()
       }
     }
   }
+
+  error_log("ProccessUsersCron finished");
+
 }
 
 // @TODO fix function when merging with Tommy's version
-//processes the firt PENDING_USERS_LIMIT users from the temperory table
+//processes the first PENDING_USERS_LIMIT users from the temperory table
 function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
 {
   global $wpdb;
@@ -4455,7 +4460,7 @@ function createWpUser($data = array(), $role = 'student', $subscription_id = 0)
     $last_name = filter_var($last_name, FILTER_SANITIZE_STRING);
     
     $email = sanitize_email($email); // User's e-mail address
-    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
 
     // check that the user doesnt exist in WP
     if ( email_exists($email) == false )
@@ -6711,6 +6716,7 @@ function getCourseForm_callback ( )
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             
             $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the module videos in the specified course
+            $course_videos_module_ids = array_column($course_videos,'mid');
             $course_quizzes = getResourcesInCourse($course_id,'exam');
             $course_handouts = array_merge(getResourcesInCourse($course_id,'doc'),getResourcesInCourse($course_id,'link'));
             $course_handouts_module_ids = array_column($course_handouts,'mid');
@@ -6794,7 +6800,7 @@ function getCourseForm_callback ( )
                     <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
                       <tr  class="head">
                         <td style ="padding:5px;" colspan="2">
-                          <?= __("Assignment Summary", "EOT_LMS") ?>
+                          <?= __("Course Summary", "EOT_LMS") ?>
                         </td>
                       </tr>
                       <tr>
@@ -6839,7 +6845,7 @@ function getCourseForm_callback ( )
                     <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
                       <tr  class="head">
                         <td style ="padding:5px;" colspan="2">
-                          <?= __("Assignment Due Date", "EOT_LMS") ?>
+                          <?= __("Course Due Date", "EOT_LMS") ?>
                         </td>
                       </tr>
                       <tr>
@@ -7038,7 +7044,7 @@ function getCourseForm_callback ( )
                             if(!in_array($module['ID'], $master_module_ids)) 
                             {
                                 // check if the module is in this specific course. if it is, then enable it, otherwise its default disabled.
-                                if(in_array($module['ID'], $course_handouts_module_ids))
+                                if(in_array($module['ID'], $course_handouts_module_ids) || in_array($module['ID'], $course_videos_module_ids))
                                 {
                                     $module_active = '1';
                                     $module_class = 'enabled';
@@ -7048,7 +7054,7 @@ function getCourseForm_callback ( )
                                   // show the input checkbox as ususal
 ?>
                                   <li class="video_item" video_id="<?= $module_id ?>" >
-                                  <input collection="add_remove_from_group" item="module" org_id=" <?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['ID'] ?>" item_id="<?= $module['ID']?>" id="chk_module_<?= $module['ID'] ?>" name="chk_module_<?= $module['ID'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
+                                  <input collection="add_remove_from_group" item="module" org_id="<?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['ID'] ?>" item_id="<?= $module['ID']?>" id="chk_module_<?= $module['ID'] ?>" name="chk_module_<?= $module['ID'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
                                   <label for="chk_module_<?= $module['ID'] ?>">
                                   <span name="video_title" class="<?=$module_class?> video_title">
 <?php                                  
@@ -7057,7 +7063,7 @@ function getCourseForm_callback ( )
 
 
                                   <span class="vtitle"><?= $module['title'] ?></span>
-                                  <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module->title ?>. This will open a new window.<b>', FIX, [t</b>his, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                                  <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module['title'] ?>. This will open a new window.<b>', FIX, [t</b>his, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                                   </a>
                                   </span><br>
 <?php

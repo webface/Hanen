@@ -63,13 +63,12 @@ register_deactivation_hook( __FILE__, 'deactivate_EOT_LMS' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-EOT_LMS.php';
 
-/*
 //cron job for processing users that were uploaded from a spreadsheet and were not processed
 if ( ! wp_next_scheduled( 'processUsersHook' ) ) {
   wp_schedule_event( time(), 'hourly', 'processUsersHook' );
 }
 add_action( 'processUsersHook', 'processUsersCron' );
-*/
+
 //cron job for processing emails that were scheduled to send but not processed
 if ( ! wp_next_scheduled( 'processEmailsHook' ) ) {
   wp_schedule_event( time(), 'hourly', 'processEmailsHook' );
