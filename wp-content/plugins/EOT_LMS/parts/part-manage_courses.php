@@ -849,7 +849,7 @@
                   $("#datepicker").hide().datepicker(
                   { minDate: 0, 
                     onSelect: function(dateText, inst) {
-                            $('.curr_duedate').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+                            $('.curr_duedate').html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>');
                             if (!due_date_set) 
                             {
                               due_date_set = true;
@@ -874,6 +874,7 @@
                       $("#datepicker").show();
                   
                   $('#remove_date a').click(function() {
+                    $('.curr_duedate').html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>');
                     // Make ajax call to remove due date for this assignment
                     url = ajax_object.ajax_url;
                     $.post(url, 'action=updateDueDate&course_id='+group_id+'&org_id='+org_id+'&course_id='+group_id+'&task=remove', function(data){
