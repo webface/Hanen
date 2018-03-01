@@ -211,7 +211,7 @@ Change your account details here.
  
 <div id="subscription_settings_result"></div>  <!-- div to hold results from ajax -->
  
-<input id="subscription_settings" type="checkbox" value="" <? echo (get_post_meta($org_id, 'continue_learning', true)) ? 'checked' : ''; ?> onclick="save_checkbox(<?php echo $org_id ?>);";/>&nbsp;&nbsp;Allow staff to continue training after they have completed assigned modules?  
+<input id="subscription_settings" type="checkbox" value="" <? echo (get_post_meta($org_id, 'continue_learning', true)) ? 'checked' : ''; ?> onclick="save_checkbox(<?php echo $org_id; ?>)"/>&nbsp;&nbsp;Allow staff to continue training after they have completed assigned modules?  
 <script>
   $ = jQuery;
 
