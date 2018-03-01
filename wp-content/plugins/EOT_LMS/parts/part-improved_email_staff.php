@@ -32,17 +32,18 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 			{
 				// Display the ACF form.
 				global $current_user;
-				$user_id = $current_user->ID; // Wordpress user ID
-                $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
-			  	$portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
-			  	$first_name = get_user_meta($user_id, "first_name", true);	// First name
-			  	$last_name  = get_user_meta($user_id, "last_name", true);	// Last name
+				$user_id = (isset($_REQUEST['user_id']) && $_REQUEST['user_id'] > 0) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT)  : $current_user->ID; // Wordpress user ID // $_REQUEST['user_id'] is verified in verifyUserAccess().
+				$wp_user = get_user_by( 'ID', $user_id ); // WP User
+        $org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID
+		  	$portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
+		  	$first_name = get_user_meta($user_id, "first_name", true);	// First name
+		  	$last_name  = get_user_meta($user_id, "last_name", true);	// Last name
 				$full_name = $first_name . " " . $last_name;	// Full name of user in WP
-				$email_address = $current_user->user_email;			// Email address in wordpress db wp_users 
-			  	$data = compact ("org_id");
-			  	$courses = getCourses(0,$org_id, 0); // All the courses that are published cause draft courses cant have staff enrolled.
-                //$response = getEotUsers($org_id); // Lists of users in the org
-                $response = getUsersInSubscription($subscription_id);
+				$email_address = $wp_user->user_email;// Email address in wordpress db wp_users 
+		  	$data = compact ("org_id");
+		  	$courses = getCourses(0,$org_id, 0); // All the courses that are published cause draft courses cant have staff enrolled.
+        //$response = getEotUsers($org_id); // Lists of users in the org
+        $response = getUsersInSubscription($subscription_id);
 				$users = array(); // Lists of users
 				$incomplete_statuses = array ('not_started', 'in_progress', 'failed'); // the statuses that an incomplete user has
 				$complete_statuses = array ('completed', 'passed'); // the statuses that an incomplete user has
@@ -591,7 +592,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 					array(
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_STAFF_MEMBERS), // The post id for ACF compose message staff members
 								'post_id' => 'user_' . $user_id,
-								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
+								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id . "&user_id=" . $user_id,
 								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
 								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
@@ -601,7 +602,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 					array(
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_INCOMPLETE_COMPLETE), // The post id for ACF compose message Incomplete and complete
 								'post_id' => 'user_' . $user_id,
-								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
+								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id . "&user_id=" . $user_id,
 								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
 								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
@@ -611,7 +612,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 					array(
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_YET_TO_LOGIN), // The post id for ACF compose yet to login
 								'post_id' => 'user_' . $user_id,
-								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
+								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id . "&user_id=" . $user_id,
 								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
 								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
@@ -621,7 +622,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 					array(
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_STAFF_PASSWORD), // The post id for ACF compose message staff members
 								'post_id' => 'user_' . $user_id,
-								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id,
+								'return' => '?part=improved_email_staff&sent=true&target=improved_email_staff&subscription_id=' . $subscription_id . "&user_id=" . $user_id,
 								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
 								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));
@@ -631,7 +632,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 					array(
 								'field_groups' => array(ACF_COMPOSE_MESSAGE_COURSE_PASSWORD), // The post id for ACF compose messagegroups password
 								'post_id' => 'user_' . $user_id,
-								'return' => '?part=improved_email_staff&sent=true&type=individual&target=improved_email_staff&subscription_id=' . $subscription_id,
+								'return' => '?part=improved_email_staff&sent=true&type=individual&target=improved_email_staff&subscription_id=' . $subscription_id . "&user_id=" . $user_id,
 								'updated_message' => __(__("We are sending your message.", "EOT_LMS"), 'acf'),
 								'submit_value' => __(__("Send Message", "EOT_LMS"), 'acf'),
 					));

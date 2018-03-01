@@ -1944,9 +1944,25 @@ function my_acf_save_post( $post_id )
   {
       // Variable declaration
     global $current_user;
-    $user_id = $current_user->ID; // Wordpress user ID
-    $sender_name = $current_user->user_firstname . " " . $current_user->user_lastname; // Recepient sender's name
-    $sender_email = $current_user->user_email; // Recepient sender's name
+    $true_subscription = verifyUserAccess();
+
+    if(isset($true_subscription['status']) && $true_subscription['status'])
+    {
+      if(isset($_REQUEST['user_id']) && $_REQUEST['user_id'] > 0)
+      {
+        $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
+        $wp_user = get_user_by( 'ID', $user_id ); // Send mail in Uber
+      }
+      else
+      {
+        $wp_user = get_user_by( 'ID', $current_user->ID ); // Send mail in camp director.
+      }
+    }
+    $first_name = get_user_meta($user_id, "first_name", true);  // First name
+    $last_name  = get_user_meta($user_id, "last_name", true); // Last name
+    $sender_name = $first_name . " " . $last_name; // Recepient sender's name
+    $sender_email = $wp_user->user_email; // Recepient sender's name
+
     $org_id = get_org_from_user ($user_id); // Organization ID
     $data = compact("org_id", "sender_name", "sender_email");
     $portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
@@ -1957,7 +1973,7 @@ function my_acf_save_post( $post_id )
     $users = json_decode(stripslashes( html_entity_decode($_REQUEST['users_info'])) ); // Get the users information
 error_log("users_info: " . json_encode($users));
     $campname = get_the_title($org_id); // the camp name
-    $directorname = $current_user->display_name; // the directors name
+    $directorname = $wp_user->display_name; // the directors name
 
     // Select the fields used for composing the e-mail message. The subject and composed message. 
     if($target == "all" || $target == "select-staff" || $target == "all-course")
@@ -2043,7 +2059,7 @@ error_log("users_info: " . json_encode($users));
     }
     else
     {
-      wp_redirect(site_url('/dashboard?part=mass_mail&subscription_id='.$subscription_id."&org_id=".$org_id."&processing=1&max=".count($recepients)));
+      wp_redirect(site_url('/dashboard?part=mass_mail&subscription_id='.$subscription_id."&org_id=".$org_id."&user_id=".$user_id."&processing=1&max=".count($recepients)));
       exit;
 
     }
