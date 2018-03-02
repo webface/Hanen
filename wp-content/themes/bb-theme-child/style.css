@@ -68,3 +68,9 @@ table.topic_rec tr.head td.one {
 .fl-menu.fl-menu-accordion-collapse {
     width: 110%;
 }
+
+/* make the bullet points align with text on prep4camp page */
+.fl-icon {
+    vertical-align: top !important;
+    padding-top: 10px !important;
+}
