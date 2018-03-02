@@ -437,4 +437,5 @@ function get_the_user_ip()
   return $ip;
 }
  
-
+require_once 'inc/template-functions.php';
+require_once 'inc/template-tags.php';
