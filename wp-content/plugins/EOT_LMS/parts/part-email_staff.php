@@ -8,22 +8,6 @@
 <h1 class="article_page_title" class="video_title"><?= __("E-mail Your Staff", "EOT_LMS"); ?></h1>
 
 <?php
-global $current_user;
-if ($current_user->ID == 348 || $current_user->ID == 18)
-{
-}
-else
-{
-    // temporary error message
-    echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">';
-    echo '
-        <div class="alert alert-danger" role="alert">
-            Notice: 2018-03-05 Please excuse this interuption to our service but we are experiencing technical difficulties with the mass mail option. It will be fixed shortly. <br><br>Please try again in a couple of hours.<br><br>If you would like to contact use you may call us M-F 9-5 at 1-877-390-2267 or email: <a href="mailto:info@expertonlinetraining.com">info@expertonlinetraining.com</a>
-        </div>
-    ';
-    return;
-}
-
     // verify this user has access to this portal/subscription/page/view
     $true_subscription = verifyUserAccess(); 
 

@@ -1991,7 +1991,7 @@ error_log("users_info: " . json_encode($users));
       $message_template = get_field( "wysiwyg_compose_message_group_passwrd", $post_id ); // The e-mail message
     }
 
-error_log("target: $target<br>\nInitial subject: $subject_template<br>\nmessage: $message_template");
+//error_log("target: $target<br>\nInitial subject: $subject_template<br>\nmessage: $message_template");
 
     // Goes to each selected user. Compose and send the message.
     foreach($users as $user)
@@ -2035,7 +2035,7 @@ error_log("target: $target<br>\nInitial subject: $subject_template<br>\nmessage:
       );
       array_push($recepients, $recepient);
 
-error_log("The recepient array: " . json_encode($recepient));
+//error_log("The recepient array: " . json_encode($recepient));
 
     }
 
@@ -2082,7 +2082,7 @@ function addPendingEmails($org_id = 0, $sender_name = '', $sender_email = '', $r
     );
     $result = $wpdb->insert(TABLE_PENDING_EMAILS, $data);
 
-error_log("Pending email table data: " . json_encode($data));
+//error_log("Pending email table data: " . json_encode($data));
 
     // check if there was an error inserting the email into the DB
     if (!$result)
@@ -2489,8 +2489,8 @@ function processEmails ($limit = PENDING_EMAILS_LIMIT, $org_id = 0)
   $recipients = $wpdb->get_results($sql, ARRAY_A);
   $results = sendMail('massmail', $recipients, $data);
 
-error_log("ProcessEmails: receipients: " . json_encode($recipients));
-error_log("ProcessEmails: results: " . json_encode($results));
+//error_log("ProcessEmails: receipients: " . json_encode($recipients));
+//error_log("ProcessEmails: results: " . json_encode($results));
 
   if(isset($results['status']) && $results['status'])
   {
@@ -4753,7 +4753,7 @@ function massMail ( $sender_email = '', $sender_name = '', $recipients = array()
             "Content-Type: text/html; charset=UTF-8"
             );
 
-error_log("massMail: " . json_encode($recipients));
+//error_log("massMail: " . json_encode($recipients));
 
         // we have the sender info now send them email(s) 
         foreach ($recipients as $recipient)
