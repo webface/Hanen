@@ -1991,7 +1991,7 @@ error_log("users_info: " . json_encode($users));
       $message_template = get_field( "wysiwyg_compose_message_group_passwrd", $post_id ); // The e-mail message
     }
 
-error_log("Initial subject: $subject_template<br>\nmessage: $message_template");
+error_log("target: $target<br>\nInitial subject: $subject_template<br>\nmessage: $message_template");
 
     // Goes to each selected user. Compose and send the message.
     foreach($users as $user)
