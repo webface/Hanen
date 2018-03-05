@@ -32,10 +32,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
               $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT);
               $suser_id = filter_var($_REQUEST['stats_user_id'], FILTER_SANITIZE_NUMBER_INT);
               $fullname = get_user_meta($suser_id, 'first_name', true)." ".get_user_meta($suser_id, 'last_name', true);
-              if(!verifyStatsUser())
-              {
-                  die(__('You dont have permission to view this user\'s stats','EOT_LMS'));
-              }
               
 ?>
                 <div class="smoothness">
