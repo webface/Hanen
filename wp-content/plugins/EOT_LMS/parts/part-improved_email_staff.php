@@ -52,133 +52,107 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 				// make sure we have some users in this portal
 			    if($response['status'] == 1)
 			    {
-			      	if($courses) // check that there are published courses
-				{
+		      	if($courses) // check that there are published courses
+						{
 				  		/*
 				  		 * Filter users base on their selected option. 
 				  		 */
-                                        if($target == "select-staff" || $target == "all")
-                                        {
-                                                $users = filterUsersMassMail($response['users']); // filter out and return an array of learner user types.
-                                        }
-                                        else if($target == "incomplete")
-                                        {
-				        	// Get all users who has incomplete enrollments.
-				        	foreach($courses as $course)
-				        	{
-					      		$enrollments = getEnrollments($course->ID, 0,0, false); // All enrollments in the courses 
-								if( $enrollments )
-								{
-							        foreach ($enrollments as $enrollment) 
-							        {
-						        		// Avoid duplicate users
-						        		if(!in_array($enrollment['email'], $complete_users_email) 
-						        			&& in_array($enrollment['status'], $incomplete_statuses))
-						        		{
-											$user = array (
-												'id' => $enrollment['user_id'],
-												'first_name' => get_user_meta($enrollment['user_id'], 'first_name', true),
-                                                                                                'last_name' => get_user_meta($enrollment['user_id'], 'last_name', true),
-												'email' => $enrollment['email']
-											);
-											array_push($users, $user);
-						        			array_push($complete_users_email, $enrollment['email']);	
-								        }
-							        }
-						    	}
-				        	}
-				        }
-				        else if($target == "completed")
-				        {
-				        	$incomplete_users = array(); // Users with incomplete course.
-				        	$completed_users = array(); // Users with complete course.
-				        	// Get all users who has incomplete enrollments.
-				        	foreach($courses as $course)
-				        	{
-					      		$enrollments = getEnrollments($course->ID, 0,0, false); // All enrollments in the courses 
-                                                        if( $enrollments )
-                                                        {
-									// Combine course and enrollments.
-							        foreach ($enrollments as $enrollment) 
-							        {
-										// Lists of users who haven't completed their enrollment.
-							        	if(in_array($enrollment['status'], $incomplete_statuses))
-									{
-                                                                                $user = array (
-                                                                                        'id' => $enrollment['user_id'],
-                                                                                        'first_name' => get_user_meta($enrollment['user_id'], 'first_name', true),
-                                                                                        'last_name' => get_user_meta($enrollment['user_id'], 'last_name', true),
-                                                                                        'email' => $enrollment['email']
-                                                                                );
-                                                                                array_push($incomplete_users, $user);
-									}
-									else if (in_array($enrollment['status'], $complete_statuses))
-									{
-                                                                                $user = array (
-                                                                                        'id' => $enrollment['user_id'],
-                                                                                        'first_name' => get_user_meta($enrollment['user_id'], 'first_name', true),
-                                                                                        'last_name' => get_user_meta($enrollment['user_id'], 'last_name', true),
-                                                                                        'email' => $enrollment['email']
-                                                                                );
-                                                                                array_push($completed_users, $user);
-									}
-							        }
-						    	}
-				        	}
-					        // Make sure that all of their enrollments are completed.
-					        foreach ($completed_users as $completed_user) 
-					        {
-					        	// make sure the user does not have any courses that are incomplete, and its not a duplicate that we already added into users
-					        	if( !in_array($completed_user, $incomplete_users) && !in_array($completed_user, $users) )
-					        	{
-									array_push($users, $completed_user);
-					        	}
-					        }		        	
-				        }
-				        else if($target == "nologin")
-				        {
-							$filtered_users = filterUsersMassMail($response['users']); // filter out and return an array of learner user types.
-				        	foreach ($filtered_users as $user) 
-				        	{
-				        		if($user['sign_in_count'] == 0)
-				        		{
-				        			array_push($users, $user);
-				        		}
-				        	}
-				        }
-				        else if($target == "staff-passwords")
-				        {
-							$users = filterUsersMassMail($response['users']); // filter out and return an array of learner user types.
-				        }
-				        else if ($target == "all-course" || $target == 'course-passwords')
-				        {
-					  		foreach ($courses as $course) 
+              if($target == "select-staff" || $target == "all")
+              {
+                $users = filterUsersMassMail($response['users']); // filter out and return an array of learner user types.
+              }
+              else if($target == "incomplete" || $target == "completed")
+              {
+			        	$incomplete_users = array(); // Users with incomplete course.
+			        	$completed_users = array(); // Users with complete course.
+			        	// Get all users who has incomplete enrollments.
+			        	$completed_user_ids = array();
+			        	$incomplete_user_ids = array();
+			        	foreach($courses as $course)
+			        	{
+				      		$enrollments = getEnrollments($course->ID, 0,$org_id, false); // All enrollments in the courses for the org.
+                  if( $enrollments )
+                  {
+								// Combine course and enrollments.
+						        foreach ($enrollments as $enrollment) 
+						        {
+											// check this user's status to see if complete/passed and not already in the completed user array to dedupe.
+											if ($enrollment['status'] == 'completed' || $enrollment['status'] == 'passed')
+											{
+												// user passed so add them to the completed_user_ids array
+												$completed_user_ids[] = $enrollment['user_id'];
+											}
+											else // user failed or didnt start
+											{
+												$incomplete_user_ids[] = $enrollment['user_id'];
+											}
+						        }
+					    		}
+			        	}
+	        			// get only uniques for each array
+								$unique_completed_user_ids = array_unique($completed_user_ids);
+								$unique_incomplete_user_ids = array_unique($incomplete_user_ids);
+								$num_staff_completed_assignment = array_diff($unique_completed_user_ids, $unique_incomplete_user_ids);
+		        		$sorted_users = ($target == "incomplete") ? $unique_incomplete_user_ids : $num_staff_completed_assignment; // Sort the users based whether its complete/incomplete.
+			        	if( !empty($sorted_users) )
+			        	{
+			        		foreach ($sorted_users as $completed_user_id) 
+			        		{
+			        			$user_info = get_userdata($completed_user_id);
+			        			$user = array (
+													'id' => $completed_user_id,
+													'first_name' => get_user_meta($completed_user_id, 'first_name', true),                                                 	
+													'last_name' => get_user_meta($completed_user_id, 'last_name', true),                                                 	
+													'email' => $user_info->user_email
+										);
+			        			array_push($users, $user);
+			        		}	
+			        	}
+			        }
+			        else if($target == "nologin")
+			        {
+								$filtered_users = filterUsersMassMail($response['users']); // filter out and return an array of learner user types.
+			        	foreach ($filtered_users as $user) 
+			        	{
+			        		if($user['sign_in_count'] == 0)
+			        		{
+			        			array_push($users, $user);
+			        		}
+			        	}
+			        }
+			        else if($target == "staff-passwords")
+			        {
+								$users = filterUsersMassMail($response['users']); // filter out and return an array of learner user types.
+			        }
+			        else if ($target == "all-course" || $target == 'course-passwords')
+			        {
+				  			foreach ($courses as $course) 
 					  		{
 					  			$users_in_course = array();
 					  			// Get enrollments for each course.
-						 		$enrollments = getEnrollments($course->ID, 0,0, false); // All enrollments in the courses 
-						 		if($enrollments)
-						 		{
-							 		$course_info['id'] = $course->ID; // The course ID
-						 			$course_info['name'] = $course->course_name; // The course name
-						 			$course_info['num_enrollments'] = count($enrollments); // Number of enrollments in the course.
-						 			foreach ($enrollments as $enrollment) 
-							        {
-										$user = array (
-											'id' => $enrollment['user_id'],
-											'first_name' => get_user_meta($enrollment['user_id'], 'first_name', true),
-											'last_name' => get_user_meta($enrollment['user_id'], 'last_name', true),
-											'email' => $enrollment['email']
-										);
-										array_push($users_in_course, $user);
-							        }
-						 			$course_info['users'] = $users_in_course;
-						 			array_push($courses_with_num_enrollments, $course_info);
-						 		}
+							 		$enrollments = getEnrollments($course->ID, 0,0, false); // All enrollments in the courses 
+							 		if($enrollments)
+							 		{
+								 		$course_info['id'] = $course->ID; // The course ID
+							 			$course_info['name'] = $course->course_name; // The course name
+							 			$course_info['num_enrollments'] = count($enrollments); // Number of enrollments in the course.
+							 			foreach ($enrollments as $enrollment) 
+						        {
+											$user = array (
+												'id' => $enrollment['user_id'],
+												'first_name' => get_user_meta($enrollment['user_id'], 'first_name', true),
+												'last_name' => get_user_meta($enrollment['user_id'], 'last_name', true),
+												'email' => $enrollment['email']
+											);
+											array_push($users_in_course, $user);
+						        }
+						 				$course_info['users'] = $users_in_course;
+						 				array_push($courses_with_num_enrollments, $course_info);
+							 		}
 					  		}		        	
-				        }
+			        }
 				  	}
-					else if($courses == null)
+						else if($courses == null)
 				    {
 				   		// No course.
 				      	echo __("You do not have any published courses. You must publish a course in order to be able to enroll staff into said course.", "EOT_LMS");
