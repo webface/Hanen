@@ -52,7 +52,7 @@
 <?php
 									if (!userIsSubscribed( P4C_ID ))
 									{
-										echo "<li><a href='/new-subscription/?library_id=" . P4C_ID . "'>Add Prep 4 Camp</a></li>";
+										echo "<li><a href='/new-subscription/?library_id=" . P4C_ID . "'>Add Prep4Camp</a></li>";
 									}
 								}
 ?>

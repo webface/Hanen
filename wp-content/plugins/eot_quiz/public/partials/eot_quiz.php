@@ -62,8 +62,8 @@
         </div>
         <div class="bs row welcome-message" ng-cloak>
 
-            <div class="bs col-xs-4"><strong><?= __('Your Scores:', 'EOT_LMS')?> </strong>{{results.quizmanager.score}}</div>
-            <div class="bs col-xs-4" ng-cloak><strong><?= __('Passing Grade:', 'EOT_LMS')?> </strong>{{results.quizmanager.quiz.quiz.passing_score}}/{{results.quizmanager.numQuestions}}({{results.quizmanager.perc}}%)</div>
+            <div class="bs col-xs-4"><strong><?= __('Your Scores:', 'EOT_LMS')?> </strong>{{results.quizmanager.score}} ({{results.quizmanager.perc}}%)</div>
+            <div class="bs col-xs-4" ng-cloak><strong><?= __('Passing Grade:', 'EOT_LMS')?> </strong>{{results.quizmanager.quiz.quiz.passing_score}}/{{results.quizmanager.numQuestions}}</div>
             <div class="bs col-xs-4"><strong><?= __('Time Spent: ', 'EOT_LMS')?></strong>{{results.quizmanager.counter| formatTimer}}</div>
 
         </div>

@@ -458,7 +458,7 @@ else if (current_user_can("is_student"))
         $subscriptions = getSubscriptions($subscription_id = 0, $library_id = 0, $active = 1, $org_id = 0, $date, $date, $year_end_date = '0000', $user_id); 
         if (empty($subscriptions)) 
         {
-            echo '<h1 class="article_page_title">Prep 4 Camp Dashboard</h1>';
+            echo '<h1 class="article_page_title">Prep4Camp Dashboard</h1>';
             if (current_user_can('is_individual')) 
             { 
                 // only director or individual can purchase subscriptions so only include the link for them. Not students.

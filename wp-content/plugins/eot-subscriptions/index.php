@@ -357,7 +357,7 @@ function handle_steps_callback () {
 			else if( isset($_REQUEST['P4C']))
 			{
 				$library_id = P4C_ID;
-				$statement_description = "Expert Online Training - Prep 4 Camp " . SUBSCRIPTION_YEAR . " Subscription";
+				$statement_description = "Expert Online Training - Prep4Camp " . SUBSCRIPTION_YEAR . " Subscription";
 				$number_of_licenses = P4C_MIN_ACC; // at least 20
 			}
 
@@ -655,7 +655,7 @@ function handle_steps_callback () {
 						);
 
 						if (!add_new_subscription($subscription_data)) {
-							$message .= "Unable to add subscription for Prep 4 Camp" . $break;
+							$message .= "Unable to add subscription for Prep4Camp" . $break;
 						}
 					}
 

@@ -84,13 +84,13 @@ define ('SE_MIN_ACC', 21);
 
 // define variables for Prep 4 Camp
 define ('P4C_PRICE', 499); // price if not subscribed to LE
-define ('P4C_LVL_1_PRICE', 6.99); // price for 1 account for parent
+define ('P4C_LVL_1_PRICE', 7); // price for 1 account for parent
 define ('P4C_LVL_1_MIN', 1);
 define ('P4C_LVL_1_MAX', 1);
 define ('P4C_LVL_2_PRICE', 99); // price for camp thats already subscribed to LE
 define ('P4C_LVL_2_MIN', 2);
 define ('P4C_LVL_2_MAX', 249);
-define ('P4C_LVL_3_PRICE', 99);
+define ('P4C_LVL_3_PRICE', 499);
 define ('P4C_LVL_3_MIN', 250);
 define ('P4C_MIN_ACC', 500);
 
@@ -177,7 +177,7 @@ $base_courses = array (
 );
 
 $base_courses_prep4camp = array (
-	"Prep 4 Camp" => 1
+	"Prep4Camp" => 608
 );
 
 // define LearnUpon Vars
@@ -196,7 +196,7 @@ define ('P4C_ID', 9); // Prep 4 Camp
 
 // define specific course IDs
 define ('CHILD_WELFARE_COURSE_ID', 32);
-define ('PREP4CAMP_COURSE_ID', 167);
+define ('PREP4CAMP_COURSE_ID', 608);
 
 
 // questionnaire base course IDs

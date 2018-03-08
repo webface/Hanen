@@ -82,7 +82,7 @@ function display_subscriptions ()
             else if($library_id == P4C_ID && !$subscription->setup)
             {
                 $subscription_id = $subscription->ID;
-                $course_name = "Prep 4 Camp";
+                $course_name = "Prep4Camp";
                 $course_id = PREP4CAMP_COURSE_ID;
                 $data = compact("user_id", "subscription_id"); //course description is ommitted in this case
                 $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
@@ -348,7 +348,7 @@ function new_subscription ($user_id = 0) {
         if ($current_LE_subscription)
         {
             // user has a subscription to LE adjust price accordingly
-            echo "<p>Because you are already subscribed to Leadership Essentials the cost to add the Camp Readyness Program for up to 1,000 families is $" . P4C_LVL_2_PRICE . "</p>";
+            echo "<p><strong>Because you are already subscribed to Leadership Essentials the cost to add the Prep4Camp for up to " . P4C_MIN_ACC . " families is $" . P4C_LVL_2_PRICE . "</strong></p>";
             $price = P4C_LVL_2_PRICE;
         }
         else
@@ -543,9 +543,7 @@ function new_subscription ($user_id = 0) {
         <script type="text/javascript">
             jQuery(function($) {
                 $(document).ready(function() {
-console.log("1");                
                     $('#subscribe-alt').click( function() {
-console.log("2");                
 
 //                        $('#new-alt-subscription').preventDefault(); // stop the form from submitting
 
@@ -603,7 +601,7 @@ console.log("2");
                     <ol>
                         <li>
                             <input type="checkbox" name="P4C" value="<?= P4C_ID ?>" class="library">&nbsp;&nbsp;
-                            <label for="chk_le"><span class="heading"><b><?= __("Prep 4 Camp - Individual family subscriptions", "EOT_LMS") ?></b></span></label>
+                            <label for="chk_le"><span class="heading"><b><?= __("Prep4Camp - Individual family subscriptions", "EOT_LMS") ?></b></span></label>
                             <p class="small" style="margin: 9px 0 9px 21px">
                                 <?= __("$7/Year (USD) for individual families. Same price as if you purchased on amazon.com", "EOT_LMS") ?>
                             </p>
