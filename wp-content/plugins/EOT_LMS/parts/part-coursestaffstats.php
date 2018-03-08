@@ -106,7 +106,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         __('Passed', 'EOT_LMS') => 'center',
                         __('Failed', 'EOT_LMS') => 'center',
                         __('Logins', 'EOT_LMS') => 'center',
-                        __('Views', 'EOT_LMS') => 'center',
+                        //__('Views', 'EOT_LMS') => 'center',
                         '<div ' . hover_text_attr(__('The enrollment status in this course. This can be the following statuses: Not started, in progress, completed. For completed courses a completion date is shown in the format: Y-M-D.', 'EOT_LMS'), true) . '>'.__('Status', 'EOT_LMS').'</div>' => 'center',
                         '<div ' . hover_text_attr(__('This is a representation of the number of modules completed by the Staff member as. A percentage of the total number of modules in the course.', 'EOT_LMS'), true) . '>'.__('Progress', 'EOT_LMS').'</div>' => 'staff-progress',
                         __('Actions', 'EOT_LMS') => 'center'
@@ -149,7 +149,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                             "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $passed_count . '/' . $num_quizzes_in_course . "</a>",
                             "<a href='/dashboard?part=staffquizstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $fail_count . "</a>",
                             "<a href='/dashboard?part=loginrecordstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $login_count . "</a>",
-                            "<a href='/dashboard?part=videowatchstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $view_count . "</a>",
+                            //"<a href='/dashboard?part=videowatchstats&stats_user_id=" . $enrollment['user_id'] . "&course_id=$course_id&subscription_id=$subscription_id&user_id=$user_id'>" . $view_count . "</a>",
                             $status,
                             $percentage,
                             "<a href='?part=improved_email_staff&subscription_id=".$subscription_id."&target=select-staff&recipient=".$enrollment['user_id']."' target='_blank'><i class='fa fa-envelope tooltip' title=\"Send an email to $name\" style=\"margin-bottom: -2px\" onmouseover=\"Tip('Send an email to $name', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')\" onmouseout=\"UnTip()\"></i></a>"
