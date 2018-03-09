@@ -28,6 +28,8 @@
 				$subLanguage = isset($_REQUEST['subLang']) ? filter_var($_REQUEST['subLang'],FILTER_SANITIZE_STRING) : null; // Video Language
 		   		$resolution = isset($_REQUEST['res']) ? filter_var($_REQUEST['res'],FILTER_SANITIZE_STRING) : null; // Video resolution
 				$module_video_resources = getResourcesInModuleInCourse($course_id, $module_id, 'video'); // get the video resources in this module
+                $resources_audio = getResourcesInModuleInCourse($course_id, $module_id, 'mp3'); // get the audio resources in this module
+d($resources_audio);
                 $resources_exam = getResourcesInCourse($course_id, "exam");
                 $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
                 $my_resources = array();
@@ -151,6 +153,25 @@
                         </center>     			
 <?php
                     }
+
+                    if (!empty($resources_audio))
+                    {
+                        echo '<div id="audio_resources">';
+?>
+                    <h3><?= __('Audio Resources', 'EOT_LMS')?></h3>
+                    <ul>
+<?php
+                        foreach ($resources_audio as $audio_resource) 
+                        {
+                            echo "<li><a href='https://" . AWS_S3_BUCKET . ".s3.amazonaws.com/" . $audio_resource['audio_name'] . "' target='_blank'>" . $audio_resource['name'] . " <i class='fa fa-play-circle'></i></a></li>";
+                        }
+?>
+                    </ul>
+<?php                        
+                        echo '</div>';
+                    }
+
+
                     echo '<h3>Resources</h3>';
                     echo '<ul class="inner nobullet">';
                     $url = '';

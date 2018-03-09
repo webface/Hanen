@@ -9275,6 +9275,9 @@ function getResourcesInModuleInCourse($course_id = 0, $module_id = 0, $type = ''
         case 'video':
             $table = TABLE_VIDEOS;
             break;
+        case 'mp3':
+            $table = TABLE_AUDIO;
+            break;
         case 'doc':
             $table = TABLE_RESOURCES;
             break;

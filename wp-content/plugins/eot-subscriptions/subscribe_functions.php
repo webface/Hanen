@@ -416,7 +416,7 @@ function new_subscription ($user_id = 0) {
                     </tr>
                     <tr>
                         <td colspan="2" border="0">
-                            * Should you require more than 1,000 family accounts, please contact us at <a href="mailto:info@expertonlinetraining.com">info@expertonlinetraining.com</a>.
+                            * Should you require more than <?= P4C_MIN_ACC ?> family accounts, please contact us at <a href="mailto:info@expertonlinetraining.com">info@expertonlinetraining.com</a>.
                         </td>
                     </tr>
                 </tbody>

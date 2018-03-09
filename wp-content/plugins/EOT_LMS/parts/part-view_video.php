@@ -172,7 +172,7 @@
                 //Video Resources
                 if(!empty($audio_resources))
                 {
-                    echo '<div id="audio_ resources">';
+                    echo '<div id="audio_resources">';
 ?>
                     <h3><?= __('Audio Resources', 'EOT_LMS')?></h3>
                     <ul>
