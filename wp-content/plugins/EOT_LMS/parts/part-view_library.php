@@ -21,13 +21,20 @@
         </div>
         <h1 class="article_page_title"><?= $library_name ?></h1>
         <span>
-          <strong><?= $library_name ?></strong> <?= __("is our most popular content library for youth leaders and supervisors. Click on one of the six category bars below to get started.", "EOT_LMS") ?>
+          <?= __($description, "EOT_LMS") ?>
+<?php
+        if ($library_id == LE_ID) 
+        {
+?>          
           <br><br>
           <div class="center">
             <a href="<?=get_home_url()?>/premade-courses/" target="_blank"><button type="button" class="btn btn-primary"><?= __("Pre-Made Courses", "EOT_LMS") ?></button></a>&nbsp;&nbsp;&nbsp;
             <a href="<?=get_home_url()?>/module-choices/" target="_blank"><button type="button" class="btn btn-primary"><?= __("Module Choices", "EOT_LMS") ?></button></a>&nbsp;&nbsp;&nbsp;
             <a href="<?=get_home_url()?>/dashboard/?part=upload_file&subscription_id=<?=$subscription_id?>&user_id=<?=$user_id?>"><button type="button" class="btn btn-primary"><?= __("Custom Content", "EOT_LMS") ?></button></a>
           </div>
+<?php
+        }         
+?>
           <br>
         </span>
       <?php

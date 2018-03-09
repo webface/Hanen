@@ -26,6 +26,7 @@
             {
                 $module_resources = getResourcesInModule($module_id); // All resources in the module.
                 $resources = array();// Video resources. Populated in the next foreach.
+                $audio_resources = array(); // the audio resources for this module
                 foreach ($module_resources as $module) 
                 {
                     if($module['type'] == "video")
@@ -104,6 +105,12 @@
                     {
                         array_push($resources, $module);
                     }
+                    // Add docs into the resources table.
+                    else if($module['type'] == "mp3")
+                    {
+                        array_push($audio_resources, $module);
+                    }
+
                 } // end foreach
 ?>
                 <br />
@@ -159,6 +166,28 @@
                     </div>
                 </div>
                 </ul>
+
+                <!-- Audio Resources of the module -->
+<?php
+                //Video Resources
+                if(!empty($audio_resources))
+                {
+                    echo '<div id="audio_ resources">';
+?>
+                    <h3><?= __('Audio Resources', 'EOT_LMS')?></h3>
+                    <ul>
+<?php
+                        foreach ($audio_resources as $audio_resource) 
+                        {
+                            echo "<li><a href='https://" . AWS_S3_BUCKET . ".s3.amazonaws.com/" . $audio_resource['audio_name'] . "' target='_blank'>" . $audio_resource['name'] . " <i class='fa fa-play-circle'></i></a></li>";
+                        }
+?>
+                    </ul>
+<?php
+                    echo '</div>';
+                }
+?>
+
                 <!-- Resources of the video (handouts, etc.) -->
                 <div id="resources">
 <?php

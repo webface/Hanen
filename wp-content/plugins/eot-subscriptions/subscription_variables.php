@@ -126,6 +126,7 @@ define ('AVG_VIDEO_LENGTH', 10); // the number of minutes it takes to watch a vi
 define ('AVG_EXAM_LENGTH', 10);  // the number of minutes it takes to complete an exam
 
 // define table names
+define ('TABLE_AUDIO', $wpdb->prefix."audio");
 define ('TABLE_SUBSCRIPTIONS', $wpdb->prefix."subscriptions");
 define ('TABLE_LIBRARY', $wpdb->prefix."library");
 define ('TABLE_LIBRARY_MODULES', $wpdb->prefix."library_modules");
@@ -177,7 +178,7 @@ $base_courses = array (
 );
 
 $base_courses_prep4camp = array (
-	"Prep4Camp" => 608
+	"Prep4Camp" => 5249
 );
 
 // define LearnUpon Vars
@@ -196,7 +197,7 @@ define ('P4C_ID', 9); // Prep 4 Camp
 
 // define specific course IDs
 define ('CHILD_WELFARE_COURSE_ID', 32);
-define ('PREP4CAMP_COURSE_ID', 608);
+define ('PREP4CAMP_COURSE_ID', 5249);
 
 
 // questionnaire base course IDs

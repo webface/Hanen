@@ -3125,7 +3125,7 @@ function getModulesInCourse($course_id = 0){
                 . "WHERE cmr.course_id = $course_id "
                 . "ORDER BY cmr.order ASC";
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
-    //error_log(json_encode($course_modules));
+//error_log("getModulesInCourse: course_id: $course_id\n sql: $sql\n course_modules: " . json_encode($course_modules));
     return $course_modules;
 }
 
@@ -3266,14 +3266,18 @@ function getModulesByLibrary($library_id = 0)
 {
   global $wpdb;
   $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
-  $modules = $wpdb->get_results("SELECT m.*, c.name AS category "
+  $query = "SELECT m.*, c.name AS category "
           . "FROM " . TABLE_MODULES . " m "
           . "LEFT JOIN " . TABLE_CATEGORIES . " c "
           . "ON m.category_id = c.id "
           . "JOIN ". TABLE_LIBRARY_MODULES. " lm "
           . "ON lm.library_id = $library_id AND lm.module_id = m.id "
           //. "WHERE m.library_id = $library_id "
-          . "ORDER BY m.title" , ARRAY_A);
+          . "ORDER BY m.title";
+
+//error_log("getModulesByLibrary: query: $query");
+
+  $modules = $wpdb->get_results( $query, ARRAY_A );
   return $modules;  
 }
 
@@ -3417,9 +3421,13 @@ function getVideoResourcesInModules($module_ids = '')
 
     global $wpdb;
     $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
-    $resources = $wpdb->get_results("SELECT DISTINCT mr.module_id, v.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_VIDEOS . " v "
+    $query = "SELECT DISTINCT mr.module_id, v.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_VIDEOS . " v "
             . "ON mr.resource_id = v.ID "
-            . "WHERE mr.module_id IN (" . $module_ids . ") AND mr.type = 'video' ORDER BY mr.order ASC", ARRAY_A);
+            . "WHERE mr.module_id IN (" . $module_ids . ") AND mr.type = 'video' ORDER BY mr.order ASC";
+
+//error_log("getVideoResourcesInModules: query: $query");
+
+    $resources = $wpdb->get_results( $query, ARRAY_A );
 
 /*
     $resources = $wpdb->get_results(
@@ -3590,9 +3598,13 @@ function getModules($org_id = 0)
 {
     global $wpdb;
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    $modules=$wpdb->get_results("SELECT m.*, c.name as category FROM " . TABLE_MODULES. " m "
+    $query = "SELECT m.*, c.name as category FROM " . TABLE_MODULES. " m "
             . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " c ON m.category_id = c.ID "
-            . "WHERE m.org_id = $org_id" , ARRAY_A);
+            . "WHERE m.org_id = $org_id";
+
+//error_log("getModules: query: $query");
+
+    $modules = $wpdb->get_results( $query, ARRAY_A );
     return $modules;
 }
 
@@ -5922,6 +5934,25 @@ function getResourcesInModule($module_id = 0)
           );
         }
       }
+      else if($resource['type'] == 'mp3')
+      {
+        $theaudio = $wpdb->get_row("SELECT * FROM " . TABLE_AUDIO . " WHERE ID = " . $resource['resource_id'], ARRAY_A);
+        if($theaudio)
+        {
+          array_push($clean_results, 
+            array(
+              'name' => $theaudio['name'],
+              'ID' => $theaudio['ID'],
+              'desc' => $theaudio['desc'],
+              'audio_name' => $theaudio['audio_name'],
+              'secs' => $theaudio['secs'],
+              'resource_id' => $resource['ID'],
+              'type' => 'mp3',
+              'order' => $resource['order']
+            )
+          );
+        }
+      }
       else
       {
         $theresource = $wpdb->get_row("SELECT * FROM " . TABLE_RESOURCES . " WHERE ID = " . $resource['resource_id'], ARRAY_A);
@@ -6737,9 +6768,7 @@ function getCourseForm_callback ( )
             $course_handouts_ids = array_column($course_handouts, 'ID');
             $modules_in_portal = getModules($org_id);// all the custom modules in this portal
             $user_modules_titles = array_column($modules_in_portal, 'title'); // only the titles of the modules from the user library.
-            
             $categories = getCategoriesByLibrary($library_id);
-            
             $master_modules = getModulesByLibrary($library_id);// Get all the modules from the current library.            
             $master_modules_titles = array_column($master_modules, 'title'); // only the titles of the modules from the current library.
             $master_module_ids = array_column($master_modules, 'ID');
@@ -6749,6 +6778,7 @@ function getCourseForm_callback ( )
             
             $videos_in_course = array();
             $vids = getVideoResourcesInModules($all_module_ids_string);
+
             foreach($vids as $video)
             {
               if(isset($videos_in_course[$video['module_id']]))
