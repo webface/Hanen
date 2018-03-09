@@ -1126,6 +1126,8 @@ function display_subscription_dashboard ($subscription)
     $data = compact ("org_id");
 //    $staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
     $courses = getCoursesById($org_id, $subscription->ID); // All the courses in the org && subscription.
+    $users_in_subscription = getUsersInSubscription($subscription->ID);
+    $users_in_subscription = isset($users_in_subscription['users']) ? $users_in_subscription['users'] : array();
 
     // get the library title
     $sql = "SELECT name from ".TABLE_LIBRARY." WHERE ID = ".$subscription->library_id;
@@ -1153,8 +1155,10 @@ function display_subscription_dashboard ($subscription)
             {
                 //echo $user['id']."<br>";
                 //echo in_multiarray($user['id'], $learners, 'id')."<br>";
-                if(!in_multiarray($user['ID'], $learners, 'ID')){
-                    array_push($learners, $user);
+//                if(!in_multiarray($user['ID'], $learners, 'ID')){
+                if(!in_array($user['user_id'], $learners))
+                {
+                    array_push($learners, $user['user_id']);
                 }
             }
         }
@@ -1227,19 +1231,27 @@ function display_subscription_dashboard ($subscription)
             </td>
           </tr>
           <tr>
-            <td class="s1">
-                <?= __("Enrolled Staff", "EOT_LMS") ?>
-            </td>
-            <td class="s2">
-                <?= count($learners); ?>                
-            </td>
-        </tr>
-          <tr>
             <td>
               <?= __("# Courses", "EOT_LMS") ?>
             </td>
             <td>
                 <?= count($courses); ?>
+            </td>
+          </tr>
+          <tr>
+            <td class="s1">
+                <?= __("# Staff Accounts", "EOT_LMS") ?>
+            </td>
+            <td class="s2">
+                <?= count($users_in_subscription); ?>                
+            </td>
+          </tr>
+          <tr>
+            <td class="s1">
+                <?= __("Enrolled Staff", "EOT_LMS") ?>
+            </td>
+            <td class="s2">
+                <?= count($learners); ?>                
             </td>
           </tr>
         </tbody>

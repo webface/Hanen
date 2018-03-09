@@ -72,24 +72,8 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
                 $resources_exam    = getResourcesInCourse($course_id, "exam");
             }
             
-            $modules_in_portal     = getModules($org_id); // all the custom modules in this portal
-            //$modules_in_course_ids = array_column($modules_in_course, 'ID');
-            $modules_in_portal_ids = array_column($modules_in_portal, 'ID');
-            foreach ($modules_in_portal as $key => $module) 
-            {
-                if (!in_array($module, $modules_in_course)) 
-                {
-                    unset($modules_in_portal[$key]);
-                }
-            }
-            $modules_in_portal_ids_string = implode(',', $modules_in_portal_ids);
-            $videos_in_custom_modules     = getVideoResourcesInModules($modules_in_portal_ids_string);
-            $quizzes_in_custom_modules    = getQuizResourcesInModules($modules_in_portal_ids_string);
-            $resources_in_custom_modules  = getHandoutResourcesInModules($modules_in_portal_ids_string);
-            $categories                   = getCategoriesByLibrary($library_id); // Get all the library from the master library (course).   
             $finished_module_quizzes      = array();
-            
-            //d($modules_in_portal,$videos_in_custom_modules,$quizzes_in_custom_modules,$resources_in_custom_modules);
+        
             
             $exams = array();
             foreach ($resources_exam as $exam) 
@@ -112,260 +96,167 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
             }
             
             $video_track          = getTrack($user_id, 0, "watch_video");
-            $modules              = array(); // Array of Module objects
-            $available_categories = array_unique(array_column($modules_in_course, 'category'));
-            
-            // if there are any null categories, set them to `custom`.
-            $available_categories = array_map(function($v){
-                return (is_null($v)) ? "Custom" : $v;
-            }, $available_categories);
-            
-            // if there are modules in this course, create module objects
+
+            $modules_in_portal_ids_string = array();
+            // Display all the modules in the course. Including custom modules.
             if (isset($modules_in_course)) 
-            {
+            {                
                 foreach ($modules_in_course as $key => $module) 
                 {
-                    /* 
-                     * This populates the modules array.
-                     */
-                    $category_name = in_array($module['category'], $available_categories) ? $module['category'] : 'Custom'; // The category name for this module.
-                    $new_module    = new module($module['ID'], $module['title'], $category_name); // Make a new module object.
-                    array_push($modules, $new_module); // Add the new module to the modules array.
-                }
-                
-                // Display library and the modules inside it.
-                foreach ($categories as $category) 
-                {
-                    $category_name = $category->name;
-                    // Check if the category has any modules. Otherwise skip it.
-                    if (in_array($category_name, $available_categories)) 
+                    $module_id    = $module['ID']; // The module ID
+                    $module_title = $module['title']; // The module name.
+                    // Custom modules
+                    if( $module['org_id'] > 0 )
                     {
-                        echo '<h3 class="library_topic">' . $category_name . '</h3>';
-                        foreach ($modules as $key => $module) 
+                        $videos_custom_modules     = getVideoResourcesInModules($module['ID']);
+                        $resources_custom_modules = getHandoutResourcesInModules($module['ID']);
+                        $quizzes_custom_modules    = getQuizResourcesInModules($module['ID']);
+                        
+                        ?>
+                        <ul class="tree">
+                            <li class="tree_video">
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                                &nbsp;<b><?= $module_title ?></b>
+                        <?php
+                        if( $resources_custom_modules )
                         {
-                            if ($module->category == $category_name) 
+                            foreach ($resources_custom_modules as $resource_module) 
                             {
-                                echo '<ul class="tree">';
-                                $module_id    = $module->id; // The module ID
-                                $module_title = $module->title; // The module name.
-?>
-		                  		<li class="tree_video">
-		          					<a href="?part=view&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>">
-		          						<i class="fa fa-play" aria-hidden="true"></i>
-		      						</a> 
-		      						<b><?= $module_title ?></b> 
-		      						<span class="small"> - 
-<?php
-                                if ($continue_learning && $enrollment_status == 'completed') {
-?>
-	          						<a href="?part=view_continued&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id ?>">
-	          							<?= __("Watch Video", "EOT_LMS"); ?>
-	          						</a>
-<?php
-                                } 
-                                else 
+                                $type = $resource_module['type'];
+                                $name = $resource_module['name'];
+                                if($type == 'link')
                                 {
-?>
-                                    <a href="?part=view&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id ?>">
-	          							<?= __("Watch Video", "EOT_LMS"); ?>
-	          						</a>
-<?php
+                                    $icon   = "fa-link";
+                                    $action = __("Visit Url", "EOT_LMS");
+                                    $url    = $resource_module['url'];
                                 }
-                                foreach ($resources_video as $key => $video) 
+                                else if($type == 'doc')
                                 {
-                                    // Get the video ID
-                                    if ($video['module_id'] == $module_id) 
-                                    {
-                                        $video_id   = $video['ID'];
-                                        $track_key  = myKey($video_track, 'video_id', $video_id);
-                                        $isFinished = ($track_key && $video_track[$track_key]->result == 1 && $video_track[$track_key]->repeat == 0) ? true : false;
-                                        unset($resources_video[$key]); // Unset the key.
-                                    }
+                                    $icon   = "fa-sticky-note-o";
+                                    $action = __("Download File", "EOT_LMS");
+                                    $url    = "/download-file?module_id=$module_id&course_id=$course_id&resource_id=" . $resource_module['ID'];
                                 }
-                                // display link to the quiz if the video has been watched.
-                                if ($isFinished) 
+                                else if($type == 'custom_video')
                                 {
-                                    if (isset($exams[$module_id])) 
-                                    {
-                                        $exam_data = $exams[$module_id];
-                                        $quiz_id   = $exam_data[0]['ID'];
-                                        echo '/ <a href="?part=quiz&module_id=' . $module_id . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '&course_id=' . $course_id . '&enrollment_id=' . $enrollment_id . '">' . __("Take Quiz", "EOT_LMS") . '</a>';
-                                        array_push($finished_module_quizzes, $quiz_id); //store that the module for this quiz was completed
-                                        
-                                    }
-                                } 
-                                else 
-                                {
-                                    if (isset($exams[$module_id])) 
-                                    {
+                                    $icon   = "fa-play";
+                                    $action = __("Watch Video", "EOT_LMS");
+                                    $url    = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=" . $resource_module['ID'];
+                                }
+?>                          
+                                        <ul class="inner nobullet">
+                                            <li>
+                                               <a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $name ?> - <span class="small"><a href="<?= $url ?>"><?= $action; ?></a></span>
+                                            </li>
+                                        </ul>
+<?php
+                            }
+                        }
+                        if($quizzes_custom_modules)
+                        {
+                            foreach ($quizzes_custom_modules as $quiz_module) 
+                            {
+                                $exam_id    = $quiz_module['ID'];
+                                $exam_title = $quiz_module['name'];
+                                $icon       = "fa-question-circle-o";
+                                $url        = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id&enrollment_id=$enrollment_id";
+?>
+                                <ul class="inner nobullet">
+                                    <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $quiz_module['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= __("Take Quiz", "EOT_LMS"); ?></a></span></li>
+                                </ul>
+<?php
+                            }
+                        }
+                echo        '</li>';
+                echo    '</ul>';
+
+                        continue;
+                    }
+                    echo '<ul class="tree">';
+?>
+                    <li class="tree_video">
+                        <a href="?part=view&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id ?>">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                        </a> 
+                        <b><?= $module_title ?></b> 
+                        <span class="small"> - 
+<?php
+                    if ($continue_learning && $enrollment_status == 'completed') 
+                    {
+?>
+                        <a href="?part=view_continued&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id ?>">
+                            <?= __("Watch Video", "EOT_LMS"); ?>
+                        </a>
+<?php
+                    } 
+                    else 
+                    {
+?>
+                        <a href="?part=view&course_id=<?= $course_id ?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id ?>">
+                            <?= __("Watch Video", "EOT_LMS"); ?>
+                        </a>
+<?php
+                    }
+                    foreach ($resources_video as $key => $video) 
+                    {
+                        // Get the video ID
+                        if ($video['module_id'] == $module_id) 
+                        {
+                            $video_id   = $video['ID'];
+                            $track_key  = myKey($video_track, 'video_id', $video_id);
+                            $isFinished = ($track_key && $video_track[$track_key]->result == 1 && $video_track[$track_key]->repeat == 0) ? true : false;
+                            unset($resources_video[$key]); // Unset the key.
+                        }
+                    }
+                    // display link to the quiz if the video has been watched.
+                    if ($isFinished) 
+                    {
+                        if (isset($exams[$module_id])) 
+                        {
+                            $exam_data = $exams[$module_id];
+                            $quiz_id   = $exam_data[0]['ID'];
+                            echo '/ <a href="?part=quiz&module_id=' . $module_id . '&quiz_id=' . $quiz_id . '&subscription_id=' . $subscription_id . '&course_id=' . $course_id . '&enrollment_id=' . $enrollment_id . '">' . __("Take Quiz", "EOT_LMS") . '</a>';
+                            array_push($finished_module_quizzes, $quiz_id); //store that the module for this quiz was completed
+                            
+                        }
+                    } 
+                    else 
+                    {
+                        if (isset($exams[$module_id])) 
+                        {
 ?>                                                                                                  
-      									/ Take Quiz
-                                        &nbsp; <i class="fa fa-question-circle" title="<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                                / Take Quiz
+                            &nbsp; <i class="fa fa-question-circle" title="<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
 <?php
-                                    }
-                                }
-                                echo '</span>';
-                                if (isset($resources_doc) && count($resources_doc) > 1) 
-                                {
-                                    foreach ($resources_doc as $key => $resource) 
-                                    {
-                                        if ($resource['module_id'] == $module->id) 
-                                        {
-                                            $video_id = $resource['video_id'];
-?>								
-			              						<ul class="inner nobullet">
-	                                                <li><a href="/download-file?module_id=<?= $module_id ?>&course_id=<?= $course_id ?>&resource_id=<?= $resource['ID'] ?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/download-file?module_id=<?= $module_id ?>&resource_id=<?= $resource['ID'] ?>&course_id=<?= $course_id ?>"><?= __("Download Handout (PDF)", "EOT_LMS"); ?></a></span></li>
-		                                      	</ul>
-<?php
-                                        }
-                                        unset($resource);
-                                    }
-                                }
+                        }
+                    }
+                    echo '</span>';
+                    if (isset($resources_doc) && count($resources_doc) > 1) 
+                    {
+                        foreach ($resources_doc as $key => $resource) 
+                        {
+                            if ($resource['module_id'] == $module['ID']) 
+                            {
+                                $video_id = $resource['video_id'];
+    ?>                              
+                                    <ul class="inner nobullet">
+                                        <li><a href="/download-file?module_id=<?= $module_id ?>&course_id=<?= $course_id ?>&resource_id=<?= $resource['ID'] ?>"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a> <?= $module_title ?> - <span class="small"><a href="/download-file?module_id=<?= $module_id ?>&resource_id=<?= $resource['ID'] ?>&course_id=<?= $course_id ?>"><?= __("Download Handout (PDF)", "EOT_LMS"); ?></a></span></li>
+                                    </ul>
+    <?php
+                            }
+                            unset($resource);
+                        }
+                    }
 ?>
-				    					</li> 	                 
+                    </li>                    
 <?php
-                                echo '</ul>';
-                            } //end if
-                        } //end for each
-                    } //end if
+            echo '</ul>';
                 } //end for each
-            } //end if
+            } 
             else 
             {
                 echo __("There are no modules in this course. Please contact your camp director.", "EOT_LMS");
             }
             
-            echo '<h3 class="library_topic">' . __("Custom Modules", "EOT_LMS") . '</h3>';
-            $rcm = array();
-            if (count($resources_in_custom_modules) > 0) 
-            {
-                foreach ($resources_in_custom_modules as $resource) 
-                {
-                    if (isset($rcm[$resource['mod_id']])) 
-                    {
-                        array_push($rcm[$resource['mod_id']], array(
-                            'ID' => $resource['ID'],
-                            'name' => $resource['name'],
-                            'type' => $resource['type'],
-                            'url' => $resource['url']
-                        ));
-                    } 
-                    else 
-                    {
-                        $rcm[$resource['mod_id']] = array();
-                        array_push($rcm[$resource['mod_id']], array(
-                            'ID' => $resource['ID'],
-                            'name' => $resource['name'],
-                            'type' => $resource['type'],
-                            'url' => $resource['url']
-                        ));
-                    }
-                }
-            }
-            $exams = array();
-            if (count($quizzes_in_custom_modules) > 0) 
-            {
-                foreach ($quizzes_in_custom_modules as $resource) 
-                {
-                    if (isset($exams[$resource['module_id']])) 
-                    {
-                        array_push($exams[$resource['module_id']], array(
-                            'ID' => $resource['ID'],
-                            'name' => $resource['name']
-                        ));
-                    } 
-                    else 
-                    {
-                        $exams[$resource['module_id']] = array();
-                        array_push($exams[$resource['module_id']], array(
-                            'ID' => $resource['ID'],
-                            'name' => $resource['name']
-                        ));
-                    }
-                }
-            }
-            
-            //d($exams);
-            foreach ($modules_in_portal as $module) 
-            {
-                echo '<ul class="tree">';
-                $module_id    = $module['ID']; // The module ID
-                $module_title = $module['title']; // The module name.
-?>
-                    <li class="tree_video">
-                        <i class="fa fa-square-o" aria-hidden="true"></i>
-                            <b><?= $module_title ?></b>
-<?php
-                if (isset($rcm[$module_id])) 
-                {
-                    foreach ($rcm[$module_id] as $resource) 
-                    {
-                        switch ($resource['type']) 
-                        {
-                            case 'link':
-                                $icon   = "fa-link";
-                                $url    = $resource['url'];
-                                $action = __("Visit Url", "EOT_LMS");
-                                break;
-                            case 'doc':
-                                $icon   = "fa-sticky-note-o";
-                                $url    = "/download-file?module_id=$module_id&course_id=$course_id&resource_id=" . $resource['ID'];
-                                $action = __("Download File", "EOT_LMS");
-                                break;
-                            case 'custom_video':
-                                $icon   = "fa-play";
-                                $url    = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=" . $resource['ID'];
-                                $action = __("Watch Video", "EOT_LMS");
-                                break;
-                            default:
-                                $icon = "fa-sticky-note-o";
-                        }
-                        
-?>
-		                    <ul class="inner nobullet">
-		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action; ?></a></span></li>
-		                    </ul>
-<?php
-                    }
-                    
-                }
-                
-                if (isset($exams[$module_id])) 
-                {
-                    foreach ($exams[$module_id] as $exam) 
-                    {
-                        $exam_id    = $exam['ID'];
-                        $exam_title = $exam['name'];
-                        $icon       = "fa-question-circle-o";
-                        $url        = "?part=quiz&module_id=$module_id&quiz_id=$exam_id&subscription_id=$subscription_id&course_id=$course_id&enrollment_id=$enrollment_id";
-?>
-		                    <ul class="inner nobullet">
-		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $exam_title ?> - <span class="small"><a href="<?= $url ?>"><?= __("Take Quiz", "EOT_LMS"); ?></a></span></li>
-		                    </ul>
-<?php
-                    }
-                }
-                
-?>
-                        </li>
-
-                        <script>
-                            function downloadResource(resource_id,module_id)
-                            {
-                                var url =  ajax_object.ajax_url  + "?action=trackAndDownload&user_id=<?= $user_id ?>&module_id="+module_id+"&resource_id="+resource_id;
-                                $.ajax({
-                                url:url,
-                                success:
-                                    function(data)
-                                    {
-                                    }
-                                });
-                            }
-	                        $(document).ready(function(){});
-                        </script>
-<?php
-                echo '</ul>';
-            }
             $quizzes_in_course   = getQuizzesInCourse($course_id);
             $quiz_ids            = array_column($quizzes_in_course, 'ID');
             $quiz_ids_string     = implode(',', $quiz_ids);

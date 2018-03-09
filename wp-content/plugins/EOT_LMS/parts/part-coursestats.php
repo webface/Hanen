@@ -51,15 +51,86 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $total_number_passed = $course_data['num_passed']; // The total number of staff who have passed the course
                     }
                 }
-
-                $calculated_num_completed = 0;
                 $total_number_failed = 0;
                 $enrollments = getEnrollments($course_id, 0, 0, false); // Get all failed/passed enrollments in the course.
+                $quizzes_in_course = getQuizzesInCourse($course_id);
+                $track_quizzes = array();
+                if($quizzes_in_course)
+                {
+                    $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
+                }
+                $num_quizzes_in_course = count($quizzes_in_course);
+                $videos = getResourcesInCourse($course_id, 'video');
+                $custom_videos = getResourcesInCourse($course_id, 'custom_video');
+                $all_videos = array_merge($videos, $custom_videos);
+                $track_records = getAllTrack($org_id); // All track records.
+                $track_watchVideo = array();
+                $track_login = array();
+                $track_watch_customVideo = array();
+                foreach ($track_records as $key => $record) 
+                {
+                    if ($record['type'] == "watch_video") 
+                    {
+                        array_push($track_watchVideo, $record['video_id']); // Save the ID of the video.
+                        //unset($track_records[$key]); // Delete them from the array.
+                    }
+                    if ($record['type'] == "watch_custom_video") 
+                    {
+                        array_push($track_watch_customVideo, $record['video_id']); // Save the ID of the video.
+                        //unset($track_records[$key]); // Delete them from the array.
+                    }
+                }
+                $trackPassed = array(); // Track passed for each users
+                $trackedQuizPassed = array(); // Track passed for each quizzes.
+                $track_quiz_attempts = array();
+                $quizPassed = array();//needed to verify and remove quizzes passed more than once
+                foreach ($track_quizzes as $key => $record) 
+                {
+                    //make sure the quiz has not been already passed 
+                    if ($record['passed'] == 1 )
+                    {
+                        // Save the user ID of the users who failed the quiz.
+                        if((!isset($quizPassed[$record['quiz_id']]) || ($quizPassed[$record['quiz_id']] != $record['user_id'])))
+                        {
+                            $quizPassed[$record['quiz_id']] = $record['user_id'];
+                            array_push($trackPassed, $record['user_id']); 
+                        }
+                        array_push($trackedQuizPassed, $record['quiz_id']);
+                    }
 
+                    array_push($track_quiz_attempts, $record['quiz_id']); // Save the user ID of the users who failed the quiz. 
+                }
+                $passed_users = array_count_values($trackPassed);
+                $passed_quiz = array_count_values($trackedQuizPassed);
+                $attempt_count = array_count_values($track_quiz_attempts);
+                $login_users = array_count_values($track_login); // Return the user ID and the key/times the user has logged in.
+                $watched_users = array_count_values($track_watchVideo); // Return the user ID and the key/times the user has watch the module.
+                $calculated_num_completed = 0;
+                /*
+                 * This goes through all the enrollments to calculate $calculated_num_completed
+                 * copied the same function from coursestaffstats.php. Just deleted unnecessary code.
+                 */
                 foreach ($enrollments as $enrollment) 
                 {
-                    $status = $enrollment['status'];
-                    if ($status == "completed" || $status == "passed") 
+                    
+                    $view_count = isset($watched_users[$enrollment['user_id']]) ? $watched_users[$enrollment['user_id']] : 0; // Number of times the user has watch the module.
+                    $passed_count = isset($passed_users[$enrollment['user_id']]) ? $passed_users[$enrollment['user_id']] : 0; //Number of passes
+                    $attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0; //Number of quiz attempts
+                    $percentage = eotprogressbar('8em', 0, true);
+                    $status = displayStatus($passed_count, $num_quizzes_in_course, $attempts, $view_count);
+                    if ($status == 'Completed')
+                    {   
+                        $calculated_num_completed++;
+                    }
+                }
+
+/*
+                foreach ($enrollments as $enrollment) 
+                {
+
+                    $passed_count = isset($passed_users[$enrollment['user_id']]) ? $passed_users[$enrollment['user_id']] : 0; //Number of passes
+
+                    if ($passed_count == $num_quizzes_in_course) 
                     {
                         $calculated_num_completed++; // people who passed also completed the course.
                     } 
@@ -68,24 +139,12 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                         $total_number_failed++;
                     }
                 }
+*/
                 $total_number_of_staff = count($enrollments); // The total number of staff enrolled in the course.
-
-                // Variable initialisation 
-                $percentage_completed = 0; // The percentage of staff who logged in once.
-                $percentage_not_started = 0;  // The percentage of staff who logged in once.
-                $percentage_number_in_progress = 0; // The percentage of staff who are in progress.
-                $percentage_number_passed = 0; // The percentage of staff who passed in this course.
-                $percentage_number_failed = 0; // The percentage of staff who failed in this course.
-  
                 // This calculates the percentage for the progressbars.
                 if ($total_number_of_staff > 0) 
-                { // Can't be divided by 0.
-                    $percentage_completed = (($total_number_complete / $total_number_of_staff) * 100);
-                    $percentage_not_started = (($total_number_not_started / $total_number_of_staff) * 100);
-                    $percentage_number_in_progress = (($total_number_in_progress / $total_number_of_staff) * 100);
-                    $percentage_number_passed = (($total_number_passed / $total_number_of_staff) * 100);
-                    $percentage_number_failed = (($total_number_failed / $total_number_of_staff) * 100);
-
+                { 
+                    // Can't be divided by 0
                     $calculated_percentage_completed = (($calculated_num_completed / $total_number_of_staff) * 100);
                 } 
                 else 
@@ -117,29 +176,6 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     <h2><?= __("Quiz Success Rate", "EOT_LMS"); ?></h2>
                     <p><?= __("For quizzes with a low success rate, you may want to go over these topics in greater depth during your on-site training.", "EOT_LMS"); ?></p>
 <?php
-                $quizzes = getQuizzesInCourse($course_id);
-                $track_quizzes = array();
-                if($quizzes)
-                {
-                    $track_quizzes = getAllQuizAttempts($course_id); //All quiz attempts for this course
-                }
-                //d($quizzes, $track_quizzes);
-                $track_passed = array();
-                $track_quiz_attempts = array();
-                foreach ($track_quizzes as $key => $record) 
-                {
-                    if ($record['passed'] == 1) 
-                    {
-                        array_push($track_passed, $record['quiz_id']); // Save the user ID of the users who failed the quiz.
-                        //unset($track_quizzes[$key]); // Delete them from the array.
-                    }
-                    array_push($track_quiz_attempts, $record['quiz_id']);
-                }
-                $passed_users = array_count_values($track_passed);
-                $attempt_count = array_count_values($track_quiz_attempts);
-//d($track_quizzes, $passed_users, $attempt_count);
-                //if ($quizzes) 
-                //{
                     // Tables that will be displayed in the front end.
                     $quizTableObj = new stdClass();
                     $quizTableObj->rows = array();
@@ -150,11 +186,11 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
                     );
 
                     // Creating rows for the table
-                    foreach ($quizzes as $quiz) 
+                    foreach ($quizzes_in_course as $quiz) 
                     {
 
                         //$time_limit = date('i', strtotime($quiz['time_limit']));
-                        $passed_count = isset($passed_users[$quiz['ID']]) ? $passed_users[$quiz['ID']] : 0; //Number of passes
+                        $passed_count = isset($passed_quiz[$quiz['ID']]) ? $passed_quiz[$quiz['ID']] : 0; //Number of passes
                         $attempts = isset($attempt_count[$quiz['ID']]) ? $attempt_count[$quiz['ID']] : 0; //Number of quiz attempts
                         $percentage = $attempts > 0 ? (($passed_count / $attempts) * 100) : 0;
 
@@ -169,26 +205,7 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 ?>
                     <h2><?= __("Video Views", "EOT_LMS"); ?></h2>
 <?php
-                    $videos = getResourcesInCourse($course_id, 'video');
-                    $custom_videos = getResourcesInCourse($course_id, 'custom_video');
-                    $all_videos = array_merge($videos, $custom_videos);
-                    $track_records = getAllTrack($org_id); // All track records.
-//d($videos,$custom_videos,$all_videos,$track_records);
-                    $track_watchVideo = array();
-                    $track_watch_customVideo = array();
-                    foreach ($track_records as $key => $record) 
-                    {
-                        if ($record['type'] == "watch_video") 
-                        {
-                            array_push($track_watchVideo, $record['video_id']); // Save the ID of the video.
-                            //unset($track_records[$key]); // Delete them from the array.
-                        }
-                        if ($record['type'] == "watch_custom_video") 
-                        {
-                            array_push($track_watch_customVideo, $record['video_id']); // Save the ID of the video.
-                            //unset($track_records[$key]); // Delete them from the array.
-                        }
-                    }
+ 
                     $views = array_count_values($track_watchVideo);
                     $custom_views = array_count_values($track_watch_customVideo);
 

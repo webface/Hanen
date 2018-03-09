@@ -40,7 +40,7 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
 				$full_name = $first_name . " " . $last_name;	// Full name of user in WP
 				$email_address = $current_user->user_email;			// Email address in wordpress db wp_users 
 			  	$data = compact ("org_id");
-			  	$courses = getCourses(0,$org_id, 0); // All the courses that are published cause draft courses cant have staff enrolled.
+			  	$courses = getCourses(0,$org_id, $subscription_id); // All the courses that are in the selected subscription.
                 //$response = getEotUsers($org_id); // Lists of users in the org
                 $response = getUsersInSubscription($subscription_id);
 				$users = array(); // Lists of users

@@ -71,8 +71,12 @@
 	  	$subscriptionsTableDownloadObj->headers = array(
 			'Camp Name' => 'center',
 			'Director Name' => 'center',
-			'<div ' . hover_text_attr('The total number of staff in this camp.',true) .'>Number of Staff</div>' => 'center',
-			'<div ' . hover_text_attr('The total amount paid in this camp.',true) .'>Amount Paid</div>' => 'center'
+			'Email' => 'center',
+			'Phone' => 'center',
+			'State' => 'center',
+			'URL' => 'center',
+			'Number of Staff' => 'center',
+			'Amount Paid' => 'center'
 		);
 
 		// This go through all subscriptions, and add the data into the table row.
@@ -108,13 +112,15 @@
 			" $" . number_format($price, 2, ".", ""),
 			$state,
 			"<a href='./?part=admin_subscription_details&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-info' aria-hidden='true' ". hover_text_attr('More information<br> for this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=admin_create_account&user_id=".$user_id."&renewal=true'><i class='fa fa-vcard-o' aria-hidden='true' ". hover_text_attr('Renew this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=charge_user&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-cart-plus' aria-hidden='true' ". hover_text_attr('Charge this camp.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=add_upgrade&subscription_id=".$subscription_id."&library_id=".$library_id."'><i class='fa fa-usd' aria-hidden='true' ". hover_text_attr('Upgrade.',true) . "></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-times-circle' aria-hidden='true' ". hover_text_attr('Disable.',true) . "></i>&nbsp;&nbsp;&nbsp;&nbsp;<a href='./?part=issue_refund&library_id=".$library_id."&subscription_id=".$subscription_id."'><i class='fa fa-money' aria-hidden='true' ". hover_text_attr('Issue Refund.',true) . "></i></a>");
-			$subscriptionsTableDownloadObj->rows[] = array($camp_name, 
-			$user_info ? "<a href=mailto:" . $user_info->user_email . ">" . $name . "</a>" : "Can't find the user", 
-			$num_staff, 
+
+
+			$phone = get_post_meta($org_id, 'org_phone', true);
+			$url = get_post_meta($org_id, 'org_url', true);
+			$subscriptionsTableDownloadObj->rows[] = array($camp_name,$name, $user_info->user_email, $phone, $state, $url, $num_staff, 
 			" $" . number_format($price, 2, ".", ""));
 		}
 ?>
-  		<h2><?= $library_name ?></h2>
+  		<h2><?= $library_name ?> -  <?= $year ?></h2>
 		<table class="data">
 			<tbody>
 				<tr class="head">

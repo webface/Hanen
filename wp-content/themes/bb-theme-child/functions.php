@@ -83,7 +83,6 @@ function new_nav_menu_items($items,$args)
     //check if its the frigging main beaver builder menu
     if ($args->menu == 'main-menu-for-beaver-builder' || is_object($args->menu) && $args->menu->slug == 'main-menu-for-beaver-builder')
     {
-        
         $languages = icl_get_languages('skip_missing=1');
         if(1 < count($languages))
         {
@@ -98,6 +97,24 @@ function new_nav_menu_items($items,$args)
     
     return $items;
 }
-add_filter( 'wp_list_pages', 'new_nav_menu_items' , 600, 2);
-add_filter( 'wp_nav_menu_items', 'new_nav_menu_items', 600, 2);
+//add_filter( 'wp_list_pages', 'new_nav_menu_items' , 600, 2);
+//add_filter( 'wp_nav_menu_items', 'new_nav_menu_items', 600, 2);
+
+// Disabled video download for every page that is using beaver builder.
+function disable_video_download_js() {
+?>
+    <script>
+    $ = jQuery
+    // Disable video from right clicking and download.
+    $("video").on("contextmenu", function(e) 
+    {
+     e.preventDefault();
+    });
+    </script>;
+<?php
+};
+// Add hook for admin <footer>
+add_action('admin_footer', 'disable_video_download_js');
+// Add hook for front-end <footer
+add_action('wp_footer', 'disable_video_download_js');
  

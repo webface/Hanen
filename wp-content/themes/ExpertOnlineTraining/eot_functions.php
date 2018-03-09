@@ -310,6 +310,46 @@ function formatStatus($status = '')
     }
 }
 
+/***************************************************************************
+ *
+ * Display the status based on progress 
+ * @param int num_passed - the number of passed quizzes
+ * @param int num_quizzes - the number of quizzes in total
+ * @param int attempts - the number of quizz attempts
+ * @param int views - the number of module views
+ *
+ **************************************************************************/
+function displayStatus($num_passed = 0, $num_quizzes = 0, $attempts = 0, $views = 0)
+{
+    if (!$num_passed)
+    {
+      if (!$attempts && !$views)
+      {
+         return formatStatus('not_started');
+      }
+      else
+      {
+          return formatStatus('in_progress');
+      }
+    }
+    else if (!$num_quizzes)
+    {
+      return formatStatus('');
+    }
+    else if ($num_passed < $num_quizzes)
+    {
+      return formatStatus('in_progress');
+    }
+    else if ($num_passed == $num_quizzes)
+    {
+      return formatStatus('completed');
+    }
+    else
+    {
+      return formatStatus('');
+    }
+}
+
 /**
  *   Display Help Videos
  */  
@@ -1547,7 +1587,7 @@ function verifyUserAccess ()
     if ($subscription_id)
     {
       // we have a subscription ID so just check that this uber admin is authorized to modify this subscription/org
-      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE id = " . $subscription_id;
+      $sql = "SELECT * FROM " . TABLE_SUBSCRIPTIONS . " WHERE ID = " . $subscription_id;
       $results = $wpdb->get_row ($sql);
       if ($results)
       {
@@ -1577,7 +1617,16 @@ function verifyUserAccess ()
                   }
                   else
                   {
+                    // allow for multiple uber admins if all else fails.
+                    if(get_user_meta($current_user->ID,'org_id', true) == get_user_meta($user_id,'umbrella_group_id', true) )
+                    {
+                      return array ( 'status' => 1 ); 
+                    }
+                    else
+                    {
                       return array( 'status' => 0, 'message' => __("you dont have permission to manage this user's subscription", "EOT_LMS") );
+
+                    }
                   }
                 }
             }
@@ -1942,6 +1991,8 @@ error_log("users_info: " . json_encode($users));
       $message_template = get_field( "wysiwyg_compose_message_group_passwrd", $post_id ); // The e-mail message
     }
 
+//error_log("target: $target<br>\nInitial subject: $subject_template<br>\nmessage: $message_template");
+
     // Goes to each selected user. Compose and send the message.
     foreach($users as $user)
     {
@@ -1983,6 +2034,9 @@ error_log("users_info: " . json_encode($users));
           'subject' => $subject_template
       );
       array_push($recepients, $recepient);
+
+//error_log("The recepient array: " . json_encode($recepient));
+
     }
 
     // add emails to pending emails table
@@ -2027,6 +2081,8 @@ function addPendingEmails($org_id = 0, $sender_name = '', $sender_email = '', $r
           'message'=>$recepient['message']
     );
     $result = $wpdb->insert(TABLE_PENDING_EMAILS, $data);
+
+//error_log("Pending email table data: " . json_encode($data));
 
     // check if there was an error inserting the email into the DB
     if (!$result)
@@ -2433,6 +2489,9 @@ function processEmails ($limit = PENDING_EMAILS_LIMIT, $org_id = 0)
   $recipients = $wpdb->get_results($sql, ARRAY_A);
   $results = sendMail('massmail', $recipients, $data);
 
+//error_log("ProcessEmails: receipients: " . json_encode($recipients));
+//error_log("ProcessEmails: results: " . json_encode($results));
+
   if(isset($results['status']) && $results['status'])
   {
     foreach($recipients as $recipient)
@@ -2468,6 +2527,8 @@ function processUsersCron()
   $sql = "SELECT count(*) as count FROM " . TABLE_PENDING_USERS . " WHERE time < DATE_SUB(NOW(), INTERVAL ".PENDING_USERS_CRON_TIME_LIMIT." HOUR) ORDER BY id asc";
   $result = $wpdb->get_row($sql)->count;
 
+  error_log("ProccessUsersCron started");
+
   if($result>0)
   {
     for($i=0;$i<$result;$i+=PENDING_USERS_CRON_LIMIT)
@@ -2479,10 +2540,13 @@ function processUsersCron()
       }
     }
   }
+
+  error_log("ProccessUsersCron finished");
+
 }
 
 // @TODO fix function when merging with Tommy's version
-//processes the firt PENDING_USERS_LIMIT users from the temperory table
+//processes the first PENDING_USERS_LIMIT users from the temperory table
 function processUsers ($limit = PENDING_USERS_LIMIT, $org_id = 0)
 {
   global $wpdb;
@@ -2975,6 +3039,11 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     
     // filter user input and make sure parameters are included
     $course_name = trim(filter_var($course_name, FILTER_SANITIZE_STRING));
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
+    $course_due_date = (isset($course_due_date)) ? $course_due_date : '1000-01-01 00:00:00';
+
     if(isset($course_description))
     {
         $course_description = trim(filter_var($course_description, FILTER_SANITIZE_STRING));
@@ -2984,13 +3053,14 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
         $copy_course_id = filter_var($copy_course_id, FILTER_SANITIZE_NUMBER_INT);
         $course = $wpdb->get_row("SELECT * FROM ".TABLE_COURSES." WHERE ID = $copy_course_id",OBJECT);
         $course_description = $course->course_description;
+
+        // overwrite the user id if were copying a course from an uber into a camp.
+        if ( isset( $owner_id ) && !empty( $owner_id ) )
+        {
+          $user_id = $owner_id;
+        }
     }
     
-    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
-    $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
-    $course_due_date = (isset($course_due_date)) ? $course_due_date : '1000-01-01 00:00:00';
-   
     $insert = $wpdb->insert( 
       TABLE_COURSES, 
       array( 
@@ -3048,12 +3118,12 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
 function getModulesInCourse($course_id = 0){
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT DISTINCT m.*, c.name AS category "
+    $sql = "SELECT DISTINCT m.*, c.name AS category, cmr.order "
                 . "FROM " . TABLE_MODULES . " AS m "
                 . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cmr ON cmr.module_id = m.id "
                 . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
-                . "WHERE cmr.course_id = $course_id";
-
+                . "WHERE cmr.course_id = $course_id "
+                . "ORDER BY cmr.order ASC";
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
     //error_log(json_encode($course_modules));
     return $course_modules;
@@ -3409,9 +3479,9 @@ function getQuizzesInCourse($course_id = 0)
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT q.* "
-                . "FROM " . TABLE_QUIZ . " AS q "
-                . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cq ON cq.resource_id = q.ID "
-                . "WHERE cq.course_id = $course_id AND cq.type = 'exam'";
+          . "FROM " . TABLE_QUIZ . " AS q "
+          . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cq ON cq.resource_id = q.ID "
+          . "WHERE cq.course_id = $course_id AND cq.type = 'exam' ORDER BY cq.order";
     $course_quizzes = $wpdb->get_results($sql, ARRAY_A);
     return $course_quizzes;
 }
@@ -4400,7 +4470,7 @@ function createWpUser($data = array(), $role = 'student', $subscription_id = 0)
     $last_name = filter_var($last_name, FILTER_SANITIZE_STRING);
     
     $email = sanitize_email($email); // User's e-mail address
-    $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
+    $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
 
     // check that the user doesnt exist in WP
     if ( email_exists($email) == false )
@@ -4682,6 +4752,8 @@ function massMail ( $sender_email = '', $sender_name = '', $recipients = array()
             "Reply-To: $sender_name <$sender_email>",
             "Content-Type: text/html; charset=UTF-8"
             );
+
+//error_log("massMail: " . json_encode($recipients));
 
         // we have the sender info now send them email(s) 
         foreach ($recipients as $recipient)
@@ -6656,6 +6728,7 @@ function getCourseForm_callback ( )
             $data = array( "org_id" => $org_id ); // to pass to our functions above
             
             $course_videos = array_merge(getResourcesInCourse($course_id,'video'),getResourcesInCourse($course_id,'custom_video')) ; // all the module videos in the specified course
+            $course_videos_module_ids = array_column($course_videos,'mid');
             $course_quizzes = getResourcesInCourse($course_id,'exam');
             $course_handouts = array_merge(getResourcesInCourse($course_id,'doc'),getResourcesInCourse($course_id,'link'));
             $course_handouts_module_ids = array_column($course_handouts,'mid');
@@ -6718,7 +6791,7 @@ function getCourseForm_callback ( )
             }
 //d($exams,$handouts,$videos_in_course,$modules_in_portal,$handout_resources,$course_handouts_ids);
             $course_data=getCourse($course_id);// all the settings for the specified course
-            $due_date =$course_data['due_date_after_enrollment']!==NULL? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])):NULL; // the due date of the specified course
+            $due_date = (isset($course_data['due_date_after_enrollment']) && $course_data['due_date_after_enrollment'] != "0000-00-00 00:00:00" && $course_data['due_date_after_enrollment'] != "1000-01-01 00:00:00") ? date('m/d/Y',  strtotime($course_data['due_date_after_enrollment'])): null; // the due date of the specified course
             $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); //  The subscription ID
             $videoCount = count($course_videos);
             $quizCount = count($course_quizzes);
@@ -6739,7 +6812,7 @@ function getCourseForm_callback ( )
                     <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
                       <tr  class="head">
                         <td style ="padding:5px;" colspan="2">
-                          <?= __("Assignment Summary", "EOT_LMS") ?>
+                          <?= __("Course Summary", "EOT_LMS") ?>
                         </td>
                       </tr>
                       <tr>
@@ -6784,7 +6857,7 @@ function getCourseForm_callback ( )
                     <table class="assign_summary data" style = "width:260px;margin:0px;padding:5px;">
                       <tr  class="head">
                         <td style ="padding:5px;" colspan="2">
-                          <?= __("Assignment Due Date", "EOT_LMS") ?>
+                          <?= __("Course Due Date", "EOT_LMS") ?>
                         </td>
                       </tr>
                       <tr>
@@ -6983,7 +7056,7 @@ function getCourseForm_callback ( )
                             if(!in_array($module['ID'], $master_module_ids)) 
                             {
                                 // check if the module is in this specific course. if it is, then enable it, otherwise its default disabled.
-                                if(in_array($module['ID'], $course_handouts_module_ids))
+                                if(in_array($module['ID'], $course_handouts_module_ids) || in_array($module['ID'], $course_videos_module_ids))
                                 {
                                     $module_active = '1';
                                     $module_class = 'enabled';
@@ -6993,7 +7066,7 @@ function getCourseForm_callback ( )
                                   // show the input checkbox as ususal
 ?>
                                   <li class="video_item" video_id="<?= $module_id ?>" >
-                                  <input collection="add_remove_from_group" item="module" org_id=" <?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['ID'] ?>" item_id="<?= $module['ID']?>" id="chk_module_<?= $module['ID'] ?>" name="chk_module_<?= $module['ID'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
+                                  <input collection="add_remove_from_group" item="module" org_id="<?= $org_id ?>" group_id=<?= $course_id ?> video_length="<?= DEFAULT_MODULE_VIDEO_LENGTH ?>" assignment_id="<?= $course_id ?>" video_id="<?= $module['ID'] ?>" item_id="<?= $module['ID']?>" id="chk_module_<?= $module['ID'] ?>" name="chk_module_<?= $module['ID'] ?>" type="checkbox" value="1" <?=($module_active)?' checked="checked"':'';?> /> 
                                   <label for="chk_module_<?= $module['ID'] ?>">
                                   <span name="video_title" class="<?=$module_class?> video_title">
 <?php                                  
@@ -7002,7 +7075,7 @@ function getCourseForm_callback ( )
 
 
                                   <span class="vtitle"><?= $module['title'] ?></span>
-                                  <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module->title ?>. This will open a new window.<b>', FIX, [t</b>his, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
+                                  <a href="?part=view_video&module_id=<?= $module_id ?>&subscription_id=<?= $subscription_id ?>" target="_blank"><i class="fa fa-play-circle-o fa-2" aria-hidden="true" style="font-size: 14px" class="tooltip" style="margin-bottom: -9px" onmouseover="Tip('<b>Watch</b> <?= $module['title'] ?>. This will open a new window.<b>', FIX, [t</b>his, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                                   </a>
                                   </span><br>
 <?php
@@ -9464,15 +9537,18 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
  * stats function calculate the number of staff logged in
  * @param $org_id - the org ID
  */
-function calculate_logged_in($org_id = 0)
+function calculate_logged_in($org_id = 0, $subscription_id = 0)
 {
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    if ($org_id == 0) 
+    if ($org_id == 0 || $subscription_id == 0) 
     {
         return 0;
     }
     global $wpdb;
-    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT user_id) as count FROM ". TABLE_TRACK ." WHERE org_id = $org_id and type = 'login'",ARRAY_A);
+//    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT user_id) as count FROM ". TABLE_TRACK ." WHERE org_id = $org_id and type = 'login'",ARRAY_A);
+// Need to check for users in a specific subscription
+    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT t.user_id) as count FROM " . TABLE_TRACK . " t LEFT JOIN " . TABLE_USERS_IN_SUBSCRIPTION . " uis ON t.user_id = uis.user_id WHERE t.org_id = $org_id AND t.type = 'login' AND uis.subscription_id = $subscription_id", ARRAY_A);
+
     return $num_logged_in['count'];
 }
 
@@ -9977,13 +10053,14 @@ function cloneCourse_callback()
     if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['camp_id'] ) && isset ( $_REQUEST['course_name'] ) )
     {
         $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID to clone
-        $org_id = filter_var($_REQUEST['camp_id'],FILTER_SANITIZE_NUMBER_INT); // The WP camp (POST) id
         $course_name = filter_var($_REQUEST['course_name'],FILTER_SANITIZE_STRING); // The course name.
-        
-        $org_subscriptions = getSubscriptions(0, 0, 0, $org_id); // Org subscriptions
-        
+        $org_id = filter_var($_REQUEST['camp_id'],FILTER_SANITIZE_NUMBER_INT); // The WP camp (POST) id
+
+        $org_subscriptions = getSubscriptions(0, 0, 1, $org_id); // get active Org subscriptions for the camp were copying into
+
         $course_library_id = 0;
         $course_subscription = getSubscriptionByCourseId($course_id); // Course subscription
+
         // Check if the course subscription exist.
         if( $course_subscription )
         {
@@ -9997,11 +10074,13 @@ function cloneCourse_callback()
             if($org_subscription->library_id == $course_library_id)
             {
               $subscription_id = $org_subscription->ID;
+              $owner_id = $org_subscription->manager_id;
               break;
             }
           }
         }
-        $data = compact("subscription_id", "org_id", "course_name");
+
+        $data = compact("subscription_id", "org_id", "course_name", "owner_id");
         $response = cloneCourse($course_id, $data);
 
         // Check for error message.
@@ -10444,6 +10523,7 @@ function cloneCourse($course_id = 0, $data = array())
    * $subscription_id - The subscription ID
    * $org_id - the ORG ID
    * $course_name - The new course name
+   * $owner_id - the user ID of the camp director of the camp we're cloning into.
    */
   if( !$course_id || !$org_id || !$subscription_id || !$course_name )
   {
@@ -10451,7 +10531,7 @@ function cloneCourse($course_id = 0, $data = array())
   }
   global $current_user;
   $user_id = $current_user->ID; // The user ID
-  $data = compact( "org_id", "user_id", "subscription_id");
+  $data = compact( "org_id", "user_id", "subscription_id", "owner_id");
   $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
   if (isset($response['status']) && !$response['status']) 
   {
@@ -11070,4 +11150,102 @@ function add_user_in_subscription( $subscription_id = 0, $user_id = 0 )
   return true;
 }
 
+/**
+ * Get the latest quiz completion date.
+ * INT $user_id - WP User ID of the student.
+ * INT $course_id = The course ID
+ * retrun the date on success false otherwise
+ */
+function getLatestQuizCompletionDate ($user_id = 0, $course_id = 0)
+{
+  $user_id = filter_var($user_id,FILTER_SANITIZE_NUMBER_INT);
+  $course_id = filter_var($course_id,FILTER_SANITIZE_NUMBER_INT);
 
+  if($user_id <= 0 || $course_id <= 0)
+  {
+    return false;
+  }
+
+  global $wpdb;
+  $sql = "SELECT MAX(date_attempted) as max_date
+          FROM " . TABLE_QUIZ_ATTEMPTS . " 
+          WHERE user_id = $user_id AND course_id = $course_id AND completed = 1 AND passed = 1 LIMIT 1";
+  $results = $wpdb->get_row ($sql);
+  return $results;
+}
+
+/********************************************************************************************************
+* Update the modules order
+* @param int $course_id - Course ID
+* @param int array $modules - The modules ID. In Ascending order.
+* @return boolean - status boolean true/false
+*******************************************************************************************************/
+function updateModulesOrder($course_id = 0, $modules = array())
+{
+  $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // course ID
+
+  if( $course_id <= 0 || count($modules) <= 0)
+  {
+    return false;
+  }
+
+  // Update modules order in ASC.
+  global $wpdb;
+  for ($i=0; $i < count($modules); $i++) 
+  {
+    $module_id = filter_var($modules[$i], FILTER_SANITIZE_NUMBER_INT);
+    // Update the database.
+    $result = $wpdb->update( 
+      TABLE_COURSE_MODULE_RESOURCES, 
+      array( 'order' => ($i+1)), 
+      array( 'course_id' => $course_id,
+             'module_id' => $module_id )
+    );
+  }
+  return true;
+}
+
+/********************************************************************************************************
+ * Update modules order
+ *******************************************************************************************************/
+add_action('wp_ajax_updateModulesOrder', 'updateModulesOrder_callback');
+function updateModulesOrder_callback () 
+{
+    global $wpdb;
+    if( isset ( $_REQUEST['course_id'] ) && isset ( $_REQUEST['modules'] ) )
+    {
+        $course_id = filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT); // The Course ID
+        $modules = $_REQUEST['modules']; // Array modules from part-sort_modules.php
+        if( !current_user_can('is_director') )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = __("updateModulesOrder_callback Error: Sorry, you do not have permisison to view this page.", "EOT_LMS");
+        }
+        else
+        {
+          // Update modules order
+          $updateModulesOrder = updateModulesOrder($course_id, $modules);
+          if( $updateModulesOrder )
+          {
+            $result['data'] = 'success';
+            $result['success'] = true;
+            $result['message'] = 'success';
+          }
+          else
+          {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = __("updateModulesOrder_callback Error: Unable to update the modules order.", "EOT_LMS");
+          }
+        }
+    }
+    else
+    {
+        $result['display_errors'] = 'failed';
+        $result['success'] = false;
+        $result['errors'] = __("updateModulesOrder_callback ERROR: Missing some parameters.", "EOT_LMS");
+    }
+    echo json_encode($result);
+    wp_die();
+}

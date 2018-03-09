@@ -349,28 +349,30 @@ jane@email.com
                         </div>
                         <script>
                             $(document).ready(function(){
+
                                 $("input[name='choice']").click(function(){
-                                    if($(this).val()==="course"){
+                                    if($(this).val()=="course"){
                                         $('.courses').show();
                                     }else{
                                         $('.courses').hide();
                                     }
                                 });
+
                                 $(".go_back").click(function(e){
-                                    console.log("go back");
                                     e.preventDefault();
                                     $("form").attr("action","?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=2");
                                    jQuery("#choose_enrollment").submit();
                                 });
+
                                 $('.next_btn').click(function(e){
                                     e.preventDefault();
-                                    console.log($("input[name='choice']").val());
+                                    //console.log("chose to go forward with: " + $("input[name='choice']:checked").val());
                                     if(!$("input[name='choice']:checked").val()){
-                                        alert(<?= __('Please make a selection','EOT_LMS')?>);
+                                        alert('<?= __('Please make a selection','EOT_LMS')?>');
                                         return false;
                                     }else if($("input[name='choice']:checked").val()=="course"){
                                         if(!$("input:radio[name='course_id']").is(":checked")){
-                                        alert(<?= __('Please choose a course','EOT_LMS')?>);
+                                        alert('<?= __('Please choose a course','EOT_LMS')?>');
                                         return false;
                                         }
                                     }
@@ -519,7 +521,7 @@ jane@email.com
                             }
                         }
                         
-                        $redirect_url = '?part=invite_users&subscription_id='.$subscription_id.'&org_id='.$org_id.'&user_id='.$user_id.'&process=1&step=7&max='.count($recipients);
+                        $redirect_url = '/dashboard/?part=invite_users&subscription_id='.$subscription_id.'&org_id='.$org_id.'&user_id='.$user_id.'&process=1&step=7&max='.count($recipients);
                         // if failed return false
                         if ($failed)
                         {
