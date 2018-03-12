@@ -29,7 +29,6 @@
 		   		$resolution = isset($_REQUEST['res']) ? filter_var($_REQUEST['res'],FILTER_SANITIZE_STRING) : null; // Video resolution
 				$module_video_resources = getResourcesInModuleInCourse($course_id, $module_id, 'video'); // get the video resources in this module
                 $resources_audio = getResourcesInModuleInCourse($course_id, $module_id, 'mp3'); // get the audio resources in this module
-d($resources_audio);
                 $resources_exam = getResourcesInCourse($course_id, "exam");
                 $resources_docs = array_merge(getResourcesInCourse($course_id, "doc"),getResourcesInCourse($course_id, "link"));
                 $my_resources = array();

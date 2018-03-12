@@ -800,10 +800,10 @@ function new_subscription ($user_id = 0) {
                             </p>
                         </li>
         -->
-        				<li>
-        					<input type="checkbox" name="se" value="<?= SE_ID ?>" class="library">&nbsp;&nbsp;
-        					<label for="chk_se"><span class="heading"><b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b></span></label>
-        				</li>            
+                        <li>
+                            <input type="checkbox" name="se" value="<?= SE_ID ?>" class="library">&nbsp;&nbsp;
+                            <label for="chk_se"><span class="heading"><b><?= __("Child Welfare & Protection", "EOT_LMS") ?></b></span></label>
+                        </li>            
         			</ol>
                     <h2><?= __("Subscribe with a Different Payment Method", "EOT_LMS") ?></h2>
                     <p>
