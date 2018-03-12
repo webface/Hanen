@@ -160,7 +160,7 @@ define ('TABLE_QUIZ_RESULT', $wpdb->prefix . 'quiz_results');
 define ('TABLE_QUIZ_QUESTION_RESULT', $wpdb->prefix . 'quiz_question_results');
 define ('TABLE_QUIZ_IN_COURSE', $wpdb->prefix . 'quiz_in_course');
 define ('TABLE_QUIZ_ATTEMPTS', $wpdb->prefix . 'quiz_attempts');
-define ('TABLE_CATEGORIES', $wpdb->prefix.'category');
+define ('TABLE_CATEGORIES', $wpdb->prefix.'categories');
 define ('TABLE_HELP_TOPICS', $wpdb->prefix.'help_topics');
 define ('TABLE_HELP_TOPICS_FOR_VIEW', $wpdb->prefix . 'help_topics_for_view');
 define ('TABLE_TRACK', $wpdb->prefix . 'track');
@@ -179,6 +179,11 @@ $base_courses = array (
 
 $base_courses_prep4camp = array (
 	"Prep4Camp" => 5249
+);
+
+// Lists of module IDs without spanish.
+$module_ids_no_spanish = array (
+	582
 );
 
 // define LearnUpon Vars
