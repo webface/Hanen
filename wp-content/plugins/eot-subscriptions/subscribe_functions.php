@@ -8,14 +8,10 @@ function display_subscriptions ()
 
     global $current_user;
     global $wpdb;
-
+d($current_user);
     wp_get_current_user ();
     $user_id = $current_user->ID;
     $org_id = get_org_from_user ($user_id);
-    if($org_id == "")
-    {
-        $org_id =  get_indiv_from_user($user_id);
-    }
     $org = get_post ($org_id);
     $subscriptions = get_current_subscriptions ($org_id);
 
@@ -603,7 +599,7 @@ function new_subscription ($user_id = 0) {
                             <input type="checkbox" name="P4C" value="<?= P4C_ID ?>" class="library">&nbsp;&nbsp;
                             <label for="chk_le"><span class="heading"><b><?= __("Prep4Camp - Individual family subscriptions", "EOT_LMS") ?></b></span></label>
                             <p class="small" style="margin: 9px 0 9px 21px">
-                                <?= __("$7/Year (USD) for individual families. Same price as if you purchased on amazon.com", "EOT_LMS") ?>
+                                <?= __("$" . P4C_LVL_1_PRICE . " (USD) for individual families. Same price as if you purchased on amazon.com", "EOT_LMS") ?>
                             </p>
                         </li>           
                     </ol>
@@ -644,21 +640,17 @@ function new_subscription ($user_id = 0) {
             <?php
                     $org_name = apply_filters ('the_title', $org->post_title);
                     $full_name = ucwords ($user->user_firstname . " " . $user->user_lastname);
-                    $address = get_post_meta ($org_id, 'org_address', true);
-                    $city = get_post_meta ($org_id, 'org_city', true);
-                    $state = get_post_meta ($org_id, 'org_state', true);
-                    $country = get_post_meta ($org_id, 'org_country', true);
-                    $zip = get_post_meta ($org_id, 'org_zip', true);
-                    $phone = get_post_meta ($org_id, 'org_phone', true);
+                    $address = get_post_meta ($org_id, 'indiv_address', true);
+                    $city = get_post_meta ($org_id, 'indiv_city', true);
+                    $state = get_post_meta ($org_id, 'indiv_state', true);
+                    $country = get_post_meta ($org_id, 'indiv_country', true);
+                    $zip = get_post_meta ($org_id, 'indiv_zip', true);
+                    $phone = get_post_meta ($org_id, 'indiv_phone', true);
                 ?>
                     <h2><?= __("Please complete your payment details:", "EOT_LMS") ?></h2>
                     <table class="staff_accounts subscription_confirm Tstandard data" id="total_table_payment">
                     </table>
                     <h2><?= __("Billing Address", "EOT_LMS") ?></h2>
-                    <div class="form-row">
-                        <label><?= __("Organization Name", "EOT_LMS") ?></label>
-                        <input type="text" name="org_name" value="<?php echo $org_name; ?>" required/>
-                    </div>
                     <div class="form-row">
                         <label><?= __("Cardholder Name", "EOT_LMS") ?></label>
                         <input type="text" name="full_name" value="<?php echo $full_name; ?>" required/>
@@ -744,7 +736,9 @@ function new_subscription ($user_id = 0) {
                     <input type="hidden" name="email" value="<?php echo $user->user_email; ?>" />
                     <input type="hidden" name="org_id" value="<?php echo $org_id; ?>" />
                     <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
+                    <input type="hidden" name="p4c_staff" value="1" />
                     <input type="hidden" name="method" value="Stripe" />
+                    <input type="hidden" name="org_name" value="<?php echo $org_name; ?>" required/>
 
                     <p>
                         <i class="fa fa-lock"></i> <?= __("This site uses 256-bit encryption to safeguard your credit card information.", "EOT_LMS") ?>

@@ -358,7 +358,7 @@ function handle_steps_callback () {
 			{
 				$library_id = P4C_ID;
 				$statement_description = "Expert Online Training - Prep4Camp " . SUBSCRIPTION_YEAR . " Subscription";
-				$number_of_licenses = P4C_MIN_ACC; // at least 20
+				$number_of_licenses = P4C_MIN_ACC; // at least 500
 			}
 
 			// check if there's already an active subscirption for this user and library in this year.
@@ -697,7 +697,14 @@ function handle_steps_callback () {
 						'lost_password' => wp_lostpassword_url(),
 						'camp_name' => $_REQUEST['org_name'] // The name of the camp
 					);
-					$fileLocation = get_template_directory_uri() . '/emailTemplates/NewSubscription.txt'; // Template message
+					if (isset($_REQUEST['P4C'])) 
+					{
+						$fileLocation = get_template_directory_uri() . '/emailTemplates/NewPrep4CampSubscription.txt'; // Template message
+					}
+					else
+					{
+						$fileLocation = get_template_directory_uri() . '/emailTemplates/NewSubscription.txt'; // Template message
+					}
 					$body = wp_remote_fopen($fileLocation, "r");
 					$subject = 'Your new Subscription Purchase on EOT';
 					/* Replace %%VARIABLE%% using vars*/

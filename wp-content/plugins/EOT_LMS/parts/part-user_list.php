@@ -100,11 +100,17 @@
                     $roles = 'Student';
                     $actions = '<a id="switch-user" href="#" data-id="' . $user_id . '"' . hover_text_attr('Switch to User',true) . '><i class="fa fa-share" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a href="?part=update_user&id=' . $user_id . '" onclick="load(\'load_loading\')"' . hover_text_attr('Update User',true) . '><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a href="?part=confirm_delete_user&user_id='.$user_id.'" onclick="load(\'load_loading\')"' . hover_text_attr('Delete User',true) . '><i class="fa fa-trash" aria-hidden="true"></i></a>';
                 }
-                if(in_array('manager', $user->roles))
+                else if(in_array('manager', $user->roles))
                 {
                     $roles = 'Director';
                     $actions = '<a href="?part=admin_create_account&user_id=' . $user_id . '" onclick="load(\'load_loading\')"' . hover_text_attr('Create a new subscription',true) . '><i class="fa fa-cart-plus" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a id="switch-user" href="#" data-id="' . $user_id . '"' . hover_text_attr('Switch to User',true) . '><i class="fa fa-share" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a href="?part=update_user&id=' . $user_id . '" onclick="load(\'load_loading\')"' . hover_text_attr('Update User',true) . '><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a href="?part=confirm_delete_user&user_id='.$user_id.'" onclick="load(\'load_loading\')"' . hover_text_attr('Delete User',true) . '><i class="fa fa-trash" aria-hidden="true"></i></a>';
                 }
+                else if(in_array('individual', $user->roles))
+                {
+                    $roles = 'Individual';
+                    $actions = '<a href="?part=admin_create_account&user_id=' . $user_id . '" onclick="load(\'load_loading\')"' . hover_text_attr('Create a new subscription',true) . '><i class="fa fa-cart-plus" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a id="switch-user" href="#" data-id="' . $user_id . '"' . hover_text_attr('Switch to User',true) . '><i class="fa fa-share" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a href="?part=update_user&id=' . $user_id . '" onclick="load(\'load_loading\')"' . hover_text_attr('Update User',true) . '><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;<a href="?part=confirm_delete_user&user_id='.$user_id.'" onclick="load(\'load_loading\')"' . hover_text_attr('Delete User',true) . '><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                }
+
                 if($roles != "subscriber")
                 {
                     // Create a table row.

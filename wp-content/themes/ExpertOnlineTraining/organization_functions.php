@@ -293,5 +293,14 @@ function get_org_from_user ($user_id) {
 	{
 		return 0;
 	}
+	$user = get_user_by( 'ID', $user_id );
+
+	// check if the user is an individual meaning it doesnt have an org.
+	if ( in_array( 'individual', $user->roles ) )
+	{
+		return get_user_meta ($user_id, 'indiv_id', true);
+	}
+
+	// else its a director/student and they have an org
 	return get_user_meta ($user_id, 'org_id', true);
 }

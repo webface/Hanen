@@ -253,13 +253,55 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
         }); 
     });
     </script>
-    <?php
+<?php
 }
 // Student
 else if (current_user_can("is_student")) 
 {
-    // Student
-    if($org_id > 0)
+    if ( current_user_can( "is_individual" ) ) // Individual
+    {
+        // Display info for the subscription page.
+        global $current_user;
+        $user_id = $current_user->ID;
+        $date = date ('Y-m-d');
+        $subscriptions = getSubscriptions($subscription_id = 0, $library_id = 0, $active = 1, $org_id = 0, $date, $date, $year_end_date = '0000', $user_id); 
+        if (empty($subscriptions)) 
+        {
+?>
+            <p>
+                <?= __("You have no subscriptions associated with this organization. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
+            </p>
+<?php 
+        }
+        else
+        {
+d($subscriptions);
+            foreach ($subscriptions as $subscription) 
+            {
+                $library = getLibrary ($subscription->library_id);
+                $accepted = accepted_terms($library); // Boolean if user has accepted terms
+                if (!$accepted)
+                {
+                   return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
+                }
+                $enrollments = array();
+                $sub_enrollments = getEnrollmentsByUserId($user_id, "all", $subscription->ID);// All the enrollments of the user.
+                if( $sub_enrollments )
+                {
+                    if (empty($enrollments))
+                    {
+                        // add the first one
+                        $enrollments = $sub_enrollments;
+                    }
+                    else
+                    {
+                        $enrollments = array_merge($enrollments, $sub_enrollments);
+                    }
+                }
+            }
+        }
+    }    
+    else // Student
     {
         $current_subscriptions = get_current_subscriptions ($org_id); // all the active current subscriptions for this user.
         // make sure user accepted the terms for all the libraries.
@@ -295,7 +337,7 @@ else if (current_user_can("is_student"))
         //user just accepted terms and need to be presented with tutorial video
         if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
         {
-    ?>
+?>
             <h1 class="article_page_title"><?= __('Intro To Expert Online Training', 'EOT_LMS')?></h1>
             <div id='tutorial_video'>
                 <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
@@ -308,7 +350,7 @@ else if (current_user_can("is_student"))
             </div>
             <br><br><br><br>
             <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton"><?= __("View Dashboard", "EOT_LMS"); ?></a>
-    <?php
+<?php
         }
         else
         {
@@ -316,12 +358,12 @@ else if (current_user_can("is_student"))
 
             if (!empty($image)) 
             {
-    ?>
+?>
                 <div class="dashboard_banner acf-image-image">
                     <img src="<?php echo $image['sizes']['medium_large']; ?>" alt="<?php echo $image['alt']; ?>"/>
                     <br/>
                 </div>
-    <?php
+<?php
             }
             if ( $enrollments && count($enrollments) > 0) 
             { // Check if the user is enrolled to any course.
@@ -366,7 +408,7 @@ else if (current_user_can("is_student"))
                                 );
                             }
                         }
-    ?>
+?>
                         <div class="dashboard_border student">
                             <h1><?= $course_name ?>
                             </h1>
@@ -433,7 +475,7 @@ else if (current_user_can("is_student"))
                                 </div>\
                                 <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
                         </script>
-    <?php
+<?php
                     } // End $modules 
                     else 
                     { 
@@ -448,73 +490,6 @@ else if (current_user_can("is_student"))
                 echo "<p>" . __("You do not have any enrollments", "EOT_LMS") . ".</p>";
             }
         }
-    }
-    else // Parent
-    {
-        // Display info for the subscription page.
-        global $current_user;
-        $user_id = $current_user->ID;
-        $date = date ('Y-m-d');
-        $subscriptions = getSubscriptions($subscription_id = 0, $library_id = 0, $active = 1, $org_id = 0, $date, $date, $year_end_date = '0000', $user_id); 
-        if (empty($subscriptions)) 
-        {
-            echo '<h1 class="article_page_title">Prep4Camp Dashboard</h1>';
-            if (current_user_can('is_individual')) 
-            { 
-                // only director or individual can purchase subscriptions so only include the link for them. Not students.
-    ?>
-                <p>
-                    <?= __("You have no subscriptions associated with this organization. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
-                </p>
-    <?php 
-            }
-        }
-        else
-        {
-            foreach ($subscriptions as $subscription) 
-            {
-                $library = getLibrary ($subscription->library_id);
-                $accepted = accepted_terms($library); // Boolean if user has accepted terms
-                if (!$accepted)
-                {
-                   return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
-                }
-                $enrollments = array();
-                $sub_enrollments = getEnrollmentsByUserId($user_id, "all", $subscription->ID);// All the enrollments of the user.
-                if( $sub_enrollments )
-                {
-                    if (empty($enrollments))
-                    {
-                        // add the first one
-                        $enrollments = $sub_enrollments;
-                    }
-                    else
-                    {
-                        $enrollments = array_merge($enrollments, $sub_enrollments);
-                    }
-                }
-            }
-        }
-
-        //user just accepted terms and need to be presented with tutorial video
-        if(isset($_REQUEST['tutorial']) && $_REQUEST['tutorial'] == 1)
-        {
-    ?>
-            <h1 class="article_page_title"><?= __('Intro To Expert Online Training', 'EOT_LMS')?></h1>
-            <div id='tutorial_video'>
-                <video id="my-video" class="video-js vjs-default-skin" preload="auto" width="650" height="366" poster="https://www.expertonlinetraining.com/wp-content/uploads/2016/11/Chris-intro.png" data-setup='{"controls": true}'>
-                    <source src="https://<?= AWS_S3_BUCKET ?>.s3.amazonaws.com/tutorial_chris_course_intro.mp4" type='video/mp4'>
-                    <p class="vjs-no-js">
-                        <?= __("To view this video please enable JavaScript, and consider upgrading to a web browser that", "EOT_LMS"); ?>
-                        <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __("supports HTML5 video", "EOT_LMS"); ?></a>
-                    </p>        
-                </video>
-            </div>
-            <br><br><br><br>
-            <a href="<?php bloginfo('url'); ?>/dashboard" class="statsbutton"><?= __("View Dashboard", "EOT_LMS"); ?></a>
-    <?php
-        }
-
     }
 } 
 else 
