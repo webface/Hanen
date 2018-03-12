@@ -41,7 +41,7 @@
 
 <?php 
                         global $module_ids_no_spanish;
-                        if( !in_array($module_id,$module_ids_no_spanish) )
+                        if( isset($module['spanish']) )
                         {
                             echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>';
                         }

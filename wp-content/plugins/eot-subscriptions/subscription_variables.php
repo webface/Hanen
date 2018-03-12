@@ -181,11 +181,6 @@ $base_courses_prep4camp = array (
 	"Prep4Camp" => 5249
 );
 
-// Lists of module IDs without spanish.
-$module_ids_no_spanish = array (
-	582
-);
-
 // define LearnUpon Vars
 define ('DEFAULT_SUBDOMAIN', 'eot');
 
