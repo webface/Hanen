@@ -263,27 +263,56 @@ else if (current_user_can("is_student"))
         // Display info for the subscription page.
         global $current_user;
         $user_id = $current_user->ID;
-        $date = date ('Y-m-d');
-        $subscriptions = getSubscriptions($subscription_id = 0, $library_id = 0, $active = 1, $org_id = 0, $date, $date, $year_end_date = '0000', $user_id); 
-        if (empty($subscriptions)) 
+        $current_subscriptions = get_current_subscriptions ($org_id); // all the active current subscriptions for this user.
+        
+        if (!$current_subscriptions) 
         {
 ?>
             <p>
-                <?= __("You have no subscriptions associated with this organization. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
+                <?= __("You have no subscriptions currently. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
             </p>
 <?php 
         }
         else
         {
-d($subscriptions);
-            foreach ($subscriptions as $subscription) 
+            foreach ($current_subscriptions as $subscription) 
             {
                 $library = getLibrary ($subscription->library_id);
+
+                if($library_id == P4C_ID && !$subscription->setup)
+                {
+                    // havent created the course yet, create it and enroll Individual in it.
+                    $subscription_id = $subscription->ID;
+                    $course_name = "Prep4Camp";
+                    $course_id = PREP4CAMP_COURSE_ID;
+                    $data = compact("user_id", "subscription_id"); //course description is ommitted in this case
+                    $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
+                    if (isset($response['status']) && !$response['status']) 
+                    {
+                        echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
+                        error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message']);
+                    }
+                    else
+                    {
+                        $upd = $wpdb->update(TABLE_SUBSCRIPTIONS, 
+                                    array( 
+                                        'setup' => '1' 
+                                    ), 
+                                    array( 
+                                        'ID' => $subscription->ID 
+                                    ) 
+                                );
+//                        display_subscription_dashboard ($subscription);
+                    }
+
+                }
+
                 $accepted = accepted_terms($library); // Boolean if user has accepted terms
                 if (!$accepted)
                 {
                    return; // do not continue to display the rest of the dashboard becuase user hasn't accepted the terms yet
                 }
+                
                 $enrollments = array();
                 $sub_enrollments = getEnrollmentsByUserId($user_id, "all", $subscription->ID);// All the enrollments of the user.
                 if( $sub_enrollments )

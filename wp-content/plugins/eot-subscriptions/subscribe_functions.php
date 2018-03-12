@@ -8,7 +8,6 @@ function display_subscriptions ()
 
     global $current_user;
     global $wpdb;
-d($current_user);
     wp_get_current_user ();
     $user_id = $current_user->ID;
     $org_id = get_org_from_user ($user_id);
@@ -82,7 +81,6 @@ d($current_user);
                 $course_id = PREP4CAMP_COURSE_ID;
                 $data = compact("user_id", "subscription_id"); //course description is ommitted in this case
                 $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
-                // THIS NEEDS CHANGE. What if the user is parent? with org_id 0, create course will not work.
                 if (isset($response['status']) && !$response['status']) 
                 {
                     echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
