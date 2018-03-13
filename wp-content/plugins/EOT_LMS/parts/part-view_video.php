@@ -40,7 +40,6 @@
                         <b><?= __('Language:', 'EOT_LMS')?></b>  <?= $subLanguage ? '<a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'">English</a>' : 'English' ?> 
 
 <?php 
-                        global $module_ids_no_spanish;
                         if( isset($module['spanish']) )
                         {
                             echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>';
