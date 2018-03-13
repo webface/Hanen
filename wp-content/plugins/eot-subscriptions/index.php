@@ -699,7 +699,15 @@ function handle_steps_callback () {
 					);
 					if (isset($_REQUEST['P4C'])) 
 					{
-						$fileLocation = get_template_directory_uri() . '/emailTemplates/NewPrep4CampSubscription.txt'; // Template message
+						$user = get_user_by( 'ID', $user_id);
+						if ( in_array('individual', $user->roles ) )
+						{
+							$fileLocation = get_template_directory_uri() . '/emailTemplates/NewIndividualPrep4CampSubscription.txt'; // Template message
+						}
+						else
+						{
+							$fileLocation = get_template_directory_uri() . '/emailTemplates/NewPrep4CampSubscription.txt'; // Template message
+						}
 					}
 					else
 					{
