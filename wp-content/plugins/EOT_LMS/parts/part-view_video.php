@@ -40,7 +40,11 @@
                         <b><?= __('Language:', 'EOT_LMS')?></b>  <?= $subLanguage ? '<a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'">English</a>' : 'English' ?> 
 
 <?php 
-                        echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>';
+                        global $module_ids_no_spanish;
+                        if( isset($module['spanish']) )
+                        {
+                            echo ($subLanguage) ? '/ Español' : '/ <a href="?part=view_video&module_id=' . $module_id . '&subscription_id=' .$subscription_id.'&subLang=es"> Español</a>';
+                        }
                         $upload_dir = wp_upload_dir()["baseurl"]; // URL to the upload directory.
 ?> 
                         <br />
@@ -179,7 +183,7 @@
 <?php
                         foreach ($audio_resources as $audio_resource) 
                         {
-                            echo "<li><a href='https://" . AWS_S3_BUCKET . ".s3.amazonaws.com/" . $audio_resource['audio_name'] . "' target='_blank'>" . $audio_resource['name'] . " <i class='fa fa-play-circle'></i></a></li>";
+                            echo "<li><a href='https://" . AWS_S3_BUCKET . ".s3.amazonaws.com/" . $audio_resource['audio_name'] . "' target='_blank'>" . $audio_resource['name'] . " <i class='fa fa-play-circle'></i></a> (Right click and save link as to download the mp3 file.)</li> ";
                         }
 ?>
                     </ul>
