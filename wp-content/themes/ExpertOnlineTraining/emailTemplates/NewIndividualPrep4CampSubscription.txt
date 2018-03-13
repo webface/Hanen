@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<style>
+	body {
+	    font-family: Verdana,sans-serif;
+	    font-size: 15px;
+	    line-height: 1.5;
+	}
+	</style>
+</head>
+<body>
+	<p>Dear %%first_name%%,</p>
+
+	<p>Smart move! Your subscription to <b>Prep4Camp</b> includes a 25-minute video that families watch together, an audio podcast for parents to listen to (on the way home from opening-day drop-off), and a PDF tip sheet for kids to download, print, and bring to camp. Together, these tools have been shown to lower the intensity of first-year campers’ homesickness by 50%, on average.</p>
+
+	<p>What’s next? Simply login to <b><a href="%%eot_link%%">ExpertOnlineTraining.com</a></b> and you will be automatically directed to the Prep4Camp pages of ExpertOnlineTraining.com. You’ll be asked to read and agree to the Terms of Use, after which you’ll have unlimited access to the entire Prep4Camp package!</p>
+
+	<table>
+    	<tr>
+    		<td width="33%"></td>
+    		<td width="33%"></td>
+    		<td width="33%"></td>
+    	</tr>
+    	<tr>
+    		<td colspan="1"><img src="https://www.expertonlinetraining.com/wp-content/uploads/2018/03/prep4camp_graph.jpg" alt="Prep4Camp graph" width="300px"></td>
+    		<td colspan="2">>Know another first-year camper family that would like to help their child have an even better time at camp? Please send them to the <a href="https://www.expertonlinetraining.com/prep4camp/">www.expertonlinetraining.com/Prep4Camp/</a> page on the Expert Online Training (EOT) website. Our system registers each subscriber, so you cannot share your username and password. But for just $7, each family can have their own account.</td>
+    	</tr>
+    </table>
+    
+	<p>Did you know that EOT also hosts a vast library of video training modules for youth leaders? If your child’s camp is an EOT subscriber, then the staff have access to our awesome content on safety, leadership, supervision, child development, mental health, and behavior. Since we started in 2009, more than 365,000 staff in 45 countries have benefitted from our engaging courses! Does your child’s camp use EOT?</p>
+
+	<p>If you ever have a question about using Prep4Camp, our <b>Customer Success Team</b> would love to hear from you! Simply call Josh and his team M-F between 9 and 5 ET, toll-free (877) 390-2267.</p>
+	 
+	<p>Thank you for your family subscription to Prep4Camp! We admire your commitment to reducing homesickness, promoting adjustment, and helping your child get the most out of camp.</p>
+
+    <p>The EOT Team</p>
+    <img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/EOT_Logo_abrv.png" alt="Expert Online Training">
+
+</body>
+</html>
