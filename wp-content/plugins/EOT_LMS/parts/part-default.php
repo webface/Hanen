@@ -277,8 +277,8 @@ else if (current_user_can("is_student"))
         {
             foreach ($current_subscriptions as $subscription) 
             {
-                $library = getLibrary ($subscription->library_id);
-
+                $library_id = $subscription->library_id;
+                $library = getLibrary ($library_id);
                 if($library_id == P4C_ID && !$subscription->setup)
                 {
                     // havent created the course yet, create it and enroll Individual in it.
@@ -289,8 +289,8 @@ else if (current_user_can("is_student"))
                     $response = createCourse($course_name, $org_id, $data, 1, $course_id); // create the course and copy the modules from $course_id
                     if (isset($response['status']) && !$response['status']) 
                     {
-                        echo "ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message'];
-                        error_log("ERROR in display_subscriptions: Couldnt Create Course: $course_name " . $response['message']);
+                        echo "ERROR in part default: Couldnt Create Course: $course_name " . $response['message'];
+                        error_log("ERROR in part default: Couldnt Create Course: $course_name " . $response['message']);
                     }
                     else
                     {
@@ -302,7 +302,22 @@ else if (current_user_can("is_student"))
                                         'ID' => $subscription->ID 
                                     ) 
                                 );
-//                        display_subscription_dashboard ($subscription);
+                        // enroll individual user into this course
+                        if ($upd)
+                        {
+                            $data = array(
+                                'course_id' => $response['id'],
+                                'org_id' => $org_id,
+                                'subscription_id' => $subscription_id,
+                            );
+                            $enrolled = enrollUserInCourse( $current_user->user_login, $data );
+                            if ( isset($enrolled['status']) && !$enrolled['status'] )
+                            {
+                                // couldn't enroll user
+                                echo "ERROR in part default: Couldnt enroll user in: $course_name " . $response['message'];
+                                error_log("ERROR in part default: Couldnt enroll user in: $course_name " . $response['message']);
+                            }
+                        }
                     }
 
                 }
@@ -315,6 +330,7 @@ else if (current_user_can("is_student"))
                 
                 $enrollments = array();
                 $sub_enrollments = getEnrollmentsByUserId($user_id, "all", $subscription->ID);// All the enrollments of the user.
+
                 if( $sub_enrollments )
                 {
                     if (empty($enrollments))
@@ -326,6 +342,132 @@ else if (current_user_can("is_student"))
                     {
                         $enrollments = array_merge($enrollments, $sub_enrollments);
                     }
+                }
+    
+                $courses = getCourses(0, $org_id);
+                if ( $enrollments && count($enrollments) > 0) 
+                { // Check if the user is enrolled to any course.
+                    // Display the enrollments information in the dashboard
+                    foreach ($enrollments as $enrollment) 
+                    {
+                        $subscription_id = isset($enrollment['subscription_id']) ? $enrollment['subscription_id'] : 0;
+                        $course_id = $enrollment['course_id']; // The course ID of the course this user is enrolled in
+                        $enrollment_id = isset($enrollment['ID']) ? $enrollment['ID'] : 0; // the enrollment ID
+                        // Get all the modules in this course
+                        $modules = getModulesInCourse($course_id);
+                        $course_name = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id]->course_name : __("could not find the course name", "EOT_LMS"); // Check if the that course id is in $courses.
+                        $course = ( array_key_exists($course_id, $courses) ) ? $courses[$course_id] : "";
+                        if ($modules) 
+                        {
+                            $status = formatStatus($enrollment['status']);
+                            
+                            $percentage_complete = ($status == 'Not Started') ? 0 : calc_course_completion($user_id, $course_id); // the percentage complete for this course
+                            //d($status, $percentage_complete);
+                            if ($status == "Failed") 
+                            {
+                                $status = __("In Progress", "EOT_LMS");
+                            } 
+                            if ($percentage_complete < 100) 
+                            {
+                                $status = __("In Progress", "EOT_LMS");
+                            }
+                            else
+                            {
+                                $status = __("Completed", "EOT_LMS");
+                                // Update the enrollment status if necessary.
+                                if($enrollment['status'] != "completed" && $enrollment['status'] != "passed")
+                                {
+                                    $update_status = $wpdb->update(
+                                        TABLE_ENROLLMENTS,
+                                        array (
+                                            'status' => "completed"
+                                        ),
+                                        array (
+                                            'ID' => $enrollment['ID']
+                                        )
+                                    );
+                                }
+                            }
+    ?>
+                            <div class="dashboard_border student">
+                                <h1><?= $course_name ?>
+                                </h1>
+                                <div class="content_right">
+                                    <div class="clear"></div>
+                                    <div class="menu">
+                                        <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
+                                            <div class="thumbnail">
+                                                <i class="fa fa-youtube-play" alt="Content"></i>
+                                            </div>
+                                            <div class="para">
+                                                <h1><?= __("Start Course", "EOT_LMS"); ?></h1>
+                                                <br/>
+                                                <?= __("Watch the videos, take quizzes, see resources", "EOT_LMS"); ?>
+                                            </div>
+                                        </a>
+                                    </div> 
+                                </div>
+                                <div class="content_left student">
+                                    <table class="tb_border">
+                                        <tbody>
+                                            <tr>
+                                                <td class="s1 darklabel">
+                                                    <?= __("Modules", "EOT_LMS"); ?>
+                                                </td>
+                                                <td class="s2">
+                                                    <?= count($modules) ?>            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="s1 darklabel">
+                                                    <?= __("Status", "EOT_LMS"); ?>
+                                                </td>
+                                                <td class="s2">
+                                                    <?= $status ?>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+
+                                </div>
+                                <div class="dashboard_button">
+                                    <a href="?part=staff_lounge&subscription_id=<?= $subscription_id ?>" onclick="load('load_staff_lounge')">
+                                        <div class="title" style="padding-top: 5px;">
+                                            <b><?= __("Virtual Staff Lounge", "EOT_LMS"); ?></b>
+                                            <br><?= __("Manage your Forum", "EOT_LMS"); ?>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <b><?= __("Technical Support", "EOT_LMS"); ?></b>
+                                    <br>
+                                    <?= __("Toll-free", "EOT_LMS"); ?> 877-390-2267
+                                </div>
+                            </div>
+                            <script>
+                                $ = jQuery;
+                            // Create HTML with the enrollments and append it to the sidebar
+                                $("#listOfCourses").append('\
+                                    <div id="bannerArea">\
+                                            <img id="menu-banner" src="' + ajax_object.template_url + '/images/menu-banner.png">\
+                                            <h2><?= $course_name ?></h2>\
+                                    </div>\
+                                    <center><h3><?= $status ?></h3></center>' + '<?php echo eotprogressbar('99%', $percentage_complete, false); ?>');
+                            </script>
+    <?php
+                        } // End $modules 
+                        else 
+                        { 
+                            // User has no modules
+                            echo '<b>' . $course_name . '</b>: ' . __("There are no modules in this course. Please contact your camp director.", "EOT_LMS");
+                        } 
+                    } // End of foreach
+                } 
+                else 
+                { 
+                    // Display message if the user has no enrollments.
+                    echo "<p>" . __("You do not have any enrollments", "EOT_LMS") . ".</p>";
                 }
             }
         }

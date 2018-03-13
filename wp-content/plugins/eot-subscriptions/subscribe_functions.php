@@ -16,11 +16,23 @@ function display_subscriptions ()
 
     if (empty ($subscriptions)) 
     { 
-        if (current_user_can ('is_director') || current_user_can('is_individual')) { 
+        if ( current_user_can('is_individual') ) { 
+            // only director or individual can purchase subscriptions so only include the link for them. Not students.
+?>
+            <p>
+                <?= __("You have no subscriptions yet. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
+            </p>
+<?php 
+        }
+        elseif (current_user_can ('is_director'))
+        {
             // only director or individual can purchase subscriptions so only include the link for them. Not students.
 ?>
             <p>
                 <?= __("You have no subscriptions associated with this organization. Create a new subscription", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/"><?= __("here", "EOT_LMS") ?></a>.
+            </p>
+            <p>
+                <?= __("Or you can add the <b>Prep4Camp Course</b> for your camper families here:", "EOT_LMS") ?> <a href="<?php bloginfo('url'); ?>/new-subscription/?library_id=<?= P4C_ID ?>"><?= __("Add a Prep4Camp Subscription", "EOT_LMS") ?></a>.
             </p>
 <?php 
         } 

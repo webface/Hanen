@@ -3087,9 +3087,10 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
     }    
     else if( $wpdb->insert_id ) // no errors when inserting
     {
+      $course_id = $wpdb->insert_id;
       if(!$copy) // return the newly created course ID
       {
-          return array('status' => 1, 'id' => $wpdb->insert_id);
+          return array('status' => 1, 'id' => $course_id);
       }
       else if($copy && $copy_course_id > 0) // copy all the modules from the course
       {
@@ -3097,7 +3098,7 @@ function createCourse($course_name = '', $org_id = 0, $data = array(), $copy = 0
         $result = $wpdb->query($sql);
         if($result !== FALSE) // return the course id of the copied course
         {
-          return array('status' => 1, 'id' => $wpdb->insert_id); 
+          return array('status' => 1, 'id' => $course_id, 'insert_id' => $wpdb->insert_id); 
         }
         else // error
         {
