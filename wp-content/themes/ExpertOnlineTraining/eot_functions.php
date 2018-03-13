@@ -9140,14 +9140,12 @@ function calc_course_completion($user_id = 0, $course_id = 0)
         }
       }
     }
-  }
-
+  };
   // calculate %
   if ($num_passed == 0)
     return 0; 
   
-  $total = $num_quizzes + $num_modules;
-  $percentage_complete = intval($num_passed/($total)*100);
+  $percentage_complete = intval($num_passed/($num_quizzes)*100);
   return $percentage_complete;
 }
 
