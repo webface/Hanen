@@ -100,6 +100,12 @@
                             $("video").on('contextmenu', function(e) {
                                 e.preventDefault();
                             });
+                            $(document).ready(function() {
+                                $(".doNothing").click(function(event)
+                                {
+                                    event.preventDefault();
+                                });
+                            })
                         </script>
 <?php
                     }
@@ -118,7 +124,7 @@
 ?>
                 <br />
                 <div id="msg">       
-                    <h3><?= __('Loading Slowly? Click here.', 'EOT_LMS')?></h3>
+                    <a href="" class="doNothing"><h3><?= __('Loading Slowly? Click here.', 'EOT_LMS')?></h3></a>
                 </div>
                 <div id="loading_message" style="margin-top: 10px;">
                     <div class="msgboxcontainer " >
