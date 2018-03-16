@@ -6697,9 +6697,8 @@ function getCourseForm_callback ( )
             <div class="middle" style ="padding:0px;clear:both;">  
               <div id="video_listing" display="video_list" group_id="null" class="holder osX">
                 <div id="video_listing_pane" class="scroll-pane" style="padding:0px 0px 0px 10px;width: 600px">
-
-                  <form name = "add_video_group" id = "add_video_group" course_name="<?= $course_name; ?>"
-                   <ul class="tree organizeassignment">
+                  <form name = "add_video_group" id = "add_video_group" course_name="<?= $course_name; ?>">
+                    <ul class="tree organizeassignment">
                       <h3 class="library_topic"><?= __("Select which camps to copy this course into:", "EOT_LMS") ?></h3>
               <?php
                       // Display all uber camps and a clone checkbox beside it for cloning functionality.
@@ -6708,26 +6707,28 @@ function getCourseForm_callback ( )
                         $camp_name = $camp['name']; // The camp name.
               ?>
                         <li class="video_item" camp_id="<?= $camp['id']?>">
-                          <input collection="add_remove_from_group" org_id="<?= $org_id ?>" portal_subdomain="<?= DEFAULT_SUBDOMAIN ?>" id="chk_video_<?= $camp['id']?>" name="chk_video_<?= $camp['id']?>" type="checkbox" value="1" camp_id="<?= $camp['id']?>" course_id="<?= $course_id ?>" " <?= ($camp['allow_copy']) ? "" : "disabled"  ?>/> 
+                          <input collection="add_remove_from_group" org_id="<?= $org_id ?>" portal_subdomain="<?= DEFAULT_SUBDOMAIN ?>" id="chk_video_<?= $camp['id']?>" name="chk_video_<?= $camp['id']?>" type="checkbox" value="1" camp_id="<?= $camp['id']?>" course_id="<?= $course_id ?>"" <?= ($camp['allow_copy']) ? "" : "disabled"  ?>/> 
                           <label for="<?= $camp['id'] ?>">
                               <span name="video_title">
                                 <b>Camp</b> - <span class="vtitle"><?= $camp_name ?></span>
                               </span>
                           </label>
-                          <img style="margin-right: 0; display:none" class="loader" id="img_loading" src="<?= get_template_directory_uri() . "/images/loading.gif"?>">
-                          <img style="margin-right: 0; <?=(!$camp['check'])? '':'display:none' ?>" class="loader" id="img_check" src="<?= get_template_directory_uri() . "/images/checkmark.gif"?>">
-                          <img style="margin-right: 0; display:none" class="loader" id="img_delete" src="<?= get_template_directory_uri() . "/images/delete.gif"?>">
+                          <i class="fa fa-spinner fa-pulse fa-2x fa-fw" style="display:none"></i>
+                          <i class="fa fa-minus-square fa-2x img_delete" style="color:red; display:none"></i>
+                          <i class="fa fa-check fa-2x img_check" style="color:green; <?=(!$camp['check'])? '':'display:none' ?>"></i>
                           <?= ($camp['needs_upgrade']) ? "" : "($camp_name requires to upgrade its subscription to before we can copy the $course_name course.)" ?>
                           <span id="clone_error_message" style="margin-right: 0; display:none"></span>
                         </li> 
               <?php
                       }
               ?> 
+                    <br>
+
                     </ul>
                   </form>
                 </div>
               </div>
-            </div>      
+            </div>
             <div class="popup_footer" style="background-color:#FFF; padding:15px 15px 5px 15px;">
               <div class="buttons" >
                 <a active='0' acton="add_video_group" rel="done_button" >

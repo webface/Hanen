@@ -49,45 +49,46 @@
       <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js'?>"></script> 
       <link href="<?= get_template_directory_uri() . "/css/fileuploader.css"?>" rel="stylesheet" type="text/css" />
       <script src="<?= get_template_directory_uri() . '/js/fileuploader.js'?>" type="text/javascript"></script>
-    	<!-- Start of left container-->
+      <!-- Start of left container-->
       <div style="float:left;" id="group_list" class="holder osX" org_id="<?= $org_id ?>"> 
-      	<div style="width:250px;" class="tableheadboxcontainer">
-      		<div class="tablehead-tr">
-      			<div class="tablehead-tl">
-      				<div style="padding:7px;margin-left:5px;height:20px">
-      					<h3 style="float:left;" class="tablehead-title"><?= __('Select A Course To Copy','EOT_LMS'); ?></h3><div style="clear:both;"></div>
-      				</div>
-      			</div>
-      		</div>
-      	</div>
-        <div class="jScrollPaneContainer jScrollPaneScrollable" tabindex="0" style="height: 250px;">
-          <div id="pane2" class="scroll-pane" style="width: 250px; overflow: hidden; height: 250px; padding-right: 0px;">
+        <div style="width:250px;" class="tableheadboxcontainer">
+          <div class="tablehead-tr">
+            <div class="tablehead-tl">
+              <div style="padding:7px;margin-left:5px;height:20px">
+                <h3 style="float:left;" class="tablehead-title"><?= __('Select A Course To Copy','EOT_LMS'); ?></h3><div style="clear:both;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+         <div class="jScrollPaneContainer jScrollPaneScrollable" tabindex="0" style="height: 250px;">
+          <div id="pane2" class="scroll-pane" style="overflow: hidden; height: 250px; width:250px; padding-right: 0px;">
             <div style="width:100%;">
               <?php 
-          			/**
-          			 * Display the name of all courses.
-          			 * If there's no course, it will display an error.
-          			 */
+                /**
+                 * Display the name of all courses.
+                 * If there's no course, it will display an error.
+                 */
                 $courses = getCourses(0, $org_id, $subscription_id); // get the courses from their org.
-               	// Check if there are any courses.
-               	if($courses)
+                // Check if there are any courses.
+                if($courses)
                 {
 
                   // Lists all the courses that can possibly be clone.
-       				    foreach($courses as $key => $course) 
+                  foreach($courses as $key => $course) 
                   {
-          					$course_id = $course->ID; // Course ID
-          					$course_name = $course->course_name; // Course Name
+                    $course_id = $course->ID; // Course ID
+                    $course_name = $course->course_name; // Course Name
                 ?>
-                  		<div class="group_list_table_row" group_id="<?= $course_id ?>" course-id="<?= $course_id ?>" org-id="<?= $org_id ?>">
-                  		  <div class="group_name"><?= $course_name ?></div>
+                      <div class="group_list_table_row" group_id="<?= $course_id ?>" course-id="<?= $course_id ?>" org-id="<?= $org_id ?>">
+                        <div class="group_name"><?= $course_name ?></div>
                         <p class="group_description" style="display:none;">
                           <span class="video_count"></span><?= __('Now select which camps to copy this course to:','EOT_LMS'); ?> 
-                				</p>
+                        </p>
                       </div>
+
               <?php
-      				    }
-               	}
+                  }
+                }
                 else if( isset($courses['status']) && $courses['status'] == 0 )
                 {
                   /*
@@ -102,7 +103,7 @@
                   echo '<div style = "width:100%;text-align:center;padding-top:100px;font-size:140%;">'.__("You do not have any courses that can be copied yet.","EOT_LMS").' <br>'.__('Please contact our Customer Success team toll-free at','EOT_LMS').' <br>'.__('(877) 237-3931 M-F 9-5 EST').' <br>'.__('and we will assist you with copying a course.',"EOT_LMS").'</div>';
 
                 }
-       		    ?>                  
+              ?>                  
             </div>
           </div>
         </div>
@@ -113,7 +114,7 @@
         </div>
         <span>&nbsp;</span> 
 
-      </div>	
+      </div>  
       <!-- End of left container -->
       <!-- Right container -->
       <div class="bottom_buttons bottom_buttons_right">
@@ -123,7 +124,7 @@
       </div>
      <!-- End of right container-->
      <div style="clear: both;"></div>
-    	<!-- CSS File goes here. -->
+      <!-- CSS File goes here. -->
        <style type = "text/css">
 
         div.tablehead-tr {
@@ -382,6 +383,8 @@
       
       jQuery(function($) {
         $(document).ready(function() {
+          $('#pane2').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+
           fix_icon_position(); // Fix display icons when one course is active then chosed another course to be active.
           $(document).bind('afterReveal.facebox', 
             function() {
@@ -399,7 +402,7 @@
               
           });
                 
-          $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+          $('#pane2').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
           $('a[rel*=facebox]').facebox();
           
           // Do not initialize with "var" because we want these to be global variables
@@ -487,7 +490,7 @@
                 $('.negative').click(function() {
                   $('.content').fadeOut(300, function() {
                     $('.content').html(prevObj).fadeIn(300, function() {
-                      $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+                      $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
                     });
                   });
                 });
@@ -526,10 +529,11 @@
                     success:
                     function(data)
                     {
-                      $.facebox(data);
-                      $("#datepicker").show();
-                
-                      $('#video_listing_pane').css({'height':'550px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5})
+                      jQuery.facebox(data,'my-groovy-style');
+                      //$.facebox(data);
+                      //$('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+                      /* stops the facebox container to go wider.  */
+                      //$('#video_listing_pane').css({'height':'550px'}).jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
                       $('li.video_item')
                       .find("[name*=chk_video_]")
                       .click(
@@ -549,7 +553,6 @@
                           {
                             return "disabled enabled";
                           })
-                    
                         /*********************************************
                         * Ajax to Add/Remove video quiz, and resources from course 
                         *                          
@@ -562,7 +565,7 @@
                         var camp_id = obj.attr("camp_id"); // the camp id
                         var org_id_e = obj.attr("org_id"); // org_idsubdomain
                         var course_name = $('form#add_video_group').attr('course_name');// The course name.
-                        obj.parent().find("img#img_loading").show('slow');
+                        obj.parent().find("i.fa-spinner").show('slow');
                         var publish_course_after_copy = $('input#chkbox_is_publish_course_after_copy').attr('checked'); // Checkbox for publishing a course after copy?
 
                         var info_data =
@@ -582,17 +585,17 @@
                           dataType: "json",
                           success: function(response)
                           {
-                            obj.parent().find("img#img_loading").hide('slow');
+                            obj.parent().find("i.fa-spinner").hide('slow');
                             obj.attr('disabled', 'disabled');
                             // Check if they have succesfully cloned the course.
                             if( response.success )
                             {
-                              obj.parent().find("img#img_check").show('slow');
+                              obj.parent().find(".img_check").show('slow');
                             }
                             // The Ajax request failed. Return an error message.
                             else
                             {
-                              obj.parent().find("img#img_delete").show('slow');
+                              obj.parent().find(".img_delete").show('slow');
                               obj.parent().find("#clone_error_message").show('slow').text(response.message);
                             }
                           },
@@ -719,7 +722,8 @@
                           }
                         )
                         }
-                      ) 
+                      );
+                      $('#video_listing_pane').css({'height':'550px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
                     }
                   });
                  /******************************************************************
@@ -1002,7 +1006,7 @@
               $('.content').fadeOut(300, function() {
                 $(this).html(data).fadeIn();
                 //resize scrollbar
-                $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+                $('#staff_listing_pane').css({'height':'350px'}).jScrollPane({});
               });
             }
           });
