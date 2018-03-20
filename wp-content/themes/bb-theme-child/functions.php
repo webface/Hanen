@@ -97,6 +97,55 @@ function new_nav_menu_items($items,$args)
     
     return $items;
 }
-//add_filter( 'wp_list_pages', 'new_nav_menu_items' , 600, 2);
-//add_filter( 'wp_nav_menu_items', 'new_nav_menu_items', 600, 2);
- 
+
+/*
+function mytheme_prepare_woocommerce_wrappers()
+{
+  remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
+  remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
+
+  add_action( 'woocommerce_before_main_content', 'my_theme_wrapper_start', 10 );
+  add_action( 'woocommerce_after_main_content', 'my_theme_wrapper_end', 10 );
+}
+
+add_action( 'wp_head', 'mytheme_prepare_woocommerce_wrappers' );
+add_theme_support( 'woocommerce' );
+
+
+function my_theme_wrapper_start() {
+    echo the_breadcrumb();
+    echo '<section id="main"><div class="wrap">';
+}
+
+function my_theme_wrapper_end() {
+    echo '</div></section>';
+}
+*/
+
+
+//Reposition WooCommerce breadcrumb in eotv5.dev/shop/
+function woocommerce_remove_breadcrumb(){
+remove_action( 
+    'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+}
+add_action(
+    'woocommerce_before_main_content', 'woocommerce_remove_breadcrumb'
+);
+
+function woocommerce_custom_breadcrumb(){
+    woocommerce_breadcrumb();
+}
+
+add_action( 'woo_custom_breadcrumb', 'woocommerce_custom_breadcrumb' );
+
+// Changed the title in shop, and product-category page.
+add_filter( 'woocommerce_page_title', 'custom_woocommerce_page_title');
+function custom_woocommerce_page_title( $page_title ) {
+    // Changed title in expertonlinetraining.com/shop/
+    if ($page_title == "Shop")
+    {
+        return "All for sale items: "; 
+    }
+    // Changed the page title in /product-category/dr-chris-thurber.
+    return "Welcome to " . $page_title . " Shop"; 
+}
