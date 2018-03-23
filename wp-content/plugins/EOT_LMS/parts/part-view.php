@@ -1,8 +1,9 @@
 <?php
-	if( isset($_REQUEST['module_id']) && isset($_REQUEST['course_id']))
+	if( isset($_REQUEST['module_id']) && isset($_REQUEST['course_id']) && isset($_REQUEST['enrollment_id']))
 	{
     	$module_id = filter_var($_REQUEST['module_id'],FILTER_SANITIZE_NUMBER_INT); // The module ID
-    	$course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+        $course_id = filter_var($_REQUEST['course_id'],FILTER_SANITIZE_NUMBER_INT); // The course ID
+    	$enrollment_id = filter_var($_REQUEST['enrollment_id'],FILTER_SANITIZE_NUMBER_INT); // The enrollment ID
         $subscription = getSubscriptionByCourse($course_id);
         $subscription_id = $subscription['ID'];
     	// make sure the user has access to this course
@@ -141,15 +142,15 @@
 ?>
       			<center>
       				<div id="quiz" style="display:none">
-                                    <span class="loadingQuiz" style="display:none"><i class="fa fa-spinner fa-pulse fa-2x"></i><?= __('loading qui', "EOT_LMS")?>z</span>
-                                    <a class="btn takeQuiz" style="display:none" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">
-                                    <?= __('Take Quiz', "EOT_LMS")?>
-                                    </a>
-                                </div>
-                                <div id="noQuiz" style="display:none">
-                                        <p><?= __('Note* You have to ', "EOT_LMS")?><b><?= __('finish watching', "EOT_LMS")?></b><?= __(' the ', "EOT_LMS")?><b><?= __('video', "EOT_LMS")?></b><?= __(' to be able to take the quiz.', "EOT_LMS")?></p>
-                                </div>
-                        </center>     			
+                        <span class="loadingQuiz" style="display:none"><i class="fa fa-spinner fa-pulse fa-2x"></i><?= __('loading qui', "EOT_LMS")?>z</span>
+                        <a class="btn takeQuiz" style="display:none" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">
+                        <?= __('Take Quiz', "EOT_LMS")?>
+                        </a>
+                    </div>
+                    <div id="noQuiz" style="display:none">
+                        <p><?= __('Note* You have to ', "EOT_LMS")?><b><?= __('finish watching', "EOT_LMS")?></b><?= __(' the ', "EOT_LMS")?><b><?= __('video', "EOT_LMS")?></b><?= __(' to be able to take the quiz.', "EOT_LMS")?></p>
+                    </div>
+                </center>     			
 <?php
                     }
 
@@ -176,150 +177,208 @@
                     $url = '';
                     $action = '';
                     foreach($my_resources as $resource)
-                        {
-                            switch ($resource['type']) 
-                            {
-                                case 'link':
-                                    $icon = "fa-link";
-                                    $url = $resource['url'];
-                                    $action = 'Visit Url';
-                                    break;
-                                case 'doc':
-                                    $icon = "fa-sticky-note-o";
-                                    $url = "/download-file?module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
-                                    $action = 'Download File';
-                                    break;
-                                case 'custom_video':
-                                    $icon = "fa-play";
-                                    $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
-                                    $action = 'Watch Video';
-                                    break;
-                                default:
-                                    $icon = "fa-sticky-note-o";
-                            }
-                            // Check if there are any resource available.
-                            if( $url && $action )
-                            {   
-    ?>
-    		                    
-    		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
-    <?php
-                            }
-                        }
-                        echo '</ul>';
-?>
-  			<script type='text/javascript'>
-                var video_ended = false;
-      			$(document).ready(function() 
-      			{
-
-<?php 						// Check if the user has not watched the video yet.
-//					if( $videoWatchStatus )
-//					{
-//						echo '$("#quiz").show();'; // Show Take quiz button.
-//                                                echo '$(".loadingQuiz").hide();'; // Show Take quiz button.
-//                                                echo '$(".takeQuiz").show();';
-//					}
-//					else
-//					{
-						echo '$("#noQuiz").show();'; // Show div message to finish watching the video.
-//					}
-?>			
-                    var agent = navigator.userAgent;
-                    var isIphone = ((agent.indexOf('iPhone') != -1) || (agent.indexOf('iPod') != -1) || (agent.indexOf('iPad') != -1));
-                    if (isIphone) 
                     {
-                        var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$('#my-video').attr("track-id")+"&status=finish&type=watch_video";
-                        $.ajax({
-                            url:url,
+                        switch ($resource['type']) 
+                        {
+                            case 'link':
+                                $icon = "fa-link";
+                                $url = $resource['url'];
+                                $action = 'Visit Url';
+                                break;
+                            case 'doc':
+                                $icon = "fa-sticky-note-o";
+                                $url = "/download-file?module_id=$module_id&course_id=$course_id&resource_id=".$resource['ID'];
+                                $action = 'Download File';
+                                break;
+                            case 'custom_video':
+                                $icon = "fa-play";
+                                $url = "?part=view_custom&course_id=$course_id&module_id=$module_id&video_id=".$resource['ID'];
+                                $action = 'Watch Video';
+                                break;
+                            default:
+                                $icon = "fa-sticky-note-o";
+                        }
+                        // Check if there are any resource available.
+                        if( $url && $action )
+                        {   
+?>
+		                    
+		                        <li><a href="<?= $url ?>"><i class="fa <?= $icon; ?>" aria-hidden="true"></i></a> <?= $resource['name'] ?> - <span class="small"><a href="<?= $url ?>"><?= $action;?></a></span></li>
+<?php
+                        }
+                    }
+        echo    '</ul>';
+?>
+                    <br />
+                    <div id="msg">       
+                        <a href="" class="doNothing"><h3><?= __('Loading Slowly? Click here.', 'EOT_LMS')?></h3></a>
+                    </div>
+                    <div id="loading_message" style="margin-top: 10px;">
+                        <div class="msgboxcontainer " >
+                            <div class="msg-tl">
+                                <div class="msg-tr"> 
+                                    <div class="msg-bl">
+                                        <div class="msg-br">
+                                            <div class='msgbox'>
+                                                <h3><?= __('Change Visual Quality', 'EOT_LMS')?><img src="<?php echo bloginfo('template_directory'); ?>/images/target/info-sm.gif" title="If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother." class="tooltip" style="margin-bottom: -2px"<?=hover_text_attr("If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother.", true) ?>></h3>
+                                                <ul class="notop">
+    <?php 
+                                                    if( $resolution != "high" && $resolution != null)
+                                                    {
+    ?>
+                                                        <li>
+                                                            <?= __('View ', 'EOT_LMS')?><a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=high">
+                                                            <!--High-Resolution Version-->
+                                                            <?= __('Full HD Version', 'EOT_LMS')?></a><?= __(' for high-speed connections and large screen viewing', 'EOT_LMS')?>
+                                                        </li>
+    <?php
+                                                    }
+                                                    if($resolution != "medium")
+                                                    {
+    ?>
+                                                        <li>
+                                                            <?= __('View ', 'EOT_LMS')?> <a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=medium">
+                                                          <!--Medium-Resolution Version-->
+                                                            <?= __('Medium-Resolution Version', 'EOT_LMS')?></a>
+                                                        </li>
+    <?php
+                                                    }
+                                                    if($resolution != "low")
+                                                    {
+    ?>
+                                                        <li>
+                                                            <?= __('View ', 'EOT_LMS')?><a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=low">
+                                                          <!--Low-Resolution Version-->
+                                                            <?= __('Low-Resolution Version', 'EOT_LMS')?></a><?= __(' for slow Internet connections', 'EOT_LMS')?>
+                                                        </li>
+    <?php
+                                                    }
+    ?>
+                                            </div>             
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type='text/javascript'>
+                    var video_ended = false;
+                    	$(document).ready(function() 
+                    	{
+
+                    <?php 						// Check if the user has not watched the video yet.
+                    //					if( $videoWatchStatus )
+                    //					{
+                    //						echo '$("#quiz").show();'; // Show Take quiz button.
+                    //                                                echo '$(".loadingQuiz").hide();'; // Show Take quiz button.
+                    //                                                echo '$(".takeQuiz").show();';
+                    //					}
+                    //					else
+                    //					{
+                    		echo '$("#noQuiz").show();'; // Show div message to finish watching the video.
+                    //					}
+                    ?>	
+                        $('#loading_message').hide();
+                        $('#msg').click(function() 
+                        {
+                          $('#loading_message').slideDown(700);
+                          $('#msg').hide();
+                        });		
+                        var agent = navigator.userAgent;
+                        var isIphone = ((agent.indexOf('iPhone') != -1) || (agent.indexOf('iPod') != -1) || (agent.indexOf('iPad') != -1));
+                        if (isIphone) 
+                        {
+                            var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$('#my-video').attr("track-id")+"&status=finish&type=watch_video";
+                            $.ajax({
+                                url:url,
+                                success:
+                                function(data)
+                                {
+                                    $(".loadingQuiz").hide(); // Show Take quiz button.
+                                    $(".takeQuiz").show();
+                                    $("#noQuiz").hide();
+                                    $("#quiz").show();
+                                }
+                            });
+                        }
+                    	});
+                            // Update the video status to finish.
+                            $( 'video' ).on('timeupdate',function(event){
+
+                                    // Save object in case you want to manipulate it more without calling the DOM
+                                    $this = $(this);
+                                    
+                                    if( this.currentTime > ( this.duration - 30 ) ) {
+                                            if(!video_ended)
+                                            {
+                                                    video_ended=true;                            
+                                                    $("#noQuiz").hide();
+                                                    $("#quiz").show();
+                                                    $(".loadingQuiz").show();
+                                                    $(".takeQuiz").hide();
+                                                    var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
+                                                    $.ajax({
+                                                    url:url,
+                                                success:
+                                                function(data)
+                                                {
+                                                    $(".loadingQuiz").hide(); // Show Take quiz button.
+                                                    $(".takeQuiz").show();
+                                                }
+                                                });
+                                                
+                                        }
+                                    }
+
+                                });
+                    	// Update the video status to finish.
+                    //      		   	$('video').on("ended", function() {
+                    //	            	$("#noQuiz").hide();
+                    //  		   			var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
+                    //					$.ajax({
+                    //					url:url,
+                    //		            success:
+                    //		            function(data)
+                    //		            {
+                    //		            	$("#quiz").show(); // Show Take quiz button.
+                    //		            }
+                    //		            });
+                    //      		   	});
+                       	// Update the video time.
+
+                    // Disable the right click on videos to not allow easy download of the video.
+                    $("video").on('contextmenu', function(e) {
+                        e.preventDefault();
+                    });
+
+                       	$("video").on("pause", function (e) {
+                       		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&time=" + e.target.currentTime + "&track_id="+$(this).attr("track-id")+"&video_id=<?=$video_id?>&status=pause&type=watch_video";
+                    	$.ajax({url:url,
+                        success:
+                        function(data)
+                        {
+                        	// Don't need to do anything.
+                        }
+                        });
+                    });
+                    // Update video for when they first started playing the video.
+                       	$("video").on("play", function (e) {
+                       		// Handle new watch video.
+                       		if( $("video").attr('track-id') == 0 )
+                       		{
+                    		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&status=started&video_id=<?=$video_id?>&type=watch_video";
+                    		$.ajax({url:url,
                             success:
                             function(data)
                             {
-                                $(".loadingQuiz").hide(); // Show Take quiz button.
-                                $(".takeQuiz").show();
-                                $("#noQuiz").hide();
-                                $("#quiz").show();
-                            }
-                        });
-                    }
-      			});
-                        // Update the video status to finish.
-                        $( 'video' ).on('timeupdate',function(event){
-
-                                // Save object in case you want to manipulate it more without calling the DOM
-                                $this = $(this);
-                                
-                                if( this.currentTime > ( this.duration - 30 ) ) {
-                                        if(!video_ended)
-                                        {
-                                                video_ended=true;                            
-                                                $("#noQuiz").hide();
-                                                $("#quiz").show();
-                                                $(".loadingQuiz").show();
-                                                $(".takeQuiz").hide();
-                                                var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
-                                                $.ajax({
-                                                url:url,
-                                            success:
-                                            function(data)
-                                            {
-                                                $(".loadingQuiz").hide(); // Show Take quiz button.
-                                                $(".takeQuiz").show();
-                                            }
-                                            });
-                                            
-                                    }
-                                }
-
+                            	var result = JSON.parse(data);
+                            	$("video").attr('track-id', result.track_id); // New track ID record.
+                            },
                             });
-      			// Update the video status to finish.
-//      		   	$('video').on("ended", function() {
-//	            	$("#noQuiz").hide();
-//  		   			var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&track_id="+$(this).attr("track-id")+"&status=finish&type=watch_video";
-//					$.ajax({
-//					url:url,
-//		            success:
-//		            function(data)
-//		            {
-//		            	$("#quiz").show(); // Show Take quiz button.
-//		            }
-//		            });
-//      		   	});
-      		   	// Update the video time.
-
-                // Disable the right click on videos to not allow easy download of the video.
-                $("video").on('contextmenu', function(e) {
-                    e.preventDefault();
-                });
-
-      		   	$("video").on("pause", function (e) {
-      		   		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&time=" + e.target.currentTime + "&track_id="+$(this).attr("track-id")+"&video_id=<?=$video_id?>&status=pause&type=watch_video";
-					$.ajax({url:url,
-		            success:
-		            function(data)
-		            {
-		            	// Don't need to do anything.
-		            }
-		            });
-				});
-				// Update video for when they first started playing the video.
-	  		   	$("video").on("play", function (e) {
-	  		   		// Handle new watch video.
-	  		   		if( $("video").attr('track-id') == 0 )
-	  		   		{
-						var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&status=started&video_id=<?=$video_id?>&type=watch_video";
-						$.ajax({url:url,
-			            success:
-			            function(data)
-			            {
-			            	var result = JSON.parse(data);
-			            	$("video").attr('track-id', result.track_id); // New track ID record.
-			            },
-			            });
-					  	$( this ).off( e ); // Triggers once only.
-	  		   		}
-				});
-  			</script>
+                    	  	$( this ).off( e ); // Triggers once only.
+                       		}
+                    });
+                    </script>
 <?php
 					}
 				}
