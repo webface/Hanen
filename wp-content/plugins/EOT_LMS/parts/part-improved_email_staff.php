@@ -62,281 +62,93 @@ if (isset($_REQUEST['target']) && isset($_REQUEST['subscription_id']))
                 }
 				else if($target == "incomplete" || $target == "completed")
 				{
-/*
-	              	$users = filterUsersMassMail($response['users']); // filter out and return an array of learner user types. 
+					$enrollments = getEnrollments(0, 0, $org_id, false, $subscription_id); // Get all enrollments in the org for this subscription.
+
 					$incomplete_users = array(); // Users with incomplete course.
-					$completed_users = array(); // Users with complete course.     		
-	              	if(!empty($users))
-	              	{
-d($users);
-	              		foreach ($users as $user) 
-	              		{
-            				$track_quiz_attempts = array();
-			                $trackFailed = array();
-			                $trackPassed = array();
-			                $quizPassed = array();//needed to verify and remove quizzes passed more than once  
-d($courses);
-	              			foreach ($courses as $course) 
-	              			{
-	              				$quizzes = getQuizzesInCourse($course->ID);
-	              				$num_quizzes_in_course = count($quizzes);
-	              				$track_quizzes = getAllQuizAttempts($course->ID, $user['id'], $quizzes);//All quiz attempts for this course
-d($quizzes, $track_quizzes);
-				                foreach ($track_quizzes as $key => $record) 
-				                {
-	                        		if ($record['passed'] == 0) 
-				                    {
-				                        array_push($trackFailed, $record['user_id']); // Save the user ID of the users who failed the quiz.
-				                        //unset($track_quizzes[$key]); // Delete them from the array.
-				                    }
-				                    if ($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || ($quizPassed[$record['quiz_id']] != $record['user_id'])))//make sure the quiz has not been already passed 
-				                    {
-				                        $quizPassed[$record['quiz_id']] = $record['user_id'];
-				                        array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
-				                    }
-				                    array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 
-				                }
-				                $failed_users = array_count_values($trackFailed);
-				                $passed_users = array_count_values($trackPassed);
-				                $attempt_count = array_count_values($track_quiz_attempts);
-				                $enrollments = getEnrollments($course->ID, $user['id'], $org_id, false); // Get all failed/passed enrollments in the course.
-d($enrollments, $failed_users, $trackFailed, $passed_users, $trackPassed, $attempt_count, $track_quiz_attempts);
-								if( !empty($enrollments) && $enrollments[0])
-			                	{
-			                  		$enrollment = $enrollments[0];
-			                  		$fail_count = isset($failed_users[$enrollment['user_id']]) ? $failed_users[$enrollment['user_id']] : 0; // Number of times they failed
-			                    	$passed_count = isset($passed_users[$enrollment['user_id']]) ? $passed_users[$enrollment['user_id']] : 0; //Number of passes
-	                        		$attempts = isset($attempt_count[$enrollment['user_id']]) ? $attempt_count[$enrollment['user_id']] : 0; //Number of quiz attempts
-	                        		$view_count = isset($watched_users[$enrollment['user_id']]) ? $watched_users[$enrollment['user_id']] : 0; // Number of times the user has watch the module.
-									$status = displayStatus($passed_count, $num_quizzes_in_course, $attempts, $view_count);
-	
-				                    if ($status == 'Completed')
-				                    {   // Add completion date
-				                        array_push($completed_users, $user['id']);
-				                    }
-				                    else
-				                    {
-				                    	array_push($incomplete_users, $user['id']);
-				                    }
-			                	}
-	              			}
-	              		}
-	              	}
-	              	$completed_users = array_unique($completed_users);
-	              	$incomplete_users = array_unique($incomplete_users);
-	              	$incomplete_users = array_diff($incomplete_users,$completed_users);
-	        		$sorted_users = ($target == "incomplete") ? $incomplete_users : $completed_users; // Sort the users based whether its complete/incomplete.
-		        	$users = array();
+					$completed_users = array(); // Users with complete course. 
+					//d($enrollments);
+
+					// go through each course to get the quizzes in that course
+					foreach ($courses as $course) 
+					{
+						$quizzes = getQuizzesInCourse($course->ID);
+						$enrolled_users = array(); // the enrolled users in this course
+
+						if ( $enrollments )
+						{
+							// check if the user is currently enrolled in this course
+							foreach ( $enrollments as $enrollment )
+							{
+								if( $enrollment['course_id'] == $course->ID )
+								{
+									array_push( $enrolled_users, $enrollment['user_id'] );
+								}
+							}
+						}
+
+						// check if the enrolled users in this course passed it or not.
+						if ( $enrolled_users )
+						{
+//d($course->ID, $enrolled_users);
+							foreach ($enrolled_users as $user_id)
+							{
+								$track_quiz_attempts = array();
+								$trackPassed = array();
+								$quizPassed = array(); // needed to verify and remove quizzes passed more than once  
+								$track_quizzes = getAllQuizAttempts($course->ID, $user_id, $quizzes); // All quiz attempts for this course for this user
+
+								foreach ($track_quizzes as $key => $record)
+								{
+									if($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || $quizPassed[$record['quiz_id']] != $record['user_id'])) //make sure the quiz has not been recorded as passed previously
+									{
+										$quizPassed[$record['quiz_id']] = $record['user_id'];
+										array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
+									}
+									array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 	
+								}
+
+//d($trackPassed, $track_quiz_attempts);
+								// check if they passed the quiz
+								if ( in_array( $user_id, $trackPassed ) && !in_array( $user_id, $incomplete_users ) )
+								{
+									array_push( $completed_users, $user_id );
+								}
+								else
+								{
+									if ( !in_array( $user_id, $incomplete_users ) )
+									{
+										array_push( $incomplete_users, $user_id );	
+									} 
+								}
+							}
+						}
+//d($completed_users, $incomplete_users);		
+					}
+
+					// dedupe complete and incomplete users
+					$completed_users = array_unique( $completed_users );
+					$incomplete_users = array_unique( $incomplete_users );
+
+					// remove user ids from complete if they have any incomplete courses
+					$complete_users = array_diff( $completed_users, $incomplete_users );
+
+					$sorted_users = ($target == "incomplete") ? $incomplete_users : $completed_users; // Sort the users based whether its complete/incomplete.
+
+					$users = array(); // this will be used below to loop through all the users to display.
 					if( !empty($sorted_users) )
 					{
-						foreach ($sorted_users as $completed_user_id) 
+						foreach ($sorted_users as $user_id) 
 						{
-							$user_info = get_userdata($completed_user_id);
+							$user_info = get_userdata($user_id);
 							$user = array (
-								'id' => $completed_user_id,
-								'first_name' => get_user_meta($completed_user_id, 'first_name', true),
-								'last_name' => get_user_meta($completed_user_id, 'last_name', true),
+								'id' => $user_id,
+								'first_name' => $user_info->first_name,
+								'last_name' => $user_info->last_name,
 								'email' => $user_info->user_email
 							);
 							array_push($users, $user);
 						}	
 					}
-*/					
-//*********************************************************************************************************//
-/*
-// attempt by Hagai to rewrite this whole function.
-error_log("HAGAI TEST");
-$enrollments = getEnrollments(0, 0, $org_id, false, $subscription_id); // Get all failed/passed enrollments in the org for this subscription.
-d($enrollments);
-
-$incomplete_users = array(); // Users with incomplete course.
-$completed_users = array(); // Users with complete course. 
-$users_in_subscription = getUsersInSubscription($subscription_id);    		
-
-	// go through each course to get the quizzes in that course
-	foreach ($courses as $course) 
-	{
-		$quizzes = getQuizzesInCourse($course->ID);
-		$num_quizzes_in_course = count($quizzes);
-
-// IMPORTANT - get only users enrolled in this course!!!
-		$enrolled_users = getEnrolledUsersInCourse($course->ID);
-
-d($enrolled_users);
-
-		if ( $enrolled_users )
-		{
-			// need to format the users to show learners
-		    $enrolled_learners = array();
-		    foreach($enrolled_users as $user_info)
-		    {
-		        $user_data = get_userdata( $user_info['user_id'] );
-		        $user = array();
-		        $user['ID'] = $user_data->ID;
-		        $user['email'] = $user_data->user_email;
-		        $user['first_name'] = $user_data->first_name;
-		        $user['last_name'] = $user_data->last_name;
-		        $user['user_type'] = 'learner';  // @TODO remove if not used(used in manage_staff_accounts line 90)
-		        array_push($enrolled_learners, $user);
-		    }
-
-			$users = filterUsersMassMail($enrolled_learners);
-//	d(getUsersInSubscription($subscription_id), $enrolled_users, $enrolled_learners, $users, filterUsersMassMail(getUsersInSubscription($subscription_id)['users']));
-d($course, $users);
-			foreach ($users as $user)
-			{
-				$track_quiz_attempts = array();
-				$trackPassed = array();
-				$quizPassed = array(); // needed to verify and remove quizzes passed more than once  
-				$track_quizzes = getAllQuizAttempts($course->ID, $user['id'], $quizzes); // All quiz attempts for this course for this user
-
-				foreach ($track_quizzes as $key => $record)
-				{
-					if($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || $quizPassed[$record['quiz_id']] != $record['user_id'])) //make sure the quiz has not been recorded as passed previously
-					{
-						$quizPassed[$record['quiz_id']] = $record['user_id'];
-						array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
-					}
-					array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 			
-				}
-
-				// check if the user is currently enrolled in this course
-				foreach ($enrollments as $enrollment)
-				{
-					if($enrollment['user_id'] == $user['id'] && $enrollment['course_id'] == $course->ID)
-					{
-						// if the user is enrolled in the course, check if they passed the quiz
-						if ( isset( $trackPassed[$user['id']] ) )
-						{
-							array_push( $completed_users, $user['id'] );
-						}
-						else
-						{
-							array_push( $incomplete_users, $user['id'] );
-						}
-						d($enrollment, $trackPassed, $track_quiz_attempts, $quizPassed);
-						break;
-					}
-				}
-			}
-		}
-d($completed_users, $incomplete_users);		
-	}
-
-	$completed_users = array_unique($completed_users);
-	$incomplete_users = array_unique($incomplete_users);
-	$incomplete_users = array_diff($incomplete_users,$completed_users);
-	$sorted_users = ($target == "incomplete") ? $incomplete_users : $completed_users; // Sort the users based whether its complete/incomplete.
-	$users = array();
-	if( !empty($sorted_users) )
-	{
-	foreach ($sorted_users as $completed_user_id) 
-	{
-		$user_info = get_userdata($completed_user_id);
-		$user = array (
-			'id' => $completed_user_id,
-			'first_name' => $user_info->first_name,
-			'last_name' => $user_info->last_name,
-			'email' => $user_info->user_email
-		);
-		array_push($users, $user);
-	}	
-	}
-*/
-//*********************************************************************************************************//
-
-//*********************************************************************************************************//
-// attempt by Hagai to rewrite this whole function.
-$enrollments = getEnrollments(0, 0, $org_id, false, $subscription_id); // Get all enrollments in the org for this subscription.
-
-$incomplete_users = array(); // Users with incomplete course.
-$completed_users = array(); // Users with complete course. 
-//d($enrollments);
-
-	// go through each course to get the quizzes in that course
-	foreach ($courses as $course) 
-	{
-		$quizzes = getQuizzesInCourse($course->ID);
-		$enrolled_users = array(); // the enrolled users in this course
-
-		if ( $enrollments )
-		{
-			// check if the user is currently enrolled in this course
-			foreach ( $enrollments as $enrollment )
-			{
-				if( $enrollment['course_id'] == $course->ID )
-				{
-					array_push( $enrolled_users, $enrollment['user_id'] );
-				}
-			}
-		}
-
-		// check if the enrolled users in this course passed it or not.
-		if ( $enrolled_users )
-		{
-//d($course->ID, $enrolled_users);
-			foreach ($enrolled_users as $user_id)
-			{
-				$track_quiz_attempts = array();
-				$trackPassed = array();
-				$quizPassed = array(); // needed to verify and remove quizzes passed more than once  
-				$track_quizzes = getAllQuizAttempts($course->ID, $user_id, $quizzes); // All quiz attempts for this course for this user
-
-				foreach ($track_quizzes as $key => $record)
-				{
-					if($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || $quizPassed[$record['quiz_id']] != $record['user_id'])) //make sure the quiz has not been recorded as passed previously
-					{
-						$quizPassed[$record['quiz_id']] = $record['user_id'];
-						array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
-					}
-					array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 	
-				}
-
-//d($trackPassed, $track_quiz_attempts);
-				// check if they passed the quiz
-				if ( in_array( $user_id, $trackPassed ) && !in_array( $user_id, $incomplete_users ) )
-				{
-					array_push( $completed_users, $user_id );
-				}
-				else
-				{
-					if ( !in_array( $user_id, $incomplete_users ) )
-					{
-						array_push( $incomplete_users, $user_id );	
-					} 
-				}
-			}
-		}
-//d($completed_users, $incomplete_users);		
-	}
-
-	// dedupe complete and incomplete users
-	$completed_users = array_unique( $completed_users );
-	$incomplete_users = array_unique( $incomplete_users );
-
-	// remove user ids from complete if they have any incomplete courses
-	$complete_users = array_diff( $completed_users, $incomplete_users );
-
-	$sorted_users = ($target == "incomplete") ? $incomplete_users : $completed_users; // Sort the users based whether its complete/incomplete.
-
-	$users = array(); // this will be used below to loop through all the users to display.
-	if( !empty($sorted_users) )
-	{
-		foreach ($sorted_users as $user_id) 
-		{
-			$user_info = get_userdata($user_id);
-			$user = array (
-				'id' => $user_id,
-				'first_name' => $user_info->first_name,
-				'last_name' => $user_info->last_name,
-				'email' => $user_info->user_email
-			);
-			array_push($users, $user);
-		}	
-	}
-
-//*********************************************************************************************************//
-
 				}
 		        else if($target == "nologin")
 		        {

@@ -124,7 +124,7 @@ else if (current_user_can("is_sales_rep") || current_user_can("is_sales_manager"
 ?> 
     <h1 class="article_page_title"> Sales Rep Administration Panel</h1>
     <ul>
-        <li><a href="?part=user_list" onclick="load('load_manage_staff_accounts')"><b>Manage Users</b></a> | <a href="?part=user_list&ignore=students"><b>Manage Directors Only</b></a><span class="bs">
+        <li><!--<a href="?part=user_list" onclick="load('load_manage_staff_accounts')">--><b>Manage Users</b><!--</a>--> | <a href="?part=user_list&ignore=students"><b>Manage Directors Only</b></a><span class="bs">
                 <form class="form-inline pull-right" action="?part=user_list" method="POST">
             <div class="form-group">
               <label class="sr-only" for="search">Search by name, email</label>
