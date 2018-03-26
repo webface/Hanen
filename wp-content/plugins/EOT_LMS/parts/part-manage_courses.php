@@ -1281,6 +1281,7 @@
                     menu_active_course.find('#loading_course_subscription_info').hide(); // Hide the loading icon.
                     menu_active_course.find('span.video_count').text(obj.video_count + " Modules Assigned"); //Update the video count.
                   }
+                  $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
                 },
                 // If it fails on the other hand.
                 error: function(XMLHttpRequest, textStatus, errorThrown) 
@@ -1289,9 +1290,11 @@
                 }
               });
             }
+            //$('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
             $(this).children("p").slideToggle("fast",
             function(){
-              $('#pane2').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+               $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+
              // $('#pane2')[0].scrollTo($(this).parent().position().top);
               fix_icon_position();
             }
@@ -1301,12 +1304,12 @@
             .slideUp("fast",
             function()
             {
-              $('#pane2').jScrollPane({contentWidth:'0px',showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
-              fix_icon_position(); // Fix display icons when one course is active then chosed another course to be active.
+              $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5}); // Fix display icons when one course is active then chosed another course to be active.
             }
             )
             $(this).siblings().children("p:visible").parent().toggleClass("active");
           });
+          $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
           
           /****************************************************
           * This function is called upon successfull 
