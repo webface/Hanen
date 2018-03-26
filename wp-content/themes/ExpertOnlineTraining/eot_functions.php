@@ -752,7 +752,9 @@ function filterUsersMassMail ($users = '', $type = 'learner', $sort = 0)
         $user_info['email'] = $user['email'];
         $user_info['id'] = $user['ID'];
         global $wpdb;
-        $sign_in_count = $wpdb->get_var("SELECT COUNT(*) FROM " . TABLE_TRACK . " WHERE type = 'login' AND user_id = ".$user['ID']);
+        $sql = "SELECT COUNT(*) FROM " . TABLE_TRACK . " WHERE type = 'login' AND user_id = ".$user['ID'];
+if (SHOW_SQL) error_log("filterUsersMassMail: get_var -> $sql");
+        $sign_in_count = $wpdb->get_var( $sql );
         $user_info['sign_in_count'] = $sign_in_count;
 
         array_push($staff_accounts, $user_info);
@@ -2985,6 +2987,7 @@ function getUsersInSubscription($subscription_id = 0)
             . "LEFT JOIN ". TABLE_USERS_IN_SUBSCRIPTION." uis "
             . "ON uis.user_id = u.ID "
             . "WHERE uis.subscription_id = $subscription_id";
+if( SHOW_SQL ) error_log("getUsersInSubscription: get_results -> $query");
     $users = $wpdb->get_results($query, ARRAY_A);
     $learners = array();
     foreach($users as $user_info)
@@ -3254,6 +3257,7 @@ function getCourses($course_id = 0, $org_id = 0, $subscription_id = 0) {
   {
     return array('status' => 0, 'message' => __("ERROR in getCourses: Invalid parameters", "EOT_LMS") );
   }
+if ( SHOW_SQL ) error_log("getCourses: get_results -> $sql");
   return $courses;
 }
 
@@ -3400,7 +3404,9 @@ function getEnrolledUsersInCourse($course_id = 0)
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
 
     // Get the enrollments who are enrolled in the course.
-    $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+    $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id";
+if( SHOW_SQL ) error_log("getEnrolledUsersInCourse: get_results -> $sql");
+    $enrollments = $wpdb->get_results( $sql, ARRAY_A );
 
     if($enrollments && count($enrollments) > 0)
     {
@@ -3491,6 +3497,7 @@ function getQuizzesInCourse($course_id = 0)
           . "FROM " . TABLE_QUIZ . " AS q "
           . "LEFT JOIN " . TABLE_COURSE_MODULE_RESOURCES . " AS cq ON cq.resource_id = q.ID "
           . "WHERE cq.course_id = $course_id AND cq.type = 'exam' ORDER BY cq.order";
+if( SHOW_SQL ) error_log("getQuizzesInCourse: get_results -> $sql");
     $course_quizzes = $wpdb->get_results($sql, ARRAY_A);
     return $course_quizzes;
 }
@@ -9362,9 +9369,10 @@ function updateEnrollmentStatus_callback()
  *  @param int $user_id - the user ID
  *  @param int $org_id - the organization ID
  *  @param string $status - the status
+ *  @param int $subscription_id - the subscription ID
  *  @return array of enrollments
  */
-function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '') 
+function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '', $subscription_id = 0) 
 {
   global $wpdb;
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
@@ -9382,13 +9390,14 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
   $sql = "SELECT e.*, u.user_email AS email FROM " . TABLE_ENROLLMENTS . " e ";
 
   // make sure were only looking for student user types
-  $sql .= "LEFT JOIN " . TABLE_USERMETA . " um ON e.user_id = um.user_id ";
+//  $sql .= "LEFT JOIN " . TABLE_USERMETA . " um ON e.user_id = um.user_id "; // 2018-03-22 Hagai removed because we dont need to confirm they are student
   $sql .= "LEFT JOIN " . TABLE_USERS . " u ON e.user_id = u.ID ";
-  $sql .= "WHERE um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%student%' ";
+//  $sql .= "WHERE um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%student%' "; // 2018-03-22 Hagai removed because we dont need to confirm they are student
+  $sql .= "WHERE ";
 
   if ($course_id > 0)
   {
-    $sql .= "AND e.course_id = $course_id ";
+    $sql .= "e.course_id = $course_id ";
   }
   
   if ($user_id > 0 && $course_id > 0)
@@ -9397,7 +9406,7 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
   }
   else if ($user_id > 0 )
   {
-    $sql .= "AND e.user_id = $user_id ";
+    $sql .= "e.user_id = $user_id ";
   }
 
   if (($user_id > 0 || $course_id > 0) && $org_id > 0)
@@ -9406,7 +9415,16 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
   }
   else if ($org_id > 0)
   {
-    $sql .= "AND e.org_id = $org_id ";
+    $sql .= "e.org_id = $org_id ";
+  }
+
+  if (($user_id > 0 || $course_id >0 || $org_id >0) && $subscription_id > 0)
+  {
+    $sql .= "AND e.subscription_id = $subscription_id ";
+  }
+  else if ($subscription_id > 0)
+  {
+    $sql.= "e.subscription_id = $subscription_id";
   }
 
   if ($status != '')
@@ -9414,6 +9432,7 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '')
     $sql .= "AND e.status = '$status' ";
   }
 
+if( SHOW_SQL ) error_log("getEnrollments: get_results -> $sql");
   $enrollments = $wpdb->get_results($sql, ARRAY_A);
   return $enrollments;
 }
@@ -9635,8 +9654,9 @@ function getAllTrack($org_id = 0)
  * stats function get quiz attempts
  * @param type $course_id - the course ID
  * @param type $user_id - the ID of the user
+ * @param $quizzes - an array of quizzes returned from getQuizzesInCourse($course_id)
  */
-function getAllQuizAttempts($course_id = 0, $user_id = 0)
+function getAllQuizAttempts($course_id = 0, $user_id = 0, $quizzes = array())
 {
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
@@ -9645,9 +9665,11 @@ function getAllQuizAttempts($course_id = 0, $user_id = 0)
         return array();
     }
     global $wpdb;
-    $quizzes = getQuizzesInCourse($course_id);
+    // check if we passed in an array of quizzes
     if(empty($quizzes))
     {
+      $quizzes = getQuizzesInCourse($course_id);
+      if (empty($quizzes)) // make sure there are quizzes in this course.
         return array();
     }
     $quiz_ids = array_column($quizzes, 'ID');
@@ -9661,6 +9683,7 @@ function getAllQuizAttempts($course_id = 0, $user_id = 0)
     {
         $sql.= " AND user_id = $user_id";
     }
+if( SHOW_SQL ) error_log("getAllQuizAttempts: get_results -> $sql");
     $attempts = $wpdb->get_results($sql, ARRAY_A);
     return $attempts;
 }

@@ -38,21 +38,12 @@
                         <a href="?part=improved_email_staff&subscription_id=<?= $subscription_id ?>&target=select-staff" onclick="load('load_email')"><?= __('Individual Staff Members', 'EOT_LMS')?></a> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Select Staff:</b> Sends and email to individual staff members.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                     </li>
                     <br> 
-<!--
                     <li>
                         <a href="?part=improved_email_staff&subscription_id=<?= $subscription_id ?>&target=incomplete" onclick="load('load_email')"><?= __('Incomplete', 'EOT_LMS')?></a> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Incomplete:</b> Sends and email to staff who have not finished all the courses that they are enrolled in.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                     </li>
                     <li>
                         <a href="?part=improved_email_staff&subscription_id=<?= $subscription_id ?>&target=completed" onclick="load('load_email')"><?= __('Completed', 'EOT_LMS')?></a> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Completed:</b> Sends and email to staff who have finished all of the courses that they are enrolled in.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                     </li>
--->
-                    <li>
-                        <?= __('Incomplete', 'EOT_LMS')?> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Incomplete:</b> Sends and email to staff who have not finished all the courses that they are enrolled in.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i> (Temporarily Unavailable)
-                    </li>
-                    <li>
-                        <?= __('Completed', 'EOT_LMS')?> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Completed:</b> Sends and email to staff who have finished all of the courses that they are enrolled in.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i> (Temporarily Unavailable)
-                    </li>
-
                     <li>
                         <a href="?part=improved_email_staff&subscription_id=<?= $subscription_id ?>&target=nologin" onclick="load('load_email')"><?= __('Yet to Login', 'EOT_LMS')?></a> <i class="fa fa-question-circle fa-lg tooltip" aria-hidden="true" title="" style="margin-bottom: -2px" onmouseover="Tip('<b>Yet to Login:</b> Sends and email to staff who still have not logged on to EOT.', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></i>
                     </li>
