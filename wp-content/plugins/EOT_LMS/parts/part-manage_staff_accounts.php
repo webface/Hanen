@@ -50,7 +50,7 @@
                       }
                       else
                       {
-                        echo '<br><b>' . __("Note:", "EOT_LMS") . '</b> ' . __("Some staff were NOT sent their login credentials. You can use the", "EOT_LMS") . ' <a href="/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">' . __("mass mail", "EOT_LMS") . '</a> ' . __("function to send staff their password.", "EOT_LMS");
+                        echo '<br><b>' . __("Note:", "EOT_LMS") . '</b> ' . __("The staff were NOT sent their login credentials. You can use the", "EOT_LMS") . ' <a href="/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">' . __("mass mail", "EOT_LMS") . '</a> ' . __("function to send staff their password.", "EOT_LMS");
                       }
 
                       if (isset($_REQUEST['import_status']) && !empty($_REQUEST['import_status']))
