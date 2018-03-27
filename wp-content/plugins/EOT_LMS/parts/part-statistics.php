@@ -7,19 +7,19 @@
 	$user_id = (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT) : $current_user->ID; // Wordpress user ID
 	$org_id = (isset($_REQUEST['org_id']) && !empty($_REQUEST['org_id'])) ? filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT) : get_org_from_user ($user_id); // Organization ID	
 	$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+
 	$courses = getCoursesById($org_id, $subscription_id);// All published courses in the portal.
     //$staff_accounts = getEotUsers($org_id); // Staff accounts registered in this portal.
 	$staff_accounts = getUsersInSubscription($subscription_id);
 	$num_staff_completed_assignment = 0; // Number of staff who have completed all their assignment
 	$num_staff_signed_in = calculate_logged_in($org_id, $subscription_id); // Number of staff who signed in at least once.
-	$learners = '';
+	$learners = array();
 	$completed_user_ids = array();
 	$incomplete_user_ids = array();
     $num_videos_watched = calculate_videos_watched($org_id);
     $num_resources_downloaded = calculate_resources_downloaded($org_id);
-    $num_quizzes_taken=calculate_quizzes_taken($org_id, $subscription_id);
-    //d($staff_accounts,$courses);
-	//d($courses,$num_videos_watched,$num_quizzes_taken,$num_resources_downloaded);
+    $num_quizzes_taken = calculate_quizzes_taken($org_id, $subscription_id, $staff_accounts);
+
     // check if we have staff accounts and filter out everyone other than learners
     if( isset($staff_accounts['status']) && $staff_accounts['status'] )
     {
@@ -35,13 +35,10 @@
 	}
 	else if (!empty($courses))
 	{	
+
+/*
 		foreach($courses as $course)
 		{
-			// Do not include the master library.
-//			if($course['course_name'] == LE_LIBRARY_TITLE)
-//			{
-//				continue;
-//			}
 			$course_id = $course['ID']; // The course ID
                         
 			$enrollment = getEnrollments($course_id, 0, $org_id, ''); // All enrollments in the course
@@ -67,8 +64,84 @@
 		// get only uniques for each array
 		$unique_completed_user_ids = array_unique($completed_user_ids);
 		$unique_incomplete_user_ids = array_unique($incomplete_user_ids);
+
 		// only count the user who are not in the incomplete array
 		$num_staff_completed_assignment = count(array_diff($unique_completed_user_ids, $unique_incomplete_user_ids));
+*/
+
+		$enrollments = getEnrollments(0, 0, $org_id, false, $subscription_id); // Get all enrollments in the org for this subscription.
+
+		$incomplete_users = array(); // Users with incomplete course.
+		$completed_users = array(); // Users with complete course. 
+		//d($enrollments);
+
+		// go through each course to get the quizzes in that course
+		foreach ($courses as $course) 
+		{
+			$quizzes = getQuizzesInCourse($course['ID']);
+			$enrolled_users = array(); // the enrolled users in this course
+
+			if ( $enrollments )
+			{
+				// check if the user is currently enrolled in this course
+				foreach ( $enrollments as $enrollment )
+				{
+					if( $enrollment['course_id'] == $course['ID'] )
+					{
+						array_push( $enrolled_users, $enrollment['user_id'] );
+					}
+				}
+			}
+
+			// check if the enrolled users in this course passed it or not.
+			if ( $enrolled_users )
+			{
+//d($course['ID'], $enrolled_users);
+				foreach ($enrolled_users as $user_id)
+				{
+					$track_quiz_attempts = array();
+					$trackPassed = array();
+					$quizPassed = array(); // needed to verify and remove quizzes passed more than once  
+					$track_quizzes = getAllQuizAttempts($course['ID'], $user_id, $quizzes); // All quiz attempts for this course for this user
+
+					foreach ($track_quizzes as $key => $record)
+					{
+						if($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || $quizPassed[$record['quiz_id']] != $record['user_id'])) //make sure the quiz has not been recorded as passed previously
+						{
+							$quizPassed[$record['quiz_id']] = $record['user_id'];
+							array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
+						}
+						array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 	
+					}
+
+//d($trackPassed, $track_quiz_attempts);
+					// check if they passed the quiz
+					if ( in_array( $user_id, $trackPassed ) && !in_array( $user_id, $incomplete_users ) )
+					{
+						array_push( $completed_users, $user_id );
+					}
+					else
+					{
+						if ( !in_array( $user_id, $incomplete_users ) )
+						{
+							array_push( $incomplete_users, $user_id );	
+						} 
+					}
+				}
+			}
+//d($completed_users, $incomplete_users);		
+		}
+
+		// dedupe complete and incomplete users
+		$completed_users = array_unique( $completed_users );
+		$incomplete_users = array_unique( $incomplete_users );
+
+		// remove user ids from complete if they have any incomplete courses
+		$complete_users = array_diff( $completed_users, $incomplete_users );
+
+		// only count the user who are not in the incomplete array
+		$num_staff_completed_assignment = count( $complete_users );
+
 	}
    /* 
 	* This will go through all the staff accounts in the portal and count who signed in more than once.

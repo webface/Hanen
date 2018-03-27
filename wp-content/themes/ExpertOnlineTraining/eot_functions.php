@@ -2993,10 +2993,11 @@ if( SHOW_SQL ) error_log("getUsersInSubscription: get_results -> $query");
     foreach($users as $user_info)
     {
         $user = array();
+        $user_data = get_user_meta( $user_info['ID'] );
         $user['ID'] = $user_info['ID'];
         $user['email'] = $user_info['user_email'];
-        $user['first_name'] = get_user_meta ($user_info['ID'], "first_name", true);
-        $user['last_name'] = get_user_meta ( $user_info['ID'], "last_name", true);
+        $user['first_name'] = $user_data['first_name'][0];
+        $user['last_name'] = $user_data['last_name'][0];
         $user['user_type'] = 'learner';  // @TODO remove if not used(used in manage_staff_accounts line 90)
         array_push($learners, $user);
     }
@@ -3280,7 +3281,7 @@ function getModulesByLibrary($library_id = 0)
           //. "WHERE m.library_id = $library_id "
           . "ORDER BY m.title";
 
-//error_log("getModulesByLibrary: query: $query");
+if( SHOW_SQL ) error_log("getModulesByLibrary: get_results -> $query");
 
   $modules = $wpdb->get_results( $query, ARRAY_A );
   return $modules;  
@@ -3295,7 +3296,9 @@ function getModulesByLibrary($library_id = 0)
 function getCategoriesByLibrary($library_id = 0){
     global $wpdb;
     $library_id = filter_var($library_id, FILTER_SANITIZE_NUMBER_INT);
-    $categories = $wpdb->get_results("SELECT * FROM " . TABLE_CATEGORIES . " c WHERE c.library_id = $library_id ORDER BY c.order ASC");
+    $sql = "SELECT * FROM " . TABLE_CATEGORIES . " c WHERE c.library_id = $library_id ORDER BY c.order ASC";
+if( SHOW_SQL ) error_log("getCategoriesByLibrary: get_results -> $sql");
+    $categories = $wpdb->get_results( $sql );
     return $categories;
 }
 
@@ -3311,7 +3314,9 @@ function getCoursesById($org_id = 0, $subscription_id = 0)
     global $wpdb;
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id AND subscription_id = $subscription_id", ARRAY_A);
+    $sql = "SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id AND subscription_id = $subscription_id";
+if ( SHOW_SQL ) error_log("getCoursesById: get_results-> $sql");    
+    $courses = $wpdb->get_results( $sql, ARRAY_A );
     return $courses;
 }
 
@@ -3322,7 +3327,9 @@ function getCoursesById($org_id = 0, $subscription_id = 0)
 function getCoursesByOrgId($org_id = 0){
     global $wpdb;
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
-    $courses = $wpdb->get_results("SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id", ARRAY_A);
+    $sql = "SELECT * FROM " . TABLE_COURSES . " WHERE org_id = $org_id";
+if( SHOW_SQL ) error_log("getCoursesByOrgId: get_results -> $sql");
+    $courses = $wpdb->get_results( $sql, ARRAY_A );
     return $courses;
 }
 
@@ -3336,7 +3343,9 @@ function getEotUsersInCourse($course_id = 0){
     global $wpdb;
     $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
     // Get the enrollments who are enrolled in the course.
-    $enrollments = $wpdb->get_results("SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id", ARRAY_A);
+    $sql = "SELECT * FROM " . TABLE_ENROLLMENTS . " WHERE course_id = $course_id";
+if( SHOW_SQL ) error_log("getEotUsersInCourse: get_results -> $sql");
+    $enrollments = $wpdb->get_results( $sql, ARRAY_A );
     $users = array(); // Lists of users who are enrolled in the course.
     if($enrollments && count($enrollments) > 0)
     {
@@ -9533,8 +9542,9 @@ function getSubscriptionIdByUser($user_id = 0)
 {
     $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
     global $wpdb;
-    $enrollment = $wpdb->get_row("SELECT * FROM ". TABLE_ENROLLMENTS ." WHERE user_id = $user_id",ARRAY_A);
-    //error_log("SELECT * FROM ". TABLE_ENROLLMENTS ." WHERE user_id = $user_id AND subscription_id != NULL");
+    $sql = "SELECT * FROM ". TABLE_ENROLLMENTS ." WHERE user_id = $user_id";
+if ( SHOW_SQL ) error_log("getSubscriptionIdByUser: get_row-> $sql");
+    $enrollment = $wpdb->get_row( $sql, ARRAY_A );
     return $enrollment['subscription_id'];
 }
 
@@ -9547,7 +9557,9 @@ function calculate_videos_watched($org_id = 0)
 {
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     global $wpdb;
-    $num_videos_watched = $wpdb->get_row("SELECT COUNT(ID) as count FROM ". TABLE_TRACK." WHERE org_id = $org_id AND result = 1 AND type = 'watch_video'", ARRAY_A);
+    $sql = "SELECT COUNT(ID) as count FROM ". TABLE_TRACK." WHERE org_id = $org_id AND result = 1 AND type = 'watch_video'";
+if ( SHOW_SQL ) error_log("calculate_videos_watched: get_row-> $sql");
+    $num_videos_watched = $wpdb->get_row( $sql, ARRAY_A );
     return $num_videos_watched['count'];
 }
 
@@ -9555,8 +9567,10 @@ function calculate_videos_watched($org_id = 0)
 /**
  * stats function calculate number of quizzes watched
  * @param $org_id - ID of the org
+ * @param $subscription_id - ID of the subscription
+ * @param $users_in_org - returned from function getUsersInSubscription($subsc)
  */
-function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
+function calculate_quizzes_taken($org_id = 0, $subscription_id = 0, $users_in_org = array())
 {
     $org_id = filter_var($org_id, FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($subscription_id, FILTER_SANITIZE_NUMBER_INT);
@@ -9565,7 +9579,9 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
         return 0;
     }
     global $wpdb;
-    $quizzes_in_course = $wpdb->get_results("SELECT DISTINCT cmr.resource_id,c.* FROM ".TABLE_COURSE_MODULE_RESOURCES." as cmr LEFT JOIN ". TABLE_COURSES . " as c ON c.ID = cmr.course_id WHERE c.org_id = $org_id AND c.subscription_id = $subscription_id AND cmr.type = 'exam'",ARRAY_A);
+    $sql = "SELECT DISTINCT cmr.resource_id,c.* FROM ".TABLE_COURSE_MODULE_RESOURCES." as cmr LEFT JOIN ". TABLE_COURSES . " as c ON c.ID = cmr.course_id WHERE c.org_id = $org_id AND c.subscription_id = $subscription_id AND cmr.type = 'exam'";
+if ( SHOW_SQL ) error_log("calculate_quizzes_taken: get_results-> $sql");
+    $quizzes_in_course = $wpdb->get_results( $sql, ARRAY_A );
     $quizzes_ids = array_column($quizzes_in_course, 'resource_id');
     $quiz_ids_string = implode(',',$quizzes_ids);
 
@@ -9575,7 +9591,10 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
     }
 
     //$users_in_org = getEotUsers($org_id);
-    $users_in_org = getUsersInSubscription($subscription_id);
+    if ( empty( $users_in_org ) )
+    {
+      $users_in_org = getUsersInSubscription($subscription_id);
+    }
     $users_in_org = isset($users_in_org['users']) ? $users_in_org['users'] : array();
     if(count($users_in_org) == 0)
     {
@@ -9583,7 +9602,9 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0)
     }
     $user_ids = array_column($users_in_org, 'ID');
     $user_ids_string = implode(',',$user_ids);
-    $attempts = $wpdb->get_row("SELECT COUNT(ID) as count FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id IN(".$quiz_ids_string.") AND  user_id IN(".$user_ids_string.")",ARRAY_A);
+    $sql = "SELECT COUNT(ID) as count FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id IN(".$quiz_ids_string.") AND  user_id IN(".$user_ids_string.")";
+if ( SHOW_SQL ) error_log("calculate_quizzes_taken: get_row-> $sql");
+    $attempts = $wpdb->get_row( $sql, ARRAY_A );
     return $attempts['count'];
 }
 
@@ -9601,7 +9622,9 @@ function calculate_logged_in($org_id = 0, $subscription_id = 0)
     global $wpdb;
 //    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT user_id) as count FROM ". TABLE_TRACK ." WHERE org_id = $org_id and type = 'login'",ARRAY_A);
 // Need to check for users in a specific subscription
-    $num_logged_in = $wpdb->get_row("SELECT COUNT(DISTINCT t.user_id) as count FROM " . TABLE_TRACK . " t LEFT JOIN " . TABLE_USERS_IN_SUBSCRIPTION . " uis ON t.user_id = uis.user_id WHERE t.org_id = $org_id AND t.type = 'login' AND uis.subscription_id = $subscription_id", ARRAY_A);
+    $sql = "SELECT COUNT(DISTINCT t.user_id) as count FROM " . TABLE_TRACK . " t LEFT JOIN " . TABLE_USERS_IN_SUBSCRIPTION . " uis ON t.user_id = uis.user_id WHERE t.org_id = $org_id AND t.type = 'login' AND uis.subscription_id = $subscription_id";
+if ( SHOW_SQL ) error_log("calculate_logged_in: get_row-> $sql");
+    $num_logged_in = $wpdb->get_row( $sql, ARRAY_A );
 
     return $num_logged_in['count'];
 }
