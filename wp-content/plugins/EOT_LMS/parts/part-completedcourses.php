@@ -47,7 +47,9 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 					'<div ' . hover_text_attr(__("This is a representation of the number of modules completed by the Staff member as a percentage of the total number of modules in the course.", "EOT_LMS"), true) .'>' . __("Progress", "EOT_LMS") . '</div>' => 'staff-progress'
 				);
 				$learners_user_info = array();
-				$enrollments = getEnrollments(0, 0, $org_id); // All enrollments in the organization.
+				$enrollments = getEnrollments(0, 0, $org_id, false, $subscription_id); // All enrollments in the organization in the sub.
+//d($learners, $enrollments);
+/*
 				foreach ($learners as $learner)
 				{
 					$user_id = $learner['ID']; // User ID
@@ -100,6 +102,130 @@ if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] > 0)
 					$percentage = eotprogressbar('8em', $overallpercent, true);
 					$quizTableObj->rows[] = array($name, $num_complete_enrollment . " / " . $num_enrollments, ($num_enrollments == $num_complete_enrollment ? __("Complete", "EOT_LMS") : __("$status", "EOT_LMS")), $percentage);
 					$finished_user[] = $enrollment['email']; // Add the email to the finished user.
+				}
+*/		
+
+				$incomplete_users = array(); // Users with incomplete course.
+				$completed_users = array(); // Users with complete course. 
+				$user_num_enrolled = array(); // an associative array $user_id => num enrolled courses
+				$user_num_passed = array(); // an associative array $user_id => num passed courses
+
+				// go through each course to get the quizzes in that course
+				foreach ($courses as $course) 
+				{
+					$quizzes = getQuizzesInCourse($course->ID);
+					$enrolled_users = array(); // the enrolled users in this course
+
+					if ( $enrollments )
+					{
+						// check if the user is currently enrolled in this course
+						foreach ( $enrollments as $enrollment )
+						{
+							if( $enrollment['course_id'] == $course->ID )
+							{
+								array_push( $enrolled_users, $enrollment['user_id'] );
+							}
+						}
+					}
+
+					// check if the enrolled users in this course passed it or not.
+					if ( $enrolled_users )
+					{
+//d($course->ID, $enrolled_users);
+						foreach ($enrolled_users as $user_id)
+						{
+							$track_quiz_attempts = array();
+							$trackPassed = array();
+							$quizPassed = array(); // needed to verify and remove quizzes passed more than once  
+							$track_quizzes = getAllQuizAttempts($course->ID, $user_id, $quizzes); // All quiz attempts for this course for this user
+
+							foreach ($track_quizzes as $key => $record)
+							{
+								if($record['passed'] == 1 && (!isset($quizPassed[$record['quiz_id']]) || $quizPassed[$record['quiz_id']] != $record['user_id'])) //make sure the quiz has not been recorded as passed previously
+								{
+									$quizPassed[$record['quiz_id']] = $record['user_id'];
+									array_push($trackPassed, $record['user_id']); // Save the user ID of the users who failed the quiz.
+								}
+								array_push($track_quiz_attempts, $record['user_id']); // Save the user ID of the users who failed the quiz. 	
+							}
+
+//d($trackPassed, $track_quiz_attempts);
+							// check if they passed the quiz
+							if ( in_array( $user_id, $trackPassed ) && !in_array( $user_id, $incomplete_users ) )
+							{
+								array_push( $completed_users, $user_id );
+
+								// if passed, then add to user_num_passed array.
+								if ( isset($user_num_passed[$user_id] ) )
+								{
+									$user_num_passed[$user_id] += 1;
+								} 
+								else
+								{
+									$user_num_passed[$user_id] = 1;
+								}
+							}
+							else
+							{
+								if ( !in_array( $user_id, $incomplete_users ) )
+								{
+									array_push( $incomplete_users, $user_id );	
+								} 
+							}
+
+							// regardless of pass/fail. add user to enrolled array
+							if ( isset( $user_num_enrolled[$user_id] ) )
+							{
+								$user_num_enrolled[$user_id] += 1;
+							}
+							else
+							{
+								$user_num_enrolled[$user_id] = 1;
+							}
+						}
+					}
+				}
+//d($completed_users, $incomplete_users, $user_num_enrolled, $user_num_passed);		
+
+
+				// dedupe complete and incomplete users
+				$completed_users = array_unique( $completed_users );
+				$incomplete_users = array_unique( $incomplete_users );
+
+				// remove user ids from complete if they have any incomplete courses
+				$complete_users = array_diff( $completed_users, $incomplete_users );
+
+				$num_staff_completed_courses = count( $complete_users );
+				$num_staff_incomplete_course = count( $incomplete_users );
+
+				// go through each learner and add them to the table
+				foreach ($learners as $learner)
+				{
+					$user_id = $learner['ID']; // User ID
+					$name = $learner['first_name'] . " " . $learner['last_name']; // User first and last name
+					$num_complete_enrollment = isset( $user_num_passed[$user_id] ) ? $user_num_passed[$user_id] : 0;
+					$num_enrollments = isset( $user_num_enrolled[$user_id] ) ? $user_num_enrolled[$user_id] : 0;
+					if ( $num_enrollments == 0 )
+					{
+						$status = __("Not Enrolled", "EOT_LMS");
+					}
+					else if ( $num_enrollments == $num_complete_enrollment )
+					{
+						$status = __("Complete", "EOT_LMS");
+					}
+					else
+					{
+						$status = __("In Progress", "EOT_LMS");
+					}
+
+					$overallpercent = $num_enrollments ? ($num_complete_enrollment/$num_enrollments)*100 : 0;
+					$percentage = eotprogressbar('8em', $overallpercent, true);
+					$quizTableObj->rows[] = array(
+						$name, 
+						$num_complete_enrollment . " / " . $num_enrollments, 
+						$status, 
+						$percentage
+					);
 				}
 			}
 ?>
