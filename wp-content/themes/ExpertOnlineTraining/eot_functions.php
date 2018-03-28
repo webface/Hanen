@@ -9265,6 +9265,7 @@ function getSubscriptionByCourse($course_id = 0)
   global $wpdb;
 
   $query = "SELECT s.* FROM " . TABLE_SUBSCRIPTIONS . " s LEFT JOIN " . TABLE_COURSES . " c ON s.ID = c.subscription_id WHERE c.ID = $course_id";
+if ( SHOW_SQL ) error_log("getSubscriptionByCourse: get_row-> $query");  
   $subscription = $wpdb->get_row($query, ARRAY_A);
   return $subscription;
 }
@@ -9427,7 +9428,7 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '',
     $sql .= "e.org_id = $org_id ";
   }
 
-  if (($user_id > 0 || $course_id >0 || $org_id >0) && $subscription_id > 0)
+  if (($user_id > 0 || $course_id > 0 || $org_id > 0) && $subscription_id > 0)
   {
     $sql .= "AND e.subscription_id = $subscription_id ";
   }
@@ -9702,7 +9703,7 @@ function getAllQuizAttempts($course_id = 0, $user_id = 0, $quizzes = array())
     $sql.= "WHERE quiz_id IN(".$quiz_ids_string.") ";
     $sql.= "AND course_id = $course_id ";
     $sql.= "AND date_attempted BETWEEN '". SUBSCRIPTION_START ."' AND '". SUBSCRIPTION_END ."'";
-    if($user_id>0)
+    if($user_id > 0)
     {
         $sql.= " AND user_id = $user_id";
     }

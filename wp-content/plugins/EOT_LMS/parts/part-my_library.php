@@ -5,11 +5,6 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
     
     if (current_user_can("is_student")) 
     {
-        global $current_user;
-        $user_id         = $current_user->ID;
-        $admin_ajax_url  = admin_url('admin-ajax.php');
-        $subscription_id = getSubscriptionIdByUser($user_id);
-        
         // verify this user has access to this course
         $has_access = verify_student_access($course_id);
         if (!$has_access) 
@@ -54,6 +49,21 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
             $org_id            = get_org_from_user($user_id);
             $modules_in_course = getModulesInCourse($course_id);
             $subscription      = getSubscriptionByCourse($course_id); // get the subscription data
+//            $admin_ajax_url  = admin_url('admin-ajax.php');
+
+            if ( isset( $_REQUEST['subscription_id'] ) )
+            {
+                $subscription_id = filter_var( $_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT );
+            }
+            else if ( isset( $subscription['ID'] ) )
+            {
+                $subscription_id = $subscription['ID'];
+            }
+            else
+            {
+                $subscription_id = NULL;
+            }
+
             $library_id        = isset($subscription['library_id']) ? $subscription['library_id'] : 0; // the library ID
             $continue_learning = get_post_meta($org_id, 'continue_learning', true);
             
@@ -95,7 +105,7 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
                 }
             }
             
-            $video_track          = getTrack($user_id, 0, "watch_video");
+            $video_track = getTrack($user_id, 0, "watch_video");
 
             $modules_in_portal_ids_string = array();
             // Display all the modules in the course. Including custom modules.
@@ -109,7 +119,7 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
                     if( $module['org_id'] > 0 )
                     {
                         $videos_custom_modules     = getVideoResourcesInModules($module['ID']);
-                        $resources_custom_modules = getHandoutResourcesInModules($module['ID']);
+                        $resources_custom_modules  = getHandoutResourcesInModules($module['ID']);
                         $quizzes_custom_modules    = getQuizResourcesInModules($module['ID']);
                         
                         ?>
@@ -262,7 +272,7 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
             $quiz_ids_string     = implode(',', $quiz_ids);
             $passed_quizzes      = getPassedQuizzes($quiz_ids_string, $user_id);
             $passed_quiz_ids     = array_column($passed_quizzes, 'ID');
-            $quiz_attempts       = getAllQuizAttempts($course_id, $user_id);
+            $quiz_attempts       = getAllQuizAttempts($course_id, $user_id, $quizzes_in_course);
             //d($quizzes_in_course,$quiz_attempts,$passed_quizzes,$finished_module_quizzes);
             $track_passed        = array();
             $track_quiz_attempts = array();
@@ -278,17 +288,17 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
             $passed_users  = array_count_values($track_passed);
             $attempt_count = array_count_values($track_quiz_attempts);
 ?>
-                                    <h1 class="article_page_title"><?= __("Quiz Summary", "EOT_LMS"); ?></h1>
-                                    <div class="bss">
-                                    <table class="table table-striped table-bordered" border="1">
-                                        <thead>
-                                        <th><b><?= __("Quiz Title", "EOT_LMS"); ?></b></th>
-                                        <th align="center"><b><?= __("Attempts", "EOT_LMS"); ?></b>&nbsp;<i class="fa fa-question-circle" title="<b><?= __("This shows the number of times you attempted the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("This shows the number of times you attempted the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
-                                        <th><b>Status</b>&nbsp;<i class="fa fa-question-circle" title="<b><?= __("Whether you passed or failed the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("Whether you passed or failed the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
-                                        <th><b>Quiz</b></th>
-                                        </thead>
-                                        <tbody>
-                                            <?php
+            <h1 class="article_page_title"><?= __("Quiz Summary", "EOT_LMS"); ?></h1>
+            <div class="bss">
+            <table class="table table-striped table-bordered" border="1">
+                <thead>
+                <th><b><?= __("Quiz Title", "EOT_LMS"); ?></b></th>
+                <th align="center"><b><?= __("Attempts", "EOT_LMS"); ?></b>&nbsp;<i class="fa fa-question-circle" title="<b><?= __("This shows the number of times you attempted the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("This shows the number of times you attempted the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                <th><b>Status</b>&nbsp;<i class="fa fa-question-circle" title="<b><?= __("Whether you passed or failed the quiz.", "EOT_LMS"); ?></b>" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip('<b><?= __("Whether you passed or failed the quiz.", "EOT_LMS"); ?></b>', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, '#E5E9ED', BORDERCOLOR, '#A1B0C7', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, '#F1F3F5')" onmouseout="UnTip()"></th>
+                <th><b>Quiz</b></th>
+                </thead>
+                <tbody>
+<?php
             foreach ($quizzes_in_course as $quiz) 
             {
                 $passed   = isset($passed_users[$quiz['ID']]) ? 'Passed' : 'Incomplete'; //Number of passes
@@ -298,12 +308,12 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
                     $passed = "Failed";
                 }
 ?>
-                                            <tr>
-                                                <td><?= $quiz['name'] . ($passed != 'Incomplete' ? '<br> <a href="/dashboard?part=wronganswers&quiz_id=' . $quiz['ID'] . '&course_id=' . $course_id . '">' . __("See Wrong Answers", "EOT_LMS") . '</a>' : '') ?></td>
-                                                <td align="center"><?= $attempts ?></td>
-                                                <td><?= $passed ?></td>
-                                                <td>
-                                                    <?php
+                    <tr>
+                        <td><?= $quiz['name'] . ($passed != 'Incomplete' ? '<br> <a href="/dashboard?part=wronganswers&quiz_id=' . $quiz['ID'] . '&course_id=' . $course_id . '">' . __("See Wrong Answers", "EOT_LMS") . '</a>' : '') ?></td>
+                        <td align="center"><?= $attempts ?></td>
+                        <td><?= $passed ?></td>
+                        <td>
+<?php
                 $action = __("Take Quiz", "EOT_LMS") . ' &nbsp;<i class="fa fa-question-circle" title="" class="tooltip" style="margin-bottom: -2px" onmouseover="Tip(\'<b>' . __("You must watch the video first (all the way through) before attempting the quiz.", "EOT_LMS") . '</b>\', FIX, [this, 45, -70], WIDTH, 240, DELAY, 5, FADEIN, 300, FADEOUT, 300, BGCOLOR, \'#E5E9ED\', BORDERCOLOR, \'#A1B0C7\', PADDING, 9, OPACITY, 90, SHADOW, true, SHADOWWIDTH, 5, SHADOWCOLOR, \'#F1F3F5\')" onmouseout="UnTip()"></i>';
                 if (in_array($quiz['ID'], $finished_module_quizzes) && $quiz['org_id'] == 0) 
                 {
@@ -315,21 +325,21 @@ if (isset($_REQUEST['course_id']) && $_REQUEST['course_id'] != "")
                 }
                 echo $action;
 ?>
-                                                </td>
-                                            </tr>
-                                            <?php
+                        </td>
+                    </tr>
+<?php
             }
             $percentage = (count($quizzes_in_course) > 0) ? (count($passed_users) / count($quizzes_in_course)) * 100 : 0;
 ?>
-                                            <tr>
-                                                <td><b><?= __("Completed Quizzes", "EOT_LMS"); ?></b></td>
-                                            	<td align="center"><b><?= count($passed_users) ?></b></td>
-                                            <td colspan="2"><?= eotprogressbar('12em', $percentage, true) ?></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                    <?php
+                    <tr>
+                        <td><b><?= __("Completed Quizzes", "EOT_LMS"); ?></b></td>
+                    	<td align="center"><b><?= count($passed_users) ?></b></td>
+                    <td colspan="2"><?= eotprogressbar('12em', $percentage, true) ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+<?php
             
         } //end if course info
         elseif ($course_info && $enrollment_status == "completed") 

@@ -395,7 +395,7 @@ else if (current_user_can("is_student"))
                                 <div class="content_right">
                                     <div class="clear"></div>
                                     <div class="menu">
-                                        <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
+                                        <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>&subscription_id=<?= $subscription_id ?>" class="my_library">
                                             <div class="thumbnail">
                                                 <i class="fa fa-youtube-play" alt="Content"></i>
                                             </div>
@@ -586,7 +586,7 @@ else if (current_user_can("is_student"))
                             <div class="content_right">
                                 <div class="clear"></div>
                                 <div class="menu">
-                                    <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>" class="my_library">
+                                    <a href="?part=my_library&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>&subscription_id=<?= $subscription_id ?>" class="my_library">
                                         <div class="thumbnail">
                                             <i class="fa fa-youtube-play" alt="Content"></i>
                                         </div>
