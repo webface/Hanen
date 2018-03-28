@@ -97,12 +97,12 @@
 			if ( $enrolled_users )
 			{
 //d($course['ID'], $enrolled_users);
-				foreach ($enrolled_users as $user_id)
+				foreach ($enrolled_users as $enrolled_user_id)
 				{
 					$track_quiz_attempts = array();
 					$trackPassed = array();
 					$quizPassed = array(); // needed to verify and remove quizzes passed more than once  
-					$track_quizzes = getAllQuizAttempts($course['ID'], $user_id, $quizzes); // All quiz attempts for this course for this user
+					$track_quizzes = getAllQuizAttempts($course['ID'], $enrolled_user_id, $quizzes); // All quiz attempts for this course for this user
 
 					foreach ($track_quizzes as $key => $record)
 					{
@@ -116,15 +116,15 @@
 
 //d($trackPassed, $track_quiz_attempts);
 					// check if they passed the quiz
-					if ( in_array( $user_id, $trackPassed ) && !in_array( $user_id, $incomplete_users ) )
+					if ( in_array( $enrolled_user_id, $trackPassed ) && !in_array( $enrolled_user_id, $incomplete_users ) )
 					{
-						array_push( $completed_users, $user_id );
+						array_push( $completed_users, $enrolled_user_id );
 					}
 					else
 					{
-						if ( !in_array( $user_id, $incomplete_users ) )
+						if ( !in_array( $enrolled_user_id, $incomplete_users ) )
 						{
-							array_push( $incomplete_users, $user_id );	
+							array_push( $incomplete_users, $enrolled_user_id );	
 						} 
 					}
 				}
