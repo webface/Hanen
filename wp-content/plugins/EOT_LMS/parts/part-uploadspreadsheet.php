@@ -318,7 +318,7 @@
 						if($result)
 						{
 							//url to redirect to (redirects to a page where users are processed in instances of PENDING_USER_LIMIT users)
-							$url = get_home_url() .'/dashboard/?part=uploadspreadsheet&org_id=' . $org_id . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '&processing=1&max=' . count($staff_data);
+							$url = get_home_url() .'/dashboard/?part=uploadspreadsheet&org_id=' . $org_id . '&subscription_id=' . $subscription_id. '&user_id=' . $user_id . '&processing=1&max=' . count($staff_data) . '&isEmail=' . $isEmail;
 ?>
 							<!-- Redirecting (wp_redirect does not load html if headers have already been sent which is the case here so we have to use javascript)-->
 							<script type="text/javascript">
@@ -348,6 +348,7 @@
 		$max = filter_var($_REQUEST['max'],FILTER_SANITIZE_NUMBER_INT);					//total users being processed from this instance of spreadsheet upload
 		$org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);			//org id
 		$subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);	//subscription id
+		$isEmail = ( isset($_REQUEST['isEmail']) ) ? filter_var($_REQUEST['isEmail'],FILTER_SANITIZE_NUMBER_INT) : 0;	// is email is clicked?
 		$admin_ajax_url = admin_url('admin-ajax.php');	
 ?>
 		<h1 class="article_page_title"><?= __('Upload Staff Spreadsheet','EOT_LMS')?></h1>
@@ -392,7 +393,7 @@
                                     if (count > <?= $max ?> && overall_status == 1)
                                     {
                                             <?php
-                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '&sent=1';
+                                        $url = get_home_url() .'/dashboard/?part=manage_staff_accounts&status=uploadedspreadsheet&org_id='. $org_id . '&subscription_id=' . $subscription_id .'&user_id=' . $user_id . '&sent=' . $isEmail;
                                         ?>
                                         $('#insert_form').html('<form action="<?= $url; ?>" name="redirect" method="post" style="display:none;"><input type="text" name="import_status" value="'+sent_emails+'" /></form>');
 
