@@ -54,9 +54,11 @@
                                     <li>
                                         <?= __("Just copy-and-paste the staff e-mail addresses and we'll send out the invitation e-mail.", "EOT_LMS")?>
                                     </li>
+<!--
                                     <li>
                                         <?= __("You can <b>Track</b> those who haven't registered yet by viewing the <b>Invite List Report</b>.", 'EOT_LMS')?>
                                     </li>
+-->
                                 </ul>
                             </li>
                             <li>

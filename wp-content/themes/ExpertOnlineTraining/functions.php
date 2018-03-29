@@ -408,6 +408,8 @@ function unsubscribe_wp_mail_filter( $args ) {
 		$message = $args['message'] . "<br><br>";
 		$message .= '<span style="font-size:10px;">' . __("You are receiving this email because ", "EOT_LMS") . $user_email . __(" is signed up to receive Expert Online Training communications. To unsubscribe, ", "EOT_LMS").' <a rel="nofollow" target="_blank" href="'.get_site_url().'/unsubscribe/?email='.$user_email.'&sec='.$hash_key.'" title="Unsubscribe" style="color:#006AC3;text-decoration:underline;">'.__("click here.", "EOT_LMS").'</a></span>';
 
+		$args['message'] = $message;
+
 		$new_wp_mail = array(
 			'to'          => $args['to'],
 			'subject'     => $args['subject'],
@@ -415,6 +417,8 @@ function unsubscribe_wp_mail_filter( $args ) {
 			'headers'     => $args['headers'],
 			'attachments' => $args['attachments'],
 		);
+if ( SHOW_SQL ) error_log("unsubscribe_wp_mail_filter: args: " . json_encode( $args ) );
+if ( SHOW_SQL ) error_log("unsubscribe_wp_mail_filter: new_wp_mail: " . json_encode( $new_wp_mail ) );
 		return $new_wp_mail;
 	}
 	

@@ -2983,10 +2983,13 @@ function getUsersInSubscription($subscription_id = 0)
         return array('status'=> 0, 'message' => __("No subscription id specified", "EOT_LMS"));
     }
     global $wpdb;
+/*
     $query = "SELECT u.* FROM ". TABLE_USERS ." u "
             . "LEFT JOIN ". TABLE_USERS_IN_SUBSCRIPTION." uis "
             . "ON uis.user_id = u.ID "
             . "WHERE uis.subscription_id = $subscription_id";
+*/
+    $query = "SELECT u.* FROM ". TABLE_USERS_IN_SUBSCRIPTION ." uis LEFT JOIN ". TABLE_USERS ." u ON uis.user_id = u.ID WHERE uis.subscription_id = $subscription_id";
 if( SHOW_SQL ) error_log("getUsersInSubscription: get_results -> $query");
     $users = $wpdb->get_results($query, ARRAY_A);
     $learners = array();
