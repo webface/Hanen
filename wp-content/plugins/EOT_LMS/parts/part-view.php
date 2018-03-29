@@ -127,6 +127,61 @@
                         
                     </video>
                 </div>
+
+                    <br />
+                    <div id="msg">       
+                        <a href="" class="doNothing"><h3><?= __('Loading Slowly? Click here.', 'EOT_LMS')?></h3></a>
+                    </div>
+                    <div id="loading_message" style="margin-top: 10px;">
+                        <div class="msgboxcontainer " >
+                            <div class="msg-tl">
+                                <div class="msg-tr"> 
+                                    <div class="msg-bl">
+                                        <div class="msg-br">
+                                            <div class='msgbox'>
+                                                <h3><?= __('Change Visual Quality', 'EOT_LMS')?><img src="<?php echo bloginfo('template_directory'); ?>/images/target/info-sm.gif" title="If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother." class="tooltip" style="margin-bottom: -2px"<?=hover_text_attr("If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother.", true) ?>></h3>
+                                                <ul class="notop">
+    <?php 
+                                                    if( $resolution != "high" && $resolution != null)
+                                                    {
+    ?>
+                                                        <li>
+                                                            <?= __('View ', 'EOT_LMS')?><a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=high">
+                                                            <!--High-Resolution Version-->
+                                                            <?= __('Full HD Version', 'EOT_LMS')?></a><?= __(' for high-speed connections and large screen viewing', 'EOT_LMS')?>
+                                                        </li>
+    <?php
+                                                    }
+                                                    if($resolution != "medium")
+                                                    {
+    ?>
+                                                        <li>
+                                                            <?= __('View ', 'EOT_LMS')?> <a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=medium">
+                                                          <!--Medium-Resolution Version-->
+                                                            <?= __('Medium-Resolution Version', 'EOT_LMS')?></a>
+                                                        </li>
+    <?php
+                                                    }
+                                                    if($resolution != "low")
+                                                    {
+    ?>
+                                                        <li>
+                                                            <?= __('View ', 'EOT_LMS')?><a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=low">
+                                                          <!--Low-Resolution Version-->
+                                                            <?= __('Low-Resolution Version', 'EOT_LMS')?></a><?= __(' for slow Internet connections', 'EOT_LMS')?>
+                                                        </li>
+    <?php
+                                                    }
+    ?>
+                                            </div>             
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+ 
+
                 <h3>Description</h3>
 				<p>
           			<?= $video['desc']; ?>       
@@ -209,59 +264,7 @@
                     }
         echo    '</ul>';
 ?>
-                    <br />
-                    <div id="msg">       
-                        <a href="" class="doNothing"><h3><?= __('Loading Slowly? Click here.', 'EOT_LMS')?></h3></a>
-                    </div>
-                    <div id="loading_message" style="margin-top: 10px;">
-                        <div class="msgboxcontainer " >
-                            <div class="msg-tl">
-                                <div class="msg-tr"> 
-                                    <div class="msg-bl">
-                                        <div class="msg-br">
-                                            <div class='msgbox'>
-                                                <h3><?= __('Change Visual Quality', 'EOT_LMS')?><img src="<?php echo bloginfo('template_directory'); ?>/images/target/info-sm.gif" title="If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother." class="tooltip" style="margin-bottom: -2px"<?=hover_text_attr("If the video is loading slowly (the video will stop-and-go frequently) you can view a lower-resolution version that will take less time to download and should run smoother.", true) ?>></h3>
-                                                <ul class="notop">
-    <?php 
-                                                    if( $resolution != "high" && $resolution != null)
-                                                    {
-    ?>
-                                                        <li>
-                                                            <?= __('View ', 'EOT_LMS')?><a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=high">
-                                                            <!--High-Resolution Version-->
-                                                            <?= __('Full HD Version', 'EOT_LMS')?></a><?= __(' for high-speed connections and large screen viewing', 'EOT_LMS')?>
-                                                        </li>
-    <?php
-                                                    }
-                                                    if($resolution != "medium")
-                                                    {
-    ?>
-                                                        <li>
-                                                            <?= __('View ', 'EOT_LMS')?> <a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=medium">
-                                                          <!--Medium-Resolution Version-->
-                                                            <?= __('Medium-Resolution Version', 'EOT_LMS')?></a>
-                                                        </li>
-    <?php
-                                                    }
-                                                    if($resolution != "low")
-                                                    {
-    ?>
-                                                        <li>
-                                                            <?= __('View ', 'EOT_LMS')?><a href="?part=view&course_id=<?=$course_id?>&module_id=<?= $module_id ?>&enrollment_id=<?= $enrollment_id?>&res=low">
-                                                          <!--Low-Resolution Version-->
-                                                            <?= __('Low-Resolution Version', 'EOT_LMS')?></a><?= __(' for slow Internet connections', 'EOT_LMS')?>
-                                                        </li>
-    <?php
-                                                    }
-    ?>
-                                            </div>             
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <script type='text/javascript'>
+                   <script type='text/javascript'>
                     var video_ended = false;
                     	$(document).ready(function() 
                     	{
@@ -350,6 +353,12 @@
                     $("video").on('contextmenu', function(e) {
                         e.preventDefault();
                     });
+                    $(document).ready(function() {
+                        $(".doNothing").click(function(event)
+                        {
+                            event.preventDefault();
+                        });
+                    })
 
                        	$("video").on("pause", function (e) {
                        		var url =  ajax_object.ajax_url + "?action=updateVideoProgress&user_id=<?= $user_id ?>&module_id=<?= $module_id?>&course_id=<?= $course_id?>&time=" + e.target.currentTime + "&track_id="+$(this).attr("track-id")+"&video_id=<?=$video_id?>&status=pause&type=watch_video";
