@@ -775,7 +775,7 @@
             }
             $(this).children("p").slideToggle("fast",
             function(){
-              //$('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
+              $('#pane2').jScrollPane({showArrows:true, scrollbarWidth: 15, arrowSize: 16,animateTo:true,animateInterval:50, animateStep:5});
               //$('#pane2')[0].scrollTo($(this).parent().position().top);
               fix_icon_position();
             }
