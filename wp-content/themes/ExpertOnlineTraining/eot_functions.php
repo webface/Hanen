@@ -5064,11 +5064,13 @@ function deleteStaffAccount_callback ()
         }
         else
         {
-                $watched_video = $wpdb->get_results("SELECT * FROM ". TABLE_TRACK ." "
-                        . "WHERE user_id = $staff_id "
-                        . "AND org_id = $org_id "
-                        . "AND type IN('watch_video','watch_custom_video') "
-                        . "AND date BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'", ARRAY_A);
+          $sql = "SELECT * FROM ". TABLE_TRACK ." "
+                . "WHERE user_id = $staff_id "
+                . "AND org_id = $org_id "
+                . "AND type IN('watch_video','watch_custom_video') "
+                . "AND date BETWEEN '".SUBSCRIPTION_START."' AND '".SUBSCRIPTION_END."'";
+if ( SHOW_SQL ) error_log("deleteStaffAccount_callback: get_results-> $sql");
+                $watched_video = $wpdb->get_results( $sql, ARRAY_A );
                 if(count($watched_video)>0)
                 {
                     $result['display_errors'] = 'failed';
@@ -8047,8 +8049,8 @@ jane@email.com
                       Are you sure that you want to delete this staff account? 
                       <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" /> 
                       <input type="hidden" name="email" id="email" value="<?= $email ?>" /> 
-                      <input type="hidden" name="staff_id" id="staff_id" value=" <?= $staff_id ?>" />
-                      <input type="hidden" name="subscription_id" id="subscription_id" value=" <?= $subscription_id ?>" />
+                      <input type="hidden" name="staff_id" id="staff_id" value="<?= $staff_id ?>" />
+                      <input type="hidden" name="subscription_id" id="subscription_id" value="<?= $subscription_id ?>" />
                         <?php wp_nonce_field( 'delete-staff_id-org_id_' . $org_id ); ?>
                     </td>
                   </tr> 
