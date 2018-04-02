@@ -242,3 +242,6 @@ define ('AWS_PRESET_SD_LOW','1351620000001-000061');
 
 // AWS S3 bucket
 define ('AWS_S3_BUCKET','eot-videos');
+
+// DEFAULT EMAIL ADDRESS IF ERRORS HAPPEN
+define ('DEFAULT_EMAIL', 'hagai@expertonlinetraining.com');

@@ -205,8 +205,8 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
     $country=$entry['9.6'];
     $zip=$entry['9.5'];
         
-    if($entry['4']==="Camp Director"){
-
+    if($entry['4'] == "Camp Director")
+    {
         $new_org = array(
 				'post_title' => $entry['5'],
 				'post_author' => $user_id,
@@ -272,6 +272,7 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
         else
         { // code exists so its a student being invited to an org
             $sql = 'SELECT * FROM ' . TABLE_INVITATIONS . ' WHERE code ="'.$code.'"';
+if ( SHOW_SQL ) error_log("after_submission_register: get_row-> $sql");
             $current = $wpdb->get_row($sql,ARRAY_A);//codes should be unique to user
             $subscription_id = isset($current['subscription_id']) ? $current['subscription_id'] : '';
 
@@ -312,10 +313,15 @@ function after_submission_register($user_id, $feed, $entry, $user_pass){
                     $course_id = $current['course_id'];
                     $course_name = $course['course_name'];
                     $data = compact("org_id", "course_id", "course_name", "subscription_id");
-
-                    if($email == $current['user_email'])
+                    $user_email = $current['user_email'] != '' ? $current['user_email'] : $email;
+                    $enrolled = enrollUserInCourse($user_email, $data);
+                    if ( isset( $enrolled['status'] ) && !$enrolled['status'] )
                     {
-                        enrollUserInCourse($email, $data);
+                    	//error enrolling student. Send me an email:
+                    	error_log( "after_submission_register: Couldn't enroll user: $user_email data: " . json_encode( $data ) );
+                    	$to = get_option( 'admin_email', DEFAULT_EMAIL );
+                    	$msg = "Tried to auto enroll a user based on the code but couldn't do it.<br><br>after_submission_register: Couldn't enroll user: $user_email data: " . json_encode( $data );
+                    	wp_mail($to, "EOT ERROR: cant enroll $user_email", $msg);
                     }
                 }
             }
