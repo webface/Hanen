@@ -107,11 +107,11 @@
 							 */
 							if($user)
 							{
-								echo $first_name . " " . $last_name . '/ <a href="mailto: ' . $user->user_email .'"><' . $user->user_email . '</a>';
+								echo $first_name . " " . $last_name . ' / <a href="mailto: ' . $user->user_email .'">' . $user->user_email . '</a>';
 							}
 							else
 							{
-								echo "N/a.";
+								echo "N/A";
 							}
 							?>
 						</td>
