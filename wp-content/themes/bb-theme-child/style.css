@@ -61,9 +61,13 @@ table.topic_rec tr.head td.one {
 	}
 }
 
+#fl-page-nav-col col-md-8 col-sm-12 {
+	width: 0px;
+}
+
 #menu-main-menu-for-beaver-builder {
-    width: 710px;
-    margin-right: -20px;
+    width: 760px;
+    margin-right: -70px;
 }
 .fl-menu.fl-menu-accordion-collapse {
     width: 110%;
