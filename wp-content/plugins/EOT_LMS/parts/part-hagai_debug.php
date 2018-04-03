@@ -86,8 +86,6 @@ error_log("current row: " . json_encode($current));
 	            $org_id = isset($current[0]['org_id']) ? $current[0]['org_id'] : '';
 	            $course_id = isset($current[0]['course_id']) ? $current[0]['course_id'] : 0;
 				$user_email = isset($current[0]['user_email']) ? $current[0]['user_email'] : $entry['2'];
-
-d($type, $subscription_id, $invitation_id,$current);
             }
             else if ( $num_rows > 1 )
             {
