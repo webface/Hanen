@@ -14,7 +14,7 @@
     $quiz_data = $eot_quiz->get_quiz_data($quiz_id, false);
 ?>
     <h3><?= esc_attr($quiz_data['quiz']['name']); ?></h3>
-    <p><?= $esc_attr(quiz_data['quiz']['description']); ?><p>
+    <p><?= esc_attr($quiz_data['quiz']['description']); ?><p>
 
     <span><strong><?= __('Time Limit:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['time_limit']; ?> <?= __('minutes', 'EOT_LMS')?></span><br>
     <span><strong><?= __('Passing Score:', 'EOT_LMS')?> </strong><?= $quiz_data['quiz']['passing_score']; ?> /<?= $quiz_data['quiz']['num_questions_to_display']; ?></span><br>
