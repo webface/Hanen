@@ -2824,6 +2824,12 @@ function remove_author_links($author_link, $args)
  */
 function org_has_maxed_staff($org_id = 0, $subscription_id = 0)
 {
+  // make sure we got an org and subscription
+  if ( !$org_id && !$subscription_id )
+  {
+    return true;
+  }
+
   $subscription = getSubscriptions($subscription_id,0,1); // Subscription details
   $staff_credits = $subscription->staff_credits; // The staff credits
   
