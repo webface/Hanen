@@ -15,7 +15,7 @@
 		$form_id = 3;
 		$search_criteria['field_filters'][] = array( 'key' => '10', 'operator' => 'isnot', 'value' => '' ); 
 		$entries = GFAPI::get_entries( $form_id, $search_criteria );
-d($entries);
+//d($entries);
 
 		// go through each user and check if they are enrolled in a course
 		foreach ( $entries as $entry )
@@ -26,7 +26,7 @@ d($entries);
             $sql = 'SELECT * FROM ' . TABLE_INVITATIONS . ' WHERE code ="'.$code.'"';
 if ( SHOW_SQL ) error_log("after_submission_register: get_row-> $sql");
             $current = $wpdb->get_results( $sql, ARRAY_A ); //codes should be unique to user unless there is no course_id for the user
-d($current);
+//d($current);
  
             $num_rows = count($current);
             $org_id = 0;
@@ -36,7 +36,7 @@ d($current);
             $invitation_id = 0;
             $user_email = 0;
 
-d($num_rows);
+//d($num_rows);
             if ( $num_rows == 1 )
             {
 error_log("current row: " . json_encode($current));
@@ -63,7 +63,7 @@ error_log("current row: " . json_encode($current));
 			            $org_id = isset($invitation['org_id']) ? $invitation['org_id'] : '';
 			            $course_id = isset($invitation['course_id']) ? $invitation['course_id'] : 0;
 						$user_email = isset($invitation['user_email']) ? $invitation['user_email'] : $entry['2'];
-d($invitation);						
+//d($invitation);						
 error_log("invitation: " . json_encode($invitation));
             		}
             		else if ( $type == 'org' || $type == 'course' )
@@ -90,7 +90,7 @@ echo "Invitation Data - type: $type, sub_id: $subscription_id, ID: $invitation_i
 				$user = get_user_by( 'email', $entry[2] );
 				$user_id = $user->ID;
 				$enrollments = getEnrollmentsByUserId($user_id, "all", $subscription_id);
-d($enrollments);
+//d($enrollments);
 
 				$enrolled = FALSE;
 
@@ -220,7 +220,7 @@ echo 'added user to subscription : ' . $user->user_email . " with ID: $user_id t
 		$form_id = 3;
 		$search_criteria['field_filters'][] = array( 'key' => '10', 'operator' => 'isnot', 'value' => '' ); 
 		$entries = GFAPI::get_entries( $form_id, $search_criteria );
-d($entries);
+//d($entries);
 
 		// go through each user and check if they are enrolled in a course
 		foreach ( $entries as $entry )
