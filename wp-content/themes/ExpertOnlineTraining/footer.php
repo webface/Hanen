@@ -48,7 +48,7 @@
 							&copy; Copyright 2008-<?php echo date('Y'); ?> <a href="http://www.campspirit.com" target="_blank">CampSpirit, LLC</a> and <a href="http://www.targetdirectories.com" target="_blank">Target Directories Corp</a>. All rights reserved.
 						</div>
 					</div>
-				</div><!-- footer --> -->
+				</div><!-- footer --> 
 				<?php wp_footer(); ?> 
 			</div><!-- wrapper -->
 		</div><!-- main -->
