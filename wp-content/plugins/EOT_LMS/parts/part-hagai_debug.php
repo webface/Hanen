@@ -14,13 +14,15 @@
 		// get all entries from registration form with camp invitation code.
 		$form_id = 3;
 		$search_criteria['field_filters'][] = array( 'key' => '10', 'operator' => 'isnot', 'value' => '' ); 
-		$entries = GFAPI::get_entries( $form_id, $search_criteria );
+		$paging = array( 'offset' => 0, 'page_size' => 500 ); 
+		$entries = GFAPI::get_entries( $form_id, $search_criteria, NULL, $paging );
 //d($entries);
-
+		$counter = 1;
 		// go through each user and check if they are enrolled in a course
 		foreach ( $entries as $entry )
 		{
-			echo 'checking: ' . $entry[2] . '<br>';
+			echo $counter . ') checking: ' . $entry[2] . '<br>';
+			$counter ++;
 			$code = $entry[10];
 
             $sql = 'SELECT * FROM ' . TABLE_INVITATIONS . ' WHERE code ="'.$code.'"';
@@ -218,14 +220,17 @@ echo 'added user to subscription : ' . $user->user_email . " with ID: $user_id t
 
 		// get all entries from registration form with camp invitation code.
 		$form_id = 3;
-		$search_criteria['field_filters'][] = array( 'key' => '10', 'operator' => 'isnot', 'value' => '' ); 
-		$entries = GFAPI::get_entries( $form_id, $search_criteria );
+		$search_criteria['field_filters'][] = array( 'key' => '10', 'operator' => 'isnot', 'value' => '' );
+		$paging = array( 'offset' => 0, 'page_size' => 500 ); 
+		$entries = GFAPI::get_entries( $form_id, $search_criteria, NULL, $paging );
 //d($entries);
-
+var_dump($entries);
+		$counter = 1;
 		// go through each user and check if they are enrolled in a course
 		foreach ( $entries as $entry )
 		{
-			echo 'checking: ' . $entry[2] . '<br>';
+			echo $counter . ') checking: ' . $entry[2] . '<br>';
+			$counter ++;
 			$code = $entry[10];
 
             $sql = 'SELECT * FROM ' . TABLE_INVITATIONS . ' WHERE code ="'.$code.'"';
