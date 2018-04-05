@@ -80,7 +80,7 @@ define ('CRUMB_MANAGESALESREP', '<a href="'. get_home_url() .'/dashboard/?part=m
 define ('CRUMB_SUBDOMAINS', '<a href="'. get_home_url() .'/dashboard/?part=manage_subdomains"">Manage Subdomains</a>');
 
 // define breadcrumb to email your staff page
-define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part=email_staff&subscription_id='.$subscription_id.'">E-mail Your Staff</a>');
+define ('CRUMB_EMAIL_YOUR_STAFF', '<a href="'. get_home_url() .'/dashboard/?part=email_staff&subscription_id='.$subscription_id.'&user_id='.$user_id.'">E-mail Your Staff</a>');
 
 // define breadcrumb to view invoice page
 define ('CRUMB_INVOICE_PAGE', '<a href="'. get_home_url() .'/dashboard/?part=view_invoice&subscription_id='.$subscription_id.'">Invoice Page</a>');

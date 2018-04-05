@@ -114,7 +114,7 @@ else
 }
 
 // define video variables
-define ('NUM_VIDEOS', 105);
+define ('NUM_VIDEOS', 120);
 define ('NUM_VIDEOS_LEL', 12); // number of videos they get access to
 define ('NUM_VIDEOS_MAX_LEL', 30); // number of videos they get to choose from
 define ('NUM_VIDEOS_LE_SP_DC', 9); // number of videos they get access to for le starter pack day camps
