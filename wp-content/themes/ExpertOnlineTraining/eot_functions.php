@@ -3871,7 +3871,6 @@ function toggleModuleInAssignment($course_id = 0, $data = array())
 
 
   $module_resources = $wpdb->get_results("SELECT * FROM " . TABLE_COURSE_MODULE_RESOURCES . " WHERE module_id = $module_id AND course_id = $course_id", ARRAY_A);
-  global $wpdb;
   if(count($module_resources) > 0)
   {
       $resources = $wpdb->get_results("SELECT * FROM " . TABLE_MODULE_RESOURCES . " WHERE module_id = $module_id", ARRAY_A);
@@ -7144,7 +7143,7 @@ function getCourseForm_callback ( )
                                   if( !isset($exams[$module['ID']]) && !isset($handouts[$module['ID']]) )
                                   {
                                     echo '<label for="chk_defaultquiz_<?= $module_id ?>">';
-                                    echo '<i>Unable to add this module in the course. The module do not have any exam or handout.  </i>';
+                                    echo '<i>This modules does not contain any resources.</i>';
                                     echo '</label>';
                                   }
 ?>
