@@ -98,10 +98,7 @@
             <?= __("Create and manage your own modules with your videos and quizzes.", "EOT_LMS"); ?>
           </div>
         </div>
-<?php 
-        if($current_user->ID == $user_id) //show below buttons if its not an uber or umbrella managing this page
-        {
-?>
+
         <div class="row">
           <div class="col">
             <a href="?part=email_staff&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_email')">
@@ -115,6 +112,10 @@
           </div>
         </div>
 
+<?php 
+        if($current_user->ID == $user_id) //show below buttons if its not an uber or umbrella managing this page
+        {
+?>
         <div class="row">
           <div class="col">
             <a href="?part=staff_lounge&amp;subscription_id=<?= $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_staff_lounge')">

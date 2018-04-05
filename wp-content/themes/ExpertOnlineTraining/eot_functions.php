@@ -1944,24 +1944,10 @@ function my_acf_save_post( $post_id )
   {
       // Variable declaration
     global $current_user;
-    $true_subscription = verifyUserAccess();
 
-    if(isset($true_subscription['status']) && $true_subscription['status'])
-    {
-      if(isset($_REQUEST['user_id']) && $_REQUEST['user_id'] > 0)
-      {
-        $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
-        $wp_user = get_user_by( 'ID', $user_id ); // Send mail in Uber
-      }
-      else
-      {
-        $wp_user = get_user_by( 'ID', $current_user->ID ); // Send mail in camp director.
-      }
-    }
-    $first_name = get_user_meta($user_id, "first_name", true);  // First name
-    $last_name  = get_user_meta($user_id, "last_name", true); // Last name
-    $sender_name = $first_name . " " . $last_name; // Recepient sender's name
-    $sender_email = $wp_user->user_email; // Recepient sender's name
+    $user_id = isset($_REQUEST['user_id']) ? filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT) : $current_user->ID;
+    $wp_user = get_user_by( 'ID', $user_id );
+    $sender_email = $wp_user->user_email; // sender's email
 
     $org_id = get_org_from_user ($user_id); // Organization ID
     $data = compact("org_id", "sender_name", "sender_email");
@@ -1971,7 +1957,7 @@ function my_acf_save_post( $post_id )
     $user_email_finish = array(); // Lists of email addresses that we already finish sending mail to
     $recepients = array(); // List of recepients
     $users = json_decode(stripslashes( html_entity_decode($_REQUEST['users_info'])) ); // Get the users information
-error_log("users_info: " . json_encode($users));
+error_log("my_acf_save_post: users: " . json_encode($users));
     $campname = get_the_title($org_id); // the camp name
     $directorname = $wp_user->display_name; // the directors name
 
@@ -2016,7 +2002,7 @@ error_log("users_info: " . json_encode($users));
       $vars = array(
           'name' => $name,
           'email' => $email,
-          'your_name' =>  $sender_name,
+          'your_name' =>  $directorname,
           'campname' => $campname,
           'directorname' => $directorname,
           'numvideos' =>  NUM_VIDEOS,
@@ -2051,7 +2037,7 @@ error_log("users_info: " . json_encode($users));
     }
 
     // add emails to pending emails table
-    $result = addPendingEmails($org_id,$sender_name,$sender_email,$recepients);
+    $result = addPendingEmails($org_id,$directorname,$sender_email,$recepients);
 
     if(is_array($result))
     {
@@ -4661,8 +4647,8 @@ function sendMail ( $target = '', $recipients = '', $data = array())
      */
     
     $current_user = wp_get_current_user();
-    $sender_email = $current_user->user_email;
-    $sender_name = $current_user->user_firstname . " " . $current_user->user_lastname;
+    $sender_email = isset($recipient['sender_email']) ? $recipient['sender_email'] : $current_user->user_email;
+    $sender_name = isset($recipient['sender_name']) ? $recipient['sender_name'] : $current_user->user_firstname . " " . $current_user->user_lastname;
 
     // check that a target is defined.
     if( $target != null && $target != "" )
