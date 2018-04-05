@@ -19,13 +19,25 @@ if (isset($_POST['submit']))
     }
 
     $quiz_name = preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['quizName']));
+    // Process Quiz Time.
+    if($_POST['quizTimeText'] >= 60)
+    {   // Change to hours.
+        $hours = $_POST['quizTimeText'] / 60;
+        $quizTime = $hours . ":00:00";
+    }
+    else
+    {
+        // Change to minutes
+        $quizTime = '00:' . $_POST['quizTimeText'] . ':00';
+    }
+
     $data = array(
         'name' => $quiz_name,
         'description' => filter_var($_POST['quizDescription'],FILTER_SANITIZE_STRING),
         'org_id' => $org_id,
         'user_id' => $user_id,
         'num_attempts' => $_POST['quizAttempts'],
-        'time_limit' => '00:' . $_POST['quizTimeText'] . ':00',
+        'time_limit' => $quizTime,
         'date_created' => current_time('Y-m-d')
     );
 
@@ -65,9 +77,7 @@ if ($quizzes)
     // Creating rows for the table
     foreach ($quizzes as $quiz) 
     {
-
-        $time_limit = date('i', strtotime($quiz['time_limit']));
-
+        $time_limit = ( substr($quiz['time_limit'], 0, 2) > 0 ) ? date('H', strtotime($quiz['time_limit'])) * 60 : date('i', strtotime($quiz['time_limit'])); // convert hours into minute
         $quizTableObj->rows[] = array(
             '<span>' . stripslashes($quiz['name']) . '</span>',
             $quiz['questions'],
@@ -166,7 +176,7 @@ else
             } 
             else 
             {
-                alert(<?= __("Quiz Name is mandatory!",'EOT_LMS') ?>);
+                alert("<?= __("Quiz Name is mandatory!",'EOT_LMS') ?>");
                 return false;
             }
         })
