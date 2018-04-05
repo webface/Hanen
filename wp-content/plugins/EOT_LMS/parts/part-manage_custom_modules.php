@@ -124,7 +124,7 @@
                             } 
                             else 
                             {
-                                alert(<?= __("Name and Description fields are mandatory", 'EOT_LMS')?>);
+                                alert('<?= __("Name and Description fields are mandatory", 'EOT_LMS')?>');
                                 return false;
                             }
                         })
@@ -138,7 +138,7 @@
                                     }
                                     else
                                     {
-                                        alert(<?= __("There was an error deleting your module", 'EOT_LMS')?>);
+                                        alert('<?= __("There was an error deleting your module", 'EOT_LMS')?>');
                                     }
                                 }
                         )

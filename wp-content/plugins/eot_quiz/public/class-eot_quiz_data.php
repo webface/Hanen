@@ -65,7 +65,7 @@ class EotQuizData
     {
         $quiz_data = array();
         $quiz = $this->get_quiz_by_id($id);
-        $time_limit = ( substr($quiz['time_limit'], 0, 2) > 0 ) ? date('H', strtotime($quiz['time_limit'])) * 60 : date('i', strtotime($quiz['time_limit'])); // convert hours into minute
+        $time_limit = ( substr($quiz['time_limit'], 0, 2) > 0 ) ? date('H', strtotime($quiz['time_limit'])) * 60 + date('i', strtotime($quiz['time_limit'])) : date('i', strtotime($quiz['time_limit'])); // convert hours into minute
         $quiz['time_limit'] = $time_limit;
         $quiz_data['quiz'] = $quiz;
         $questions = $this->get_quiz_questions($id);
