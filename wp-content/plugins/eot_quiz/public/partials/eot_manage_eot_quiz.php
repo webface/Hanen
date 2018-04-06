@@ -21,17 +21,7 @@ if (isset($_POST['submit']))
         print 'Sorry, your nonce did not verify.';
         exit;
     }
-    // Process Quiz Time.
-    if($_POST['quizTimeText'] >= 60)
-    {   // Change to hours.
-        $hours = $_POST['quizTimeText'] / 60;
-        $quizTime = $hours . ":00:00";
-    }
-    else
-    {
-        // Change to minutes
-        $quizTime = '00:' . $_POST['quizTimeText'] . ':00',
-    }
+    $quizTime = convertMinutesToTime($_POST['quizTimeText']);
     $quiz_name = preg_replace("/[^a-zA-Z0-9'?_\. !&-]+/","",sanitize_text_field($_POST['quizName']));
     $data = array(
         'name' => $quiz_name,

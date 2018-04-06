@@ -11344,3 +11344,33 @@ function updateModulesOrder_callback ()
     echo json_encode($result);
     wp_die();
 }
+// Convert minutes to time.
+function convertMinutesToTime($minutes = 0)
+{
+  if($minutes == 0)
+  {
+    return false;
+  }
+  if($minutes >= 60)
+  {
+    $hours = str_pad(round($minutes / 60), 2, '0', STR_PAD_LEFT); 
+    $minutes = str_pad($minutes % 60, 2, '0', STR_PAD_LEFT);
+    $time = "$hours:$minutes:00";
+  }
+  else
+  {
+    $time = "00:$minutes:00";
+  }
+  return $time;
+}
+// Convert time to minutes.
+function convertTimetoMinutes($time = "00:00:00")
+{
+  if($time == "00:00:00")
+  {
+    return false;
+  }
+  $hoursToMinutes = date('H', strtotime($time)) * 60;
+  $minutes = date('i', strtotime($time));
+  return $hoursToMinutes + $minutes;
+}

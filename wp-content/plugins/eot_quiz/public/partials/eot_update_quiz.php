@@ -26,17 +26,8 @@ $eot_quiz = new EotQuizData();
 if (isset($_POST['submit'])) 
 {
 
-    // Process Quiz Time.
-    if($_POST['quizTimeText'] >= 60)
-    {   // Change to hours.
-        $hours = $_POST['quizTimeText']/60;
-        $quizTime =  $hours . ":00:00";
-    }
-    else
-    {
-        // Change to minutes
-        $quizTime = '00:' . $_POST['quizTimeText'] . ':00';
-    }
+    // Process quiz time.
+    $quizTime = convertMinutesToTime($_POST['quizTimeText']);
     $data = array(
         'name' => preg_replace("/[^a-zA-Z0-9'\"?_\. !&-]+/","",sanitize_text_field($_POST['quizName'])),
         'description' => filter_var($_POST['quizDescription']),

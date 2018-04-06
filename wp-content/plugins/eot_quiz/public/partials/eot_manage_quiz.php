@@ -77,7 +77,7 @@ if ($quizzes)
     // Creating rows for the table
     foreach ($quizzes as $quiz) 
     {
-        $time_limit = ( substr($quiz['time_limit'], 0, 2) > 0 ) ? date('H', strtotime($quiz['time_limit'])) * 60 : date('i', strtotime($quiz['time_limit'])); // convert hours into minute
+        $time_limit = convertTimetoMinutes($quiz['time_limit']);
         $quizTableObj->rows[] = array(
             '<span>' . stripslashes($quiz['name']) . '</span>',
             $quiz['questions'],
