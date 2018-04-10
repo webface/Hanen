@@ -88,9 +88,10 @@ class EotQuizData
     public function deleteQuiz($id = 0) 
     {
         global $wpdb;
-        $del = $wpdb->delete(TABLE_QUIZ_QUESTION, array('quiz_id' => $id));
+//        $del = $wpdb->delete(TABLE_QUIZ_QUESTION, array('quiz_id' => $id));
         $del = $wpdb->delete(TABLE_QUIZ, array('ID' => $id));
-        $del = $wpdb->delete(TABLE_MODULE_RESOURCES, array('resource_id' => $id, 'type' => 'exam'));
+        $del = $wpdb->delete(TABLE_MODULE_RESOURCES, array( 'resource_id' => $id, 'type' => 'exam' ) );
+        $del = $wpdb->delete(TABLE_COURSE_MODULE_RESOURCES, array( 'resource_id' => $id, 'type' => 'exam' ) );
 
         return $del;
     }
