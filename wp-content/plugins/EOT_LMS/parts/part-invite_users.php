@@ -22,6 +22,7 @@
     if (isset($_REQUEST['subscription_id']) && $_REQUEST['subscription_id'] !== "") 
     {
         $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
+        $library_id = getLibraryFromSubscription($subscription_id);
         $courses = getCoursesById($org_id, $subscription_id);
         if (isset($true_subscription['status']) && $true_subscription['status']) 
         {
@@ -39,7 +40,29 @@
                                     <div class="msg-bl">
                                         <div class="msg-br">
                                             <div class="msgbox">
-                                                <p><?= __('Staff will receive an e-mail with a hyperlink (containing a unique code) that lets them register and be automatically placed in the Camp or Course.', 'EOT_LMS')?></p>
+                                                <p>
+<?php
+    if ( $library_id == P4C_ID )
+    {
+        echo __('<h3>How to Register Your Families</h3>', 'EOT_LMS');
+        echo __('<p>You made it to the right page! Here’s how to provide the Prep4Camp package to all of your new families. You may also wish to provide it to some of your returning families. Simply follow these steps:</p>', 'EOT_LMS');
+        echo __('<ol>
+            <li>Copy the entire letter below. (You can edit it before sending.)</li>
+            <li>Open your email program. (This might be Outlook or Gmail, etc.)</li>
+            <li>Paste the entire letter into the body of a new email.</li>
+            <li>Make any edits you would like to the text of the email.</li>
+            <li>In the TO: section of the email, put all of the recipients’ emails</li>
+            <li>In the SUBJECT: section of the email, type something like: <strong>Enroll Now in Prep4Camp!</strong> or <strong>Your Invitation to Prep4Camp is Here!</strong></li>
+            <li>Click SEND!</li>
+        </ol>', 'EOT_LMS');
+        echo __('<p>When families receive your email, it will contain your unique registration link. That link has been automatically included in the letter below. The registration link will send them to a special page on ExpertOnlineTraining.com, where they will enter their name and email, as a way of authenticating their enrollment in your camp. Parents and kids will then be able to watch the Prep4Camp video together as a family, download the parent podcast (to listen to in the car after opening-day drop-off), and print out the camper tip sheet.</p>', 'EOT_LMS');
+    }
+    else
+    {
+        echo __('Staff will receive an e-mail with a hyperlink (containing a unique code) that lets them register and be automatically placed in the Camp or Course.', 'EOT_LMS');
+    }
+?>                                                        
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -589,23 +612,35 @@ jane@email.com
             			  </div>
             		  </div>
 <p>
-    Dear Staff,<br>
-    <br>
-    <?= __("Summer is right around the corner! Before you know it, the campers will be arriving at ", 'EOT_LMS')?><?= get_the_title($org_id)?>, <?= __('full of energy, enthusiasm, and youthful exuberance.', 'EOT_LMS')?><br>
-    <br>
-    <?= __("Before you arrive for our on-site training, I'd like you to watch a set of short training videos and take the accompanying quizzes. I'll be monitoring your progress along the way. This combination of online and on-site training is engaging, relevant, and essential for your work with children this summer.", 'EOT_LMS')?><br>
-    <br>
-    <?= __("Follow the link below to register your account and start the training. If you already have an account, still click the link as it will add you to the appropriate grouping.", 'EOT_LMS')?><br>
-    <br>
-    <?= __("CODE: ", 'EOT_LMS')?><a href="<?= site_url('/register/?type=Student&code='.$code); ?>"><strong><?= $code; ?></strong></a><br>
-    <br>
-    <?= __("If the link above does not work, try to copy/paste this URL into your browser:", 'EOT_LMS')?> <?= site_url('/register/?type=Student&code='.$code); ?><br>
-    <br>
-    <?= __("If you run into any technical snags, you can call the toll-free support line: 877-390-2267 during regular business hours. ", 'EOT_LMS')?><br>
-    <br>
-    <?= __('Sincerely,', 'EOT_LMS')?><br>
-    <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?><br>
-    <?= __('Camp Director', 'EOT_LMS')?>
+<?php
+    if ( $library_id == P4C_ID )
+    {
+        $camp_name = get_the_title($org_id);
+        echo __( "<p>Dear Camp Families,</p>", "EOT_LMS" );
+        echo __( "<p>Life is better when you’re prepared. Which is why I’m so excited to give you access to <b>Prep4Camp</b>. Developed by psychologist and camp parent, Dr. Chris Thurber, Prep4Camp includes a 25-minute video (for families to watch together), a 20-minute podcast (for parents to download and listen to on the way home from opening-day drop-off), and a PDF tip sheet for campers to print and pack with the rest of their gear.</p>", "EOT_LMS" );
+        echo __( "<p><b>Prep4Camp</b> has been carefully designed after extensive research on what promotes positive adjustment. We want everyone who attends $camp_name to make friends, have fun, and cope effectively with any normal feelings of missing home. Prep4Camp makes that possible by giving families expert guidance, insider tips, and kids’ perspectives on how to get the most out of your stay.</p>", "EOT_LMS" );
+        echo __( "<p><b>Enrollment</b> is complementary for all $camp_name families. Simply click on the link below, create your unique Prep4Camp account, and start enjoying the benefits of this ingenious and entertaining program. It’s a small time commitment with huge benefits.</p>", "EOT_LMS" );
+        echo __("<p>Your unique registration link: ", 'EOT_LMS') . '<a href="' . site_url("/register/?type=Student&code=.$code") . '"><strong>' . $code . '</strong></a></p>';
+        echo __("<p>If the link above does not work, try to copy/paste this URL into your browser:", 'EOT_LMS') . site_url('/register/?type=Student&code='.$code) . '</p>';
+        echo __( "<p>Our friends at <b>ExpertOnlineTraining.com</b> host the Prep4Camp program, so if you run into any technical snags, please do not call camp. Instead, call EOT’s toll-free support line: (877) 390-2267 between 9-5 Eastern, Monday through Friday.</p>", "EOT_LMS" );
+        echo __( "<p>Camp is a powerful vehicle for positive youth development. And by using Prep4Camp, we are confident that everyone will have an amazing experience!</p>", "EOT_LMS" );
+        echo __('<p>Sincerely,</p>', 'EOT_LMS');
+        echo '<p>' . $current_user->user_firstname . ' ' . $current_user->user_lastname . '<br />' . $camp_name . '</p>';
+    }
+    else
+    {
+        $camp_name = get_the_title($org_id);
+        echo __('<p>Dear Staff,</p>', 'EOT_LMS');
+        echo __("<p>Summer is right around the corner! Before you know it, the campers will be arriving at $camp_name, full of energy, enthusiasm, and youthful exuberance.", 'EOT_LMS');
+        echo __("<p>Before you arrive for our on-site training, I'd like you to watch a set of short training videos and take the accompanying quizzes. I'll be monitoring your progress along the way. This combination of online and on-site training is engaging, relevant, and essential for your work with children this summer.", 'EOT_LMS');
+        echo __("<p>Follow the link below to register your account and start the training.", 'EOT_LMS');
+        echo __("<p>CODE: ", 'EOT_LMS') . '<a href="' . site_url("/register/?type=Student&code=.$code") . '"><strong>' . $code . '</strong></a></p>';
+        echo __("<p>If the link above does not work, try to copy/paste this URL into your browser:", 'EOT_LMS') . site_url('/register/?type=Student&code='.$code) . '</p>';
+        echo __("<p>If you run into any technical snags, you can call the toll-free support line: 877-390-2267 M-F 9-5.", 'EOT_LMS');
+        echo __('<p>Sincerely,</p>', 'EOT_LMS');
+        echo '<p>' . $current_user->user_firstname . ' ' . $current_user->user_lastname . '<br />' . $camp_name . '</p>';
+    }
+?>
 </p>
     		 </div>
 <?php
