@@ -36,7 +36,7 @@
         if($track && $track->repeat == 1)
         {
             echo "<div class='bs'><div class='well'><p>You have failed the quiz! You must rewatch the video to attempt it again</p></div></div>";
-            echo "<a href='?part=my_library&course_id=".$course_id."&enrollment_id=".$enrollment_id."'>Back to Courses</a>";
+            echo "<a href='?part=my_library&course_id=".$course_id."&enrollment_id=".$enrollment_id."&subscription_id=".$subscription_id."'>Back to Courses</a>";
             wp_die();
         }
     }
@@ -48,8 +48,15 @@
         {
             if(verifyQuizInCourse($quiz_id, $course_id) || $continue_learning)
             {
-                echo '<script>var quiz_id = ' . $quiz_id . '; var course_id = ' . $course_id . '; var enrollment_id = ' . $enrollment_id . ';</script>'; // set the quiz ID in JS
-
+                // set the quiz variables in JS
+?>
+                <script type="text/javascript">
+                    var quiz_id = <?= $quiz_id ?>;
+                    var course_id = <?= $course_id ?>;
+                    var enrollment_id = <?= $enrollment_id ?>;
+                    var subscription_id = <?= $subscription_id ?>;
+                </script>
+<?php
                 //load quiz
                 echo do_shortcode( '[eot_quiz_display action="view_quiz" id="' . $quiz_id . '"]' );
             }

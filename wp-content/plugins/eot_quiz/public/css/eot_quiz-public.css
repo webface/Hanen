@@ -89,7 +89,7 @@
 }
 
 .quiz-holder .exit{
-    display:block;
+    /* display:block; */
     text-align: center;
 }
 

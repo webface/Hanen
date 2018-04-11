@@ -57,6 +57,7 @@
             quiz_id:quiz_id,
             course_id:course_id,
             enrollment_id:enrollment_id,
+            subscription_id:subscription_id,
             resultsActive: false,
             passed: false,
             numQuestionsAnswered: 0,
@@ -329,12 +330,12 @@
             quizObj.perc = Math.round(quizObj.score / quizObj.quiz.questions.length * 100);
             if (quizObj.score >= quizObj.quiz.quiz.passing_score)
             {
-                quizObj.quiz_message = "You have passed the Quiz!"
+                quizObj.quiz_message = "Congratulations! You passed this quiz with a score of " + quizObj.score;
                 quizObj.passed = true;
             }
             else
             {
-                quizObj.quiz_message = "You have failed the Quiz!"
+                quizObj.quiz_message = "You score on this quiz was " + quizObj.score + " so you did not pass.";
                 quizObj.passed = false;
             }
             if (quizObj.numQuestionsAnswered >= quizObj.quiz.questions.length)

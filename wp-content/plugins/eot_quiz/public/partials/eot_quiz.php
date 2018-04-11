@@ -13,6 +13,17 @@
             <div class="bs col-xs-4"><strong><?= __('Passing Grade:', 'EOT_LMS')?> </strong>{{welcome.quizmanager.quiz.quiz.passing_score}}/{{welcome.quizmanager.quiz.questions.length}}</div>
 
         </div>
+        <br>
+        <span>
+            <?= __('Quizzes on EOT videos contain seven multiple-choice questions. You have 20 minutes to complete each quiz. At the end of each quiz, you will see your score. The passing score is displayed above. If you do not pass a quiz, don’t worry. You will be able to click a button to see corrective feedback. You will then have the opportunity to review the video and retake the quiz.', 'EOT_LMS')?>
+        </span>
+        <br><br>
+        <b><?= __('NOTES:', 'EOT_LMS')?></b>
+        <ul style="list-style-type:disc">
+          <li><?= __('Retake quizzes contain a few different questions, but will cover the same material.', 'EOT_LMS')?></li>
+          <li><?= __('Custom quizzes, created by your organization, may not contain corrective feedback.', 'EOT_LMS')?></li>
+          <li><?= __('You may take a quiz up to three times, unless your director sets a higher number.', 'EOT_LMS')?></li>
+        </ul> 
         <img ng-cloak class="logo startBtn" src="{{welcome.quizmanager.quiz_start_button}}" ng-hide="welcome.quizmanager.quizIsLoading" ng-click="welcome.activateQuiz()"/>
     </div>
     <div class="slide-container quiz"  ng-controller="quizCtrl as quiz" ng-show="quiz.quizmanager.quizActive" ng-cloak>
@@ -67,9 +78,14 @@
             <div class="bs col-xs-4"><strong><?= __('Time Spent: ', 'EOT_LMS')?></strong>{{results.quizmanager.counter| formatTimer}}</div>
 
         </div>
-        <h1 ng-cloak >{{results.quizmanager.quiz_message}}</h1>
-        <a ng-cloak href="?part=my_library&course_id={{results.quizmanager.course_id}}&enrollment_id={{results.quizmanager.enrollment_id}}" class="exit"><?= __('Back to Courses', 'EOT_LMS')?></a>
-        <a ng-cloak href="?part=wronganswers&course_id={{results.quizmanager.course_id}}&quiz_id={{results.quizmanager.quiz_id}}" class="exit"><?= __('View Wrong Answers', 'EOT_LMS') ?></a>
+        <h1 ng-cloak >{{results.quizmanager.quiz_message}}</h1> 
+        <br>
+        <span><?= __("If you'd like you can click the Feedback button below to read an explanation of why correct answers were correct and why any incorrect answers were wrong. Or, you can move ahead to the next video in your course.", "EOT_LMS")?></span>
+        <br><br>
+        <div style="width: 330px; margin: 0 auto;">
+            <a ng-cloak href="?part=my_library&course_id={{results.quizmanager.course_id}}&enrollment_id={{results.quizmanager.enrollment_id}}&subscription_id={{results.quizmanager.subscription_id}}" class="exit btn"><?= __('Back to Courses', 'EOT_LMS')?></a>
+            <a ng-cloak href="?part=wronganswers&course_id={{results.quizmanager.course_id}}&quiz_id={{results.quizmanager.quiz_id}}&enrollment_id={{results.quizmanager.enrollment_id}}&subscription_id={{results.quizmanager.subscription_id}}" class="exit btn"><?= __('View Wrong Answers', 'EOT_LMS') ?></a>
+        </div>
         <img class="logo" src="{{results.quizmanager.quiz_results_logo}}"/>
     </div>
 </div>
