@@ -195,7 +195,7 @@
       			<center>
       				<div id="quiz" style="display:none">
                                     <span class="loadingQuiz" style="display:none"><i class="fa fa-spinner fa-pulse fa-2x"></i>loading quiz</span>
-                                    <a class="btn takeQuiz" style="display:none" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>">
+                                    <a class="btn takeQuiz" style="display:none" href="?part=quiz&module_id=<?= $module_id ?>&quiz_id=<?= $quiz_id?>&subscription_id=<?= $subscription_id?>&course_id=<?= $course_id?>&enrollment_id=<?= $enrollment_id ?>">
                                     Take Quiz
                                     </a>
                                 </div>

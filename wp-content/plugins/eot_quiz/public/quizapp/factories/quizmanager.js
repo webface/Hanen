@@ -57,6 +57,7 @@
             quiz_id:quiz_id,
             course_id:course_id,
             enrollment_id:enrollment_id,
+            subscription_id:subscription_id,
             resultsActive: false,
             passed: false,
             numQuestionsAnswered: 0,

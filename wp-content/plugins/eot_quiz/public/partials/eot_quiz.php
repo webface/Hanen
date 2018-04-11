@@ -83,8 +83,8 @@
         <span><?= __("If you'd like you can click the Feedback button below to read an explanation of why correct answers were correct and why any incorrect answers were wrong. Or, you can move ahead to the next video in your course.", "EOT_LMS")?></span>
         <br><br>
         <div style="width: 330px; margin: 0 auto;">
-            <a ng-cloak href="?part=my_library&course_id={{results.quizmanager.course_id}}&enrollment_id={{results.quizmanager.enrollment_id}}" class="exit btn"><?= __('Back to Courses', 'EOT_LMS')?></a>
-            <a ng-cloak href="?part=wronganswers&course_id={{results.quizmanager.course_id}}&quiz_id={{results.quizmanager.quiz_id}}" class="exit btn"><?= __('View Wrong Answers', 'EOT_LMS') ?></a>
+            <a ng-cloak href="?part=my_library&course_id={{results.quizmanager.course_id}}&enrollment_id={{results.quizmanager.enrollment_id}}&subscription_id={{results.quizmanager.subscription_id}}" class="exit btn"><?= __('Back to Courses', 'EOT_LMS')?></a>
+            <a ng-cloak href="?part=wronganswers&course_id={{results.quizmanager.course_id}}&quiz_id={{results.quizmanager.quiz_id}}&enrollment_id={{results.quizmanager.enrollment_id}}&subscription_id={{results.quizmanager.subscription_id}}" class="exit btn"><?= __('View Wrong Answers', 'EOT_LMS') ?></a>
         </div>
         <img class="logo" src="{{results.quizmanager.quiz_results_logo}}"/>
     </div>
