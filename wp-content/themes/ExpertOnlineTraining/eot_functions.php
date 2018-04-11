@@ -9194,7 +9194,7 @@ function calc_course_completion($user_id = 0, $course_id = 0)
         }
       }
     }
-}
+  }
   if ($videos_in_custom_modules)
   {
     foreach($videos_in_custom_modules as $video)//count and check watched for custom module videos

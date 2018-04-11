@@ -3,7 +3,7 @@
   <?= CRUMB_SEPARATOR ?>     
   <?= CRUMB_ADMINISTRATOR ?>    
   <?= CRUMB_SEPARATOR ?>    
-    <span class="current"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></span>     
+    <span class="current"><?= __("Manage Staff Accounts / Invite Families", "EOT_LMS"); ?></span>     
 </div>
 
 <?php
@@ -32,7 +32,7 @@
     {
       if(current_user_can( "is_director" ))
       {
-        echo '<h1 class="article_page_title">' . __("Manage Staff Accounts", "EOT_LMS") . '</h1>';
+        echo '<h1 class="article_page_title">' . __("Manage Staff Accounts / Invite Families", "EOT_LMS") . '</h1>';
 
         if( isset($_REQUEST['status']) && isset($_REQUEST['status']) == 'uploadedspreadsheet' )
         {

@@ -5,7 +5,7 @@
     <?= CRUMB_SEPARATOR ?>
     <?= CRUMB_MANAGE_STAFF_ACCOUNTS ?>
     <?= CRUMB_SEPARATOR ?> 
-    <span class="current"><?= __('Invite Staff To Register', 'EOT_LMS')?></span>     
+    <span class="current"><?= __('Invite Staff To Register / Invite Families', 'EOT_LMS')?></span>     
 </div>
 
 <?php
@@ -24,6 +24,8 @@
         $subscription_id = filter_var($_REQUEST['subscription_id'], FILTER_SANITIZE_NUMBER_INT); // The subscription ID
         $library_id = getLibraryFromSubscription($subscription_id);
         $courses = getCoursesById($org_id, $subscription_id);
+        $camp_name = get_the_title($org_id);
+
         if (isset($true_subscription['status']) && $true_subscription['status']) 
         {
             if (current_user_can("is_director")) 
@@ -33,7 +35,7 @@
                     case 1:
                         // the options page
 ?>
-                        <h1 class="article_page_title"><?= __('Invite Staff To Register', 'EOT_LMS')?></h1>
+                        <h1 class="article_page_title"><?= __('Invite Staff To Register / Invite Families', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
@@ -42,7 +44,7 @@
                                             <div class="msgbox">
                                                 <p>
 <?php
-    if ( $library_id == P4C_ID )
+/*    if ( $library_id == P4C_ID )
     {
         echo __('<h3>How to Register Your Families</h3>', 'EOT_LMS');
         echo __('<p>You made it to the right page! Here’s how to provide the Prep4Camp package to all of your new families. You may also wish to provide it to some of your returning families. Simply follow these steps:</p>', 'EOT_LMS');
@@ -59,8 +61,8 @@
     }
     else
     {
-        echo __('Staff will receive an e-mail with a hyperlink (containing a unique code) that lets them register and be automatically placed in the Camp or Course.', 'EOT_LMS');
-    }
+*/        echo __('Choose between two methods of emailing your staff or your Prep4Camp families. Both methods deliver a hyperlink with a unique registration code. When clicked, the registration code automatically connects them to the content you assigned.', 'EOT_LMS');
+//    }
 ?>                                                        
                                                 </p>
                                             </div>
@@ -72,26 +74,26 @@
                         <h2><?= __('Choose an Invitation Method:', 'EOT_LMS')?></h2>
                         <ol>
                             <li>
-                                <h3><?= __('Use our Invitation Sender', 'EOT_LMS')?></h3>
+                                <h3><?= __('Use our Invitation Sender (recommended)', 'EOT_LMS')?></h3>
                                 <ul>
                                     <li>
-                                        <?= __("Just copy-and-paste the staff e-mail addresses and we'll send out the invitation e-mail.", "EOT_LMS")?>
+                                        <?= __("Paste the e-mail addresses of your staff or your Prep4Camp families (from your own database into ours) and we will send a pre-written invitation letter to each recipient. Each email will have a unique registration link. Of course, you can edit the email before sending.", "EOT_LMS")?>
                                     </li>
 <!--
                                     <li>
-                                        <?= __("You can <b>Track</b> those who haven't registered yet by viewing the <b>Invite List Report</b>.", 'EOT_LMS')?>
+                                        <?= __("This method allows you to track who has registered and who has not yet registered for the content you assigned.", 'EOT_LMS')?>
                                     </li>
 -->
                                 </ul>
                             </li>
                             <li>
-                                <h3><?= __('Use your own E-mail (Hotmail, GMail, etc.)', 'EOT_LMS')?></h3>
+                                <h3><?= __('Use your own Email Client', 'EOT_LMS')?></h3>
                                 <ul>
                                     <li>
-                                        <?= __('We give you the hyperlink to copy-and-paste into an e-mail and you send it yourself.', 'EOT_LMS')?>
+                                        <?= __('We will provide the unique registration link for you to copy and paste into an email that you send yourself, from your Outlook, Hotmail, or Gmail account. You can still use our sample invitation letter, which you can edit before sending.', 'EOT_LMS')?>
                                     </li>
                                     <li>
-                                        <?= __("You <b><u>cannot</u> Track</b> those who haven't registered yet.", 'EOT_LMS')?>
+                                        <?= __("If you use this method, you <b>cannot track</b> who has registered and who has not yet registered for the content you assigned.", 'EOT_LMS')?>
                                     </li>
                                 </ul>
                             </li>
@@ -116,7 +118,7 @@
                     case 2:
                         // our invitation sender. User will be asked to input a comma seperated list of emails
 ?>
-                        <h1 class="article_page_title"><?= __('Staff Emails', 'EOT_LMS')?></h1>
+                        <h1 class="article_page_title"><?= __('Invitation Sender, Step 1', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
@@ -124,22 +126,17 @@
                                         <div class="msg-br">
                                             <div class="msgbox">
                                                 <p>
-                                                    <?= __('Paste a list of e-mail addresses in the field below.', 'EOT_LMS')?>
+                                                    <?= __('Paste a list of staff or parent email addresses in the box below. <br><br>Use one of the following formats:', 'EOT_LMS')?>
                                                 </p>
                                                 <div class="small">
-                                                    <b><?= __('Format of E-mail Addresses:', 'EOT_LMS')?></b>
-                                                    <?= __('The format should be one of the following:', 'EOT_LMS')?>
-                                                    <ul>
+                                                    <ol>
                                                         <li>
-                                                            <?= __('comma-separated list, or', 'EOT_LMS')?>
+                                                            <?= __('A comma separated list, such as: bill@comcast.com, sam@comcast.com, etc...', 'EOT_LMS')?>
                                                         </li>
                                                         <li>
-                                                            <?= __('one e-mail address per line (no comma), or', 'EOT_LMS')?>
+                                                            <?= __('One email address per line, without any commas', 'EOT_LMS')?>
                                                         </li>
-                                                        <li>
-                                                            <?= __('a combination of commas and one-per-line', 'EOT_LMS')?>
-                                                        </li>
-                                                    </ul>
+                                                    </ol>
                                                 </div>
                                             </div>
                                         </div>
@@ -205,19 +202,36 @@ jane@email.com
                         $org_id = filter_var($_REQUEST['org_id'], FILTER_SANITIZE_NUMBER_INT);
                         $course_id = isset($_REQUEST['course_id']) ? filter_var($_REQUEST['course_id'], FILTER_SANITIZE_NUMBER_INT) : '';
                         $emails = isset($_REQUEST['emails']) ? $_REQUEST['emails'] : '';
-                        $camp_name = get_the_title($org_id);
                         $code = "%%code%%";
 ?>
                         <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/jquery.tinymce.js' ?>"></script>
                         <script type="text/javascript" src="<?= get_template_directory_uri() . '/js/tinymce/tiny_mce.js' ?>"></script>
-                        <h1 class="article_page_title"><?= __('Compose Message', 'EOT_LMS')?></h1>
+                        <h1 class="article_page_title"><?= __('Invitation Sender, Step 3', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
                                     <div class="msg-bl">
                                         <div class="msg-br">
                                             <div class="msgbox">
-                                                <p><?= __("The following message will be sent to your staff. For your convenience we've written a sample letter that you can customize to your liking. Once you are done, click ", 'EOT_LMS')?><strong><?= __('Send', 'EOT_LMS')?></strong>. <br><br><?= __('Your message ', 'EOT_LMS')?><strong><?= __('MUST', 'EOT_LMS')?></strong> <?= __('include the following text which will substitute a unique sign up link for each staff member:', 'EOT_LMS')?><br><strong><?= $code; ?></strong> </p>
+<?php
+    if ( $library_id == P4C_ID )
+    {
+?>
+                                                <p><?= __("Now that you’ve entered the email addresses for your Prep4Camp families, the final step is to edit the letter below. We have used “short codes,” which will automatically insert your name, your camp’s name, and your camp’s unique registration link.", "EOT_LMS") ?></p>
+                                                <p><?= __("When families receive your email, it will contain a unique registration link. That link has been automatically included in the letter below. The registration link will send them to a special page on ExpertOnlineTraining.com, where they will enter their name and email, as a way of authenticating their enrollment in your camp.", "EOT_LMS") ?></p>
+                                                <p><?= __("Once their registration is complete, parents and kids will then be able to watch the Prep4Camp video together as a family, download the parent podcast (to listen to in the car after opening-day drop-off), and print out the camper tip sheet.", "EOT_LMS") ?></p>
+                                                <p><?= __("<b>Take a minute</b> and read the Prep4Camp enrollment letter below. Feel free to make any edits you would like, then click the SEND button below the letter. That’s it! From your Prep4Camp dashboard, you’ll be able to track enrollment.", "EOT_LMS") ?></p>
+                                                <p><?= __("<b>IMPORTANT:</b> Do not remove or modify or remove the <b>%%code%%</b> in the message below. This will be replaced with the unique registration link for each family.", "EOT_LMS") ?></p>
+<?php
+    }
+    else
+    {
+?>
+                                                <p><?= __("The following message will be sent to your staff. For your convenience we've written a sample letter that you can customize to your liking. Once you are done, click ", 'EOT_LMS')?><strong><?= __('Send', 'EOT_LMS')?></strong>. <br><br><?= __('Your message ', 'EOT_LMS')?><strong><?= __('MUST', 'EOT_LMS')?></strong> <?= __('include the following text which will substitute a unique sign up link for each staff member:', 'EOT_LMS')?><strong><?= $code; ?></strong> </p>
+
+<?php
+    }
+?>
                                             </div>
                                         </div>
                                     </div>
@@ -229,6 +243,33 @@ jane@email.com
                                 <tr> 
                                     <td class="value"> 
                                         <textarea class="tinymce" id="composed_message" name="msg" style="margin-left:1px;width: 100%; height: 300px">
+<?php
+    if ( $library_id == P4C_ID )
+    {
+?>
+                                            <p><?= __("Dear $camp_name Families", 'EOT_LMS')?></p>
+
+                                            <p><?= __("Adventures are always better when you're prepared. Which is why I'm so excited to give you access to <b>Prep4Camp</b>. Developed by psychologist and camp parent, Dr. Chris Thurber, Prep4Camp includes a 25-minute video (for families to watch together), a 20-minute podcast (for parents to download and listen to on the way home from opening-day drop-off), and a PDF tip sheet for campers to print and pack with the rest of their gear.", 'EOT_LMS')?></p>
+
+                                            <div style="height: 94px;"><img src="https://www.expertonlinetraining.com/wp-content/uploads/2018/02/Prep-4-camp-logo-150px.png" alt="prep4camp Logo" style="height: 94px; float: left;"> <?= __("<b>Prep4Camp</b> has been carefully designed after extensive research on what promotes positive adjustment. We want everyone who attends $camp_name to feel happy, make friends, have fun, and cope effectively with any normal feelings of missing home. Prep4Camp makes that possible by giving caregivers and kids expert guidance, insider tips, and actual campers' perspectives on how to get the most out of camp.", 'EOT_LMS')?></div>
+
+                                            <p><?= __("<b>Enrollment</b> in Prep4Camp is so valuable that I have pre-paid for all new $camp_name families. Simply click on the link below, create your unique Prep4Camp account, and start enjoying the benefits of this ingenious and entertaining program. Investing a little time now will have huge benefits at camp.", 'EOT_LMS')?></p>
+
+                                            <p><?= __("Your unique registration link is:", 'EOT_LMS')?> <a href="<?= site_url('/register/?type=Student&code=' . $code) ?>"><strong><?= $code ?></strong></a></p>
+
+
+                                            <p><?= __("Our friends at <b>ExpertOnlineTraining.com</b> host the <b>Prep4Camp</b> program, so if you run into any technical snags, please do not call $camp_name. Instead, call Expert Online Training's toll-free support line: (877) 390-2267 between 9-5 Eastern, Monday through Friday. One of their Customer Success Team members will be glad to answer your questions.", 'EOT_LMS')?></p>
+
+                                            <p><?= __("Camp is a powerful vehicle for positive youth development. And by using <b>Prep4Camp</b>, we are confident that everyone will have an amazing experience!", 'EOT_LMS')?></p>
+
+                                            <p><?= __('Sincerely yours,', 'EOT_LMS')?><br><br>
+                                            <?= $current_user->display_name ?><br>
+                                            <?= $camp_name ?></p>
+<?php
+    }
+    else
+    {
+?>
                                             <p><b><?= __('Congratulations!', 'EOT_LMS')?></b> <?= $current_user->user_firstname; ?> <?= $current_user->user_lastname; ?> of <?= $camp_name; ?><?= __(' is inviting you to join  Expert Online Training (EOT), the world’s best virtual classroom for youth development professionals. By using EOT now, before your job starts at ', 'EOT_LMS')?><?= $camp_name; ?><?= __(', you will turbocharge your leadership skills, boost your self-confidence, and get even more out of ', 'EOT_LMS')?><?= $camp_name; ?><?= __("’s on-site training.", 'EOT_LMS')?> </p>
 
                                             <div style="height: 94px;"><img src="https://www.expertonlinetraining.com/wp-content/uploads/2017/02/image1.png" alt="EOT Logo" style="width: 125px; height: 94px; float: left;"> <b><?= __('Take EOT with you. ', 'EOT_LMS')?></b> <?= __('We know you are busy, so our new website is mobile-friendly. You can now watch EOT videos and take your quizzes on any smartphone, tablet, or laptop with a WiFi connection. Imagine learning more about behavior management, leadership, supervision, games, and safety while you sit in a café, library, or student lounge!', 'EOT_LMS')?></div>
@@ -248,6 +289,9 @@ jane@email.com
                                             <?= __('Dr. Chris Thurber', 'EOT_LMS')?><br>
                                             <?= __('EOT Co-Founder &', 'EOT_LMS')?><br>
                                             <?= __('Director of Content', 'EOT_LMS')?></p>
+<?php        
+    }
+?>
                                         </textarea>
                                     </td>
                                 </tr>
@@ -322,14 +366,14 @@ jane@email.com
                             echo "<script>var use_email=false;</script>";
                         }
 ?>
-                        <h1 class="article_page_title"><?= __('Select Registration Type', 'EOT_LMS')?></h1>
+                        <h1 class="article_page_title"><?= __('Invitation Sender, Step 2', 'EOT_LMS')?></h1>
                         <div class="msgboxcontainer_no_width">
                             <div class="msg-tl">
                                 <div class="msg-tr"> 
                                     <div class="msg-bl">
                                         <div class="msg-br">
                                             <div class="msgbox">
-                                                <p><?= __('When a staff member signs up, please select whether or not you would like to enroll these staff members into a specific course or simply add them to your camp and enroll them into specific courses later on.', 'EOT_LMS')?></p>
+                                                <p><?= __('If you are enrolling staff members for <b>online training</b>, you may choose whether to enroll them into a specific course now or simply add them to your EOT subscription now and enroll them into a specific course later.<br><br>If you are inviting parents to <b>Prep4Camp</b>, you must choose to enroll them into that program now.', 'EOT_LMS')?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -339,9 +383,9 @@ jane@email.com
 
                         <form method="POST" id="choose_enrollment" action="?part=invite_users&org_id=<?= $org_id ?>&subscription_id=<?= $subscription_id ?>&user_id=<?= $user_id ?>&step=3"> 
                             <input type="radio" name="choice" id="" value="org">
-                            <label for=""><?= __('Just add these staff members to my camp', 'EOT_LMS')?></label><br>
+                            <label for=""><?= __('Just add these staff members to my EOT subscription. Do not enroll them in a specific course yet.', 'EOT_LMS')?></label><br>
                             <input type="radio" name="choice" id="" value="course">
-                            <label for=""><?= __('I would like to enroll these staff members into a specific course', 'EOT_LMS')?></label><br>
+                            <label for=""><?= __('Enroll these staff or families into a specific course. Choose this option of you are enrolling families into Prep4Camp or if you are enrolling staff into a specific EOT course. (The choice of courses will appear below, after you click this option.)', 'EOT_LMS')?></label><br>
                             
                             <input type="hidden" name="org_id" id="org_id" value="<?= $org_id ?>" />
                             <input type="hidden" name="user_id" id="user_id" value="<?= $user_id ?>" />
@@ -604,7 +648,33 @@ jane@email.com
                 				  <div class="msg-bl">
                 					<div class="msg-br">
                 						<div class="msgbox">
-                							<h2><?= __('Instructions', 'EOT_LMS')?></h2> <?= __("For your convenience we've written a sample letter that you can send to your staff. Copy and paste this letter into your e-mail program (you can customize the letter of course) and send it out to your staff. ", 'EOT_LMS')?><br><br><?= __('It contains the unique registration link at the bottom. Your email', 'EOT_LMS')?> <strong><?= __('MUST', 'EOT_LMS')?></strong> <?= __('include this code to link your staff to your camp', 'EOT_LMS')?>:<br><?= __('CODE:', 'EOT_LMS')?> <strong><?= $code; ?></strong><br><br><?= __("We've already filled in some details for you, like", 'EOT_LMS')?> <b><?= __("Your Name", 'EOT_LMS')?></b> <?= __('and your ', 'EOT_LMS')?><b><?= __('Camp Name', 'EOT_LMS')?></b>
+<?php
+    if ( $library_id == P4C_ID )
+    {
+?>
+                                            <h2><?= __('Enroll Families with Your Own Email', 'EOT_LMS')?></h2> 
+                                            <?= __("To enroll families in Prep4Camp using your own email client (e.g., Outlook, Hotmail, Gmail), simply follow these steps:", 'EOT_LMS')?>
+                                            <ol>
+                                                <li><?= __("Select-and-Copy the entire letter below. (You can edit it later, in your own email program.)", 'EOT_LMS')?></li>
+                                                <li><?= __("Open your email program. (This might be Outlook or Gmail, etc.)", 'EOT_LMS')?></li>
+                                                <li><?= __("Paste the entire letter into the body of a new email.", 'EOT_LMS')?></li>
+                                                <li><?= __("Make any text edits you would like. <b>Do not change the registration code.</b>", 'EOT_LMS')?></li>
+                                                <li><?= __("In the TO: section of the email, put ALL of the recipients' emails. This is who will get the unique registration link to Prep4Camp.", 'EOT_LMS')?></li>
+                                                <li><?= __("In the SUBJECT: section of the email, type something like: <b>Enroll Now in Prep4Camp!</b> or <b>Your Invitation to Prep4Camp is Here!</b>", 'EOT_LMS')?></li>
+                                                <li><?= __("Click SEND!", 'EOT_LMS')?></li>
+                                            </ol>
+                                            <?= __("When families receive your email, it will contain your unique registration link. (That link has been automatically included in the letter below.) The registration link will send them to a special page on ExpertOnlineTraining.com, where they will enter their name and email, as a way of authenticating their enrollment in your camp. ", 'EOT_LMS')?>
+                                            <br><br>
+                                            <?= __("Once enrolled, parents and kids will then be able to watch the Prep4Camp video together as a family, download the parent podcast (to listen to in the car after opening-day drop-off), and print out the camper tip sheet.", 'EOT_LMS')?>
+<?php
+    }
+    else
+    {
+?>
+                                            <h2><?= __('Instructions', 'EOT_LMS')?></h2> <?= __("For your convenience we've written a sample letter that you can send to your staff. Copy and paste this letter into your e-mail program (you can customize the letter of course) and send it out to your staff. ", 'EOT_LMS')?><br><br><?= __('It contains the unique registration link at the bottom. Your email', 'EOT_LMS')?> <strong><?= __('MUST', 'EOT_LMS')?></strong> <?= __('include this code to link your staff to your camp', 'EOT_LMS')?>:<br><?= __('CODE:', 'EOT_LMS')?> <strong><?= $code; ?></strong><br><br><?= __("We've already filled in some details for you, like", 'EOT_LMS')?> <b><?= __("Your Name", 'EOT_LMS')?></b> <?= __('and your ', 'EOT_LMS')?><b><?= __('Camp Name', 'EOT_LMS')?></b>
+<?php
+    }
+?>
                 						</div>
                 				  </div>
                 				</div>
@@ -612,24 +682,32 @@ jane@email.com
             			  </div>
             		  </div>
 <p>
+    <br><br>    
 <?php
     if ( $library_id == P4C_ID )
     {
-        $camp_name = get_the_title($org_id);
-        echo __( "<p>Dear Camp Families,</p>", "EOT_LMS" );
-        echo __( "<p>Life is better when you’re prepared. Which is why I’m so excited to give you access to <b>Prep4Camp</b>. Developed by psychologist and camp parent, Dr. Chris Thurber, Prep4Camp includes a 25-minute video (for families to watch together), a 20-minute podcast (for parents to download and listen to on the way home from opening-day drop-off), and a PDF tip sheet for campers to print and pack with the rest of their gear.</p>", "EOT_LMS" );
-        echo __( "<p><b>Prep4Camp</b> has been carefully designed after extensive research on what promotes positive adjustment. We want everyone who attends $camp_name to make friends, have fun, and cope effectively with any normal feelings of missing home. Prep4Camp makes that possible by giving families expert guidance, insider tips, and kids’ perspectives on how to get the most out of your stay.</p>", "EOT_LMS" );
-        echo __( "<p><b>Enrollment</b> is complementary for all $camp_name families. Simply click on the link below, create your unique Prep4Camp account, and start enjoying the benefits of this ingenious and entertaining program. It’s a small time commitment with huge benefits.</p>", "EOT_LMS" );
-        echo __("<p>Your unique registration link: ", 'EOT_LMS') . '<a href="' . site_url("/register/?type=Student&code=.$code") . '"><strong>' . $code . '</strong></a></p>';
-        echo __("<p>If the link above does not work, try to copy/paste this URL into your browser:", 'EOT_LMS') . site_url('/register/?type=Student&code='.$code) . '</p>';
-        echo __( "<p>Our friends at <b>ExpertOnlineTraining.com</b> host the Prep4Camp program, so if you run into any technical snags, please do not call camp. Instead, call EOT’s toll-free support line: (877) 390-2267 between 9-5 Eastern, Monday through Friday.</p>", "EOT_LMS" );
-        echo __( "<p>Camp is a powerful vehicle for positive youth development. And by using Prep4Camp, we are confident that everyone will have an amazing experience!</p>", "EOT_LMS" );
-        echo __('<p>Sincerely,</p>', 'EOT_LMS');
-        echo '<p>' . $current_user->user_firstname . ' ' . $current_user->user_lastname . '<br />' . $camp_name . '</p>';
+?>
+        <p><?= __("Dear $camp_name Families", 'EOT_LMS')?></p>
+
+        <p><?= __("Adventures are always better when you're prepared. Which is why I'm so excited to give you access to <b>Prep4Camp</b>. Developed by psychologist and camp parent, Dr. Chris Thurber, Prep4Camp includes a 25-minute video (for families to watch together), a 20-minute podcast (for parents to download and listen to on the way home from opening-day drop-off), and a PDF tip sheet for campers to print and pack with the rest of their gear.", 'EOT_LMS')?></p>
+
+        <p><div style="height: 94px;"><img src="https://www.expertonlinetraining.com/wp-content/uploads/2018/02/Prep-4-camp-logo-150px.png" alt="prep4camp Logo" style="height: 94px; float: left;"> <?= __("<b>Prep4Camp</b> has been carefully designed after extensive research on what promotes positive adjustment. We want everyone who attends $camp_name to feel happy, make friends, have fun, and cope effectively with any normal feelings of missing home. Prep4Camp makes that possible by giving caregivers and kids expert guidance, insider tips, and actual campers' perspectives on how to get the most out of camp.", 'EOT_LMS')?></div></p>
+
+        <p><br><?= __("<b>Enrollment</b> in Prep4Camp is so valuable that I have pre-paid for all new $camp_name families. Simply click on the link below, create your unique Prep4Camp account, and start enjoying the benefits of this ingenious and entertaining program. Investing a little time now will have huge benefits at camp.", 'EOT_LMS')?></p>
+
+        <p><?= __("Your unique registration link is:", 'EOT_LMS')?> <a href="<?= site_url('/register/?type=Student&code=' . $code) ?>"><strong><?= $code ?></strong></a></p>
+
+        <p><?= __("Our friends at <b>ExpertOnlineTraining.com</b> host the <b>Prep4Camp</b> program, so if you run into any technical snags, please do not call $camp_name. Instead, call Expert Online Training's toll-free support line: (877) 390-2267 between 9-5 Eastern, Monday through Friday. One of their Customer Success Team members will be glad to answer your questions.", 'EOT_LMS')?></p>
+
+        <p><?= __("Camp is a powerful vehicle for positive youth development. And by using <b>Prep4Camp</b>, we are confident that everyone will have an amazing experience!", 'EOT_LMS')?></p>
+
+        <p><?= __('Sincerely yours,', 'EOT_LMS')?><br><br>
+        <?= $current_user->display_name ?><br>
+        <?= $camp_name ?></p>
+<?php
     }
     else
     {
-        $camp_name = get_the_title($org_id);
         echo __('<p>Dear Staff,</p>', 'EOT_LMS');
         echo __("<p>Summer is right around the corner! Before you know it, the campers will be arriving at $camp_name, full of energy, enthusiasm, and youthful exuberance.", 'EOT_LMS');
         echo __("<p>Before you arrive for our on-site training, I'd like you to watch a set of short training videos and take the accompanying quizzes. I'll be monitoring your progress along the way. This combination of online and on-site training is engaging, relevant, and essential for your work with children this summer.", 'EOT_LMS');

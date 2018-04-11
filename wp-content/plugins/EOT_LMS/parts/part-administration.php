@@ -56,9 +56,9 @@
               </a>
             </div>
             <div class="col">
-              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_manage_staff_accounts')"><?= __("Manage Staff Accounts", "EOT_LMS"); ?></a>
+              <a href="?part=manage_staff_accounts&amp;org_id=<?= $org_id ?>&amp;subscription_id=<?=  $subscription_id ?>&amp;user_id=<?=  $user_id ?>" onclick="load('load_manage_staff_accounts')"><?= __("Manage Staff Accounts", "EOT_LMS"); ?> / <?= __("Invite Families", "EOT_LMS"); ?></a>
               <br>
-              <?= __("Enter or upload staff names, email addresses, and passwords.", "EOT_LMS"); ?>
+              <?= __("Enter or upload staff names, email addresses, and passwords. <br>Or, invite families to the Prep4Camp program.", "EOT_LMS"); ?>
             </div>
           </div>
           <div class="row">
