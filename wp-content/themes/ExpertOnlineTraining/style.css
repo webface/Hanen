@@ -47,7 +47,7 @@ p{font-size: 12px}
 	margin-left: 10px;
 }
 div#helpBtn, div#helpbar {
-	display: none;
+	/*display: none;*/
 }
 div#poststuff {
 	min-width: 500px
