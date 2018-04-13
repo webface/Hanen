@@ -4705,3 +4705,5 @@ span.gfield_required {
 #sortable li span { position: absolute; margin-left: -1.3em; }
 .movable { cursor: move; }
 
+a.edit-attachment{ display:none; } 
+
