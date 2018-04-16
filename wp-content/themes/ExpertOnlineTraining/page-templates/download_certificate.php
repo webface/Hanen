@@ -107,7 +107,9 @@
 	        	$first_name = get_user_meta($user_id, "first_name", true);  // First name
 				$last_name  = get_user_meta($user_id, "last_name", true); // Last name
 				$name = $first_name . ' ' . $last_name;
-d(get_template_directory(), CERTIFICATE_TEMPLATE);				
+
+var_dump(get_template_directory());
+var_dump(CERTIFICATE_TEMPLATE);				
 				$im = new Imagick(get_template_directory() . CERTIFICATE_TEMPLATE); // The certificate template.
 				$draw = new ImagickDraw();
 				$maxwidth = 970;
