@@ -108,8 +108,6 @@
 				$last_name  = get_user_meta($user_id, "last_name", true); // Last name
 				$name = $first_name . ' ' . $last_name;
 
-var_dump(get_template_directory());
-var_dump(CERTIFICATE_TEMPLATE);				
 				$im = new Imagick(get_template_directory() . CERTIFICATE_TEMPLATE); // The certificate template.
 				$draw = new ImagickDraw();
 				$maxwidth = 970;
@@ -191,6 +189,7 @@ var_dump(CERTIFICATE_TEMPLATE);
 				// This process the instant download if the file is created.
 				if (file_exists($file))
 				{
+					header_remove();
 					header('Content-Type: image/jpg');
 					header('Content-Disposition: attachment;filename=' . basename($filename));
 			    	readfile(realpath(get_template_directory() . CERTIFICATE_PATH . $filename));
