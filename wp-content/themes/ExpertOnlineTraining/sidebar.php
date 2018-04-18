@@ -34,7 +34,9 @@
 								if(current_user_can ('is_student') || current_user_can ('is_director'))
 								{
 ?>
+<!--
 									<li><a href="<?php echo bloginfo('url'); ?>/dashboard/?part=mycertificates"><?= __("My Certificates", "EOT_LMS") ?></a></li>
+-->									
 <?php
 								}
 ?>

@@ -95,6 +95,7 @@
 			}
 			else if( file_exists( $fileLocation ) )
 			{
+				header_remove();
 				header('Content-Type: image/jpg');
 				header("Cache-Control: no-store, no-cache");
 				header('Content-Disposition: attachment;filename=' . basename($filename));
