@@ -1959,7 +1959,7 @@ function my_acf_save_post( $post_id )
     $user_email_finish = array(); // Lists of email addresses that we already finish sending mail to
     $recepients = array(); // List of recepients
     $users = json_decode(stripslashes( html_entity_decode($_REQUEST['users_info'])) ); // Get the users information
-error_log("my_acf_save_post: users: " . json_encode($users));
+//error_log("my_acf_save_post: users: " . json_encode($users));
     $campname = get_the_title($org_id); // the camp name
     $directorname = $wp_user->display_name; // the directors name
 
@@ -9605,6 +9605,7 @@ function calculate_quizzes_taken($org_id = 0, $subscription_id = 0, $users_in_or
 if ( SHOW_SQL ) error_log("calculate_quizzes_taken: get_results-> $sql");
     $quizzes_in_course = $wpdb->get_results( $sql, ARRAY_A );
     $quizzes_ids = array_column($quizzes_in_course, 'resource_id');
+    $quizzes_ids = array_filter( $quizzes_ids, 'strlen' ); // in case any quiz ids are null or empty, this will remove them from the list
     $quiz_ids_string = implode(',',$quizzes_ids);
 
     if($quiz_ids_string == "")
@@ -9623,6 +9624,7 @@ if ( SHOW_SQL ) error_log("calculate_quizzes_taken: get_results-> $sql");
       return 0;
     }
     $user_ids = array_column($users_in_org, 'ID');
+    $user_ids = array_filter( $user_ids, 'strlen' ); // in case any user ID are NULL or empty, this will remove them from the list.
     $user_ids_string = implode(',',$user_ids);
     $sql = "SELECT COUNT(ID) as count FROM ". TABLE_QUIZ_ATTEMPTS ." WHERE quiz_id IN(".$quiz_ids_string.") AND  user_id IN(".$user_ids_string.")";
 if ( SHOW_SQL ) error_log("calculate_quizzes_taken: get_row-> $sql");

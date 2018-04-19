@@ -138,6 +138,7 @@
                     'fields' => array ('ID', 'display_name', 'user_email', 'user_registered')
                 );
                 $users = array();
+/* THIS USES TOO MUCH MEMORY. CANT DO IT RIGHT NOW.
                 while ($students = get_users( $args ))
                 {
                     $users = array_merge($users, $students);
@@ -150,7 +151,7 @@
                         'fields' => array ('ID', 'display_name', 'user_email', 'user_registered')
                     );
                 }
-
+*/
                 /*
                  * Create table heading for users
                  */
