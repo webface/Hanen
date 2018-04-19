@@ -92,9 +92,11 @@
                                     <li>
                                         <?= __('We will provide the unique registration link for you to copy and paste into an email that you send yourself, from your Outlook, Hotmail, or Gmail account. You can still use our sample invitation letter, which you can edit before sending.', 'EOT_LMS')?>
                                     </li>
+<!--
                                     <li>
                                         <?= __("If you use this method, you <b>cannot track</b> who has registered and who has not yet registered for the content you assigned.", 'EOT_LMS')?>
                                     </li>
+-->                                    
                                 </ul>
                             </li>
                         </ol>
