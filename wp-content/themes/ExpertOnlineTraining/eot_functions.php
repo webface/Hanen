@@ -5057,8 +5057,15 @@ function deleteStaffAccount_callback ()
         $email = sanitize_email( $_REQUEST['email'] ); // wordpress e-mail address
         $data = compact("org_id");
 
+        // make sure above vars are not null.
+        if ( empty( $org_id ) || empty( $staff_id ) || empty( $email ) || empty( $subscription_id ) )
+        {
+            $result['display_errors'] = 'failed';
+            $result['success'] = false;
+            $result['errors'] = __("deleteStaffAccount_callback error: Sorry, your are missing parameters. Please contact our customer success team and we will help you delete this user. 1-877-390-2267 M-F 9-5 EST.", "EOT_LMS");
+        }
         // Check permissions
-        if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'delete-staff_id-org_id_' . $org_id ) ) 
+        else if( ! wp_verify_nonce( $_POST['_wpnonce'] ,  'delete-staff_id-org_id_' . $org_id ) ) 
         {
             $result['display_errors'] = 'failed';
             $result['success'] = false;
