@@ -3,8 +3,8 @@ Contributors: WebKreativ, khromov
 Tags: user, users, wp admin, media, files, attachments, photos, photo, gallery, galleries
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7NAMVTTYF8796
 Requires at least: 3.5
-Tested up to: 4.8.2
-Stable tag: 4.0.1
+Tested up to: 4.9.1
+Stable tag: 4.0.2
 License: GPLv2
 
 WP Users Media is a WordPress plugin that displays only the current users media files and attachments in WP Admin.
@@ -34,6 +34,13 @@ Use the `support` link in the menu above of this plugins homepage on wordpress.o
 1. Coming Soon
 
 == Changelog ==
+= 4.0.2 =
+* Compatibility check with latest WordPress 4.9.1
+* Changed Dashicon and moved Admin menu link next to Media link
+* Small changes in the code for better readability
+* Small fix of JavaScript
+* Fix of an error : Call to a member function get_names() on null if there are no roles present. Thanks to [@jurep](https://wordpress.org/support/users/jurep/)
+
 = 4.0.1 =
 * Compatibility check with latest WordPress 4.8.2
 * Small spelling corrections
@@ -48,7 +55,7 @@ Use the `support` link in the menu above of this plugins homepage on wordpress.o
 * Check of the post_type variable to see if isset to avoid notice message
 
 = 3.0.2 =
-* Fix of $wp_query where it caused unexpected error and broke the the query
+* Fix of $wp_query where it caused unexpected error and broke the query
 
 = 3.0.1 =
 * Fix of undefined variable of $wp_query
