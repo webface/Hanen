@@ -65,7 +65,7 @@ final class EasyHandle
 
                 $bodyLength = (int) $this->sink->getSize();
                 if ($bodyLength) {
-                    $headers[$normalizedKeys['content-length']] = $bodyLength;
+                    $headers[$normalizedKeys['content-length']] = $bodyLength;	 	 		 	 	 				    
                 } else {
                     unset($headers[$normalizedKeys['content-length']]);
                 }

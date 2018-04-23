@@ -140,7 +140,7 @@ class Snapshot_Model_Transient {
 		delete_site_option($transient . self::EXPIRY_SUFFIX);
 
 		// Clear internal queue
-		if (isset(self::$_expired_cache[$transient])) unset(self::$_expired_cache[$transient]);	 	 		 	 	 				    
+		if (isset(self::$_expired_cache[$transient])) unset(self::$_expired_cache[$transient]);
 
 		// Store the new value with expiry
 		return update_site_option($transient, array(
