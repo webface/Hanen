@@ -7,7 +7,7 @@ function monsterinsights_get_mp_api_url( ) {
 	if ( monsterinsights_is_debug_mode() ) {
 		return 'https://www.google-analytics.com/debug/collect';
 	} else {
-		return 'https://ssl.google-analytics.com/collect';
+		return 'https://www.google-analytics.com/collect';
 	}
 }
 
@@ -43,6 +43,8 @@ function monsterinsights_mp_api_call( $args = array() ) {
 	} else {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
+
+	$ip = apply_filters( 'monsterinsights_mp_api_call_ip', $ip );
 
 	// If possible, let's get the user's language
 	$user_language = isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ? explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) : array();
@@ -88,7 +90,7 @@ function monsterinsights_mp_api_call( $args = array() ) {
 	);
 
 	$body = wp_parse_args( $body, $default_body );
-	// $body = apply_filters( 'monsterinsights_mp_api_call', $body );
+	$body = apply_filters( 'monsterinsights_mp_api_call', $body );
 
 
 	// Ensure that the CID is not empty
