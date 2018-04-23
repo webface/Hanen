@@ -4,7 +4,7 @@ Tags: maintenance mode, maintenance page, coming soon page, landing page, under 
 Requires at least: 4.0
 Requires PHP: 5.2
 Tested up to: 4.9
-Stable tag: 2.95
+Stable tag: 3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,7 @@ A simple, no-nonsense plugin for all those situations when you have to hide the 
   * Telegram
   * WhatsApp
   * Tumblr
+  * VK
 * Whitelisted User Roles - user roles who see the site, instead of maintenance page
 * Whitelisted Users - users who see the site, instead of maintenance page
 
@@ -59,6 +60,7 @@ UCP has a built-in support system. It requires no registration or any kind of me
 
 **What are others saying about the Under Construction Page plugin**
 
+* <a href="https://www.webhostingsecretrevealed.net/blog/blogging-tips/how-to-grow-your-blog-before-it-is-born/">WHSR</a> wrote an in-depth guide on how to "Grow Your Blog Before It Is Born" featuring UCP
 * John Fraskos from <a href="https://codestag.com/setting-wordpress-theme-easily-create-construction-page/">Codestag</a> says it's "very friendly and easy to use"
 * <a href="http://wppluginsify.com/interface-elements/professional-construction-page/">WP Pluginsify</a> wrote a review
 * <a href="https://www.wpmayor.com/set-construction-page-wordpress/">WP Major</a> wrote a review too
@@ -117,14 +119,21 @@ Or if needed, upload manually;
 28. Bulldozer theme
 29. Christmas theme
 30. Hard Worker theme
-31. Main settings
-32. Design settings
-33. Content settings
-34. Access settings
-35. Support
+31. Temporarily Closed theme
+32. Main settings
+33. Design settings
+34. Content settings
+35. Access settings
+36. Support
 
 
 == Changelog ==
+
+= 3.0 =
+* 2018/04/23
+* added VK icon - a Russian social network
+* new theme - Temporarily Closed
+* added discount for old users
 
 = 2.95 =
 * 2018/03/26

@@ -4,7 +4,7 @@
   Plugin URI: https://underconstructionpage.com/
   Description: Put your site behind a great looking under construction, coming soon, maintenance mode or landing page.
   Author: Web factory Ltd
-  Version: 2.95
+  Version: 3.0
   Author URI: http://www.webfactoryltd.com/
   Text Domain: under-construction-page
   Domain Path: lang
@@ -599,6 +599,9 @@ class UCP {
     if (!empty($options['social_tumblr'])) {
       $out .= '<a title="Tumblr" href="' . $options['social_tumblr'] . '" target="_blank"><i class="fa fa-tumblr-square fa-3x"></i></a>';
     }
+    if (!empty($options['social_vk'])) {
+      $out .= '<a title="VK" href="' . $options['social_vk'] . '" target="_blank"><i class="fa fa-vk fa-3x"></i></a>';
+    }
     if (!empty($options['social_skype'])) {
       $out .= '<a title="Skype" href="skype:' . $options['social_skype'] . '?chat"><i class="fa fa-skype fa-3x"></i></a>';
     }
@@ -791,6 +794,8 @@ class UCP {
     $options = self::get_options();
     $meta = self::get_meta();
     $current_user = wp_get_current_user();
+    $shown = false;
+    $promo = self::is_promo_active();
 
     $name = '';
     if (!empty($current_user->user_firstname)) {
@@ -805,6 +810,7 @@ class UCP {
       echo '<p class="center">Thank you for purchasing UnderConstructionPage PRO! <b>Your license has been verified and activated.</b></p><p>Please <b>click the button below</b> to update plugin files to PRO version.</p>';
       echo '<p><a href="' . esc_url($update_url) . '" class="button button-primary">Update UnderConstructionPage files to PRO</a></p>';
       echo '</div>';
+      $shown = true;
 
       return;
     }
@@ -823,11 +829,13 @@ class UCP {
       echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . esc_url($dismiss_url) . '">' . __('I\'ve already rated the plugin', 'under-construction-page') . '</a>';
       echo '<br><br><b>' . __('Thank you very much! The UCP team', 'under-construction-page') . '</b>';
       echo '</p></div>';
+      $shown = true;
     }
 
     // end date in past
     if (self::is_plugin_page() && self::is_construction_mode_enabled(true) && !empty($options['end_date']) && $options['end_date'] != '0000-00-00 00:00' && $options['end_date'] < current_time('mysql')) {
       echo '<div id="ucp_end_date_notice" class="notice-error notice"><p>Under construction mode is enabled but the <a href="#end_date" class="change_tab" data-tab="0">end date</a> is set to a past date so the <b>under construction page will not be shown</b>. Either move the <a href="#end_date" class="change_tab" data-tab="0">end date</a> to a future date or disable it.</p></div>';
+      $shown = true;
     }
 
     // ask for translation
@@ -843,6 +851,22 @@ class UCP {
       echo '<br><a target="_blank" href="' . esc_url($translate_url) . '" style="vertical-align: baseline; margin-top: 15px;" class="button-primary">' . __('Translate UCP into your language &amp; get a PRO license for free', 'under-construction-page') . '</a>';
       echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . esc_url($dismiss_url) . '">' . __('I\'m not interested (remove this notice)', 'under-construction-page') . '</a>';
       echo '</p></div>';
+      $shown = true;
+    }
+
+    // promo for old users
+    if (self::is_plugin_page() &&
+        empty($notices['dismiss_olduser']) &&
+        !$shown && $promo == 'olduser') {
+      $dismiss_url = add_query_arg(array('action' => 'ucp_dismiss_notice', 'notice' => 'olduser', 'redirect' => urlencode($_SERVER['REQUEST_URI'])), admin_url('admin.php'));
+
+      echo '<div id="ucp_rate_notice" class="notice-info notice"><p>Hi' . $name . ',<br>';
+      echo 'We have a <a class="open-ucp-upsell" data-pro-ad="notification-olduser-text" href="#">special offer</a> only for <b>users like you</b> who\'ve been using the UnderConstructionPage for a long period of time: a <b>special DISCOUNT</b> on our most popular lifetime licenses!<br>No nonsense! Pay once and use the plugin forever.<br><a class="open-ucp-upsell" data-pro-ad="notification-olduser-text" href="#">Upgrade now</a> to <b>PRO</b> &amp; get more than 50 extra features, premium themes and 400,000+ images.</p>';
+
+      echo '<a href="#" style="vertical-align: baseline; margin-top: 15px;" class="button-primary open-ucp-upsell" data-pro-ad="notification-olduser-button">Upgrade to <b>PRO</b> now with a <b>SPECIAL DISCOUNT</b></a>';
+      echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . esc_url($dismiss_url) . '"><small>' . __('I\'m not interested (remove this notice)', 'under-construction-page') . '</small></a>';
+      echo '</p></div>';
+      $shown = true;
     }
   } // notices
 
@@ -866,6 +890,10 @@ class UCP {
 
     if ($_GET['notice'] == 'whitelisted') {
       $notices['dismiss_whitelisted'] = true;
+    }
+
+    if ($_GET['notice'] == 'olduser') {
+      $notices['dismiss_olduser'] = true;
     }
 
     update_option(UCP_NOTICES_KEY, $notices);
@@ -1090,6 +1118,7 @@ class UCP {
                       'social_behance' => '',
                       'social_instagram' => '',
                       'social_tumblr' => '',
+                      'social_vk' => '',
                       'social_email' => '',
                       'social_phone' => '',
                       'social_skype' => '',
@@ -1127,6 +1156,7 @@ class UCP {
         case 'social_behance':
         case 'social_instagram':
         case 'social_tumblr':
+        case 'social_vk':
         case 'social_email':
         case 'social_phone':
         case 'social_telegram':
@@ -1460,67 +1490,67 @@ class UCP {
     echo '<tr valign="top">
     <th scope="row"><label for="social_facebook">' . __('Facebook Page', 'under-construction-page') . '</label></th>
     <td><input id="social_facebook" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_facebook]" value="' . esc_attr($options['social_facebook']) . '" placeholder="' . __('Facebook business or personal page URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Facebook page.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Facebook page.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top">
     <th scope="row"><label for="social_twitter">' . __('Twitter Profile', 'under-construction-page') . '</label></th>
     <td><input id="social_twitter" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_twitter]" value="' . esc_attr($options['social_twitter']) . '" placeholder="' . __('Twitter profile URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Twitter profile page.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Twitter profile page.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top">
     <th scope="row"><label for="social_google">' . __('Google Page', 'under-construction-page') . '</label></th>
     <td><input id="social_google" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_google]" value="' . esc_attr($options['social_google']) . '" placeholder="' . __('Google+ page URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Google+ page.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Google+ page.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top">
     <th scope="row"><label for="social_linkedin">' . __('LinkedIn Profile', 'under-construction-page') . '</label></th>
     <td><input id="social_linkedin" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_linkedin]" value="' . esc_attr($options['social_linkedin']) . '" placeholder="' . __('LinkedIn profile page URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to LinkedIn profile page.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to LinkedIn profile page.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top">
     <th scope="row"><label for="social_youtube">' . __('YouTube Profile Page or Video', 'under-construction-page') . '</label></th>
     <td><input id="social_youtube" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_youtube]" value="' . esc_attr($options['social_youtube']) . '" placeholder="' . __('YouTube page or video URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to YouTube page or video.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to YouTube page or video.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top" class="hidden">
     <th scope="row"><label for="social_vimeo">' . __('Vimeo Profile Page or Video', 'under-construction-page') . '</label></th>
     <td><input id="social_vimeo" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_vimeo]" value="' . esc_attr($options['social_vimeo']) . '" placeholder="' . __('Vimeo page or video URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Vimeo page or video.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Vimeo page or video.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top" class="hidden">
     <th scope="row"><label for="social_pinterest">' . __('Pinterest Profile', 'under-construction-page') . '</label></th>
     <td><input id="social_pinterest" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_pinterest]" value="' . esc_attr($options['social_pinterest']) . '" placeholder="' . __('Pinterest profile URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Pinterest profile.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Pinterest profile.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top" class="hidden">
     <th scope="row"><label for="social_dribbble">' . __('Dribbble Profile', 'under-construction-page') . '</label></th>
     <td><input id="social_dribbble" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_dribbble]" value="' . esc_attr($options['social_dribbble']) . '" placeholder="' . __('Dribbble profile URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Dribbble profile.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Dribbble profile.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top" class="hidden">
     <th scope="row"><label for="social_behance">' . __('Behance Profile', 'under-construction-page') . '</label></th>
     <td><input id="social_behance" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_behance]" value="' . esc_attr($options['social_behance']) . '" placeholder="' . __('Behance profile URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Behance profile.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Behance profile.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top" class="hidden">
     <th scope="row"><label for="social_instagram">' . __('Instagram Profile', 'under-construction-page') . '</label></th>
     <td><input id="social_instagram" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_instagram]" value="' . esc_attr($options['social_instagram']) . '" placeholder="' . __('Instagram profile URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Instagram profile.', 'under-construction-page') . '</p>';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to Instagram profile.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top" class="hidden">
-    <th scope="row"><label for="social_tumblr">' . __('Tumblr Blog', 'under-construction-page') . '</label></th>
-    <td><input id="social_tumblr" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_tumblr]" value="' . esc_attr($options['social_tumblr']) . '" placeholder="' . __('Tumblr blog URL', 'under-construction-page') . '">';
-    echo '<p class="description">' . __('Complete URL, with http prefix, to Tumblr blog.', 'under-construction-page') . '</p>';
+    <th scope="row"><label for="social_vk">' . __('VK Profile', 'under-construction-page') . '</label></th>
+    <td><input id="social_vk" type="url" class="regular-text code" name="' . UCP_OPTIONS_KEY . '[social_vk]" value="' . esc_attr($options['social_vk']) . '" placeholder="' . __('VK profile URL', 'under-construction-page') . '">';
+    echo '<p class="description">' . __('Complete URL, with https prefix, to VK profile.', 'under-construction-page') . '</p>';
     echo '</td></tr>';
 
     echo '<tr valign="top" class="hidden">
@@ -1606,7 +1636,9 @@ class UCP {
                     'bulldozer' => __('Bulldozer at Work', 'under-construction-page'),
                     'christmas' => __('Christmas Greetings', 'under-construction-page'),
                     '_pro_pink-lips' => __('Pink Lips', 'under-construction-page'),
-                    'hard_worker' => __('Hard Worker', 'under-construction-page'));
+                    'hard_worker' => __('Hard Worker', 'under-construction-page'),
+                    'closed' => __('Temporarily Closed', 'under-construction-page'),
+                    '_pro_animated-green' => __('Simple Green Animated', 'under-construction-page'));
 
     $themes = apply_filters('ucp_themes', $themes);
 
@@ -1777,6 +1809,8 @@ class UCP {
     echo '<p><b>I have disabled UCP but the under construction page is still visible. How do I remove it?</b><br>Open your site and force refresh browser cache (Ctrl or Shift + F5). If that doesn\'t help it means you have a caching plugin installed. Purge/delete cache in that plugin or disable it. If that fails too contact your hosting provider and ask to empty the site cache for you.</p>';
 
     echo '<p><b>I have disabled UCP but the site\'s favicon is still the UCP logo. How do I change/remove it?</b><br>Make sure your theme has a favicon defined and empty all caches - browser and server ones. Open the site and force refresh browser cache (Ctrl or Shift + F5). If that doesn\'t help it means you have a caching plugin installed. Purge/delete cache in that plugin or disable it. If that fails too contact your hosting provider and ask to empty the site cache for you.</p>';
+
+    echo '<p><b>UCP is disabled but Twitter and Facebook still show it as my site\'s preview/thumbnail when I post the URL</b><br>Twitter and Facebook have their own cache which has to be refreshed. You can either wait and the problem will resolve itself in about a day or you can manually refresh the cache.<br>For Facebook open the <a href="https://developers.facebook.com/tools/debug/" target="_blank">Debugger</a>, input the URL, click "Debug". Once the results who up click "Scrape Again" to fetch the latest version of the page.<br>For Twitter, open the <a href="https://cards-dev.twitter.com/validator" target="_blank">Card validator</a>, enter the URL and click "Preview card". Latest version of the site should appear.</p>';
     echo '</div>'; // faq
 
     echo '<div style="display: none;" id="tab_support_contact" class="ucp-tab-content">';
@@ -1846,6 +1880,8 @@ class UCP {
       echo '<div id="ucp-earlybird"><span>Build <b>landing pages, coming soon pages, maintenance &amp; under construction pages</b> faster &amp; easier!</span>';
       if (self::is_promo_active() == 'welcome') {
         echo '<p class="textcenter"><a data-pro-ad="get_pro" href="#" class="button button-primary button-large open-ucp-upsell">Get <b>PRO</b> now with a LIMITED <b>welcoming discount</b>! Offer is valid for only <b class="ucp-countdown">59min 33sec</b>.</a></p>';
+      } elseif (self::is_promo_active() == 'olduser') {
+        echo '<p class="textcenter"><a data-pro-ad="get_pro" href="#" class="button button-primary button-large open-ucp-upsell">Get <b>PRO</b> now with a special <b>DISCOUNT for long-term users</b>!</a></p>';
       } else {
         echo '<p class="textcenter"><a data-pro-ad="get_pro" href="#" class="button button-primary button-large open-ucp-upsell">Get <b>PRO</b> now!</a></p>';
       }
@@ -1956,6 +1992,11 @@ class UCP {
       $products['agency'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'agency-lifetime-welcome', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>$51 OFF</u><br><del>$250</del> $199<br><small>Discount ends in <b class="ucp-countdown">59min 30sec</b></small>');
       $products['pro-lifetime'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-lifetime-welcome', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>20% OFF</u><br><del>$69</del> $55<br><small>Discount ends in <b class="ucp-countdown">59min 30sec</b></small>');
       $products['pro-yearly'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-yearly-welcome', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>20% OFF</u><br><del>$39</del> $31<small>/year</small><br><small>Discount ends in <b class="ucp-countdown">59min 30sec</b></small>');
+    } elseif ($promo == 'olduser') {
+      $header = 'A special <b>discount for long-term users</b> has been applied to all packages!';
+      $products['agency'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'agency-lifetime-olduser', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>$51 OFF</u><br><del>$250</del> $199');
+      $products['pro-lifetime'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-lifetime-olduser', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>20% OFF</u><br><del>$69</del> $55');
+      $products['pro-yearly'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-yearly-olduser', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>20% OFF</u><br><del>$39</del> $31<small>/year</small>');
     } else {
       $header = '';
       $products['agency'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'agency-lifetime', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW<br>$250');
@@ -2087,6 +2128,10 @@ class UCP {
 
     if ((time() - $meta['first_install']) < HOUR_IN_SECONDS) {
       return 'welcome';
+    }
+
+    if ((time() - $meta['first_install']) > DAY_IN_SECONDS * 45) {
+      return 'olduser';
     }
 
     return false;
