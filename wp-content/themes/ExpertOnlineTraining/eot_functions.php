@@ -2252,6 +2252,7 @@ function getCertificates($user_id = 0, $certificate_id = 0, $course_id = 0)
   {
     $sql .= " AND course_id = " . $course_id;
   }
+if ( SHOW_SQL ) error_log( "getCertificates: sql-> $sql");
   $result = ($certificate_id == 0 && $course_id == 0) ? $wpdb->get_results ($sql, ARRAY_A) : $wpdb->get_row ($sql, ARRAY_A);
   return $result;
 }
@@ -2283,6 +2284,7 @@ function setCertificate( $user_id = 0, $data = array() )
   $today = current_time('Y-m-d');
   $sql = "INSERT INTO " . TABLE_CERTIFICATES . " (user_id, org_id, course_id, course_name, filename, date_created, status) 
           VALUES ($user_id, $org_id, $course_id, '$course_name', '$filename', '$today', '$status')";
+if ( SHOW_SQL ) error_log( "setCertificate: query-> $sql");
   $result = $wpdb->query ($sql);
 }
 
@@ -2307,6 +2309,7 @@ function setCertificateSyllabus( $user_id = 0, $data = array() )
   global $wpdb;
   $sql =  "INSERT INTO " . TABLE_CERTIFICATES_SYLLABUS . " (user_id, course_id, course_name, modules) 
           VALUES (%d, %d, %s , %s)";
+if ( SHOW_SQL ) error_log( "setCertificateSyllabus: query-> $sql");
   $result = $wpdb->query ($wpdb->prepare($sql, $user_id, $course_id, $course_name, $module_titles));
 }
 
@@ -2332,6 +2335,7 @@ function getCertificatesSyllabus($user_id = 0, $course_id = 0)
   {
     $sql .= " AND course_id = " . $course_id;
   }
+if ( SHOW_SQL ) error_log( "getCertificateSyllabus: sql-> $sql");
   $result = ($course_id > 0) ? $wpdb->get_row ($sql, ARRAY_A) : $wpdb->get_results ($sql, ARRAY_A);
   return $result;
 }
@@ -2403,6 +2407,7 @@ function addPendingUsers ($staff_data = array(), $org_id = 0, $message = '', $su
     $sql = "INSERT INTO " . TABLE_PENDING_USERS . " (org_id, variables, email, password, courses, subject, message, isEmail, subscription_id) 
     VALUES 
     ($org_id, '$variables', '$email', '$password', '$courses', '".addslashes($subject)."', '" . addslashes($message) . "', $isEmail, $subscription_id)";
+if ( SHOW_SQL ) error_log( "addPendingUsers: query-> $sql");
     $result = $wpdb->query ($sql);
     if(!$result)
     {
@@ -3140,6 +3145,7 @@ function getModulesInCourse($course_id = 0){
                 . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " AS c ON m.category_id = c.id "            
                 . "WHERE cmr.course_id = $course_id "
                 . "ORDER BY cmr.order ASC";
+if( SHOW_SQL ) error_log("getModulesInCourse: get_results -> $sql");
     $course_modules = $wpdb->get_results($sql, ARRAY_A);
 //error_log("getModulesInCourse: course_id: $course_id\n sql: $sql\n course_modules: " . json_encode($course_modules));
     return $course_modules;
@@ -3566,7 +3572,7 @@ function getResourcesInCourse($course_id = 0, $type = '')
     {
       $sql .= " AND r.type = '$type'";
     }
-
+if( SHOW_SQL ) error_log("getResourcesInCourse: get_results -> $sql");
     $course_resources = $wpdb->get_results($sql, ARRAY_A);
     return $course_resources;
 }
@@ -3611,6 +3617,7 @@ function getResourcesInLibrary($library_id = 0, $type = '')
                 . "LEFT JOIN ". TABLE_LIBRARY_MODULES ." AS lm ON lm.library_id = $library_id " 
                 . "LEFT JOIN " . TABLE_MODULE_RESOURCES . " AS mr ON mr.module_id = lm.module_id AND mr.resource_id = r.ID "
                 . "WHERE mr.type = '$type'";
+if( SHOW_SQL ) error_log("getResourcesInLibrary: get_results -> $sql");
     $library_resources = $wpdb->get_results($sql, ARRAY_A);
     return $library_resources;
 }
@@ -3630,7 +3637,7 @@ function getModules($org_id = 0)
             . "LEFT OUTER JOIN " . TABLE_CATEGORIES . " c ON m.category_id = c.ID "
             . "WHERE m.org_id = $org_id";
 
-//error_log("getModules: query: $query");
+if( SHOW_SQL ) error_log("getModules: get_results -> $query");
 
     $modules = $wpdb->get_results( $query, ARRAY_A );
     return $modules;
@@ -3664,6 +3671,7 @@ function getLibraryCategory($id = 0, $library_id = 0)
   {
     $sql .= " WHERE library_id = $library_id ORDER BY `order`";
   }
+if( SHOW_SQL ) error_log("getLibraryCategory: get_results -> $sql");
 
   $categories = $wpdb->get_results( $sql, OBJECT_K ); // returns an array of objects with the key as the ID
   return $categories;
@@ -3683,7 +3691,8 @@ function getHelpForView($part_name = "", $role = "")
 
   global $wpdb;
   $sql = "SELECT * FROM " . TABLE_HELP_TOPICS . " ht LEFT JOIN " . TABLE_HELP_TOPICS_FOR_VIEW . " htv ON ht.ID = htv.topic_id WHERE htv.part_name = '$part_name' AND htv.role='$role' ORDER BY htv.order";
-  
+ if( SHOW_SQL ) error_log("getHelpForView: get_results -> $sql");
+ 
   $views = $wpdb->get_results( $sql, ARRAY_A ); // returns an array of view information.
   return $views;
 }
@@ -3702,7 +3711,8 @@ function getHelpVideoById($id = 0)
   global $wpdb;
   $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
   $sql = "SELECT * FROM " . TABLE_HELP_TOPICS . " WHERE ID = $id";
-  
+ if( SHOW_SQL ) error_log("getHelpVideoById: get_row -> $sql");
+ 
   $video = $wpdb->get_row( $sql, OBJECT ); // returns an object with the video data.
   return $video;
 }
@@ -3722,7 +3732,9 @@ function getHandoutResourcesInModules($module_ids = '')
     global $wpdb;
     $module_ids = filter_var($module_ids, FILTER_SANITIZE_STRING);
     //$handouts = $wpdb->get_results("SELECT r.* FROM " . TABLE_RESOURCES . " r WHERE r.module_id IN (" . $module_ids . ")" , ARRAY_A);
-    $handouts = $wpdb->get_results("SELECT DISTINCT mr.module_id as mod_id, r.* FROM " . TABLE_MODULE_RESOURCES . " mr LEFT JOIN " .TABLE_RESOURCES . " r on mr.resource_id = r.ID WHERE mr.module_id IN (" . $module_ids . ") AND mr.type NOT IN ('video','exam')",ARRAY_A);
+    $sql = "SELECT DISTINCT mr.module_id as mod_id, r.* FROM " . TABLE_MODULE_RESOURCES . " mr LEFT JOIN " .TABLE_RESOURCES . " r on mr.resource_id = r.ID WHERE mr.module_id IN (" . $module_ids . ") AND mr.type NOT IN ('video','exam')";
+if( SHOW_SQL ) error_log("getHandoutResourcesInModules: get_results -> $sql");
+    $handouts = $wpdb->get_results( $sql, ARRAY_A );
     return $handouts;
 }
 
@@ -3741,9 +3753,11 @@ function getQuizResourcesInModule($module_id = 0)
 
     global $wpdb;
     $module_id = filter_var($module_id, FILTER_SANITIZE_NUMBER_INT);
-    $resources=$wpdb->get_results("SELECT DISTINCT mr.module_id, q.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_QUIZ . " q "
+    $sql = "SELECT DISTINCT mr.module_id, q.* FROM ". TABLE_MODULE_RESOURCES ." mr LEFT JOIN " . TABLE_QUIZ . " q "
             . "ON mr.resource_id = q.ID "
-            . "WHERE mr.module_id = $module_id AND mr.type = 'exam' ORDER BY mr.order ASC", ARRAY_A);
+            . "WHERE mr.module_id = $module_id AND mr.type = 'exam' ORDER BY mr.order ASC";
+if( SHOW_SQL ) error_log("getQuizResourcesInModule: get_results -> $sql");
+    $resources=$wpdb->get_results( $sql, ARRAY_A );
     return $resources;
 }
 
@@ -9035,6 +9049,7 @@ function getTrack($user_id = 0, $video_id = 0, $type = "all")
   {
     $results = ($video_id > 0) ? (array) $wpdb->get_row($sql, OBJECT) : $wpdb->get_results($sql);
   }
+if( SHOW_SQL ) error_log("getTrack: get_results -> $sql");
   return $results;
 }
 
@@ -9142,16 +9157,18 @@ function updateVideoProgress_callback()
  * Calculate the percentage completion for a given course
  * @param int $user_id - the user id
  * @param int $course_id - the course id
+ * @param int $org_id - the org id
+ * @param array $modules_in_portal - an array of all the modules in the portal returned from getModules($org_id)
  * returns an int between 0-100 representing the percentage completion 
  */
-function calc_course_completion($user_id = 0, $course_id = 0)
+function calc_course_completion($user_id = 0, $course_id = 0, $org_id = 0, $modules_in_portal = array())
 {
   if (!$user_id || !$course_id)
     return 0;
 
   $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
-  $org_id = get_org_from_user($user_id);
+  $org_id = $org_id ? filter_var($org_id, FILTER_SANITIZE_NUMBER_INT) : get_org_from_user($user_id);
 
   // get quizzes in course
   $quizzes = getQuizzesInCourse($course_id);
@@ -9163,8 +9180,8 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   $num_modules = 0;
   if ($num_quizzes == 0 && count($modules_in_course) == 0)
     return 0; // cant divide by 0
-  
-  $modules_in_portal = getModules($org_id);// all the custom modules in this portal
+
+  $modules_in_portal = !empty($modules_in_portal) ? $modules_in_portal : getModules($org_id); // all the custom modules in this portal
   foreach($modules_in_portal as $key => $module)
   {
     if(!in_array($module, $modules_in_course))
@@ -9182,6 +9199,7 @@ function calc_course_completion($user_id = 0, $course_id = 0)
   if($quizzes)
   {
     $query = "SELECT * FROM " . TABLE_QUIZ_ATTEMPTS . " WHERE quiz_id IN ($quiz_ids) AND user_id = $user_id AND passed = 1";
+if( SHOW_SQL ) error_log("calc_course_completion: get_results -> $query");
     $amount_passed = $wpdb->get_results($query, ARRAY_A);
     $quizzes_passed = array_column($amount_passed, 'quiz_id');
     $uniques = array_count_values($quizzes_passed);
@@ -9408,9 +9426,11 @@ function updateEnrollmentStatus_callback()
  *  @param int $org_id - the organization ID
  *  @param string $status - the status
  *  @param int $subscription_id - the subscription ID
+ *  @param date $start_date - the start date
+ *  @param date $end_date - the end date
  *  @return array of enrollments
  */
-function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '', $subscription_id = 0) 
+function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '', $subscription_id = 0, $start_date = 0, $end_date = 0) 
 {
   global $wpdb;
   $course_id = filter_var($course_id, FILTER_SANITIZE_NUMBER_INT);
@@ -9462,13 +9482,16 @@ function getEnrollments($course_id = 0, $user_id = 0, $org_id = 0, $status = '',
   }
   else if ($subscription_id > 0)
   {
-    $sql.= "e.subscription_id = $subscription_id";
+    $sql .= "e.subscription_id = $subscription_id ";
   }
 
   if ($status != '')
   {
     $sql .= "AND e.status = '$status' ";
   }
+
+  $sql .= $start_date ? "AND e.date_enrolled >= '$start_date' " : '';
+  $sql .= $end_date ? "AND e.date_enrolled <= '$end_date' " : '';
 
 if( SHOW_SQL ) error_log("getEnrollments: get_results -> $sql");
   $enrollments = $wpdb->get_results($sql, ARRAY_A);
@@ -9511,6 +9534,7 @@ function getCertificatesByUserIds( $user_ids = array(), $type = 'image', $start_
   {
     $sql .= "  AND date_created >= '" . $start_date . "' AND date_created <= '" . $end_date . "'";
   }
+if( SHOW_SQL ) error_log("getCertificatesByUserIds: get_results -> $sql");
   $result = $wpdb->get_results ($sql, ARRAY_A);
   return $result;
 }
@@ -9532,6 +9556,7 @@ function verifyCertificate($student_user_id = 0, $director_org_id = 0)
   $director_org_id = filter_var($director_org_id, FILTER_SANITIZE_NUMBER_INT);
 
   $sql = "SELECT * FROM " . TABLE_CERTIFICATES . " WHERE user_id = $student_user_id AND org_id = $director_org_id";
+if( SHOW_SQL ) error_log("verifyCertificate: get_row -> $sql");
   $results = $wpdb->get_row ($sql);
   return $results;
 }
