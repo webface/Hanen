@@ -76,6 +76,7 @@
 		}
 		else
 		{
+/*
 			// Parse the text file and store them in the $staff_data array.
 			$delimiter = (pathinfo($fileLink, PATHINFO_EXTENSION) == 'txt') ? "\t" : ",";
 			$fp = fopen($fileLink , 'r');
@@ -339,6 +340,7 @@
 			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&user_id='.$user_id.'subscription_id=' . $subscription_id ?>"><?= __('Please fix your spreadsheet and upload your file again.','EOT_LMS')?> </a>
 
 <?php
+*/
 		}
 	}
 	//this part processes users PENDING_USERS_LIMIT each time until it runs out
