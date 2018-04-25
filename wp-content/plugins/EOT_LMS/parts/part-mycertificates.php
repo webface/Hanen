@@ -13,10 +13,10 @@
     $org_id = get_org_from_user ($user_id); // Organization ID
     $courses = getCourses(0, $org_id); // All the courses base on the organization ID.
     $completed_enrollments = array(); // will store the completed enrollments
-    $modules_in_portal = array(); // all of the modules in the portal. Will be used in calc_course_completion so to speed it up we only use it once.
+    $modules_in_portal = array(); // all of the custom modules in the portal. Will be used in calc_course_completion so to speed it up we only use it once.
     if ( $org_id )
     {
-      $modules_in_portal = getModules($org_id); // populate the modules in portal
+      $modules_in_portal = getModules($org_id); // populate the custom modules in portal
     }
 
     // If student.
