@@ -14,6 +14,13 @@
 </div>
 
 <?php
+
+echo ' <div class="spreadsheet_upload round_msgbox">
+  <strong>We are currently experiencing an issue with the upload spreadsheet functionality and are working diligently to resolve it.<br><br>Please check back tomorrow or call us at 1-877-390-2267 M-F 9-5 EST.</strong> 
+</div>';
+return;
+
+
 	// verify this user has access to this portal/subscription/page/view
 	$true_subscription = verifyUserAccess(); 
 	global $current_user;
@@ -76,7 +83,6 @@
 		}
 		else
 		{
-/*
 			// Parse the text file and store them in the $staff_data array.
 			$delimiter = (pathinfo($fileLink, PATHINFO_EXTENSION) == 'txt') ? "\t" : ",";
 			$fp = fopen($fileLink , 'r');
@@ -139,7 +145,6 @@
 					$has_error = false; // Boolean indication if the process has an error
 					$has_user_error = false; // Boolean indicator for individual user error.
 					$org_id = get_org_from_user ($user_id); // Organization id
-					$portal_subdomain = get_post_meta ($org_id, 'org_subdomain', true); // Subdomain of the user
 					$data = compact("org_id"); // to pass to our functions below
 					$courses_in_org = getCoursesByOrgId($org_id); // All the courses in this org
 					$course_names = array_column($courses_in_org, 'course_name'); // The titles of the modules from the master library
@@ -340,7 +345,6 @@
 			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&user_id='.$user_id.'subscription_id=' . $subscription_id ?>"><?= __('Please fix your spreadsheet and upload your file again.','EOT_LMS')?> </a>
 
 <?php
-*/
 		}
 	}
 	//this part processes users PENDING_USERS_LIMIT each time until it runs out
