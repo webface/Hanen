@@ -81,6 +81,9 @@
 			$delimiter = (pathinfo($fileLink, PATHINFO_EXTENSION) == 'txt') ? "\t" : ",";
 			$fp = fopen($fileLink , 'r');
 			$staff_data = array();
+
+ddd($delimiter, $fp, $file, $fileLink );
+
 			while ( !feof($fp) )
 			{
 			    $line = fgets($fp, 2048);
