@@ -86,6 +86,7 @@ error_log( "delimiter: $delimiter");
 error_log( "fp: $fp");
 error_log( "file: $file");
 error_log( "fileLink: $fileLink");
+d($delimiter, $fp, $file, $fileLink, $staff_data);
 
 			if ( $fp )
 			{
