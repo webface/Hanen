@@ -79,33 +79,23 @@
 		{
 			// Parse the text file and store them in the $staff_data array.
 			$delimiter = (pathinfo($fileLink, PATHINFO_EXTENSION) == 'txt') ? "\t" : ",";
-			$fp = @fopen($fileLink , 'r');
+//			$fp = @fopen($fileLink , 'r');
 			$staff_data = array();
 
-error_log( "delimiter: $delimiter");
-error_log( "fp: $fp");
-error_log( "file: $file");
-error_log( "fileLink: $fileLink");
-d($delimiter, $fp, $file, $fileLink, $staff_data);
+			$contents = wp_remote_fopen($fileLink);
 
-			if ( $fp )
+			if ( $contents )
 			{
-				while ( ( $line = fgets( $fp, 2048 ) ) !== false )
+				$lines = explode( PHP_EOL, $contents );
+				foreach ( $lines as $line )
 				{
 					$data = str_getcsv($line, $delimiter);
 					if( isset($data[2] ) && strlen( $data[2] ) > 0 ) // check that there is actually an email present and if so push it into the array.
 			    	{
 			    		array_push ( $staff_data , $data );
 			    	}
-			    	if ( !feof( $fp ) )
-			    	{
-			    		error_log("part-uploadspreadsheet: got an error trying to get to the end of the file. file object: " . json_encode( $file ));
-			    		echo "Error: there was an error with the end of file.";
-			    		return;
-			    	}
 				}
 				array_shift( $staff_data ); // Delete first element of the array. Delete the headers.
-				fclose( $fp );
 
 /* OLD WAY CAUSING LOOP ISSUE
 				while ( !feof($fp) )
