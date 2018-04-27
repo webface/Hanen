@@ -99,6 +99,7 @@ error_log( "fileLink: $fileLink");
 			    	if ( !feof( $fp ) )
 			    	{
 			    		error_log("part-uploadspreadsheet: got an error trying to get to the end of the file. file object: " . json_encode( $file ));
+			    		echo "Error: there was an error with the end of file.";
 			    		return;
 			    	}
 				}
