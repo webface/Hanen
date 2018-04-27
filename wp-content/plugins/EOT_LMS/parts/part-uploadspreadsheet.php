@@ -15,12 +15,6 @@
 
 <?php
 
-echo ' <div class="spreadsheet_upload round_msgbox">
-  <strong>We are currently experiencing an issue with the upload spreadsheet functionality and are working diligently to resolve it.<br><br>Please check back tomorrow or call us at 1-877-390-2267 M-F 9-5 EST.</strong> 
-</div>';
-return;
-
-
 	// verify this user has access to this portal/subscription/page/view
 	$true_subscription = verifyUserAccess(); 
 	global $current_user;
