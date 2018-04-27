@@ -112,7 +112,7 @@
 */
 			}
 
-ddd($delimiter, $fp, $file, $fileLink, $staff_data);
+d($delimiter, $fp, $file, $fileLink, $staff_data);
 
 		?>
 			<h1 class="article_page_title"><?= __('Upload Spreadsheet', 'EOT_LMS') ?></h1>
