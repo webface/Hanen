@@ -83,6 +83,11 @@
 			$staff_data = array();
 
 ddd($delimiter, $fp, $file, $fileLink );
+error_log( "delimiter: $delimiter");
+error_log( "fp: $fp");
+error_log( "file: $file");
+error_log( "fileLink: $fileLink");
+
 
 			while ( !feof($fp) )
 			{
