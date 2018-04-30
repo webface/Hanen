@@ -355,7 +355,7 @@
 				</tbody>
 			</table>
 			<br>
-			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&user_id='.$user_id.'subscription_id=' . $subscription_id ?>"><?= __('Please fix your spreadsheet and upload your file again.','EOT_LMS')?> </a>
+			<a href="<?= get_home_url() .'/dashboard/?part=uploadspreadsheet&user_id='.$user_id.'&subscription_id=' . $subscription_id . '&org_id=' . $org_id ?>"><?= __('Please fix your spreadsheet and upload your file again.','EOT_LMS')?> </a>
 
 <?php
 		}
