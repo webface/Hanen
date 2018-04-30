@@ -4870,6 +4870,12 @@ function updateUser_callback()
             $result['success'] = false;
             $result['errors'] = __("updateUser_callback error: Sorry, your nonce did not verify.", "EOT_LMS");
         }
+        else if( !is_email($email) )
+        {
+            $result['display_errors'] = true;
+            $result['success'] = false;
+            $result['errors'] = __("updateuser_callback Error: Please enter a valid e-mail address.", "EOT_LMS");
+        }
         else if($first_name == ""){
             $result['display_errors'] = true;
             $result['success'] = false;
@@ -4951,7 +4957,7 @@ function updateUser_callback()
                               //failed
                               $result['display_errors'] = 'failed';
                               $result['success'] = false;
-                              $result['errors'] = __('updateUser_callback Error: Could not update WP user.', "EOT_LMS");
+                              $result['errors'] = __('updateUser_callback Error: Could not update WP user. User already exist.', "EOT_LMS");
                           }
                       }
                     }
@@ -7331,7 +7337,7 @@ function getCourseForm_callback ( )
                 <a active = "0" acton = "edit_staff_account" rel = "submit_button" class="positive">
                   <img src="<?php bloginfo('template_directory'); ?>/images/tick.png" alt=""/> 
                   <?= __("Update", "EOT_LMS") ?>
-                </a>        
+                </a> 
               </div>
             </div>
         <?php

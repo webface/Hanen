@@ -346,6 +346,7 @@
     //{
      $(document).on('submit','form[rel*=submit_form]',function(){
   		var form = $(this);
+      $("a[rel=submit_button]").after("<i class='fa fa-spinner fa-pulse fa-3x fa-fw' id='loading'></i>");
   		var form_name = form.attr('frm_name');
       var form_action = form.attr('frm_action');
   		var query_string = form.serialize();
@@ -369,6 +370,7 @@
         // If we are successful
         success: function(data)
         {
+          $("#loading").hide();
           if (!$.trim(data))
           {   
               alert("The function is not available, or you your session has ended. Please refresh the page and try again.");

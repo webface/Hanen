@@ -324,10 +324,10 @@ static $i = 0;
         // Create the row for the updated information.
         staffTable.row.add([data.first_name + " " + data.last_name, // First and last name
                   data.email, // Email Address
-                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'" email="'+data.email+'" rel="facebox">\
+                  '<a href="<?= $admin_ajax_url ?>?action=getCourseForm&amp;form_name=edit_staff_account&amp;org_id=<?= $org_id ?>&amp;staff_id='+data.staff_id+'" email="'+data.email+'" rel="facebox">\
                     <i class="fa fa-pencil tooltip" aria-hidden="true" style="color:green"></i>\
                   </a>&nbsp;&nbsp;&nbsp;\
-                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id='+data.org_id+'&amp;staff_id='+data.user_id+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
+                  <a href="<?= $admin_ajax_url ?>?action=getCourseForm&form_name=delete_staff_account&amp;org_id=<?= $org_id ?>&amp;staff_id='+data.staff_id+'&amp;email='+data.email+'" email="'+data.email+'" rel="facebox">\
                     <i class="fa fa-trash tooltip" aria-hidden="true" style="color:green"></i>\
                   </a>\
                       ' // User options
