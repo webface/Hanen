@@ -3518,7 +3518,18 @@ function upgradeSubscription_callback ()
                     $card_id = $cc_card;
                 }
                 
-                $trans_id = charge_customer ($price, $customer_id, $card_id, $statement_description); //$charge->{'id'};
+                // try to charge the customer
+                try
+                {
+                    $trans_id = charge_customer ($price, $customer_id, $card_id, $statement_description); //$charge->{'id'};
+                }
+                catch ( Exception $e )
+                {
+                    $result['status'] = false;
+                    $result['message'] = __("upgradeSubscription_callback Error: There was an error upgrading your account:", "EOT_LMS") . ' ' . $e->getMessage();
+                    echo json_encode($result);
+                    wp_die(); 
+                }
             }
             else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'free')
             {
