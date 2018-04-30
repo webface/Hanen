@@ -3354,7 +3354,7 @@ function subscribe_alt_callback ()
         {
             $trans_id = 'FREE';
         }
-        else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'cheque')
+        else if (isset($_REQUEST['method']) && ( $_REQUEST['method'] == 'cheque' || $_REQUEST['method'] == 'check' ) )
         {
             $trans_id = 'CHEQUE';
         }
@@ -3524,7 +3524,7 @@ function upgradeSubscription_callback ()
             {
                 $trans_id = 'FREE';
             }
-            else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'cheque')
+            else if (isset($_REQUEST['method']) && ( $_REQUEST['method'] == 'cheque' || $_REQUEST['method'] == 'check' ) )
             {
                 $trans_id = 'CHEQUE';
             }
@@ -3695,7 +3695,7 @@ function chargeUser_callback ()
             {
                 $trans_id = 'FREE';
             }
-            else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'cheque')
+            else if (isset($_REQUEST['method']) && ( $_REQUEST['method'] == 'cheque' || $_REQUEST['method'] == 'check' ) )
             {
                 $trans_id = 'CHEQUE';
             }
@@ -4078,7 +4078,7 @@ function renewCamp_callback ()
             {
                 $trans_id = 'FREE';
             }
-            else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'cheque')
+            else if (isset($_REQUEST['method']) && ( $_REQUEST['method'] == 'cheque' || $_REQUEST['method'] == 'check' ) )
             {
                 $trans_id = 'CHEQUE';
             }
