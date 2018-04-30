@@ -3526,7 +3526,8 @@ function upgradeSubscription_callback ()
                 catch ( Exception $e )
                 {
                     $result['status'] = false;
-                    $result['message'] = __("upgradeSubscription_callback Error: There was an error upgrading your account:", "EOT_LMS") . ' ' . $e->getMessage();
+                    error_log("upgradeSubscription_callback Error: There was an error upgrading your account: " . $e->getMessage() );
+                    $result['message'] = __("There was an error upgrading your account:", "EOT_LMS") . ' ' . $e->getMessage();
                     echo json_encode($result);
                     wp_die(); 
                 }
