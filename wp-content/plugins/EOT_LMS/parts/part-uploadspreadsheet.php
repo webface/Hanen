@@ -79,7 +79,6 @@
 		{
 			// Parse the text file and store them in the $staff_data array.
 			$delimiter = (pathinfo($fileLink, PATHINFO_EXTENSION) == 'txt') ? "\t" : ",";
-//			$fp = @fopen($fileLink , 'r');
 			$staff_data = array();
 
 			$contents = wp_remote_fopen($fileLink);
@@ -96,8 +95,9 @@
 			    	}
 				}
 				array_shift( $staff_data ); // Delete first element of the array. Delete the headers.
-
-/* OLD WAY CAUSING LOOP ISSUE
+			}
+/* OLD WAY CAUSING LOOP ISSUE EOF issue
+//			$fp = @fopen($fileLink , 'r');
 				while ( !feof($fp) )
 				{
 				    $line = fgets($fp, 2048);
@@ -110,11 +110,8 @@
 				array_shift($staff_data); // Delete first element of the array. Delete the headers.
 				fclose($fp);
 */
-			}
 
-d($delimiter, $fp, $file, $fileLink, $staff_data);
-
-		?>
+?>
 			<h1 class="article_page_title"><?= __('Upload Spreadsheet', 'EOT_LMS') ?></h1>
 
 	        <div class="spreadsheet_upload round_msgbox">
