@@ -4929,11 +4929,12 @@ function updateUser_callback()
                       $result['success'] = true;
                       $result['message'] = __("User account information has been successfully updated.", "EOT_LMS");
                       $result['staff_id'] = $WP_user_id;
-                      $result['old_email']= $old_email;
-                      $result['staff_email']=$email;
-                      $result['email']=$email;
-                      $result['first_name']=$first_name;
-                      $result['last_name']=$last_name;
+                      $result['old_email'] = $old_email;
+                      $result['staff_email'] = $email;
+                      $result['email'] = $email;
+                      $result['first_name'] = $first_name;
+                      $result['last_name'] = $last_name;
+                      $result['org_id'] = $org_id;
 
                       // check if email was updated because if it was, we need to update the user_login field.
                       if ($email != $old_email)
@@ -4951,6 +4952,7 @@ function updateUser_callback()
                               $result['old_email']= $old_email;
                               $result['first_name']=$first_name;
                               $result['last_name']=$last_name;
+                              $result['org_id'] = $org_id;
                           }
                           else
                           {
