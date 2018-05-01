@@ -5262,7 +5262,7 @@ function deleteEnrolledUser_callback ()
     $org_id = filter_var($_REQUEST['org_id'],FILTER_SANITIZE_NUMBER_INT);
     $email  = filter_var($_REQUEST['email'],FILTER_SANITIZE_STRING);
     $course_id = filter_var($_REQUEST['group_id'],FILTER_SANITIZE_NUMBER_INT);
-    $enrollment_id = filter_var($_REQUEST['enrollment_id'],FILTER_SANITIZE_NUMBER_INT);
+//    $enrollment_id = filter_var($_REQUEST['enrollment_id'],FILTER_SANITIZE_NUMBER_INT); // we dont need this
     $user_id = filter_var($_REQUEST['user_id'],FILTER_SANITIZE_NUMBER_INT);
     $subscription_id = filter_var($_REQUEST['subscription_id'],FILTER_SANITIZE_NUMBER_INT);
 
@@ -7739,7 +7739,7 @@ function getCourseForm_callback ( )
                                                     <span class="staff_name" style="font-size:12px;"><?= $name ?></span> / 
                                                     <span class="staff_name" style="font-size:12px;"><?= $email ?></span>
                                                     <div style="width:140px;text-align:center;float:right;padding-right:35px;">
-                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="remove" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" enrollment_id="<?= $enrollment_id ?>" course_name="<?= $course_name ?>" portal_subdomain="<?= $org_subdomain ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>" >
+                                                        <a selected=1 class="add_remove_btn" collection="add_remove_from_group" group_id="<?= $course_id ?>" email="<?= $email ?>" status="remove" org_id="<?= $org_id ?>" subscription_id="<?= $subscription_id ?>" course_name="<?= $course_name ?>" nonce="<?= $nonce ?>" user_id="<?= $user_id ?>" >
                                                             Remove from course
                                                         </a>
                                                     </div>
