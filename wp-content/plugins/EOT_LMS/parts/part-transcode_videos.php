@@ -50,7 +50,7 @@
 					{
 						var fileName = bucketContents["data"][name]["name"];
 						var fileSize = bucketContents["data"][name]["size"];
-						var rgx = /^[a-z0-9]+_[0-9]{4}\.(0?[1-9]|1[012])\.([012]?[0-9]|3[01])\.[a-z0-9]+$/i;
+						var rgx = /^[a-z0-9_-]+_[0-9]{4}\.(0?[1-9]|1[012])\.([012]?[0-9]|3[01])\.[a-z0-9]+$/i;
 						var match = rgx.test(fileName);
 						var checkbox = match ? $("<input type='checkbox' class='files_check' name='files[]'>").attr("value",fileName).attr("id","file"+i) : "";
 						//* Debugging: */ var checkbox = $("<input type='checkbox' class='files_check' name='files[]'>").attr("value",fileName).attr("id","file"+i) ;
