@@ -15,6 +15,126 @@
   </head>
 
   <body>
+    <!--NAVIGATION--->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Hanen</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Reset</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Code</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          Prepared by Tommy Adeniyi
+        </span>
+      </div>
+    </nav>
+    <!--END NAVIGATION-->
+    <div class="container">
+      <div class="row">
+          <div class="col-md-7 articles">
+              <section>
+                
+                <div class="card filter">
+                    <div class="card-header">
+                      Bigfoot Afoot &nbsp;<small>True stories, forests</small>
+                      <span class="badge badge-bigfoot float-right">Bigfoot</span>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dapibus mi at nulla finibus pretium. Curabitur auctor lacus vitae varius viverra. Sed pharetra varius sapien, id hendrerit ipsum lacinia placerat. Morbi vitae neque ipsum. Curabitur sem neque, iaculis vel nisl a, condimentum commodo arcu. Morbi nec urna efficitur, tempor nisl a, aliquet felis. Ut non est massa. Proin eget purus est. Integer eu nisi sed nisi maximus sodales. Duis finibus turpis a velit consectetur, luctus eleifend metus scelerisque. Pellentesque suscipit iaculis purus vel convallis.
+                        </p>  
+                    </div>
+                </div>
+
+                <div class="card filter">
+                    <div class="card-header">
+                      Lochness Sighted &nbsp;&nbsp;<small>Sightings, lakes</small>
+                      <span class="badge badge-nessy float-right">Nessy</span>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dapibus mi at nulla finibus pretium. Curabitur auctor lacus vitae varius viverra. Sed pharetra varius sapien, id hendrerit ipsum lacinia placerat. Morbi vitae neque ipsum. Curabitur sem neque, iaculis vel nisl a, condimentum commodo arcu. Morbi nec urna efficitur, tempor nisl a, aliquet felis. Ut non est massa. Proin eget purus est. Integer eu nisi sed nisi maximus sodales. Duis finibus turpis a velit consectetur, luctus eleifend metus scelerisque. Pellentesque suscipit iaculis purus vel convallis.
+                        </p>  
+                    </div>
+                </div>
+
+                <div class="card filter">
+                    <div class="card-header">
+                      Jacktalopes Everywhere &nbsp;<small>Rabbits, cities</small>
+                      <span class="badge badge-jacktalope float-right">Jacktalope</span>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dapibus mi at nulla finibus pretium. Curabitur auctor lacus vitae varius viverra. Sed pharetra varius sapien, id hendrerit ipsum lacinia placerat. Morbi vitae neque ipsum. Curabitur sem neque, iaculis vel nisl a, condimentum commodo arcu. Morbi nec urna efficitur, tempor nisl a, aliquet felis. Ut non est massa. Proin eget purus est. Integer eu nisi sed nisi maximus sodales. Duis finibus turpis a velit consectetur, luctus eleifend metus scelerisque. Pellentesque suscipit iaculis purus vel convallis.
+                        </p>  
+                    </div>
+                </div>
+
+              </section>
+          </div>
+          <div class="col-md-1">&nbsp;</div>
+          <div class="col-md-4 admin">
+              <section>
+                  <div class="card filter">
+                    <div class="card-header">
+                      Filter
+                    </div>
+                    <form>
+                      <div class="form-group">
+                        <label for="filterName">Filter by name</label>
+                        <input type="text" class="form-control" id="filterName" placeholder="name">
+                      </div>
+                      <div class="form-group">
+                        <label for="filterTags">Filter by tags</label>
+                        <input type="text" class="form-control" id="filterTags" placeholder="tags">
+                      </div>
+                    </form>
+                  </div>
+                  <div class="card filter">
+                    <div class="card-header">
+                      Add an Article
+                    </div>
+                    <form>
+
+                      <div class="form-group">
+                        <label for="articleName">Name</label>
+                        <input type="text" class="form-control" id="articleName" placeholder="title">
+                      </div>
+                      <div class="form-group">
+                        <label for="articleDescription">Description</label>
+                        <textarea class="form-control" id="articleDescription" rows="3"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="articleTags">Tags</label>
+                        <input type="text" class="form-control" id="articleTags" placeholder="">
+                      </div>
+                      <div class="form-group">
+                        <label for="articleCategory">Category</label>
+                        <select class="form-control" id="articleCategory">
+                          <option></option>
+                          <option value="Bigfoot">Bigfoot</option>
+                          <option value="Nessy">Nessy</option>
+                          <option value="Jacktalope">Jacktalope</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-light">Submit</button>
+                      
+                    </form>
+                  </div>
+              </section>
+          </div>
+      </div>
+    </div>
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>

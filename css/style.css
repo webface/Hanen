@@ -1,0 +1,34 @@
+.container{
+	margin-top:20px;
+}
+form{
+	padding:15px 10px;
+}
+.card{
+	margin-bottom: 20px;
+	border-radius: 0;
+}
+
+input,textarea,select{
+	border-radius:0;
+}
+
+.admin .card-header{
+	background-color: #E2F1F9;
+}
+
+.articles .card-header{
+	background-color: #F2F2F2;
+}
+.articles .card-header .badge{
+	color:white;
+}
+.badge-bigfoot{
+	background-color: #399953;
+}
+.badge-nessy{
+	background-color: #428FB4;
+}
+.badge-jacktalope{
+	background-color: #EE9B3E;
+}
