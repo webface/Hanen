@@ -73,12 +73,12 @@
             console.log('posting article');
             var json =[];
             var tags = vm.currentArticle.tags;
-            var toSplit = to.split(",");
+            var toSplit = tags.split(",");
             for (var i = 0; i < toSplit.length; i++) {
                 json.push(toSplit[i]);
             }
             vm.currentArticle.tags = json;
-            vm.articlemanager.articles.push(vm.currentArticle);
+            vm.articlemanager.addArticle(vm.currentArticle);
             vm.currentArticle = {
                 title:'',
                 tags:'',

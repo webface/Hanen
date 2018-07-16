@@ -20,7 +20,7 @@
     function ArticleManager($http, $httpParamSerializer)
     {
         var articlesManager ={
-            articles:[
+            articles_data:[
                 {
                     title:'Bigfoot Afoot',
                     tags:['True stories', 'forests'],
@@ -40,13 +40,15 @@
                     category:'Jacktalope'
                 }
             ],
-            addArticles:addArticles
+            addArticle:addArticle,
+            articles :(localStorage.getItem('articles')!==null) ? JSON.parse(localStorage.getItem('articles')): []
         };
         return articlesManager;
 
-        function addArticles(article)
+        function addArticle(article)
         {
             articlesManager.articles.push(article);
+            localStorage.setItem('articles', JSON.stringify(articlesManager.articles));
         }
         
     }

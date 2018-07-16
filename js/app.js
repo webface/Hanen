@@ -7,6 +7,6 @@
      * empty array as the second argument)
      */
     angular
-        .module("articles", ['ngStorage']);
+        .module("articles", []);
 
 })();
