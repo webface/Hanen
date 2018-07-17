@@ -41,7 +41,8 @@
                 }
             ],
             addArticle:addArticle,
-            articles :(localStorage.getItem('articles')!==null) ? JSON.parse(localStorage.getItem('articles')): []
+            articles :(localStorage.getItem('articles')!==null) ? JSON.parse(localStorage.getItem('articles')): [],
+            reset:reset
         };
         return articlesManager;
 
@@ -49,6 +50,14 @@
         {
             articlesManager.articles.push(article);
             localStorage.setItem('articles', JSON.stringify(articlesManager.articles));
+        }
+
+        function reset()
+        {
+            console.log('reset');
+            articlesManager.articles = [];
+            console.log(articlesManager.articles);
+            localStorage.setItem('articles', JSON.stringify([]));
         }
         
     }

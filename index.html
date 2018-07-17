@@ -23,14 +23,14 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home </a>
+          <li class="nav-item">
+            <a class="btn btn-link" href="#">Home </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Reset</a>
+            <button class="btn btn-link" ng-click="articles.articlemanager.reset()">Reset </button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/webface/Hanen" target="blank">Code</a>
+            <a class="btn btn-link" href="https://github.com/webface/Hanen" target="blank">Code </a>
           </li>
         </ul>
         <span class="navbar-text">
@@ -42,9 +42,9 @@
     <div class="container">
       <div class="row">
 
-          <div class="col-md-7 articles">
+          <div class="col-md-8 articles">
               <section>
-                <div class="card filter" ng-repeat="article in articles.articlemanager.articles track by $index">
+                <div class="card filter" ng-repeat="article in articles.articlemanager.articles | filter : filterName | filter: filterTags track by $index">
                     <div class="card-header">
                       {{article.title}} &nbsp;<small>{{article.tags.join()}}</small>
                       <span class="badge badge-{{article.category}} float-right">{{article.category}}</span>
@@ -55,10 +55,9 @@
                         </p>  
                     </div>
                 </div>
-              </section>
-          </div>
+              </section>            
 
-          <div class="col-md-1">&nbsp;</div>
+          </div>
 
           <div class="col-md-4 admin">
               <section>
@@ -69,11 +68,11 @@
                     <form>
                       <div class="form-group">
                         <label for="filterName">Filter by name</label>
-                        <input type="text" class="form-control" id="filterName">
+                        <input type="text" class="form-control" id="filterName" ng-model="filterName">
                       </div>
                       <div class="form-group">
                         <label for="filterTags">Filter by tags</label>
-                        <input type="text" class="form-control" id="filterTags">
+                        <input type="text" class="form-control" id="filterTags" ng-model="filterTags">
                       </div>
                     </form>
                   </div>
