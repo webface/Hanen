@@ -12,7 +12,7 @@
      * dependency injection as seen in all the controllers. See comments 
      * there for a deeper explaination of dependency injection
      */
-    ArticleManager.$inject = ['$http',  '$httpParamSerializer'];
+    ArticleManager.$inject = [];
 
     /*
      * function definition for the factory
